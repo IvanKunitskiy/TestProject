@@ -1,0 +1,11 @@
+.idea
+*.iml
+
+*.log
+
+*.html
+
+target
+test-output
+allure-results
+.DS_Store
