@@ -3,7 +3,7 @@
 <suite name="Suite" parallel="tests" thread-count="2" configfailurepolicy="continue">
     <test name="Navigation tests">
         <packages>
-            <package name="com.nymbus.tests.navigation.FirstTest"/>
+            <package name="com.nymbus.frontoffice.login.*"/>
         </packages>
     </test>
 </suite>

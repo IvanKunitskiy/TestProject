@@ -19,6 +19,8 @@
         <org.slf4j>1.7.5</org.slf4j>
         <allure.version>2.13.0</allure.version>
         <aspectj.version>1.9.5</aspectj.version>
+        <test.resource.dir>src${file.separator}test${file.separator}resources</test.resource.dir>
+        <suiteXmlFile>AllTest</suiteXmlFile>
     </properties>
 
     <dependencies>
@@ -97,7 +99,11 @@
                         <argLine>
                             -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                         </argLine>
+                        <suiteXmlFiles>
+                            <suiteXmlFile>${test.resource.dir}${file.separator}${suiteXmlFile}.xml</suiteXmlFile>
+                        </suiteXmlFiles>
                     </configuration>
+
                 </plugin>
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
