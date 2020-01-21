@@ -27,14 +27,13 @@ public class UsersActions {
     public void addUserRoles(User user){
         for (int i=0; i<user.getRolesList().size(); i++){
             SettingsPage.addingUsersPage().clickRolesSelectorButton(i+1);
-            SettingsPage.addingUsersPage().wait(3);
             SettingsPage.addingUsersPage().setRolesValue(user.getRolesList().get(i), i+1);
-            SettingsPage.addingUsersPage().wait(3);
-            SettingsPage.addingUsersPage().clickRolesOption(user.getRolesList().get(i), i+1);
-            SettingsPage.addingUsersPage().wait(3);
             SettingsPage.addingUsersPage().clickAddRolesLink();
-            SettingsPage.addingUsersPage().wait(3);
         }
+    }
+
+    public void addBranch(User user){
+
     }
 
 }

@@ -27,6 +27,7 @@ public class NavigationPage extends BasePage {
     @Step("Get user full name")
     public String getUserFullName(){
         waitForElementVisibility(userFullName);
+        waitForElementClickable(userFullName);
         return getElementText(userFullName);
     }
 

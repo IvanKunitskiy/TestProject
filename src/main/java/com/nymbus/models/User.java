@@ -36,8 +36,8 @@ public class User {
         user.setMiddleName(Random.genString(2));
         user.setLastName(Random.genString(2));
         user.setInitials(Random.genString(2));
-        user.setBranch(Random.genString(2));
-        user.setLocation(Random.genString(2));
+        user.setBranch("Inspire - Bristol");
+        user.setLocation("Inspire - Bristol");
         user.setTitle(Random.genString(2));
         user.setBusinessPhone(Random.genMobilePhone());
         user.setOtherPhone(Random.genMobilePhone());

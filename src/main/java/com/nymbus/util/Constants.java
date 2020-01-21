@@ -7,8 +7,8 @@ public class Constants {
 
     public static String USERNAME = "autotest";
     public static String PASSWORD = "autotest";
-    public static String FIRST_NAME = "autotestF";
-    public static String LAST_NAME = "autotestL";
+    public static String FIRST_NAME = "autotest";
+    public static String LAST_NAME = "autotest";
 
     /**
      * Browsers
