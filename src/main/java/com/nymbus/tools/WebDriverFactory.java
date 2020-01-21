@@ -7,13 +7,18 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.io.IOException;
+import java.net.URI;
 
 import static org.openqa.selenium.remote.BrowserType.CHROME;
 import static org.openqa.selenium.remote.BrowserType.FIREFOX;
 
 public class WebDriverFactory {
 
-    public static WebDriver createBrowser(String browser) {
+    public static WebDriver createBrowser(String browser) throws IOException{
         boolean isHeadlessMode = Boolean.valueOf(System.getProperty("headless"));
 
         switch (browser) {
@@ -30,6 +35,17 @@ public class WebDriverFactory {
                 firefoxOptions.setHeadless(isHeadlessMode);
 
                 return new FirefoxDriver(firefoxOptions);
+            case "Selenoid":
+                DesiredCapabilities capabilities = new DesiredCapabilities();
+                capabilities.setBrowserName("chrome");
+                capabilities.setVersion("64");
+                capabilities.setCapability("enableVNC", true);
+                capabilities.setCapability("enableVideo", false);
+
+                return new RemoteWebDriver(
+                        URI.create("http://selenoid:4444/wd/hub").toURL(),
+                        capabilities
+                );
             default:
                 throw new WebDriverException(String.format
                     ("Browser: %s is invalid or not supported by project", browser));

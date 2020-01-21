@@ -4,11 +4,16 @@ import com.nymbus.tools.WebDriverFactory;
 import com.nymbus.util.Constants;
 import com.nymbus.util.testlistener.TestListener;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
+
+import java.io.IOException;
+import java.net.URI;
 
 @Listeners({TestListener.class})
 public class BaseTest {
@@ -25,7 +30,7 @@ public class BaseTest {
     }
 
     @BeforeClass(alwaysRun = true, description = "Open BROWSER")
-    public void startBrowser() {
+    public void startBrowser() throws IOException {
         WebDriver driver = WebDriverFactory.createBrowser(System.getProperty("browser", Constants.CHROME));
 
         concurrentDriver.set(driver);
