@@ -1,6 +1,5 @@
 package com.nymbus.frontoffice.login;
 
-import com.nymbus.actions.Actions;
 import com.nymbus.base.BaseTest;
 import com.nymbus.pages.Pages;
 import com.nymbus.util.Constants;

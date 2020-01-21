@@ -16,6 +16,7 @@ public class Pages {
     private static LoansPage loansPage;
     private static ReportGeneratorPage reportGeneratorPage;
     private static Settings settings;
+    private static Settings settings1;
 
     /**
      * This function return an instance of `LoginPage`

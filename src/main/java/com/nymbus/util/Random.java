@@ -22,7 +22,7 @@ public class Random {
         return (genInt(1, 9) * 10_000_000) + (System.currentTimeMillis() % 10_000_000) + shortRandAdd++;
     }
 
-    private static String genString(int length) {
+    public static String genString(int length) {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < length; i++) {
             s.append((char) Random.genInt(97, 120));

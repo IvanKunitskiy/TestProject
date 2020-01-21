@@ -9,7 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 @Epic("Frontoffice")
-@Feature("Log out")
+@Feature("Log in")
 public class C22514_LogOut extends BaseTest {
 
     public void loginWithVerification(){
