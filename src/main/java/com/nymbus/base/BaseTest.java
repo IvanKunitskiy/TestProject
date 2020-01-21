@@ -33,9 +33,9 @@ public class BaseTest {
         concurrentDriver.get().manage().deleteAllCookies();
     }
 
-//    @AfterClass(alwaysRun = true, description = "Close BROWSER")
-//    public void closeBrowser() {
-//        getDriver().manage().deleteAllCookies();
-//        getDriver().quit();
-//    }
+    @AfterClass(alwaysRun = true, description = "Close BROWSER")
+    public void closeBrowser() {
+        getDriver().manage().deleteAllCookies();
+        getDriver().quit();
+    }
 }
