@@ -12,38 +12,44 @@ public class ViewUserPage extends BasePage {
      * Controls
      */
 
-    Locator addNewButton = new XPath("//a[span[text()='Add New']]");
-    Locator editButton = new XPath("//button[contains(@ng-click, 'editForm')]");
+    private Locator overLay = new XPath("//div[contains(@ng-show, 'isLoading') and contains(@class, 'xwidget_loading_overlay')]");
+    private Locator addNewButton = new XPath("//a[span[text()='Add New']]");
+    private Locator editButton = new XPath("//button[contains(@ng-click, 'editForm')]");
 
     /**
      * User data
      */
 
-    Locator firstName = new XPath("//div[@id='usrusers-userfname']//span[@class='xwidget_readonly_value']");
-    Locator middleName = new XPath("//div[@id='usrusers-usermname']//span[@class='xwidget_readonly_value']");
-    Locator lastName = new XPath("//div[@id='usrusers-userlname']//span[@class='xwidget_readonly_value']");
-    Locator userID = new XPath("//div[@id='usrusers-userid']//span[@class='xwidget_readonly_value']");
-    Locator initials = new XPath("//div[@id='usrusers-initials']//span[@class='xwidget_readonly_value']");
-    Locator branch = new XPath("//div[@id='usrusers-branchid']//span[@class='xwidget_readonly_value']");
-    Locator location = new XPath("//div[@id='usrusers-locationid']//span[@class='xwidget_readonly_value']");
-    Locator title = new XPath("//div[@id='usrusers-jobtitle']//span[@class='xwidget_readonly_value']");
-    Locator taxID = new XPath("//div[@id='usrusers-taxidnumbers']//span[@class='xwidget_readonly_value']");
-    Locator phone = new XPath("//div[@id='usrusers-businesstelephone']//span[@class='xwidget_readonly_value']");
-    Locator mobile = new XPath("//div[@id='usrusers-othertelephone']//span[@class='xwidget_readonly_value']");
-    Locator email = new XPath("//div[@id='usrusers-emailaddress']//span[@class='xwidget_readonly_value']");
-    Locator loginID = new XPath("//div[@id='usrusers-loginname']//span[@class='xwidget_readonly_value']");
-    Locator loginDisabled = new XPath("//div[@id='usrusers-logindisabledflag']//input[contains(@name, 'logindisabledflag')]");
-    Locator roles = new XPath("//div[@id='usrusers-groupid']//span[@class='xwidget_readonly_value']");
-    Locator isActive = new XPath("//div[@id='usrusers-inactive']//input[contains(@name, 'inactive')]");
-    Locator checkDepositLimit = new XPath("//div[@id='usrusers-checksdepositslimit']//span[@class='xwidget_readonly_value']");
-    Locator networkPrinter = new XPath("//div[@id='usrusers-networkprinter']//span[@class='xwidget_readonly_value']");
-    Locator officialCheckLimit = new XPath("//div[@id='usrusers-officialcheckslimit']//span[@class='xwidget_readonly_value']");
-    Locator cashOutLimit = new XPath("//div[@id='usrusers-cashoutlimit']//span");
-    Locator teller = new XPath("//div[@id='usrusers-telleryn']//input[contains(@name, 'teller')]");
+    private Locator firstName = new XPath("//div[@id='usrusers-userfname']//span[@class='xwidget_readonly_value']");
+    private Locator middleName = new XPath("//div[@id='usrusers-usermname']//span[@class='xwidget_readonly_value']");
+    private Locator lastName = new XPath("//div[@id='usrusers-userlname']//span[@class='xwidget_readonly_value']");
+    private Locator userID = new XPath("//div[@id='usrusers-userid']//span[@class='xwidget_readonly_value']");
+    private Locator initials = new XPath("//div[@id='usrusers-initials']//span[@class='xwidget_readonly_value']");
+    private Locator branch = new XPath("//div[@id='usrusers-branchid']//span[@class='xwidget_readonly_value']");
+    private Locator location = new XPath("//div[@id='usrusers-locationid']//span[@class='xwidget_readonly_value']");
+    private Locator title = new XPath("//div[@id='usrusers-jobtitle']//span[@class='xwidget_readonly_value']");
+    private Locator taxID = new XPath("//div[@id='usrusers-taxidnumbers']//span[@class='xwidget_readonly_value']");
+    private Locator phone = new XPath("//div[@id='usrusers-businesstelephone']//span[@class='xwidget_readonly_value']");
+    private Locator mobile = new XPath("//div[@id='usrusers-othertelephone']//span[@class='xwidget_readonly_value']");
+    private Locator email = new XPath("//div[@id='usrusers-emailaddress']//span[@class='xwidget_readonly_value']");
+    private Locator loginID = new XPath("//div[@id='usrusers-loginname']//span[@class='xwidget_readonly_value']");
+    private Locator loginDisabled = new XPath("//div[@id='usrusers-logindisabledflag']//input[contains(@name, 'logindisabledflag')]");
+    private Locator roles = new XPath("//div[@id='usrusers-groupid']//span[@class='xwidget_readonly_value']");
+    private Locator isActive = new XPath("//div[@id='usrusers-inactive']//input[contains(@name, 'inactive')]");
+    private Locator checkDepositLimit = new XPath("//div[@id='usrusers-checksdepositslimit']//span[@class='xwidget_readonly_value']");
+    private Locator networkPrinter = new XPath("//div[@id='usrusers-networkprinter']//span[@class='xwidget_readonly_value']");
+    private Locator officialCheckLimit = new XPath("//div[@id='usrusers-officialcheckslimit']//span[@class='xwidget_readonly_value']");
+    private Locator cashOutLimit = new XPath("//div[@id='usrusers-cashoutlimit']//span");
+    private Locator teller = new XPath("//div[@id='usrusers-telleryn']//input[contains(@name, 'teller')]");
 
     /**
      * Actions with controls
      */
+
+    public void waitViewUserDataVisible(){
+        waitForElementVisibility(overLay);
+        waitForElementInvisibility(overLay);
+    }
 
     @Step("Click 'Add New' button")
     public void clickAddNewButton() {
@@ -108,12 +114,12 @@ public class ViewUserPage extends BasePage {
 
     @Step("Get 'Phone' value")
     public String getPhoneValue(){
-        return getElementText(phone);
+        return getElementText(phone).replaceAll("[\\W_&&[^°]]+","");
     }
 
     @Step("Get 'Mobile' value")
     public String getMobileValue(){
-        return getElementText(mobile);
+        return getElementText(mobile).replaceAll("[\\W_&&[^°]]+","");
     }
 
     @Step("Get 'Email' value")

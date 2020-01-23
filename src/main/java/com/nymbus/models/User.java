@@ -33,23 +33,23 @@ public class User {
     public User setDefaultUserData(){
         User user = new User();
         user.setFirstName(Random.genString(2));
-        user.setMiddleName(Random.genString(2));
         user.setLastName(Random.genString(2));
         user.setInitials(Random.genString(2));
-        user.setBranch("Inspire - Bristol");
-        user.setLocation("Inspire - Bristol");
         user.setTitle(Random.genString(2));
         user.setBusinessPhone(Random.genMobilePhone());
-        user.setOtherPhone(Random.genMobilePhone());
         user.setEmail(Random.genEmail("test@test.ts"));
         user.setLoginID(Random.genString(5));
+        user.setIsLoginDisabledFlag(false);
         user.setRolesList(new ArrayList<String>(3) {
             {
-                add("Systems Groups");
+                add("Systems Group");
                 add("Teller");
                 add("Officers");
             }
         });
+
+        user.setIsActiveFlag(true);
+        user.setIsTellerFlag(false);
 
         return user;
     }
@@ -107,6 +107,18 @@ public class User {
                 officialCheckLimit,
                 cashOutLimit,
                 isTeller);
+    }
+
+    public void setIsActiveFlag(boolean isActive){
+        this.isActive = isActive;
+    }
+
+    public void setIsLoginDisabledFlag(boolean isLoginDisabled){
+        this.isLoginDisabled = isLoginDisabled;
+    }
+
+    public void setIsTellerFlag(boolean isTeller){
+        this.isTeller = isTeller;
     }
 
     public String getFirstName() {
@@ -275,5 +287,32 @@ public class User {
 
     public void setTeller(boolean teller) {
         isTeller = teller;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", initials='" + initials + '\'' +
+                ", photoPath='" + photoPath + '\'' +
+                ", branch='" + branch + '\'' +
+                ", location='" + location + '\'' +
+                ", title='" + title + '\'' +
+                ", taxIDList=" + taxIDList +
+                ", businessPhone='" + businessPhone + '\'' +
+                ", otherPhone='" + otherPhone + '\'' +
+                ", email='" + email + '\'' +
+                ", loginID='" + loginID + '\'' +
+                ", isLoginDisabled=" + isLoginDisabled +
+                ", rolesList=" + rolesList +
+                ", isActive=" + isActive +
+                ", checkDepositLimit=" + checkDepositLimit +
+                ", networkPrinter='" + networkPrinter + '\'' +
+                ", officialCheckLimit=" + officialCheckLimit +
+                ", cashOutLimit=" + cashOutLimit +
+                ", isTeller=" + isTeller +
+                '}';
     }
 }

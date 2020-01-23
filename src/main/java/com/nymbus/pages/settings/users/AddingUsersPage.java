@@ -5,72 +5,78 @@ import com.nymbus.locator.Locator;
 import com.nymbus.locator.XPath;
 import io.qameta.allure.Step;
 
+import java.util.List;
+
 public class AddingUsersPage extends BasePage {
 
     /**
      * Controls
      */
 
-    Locator saveChangesButton = new XPath("//button[contains(@class, 'saveAndContinue')]");
-    Locator cancelButton = new XPath("//button[contains(@ng-click, 'cancelForm')]");
+    private Locator saveChangesButton = new XPath("//button[contains(@class, 'saveAndContinue')]");
+    private Locator cancelButton = new XPath("//button[contains(@ng-click, 'cancelForm')]");
 
     /**
      * User data
      */
 
-    Locator firstNameField = new XPath("//div[@id='usrusers-userfname']" +
+    private Locator firstNameField = new XPath("//div[@id='usrusers-userfname']" +
             "//input[@type='text' and @class='xwidget_value']");
-    Locator middleNameField = new XPath("//div[@id='usrusers-usermname']" +
+    private Locator middleNameField = new XPath("//div[@id='usrusers-usermname']" +
             "//input[@type='text' and @class='xwidget_value']");
-    Locator lastNameField = new XPath("//div[@id='usrusers-userlname']" +
+    private Locator lastNameField = new XPath("//div[@id='usrusers-userlname']" +
             "//input[@type='text' and @class='xwidget_value']");
-    Locator initialsField = new XPath("//div[@id='usrusers-initials']" +
+    private Locator initialsField = new XPath("//div[@id='usrusers-initials']" +
             "//input[@type='text' and @class='xwidget_value']");
-    Locator profilePhotoField = new XPath("//div[@id='usrusers-photo']//input[@type='file']");
-    Locator brandField = new XPath("//div[@id='usrusers-branchid']" +
+    private Locator profilePhotoField = new XPath("//div[@id='usrusers-photo']//input[@type='file']");
+    private Locator brandField = new XPath("//div[@id='usrusers-branchid']" +
             "//input[@type='text']");
-    Locator brandSelectorButton = new XPath("//div[@id='usrusers-branchid']" +
+    private Locator brandSelectorButton = new XPath("//div[@id='usrusers-branchid']" +
             "//div[contains(@class, 'action_icon')]");
-    Locator brandSelectorOption = new XPath("//div[@id='usrusers-branchid']" +
+    private Locator brandList = new XPath("//div[@id='usrusers-branchid']" +
+            "//li[contains(@class, 'xwidget_item')]/a");
+    private Locator brandSelectorOption = new XPath("//div[@id='usrusers-branchid']" +
             "//ul/li/a[contains(text(),'%s')]");
-    Locator locationField = new XPath("//div[@id='usrusers-locationid']" +
+    private Locator locationField = new XPath("//div[@id='usrusers-locationid']" +
             "//input[@type='text']");
-    Locator locationSelectorButton = new XPath("//div[@id='usrusers-locationid']" +
+    private Locator locationList = new XPath("//div[@id='usrusers-locationid']" +
+            "//li[contains(@class, 'xwidget_item')]/a");
+    private Locator locationSelectorButton = new XPath("//div[@id='usrusers-locationid']" +
             "//div[contains(@class, 'action_icon')]");
-    Locator locationSelectorOption = new XPath("//div[@id='usrusers-locationid']" +
+    private Locator locationSelectorOption = new XPath("//div[@id='usrusers-locationid']" +
             "//ul/li/a[contains(text(),'%s')]");
-    Locator titleField = new XPath("//div[@id='usrusers-jobtitle']//input[@type='text' and @class='xwidget_value']");
-    Locator addNexTaxIDLink = new XPath("//div[@id='usrusers-taxidnumbers']//div[contains(@class, 'xwidget_editableGrid_add')]//span[@class='ui-button-text']");
-    Locator taxIDFieldByIndex = new XPath("//div[@id='usrusers-taxidnumbers']" +
+    private Locator titleField = new XPath("//div[@id='usrusers-jobtitle']//input[@type='text' and @class='xwidget_value']");
+    private Locator addNexTaxIDLink = new XPath("//div[@id='usrusers-taxidnumbers']//div[contains(@class, 'xwidget_editableGrid_add')]//span[@class='ui-button-text']");
+    private Locator taxIDFieldByIndex = new XPath("//div[@id='usrusers-taxidnumbers']" +
             "//tr[@data-alias='usrusers.taxidnumber'][%s]//input[@type='text' and @class='xwidget_value']");
-    Locator deleteTaxIDFieldByIndex = new XPath("//div[@id='usrusers-taxidnumbers']" +
+    private Locator deleteTaxIDFieldByIndex = new XPath("//div[@id='usrusers-taxidnumbers']" +
             "//tr[@data-alias='usrusers.taxidnumber'][%s]//div[contains(@class, 'xwidget_visible')]//button");
-    Locator phoneField = new XPath("//div[@id='usrusers-businesstelephone']//input[@type='text' and @class='xwidget_value']");
-    Locator mobileField = new XPath("//div[@id='usrusers-othertelephone']//input[@type='text' and @class='xwidget_value']");
-    Locator emailField = new XPath("//div[@id='usrusers-emailaddress']//input[@type='text' and @class='xwidget_value']");
-    Locator loginIDField = new XPath("//div[@id='usrusers-loginname']//input[@type='text' and @class='xwidget_value']");
-    Locator loginDisabledToggle = new XPath("//div[@id='usrusers-logindisabledflag']//input[@type='checkbox']");
-    Locator addRolesLink = new XPath("//div[@id='usrusers-groupid']" +
+    private Locator phoneField = new XPath("//div[@id='usrusers-businesstelephone']//input[@type='text' and @class='xwidget_value']");
+    private Locator mobileField = new XPath("//div[@id='usrusers-othertelephone']//input[@type='text' and @class='xwidget_value']");
+    private Locator emailField = new XPath("//div[@id='usrusers-emailaddress']//input[@type='text' and @class='xwidget_value']");
+    private Locator loginIDField = new XPath("//div[@id='usrusers-loginname']//input[@type='text' and @class='xwidget_value']");
+    private Locator loginDisabledToggle = new XPath("//div[@id='usrusers-logindisabledflag']//div[input[@type='checkbox']]");
+    private Locator addRolesLink = new XPath("//div[@id='usrusers-groupid']" +
             "//div[contains(@class, 'container-add-field')]/a");
-    Locator rolesFieldByIndex = new XPath("//div[@id='usrusers-groupid']" +
+    private Locator rolesFieldByIndex = new XPath("//div[@id='usrusers-groupid']" +
             "//div[contains(@class, 'xwidget_single')][%s]//input[@type='text']");
-    Locator rolesSelectorButtonByIndex = new XPath("//div[@id='usrusers-groupid']" +
+    private Locator rolesSelectorButtonByIndex = new XPath("//div[@id='usrusers-groupid']" +
             "//div[contains(@class, 'xwidget_single')][%s]//div[contains(@class, 'action_icon')]");
-    Locator rolesSelectorOptionByIndex = new XPath("//div[@id='usrusers-groupid']" +
-            "//div[contains(@class, 'xwidget_single')][%s]//ul/li/a[contains(text(),'%s')]");
-    Locator deleteRolesFieldByIndex = new XPath("//div[@id='usrusers-groupid']" +
+    private Locator rolesSelectorOptionByIndex = new XPath("//div[@id='usrusers-groupid']" +
+            "//div[contains(@class, 'xwidget_single')][%s]//ul/li[1]/a[contains(text(),'%s')]");
+    private Locator deleteRolesFieldByIndex = new XPath("//div[@id='usrusers-groupid']" +
             "//div[contains(@class, 'xwidget_single')][%s]/div[@class='xwidget_delete_icon']");
-    Locator isActiveToggle = new XPath("//div[@id='usrusers-inactive']//input[@type='checkbox']");
-    Locator checkDepositLimitField = new XPath("//div[@id='usrusers-checksdepositslimit']//input[@type='text']");
-    Locator networkPrinterField = new XPath("//div[@id='usrusers-networkprinter']" +
+    private Locator isActiveToggle = new XPath("//div[@id='usrusers-inactive']//div[input[@type='checkbox']]");
+    private Locator checkDepositLimitField = new XPath("//div[@id='usrusers-checksdepositslimit']//input[@type='text']");
+    private Locator networkPrinterField = new XPath("//div[@id='usrusers-networkprinter']" +
             "//input[@type='text']");
-    Locator networkPrinterSelectorButton = new XPath("//div[@id='usrusers-networkprinter']" +
+    private Locator networkPrinterSelectorButton = new XPath("//div[@id='usrusers-networkprinter']" +
             "//div[contains(@class, 'action_icon')]");
-    Locator networkPrinterSelectorOption = new XPath("//div[@id='usrusers-networkprinter']" +
+    private Locator networkPrinterSelectorOption = new XPath("//div[@id='usrusers-networkprinter']" +
             "//ul/li/a[contains(text(),'%s')]");
-    Locator officialCheckLimitField = new XPath("//div[@id='usrusers-officialcheckslimit']//input[@type='text']");
-    Locator cashOutLimitField = new XPath("//div[@id='usrusers-cashoutlimit']//input[@type='text']");
-    Locator tellerToggle = new XPath("//div[@id='usrusers-telleryn']//input[@type='checkbox']");
+    private Locator officialCheckLimitField = new XPath("//div[@id='usrusers-officialcheckslimit']//input[@type='text']");
+    private Locator cashOutLimitField = new XPath("//div[@id='usrusers-cashoutlimit']//input[@type='text']");
+    private Locator tellerToggle = new XPath("//div[@id='usrusers-telleryn']//div[input[@type='checkbox']]");
 
     /**
      * Actions with controls
@@ -135,6 +141,13 @@ public class AddingUsersPage extends BasePage {
         click(brandSelectorButton);
     }
 
+    @Step("Returning list of branchs")
+    public List<String> getBranchList(){
+        waitForElementVisibility(brandList);
+        waitForElementClickable(brandList);
+        return getElementsText(brandList);
+    }
+
     @Step("Click on 'Branch' option")
     public void clickBranchOption(String branchOption) {
         waitForElementVisibility(brandSelectorOption, branchOption);
@@ -153,6 +166,13 @@ public class AddingUsersPage extends BasePage {
     public void clickLocationSelectorButton() {
         waitForElementClickable(locationSelectorButton);
         click(locationSelectorButton);
+    }
+
+    @Step("Returning list of locations")
+    public List<String> getLocationList(){
+        waitForElementVisibility(locationList);
+        waitForElementClickable(locationList);
+        return getElementsText(locationList);
     }
 
     @Step("Click on 'Location' option")
@@ -192,14 +212,22 @@ public class AddingUsersPage extends BasePage {
     public void setPhoneValue(String phoneValue) {
         waitForElementVisibility(phoneField);
         waitForElementClickable(phoneField);
-        type(phoneValue, phoneField);
+        click(phoneField);
+        for (char ch:phoneValue.toCharArray()) {
+            wait(1);
+            typeWithoutWipe(String.valueOf(ch), phoneField);
+        }
     }
 
     @Step("Set 'Mobile' value")
     public void setMobileValue(String mobileValue) {
         waitForElementVisibility(mobileField);
         waitForElementClickable(mobileField);
-        type(mobileValue, mobileField);
+        click(mobileField);
+        for (char ch: mobileValue.toCharArray()) {
+            wait(1);
+            typeWithoutWipe(String.valueOf(ch), mobileField);
+        }
     }
 
     @Step("Set 'Email' value")
@@ -319,5 +347,12 @@ public class AddingUsersPage extends BasePage {
     public void clickTellerToggle() {
         waitForElementClickable(tellerToggle);
         click(tellerToggle);
+    }
+
+    @Step("Checking is 'Teller' option activated")
+    public boolean isTellerOptionActivated() {
+        return getElementAttributeValue("value",
+                new XPath("//div[@id='usrusers-telleryn']//div[contains(@class, 'field_container')]/input"))
+                .contains("1");
     }
 }

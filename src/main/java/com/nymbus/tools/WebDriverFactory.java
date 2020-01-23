@@ -27,6 +27,7 @@ public class WebDriverFactory {
                 ChromeOptions chromeOptions = new ChromeOptions();
                 chromeOptions.setHeadless(isHeadlessMode);
                 chromeOptions.addArguments("--window-size=1920,1080");
+                chromeOptions.addArguments("--ignore-certificate-errors");
 
                 return new ChromeDriver(chromeOptions);
             case FIREFOX:
@@ -38,7 +39,7 @@ public class WebDriverFactory {
             case "Selenoid":
                 DesiredCapabilities capabilities = new DesiredCapabilities();
                 capabilities.setBrowserName("chrome");
-                capabilities.setVersion("64");
+                capabilities.setVersion("79");
                 capabilities.setCapability("enableVNC", true);
                 capabilities.setCapability("enableVideo", false);
 

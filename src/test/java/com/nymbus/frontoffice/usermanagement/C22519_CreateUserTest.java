@@ -4,6 +4,7 @@ import com.nymbus.actions.Actions;
 import com.nymbus.base.BaseTest;
 import com.nymbus.models.User;
 import com.nymbus.pages.Pages;
+import com.nymbus.pages.settings.SettingsPage;
 import com.nymbus.util.Constants;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -32,9 +33,11 @@ public class C22519_CreateUserTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         Pages.aSideMenuPage().clickSettingsMenuItem();
-
         Actions.usersActions().createUser(user);
 
-    }
+        SettingsPage.viewUserPage().waitViewUserDataVisible();
 
+        Assert.assertTrue(Actions.usersActions().getUserFromUserViewPage().equals(user),
+                "User's data isn't the same");
+    }
 }

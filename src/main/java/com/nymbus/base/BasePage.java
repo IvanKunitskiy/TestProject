@@ -135,6 +135,12 @@ public class BasePage {
         inputElement.sendKeys(value);
     }
 
+    protected void typeWithoutWipe(String value, Locator locator, Object... args) {
+        LOG.info("type text '{}' to element '{}'", value, locator);
+        WebElement inputElement = getElement(locator, args);
+        inputElement.sendKeys(value);
+    }
+
     protected boolean isElementEditable(Locator locator, Object... args) {
         LOG.info("check is element '{}' editable", locator);
         WebElement element = getElement(locator, args);
@@ -249,7 +255,7 @@ public class BasePage {
     }
 
     protected void waitForElementInvisibility(Locator locator, Object... args) {
-        waitForElementInvisibilityWithWait(10, locator, args);
+        waitForElementInvisibilityWithWait(60, locator, args);
     }
 
     protected void waitForElementInvisibilityWithWait(int waitInSecondsBefore, Locator locator, Object... args) {
