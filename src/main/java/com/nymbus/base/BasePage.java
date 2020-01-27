@@ -20,18 +20,18 @@ import java.util.concurrent.TimeUnit;
 
 public class BasePage {
 
-    protected static final Logger LOG = LoggerFactory.getLogger(BasePage.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BasePage.class);
     private static final int WAIT_TIMEOUT = 60;
 
     /*
      * General actions
      */
 
-    protected Actions getActions() {
+    private Actions getActions() {
         return new Actions(BaseTest.getDriver());
     }
 
-    protected WebDriverWait getWait() {
+    private WebDriverWait getWait() {
         return new WebDriverWait(BaseTest.getDriver(), WAIT_TIMEOUT);
     }
 
@@ -120,7 +120,7 @@ public class BasePage {
         List<String> elementsText = new ArrayList<>();
         List<WebElement> elements = getElements(locator, args);
         for (WebElement element : elements) {
-            elementsText.add(element.getText());
+            elementsText.add(element.getText().trim());
         }
         return elementsText;
     }

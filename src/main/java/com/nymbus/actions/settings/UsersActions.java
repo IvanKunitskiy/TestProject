@@ -6,6 +6,7 @@ import com.nymbus.pages.settings.SettingsPage;
 import org.testng.Assert;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -62,7 +63,7 @@ public class UsersActions {
         }
     }
 
-    public void addUserRoles(User user){
+    private void addUserRoles(User user){
         for (int i=0; i<user.getRolesList().size(); i++){
             SettingsPage.addingUsersPage().clickRolesSelectorButton(i+1);
             SettingsPage.addingUsersPage().setRolesValue(user.getRolesList().get(i), i+1);
@@ -72,7 +73,7 @@ public class UsersActions {
         }
     }
 
-    public void addRandomBranch(User user){
+    private void addRandomBranch(User user){
 
         SettingsPage.addingUsersPage().clickBranchSelectorButton();
         List<String> listOfBranch = SettingsPage.addingUsersPage().getBranchList();
@@ -85,7 +86,7 @@ public class UsersActions {
         SettingsPage.addingUsersPage().clickBranchOption(user.getBranch());
     }
 
-    public void addRandomLocation(User user){
+    private void addRandomLocation(User user){
         SettingsPage.addingUsersPage().clickLocationSelectorButton();
         List<String> listOfLocation = SettingsPage.addingUsersPage().getLocationList();
 
@@ -113,6 +114,8 @@ public class UsersActions {
         user.setRolesList(SettingsPage.viewUserPage().getRolesValue());
         user.setIsActiveFlag(SettingsPage.viewUserPage().isUserActive());
         user.setIsTellerFlag(SettingsPage.viewUserPage().isTeller());
+
+        Collections.sort(user.getRolesList());
 
         return user;
     }

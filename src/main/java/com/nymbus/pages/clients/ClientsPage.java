@@ -7,7 +7,7 @@ import io.qameta.allure.Step;
 
 public class ClientsPage extends BasePage {
 
-    Locator addNewClientButton = new XPath("//a[@*='action-addNewCustomer']");
+    private Locator addNewClientButton = new XPath("//a[@*='action-addNewCustomer']");
 
 
     @Step("Wait for 'Add new client' button")

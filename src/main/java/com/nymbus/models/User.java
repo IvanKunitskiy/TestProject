@@ -3,6 +3,7 @@ package com.nymbus.models;
 import com.nymbus.util.Random;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,6 +22,7 @@ public class User {
     private String otherPhone;
     private String email;
     private String loginID;
+    private String password;
     private boolean isLoginDisabled;
     private List<String> rolesList;
     private boolean isActive;
@@ -47,6 +49,8 @@ public class User {
                 add("Officers");
             }
         });
+
+        Collections.sort(user.getRolesList());
 
         user.setIsActiveFlag(true);
         user.setIsTellerFlag(false);
@@ -107,6 +111,14 @@ public class User {
                 officialCheckLimit,
                 cashOutLimit,
                 isTeller);
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setIsActiveFlag(boolean isActive){
@@ -305,6 +317,7 @@ public class User {
                 ", otherPhone='" + otherPhone + '\'' +
                 ", email='" + email + '\'' +
                 ", loginID='" + loginID + '\'' +
+                ", password='" + password + '\'' +
                 ", isLoginDisabled=" + isLoginDisabled +
                 ", rolesList=" + rolesList +
                 ", isActive=" + isActive +

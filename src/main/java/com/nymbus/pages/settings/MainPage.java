@@ -8,11 +8,11 @@ import io.qameta.allure.Step;
 public class MainPage extends BasePage {
 
     // Users
-     Locator userRegion = new XPath("//div[div[h2[text()='Users']]]");
-     Locator addNewUserLink = new XPath("//div[div[h2[text()='Users']]]//span");
-     Locator searchUserField = new XPath("//div[div[h2[text()='Users']]]//form/input[@name='username']");
-     Locator searchUserButton = new XPath("//div[div[h2[text()='Users']]]//form/button");
-     Locator viewAllUsersLink = new XPath("//div[div[h2[text()='Users']]]/div[@class='footer']//a");
+    private Locator userRegion = new XPath("//div[div[h2[text()='Users']]]");
+    private Locator addNewUserLink = new XPath("//div[div[h2[text()='Users']]]//span");
+    private Locator searchUserField = new XPath("//div[div[h2[text()='Users']]]//form/input[@name='username']");
+    private Locator searchUserButton = new XPath("//div[div[h2[text()='Users']]]//form/button");
+    private Locator viewAllUsersLink = new XPath("//div[div[h2[text()='Users']]]/div[@class='footer']//a");
 
      @Step("Waiting 'Users' region")
      public void waitForUserRegion(){

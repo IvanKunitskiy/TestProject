@@ -7,7 +7,7 @@ import io.qameta.allure.Step;
 
 public class BackOfficePage extends BasePage {
 
-    Locator reportGeneratorPageHeader = new XPath("//h1[text()='Ad Hoc Reporting']");
+    private Locator reportGeneratorPageHeader = new XPath("//h1[text()='Ad Hoc Reporting']");
 
     @Step("Wait for Report Generator page loaded")
     public void waitForReportGeneratorPageLoaded(){

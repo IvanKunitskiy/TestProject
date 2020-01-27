@@ -8,12 +8,12 @@ import io.qameta.allure.Step;
 
 public class ASideMenuPage extends BasePage {
 
-    Locator menu = new ID("menu");
-    Locator clientMenuItem = new XPath("//li[a[@id='menu-customers']]");
-    Locator loansMenuItem = new XPath("//li[a[@id='menu-loans']]");
-    Locator reportGeneratorMenuItem = new XPath("//li[a[@id='menu-adhocReport']]");
-    Locator backOfficeMenuItem = new XPath("//li[a[@id='menu-backoffice']]");
-    Locator settingsMenuItem = new XPath("//li[a[@id='menu-settings']]");
+    private Locator menu = new ID("menu");
+    private Locator clientMenuItem = new XPath("//li[a[@id='menu-customers']]");
+    private Locator loansMenuItem = new XPath("//li[a[@id='menu-loans']]");
+    private Locator reportGeneratorMenuItem = new XPath("//li[a[@id='menu-adhocReport']]");
+    private Locator backOfficeMenuItem = new XPath("//li[a[@id='menu-backoffice']]");
+    private Locator settingsMenuItem = new XPath("//li[a[@id='menu-settings']]");
 
     @Step("Wait for a side menu")
     public void waitForASideMenu(){

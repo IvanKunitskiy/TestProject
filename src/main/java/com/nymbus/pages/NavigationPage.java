@@ -8,10 +8,11 @@ import io.qameta.allure.Step;
 
 public class NavigationPage extends BasePage {
 
-    Locator userMenu = new ID("user-menu");
-    Locator openAccountButton = new XPath("//li[contains(@class, 'account')]/button");
-    Locator userFullName = new XPath("//span[@text='header.fullName']/span");
-    Locator signOutButton = new XPath("//li[a/*[@class='nyb-icon-logout']]");
+    private Locator userMenu = new ID("user-menu");
+    private Locator openAccountButton = new XPath("//li[contains(@class, 'account')]/button");
+    private Locator userFullName = new XPath("//span[@text='header.fullName']/span");
+    private Locator viewMyProfileLink = new ID("site-header-view-profile");
+    private Locator signOutButton = new XPath("//li[a/*[@class='nyb-icon-logout']]");
 
     @Step("Wait for user menu")
     public void waitForUserMenuVisible(){
@@ -39,7 +40,15 @@ public class NavigationPage extends BasePage {
     @Step("Click 'Sign Out' button")
     public void clickSignOut(){
         waitForElementVisibility(signOutButton);
+        waitForElementClickable(signOutButton);
         click(signOutButton);
+    }
+
+    @Step("Click 'View my Profile' link")
+    public void clickViewMyProfileLink(){
+        waitForElementVisibility(viewMyProfileLink);
+        waitForElementClickable(viewMyProfileLink);
+        click(viewMyProfileLink);
     }
 
 }

@@ -69,106 +69,127 @@ public class ViewUserPage extends BasePage {
 
     @Step("Get 'First Name' value")
     public String getFirstNameValue(){
-        return getElementText(firstName);
+        waitForElementVisibility(location);
+        return getElementText(firstName).trim();
     }
 
     @Step("Get 'Middle name' value")
     public String getMiddleNameValue(){
-        return getElementText(middleName);
+        waitForElementVisibility(location);
+        return getElementText(middleName).trim();
     }
 
     @Step("Get 'Last Name' value")
     public String getLastNameValue(){
-        return getElementText(lastName);
+        waitForElementVisibility(location);
+        return getElementText(lastName).trim();
     }
 
     @Step("Get 'USERID' value")
     public String getUSERIDValue(){
-        return getElementText(userID);
+        waitForElementVisibility(location);
+        return getElementText(userID).trim();
     }
 
     @Step("Get 'Initials' value")
     public String getInitialsValue(){
-        return getElementText(initials);
+        waitForElementVisibility(location);
+        return getElementText(initials).trim();
     }
 
     @Step("Get 'Branch' value")
     public String getBranchValue(){
-        return getElementText(branch);
+        waitForElementVisibility(location);
+        return getElementText(branch).trim();
     }
 
     @Step("Get 'Location' value")
     public String getLocationValue(){
-        return getElementText(location);
+        waitForElementVisibility(location);
+        return getElementText(location).trim();
     }
 
     @Step("Get 'Title' value")
     public String getTitleValue(){
-        return getElementText(title);
+        waitForElementVisibility(location);
+        return getElementText(title).trim();
     }
 
     @Step("Get 'Tax ID' value")
     public String getTaxIDValue(){
-        return getElementText(taxID);
+        waitForElementVisibility(location);
+        return getElementText(taxID).trim();
     }
 
     @Step("Get 'Phone' value")
     public String getPhoneValue(){
-        return getElementText(phone).replaceAll("[\\W_&&[^°]]+","");
+        waitForElementVisibility(location);
+        return getElementText(phone).trim().replaceAll("[\\W_&&[^°]]+","");
     }
 
     @Step("Get 'Mobile' value")
     public String getMobileValue(){
-        return getElementText(mobile).replaceAll("[\\W_&&[^°]]+","");
+        waitForElementVisibility(location);
+        return getElementText(mobile).trim().replaceAll("[\\W_&&[^°]]+","");
     }
 
     @Step("Get 'Email' value")
     public String getEmailValue(){
-        return getElementText(email);
+        waitForElementVisibility(location);
+        return getElementText(email).trim();
     }
 
     @Step("Get 'Login ID' value")
     public String getLoginIDValue(){
-        return getElementText(loginID);
+        waitForElementVisibility(location);
+        return getElementText(loginID).trim();
     }
 
     @Step("Returning is 'Login Disabled' result")
     public boolean isLoginDisabled(){
+        waitForElementVisibility(location);
         return getElementAttributeValue("value", loginDisabled).contains("1");
     }
 
     @Step("Get 'Roles' values")
     public List<String> getRolesValue(){
+        waitForElementVisibility(location);
         return getElementsText(roles);
     }
 
     @Step("Returning is user 'Is Active' result")
     public boolean isUserActive(){
+        waitForElementVisibility(location);
         return getElementAttributeValue("value", isActive).contains("0");
     }
 
     @Step("Get 'Check Deposit Limit' value")
     public String getCheckDepositLimitValue(){
-        return getElementText(checkDepositLimit);
+        waitForElementVisibility(location);
+        return getElementText(checkDepositLimit).trim();
     }
 
     @Step("Get 'Network Printer' value")
     public String getNetworkPrinterValue(){
-        return getElementText(networkPrinter);
+        waitForElementVisibility(location);
+        return getElementText(networkPrinter).trim();
     }
 
     @Step("Get 'Official Check Limit' value")
     public String getOfficialCheckLimitValue(){
-        return getElementText(officialCheckLimit);
+        waitForElementVisibility(location);
+        return getElementText(officialCheckLimit).trim();
     }
 
     @Step("Get 'Cash Out Limit' value")
     public String getCashOutLimitValue(){
-        return getElementText(cashOutLimit);
+        waitForElementVisibility(location);
+        return getElementText(cashOutLimit).trim();
     }
 
     @Step("Returning is user 'Teller' result")
     public boolean isTeller(){
+        waitForElementVisibility(location);
         return getElementAttributeValue("value", teller).contains("1");
     }
 

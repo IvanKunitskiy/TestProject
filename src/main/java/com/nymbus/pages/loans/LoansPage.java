@@ -7,7 +7,7 @@ import io.qameta.allure.Step;
 
 public class LoansPage extends BasePage {
 
-    Locator loansPageHeader = new XPath("//h1[text()='Loan']");
+    private Locator loansPageHeader = new XPath("//h1[text()='Loan']");
 
     @Step("Wait for Loan page loaded")
     public void waitForLoanPageLoaded(){
