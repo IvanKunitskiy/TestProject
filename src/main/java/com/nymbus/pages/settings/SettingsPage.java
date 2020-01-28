@@ -1,6 +1,7 @@
 package com.nymbus.pages.settings;
 
 import com.nymbus.pages.settings.users.AddingUsersPage;
+import com.nymbus.pages.settings.users.UsersSearchPage;
 import com.nymbus.pages.settings.users.ViewUserPage;
 
 public class SettingsPage {
@@ -11,6 +12,7 @@ public class SettingsPage {
     private static MainPage mainPage;
     private static AddingUsersPage addingUsersPage;
     private static ViewUserPage viewUserPage;
+    private static UsersSearchPage usersSearchPage;
 
     /**
      * This function return an instance of `MainPage`
@@ -42,5 +44,13 @@ public class SettingsPage {
         return viewUserPage;
     }
 
-
+    /**
+     * This function return an instance of `UsersSearchPage`
+     */
+    public static UsersSearchPage usersSearchPage() {
+        if (usersSearchPage == null) {
+            usersSearchPage = new UsersSearchPage();
+        }
+        return usersSearchPage;
+    }
 }

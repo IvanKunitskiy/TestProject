@@ -132,7 +132,14 @@ public class BasePage {
         LOG.info("type text '{}' to element '{}'", value, locator);
         WebElement inputElement = getElement(locator, args);
         inputElement.clear();
+        inputElement.clear();
         inputElement.sendKeys(value);
+    }
+
+    public void wipeText(Locator locator, Object... args) {
+        WebElement inputElement = getElement(locator, args);
+        inputElement.clear();
+        inputElement.clear();
     }
 
     protected void typeWithoutWipe(String value, Locator locator, Object... args) {

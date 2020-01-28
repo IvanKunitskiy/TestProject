@@ -12,7 +12,17 @@ import java.util.Random;
 
 public class UsersActions {
 
-    public void createUser(User user){
+    public void searchUser(User user) {
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+
+        Pages.settings().waitForSettingsPageLoaded();
+        SettingsPage.mainPage().waitForUserRegion();
+        SettingsPage.mainPage().setUserNameToSearchField(user.getLoginID());
+        SettingsPage.mainPage().clickSearchUserButton();
+        SettingsPage.usersSearchPage().waitForPageLoaded();
+    }
+
+    public void createUser(User user) {
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().waitForUserRegion();
         SettingsPage.mainPage().clickAddNewUserLink();
@@ -23,7 +33,16 @@ public class UsersActions {
 
     }
 
-    private void setUserData(User user){
+    public void editUser(User user) {
+        SettingsPage.viewUserPage().waitViewUserDataVisible();
+        SettingsPage.viewUserPage().clickEditButton();
+
+        setUserData(user);
+
+        SettingsPage.addingUsersPage().clickSaveChangesButton();
+    }
+
+    private void setUserData(User user) {
         SettingsPage.addingUsersPage().setFirstNameValue(user.getFirstName());
         SettingsPage.addingUsersPage().setLastNameValue(user.getLastName());
         SettingsPage.addingUsersPage().setInitialsValue(user.getInitials());
@@ -38,7 +57,7 @@ public class UsersActions {
 
         addUserRoles(user);
 
-        if(user.isActive()){
+        if (user.isActive()) {
             if (!SettingsPage.addingUsersPage().isIsActiveOptionActivated())
                 SettingsPage.addingUsersPage().clickIsActiveToggle();
         } else {
@@ -46,7 +65,7 @@ public class UsersActions {
                 SettingsPage.addingUsersPage().clickIsActiveToggle();
         }
 
-        if(user.isLoginDisabled()){
+        if (user.isLoginDisabled()) {
             if (!SettingsPage.addingUsersPage().isLoginDisabledOptionActivated())
                 SettingsPage.addingUsersPage().clickLoginDisabledToggle();
         } else {
@@ -54,7 +73,7 @@ public class UsersActions {
                 SettingsPage.addingUsersPage().clickLoginDisabledToggle();
         }
 
-        if(user.isTeller()){
+        if (user.isTeller()) {
             if (!SettingsPage.addingUsersPage().isTellerOptionActivated())
                 SettingsPage.addingUsersPage().clickTellerToggle();
         } else {
@@ -63,42 +82,53 @@ public class UsersActions {
         }
     }
 
-    private void addUserRoles(User user){
-        for (int i=0; i<user.getRolesList().size(); i++){
-            SettingsPage.addingUsersPage().clickRolesSelectorButton(i+1);
-            SettingsPage.addingUsersPage().setRolesValue(user.getRolesList().get(i), i+1);
-            SettingsPage.addingUsersPage().clickRolesOption(user.getRolesList().get(i), i+1);
-            if (user.getRolesList().size() > (i+1))
+    private void addUserRoles(User user) {
+
+        deleteRoles();
+
+        for (int i = 0; i < user.getRolesList().size(); i++) {
+            SettingsPage.addingUsersPage().clickRolesSelectorButton(i + 1);
+            SettingsPage.addingUsersPage().setRolesValue(user.getRolesList().get(i), i + 1);
+            SettingsPage.addingUsersPage().clickRolesOption(user.getRolesList().get(i), i + 1);
+            if (user.getRolesList().size() > (i + 1))
                 SettingsPage.addingUsersPage().clickAddRolesLink();
         }
     }
 
-    private void addRandomBranch(User user){
+    private void deleteRoles() {
+        if (SettingsPage.addingUsersPage().getNumberOfRoles() >= 2) {
+            for (int i = SettingsPage.addingUsersPage().getNumberOfRoles(); i >= 2; i--) {
+                SettingsPage.addingUsersPage().clickDeleteRoleByIndex(i);
+            }
+        }
+    }
+
+    private void addRandomBranch(User user) {
 
         SettingsPage.addingUsersPage().clickBranchSelectorButton();
         List<String> listOfBranch = SettingsPage.addingUsersPage().getBranchList();
 
-        Assert.assertTrue(listOfBranch.size()>0,
+        Assert.assertTrue(listOfBranch.size() > 0,
                 "There are not an available branches");
-
-        user.setBranch(listOfBranch.get(new Random().nextInt(listOfBranch.size())).trim());
+        if (user.getBranch() == null)
+            user.setBranch(listOfBranch.get(new Random().nextInt(listOfBranch.size())).trim());
         SettingsPage.addingUsersPage().setBranchValue(user.getBranch());
         SettingsPage.addingUsersPage().clickBranchOption(user.getBranch());
     }
 
-    private void addRandomLocation(User user){
+    private void addRandomLocation(User user) {
         SettingsPage.addingUsersPage().clickLocationSelectorButton();
         List<String> listOfLocation = SettingsPage.addingUsersPage().getLocationList();
 
-        Assert.assertTrue(listOfLocation.size()>0,
+        Assert.assertTrue(listOfLocation.size() > 0,
                 "There are not an available locations");
-
-        user.setLocation(listOfLocation.get(new Random().nextInt(listOfLocation.size())).trim());
+        if (user.getLocation() == null)
+            user.setLocation(listOfLocation.get(new Random().nextInt(listOfLocation.size())).trim());
         SettingsPage.addingUsersPage().setLocationValue(user.getLocation());
         SettingsPage.addingUsersPage().clickLocationOption(user.getLocation());
     }
 
-    public User getUserFromUserViewPage(){
+    public User getUserFromUserViewPage() {
         User user = new User();
 
         user.setFirstName(SettingsPage.viewUserPage().getFirstNameValue());

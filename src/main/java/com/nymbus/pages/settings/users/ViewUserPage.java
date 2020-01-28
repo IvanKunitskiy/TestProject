@@ -53,12 +53,14 @@ public class ViewUserPage extends BasePage {
 
     @Step("Click 'Add New' button")
     public void clickAddNewButton() {
+        waitForElementVisibility(addNewButton);
         waitForElementClickable(addNewButton);
         click(addNewButton);
     }
 
     @Step("Click 'Edit' button")
     public void clickEditButton() {
+        waitForElementVisibility(editButton);
         waitForElementClickable(editButton);
         click(editButton);
     }
@@ -106,6 +108,7 @@ public class ViewUserPage extends BasePage {
     @Step("Get 'Location' value")
     public String getLocationValue(){
         waitForElementVisibility(location);
+        wait(2);
         return getElementText(location).trim();
     }
 

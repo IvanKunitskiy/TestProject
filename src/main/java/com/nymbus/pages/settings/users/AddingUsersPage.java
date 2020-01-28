@@ -64,6 +64,7 @@ public class AddingUsersPage extends BasePage {
             "//div[contains(@class, 'xwidget_single')][%s]//div[contains(@class, 'action_icon')]");
     private Locator rolesSelectorOptionByIndex = new XPath("//div[@id='usrusers-groupid']" +
             "//div[contains(@class, 'xwidget_single')][%s]//ul/li[1]/a[contains(text(),'%s')]");
+    private Locator deleteRolesIcons = new XPath("//div[@id='usrusers-groupid']//div[@class='xwidget_delete_icon']");
     private Locator deleteRolesFieldByIndex = new XPath("//div[@id='usrusers-groupid']" +
             "//div[contains(@class, 'xwidget_single')][%s]/div[@class='xwidget_delete_icon']");
     private Locator isActiveToggle = new XPath("//div[@id='usrusers-inactive']//div[input[@type='checkbox']]");
@@ -100,18 +101,21 @@ public class AddingUsersPage extends BasePage {
 
     @Step("Set 'First Name' value")
     public void setFirstNameValue(String firstNameValue) {
+        waitForElementVisibility(firstNameField);
         waitForElementClickable(firstNameField);
         type(firstNameValue, firstNameField);
     }
 
     @Step("Set 'Middle Name' value")
     public void setMiddleNameValue(String middleNameValue) {
+        waitForElementVisibility(middleNameField);
         waitForElementClickable(middleNameField);
         type(middleNameValue, middleNameField);
     }
 
     @Step("Set 'Last Name' value")
     public void setLastNameValue(String lastNameValue) {
+        waitForElementVisibility(lastNameField);
         waitForElementClickable(lastNameField);
         type(lastNameValue, lastNameField);
     }
@@ -132,6 +136,7 @@ public class AddingUsersPage extends BasePage {
     public void setBranchValue(String branchValue) {
         waitForElementVisibility(brandField);
         waitForElementClickable(brandField);
+        wipeText(brandField);
         type(branchValue, brandField);
     }
 
@@ -159,6 +164,7 @@ public class AddingUsersPage extends BasePage {
     public void setLocationValue(String locationValue) {
         waitForElementVisibility(locationField);
         waitForElementClickable(locationField);
+        wipeText(locationField);
         type(locationValue, locationField);
     }
 
@@ -281,6 +287,11 @@ public class AddingUsersPage extends BasePage {
         waitForElementVisibility(rolesSelectorOptionByIndex, index, rolesOption);
         waitForElementClickable(rolesSelectorOptionByIndex, index, rolesOption);
         click(rolesSelectorOptionByIndex, index, rolesOption);
+    }
+
+    @Step
+    public int getNumberOfRoles(){
+        return getElements(deleteRolesIcons).size();
     }
 
     @Step("Click 'Delete' Role button")
