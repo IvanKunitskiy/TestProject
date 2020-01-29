@@ -16,12 +16,6 @@ public class C22514_LogOut extends BaseTest {
 
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-        Pages.clientsPage().waitForAddNewClientButton();
-
-        Pages.aSideMenuPage().waitForASideMenu();
-        Assert.assertTrue(Pages.aSideMenuPage().isClientPageOpened(),
-                "Client page is not opened");
-
         Pages.navigationPage().waitForUserMenuVisible();
         Pages.navigationPage().clickAccountButton();
 

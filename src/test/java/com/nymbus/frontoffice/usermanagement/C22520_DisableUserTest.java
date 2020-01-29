@@ -33,7 +33,6 @@ public class C22520_DisableUserTest extends BaseTest {
 
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-        Pages.aSideMenuPage().clickSettingsMenuItem();
         Actions.usersActions().createUser(user);
 
         SettingsPage.viewUserPage().waitViewUserDataVisible();
@@ -51,16 +50,6 @@ public class C22520_DisableUserTest extends BaseTest {
         navigateToUrl(Constants.URL);
 
         Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
-
-        Assert.assertFalse(Pages.loginPage().isErrorsVisibleOnLoginForm(),
-                "Error messages is visible");
-
-        Pages.clientsPage().waitForAddNewClientButton();
-
-        Pages.aSideMenuPage().waitForASideMenu();
-        Assert.assertTrue(Pages.aSideMenuPage().isClientPageOpened(),
-                "Client page is not opened");
-
         Actions.loginActions().doLogOut();
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 

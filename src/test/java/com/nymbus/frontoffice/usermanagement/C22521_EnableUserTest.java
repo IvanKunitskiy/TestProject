@@ -1,12 +1,11 @@
 package com.nymbus.frontoffice.usermanagement;
 
 import com.nymbus.actions.Actions;
-import com.nymbus.pages.Pages;
-import com.nymbus.pages.settings.SettingsPage;
-import com.nymbus.pages.webadmin.WebAdminPages;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.base.BaseTest;
 import com.nymbus.models.User;
+import com.nymbus.pages.Pages;
+import com.nymbus.pages.settings.SettingsPage;
 import com.nymbus.util.Constants;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -18,7 +17,7 @@ import org.testng.annotations.Test;
 
 @Epic("Frontoffice")
 @Feature("User Management")
-public class C22519_CreateUserTest extends BaseTest {
+public class C22521_EnableUserTest extends BaseTest {
 
     private User user;
 
@@ -27,14 +26,16 @@ public class C22519_CreateUserTest extends BaseTest {
         user = new User().setDefaultUserData();
     }
 
-    @Test(description = "C22519, Create User + Forgot Password + Log In")
+    @Test(description = "C22521, Enable User")
     @Severity(SeverityLevel.CRITICAL)
-    public void verifyUserCreation() {
+    public void verifyUserEnabling() {
         navigateToUrl(Constants.URL);
 
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-
+        Pages.aSideMenuPage().clickSettingsMenuItem();
         Actions.usersActions().createUser(user);
+        user.setIsLoginDisabledFlag(true);
+        Actions.usersActions().editUser(user);
 
         SettingsPage.viewUserPage().waitViewUserDataVisible();
 
@@ -50,22 +51,25 @@ public class C22519_CreateUserTest extends BaseTest {
 
         navigateToUrl(Constants.URL);
 
+        Pages.loginPage().waitForLoginForm();
+        Pages.loginPage().typeUserName(user.getLoginID());
+        Pages.loginPage().typePassword(user.getPassword());
+        Pages.loginPage().clickEnterButton();
+        Pages.loginPage().wait(2);
+
+        Assert.assertEquals(Pages.loginPage().getErrorMessage(),
+                "The user account has been disabled, please contact your system administrator",
+                "Expected message is not visible");
+        Pages.loginPage().waitForErrorMessageDisappear();
+
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        Actions.usersActions().searUserOnCustomerSearchPage(user);
+
+        user.setIsLoginDisabledFlag(false);
+        Actions.usersActions().editUser(user);
+        Actions.loginActions().doLogOut();
+
         Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
-
-        Pages.navigationPage().waitForUserMenuVisible();
-        Pages.navigationPage().clickAccountButton();
-
-        Assert.assertTrue(Pages.navigationPage().getUserFullName().contains(user.getFirstName()),
-                "User's first name is not visible. Found: " + Pages.navigationPage().getUserFullName());
-
-        Assert.assertTrue(Pages.navigationPage().getUserFullName().contains(user.getLastName()),
-                "User's last name is not visible. Found: " + Pages.navigationPage().getUserFullName());
-
-        //TODO Title issue in case setting password throw web admin
-
-//        Pages.navigationPage().clickViewMyProfileLink();
-//
-//        Assert.assertEquals(Actions.usersActions().getUserFromUserViewPage(), user,
-//                "User's data isn't the same");
     }
 }

@@ -12,6 +12,24 @@ import java.util.Random;
 
 public class UsersActions {
 
+    public void openViewAllUsersPage(){
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+
+        Pages.settings().waitForSettingsPageLoaded();
+        SettingsPage.mainPage().waitForUserRegion();
+        SettingsPage.mainPage().clickViewAllUsersLink();
+
+    }
+
+    public void searUserOnCustomerSearchPage(User user){
+        openViewAllUsersPage();
+        SettingsPage.usersSearchPage().waitViewUsersListVisible();
+        SettingsPage.usersSearchPage().waitForPageLoaded();
+        SettingsPage.usersSearchPage().setUserDataForSearching(user.getFirstName());
+        SettingsPage.usersSearchPage().clickSearchButton();
+        SettingsPage.usersSearchPage().clickCellByUserData(user.getEmail());
+    }
+
     public void searchUser(User user) {
         Pages.aSideMenuPage().clickSettingsMenuItem();
 
@@ -23,6 +41,7 @@ public class UsersActions {
     }
 
     public void createUser(User user) {
+        Pages.aSideMenuPage().clickSettingsMenuItem();
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().waitForUserRegion();
         SettingsPage.mainPage().clickAddNewUserLink();

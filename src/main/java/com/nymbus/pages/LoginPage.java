@@ -51,8 +51,14 @@ public class LoginPage extends BasePage {
                 isElementVisible(wrongCredentialsMessage);
     }
 
+    @Step("Get error message text")
     public String getErrorMessage(){
         return getElementText(wrongCredentialsMessage).trim();
+    }
+
+    @Step("Wait for error message block disappear")
+    public void waitForErrorMessageDisappear(){
+        waitForElementInvisibility(wrongCredentialsMessage);
     }
 
     @Step("Check is user name field has error visible")
