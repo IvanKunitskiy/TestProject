@@ -60,13 +60,13 @@ public class C22523_CreateCashDrawerTest extends BaseTest {
         Actions.loginActions().doLogOut();
         Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
 
-        Pages.aSideMenuPage().clickTellerToTellerMenuItem();
-        Assert.assertTrue(Pages.aSideMenuPage().isTellerToTellerPageOpened(),
-                "Teller To Teller Transfer page is not opened");
+        Pages.aSideMenuPage().clickTellerMenuItem();
+        Assert.assertTrue(Pages.aSideMenuPage().isTellerPageOpened(),
+                "Teller page is not opened");
 
-        Pages.tellerToTellerPage().waitModalWindow();
+        Pages.tellerPage().waitModalWindow();
 
-        Assert.assertEquals(Pages.tellerToTellerPage().getCashDrawerName(), cashDrawer.getName(),
+        Assert.assertEquals(Pages.tellerPage().getCashDrawerName(), cashDrawer.getName(),
                 "Cash Drawer name isn't correct");
     }
 
