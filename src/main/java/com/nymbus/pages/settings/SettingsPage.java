@@ -1,6 +1,9 @@
 package com.nymbus.pages.settings;
 
-import com.nymbus.pages.settings.users.AddingUsersPage;
+import com.nymbus.pages.settings.cashdrawer.AddCashDrawerPage;
+import com.nymbus.pages.settings.cashdrawer.CashDrawerSearchPage;
+import com.nymbus.pages.settings.cashdrawer.ViewCashDrawerPage;
+import com.nymbus.pages.settings.users.AddUsersPage;
 import com.nymbus.pages.settings.users.UsersSearchPage;
 import com.nymbus.pages.settings.users.ViewUserPage;
 
@@ -10,9 +13,12 @@ public class SettingsPage {
      * Pages
      */
     private static MainPage mainPage;
-    private static AddingUsersPage addingUsersPage;
+    private static AddUsersPage addUsersPage;
     private static ViewUserPage viewUserPage;
     private static UsersSearchPage usersSearchPage;
+    private static AddCashDrawerPage addCashDrawerPage;
+    private static ViewCashDrawerPage viewCashDrawerPage;
+    private static CashDrawerSearchPage cashDrawerSearchPage;
 
     /**
      * This function return an instance of `MainPage`
@@ -27,11 +33,11 @@ public class SettingsPage {
     /**
      * This function return an instance of `AddingUsersPage`
      */
-    public static AddingUsersPage addingUsersPage() {
-        if (addingUsersPage == null) {
-            addingUsersPage = new AddingUsersPage();
+    public static AddUsersPage addingUsersPage() {
+        if (addUsersPage == null) {
+            addUsersPage = new AddUsersPage();
         }
-        return addingUsersPage;
+        return addUsersPage;
     }
 
     /**
@@ -52,5 +58,35 @@ public class SettingsPage {
             usersSearchPage = new UsersSearchPage();
         }
         return usersSearchPage;
+    }
+
+    /**
+     * This function return an instance of `AddCashDrawerPage`
+     */
+    public static AddCashDrawerPage addCashDrawerPage() {
+        if (addCashDrawerPage == null) {
+            addCashDrawerPage = new AddCashDrawerPage();
+        }
+        return addCashDrawerPage;
+    }
+
+    /**
+     * This function return an instance of `ViewCashDrawerPage`
+     */
+    public static ViewCashDrawerPage viewCashDrawerPage() {
+        if (viewCashDrawerPage == null) {
+            viewCashDrawerPage = new ViewCashDrawerPage();
+        }
+        return viewCashDrawerPage;
+    }
+
+    /**
+     * This function return an instance of `CashDrawerSearchPage`
+     */
+    public static CashDrawerSearchPage cashDrawerSearchPage() {
+        if (cashDrawerSearchPage == null) {
+            cashDrawerSearchPage = new CashDrawerSearchPage();
+        }
+        return cashDrawerSearchPage;
     }
 }

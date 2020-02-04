@@ -31,6 +31,7 @@ public class User {
     private int officialCheckLimit;
     private int cashOutLimit;
     private boolean isTeller;
+    private CashDrawer cashDrawer;
 
     public User setDefaultUserData(){
         User user = new User();
@@ -77,7 +78,7 @@ public class User {
                 Objects.equals(photoPath, user.photoPath) &&
                 branch.equals(user.branch) &&
                 location.equals(user.location) &&
-                title.equals(user.title) &&
+//                title.equals(user.title) &&
                 Objects.equals(taxIDList, user.taxIDList) &&
                 businessPhone.equals(user.businessPhone) &&
                 Objects.equals(otherPhone, user.otherPhone) &&
@@ -111,6 +112,14 @@ public class User {
                 officialCheckLimit,
                 cashOutLimit,
                 isTeller);
+    }
+
+    public CashDrawer getCashDrawer() {
+        return cashDrawer;
+    }
+
+    public void setCashDrawer(CashDrawer cashDrawer) {
+        this.cashDrawer = cashDrawer;
     }
 
     public String getPassword() {

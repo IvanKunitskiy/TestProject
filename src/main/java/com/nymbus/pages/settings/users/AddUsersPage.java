@@ -7,19 +7,17 @@ import io.qameta.allure.Step;
 
 import java.util.List;
 
-public class AddingUsersPage extends BasePage {
+public class AddUsersPage extends BasePage {
 
     /**
      * Controls
      */
-
     private Locator saveChangesButton = new XPath("//button[contains(@class, 'saveAndContinue')]");
     private Locator cancelButton = new XPath("//button[contains(@ng-click, 'cancelForm')]");
 
     /**
      * User data
      */
-
     private Locator firstNameField = new XPath("//div[@id='usrusers-userfname']" +
             "//input[@type='text' and @class='xwidget_value']");
     private Locator middleNameField = new XPath("//div[@id='usrusers-usermname']" +
@@ -78,6 +76,41 @@ public class AddingUsersPage extends BasePage {
     private Locator officialCheckLimitField = new XPath("//div[@id='usrusers-officialcheckslimit']//input[@type='text']");
     private Locator cashOutLimitField = new XPath("//div[@id='usrusers-cashoutlimit']//input[@type='text']");
     private Locator tellerToggle = new XPath("//div[@id='usrusers-telleryn']//div[input[@type='checkbox']]");
+    private Locator cashDrawerField = new XPath("//div[@id='usrusers-cashdrawerid']" +
+            "//input[@type='text']");
+    private Locator cashDrawerList = new XPath("//div[@id='usrusers-cashdrawerid']" +
+            "//li[contains(@class, 'xwidget_item')]/a");
+    private Locator cashDrawerSelectorButton = new XPath("//div[@id='usrusers-cashdrawerid']" +
+            "//div[contains(@class, 'action_icon')]");
+    private Locator cashDrawerSelectorOption = new XPath("//div[@id='usrusers-cashdrawerid']" +
+            "//ul/li/a[contains(text(),'%s')]");
+    private Locator addNewCashDrawerLink = new XPath("//div[@id='usrusers-cashDrawer_addNew']//a");
+
+    // Add Cash Drawer modal
+    private Locator addNewCashDrawerModal = new XPath("//div[span[text()='Add Cash Drawer']]");
+    private Locator cashDrawerNameModal = new XPath("//div[@id='usrusers-cashDrawer_name']" +
+            "//input[@name='field[cashDrawer_name]']");
+    private Locator cashDrawerTypeField = new XPath("//div[@id='usrusers-cashDrawer_cashdrawertype']" +
+            "//input[@type='text']");
+    private Locator cashDrawerTypeList = new XPath("//div[@id='usrusers-cashDrawer_cashdrawertype']" +
+            "//li[contains(@class, 'xwidget_item')]/a");
+    private Locator cashDrawerTypeSelectorButton = new XPath("//div[@id='usrusers-cashDrawer_cashdrawertype']" +
+            "//div[contains(@class, 'action_icon')]");
+    private Locator cashDrawerTypeSelectorOption = new XPath("//div[@id='usrusers-cashDrawer_cashdrawertype']" +
+            "//ul/li/a[contains(text(),'%s')]");
+    private Locator glAccountNumberField = new XPath("//div[@id='usrusers-cashDrawer_lglaccountid']" +
+            "//input[@type='text']");
+    private Locator glAccountNumberList = new XPath("//div[@id='usrusers-cashDrawer_lglaccountid']" +
+            "//li[contains(@class, 'xwidget_item')]/a");
+    private Locator glAccountNumberSearchButton = new XPath("//div[@id='usrusers-cashDrawer_lglaccountid']" +
+            "//div[contains(@class, 'action_icon')]");
+    private Locator glAccountNumberOption = new XPath("//div[@id='usrusers-cashDrawer_lglaccountid']" +
+            "//ul/li/a[contains(text(),'%s')]");
+
+    private Locator cancelCashDrawerButton = new XPath("//div[span[text()='Add Cash Drawer']]/..//button[span[text()='Cancel']]");
+    private Locator addCashDrawerButton = new XPath("//div[span[text()='Add Cash Drawer']]/..//button[span[text()='Add']]");
+
+
 
     /**
      * Actions with controls
@@ -289,7 +322,7 @@ public class AddingUsersPage extends BasePage {
         click(rolesSelectorOptionByIndex, index, rolesOption);
     }
 
-    @Step
+    @Step("Get numbers of roles")
     public int getNumberOfRoles(){
         return getElements(deleteRolesIcons).size();
     }
@@ -365,5 +398,122 @@ public class AddingUsersPage extends BasePage {
         return getElementAttributeValue("value",
                 new XPath("//div[@id='usrusers-telleryn']//div[contains(@class, 'field_container')]/input"))
                 .contains("1");
+    }
+
+    @Step("Set 'Cash Drawer' value")
+    public void setCashDrawerValue(String cashDrawerValue) {
+        waitForElementVisibility(cashDrawerField);
+        waitForElementClickable(cashDrawerField);
+        wipeText(cashDrawerField);
+        type(cashDrawerValue, cashDrawerField);
+    }
+
+    @Step("Click on 'Cash Drawer' selector")
+    public void clickCashDrawerSelectorButton() {
+        waitForElementClickable(cashDrawerSelectorButton);
+        click(cashDrawerSelectorButton);
+    }
+
+    @Step("Returning list of cash drawer")
+    public List<String> getCashDrawerList(){
+        waitForElementVisibility(cashDrawerList);
+        waitForElementClickable(cashDrawerList);
+        return getElementsText(cashDrawerList);
+    }
+
+    @Step("Click on 'Cash Drawer' option")
+    public void clickCashDrawerOption(String cashDrawerOption) {
+        waitForElementVisibility(cashDrawerSelectorOption, cashDrawerOption);
+        waitForElementClickable(cashDrawerSelectorOption, cashDrawerOption);
+        click(cashDrawerSelectorOption, cashDrawerOption);
+    }
+
+    @Step("Click 'Add New' cash drawer link")
+    public void clickAddNewCashDrawerLink() {
+        waitForElementClickable(addNewCashDrawerLink);
+        click(addNewCashDrawerLink);
+    }
+
+    // Add Cash Drawer modal
+
+	@Step("Wait Add Cash Drawer modal window")
+    public void waitAddNewCashDrawerWindow(){
+        waitForElementVisibility(addNewCashDrawerModal);
+        waitForElementClickable(addNewCashDrawerModal);
+    }
+
+    @Step("Set 'GL Account Number' value")
+    public void setGLAccountNumberValue(String glAccountNumberValue) {
+        waitForElementVisibility(glAccountNumberField);
+        waitForElementClickable(glAccountNumberField);
+        type(glAccountNumberValue, glAccountNumberField);
+    }
+
+    @Step("Click on 'GL Account Number' selector")
+    public void clickGLAccountNumberSearchButton() {
+        waitForElementClickable(glAccountNumberSearchButton);
+        click(glAccountNumberSearchButton);
+    }
+
+    @Step("Returning list of GL Account Number")
+    public List<String> getGLAccountNumberList(){
+        waitForElementVisibility(glAccountNumberList);
+        waitForElementClickable(glAccountNumberList);
+        return getElementsText(glAccountNumberList);
+    }
+
+    @Step("Click on 'GL Account Number' option")
+    public void clickGLAccountNumberOption(String glAccountNumber) {
+        waitForElementVisibility(glAccountNumberOption, glAccountNumber);
+        waitForElementClickable(glAccountNumberOption, glAccountNumber);
+        click(glAccountNumberOption, glAccountNumber);
+    }
+
+    @Step("Set 'Cash Drawer Name' value")
+    public void setCashDrawerNameValue(String nameValue) {
+        waitForElementVisibility(cashDrawerNameModal);
+        waitForElementClickable(cashDrawerNameModal);
+        type(nameValue, cashDrawerNameModal);
+    }
+
+    @Step("Set 'Cash Drawer Type' value")
+    public void setCashDrawerTypeValue(String cashDrawerTypeValue) {
+        waitForElementVisibility(cashDrawerTypeField);
+        waitForElementClickable(cashDrawerTypeField);
+        type(cashDrawerTypeValue, cashDrawerTypeField);
+    }
+
+    @Step("Click on 'Cash Drawer Type' selector")
+    public void clickCashDrawerTypeSelectorButton() {
+        waitForElementClickable(cashDrawerTypeSelectorButton);
+        click(cashDrawerTypeSelectorButton);
+    }
+
+    @Step("Returning list of cash drawer's type")
+    public List<String> getCashDrawerTypeList(){
+        waitForElementVisibility(cashDrawerTypeList);
+        waitForElementClickable(cashDrawerTypeList);
+        return getElementsText(cashDrawerTypeList);
+    }
+
+    @Step("Click on 'Cash Drawer Type' option")
+    public void clickCashDrawerTypeOption(String cashDrawerTypeOption) {
+        waitForElementVisibility(cashDrawerTypeSelectorOption, cashDrawerTypeOption);
+        waitForElementClickable(cashDrawerTypeSelectorOption, cashDrawerTypeOption);
+        click(cashDrawerTypeSelectorOption, cashDrawerTypeOption);
+    }
+
+    @Step("Click 'Cancel' create cash drawer button")
+    public void clickCancelAddCashDrawer() {
+        waitForElementVisibility(cancelButton);
+        waitForElementClickable(cancelButton);
+        click(cancelButton);
+    }
+
+    @Step("Click 'Add' create cash drawer button")
+    public void clickAddNewCashDrawerButton() {
+        waitForElementVisibility(addCashDrawerButton);
+        waitForElementClickable(addCashDrawerButton);
+        click(addCashDrawerButton);
     }
 }

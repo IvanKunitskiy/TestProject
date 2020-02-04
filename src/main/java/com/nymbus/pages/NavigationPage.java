@@ -22,6 +22,7 @@ public class NavigationPage extends BasePage {
     @Step("Click on account button")
     public void clickAccountButton(){
         waitForElementVisibility(openAccountButton);
+        waitForElementClickable(openAccountButton);
         click(openAccountButton);
     }
 

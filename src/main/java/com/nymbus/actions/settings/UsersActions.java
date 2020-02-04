@@ -1,18 +1,18 @@
 package com.nymbus.actions.settings;
 
+import com.nymbus.models.CashDrawer;
 import com.nymbus.models.User;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
 import org.testng.Assert;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public class UsersActions {
 
-    public void openViewAllUsersPage(){
+    public void openViewAllUsersPage() {
         Pages.aSideMenuPage().clickSettingsMenuItem();
 
         Pages.settings().waitForSettingsPageLoaded();
@@ -21,7 +21,7 @@ public class UsersActions {
 
     }
 
-    public void searUserOnCustomerSearchPage(User user){
+    public void searUserOnCustomerSearchPage(User user) {
         openViewAllUsersPage();
         SettingsPage.usersSearchPage().waitViewUsersListVisible();
         SettingsPage.usersSearchPage().waitForPageLoaded();
@@ -99,6 +99,8 @@ public class UsersActions {
             if (SettingsPage.addingUsersPage().isTellerOptionActivated())
                 SettingsPage.addingUsersPage().clickTellerToggle();
         }
+
+        addNewCashDrawer(user);
     }
 
     private void addUserRoles(User user) {
@@ -145,6 +147,35 @@ public class UsersActions {
             user.setLocation(listOfLocation.get(new Random().nextInt(listOfLocation.size())).trim());
         SettingsPage.addingUsersPage().setLocationValue(user.getLocation());
         SettingsPage.addingUsersPage().clickLocationOption(user.getLocation());
+    }
+
+    public void addNewCashDrawer(User user) {
+        if (user.isTeller()) {
+            SettingsPage.addingUsersPage().clickAddNewCashDrawerLink();
+            SettingsPage.addingUsersPage().waitAddNewCashDrawerWindow();
+            SettingsPage.addingUsersPage().setCashDrawerNameValue(user.getCashDrawer().getName());
+            setCashDrawerType(user.getCashDrawer());
+            setGLAccountNumber(user.getCashDrawer());
+            SettingsPage.addingUsersPage().clickAddNewCashDrawerButton();
+        }
+    }
+
+    private void setCashDrawerType(CashDrawer cashDrawer) {
+        SettingsPage.addingUsersPage().setCashDrawerTypeValue(cashDrawer.getType());
+        SettingsPage.addingUsersPage().clickCashDrawerTypeOption(cashDrawer.getType());
+    }
+
+    private void setGLAccountNumber(CashDrawer cashDrawer) {
+        SettingsPage.addingUsersPage().setGLAccountNumberValue("%%%");
+        SettingsPage.addingUsersPage().clickGLAccountNumberSearchButton();
+        List<String> listOfAccounts = SettingsPage.addingUsersPage().getGLAccountNumberList();
+
+        Assert.assertTrue(listOfAccounts.size() > 0,
+                "There are not an available accounts");
+        if (cashDrawer.getGlAccountNumber() == null)
+            cashDrawer.setGlAccountNumber(listOfAccounts.get(new Random().nextInt(listOfAccounts.size())).trim());
+        SettingsPage.addingUsersPage().setGLAccountNumberValue(cashDrawer.getGlAccountNumber());
+        SettingsPage.addingUsersPage().clickGLAccountNumberOption(cashDrawer.getGlAccountNumber());
     }
 
     public User getUserFromUserViewPage() {

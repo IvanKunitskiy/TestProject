@@ -41,6 +41,7 @@ public class ViewUserPage extends BasePage {
     private Locator officialCheckLimit = new XPath("//div[@id='usrusers-officialcheckslimit']//span[@class='xwidget_readonly_value']");
     private Locator cashOutLimit = new XPath("//div[@id='usrusers-cashoutlimit']//span");
     private Locator teller = new XPath("//div[@id='usrusers-telleryn']//input[contains(@name, 'teller')]");
+    private Locator cashDrawer = new XPath("//div[@id='usrusers-cashdrawerid']//span[contains(@class, 'xwidget_readonly_value')]");
 
     /**
      * Actions with controls
@@ -89,19 +90,19 @@ public class ViewUserPage extends BasePage {
 
     @Step("Get 'USERID' value")
     public String getUSERIDValue(){
-        waitForElementVisibility(location);
+        waitForElementVisibility(userID);
         return getElementText(userID).trim();
     }
 
     @Step("Get 'Initials' value")
     public String getInitialsValue(){
-        waitForElementVisibility(location);
+        waitForElementVisibility(initials);
         return getElementText(initials).trim();
     }
 
     @Step("Get 'Branch' value")
     public String getBranchValue(){
-        waitForElementVisibility(location);
+        waitForElementVisibility(branch);
         return getElementText(branch).trim();
     }
 
@@ -114,86 +115,93 @@ public class ViewUserPage extends BasePage {
 
     @Step("Get 'Title' value")
     public String getTitleValue(){
-        waitForElementVisibility(location);
+        waitForElementVisibility(title);
         return getElementText(title).trim();
     }
 
     @Step("Get 'Tax ID' value")
     public String getTaxIDValue(){
-        waitForElementVisibility(location);
+        waitForElementVisibility(taxID);
         return getElementText(taxID).trim();
     }
 
     @Step("Get 'Phone' value")
     public String getPhoneValue(){
-        waitForElementVisibility(location);
+        waitForElementVisibility(phone);
         return getElementText(phone).trim().replaceAll("[\\W_&&[^°]]+","");
     }
 
     @Step("Get 'Mobile' value")
     public String getMobileValue(){
-        waitForElementVisibility(location);
+        waitForElementVisibility(mobile);
         return getElementText(mobile).trim().replaceAll("[\\W_&&[^°]]+","");
     }
 
     @Step("Get 'Email' value")
     public String getEmailValue(){
-        waitForElementVisibility(location);
+        waitForElementVisibility(email);
         return getElementText(email).trim();
     }
 
     @Step("Get 'Login ID' value")
     public String getLoginIDValue(){
-        waitForElementVisibility(location);
+        waitForElementVisibility(loginID);
         return getElementText(loginID).trim();
     }
 
     @Step("Returning is 'Login Disabled' result")
     public boolean isLoginDisabled(){
-        waitForElementVisibility(location);
+//        waitForElementVisibility(loginDisabled);
         return getElementAttributeValue("value", loginDisabled).contains("1");
     }
 
     @Step("Get 'Roles' values")
     public List<String> getRolesValue(){
-        waitForElementVisibility(location);
+        waitForElementVisibility(roles);
         return getElementsText(roles);
     }
 
     @Step("Returning is user 'Is Active' result")
     public boolean isUserActive(){
-        waitForElementVisibility(location);
+//        waitForElementVisibility(isActive);
         return getElementAttributeValue("value", isActive).contains("0");
     }
 
     @Step("Get 'Check Deposit Limit' value")
     public String getCheckDepositLimitValue(){
-        waitForElementVisibility(location);
+        waitForElementVisibility(checkDepositLimit);
         return getElementText(checkDepositLimit).trim();
     }
 
     @Step("Get 'Network Printer' value")
     public String getNetworkPrinterValue(){
-        waitForElementVisibility(location);
+        waitForElementVisibility(networkPrinter);
         return getElementText(networkPrinter).trim();
     }
 
     @Step("Get 'Official Check Limit' value")
     public String getOfficialCheckLimitValue(){
-        waitForElementVisibility(location);
+        waitForElementVisibility(officialCheckLimit);
         return getElementText(officialCheckLimit).trim();
     }
 
     @Step("Get 'Cash Out Limit' value")
     public String getCashOutLimitValue(){
-        waitForElementVisibility(location);
+        waitForElementVisibility(cashOutLimit);
         return getElementText(cashOutLimit).trim();
     }
 
     @Step("Returning is user 'Teller' result")
     public boolean isTeller(){
-        waitForElementVisibility(location);
+//        waitForElementVisibility(teller);
         return getElementAttributeValue("value", teller).contains("1");
+    }
+
+    @Step("Get 'Cash Drawer' value")
+    public String getCashDrawerValue(){
+        waitForElementVisibility(cashDrawer);
+        wait(2);
+        return getElementText(cashDrawer).trim();
     }
 
 }

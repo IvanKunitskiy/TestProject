@@ -3,6 +3,7 @@ package com.nymbus.pages;
 import com.nymbus.pages.clients.ClientsPage;
 import com.nymbus.pages.loans.LoansPage;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
+import com.nymbus.pages.tellertotellertransfer.TellerToTellerPage;
 
 public class Pages {
 
@@ -15,8 +16,8 @@ public class Pages {
     private static ClientsPage clientsPage;
     private static LoansPage loansPage;
     private static ReportGeneratorPage reportGeneratorPage;
+    private static TellerToTellerPage tellerToTellerPage;
     private static Settings settings;
-    private static Settings settings1;
 
     /**
      * This function return an instance of `LoginPage`
@@ -76,6 +77,16 @@ public class Pages {
             reportGeneratorPage = new ReportGeneratorPage();
         }
         return reportGeneratorPage;
+    }
+
+    /**
+     * This function return an instance of `TellerToTellerPage`
+     */
+    public static TellerToTellerPage tellerToTellerPage() {
+        if (tellerToTellerPage == null) {
+            tellerToTellerPage = new TellerToTellerPage();
+        }
+        return tellerToTellerPage;
     }
 
     /**

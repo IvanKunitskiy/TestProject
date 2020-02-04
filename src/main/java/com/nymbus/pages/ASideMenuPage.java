@@ -11,6 +11,7 @@ public class ASideMenuPage extends BasePage {
     private Locator menu = new ID("menu");
     private Locator clientMenuItem = new XPath("//li[a[@id='menu-customers']]");
     private Locator loansMenuItem = new XPath("//li[a[@id='menu-loans']]");
+    private Locator tellerToTellerMenuItem = new XPath("//li[a[@id='menu-tellerToTeller']]");
     private Locator reportGeneratorMenuItem = new XPath("//li[a[@id='menu-adhocReport']]");
     private Locator backOfficeMenuItem = new XPath("//li[a[@id='menu-backoffice']]");
     private Locator settingsMenuItem = new XPath("//li[a[@id='menu-settings']]");
@@ -42,6 +43,18 @@ public class ASideMenuPage extends BasePage {
     public boolean isLoansPageOpened(){
         waitForElementVisibility(loansMenuItem);
         return getElementAttributeValue("class", loansMenuItem).contains("active");
+    }
+
+    @Step("Click 'Teller To Teller Transfer' menu item")
+    public void clickTellerToTellerMenuItem(){
+        waitForElementVisibility(tellerToTellerMenuItem);
+        click(tellerToTellerMenuItem);
+    }
+
+    @Step("Check is Teller To Teller Transfer page opened")
+    public boolean isTellerToTellerPageOpened(){
+        waitForElementVisibility(tellerToTellerMenuItem);
+        return getElementAttributeValue("class", tellerToTellerMenuItem).contains("active");
     }
 
     @Step("Click 'Report Generator' menu item")
