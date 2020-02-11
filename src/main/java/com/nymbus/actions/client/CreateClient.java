@@ -4,12 +4,13 @@ import com.nymbus.models.client.Client;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 
+import java.io.File;
 import java.util.List;
 import java.util.Random;
 
 public class CreateClient {
 
-    public void openClientPage(){
+    public void openClientPage() {
         if (Pages.aSideMenuPage().isClientPageOpened())
             return;
 
@@ -20,16 +21,23 @@ public class CreateClient {
                 "Client page is not opened");
     }
 
-    public void createClient(Client client){
+    public void createClient(Client client) {
         openClientPage();
         Pages.clientsPage().clickAddNewClient();
         setBasicInformation(client);
         Assert.assertTrue(Pages.addClientPage().isVerificationSuccess(),
                 "Client data verification is not success");
         Pages.addClientPage().clickOkModalButton();
+        setClientDetailsData(client);
+        setDocumentation(client);
+        Pages.addClientPage().clickSaveAndContinueButton();
+        Pages.addClientPage().uploadClientSignature(System.getProperty("client.resource.dir")
+                + File.separator + "clientSignature.png");
+        Pages.addClientPage().clickSaveAndContinueButton();
+        Pages.addClientPage().clickViewMemberProfileButton();
     }
 
-    public void setBasicInformation(Client client){
+    public void setBasicInformation(Client client) {
         setClientType(client);
         setClientStatus(client);
         Pages.addClientPage().setFirstNameValue(client.getFirstName());
@@ -49,6 +57,32 @@ public class CreateClient {
         setAddress(client);
         Pages.addClientPage().clickSaveAndContinueButton();
         Pages.addClientPage().waitForModalWindow();
+    }
+
+    public void setClientDetailsData(Client client) {
+        Pages.addClientPage().setSuffixField(client.getSuffix());
+        Pages.addClientPage().setMaidenFamilyNameField(client.getMaidenFamilyName());
+        Pages.addClientPage().setAkaField(client.getAKA_1());
+        Pages.addClientPage().uploadProfilePhoto(System.getProperty("client.resource.dir")
+                + File.separator + "profilePhoto.png");
+        setGender(client);
+        setEducation(client);
+        setIncome(client);
+        setMaritalStatus(client);
+        Pages.addClientPage().setOccupationValue(client.getOccupation());
+        setConsumerInformationIndicator(client);
+        Pages.addClientPage().setJobTitleValue(client.getJobTitle());
+        setOwnOrRent(client);
+        setMailCode(client);
+        setSelectOfficer(client);
+        Pages.addClientPage().setUserDefinedField1Value(client.getUserDefined_1());
+        Pages.addClientPage().setUserDefinedField2Value(client.getUserDefined_2());
+        Pages.addClientPage().setUserDefinedField3Value(client.getUserDefined_3());
+        Pages.addClientPage().setUserDefinedField3Value(client.getUserDefined_4());
+        Pages.addClientPage().setPhoneValue(client.getPhone());
+        setEmailType(client);
+        Pages.addClientPage().setEmailValue(client.getEmail());
+        Pages.addClientPage().clickSaveAndContinueButton();
     }
 
     private void setClientType(Client client) {
@@ -129,7 +163,7 @@ public class CreateClient {
         Pages.addClientPage().clickCountryOption(client.getIdentityDocument().getCountry());
     }
 
-    private void setAddress(Client client){
+    private void setAddress(Client client) {
         setAddressType(client);
         setAddressCountry(client);
         Pages.addClientPage().setAddressValue(client.getAddress().getAddress());
@@ -138,7 +172,7 @@ public class CreateClient {
         Pages.addClientPage().setAddressZipCodeValue(client.getAddress().getZipCode());
     }
 
-    private void setAddressType(Client client){
+    private void setAddressType(Client client) {
         Pages.addClientPage().clickAddressTypeSelectorButton();
         List<String> listOfAddressType = Pages.addClientPage().getAddressTypeList();
 
@@ -150,7 +184,7 @@ public class CreateClient {
         Pages.addClientPage().clickAddressTypeOption(client.getAddress().getType());
     }
 
-    private void setAddressCountry(Client client){
+    private void setAddressCountry(Client client) {
         Pages.addClientPage().clickAddressCountrySelectorButton();
         List<String> listOfAddressCountry = Pages.addClientPage().getAddressCountryList();
 
@@ -162,7 +196,7 @@ public class CreateClient {
         Pages.addClientPage().clickAddressCountryOption(client.getAddress().getCountry());
     }
 
-    private void setAddressStates(Client client){
+    private void setAddressStates(Client client) {
         Pages.addClientPage().clickAddressStateSelectorButton();
         List<String> listOfAddressStates = Pages.addClientPage().getAddressStateList();
 
@@ -172,5 +206,163 @@ public class CreateClient {
             client.getAddress().setState(listOfAddressStates.get(new Random().nextInt(listOfAddressStates.size())).trim());
         Pages.addClientPage().setAddressStateValue(client.getAddress().getState());
         Pages.addClientPage().clickAddressStateOption(client.getAddress().getState());
+    }
+
+    private void setGender(Client client) {
+        Pages.addClientPage().clickGenderSelectorButton();
+        List<String> listOfGender = Pages.addClientPage().getGenderList();
+
+        Assert.assertTrue(listOfGender.size() > 0,
+                "There are not an available gender");
+        if (client.getGender() == null)
+            client.setGender(listOfGender.get(new Random().nextInt(listOfGender.size())).trim());
+        Pages.addClientPage().setGenderValue(client.getGender());
+        Pages.addClientPage().clickGenderOption(client.getGender());
+    }
+
+    private void setEducation(Client client) {
+        Pages.addClientPage().clickEducationSelectorButton();
+        List<String> listOfEducation = Pages.addClientPage().getEducationList();
+
+        Assert.assertTrue(listOfEducation.size() > 0,
+                "There are not an available education");
+        if (client.getEducation() == null)
+            client.setEducation(listOfEducation.get(new Random().nextInt(listOfEducation.size())).trim());
+        Pages.addClientPage().setEducationValue(client.getEducation());
+        Pages.addClientPage().clickEducationOption(client.getEducation());
+    }
+
+    private void setIncome(Client client) {
+        Pages.addClientPage().clickIncomeSelectorButton();
+        List<String> listOfIncome = Pages.addClientPage().getIncomeList();
+
+        Assert.assertTrue(listOfIncome.size() > 0,
+                "There are not an available income");
+        if (client.getIncome() == null)
+            client.setIncome(listOfIncome.get(new Random().nextInt(listOfIncome.size())).trim());
+        Pages.addClientPage().setIncomeValue(client.getIncome());
+        Pages.addClientPage().clickIncomeOption(client.getIncome());
+    }
+
+    private void setMaritalStatus(Client client) {
+        Pages.addClientPage().clickMaritalStatusSelectorButton();
+        List<String> listOfMaritalStatus = Pages.addClientPage().getsMaritalStatusList();
+
+        Assert.assertTrue(listOfMaritalStatus.size() > 0,
+                "There are not an available marital status");
+        if (client.getMaritalStatus() == null)
+            client.setMaritalStatus(listOfMaritalStatus.get(new Random().nextInt(listOfMaritalStatus.size())).trim());
+        Pages.addClientPage().setMaritalStatusValue(client.getMaritalStatus());
+        Pages.addClientPage().clickMaritalStatusOption(client.getMaritalStatus());
+    }
+
+    private void setConsumerInformationIndicator(Client client) {
+        Pages.addClientPage().clickConsumerInformationIndicatorSelectorButton();
+        List<String> listOfConsumerInformationIndicator = Pages.addClientPage().getsConsumerInformationIndicatorList();
+
+        Assert.assertTrue(listOfConsumerInformationIndicator.size() > 0,
+                "There are not an available Consumer Information Indicator");
+        if (client.getConsumerInfoIndicator() == null)
+            client.setConsumerInfoIndicator(listOfConsumerInformationIndicator.get(new Random().nextInt(listOfConsumerInformationIndicator.size())).trim());
+        Pages.addClientPage().setConsumerInformationIndicatorValue(client.getConsumerInfoIndicator());
+        Pages.addClientPage().clickConsumerInformationIndicatorOption(client.getConsumerInfoIndicator());
+    }
+
+    private void setOwnOrRent(Client client) {
+        Pages.addClientPage().clickOwnOrRentSelectorButton();
+        List<String> listOfOwnOrRent = Pages.addClientPage().getsOwnOrRentList();
+
+        Assert.assertTrue(listOfOwnOrRent.size() > 0,
+                "There are not an available Own or Rent");
+        if (client.getOwnOrRent() == null)
+            client.setOwnOrRent(listOfOwnOrRent.get(new Random().nextInt(listOfOwnOrRent.size())).trim());
+        Pages.addClientPage().setOwnOrRentValue(client.getOwnOrRent());
+        Pages.addClientPage().clickOwnOrRentOption(client.getOwnOrRent());
+    }
+
+    private void setMailCode(Client client) {
+        Pages.addClientPage().clickMailCodeSelectorButton();
+        List<String> listOfMailCode = Pages.addClientPage().getsMailCodeList();
+
+        Assert.assertTrue(listOfMailCode.size() > 0,
+                "There are not an available Mail Codes");
+        if (client.getMailCode() == null)
+            client.setMailCode(listOfMailCode.get(new Random().nextInt(listOfMailCode.size())).trim());
+        Pages.addClientPage().setMailCodeValue(client.getMailCode());
+        Pages.addClientPage().clickMailCodeOption(client.getMailCode());
+    }
+
+    private void setSelectOfficer(Client client) {
+        Pages.addClientPage().clickSelectOfficerSelectorButton();
+        List<String> listOfSelectOfficer = Pages.addClientPage().getSlectOfficerList();
+
+        Assert.assertTrue(listOfSelectOfficer.size() > 0,
+                "There are not an available Select Officer");
+        if (client.getSelectOfficer() == null)
+            client.setSelectOfficer(listOfSelectOfficer.get(new Random().nextInt(listOfSelectOfficer.size())).trim());
+        Pages.addClientPage().setSelectOfficerValue(client.getSelectOfficer());
+        Pages.addClientPage().clickSelectOfficerOption(client.getSelectOfficer());
+    }
+
+    private void setEmailType(Client client) {
+        Pages.addClientPage().clickEmailTypeSelectorButton();
+        List<String> listOfEmailType = Pages.addClientPage().getEmailTypeList();
+
+        Assert.assertTrue(listOfEmailType.size() > 0,
+                "There are not an available Email Type");
+        if (client.getEmailType() == null)
+            client.setEmailType(listOfEmailType.get(new Random().nextInt(listOfEmailType.size())).trim());
+        Pages.addClientPage().setEmailTypeValue(client.getEmailType());
+        Pages.addClientPage().clickEmailTypeOption(client.getEmailType());
+    }
+
+    private void setDocumentation(Client client) {
+        Pages.addClientPage().uploadClientDocumentation(System.getProperty("client.resource.dir")
+                + File.separator + "clientDocument.png");
+        setDocumentationIDType(client);
+        Pages.addClientPage().setDocumentIDNumberValue(client.getIdentityDocument().getNumber());
+        setDocumentationIssuedBY(client);
+        setDocumentationCountry(client);
+        Pages.addClientPage().setDocumentExpirationDateValue(client.getIdentityDocument().getExpirationDate());
+        Pages.addClientPage().clickDocumentSaveChangesButton();
+    }
+
+    private void setDocumentationIDType(Client client) {
+
+        Pages.addClientPage().clickDocumentIDTypeSelectorButton();
+        List<String> listOfIDType = Pages.addClientPage().getDocumentIDTypeList();
+
+        Assert.assertTrue(listOfIDType.size() > 0,
+                "There are not an available ID Type");
+        if (client.getIdentityDocument().getType() == null)
+            client.getIdentityDocument().setType(listOfIDType.get(new Random().nextInt(listOfIDType.size())).trim());
+        Pages.addClientPage().setDocumentIDTypeValue(client.getIdentityDocument().getType());
+        Pages.addClientPage().clickDocumentIDTypeOption(client.getIdentityDocument().getType());
+    }
+
+    private void setDocumentationIssuedBY(Client client) {
+
+        Pages.addClientPage().clickDocumentIssuedBySelectorButton();
+        List<String> listOfIssuedBy = Pages.addClientPage().getDocumentIssuedByList();
+
+        Assert.assertTrue(listOfIssuedBy.size() > 0,
+                "There are not an available Issued By");
+        if (client.getIdentityDocument().getIssuedBy() == null)
+            client.getIdentityDocument().setIssuedBy(listOfIssuedBy.get(new Random().nextInt(listOfIssuedBy.size())).trim());
+        Pages.addClientPage().setDocumentIssuedByValue(client.getIdentityDocument().getIssuedBy());
+        Pages.addClientPage().clickDocumentIssuedByOption(client.getIdentityDocument().getIssuedBy());
+    }
+
+    private void setDocumentationCountry(Client client) {
+
+        Pages.addClientPage().clickDocumentCountrySelectorButton();
+        List<String> listOfCountry = Pages.addClientPage().getDocumentCountryList();
+
+        Assert.assertTrue(listOfCountry.size() > 0,
+                "There are not an available Country");
+        if (client.getIdentityDocument().getCountry() == null)
+            client.getIdentityDocument().setCountry(listOfCountry.get(new Random().nextInt(listOfCountry.size())).trim());
+        Pages.addClientPage().setDocumentCountryValue(client.getIdentityDocument().getCountry());
+        Pages.addClientPage().clickDocumentCountryOption(client.getIdentityDocument().getCountry());
     }
 }

@@ -21,7 +21,6 @@ public class Client {
     /*
     Client detailed info
      */
-
     private String suffix;
     private String maidenFamilyName;
     private String AKA_1;
@@ -40,15 +39,18 @@ public class Client {
     private String userDefined_3;
     private String userDefined_4;
     private String phone;
+    private String phoneType;
     private String email;
+    private String emailType;
 
-    public Client setDefaultClientData(){
+    public Client setDefaultClientData() {
         Client client = new Client();
 
         client.setFirstName(Random.genString(5));
         client.setFirstName(Random.genString(5));
         client.setMiddleName(Random.genString(5));
         client.setLastName(Random.genString(5));
+        client.setTaxPayerIDType("Individual SSN");
         client.setTaxID(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         client.setAddress(new Address().setDefaultPhysicalData());
         client.setIdentityDocument(new IdentityDocument().setDefaultIdentityDocumentData());
@@ -287,6 +289,22 @@ public class Client {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getPhoneType() {
+        return phoneType;
+    }
+
+    public void setPhoneType(String phoneType) {
+        this.phoneType = phoneType;
+    }
+
+    public String getEmailType() {
+        return emailType;
+    }
+
+    public void setEmailType(String emailType) {
+        this.emailType = emailType;
     }
 
     public String getEmail() {

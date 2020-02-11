@@ -11,13 +11,13 @@ public class IdentityDocument {
     private String country;
     private String expirationDate;
 
-    public IdentityDocument setDefaultIdentityDocumentData(){
+    public IdentityDocument setDefaultIdentityDocumentData() {
         IdentityDocument identityDocument = new IdentityDocument();
 
         identityDocument.setType("Passport");
         identityDocument.setNumber("C" + Random.genInt(11111111, 99999999));
         identityDocument.setCountry("United States");
-        identityDocument.setExpirationDate("01/01/2030");
+        identityDocument.setExpirationDate("11/11/2030");
 
         return identityDocument;
     }
