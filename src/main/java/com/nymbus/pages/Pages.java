@@ -1,6 +1,7 @@
 package com.nymbus.pages;
 
 import com.nymbus.pages.clients.ClientsPage;
+import com.nymbus.pages.clients.ClientsSearchResultsPage;
 import com.nymbus.pages.loans.LoansPage;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
 import com.nymbus.pages.teller.TellerPage;
@@ -20,6 +21,7 @@ public class Pages {
     private static ReportGeneratorPage reportGeneratorPage;
     private static TellerToTellerPage tellerToTellerPage;
     private static Settings settings;
+    private static ClientsSearchResultsPage clientsSearchResultsPage;
 
     /**
      * This function return an instance of `LoginPage`
@@ -111,4 +113,13 @@ public class Pages {
         return settings;
     }
 
+    /**
+     * This function return an instance of `ClientsSearchResultsPage`
+     */
+    public static ClientsSearchResultsPage clientsSearchResultsPage() {
+        if (clientsSearchResultsPage == null) {
+            clientsSearchResultsPage = new ClientsSearchResultsPage();
+        }
+        return clientsSearchResultsPage;
+    }
 }

@@ -191,9 +191,11 @@ public class BasePage {
         executor.executeScript("arguments[0].click();", getElement(locator, args));
     }
 
-    protected void jsClick(WebElement element) {
-        JavascriptExecutor executor = (JavascriptExecutor) BaseTest.getDriver();
-        executor.executeScript("arguments[0].click();", element);
+    protected void actionClick(Locator locator, Object... args) {
+        LOG.info("click on element '{}'", locator);
+        Actions builder = new Actions(BaseTest.getDriver());
+        builder.moveToElement(getElement(locator, args)).click(getElement(locator, args));
+        builder.perform();
     }
 
     /*

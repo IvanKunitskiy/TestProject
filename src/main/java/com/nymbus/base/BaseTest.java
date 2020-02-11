@@ -4,8 +4,6 @@ import com.nymbus.tools.WebDriverFactory;
 import com.nymbus.util.Constants;
 import com.nymbus.util.testlistener.TestListener;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
@@ -13,7 +11,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 
 import java.io.IOException;
-import java.net.URI;
 
 @Listeners({TestListener.class})
 public class BaseTest {
@@ -40,7 +37,7 @@ public class BaseTest {
 
     @AfterClass(alwaysRun = true, description = "Close BROWSER")
     public void closeBrowser() {
-        getDriver().manage().deleteAllCookies();
-        getDriver().quit();
+        /*getDriver().manage().deleteAllCookies();
+        getDriver().quit();*/
     }
 }
