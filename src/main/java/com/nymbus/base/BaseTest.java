@@ -37,7 +37,7 @@ public class BaseTest {
 
     @AfterClass(alwaysRun = true, description = "Close BROWSER")
     public void closeBrowser() {
-        /*getDriver().manage().deleteAllCookies();
-        getDriver().quit();*/
+        getDriver().manage().deleteAllCookies();
+        getDriver().quit();
     }
 }
