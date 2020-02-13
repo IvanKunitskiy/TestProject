@@ -17,6 +17,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class BasePage {
 
@@ -117,12 +118,10 @@ public class BasePage {
 
     protected List<String> getElementsText(Locator locator, Object... args) {
         LOG.info("get text from '{}' element", locator);
-        List<String> elementsText = new ArrayList<>();
-        List<WebElement> elements = getElements(locator, args);
-        for (WebElement element : elements) {
-            elementsText.add(element.getText().trim());
-        }
-        return elementsText;
+        return getElements(locator, args)
+                .stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
     }
 
     /*

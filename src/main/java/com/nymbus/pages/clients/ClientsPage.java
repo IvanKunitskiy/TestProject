@@ -4,14 +4,18 @@ import com.nymbus.base.BasePage;
 import com.nymbus.locator.Locator;
 import com.nymbus.locator.XPath;
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ClientsPage extends BasePage {
 
     private Locator addNewClientButton = new XPath("//a[@*='action-addNewCustomer']");
     private Locator clientsSearchInputField = new XPath("//input[@type='search']");
     private Locator searchButton = new XPath("//button[text()='Search']");
-    private Locator lookupResults = new XPath("//div[contains(@class, 'choices')]//div[text()='View Profile']");
-    private Locator clientNameFromLookupResultByIndex = new XPath("(//div[contains(@class,'option')]/div[1])[%s]");
+    private Locator lookupResults = new XPath("//div[contains(text(),'View')]/preceding-sibling::*[1]");
+    private Locator lookupResultByIndex = new XPath("(//div[contains(text(),'View')]/preceding-sibling::*[1])[%s]");
     private Locator loadMoreResultsButton = new XPath("//div[text()='Load More Results']");
     private Locator clearSearchInputFieldButton = new XPath("//button[@class='btn btn-link btnIcon']");
 
@@ -40,14 +44,20 @@ public class ClientsPage extends BasePage {
 
     @Step("Getting clients first name from lookup results by index '{index}'")
     public String getClientFirstNameFromLookupResultByIndex(int index) {
-        waitForElementVisibility(clientNameFromLookupResultByIndex, index);
-        return getElementText(clientNameFromLookupResultByIndex, index).split(", ")[1];
+        waitForElementVisibility(lookupResultByIndex, index);
+        return getElementText(lookupResultByIndex, index).split(", ")[1];
     }
 
     @Step("Getting clients first name from lookup results by index '{index}'")
     public String getClientLastNameFromLookupResultByIndex(int index) {
-        waitForElementVisibility(clientNameFromLookupResultByIndex, index);
-        return getElementText(clientNameFromLookupResultByIndex, index).split(", ")[0];
+        waitForElementVisibility(lookupResultByIndex, index);
+        return getElementText(lookupResultByIndex, index).split(", ")[0];
+    }
+
+    @Step("Getting all lookup results")
+    public List<String> getAllLookupResults() {
+        waitForElementVisibility(lookupResults);
+        return getElements(lookupResults).stream().map(WebElement::getText).collect(Collectors.toList());
     }
 
     @Step("Verify is 'Load Mode Results' button visible")

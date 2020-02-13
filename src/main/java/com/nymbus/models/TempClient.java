@@ -3,6 +3,7 @@ package com.nymbus.models;
 public class TempClient {
     private String firstName;
     private String lastName;
+    private String accountNumber;
 
     public TempClient() {
     }
@@ -28,11 +29,20 @@ public class TempClient {
         this.lastName = lastName;
     }
 
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
     @Override
     public String toString() {
         return "TempClient{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", accountNumber='" + accountNumber + '\'' +
                 '}';
     }
 }

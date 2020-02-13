@@ -15,17 +15,19 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 import static org.testng.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertEquals;
 
 @Epic("Frontoffice")
 @Feature("User Management")
 @Owner("Dmytro")
-public class C22526_SearchByName extends BaseTest {
+public class C22527_SearchByNumber extends BaseTest {
     // TODO: Need to change this objects to Petro's 'Client'
     private TempClient client;
 
     @BeforeMethod
     public void preCondition() {
-        client = new TempClient("Anna", "Adams");
+        client = new TempClient();
+        client.setAccountNumber("28461564083");
 
         navigateToUrl(Constants.URL);
 
@@ -34,35 +36,38 @@ public class C22526_SearchByName extends BaseTest {
         Pages.navigationPage().waitForUserMenuVisible();
     }
 
-    @Test(description = "C22526, Search client by name")
-    public void searchByName() {
+    @Test(description = "C22527, Search client by number")
+    public void searchByNumber() {
         LOG.info("Step 2: Click within search field and try to search for an existing client (by first name)");
-        Pages.clientsPage().typeToClientsSearchInputField(client.getFirstName().substring(0, 3));
+        String accountNumber = client.getAccountNumber();
+        String lastFourNumbers = accountNumber.substring(accountNumber.length()-4);
+        Pages.clientsPage().typeToClientsSearchInputField(lastFourNumbers);
         int lookupResultsCount = Pages.clientsPage().getLookupResultsCount();
         Assert.assertEquals(lookupResultsCount, 8);
         assertTrue(Pages.clientsPage().isLoadMoreResultsButtonVisible());
 
-        List<TempClient> clients = Actions.clientPageActions().getAllClientsFromLookupResults(lookupResultsCount);
-        assertTrue(Actions.clientPageActions().verifySearchResultsByFirstName(clients, client.getFirstName().substring(0, 3)));
+        List<String> clients = Pages.clientsPage().getAllLookupResults();
+        clients.stream().forEach(s -> Assert.assertEquals(s.substring(s.length()-4), lastFourNumbers));
 
         LOG.info("Step 3: Click [Search] button");
         Pages.clientsPage().clickOnSearchButton();
-        int searchResults = Pages.clientsSearchResultsPage().getSearchResultsCount();
-        Assert.assertEquals(searchResults, 10);
-        assertTrue(Pages.clientsSearchResultsPage().isLoadMoreResultsButtonVisible());
+        int searchResults = Pages.clientsSearchResultsPage().getAccountNumbersFromSearchResults().size();
+        assertTrue(searchResults <= 10);
+        if (searchResults == 10)
+            assertTrue(Pages.clientsSearchResultsPage().isLoadMoreResultsButtonVisible());
 
-        clients = Actions.clientsSearchResultsPageActions().getAllClientsFromResult(searchResults);
-        assertTrue(Actions.clientPageActions().verifySearchResultsByFirstName(clients, client.getFirstName().substring(0, 3)));
+        clients = Pages.clientsSearchResultsPage().getAccountNumbersFromSearchResults();
+        clients.stream().forEach(s -> assertTrue(s.substring(s.length()-4).contains(lastFourNumbers)));
 
         LOG.info("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
         Pages.clientsPage().clickOnSearchInputFieldClearButton();
 
-        Pages.clientsPage().typeToClientsSearchInputField(client.getLastName().substring(0, 3));
+        Pages.clientsPage().typeToClientsSearchInputField(client.getAccountNumber());
         lookupResultsCount = Pages.clientsPage().getLookupResultsCount();
-        Assert.assertEquals(lookupResultsCount, 8);
-        assertTrue(Pages.clientsPage().isLoadMoreResultsButtonVisible());
+        Assert.assertEquals(lookupResultsCount, 1);
+        Assert.assertFalse(Pages.clientsPage().isLoadMoreResultsButtonVisible());
 
-        clients = Actions.clientPageActions().getAllClientsFromLookupResults(lookupResultsCount);
-        assertTrue(Actions.clientPageActions().verifySearchResultsByLastName(clients, client.getLastName().substring(0, 3)));
+        clients = Pages.clientsPage().getAllLookupResults();
+        assertEquals(clients.get(0), client.getAccountNumber());
     }
 }
