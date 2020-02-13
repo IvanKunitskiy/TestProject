@@ -61,11 +61,11 @@ public class ClientsSearchPage extends BasePage {
         click(clearSearchInputFieldButton);
         wait(1);
     }
+
     @Step("Click 'Add new client' button")
     public void clickAddNewClient(){
         waitForElementVisibility(addNewClientButton);
         waitForElementClickable(addNewClientButton);
         click(addNewClientButton);
     }
-
 }

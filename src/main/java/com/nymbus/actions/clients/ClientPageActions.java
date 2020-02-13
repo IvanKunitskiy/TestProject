@@ -19,20 +19,4 @@ public class ClientPageActions {
 
         return clients;
     }
-
-    public boolean verifySearchResultsByFirstName(List<TempClient> clients, String partOfName) {
-        return clients.stream()
-                /*This part filters only valid values*/
-                .filter(c -> c.getFirstName().contains(partOfName))
-                /*There will be only valid values.
-                So if one of the values is not valid, count of valid values
-                and the size of source list will not be equal and returns false*/
-                .count() == clients.size();
-    }
-
-    public boolean verifySearchResultsByLastName(List<TempClient> clients, String partOfName) {
-        return clients.stream()
-                .filter(c -> c.getLastName().contains(partOfName))
-                .count() == clients.size();
-    }
 }
