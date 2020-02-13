@@ -1,9 +1,8 @@
 package com.nymbus.pages;
 
 import com.nymbus.pages.clients.AddClientPage;
-import com.nymbus.pages.clients.ClientsSearchPage;
 import com.nymbus.pages.clients.ClientDetailsPage;
-import com.nymbus.pages.clients.ClientsPage;
+import com.nymbus.pages.clients.ClientsSearchPage;
 import com.nymbus.pages.clients.ClientsSearchResultsPage;
 import com.nymbus.pages.loans.LoansPage;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;

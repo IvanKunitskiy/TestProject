@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.clientsearch;
 import com.nymbus.actions.Actions;
 import com.nymbus.base.BaseTest;
 import com.nymbus.models.TempClient;
+import com.nymbus.models.client.Client;
 import com.nymbus.pages.Pages;
 import com.nymbus.util.Constants;
 import io.qameta.allure.Epic;
@@ -18,12 +19,13 @@ import java.util.List;
 @Feature("User Management")
 @Owner("Dmytro")
 public class C22526_SearchByName extends BaseTest {
-    // TODO: Need to change this objects to Petro's 'Client'
-    private TempClient client;
+    private Client client;
 
     @BeforeMethod
     public void preCondition() {
-        client = new TempClient("Anna", "Adams");
+        client = new Client();
+        client.setFirstName("Anna");
+        client.setLastName("Adams");
 
         navigateToUrl(Constants.URL);
 

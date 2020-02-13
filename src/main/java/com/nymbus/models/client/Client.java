@@ -3,7 +3,9 @@ package com.nymbus.models.client;
 import com.nymbus.util.Random;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Client {
 
@@ -16,6 +18,7 @@ public class Client {
     private String taxPayerIDType;
     private String taxID;
     private String birthDate;
+    private String accountNumber;
     private List<IdentityDocument> identityDocument;
     private Address address;
 
@@ -87,6 +90,7 @@ public class Client {
                 ", taxPayerIDType='" + taxPayerIDType + '\'' +
                 ", taxID='" + taxID + '\'' +
                 ", birthDate='" + birthDate + '\'' +
+                ", accountNumber='" + accountNumber + '\'' +
                 ", identityDocument=" + identityDocument +
                 ", address=" + address +
                 ", suffix='" + suffix + '\'' +
@@ -124,6 +128,7 @@ public class Client {
                 taxPayerIDType.equals(client.taxPayerIDType) &&
                 taxID.equals(client.taxID) &&
                 birthDate.equals(client.birthDate) &&
+                accountNumber.equals(client.accountNumber) &&
                 identityDocument.equals(client.identityDocument) &&
                 address.equals(client.address) &&
                 Objects.equals(suffix, client.suffix) &&
@@ -149,7 +154,7 @@ public class Client {
 
     @Override
     public int hashCode() {
-        return Objects.hash(clientType, clientStatus, firstName, middleName, lastName, taxPayerIDType, taxID, birthDate, identityDocument, address, suffix, maidenFamilyName, AKA_1, gender, education, income, maritalStatus, occupation, consumerInfoIndicator, jobTitle, ownOrRent, mailCode, selectOfficer, userDefined_1, userDefined_2, userDefined_3, userDefined_4, phone, email);
+        return Objects.hash(clientType, clientStatus, firstName, middleName, lastName, taxPayerIDType, taxID, birthDate, accountNumber, identityDocument, address, suffix, maidenFamilyName, AKA_1, gender, education, income, maritalStatus, occupation, consumerInfoIndicator, jobTitle, ownOrRent, mailCode, selectOfficer, userDefined_1, userDefined_2, userDefined_3, userDefined_4, phone, email);
     }
 
     public String getClientID() {
@@ -390,6 +395,14 @@ public class Client {
 
     public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 
     public List<IdentityDocument> getIdentityDocument() {
