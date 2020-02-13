@@ -9,12 +9,24 @@ public class IdentityDocument {
     private String number;
     private String issuedBy;
     private String country;
+    private String issueDate;
     private String expirationDate;
 
     public IdentityDocument setDefaultIdentityDocumentData() {
         IdentityDocument identityDocument = new IdentityDocument();
 
         identityDocument.setType("Passport");
+        identityDocument.setNumber("C" + Random.genInt(11111111, 99999999));
+        identityDocument.setCountry("United States");
+        identityDocument.setExpirationDate("11/11/2030");
+
+        return identityDocument;
+    }
+
+    public IdentityDocument setDefaultStateDriversLicenseData() {
+        IdentityDocument identityDocument = new IdentityDocument();
+
+        identityDocument.setType("State Drivers License");
         identityDocument.setNumber("C" + Random.genInt(11111111, 99999999));
         identityDocument.setCountry("United States");
         identityDocument.setExpirationDate("11/11/2030");
@@ -29,6 +41,7 @@ public class IdentityDocument {
                 ", number='" + number + '\'' +
                 ", issuedBy='" + issuedBy + '\'' +
                 ", country='" + country + '\'' +
+                ", issueDate='" + issueDate + '\'' +
                 ", expirationDate='" + expirationDate + '\'' +
                 '}';
     }
@@ -38,16 +51,25 @@ public class IdentityDocument {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         IdentityDocument that = (IdentityDocument) o;
-        return type.equals(that.type) &&
-                number.equals(that.number) &&
+        return Objects.equals(type, that.type) &&
+                Objects.equals(number, that.number) &&
                 Objects.equals(issuedBy, that.issuedBy) &&
-                country.equals(that.country) &&
-                expirationDate.equals(that.expirationDate);
+                Objects.equals(country, that.country) &&
+                Objects.equals(issueDate, that.issueDate) &&
+                Objects.equals(expirationDate, that.expirationDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, number, issuedBy, country, expirationDate);
+        return Objects.hash(type, number, issuedBy, country, issueDate, expirationDate);
+    }
+
+    public String getIssueDate() {
+        return issueDate;
+    }
+
+    public void setIssueDate(String issueDate) {
+        this.issueDate = issueDate;
     }
 
     public String getType() {

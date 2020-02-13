@@ -43,12 +43,12 @@ public class Address {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address1 = (Address) o;
-        return Objects.equals(type, address1.type) &&
-                Objects.equals(country, address1.country) &&
-                Objects.equals(address, address1.address) &&
-                Objects.equals(city, address1.city) &&
-                Objects.equals(state, address1.state) &&
-                Objects.equals(zipCode, address1.zipCode);
+        return type.equals(address1.type) &&
+                country.equals(address1.country) &&
+                address.equals(address1.address) &&
+                city.equals(address1.city) &&
+                state.equals(address1.state) &&
+                zipCode.equals(address1.zipCode);
     }
 
     @Override

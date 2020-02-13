@@ -3,10 +3,11 @@ package com.nymbus.models.client;
 import com.nymbus.util.Random;
 
 import java.sql.Timestamp;
-import java.util.Objects;
+import java.util.*;
 
 public class Client {
 
+    private String clientID;
     private String clientType;
     private String clientStatus;
     private String firstName;
@@ -15,7 +16,7 @@ public class Client {
     private String taxPayerIDType;
     private String taxID;
     private String birthDate;
-    private IdentityDocument identityDocument;
+    private List<IdentityDocument> identityDocument;
     private Address address;
 
     /*
@@ -53,7 +54,11 @@ public class Client {
         client.setTaxPayerIDType("Individual SSN");
         client.setTaxID(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         client.setAddress(new Address().setDefaultPhysicalData());
-        client.setIdentityDocument(new IdentityDocument().setDefaultIdentityDocumentData());
+
+        List<IdentityDocument> identityDocuments = new ArrayList<>();
+        identityDocuments.add(new IdentityDocument().setDefaultIdentityDocumentData());
+        identityDocuments.add(new IdentityDocument().setDefaultStateDriversLicenseData());
+        client.setIdentityDocument(identityDocuments);
         client.setBirthDate("01/01/1990");
         client.setSuffix(Random.genString(3));
         client.setMaidenFamilyName(Random.genString(5));
@@ -145,6 +150,14 @@ public class Client {
     @Override
     public int hashCode() {
         return Objects.hash(clientType, clientStatus, firstName, middleName, lastName, taxPayerIDType, taxID, birthDate, identityDocument, address, suffix, maidenFamilyName, AKA_1, gender, education, income, maritalStatus, occupation, consumerInfoIndicator, jobTitle, ownOrRent, mailCode, selectOfficer, userDefined_1, userDefined_2, userDefined_3, userDefined_4, phone, email);
+    }
+
+    public String getClientID() {
+        return clientID;
+    }
+
+    public void setClientID(String clientID) {
+        this.clientID = clientID;
     }
 
     public String getSuffix() {
@@ -379,11 +392,11 @@ public class Client {
         this.birthDate = birthDate;
     }
 
-    public IdentityDocument getIdentityDocument() {
+    public List<IdentityDocument> getIdentityDocument() {
         return identityDocument;
     }
 
-    public void setIdentityDocument(IdentityDocument identityDocument) {
+    public void setIdentityDocument(List<IdentityDocument> identityDocument) {
         this.identityDocument = identityDocument;
     }
 

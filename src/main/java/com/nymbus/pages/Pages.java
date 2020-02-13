@@ -2,6 +2,7 @@ package com.nymbus.pages;
 
 import com.nymbus.pages.clients.AddClientPage;
 import com.nymbus.pages.clients.ClientsSearchPage;
+import com.nymbus.pages.clients.ClientDetailsPage;
 import com.nymbus.pages.loans.LoansPage;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
 import com.nymbus.pages.teller.TellerPage;
@@ -17,6 +18,7 @@ public class Pages {
     private static ASideMenuPage aSideMenuPage;
     private static AddClientPage addClientPage;
     private static ClientsSearchPage clientsSearchPage;
+    private static ClientDetailsPage clientDetailsPage;
     private static TellerPage tellerPage;
     private static LoansPage loansPage;
     private static ReportGeneratorPage reportGeneratorPage;
@@ -71,6 +73,16 @@ public class Pages {
             clientsSearchPage = new ClientsSearchPage();
         }
         return clientsSearchPage;
+    }
+
+    /**
+     * This function return an instance of `ClientDetailsPage`
+     */
+    public static ClientDetailsPage clientDetailsPage() {
+        if (clientDetailsPage == null) {
+            clientDetailsPage = new ClientDetailsPage();
+        }
+        return clientDetailsPage;
     }
 
     /**

@@ -8,6 +8,17 @@ import com.nymbus.locator.XPath;
 import io.qameta.allure.Step;
 
 public class ClientDetailsPage extends BasePage {
+
+    private Locator profileForm = new XPath("//div[@name='profileForm']");
+
+    /**
+     * Tabs button
+     */
+    private Locator documentsTab = new ID("app-customer-documents");
+
+    /**
+     * Profile Tab
+     */
     private Locator clientID = new XPath("//p[@data-test-id='display-customerNumber']");
     private Locator type = new XPath("//div[@id='typeid_person']//span[@class='select2-chosen']/span");
     private Locator status = new XPath("//div[@id='statusid']//span[@class='select2-chosen']/span");
@@ -45,22 +56,54 @@ public class ClientDetailsPage extends BasePage {
     private Locator addressState = new XPath("//div[@name='states_0']//span[@class='select2-chosen']/span");
     private Locator addressZipCode = new Name("zipcode_0");
 
+    /**
+     * Documents Tab
+     */
+    private Locator listOfDocumentsRegion = new XPath("//table[contains(@ng-if, 'documents')]");
+    private Locator listOfDocuments = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]]");
+    private Locator documentType = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td/span");
+    private Locator country = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[3]");
+    private Locator state = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[4]");
+    private Locator documentID = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[5]");
+    private Locator issueDate = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[6]");
+    private Locator expirationDate = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[7]");
+    private Locator createdBy = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[8]");
+
+    @Step("Wait for Client Details page loaded")
+    public void waitForPageLoaded(){
+        waitForElementVisibility(profileForm);
+        waitForElementClickable(profileForm);
+    }
+
+    /**
+     * Tabs button
+     */
+    @Step("Click 'Documents' tab")
+    public void clickDocumentsTab(){
+        waitForElementVisibility(documentsTab);
+        waitForElementClickable(documentsTab);
+        click(documentsTab);
+    }
+
+    /**
+     * Profile Tab
+     */
     @Step("Get 'Client ID' value")
     public String getClientID() {
         waitForElementVisibility(clientID);
-        return getElementAttributeValue("value", clientID).trim();
+        return getElementText(clientID).trim();
     }
 
     @Step("Get 'Type' value")
     public String getType() {
         waitForElementVisibility(type);
-        return getElementAttributeValue("value", type).trim();
+        return getElementText(type).trim();
     }
 
     @Step("Get 'Status' value")
     public String getStatus() {
         waitForElementVisibility(status);
-        return getElementAttributeValue("value", status).trim();
+        return getElementText(status).trim();
     }
 
     @Step("Get 'First Name' value")
@@ -108,7 +151,7 @@ public class ClientDetailsPage extends BasePage {
     @Step("Get 'Tax ID' value")
     public String getTaxID() {
         waitForElementVisibility(taxID);
-        return getElementAttributeValue("value", taxID).trim();
+        return getElementAttributeValue("value", taxID).trim().replaceAll("[\\W_&&[^°]]+","");
     }
 
     @Step("Get 'BirthDate' value")
@@ -210,7 +253,7 @@ public class ClientDetailsPage extends BasePage {
     @Step("Get 'Phone' value")
     public String getPhone() {
         waitForElementVisibility(phone);
-        return getElementAttributeValue("value", phone).trim();
+        return getElementAttributeValue("value", phone).trim().replaceAll("[\\W_&&[^°]]+","");
     }
 
     @Step("Get 'Email Type' value")
@@ -260,4 +303,63 @@ public class ClientDetailsPage extends BasePage {
         waitForElementVisibility(addressZipCode);
         return getElementAttributeValue("value", addressZipCode).trim();
     }
+
+    /**
+     * Documents Tab
+     */
+
+    @Step("Wait for documents table")
+    public void waitForDocumentsTable(){
+        waitForElementVisibility(listOfDocumentsRegion);
+        waitForElementClickable(listOfDocumentsRegion);
+    }
+
+    @Step("Get amount of Documents")
+    public int amountOfDocuments(){
+        waitForElementVisibility(listOfDocuments);
+        return getElements(listOfDocuments).size();
+    }
+
+    @Step("Get document type by index")
+    public String getDocumentTypeByIndex(int index){
+        waitForElementVisibility(documentType, index);
+        return getElementText(documentType, index).trim();
+    }
+
+    @Step("Get country by index")
+    public String getCountryByIndex(int index){
+        waitForElementVisibility(country, index);
+        return getElementText(country, index).trim();
+    }
+
+    @Step("Get state by index")
+    public String getStateByIndex(int index){
+        waitForElementVisibility(state, index);
+        return getElementText(state, index).trim();
+    }
+
+    @Step("Get documentID by index")
+    public String getDocumentIDByIndex(int index){
+        waitForElementVisibility(documentID, index);
+        return getElementText(documentID, index).trim();
+    }
+
+    @Step("Get issueDate by index")
+    public String getIssueDateByIndex(int index){
+        waitForElementVisibility(issueDate, index);
+        return getElementText(issueDate, index).trim();
+    }
+
+    @Step("Get expirationDate by index")
+    public String getExpirationDateByIndex(int index){
+        waitForElementVisibility(expirationDate, index);
+        return getElementText(expirationDate, index).trim();
+    }
+
+    @Step("Get createdBy by index")
+    public String getCreatedByByIndex(int index){
+        waitForElementVisibility(createdBy, index);
+        return getElementText(createdBy, index).trim();
+    }
+
 }

@@ -50,10 +50,10 @@ public class CreateClient {
         Pages.addClientPage().setBirthDateValue(client.getBirthDate());
         Pages.addClientPage().clickBirthDateCalendarIcon();
         setIDType(client);
-        Pages.addClientPage().setIDNumberValue(client.getIdentityDocument().getNumber());
+        Pages.addClientPage().setIDNumberValue(client.getIdentityDocument().get(0).getNumber());
         setIssuedBY(client);
         setCountry(client);
-        Pages.addClientPage().setExpirationDateValue(client.getIdentityDocument().getExpirationDate());
+        Pages.addClientPage().setExpirationDateValue(client.getIdentityDocument().get(0).getExpirationDate());
         setAddress(client);
         Pages.addClientPage().clickSaveAndContinueButton();
         Pages.addClientPage().waitForModalWindow();
@@ -78,7 +78,7 @@ public class CreateClient {
         Pages.addClientPage().setUserDefinedField1Value(client.getUserDefined_1());
         Pages.addClientPage().setUserDefinedField2Value(client.getUserDefined_2());
         Pages.addClientPage().setUserDefinedField3Value(client.getUserDefined_3());
-        Pages.addClientPage().setUserDefinedField3Value(client.getUserDefined_4());
+        Pages.addClientPage().setUserDefinedField4Value(client.getUserDefined_4());
         Pages.addClientPage().setPhoneValue(client.getPhone());
         setEmailType(client);
         Pages.addClientPage().setEmailValue(client.getEmail());
@@ -131,10 +131,10 @@ public class CreateClient {
 
         Assert.assertTrue(listOfIDType.size() > 0,
                 "There are not an available ID Type");
-        if (client.getIdentityDocument().getType() == null)
-            client.getIdentityDocument().setType(listOfIDType.get(new Random().nextInt(listOfIDType.size())).trim());
-        Pages.addClientPage().setIDTypeValue(client.getIdentityDocument().getType());
-        Pages.addClientPage().clickIDTypeOption(client.getIdentityDocument().getType());
+        if (client.getIdentityDocument().get(0).getType() == null)
+            client.getIdentityDocument().get(0).setType(listOfIDType.get(new Random().nextInt(listOfIDType.size())).trim());
+        Pages.addClientPage().setIDTypeValue(client.getIdentityDocument().get(0).getType());
+        Pages.addClientPage().clickIDTypeOption(client.getIdentityDocument().get(0).getType());
     }
 
     private void setIssuedBY(Client client) {
@@ -144,10 +144,10 @@ public class CreateClient {
 
         Assert.assertTrue(listOfIssuedBy.size() > 0,
                 "There are not an available Issued By");
-        if (client.getIdentityDocument().getIssuedBy() == null)
-            client.getIdentityDocument().setIssuedBy(listOfIssuedBy.get(new Random().nextInt(listOfIssuedBy.size())).trim());
-        Pages.addClientPage().setIssuedByValue(client.getIdentityDocument().getIssuedBy());
-        Pages.addClientPage().clickIssuedByOption(client.getIdentityDocument().getIssuedBy());
+        if (client.getIdentityDocument().get(0).getIssuedBy() == null)
+            client.getIdentityDocument().get(0).setIssuedBy(listOfIssuedBy.get(new Random().nextInt(listOfIssuedBy.size())).trim());
+        Pages.addClientPage().setIssuedByValue(client.getIdentityDocument().get(0).getIssuedBy());
+        Pages.addClientPage().clickIssuedByOption(client.getIdentityDocument().get(0).getIssuedBy());
     }
 
     private void setCountry(Client client) {
@@ -157,10 +157,10 @@ public class CreateClient {
 
         Assert.assertTrue(listOfCountry.size() > 0,
                 "There are not an available Country");
-        if (client.getIdentityDocument().getCountry() == null)
-            client.getIdentityDocument().setCountry(listOfCountry.get(new Random().nextInt(listOfCountry.size())).trim());
-        Pages.addClientPage().setCountryValue(client.getIdentityDocument().getCountry());
-        Pages.addClientPage().clickCountryOption(client.getIdentityDocument().getCountry());
+        if (client.getIdentityDocument().get(0).getCountry() == null)
+            client.getIdentityDocument().get(0).setCountry(listOfCountry.get(new Random().nextInt(listOfCountry.size())).trim());
+        Pages.addClientPage().setCountryValue(client.getIdentityDocument().get(0).getCountry());
+        Pages.addClientPage().clickCountryOption(client.getIdentityDocument().get(0).getCountry());
     }
 
     private void setAddress(Client client) {
@@ -320,10 +320,10 @@ public class CreateClient {
         Pages.addClientPage().uploadClientDocumentation(System.getProperty("client.resource.dir")
                 + File.separator + "clientDocument.png");
         setDocumentationIDType(client);
-        Pages.addClientPage().setDocumentIDNumberValue(client.getIdentityDocument().getNumber());
+        Pages.addClientPage().setDocumentIDNumberValue(client.getIdentityDocument().get(1).getNumber());
         setDocumentationIssuedBY(client);
         setDocumentationCountry(client);
-        Pages.addClientPage().setDocumentExpirationDateValue(client.getIdentityDocument().getExpirationDate());
+        Pages.addClientPage().setDocumentExpirationDateValue(client.getIdentityDocument().get(1).getExpirationDate());
         Pages.addClientPage().clickDocumentSaveChangesButton();
     }
 
@@ -334,10 +334,10 @@ public class CreateClient {
 
         Assert.assertTrue(listOfIDType.size() > 0,
                 "There are not an available ID Type");
-        if (client.getIdentityDocument().getType() == null)
-            client.getIdentityDocument().setType(listOfIDType.get(new Random().nextInt(listOfIDType.size())).trim());
-        Pages.addClientPage().setDocumentIDTypeValue(client.getIdentityDocument().getType());
-        Pages.addClientPage().clickDocumentIDTypeOption(client.getIdentityDocument().getType());
+        if (client.getIdentityDocument().get(1).getType() == null)
+            client.getIdentityDocument().get(1).setType(listOfIDType.get(new Random().nextInt(listOfIDType.size())).trim());
+        Pages.addClientPage().setDocumentIDTypeValue(client.getIdentityDocument().get(1).getType());
+        Pages.addClientPage().clickDocumentIDTypeOption(client.getIdentityDocument().get(1).getType());
     }
 
     private void setDocumentationIssuedBY(Client client) {
@@ -347,10 +347,10 @@ public class CreateClient {
 
         Assert.assertTrue(listOfIssuedBy.size() > 0,
                 "There are not an available Issued By");
-        if (client.getIdentityDocument().getIssuedBy() == null)
-            client.getIdentityDocument().setIssuedBy(listOfIssuedBy.get(new Random().nextInt(listOfIssuedBy.size())).trim());
-        Pages.addClientPage().setDocumentIssuedByValue(client.getIdentityDocument().getIssuedBy());
-        Pages.addClientPage().clickDocumentIssuedByOption(client.getIdentityDocument().getIssuedBy());
+        if (client.getIdentityDocument().get(1).getIssuedBy() == null)
+            client.getIdentityDocument().get(1).setIssuedBy(listOfIssuedBy.get(new Random().nextInt(listOfIssuedBy.size())).trim());
+        Pages.addClientPage().setDocumentIssuedByValue(client.getIdentityDocument().get(1).getIssuedBy());
+        Pages.addClientPage().clickDocumentIssuedByOption(client.getIdentityDocument().get(1).getIssuedBy());
     }
 
     private void setDocumentationCountry(Client client) {
@@ -360,9 +360,9 @@ public class CreateClient {
 
         Assert.assertTrue(listOfCountry.size() > 0,
                 "There are not an available Country");
-        if (client.getIdentityDocument().getCountry() == null)
-            client.getIdentityDocument().setCountry(listOfCountry.get(new Random().nextInt(listOfCountry.size())).trim());
-        Pages.addClientPage().setDocumentCountryValue(client.getIdentityDocument().getCountry());
-        Pages.addClientPage().clickDocumentCountryOption(client.getIdentityDocument().getCountry());
+        if (client.getIdentityDocument().get(1).getCountry() == null)
+            client.getIdentityDocument().get(1).setCountry(listOfCountry.get(new Random().nextInt(listOfCountry.size())).trim());
+        Pages.addClientPage().setDocumentCountryValue(client.getIdentityDocument().get(1).getCountry());
+        Pages.addClientPage().clickDocumentCountryOption(client.getIdentityDocument().get(1).getCountry());
     }
 }

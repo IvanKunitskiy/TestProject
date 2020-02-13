@@ -35,5 +35,8 @@ public class C22541_CreateIndividualMemberClient extends BaseTest {
 
         ClientsActions.createClient().createClient(client);
 
+        Assert.assertEquals(ClientsActions.verifyClientDataActions().getIndividualClientData(), client,
+                "Address's data is not equals");
+
     }
 }
