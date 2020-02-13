@@ -1,5 +1,8 @@
 package com.nymbus.pages;
 
+import com.nymbus.pages.clients.AddClientPage;
+import com.nymbus.pages.clients.ClientsSearchPage;
+import com.nymbus.pages.clients.ClientDetailsPage;
 import com.nymbus.pages.clients.ClientsPage;
 import com.nymbus.pages.clients.ClientsSearchResultsPage;
 import com.nymbus.pages.loans.LoansPage;
@@ -15,7 +18,9 @@ public class Pages {
     private static LoginPage loginPage;
     private static NavigationPage navigationPage;
     private static ASideMenuPage aSideMenuPage;
-    private static ClientsPage clientsPage;
+    private static AddClientPage addClientPage;
+    private static ClientsSearchPage clientsSearchPage;
+    private static ClientDetailsPage clientDetailsPage;
     private static TellerPage tellerPage;
     private static LoansPage loansPage;
     private static ReportGeneratorPage reportGeneratorPage;
@@ -54,13 +59,33 @@ public class Pages {
     }
 
     /**
-     * This function return an instance of `ClientsPage`
+     * This function return an instance of `ClientsSearchPage`
      */
-    public static ClientsPage clientsPage() {
-        if (clientsPage == null) {
-            clientsPage = new ClientsPage();
+    public static AddClientPage addClientPage() {
+        if (addClientPage == null) {
+            addClientPage = new AddClientPage();
         }
-        return clientsPage;
+        return addClientPage;
+    }
+
+    /**
+     * This function return an instance of `ClientsSearchPage`
+     */
+    public static ClientsSearchPage clientsPage() {
+        if (clientsSearchPage == null) {
+            clientsSearchPage = new ClientsSearchPage();
+        }
+        return clientsSearchPage;
+    }
+
+    /**
+     * This function return an instance of `ClientDetailsPage`
+     */
+    public static ClientDetailsPage clientDetailsPage() {
+        if (clientDetailsPage == null) {
+            clientDetailsPage = new ClientDetailsPage();
+        }
+        return clientDetailsPage;
     }
 
     /**

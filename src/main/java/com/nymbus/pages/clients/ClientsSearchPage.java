@@ -5,7 +5,7 @@ import com.nymbus.locator.Locator;
 import com.nymbus.locator.XPath;
 import io.qameta.allure.Step;
 
-public class ClientsPage extends BasePage {
+public class ClientsSearchPage extends BasePage {
 
     private Locator addNewClientButton = new XPath("//a[@*='action-addNewCustomer']");
     private Locator clientsSearchInputField = new XPath("//input[@type='search']");
@@ -61,4 +61,11 @@ public class ClientsPage extends BasePage {
         click(clearSearchInputFieldButton);
         wait(1);
     }
+    @Step("Click 'Add new client' button")
+    public void clickAddNewClient(){
+        waitForElementVisibility(addNewClientButton);
+        waitForElementClickable(addNewClientButton);
+        click(addNewClientButton);
+    }
+
 }
