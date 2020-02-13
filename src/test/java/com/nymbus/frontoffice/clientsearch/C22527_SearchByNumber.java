@@ -2,7 +2,7 @@ package com.nymbus.frontoffice.clientsearch;
 
 import com.nymbus.actions.Actions;
 import com.nymbus.base.BaseTest;
-import com.nymbus.models.TempClient;
+import com.nymbus.models.client.Client;
 import com.nymbus.pages.Pages;
 import com.nymbus.util.Constants;
 import io.qameta.allure.Epic;
@@ -21,12 +21,11 @@ import static org.testng.AssertJUnit.assertEquals;
 @Feature("User Management")
 @Owner("Dmytro")
 public class C22527_SearchByNumber extends BaseTest {
-    // TODO: Need to change this objects to Petro's 'Client'
-    private TempClient client;
+    private Client client;
 
     @BeforeMethod
     public void preCondition() {
-        client = new TempClient();
+        client = new Client();
         client.setAccountNumber("28461564083");
 
         navigateToUrl(Constants.URL);
@@ -69,5 +68,8 @@ public class C22527_SearchByNumber extends BaseTest {
 
         clients = Pages.clientsPage().getAllLookupResults();
         assertEquals(clients.get(0), client.getAccountNumber());
+
+        LOG.info("Step 5: Click [Search] button and pay attention to the search results list");
+        // TODO: Need to implement assertion for exist Client object
     }
 }
