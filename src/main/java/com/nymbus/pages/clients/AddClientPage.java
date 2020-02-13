@@ -19,7 +19,7 @@ public class AddClientPage extends BasePage {
     private Locator cancelButton = new XPath("//button[contains(@class,'btnCancel')]");
     private Locator modalWindow = new XPath("//div[contains(@class, 'modal-content')]");
     private Locator verificationCheckIcon = new XPath("//div[contains(@class, 'modal-content')]" +
-            "//div/i[contains(@class, 'nyb-icon-verificationok')]");
+            "//div/h4[contains(@class, 'modal-title')]");
     private Locator okModalButton = new XPath("//div[contains(@class, 'modal-content')]" +
             "//button[span[text()='OK']]");
 
@@ -258,7 +258,7 @@ public class AddClientPage extends BasePage {
     @Step("Checking verification")
     public boolean isVerificationSuccess() {
         waitForElementVisibility(verificationCheckIcon);
-        return getElementAttributeValue("class", verificationCheckIcon).contains("textGreen");
+        return getElementAttributeValue("class", verificationCheckIcon).contains("textBlue");
     }
 
     @Step("Click 'OK' modal button")
