@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.clientsearch;
 import com.nymbus.actions.Actions;
 import com.nymbus.base.BaseTest;
 import com.nymbus.models.TempClient;
+import com.nymbus.models.client.Client;
 import com.nymbus.pages.Pages;
 import com.nymbus.util.Constants;
 import io.qameta.allure.Epic;
@@ -20,12 +21,13 @@ import static org.testng.Assert.assertTrue;
 @Feature("User Management")
 @Owner("Dmytro")
 public class C22526_SearchByName extends BaseTest {
-    // TODO: Need to change this objects to Petro's 'Client'
-    private TempClient client;
+    private Client client;
 
     @BeforeMethod
     public void preCondition() {
-        client = new TempClient("Anna", "Adams");
+        client = new Client();
+        client.setFirstName("Anna");
+        client.setLastName("Adams");
 
         navigateToUrl(Constants.URL);
 
@@ -37,13 +39,15 @@ public class C22526_SearchByName extends BaseTest {
     @Test(description = "C22526, Search client by name")
     public void searchByName() {
         LOG.info("Step 2: Click within search field and try to search for an existing client (by first name)");
-        Pages.clientsPage().typeToClientsSearchInputField(client.getFirstName().substring(0, 3));
+        final String firstNameLetters = client.getFirstName().substring(0, 3);
+        Pages.clientsPage().typeToClientsSearchInputField(firstNameLetters);
+
         int lookupResultsCount = Pages.clientsPage().getLookupResultsCount();
         Assert.assertEquals(lookupResultsCount, 8);
         assertTrue(Pages.clientsPage().isLoadMoreResultsButtonVisible());
 
         List<TempClient> clients = Actions.clientPageActions().getAllClientsFromLookupResults(lookupResultsCount);
-        assertTrue(Actions.clientPageActions().verifySearchResultsByFirstName(clients, client.getFirstName().substring(0, 3)));
+        clients.stream().forEach(c -> assertTrue(c.getFirstName().contains(firstNameLetters)));
 
         LOG.info("Step 3: Click [Search] button");
         Pages.clientsPage().clickOnSearchButton();
@@ -52,17 +56,19 @@ public class C22526_SearchByName extends BaseTest {
         assertTrue(Pages.clientsSearchResultsPage().isLoadMoreResultsButtonVisible());
 
         clients = Actions.clientsSearchResultsPageActions().getAllClientsFromResult(searchResults);
-        assertTrue(Actions.clientPageActions().verifySearchResultsByFirstName(clients, client.getFirstName().substring(0, 3)));
+        clients.stream().forEach(c -> assertTrue(c.getFirstName().contains(firstNameLetters)));
 
         LOG.info("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
         Pages.clientsPage().clickOnSearchInputFieldClearButton();
 
-        Pages.clientsPage().typeToClientsSearchInputField(client.getLastName().substring(0, 3));
+        final String lastNameLetters = client.getLastName().substring(0, 3);
+        Pages.clientsPage().typeToClientsSearchInputField(lastNameLetters);
+
         lookupResultsCount = Pages.clientsPage().getLookupResultsCount();
         Assert.assertEquals(lookupResultsCount, 8);
         assertTrue(Pages.clientsPage().isLoadMoreResultsButtonVisible());
 
         clients = Actions.clientPageActions().getAllClientsFromLookupResults(lookupResultsCount);
-        assertTrue(Actions.clientPageActions().verifySearchResultsByLastName(clients, client.getLastName().substring(0, 3)));
+        clients.stream().forEach(c -> assertTrue(c.getLastName().contains(lastNameLetters)));
     }
 }

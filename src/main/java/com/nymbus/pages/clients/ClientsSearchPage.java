@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ClientsPage extends BasePage {
+public class ClientsSearchPage extends BasePage {
 
     private Locator addNewClientButton = new XPath("//a[@*='action-addNewCustomer']");
     private Locator clientsSearchInputField = new XPath("//input[@type='search']");
@@ -70,5 +70,12 @@ public class ClientsPage extends BasePage {
         waitForElementVisibility(clearSearchInputFieldButton);
         click(clearSearchInputFieldButton);
         wait(1);
+    }
+
+    @Step("Click 'Add new client' button")
+    public void clickAddNewClient(){
+        waitForElementVisibility(addNewClientButton);
+        waitForElementClickable(addNewClientButton);
+        click(addNewClientButton);
     }
 }
