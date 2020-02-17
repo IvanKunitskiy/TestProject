@@ -18,6 +18,23 @@ public class ClientsSearchPage extends BasePage {
     private Locator lookupResultByIndex = new XPath("(//div[contains(text(),'View')]/preceding-sibling::*[1])[%s]");
     private Locator loadMoreResultsButton = new XPath("//div[text()='Load More Results']");
     private Locator clearSearchInputFieldButton = new XPath("//button[@class='btn btn-link btnIcon']");
+    private Locator searchResultsTable = new XPath("//main[@id='main-content']//section[@class='content']");
+    private Locator searchResultsTableRow = new XPath("//*[contains(@class, 'dn-gridok-table__tr ng-scope')]");
+    private Locator viewMemberProfileButton = new XPath("//button[@data-test-id='go-CustomerPage']");
+    private Locator clientID = new XPath("//button[@data-test-id='display-customerNumber']");
+
+    @Step("Get client id after creation")
+    public String getClientIdAfterCreation() {
+        waitForElementVisibility(clientID);
+        return getElementText(clientID);
+    }
+
+    @Step("Click the 'View Member Profile' button")
+    public void clickViewMemberProfileButton(){
+        waitForElementVisibility(viewMemberProfileButton);
+        waitForElementClickable(viewMemberProfileButton);
+        click(viewMemberProfileButton);
+    }
 
     @Step("Wait for 'Add new client' button")
     public void waitForAddNewClientButton(){
@@ -77,5 +94,28 @@ public class ClientsSearchPage extends BasePage {
         waitForElementVisibility(addNewClientButton);
         waitForElementClickable(addNewClientButton);
         click(addNewClientButton);
+    }
+
+    @Step("Check that all search results are relevant")
+    public boolean isSearchResultsRelative(List<String> listOfSearchResults, String query) {
+        int match = 0;
+        for (String client : listOfSearchResults) {
+//            System.out.println(client);
+            if (client.contains(query)) {
+                match++;
+            }
+        }
+        return listOfSearchResults.size() == match;
+    }
+
+    @Step("Get clients from table")
+    public List<String> getClientsFromTable() {
+        return getElementsText(searchResultsTableRow);
+    }
+
+    @Step("Wait for search results table is visible")
+    public void waitForSearchResultsTableIsVisible() {
+        waitForElementVisibility(searchResultsTable);
+        waitForElementClickable(searchResultsTable);
     }
 }
