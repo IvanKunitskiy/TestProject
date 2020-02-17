@@ -8,10 +8,7 @@ import com.nymbus.models.client.Client;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
 import com.nymbus.util.Constants;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -20,6 +17,7 @@ import java.util.Random;
 
 @Epic("Frontoffice")
 @Feature("Create clients")
+@Owner("Petro")
 public class C22542_CreateClientIndividualOfacFail extends BaseTest {
 
     private Client client;

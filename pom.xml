@@ -21,8 +21,6 @@
         <aspectj.version>1.9.5</aspectj.version>
         <test.resource.dir>src${file.separator}test${file.separator}resources</test.resource.dir>
         <suiteXmlFile>AllTest</suiteXmlFile>
-        <main.resource.dir>${project.basedir}${file.separator}src${file.separator}main${file.separator}resources</main.resource.dir>
-        <client.resource.dir>${main.resource.dir}${file.separator}client</client.resource.dir>
     </properties>
 
     <dependencies>
@@ -104,9 +102,6 @@
                         <suiteXmlFiles>
                             <suiteXmlFile>${test.resource.dir}${file.separator}${suiteXmlFile}.xml</suiteXmlFile>
                         </suiteXmlFiles>
-                        <systemProperties>
-                            <client.resource.dir>${client.resource.dir}</client.resource.dir>
-                        </systemProperties>
                     </configuration>
 
                 </plugin>

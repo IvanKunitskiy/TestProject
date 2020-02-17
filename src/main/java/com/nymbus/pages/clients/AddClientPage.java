@@ -235,7 +235,7 @@ public class AddClientPage extends BasePage {
      */
     private Locator clientSignatureField = new XPath("//section[contains(@ng-show, 'customerSignature')]//input[@type='file' and @name='file']");
 
-    private Locator viewMemberProfileButton = new XPath("//button[span[contains(text(), 'View Member Profile')]]");
+    private Locator viewMemberProfileButton = new XPath("//button[@data-test-id='go-CustomerPage']");
 
     @Step("Click on 'Save and continue' button")
     public void clickSaveAndContinueButton() {

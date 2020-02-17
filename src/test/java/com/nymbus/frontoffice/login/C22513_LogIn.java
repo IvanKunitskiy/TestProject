@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 
 @Epic("Frontoffice")
 @Feature("Log In")
+@Owner("Petro")
 public class C22513_LogIn extends BaseTest {
 
     @Test(description = "C22513, Log in")

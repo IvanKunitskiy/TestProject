@@ -14,6 +14,7 @@ public class ClientDetailsPage extends BasePage {
     /**
      * Tabs button
      */
+    private Locator profileTab = new ID("app-customer-profile");
     private Locator documentsTab = new ID("app-customer-documents");
 
     /**
@@ -78,6 +79,13 @@ public class ClientDetailsPage extends BasePage {
     /**
      * Tabs button
      */
+    @Step("Click 'Profile' tab")
+    public void clickProfileTab(){
+        waitForElementVisibility(profileTab);
+        waitForElementClickable(profileTab);
+        click(profileTab);
+    }
+
     @Step("Click 'Documents' tab")
     public void clickDocumentsTab(){
         waitForElementVisibility(documentsTab);

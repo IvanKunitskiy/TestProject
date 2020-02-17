@@ -7,16 +7,14 @@ import com.nymbus.models.User;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
 import com.nymbus.util.Constants;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 @Epic("Frontoffice")
 @Feature("User Management")
+@Owner("Petro")
 public class C22520_DisableUserTest extends BaseTest {
 
     private User user;

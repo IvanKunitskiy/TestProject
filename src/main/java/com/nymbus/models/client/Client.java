@@ -108,7 +108,7 @@ public class Client {
                 ", selectOfficer='" + selectOfficer + '\'' +
                 ", userDefined_1='" + userDefined_1 + '\'' +
                 ", userDefined_2='" + userDefined_2 + '\'' +
-                ", userDefined_='" + userDefined_3 + '\'' +
+                ", userDefined_3='" + userDefined_3 + '\'' +
                 ", userDefined_4='" + userDefined_4 + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
@@ -128,7 +128,7 @@ public class Client {
                 taxPayerIDType.equals(client.taxPayerIDType) &&
                 taxID.equals(client.taxID) &&
                 birthDate.equals(client.birthDate) &&
-                accountNumber.equals(client.accountNumber) &&
+                Objects.equals(accountNumber, client.accountNumber) &&
                 identityDocument.equals(client.identityDocument) &&
                 address.equals(client.address) &&
                 Objects.equals(suffix, client.suffix) &&

@@ -16,6 +16,7 @@ public class VerifyClientDataActions {
         Pages.clientDetailsPage().waitForPageLoaded();
 
         client.setClientID(Pages.clientDetailsPage().getClientID());
+        Pages.clientDetailsPage().clickProfileTab();
         setIndividualInformation(client);
         setContactInformation(client);
         setAddressInformation(client);
