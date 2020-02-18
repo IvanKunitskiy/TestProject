@@ -26,6 +26,36 @@ public class VerifyClientDataActions {
         return client;
     }
 
+    public Client getIndividualConsumerClientData() {
+        Client client = new Client();
+
+        Pages.clientDetailsPage().waitForPageLoaded();
+
+        client.setClientID(Pages.clientDetailsPage().getClientID());
+        Pages.clientDetailsPage().clickProfileTab();
+        setIndividualInformation(client);
+
+        client.setPhoneType(Pages.clientDetailsPage().getPhoneType());
+        client.setPhone(Pages.clientDetailsPage().getPhone());
+        client.setSuffix("");
+        client.setMaidenFamilyName("");
+        client.setAKA_1("");
+        client.setOccupation("");
+        client.setJobTitle("");
+        client.setUserDefined_1("");
+        client.setUserDefined_2("");
+        client.setUserDefined_3("");
+        client.setUserDefined_4("");
+        client.setPhone("");
+        client.setEmail("");
+
+        setAddressInformation(client);
+        Pages.clientDetailsPage().clickDocumentsTab();
+        setIdentityDocuments(client);
+
+        return client;
+    }
+
     private void setIndividualInformation(Client client) {
         client.setClientType(Pages.clientDetailsPage().getType());
         client.setClientStatus(Pages.clientDetailsPage().getStatus());
