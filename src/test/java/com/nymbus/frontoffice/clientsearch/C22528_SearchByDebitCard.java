@@ -41,7 +41,7 @@ public class C22528_SearchByDebitCard extends BaseTest {
         String lastFourNumbers = cardNumber.substring(cardNumber.length()-4);
         String hiddenNumber = "XXXX-XXXX-XXXX-" + lastFourNumbers;
 
-                LOG.info("Step 2: Click within search field and try to search for an existing Debit Card");
+        LOG.info("Step 2: Click within search field and try to search for an existing Debit Card");
         Pages.clientsPage().typeToClientsSearchInputField(lastFourNumbers);
 
         int lookupResultsCount = Pages.clientsPage().getLookupResultsCount();
