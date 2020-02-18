@@ -18,8 +18,6 @@ public class ClientsSearchPage extends BasePage {
     private Locator lookupResultByIndex = new XPath("(//div[contains(text(),'View')]/preceding-sibling::*[1])[%s]");
     private Locator loadMoreResultsButton = new XPath("//div[text()='Load More Results']");
     private Locator clearSearchInputFieldButton = new XPath("//button[@class='btn btn-link btnIcon']");
-    private Locator searchResultsTable = new XPath("//main[@id='main-content']//section[@class='content']");
-    private Locator searchResultsTableRow = new XPath("//*[contains(@class, 'dn-gridok-table__tr ng-scope')]");
 
     @Step("Wait for 'Add new client' button")
     public void waitForAddNewClientButton(){
