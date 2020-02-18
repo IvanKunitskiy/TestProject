@@ -79,6 +79,44 @@ public class Client {
         return client;
     }
 
+    public Client setConsumerClientData() {
+        Client client = new Client();
+        client.setClientStatus("Consumer");
+        client.setFirstName(Random.genString(5));
+        client.setFirstName(Random.genString(5));
+        client.setMiddleName(Random.genString(5));
+        client.setLastName(Random.genString(5));
+        client.setTaxPayerIDType("Individual SSN");
+        client.setTaxID(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        client.setAddress(new Address().setDefaultPhysicalData());
+
+        List<IdentityDocument> identityDocuments = new ArrayList<>();
+        identityDocuments.add(new IdentityDocument().setDefaultIdentityDocumentData());
+        client.setIdentityDocument(identityDocuments);
+        client.setBirthDate("01/01/1990");
+        client.setSuffix("");
+        client.setGender("");
+        client.setEducation("");
+        client.setIncome("");
+        client.setMaritalStatus("");
+        client.setMaidenFamilyName("");
+        client.setAKA_1("");
+        client.setOccupation("");
+        client.setConsumerInfoIndicator("");
+        client.setOwnOrRent("");
+        client.setMailCode("");
+        client.setSelectOfficer("");
+        client.setJobTitle("");
+        client.setUserDefined_1("");
+        client.setUserDefined_2("");
+        client.setUserDefined_3("");
+        client.setUserDefined_4("");
+        client.setPhone("");
+        client.setEmail("");
+
+        return client;
+    }
+
     @Override
     public String toString() {
         return "Client{" +
