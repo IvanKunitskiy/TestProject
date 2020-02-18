@@ -24,6 +24,8 @@ public class C22529_SearchClientByID extends BaseTest {
     @BeforeMethod
     public void preCondition() {
         client = new Client().setDefaultClientData();
+        client.setClientType("Individual");
+        client.setClientStatus("Member");
     }
 
     @Test(description = "C22529, Search client by ID")
@@ -34,8 +36,7 @@ public class C22529_SearchClientByID extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client);
 
-        Pages.clientsPage().clickViewMemberProfileButton();
-        final String clientID = Pages.clientsPage().getClientIdAfterCreation();
+        final String clientID = Pages.clientDetailsPage().getClientID();
         Pages.aSideMenuPage().clickClientMenuItem();
 
         LOG.info("Step 2: Click within search field and try to search for an existing client (by client id)");
@@ -45,17 +46,13 @@ public class C22529_SearchClientByID extends BaseTest {
 
         LOG.info("Step 3: Click the 'Search' button");
         Pages.clientsPage().clickOnSearchButton();
-        Pages.clientsPage().waitForSearchResultsTableIsVisible();
+        Pages.clientsSearchResultsPage().waitForSearchResults();
 
-        String searchResultsFirstRow = Pages.clientsPage().getClientsFromTable().get(0);
-        System.out.println(searchResultsFirstRow);
-        System.out.println("---> " + client.getLastName() + " " + client.getFirstName());
-        Assert.assertTrue(searchResultsFirstRow.contains(client.getLastName() + " " + client.getFirstName()), "bad name");
-        Assert.assertTrue(searchResultsFirstRow.contains(client.getClientID()), "bad id");
-        Assert.assertTrue(searchResultsFirstRow.contains(client.getClientType()), "bad type");
-//        Assert.assertTrue(searchResultsFirstRow.contains(client.getAddress()));
-
+        Assert.assertEquals(Pages.clientsSearchResultsPage().getClientFirstNameFromResultByIndex(1), client.getFirstName(), "First name is not relevant to the client");
+        Assert.assertEquals(Pages.clientsSearchResultsPage().getClientLastNameFromResultByIndex(1), client.getLastName(), "Last name is not relevant to the client");
+        Assert.assertEquals(Pages.clientsSearchResultsPage().getClientIDFromResultByIndex(1), clientID, "Client id is not relevant to the client");
+        Assert.assertEquals(Pages.clientsSearchResultsPage().getClientTypeFromResultByIndex(1), client.getClientType(), "Client type is not relevant to the client");
+        Assert.assertEquals(Pages.clientsSearchResultsPage().getClientAddressFromResultByIndex(1), client.getAddress().getAddress(), "Client address is not relevant to the client");
+        Assert.assertEquals(Pages.clientsSearchResultsPage().getClientAKAFromResultByIndex(1), client.getAKA_1(), "Client AKA is not relevant to the client");
     }
-
-
 }
