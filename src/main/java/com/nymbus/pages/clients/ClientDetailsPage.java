@@ -32,29 +32,29 @@ public class ClientDetailsPage extends BasePage {
     private Locator taxPairIdType = new XPath("//div[@name='taxpayeridtype' and contains(@field-config, 'fieldConfig')]//span[@class='select2-chosen']/span");
     private Locator taxID = new ID("taxidnumber");
     private Locator birthDate = new ID("birthdate");
-    private Locator gender = new XPath("//div[@name='gender' and contains(@field-config, 'fieldConfig')]//span[@class='select2-chosen']/span");
-    private Locator education = new XPath("//div[@name='education' and contains(@field-config, 'fieldConfig')]//span[@class='select2-chosen']/span");
-    private Locator income = new XPath("//div[@name='incomesalary' and contains(@field-config, 'fieldConfig')]//span[@class='select2-chosen']/span");
-    private Locator martialStatus = new XPath("//div[@name='maritalstatus' and contains(@field-config, 'fieldConfig')]//span[@class='select2-chosen']/span");
+    private Locator gender = new XPath("//div[@name='gender' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
+    private Locator education = new XPath("//div[@name='education' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
+    private Locator income = new XPath("//div[@name='incomesalary' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
+    private Locator martialStatus = new XPath("//div[@name='maritalstatus' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
     private Locator occupation = new ID("_occupation");
-    private Locator consumerInformationIndicator = new XPath("//div[@name='consumerinformationindicator' and contains(@field-config, 'fieldConfig')]//span[@class='select2-chosen']/span");
+    private Locator consumerInformationIndicator = new XPath("//div[@name='consumerinformationindicator' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
     private Locator jobTitle = new ID("jobtitle");
-    private Locator ownOrRent = new XPath("//div[@name='ownrent' and contains(@field-config, 'fieldConfig')]//span[@class='select2-chosen']/span");
-    private Locator mailCode = new XPath("//div[@name='mailingcode' and contains(@field-config, 'fieldConfig')]//span[@class='select2-chosen']/span");
-    private Locator selectOfficer = new XPath("//div[@name='officerid' and contains(@field-config, 'fieldConfig')]//span[@class='select2-chosen']/span");
+    private Locator ownOrRent = new XPath("//div[@name='ownrent' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
+    private Locator mailCode = new XPath("//div[@name='mailingcode' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
+    private Locator selectOfficer = new XPath("//div[@name='officerid' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
     private Locator userDefined_1 = new ID("userdefinedfield1");
     private Locator userDefined_2 = new ID("userdefinedfield2");
     private Locator userDefined_3 = new ID("userdefinedfield3");
     private Locator userDefined_4 = new ID("userdefinedfield4");
-    private Locator phoneType = new XPath("//div[@name='phoneuse_0' and contains(@field-config, 'phone')]//span[@class='select2-chosen']/span");
+    private Locator phoneType = new XPath("//div[@name='phoneuse_0' and contains(@field-config, 'phone')]//span[contains(@class, 'select2-chosen')]/span");
     private Locator phone = new Name("fullphonenumber_0");
-    private Locator emailType = new XPath("//div[@name='emailuse_0' and contains(@field-config, 'emailSubformConfig')]//span[@class='select2-chosen']/span");
+    private Locator emailType = new XPath("//div[@name='emailuse_0' and contains(@field-config, 'emailSubformConfig')]//span[contains(@class, 'select2-chosen')]/span");
     private Locator email = new Name("email_0");
-    private Locator addressType = new XPath("//div[@name='addressuse_0' and contains(@field-config, 'address')]//span[@class='select2-chosen']/span");
-    private Locator addressCountry = new XPath("//div[@name='country_0' and contains(@field-config, 'address')]//span[@class='select2-chosen']/span");
+    private Locator addressType = new XPath("//div[@name='addressuse_0' and contains(@field-config, 'address')]//span[contains(@class, 'select2-chosen')]/span");
+    private Locator addressCountry = new XPath("//div[@name='country_0' and contains(@field-config, 'address')]//span[contains(@class, 'select2-chosen')]/span");
     private Locator address = new Name("addressline1_0");
     private Locator addressCity = new Name("cityname_0");
-    private Locator addressState = new XPath("//div[@name='states_0']//span[@class='select2-chosen']/span");
+    private Locator addressState = new XPath("//div[@name='states_0']//span[contains(@class, 'select2-chosen')]/span");
     private Locator addressZipCode = new Name("zipcode_0");
 
     /**
@@ -170,121 +170,121 @@ public class ClientDetailsPage extends BasePage {
 
     @Step("Get 'Gender' value")
     public String getGender() {
-        waitForElementVisibility(gender);
+//        waitForElementVisibility(gender);
         return getElementText(gender).trim();
     }
 
     @Step("Get 'Education' value")
     public String getEducation() {
-        waitForElementVisibility(education);
+//        waitForElementVisibility(education);
         return getElementText(education).trim();
     }
 
     @Step("Get 'Income' value")
     public String getIncome() {
-        waitForElementVisibility(income);
+//        waitForElementVisibility(income);
         return getElementText(income).trim();
     }
 
     @Step("Get 'Marital Status' value")
     public String getMaritalStatus() {
-        waitForElementVisibility(martialStatus);
+//        waitForElementVisibility(martialStatus);
         return getElementText(martialStatus).trim();
     }
 
     @Step("Get 'Job Title' value")
     public String getOccupation() {
-        waitForElementVisibility(occupation);
+//        waitForElementVisibility(occupation);
         return getElementAttributeValue("value", occupation).trim();
     }
 
     @Step("Get 'Consumer Information Indicator' value")
     public String getConsumerInformationIndicator() {
-        waitForElementVisibility(consumerInformationIndicator);
+//        waitForElementVisibility(consumerInformationIndicator);
         return getElementText(consumerInformationIndicator).trim();
     }
 
     @Step("Get 'Job Title' value")
     public String getJobTitle() {
-        waitForElementVisibility(jobTitle);
+//        waitForElementVisibility(jobTitle);
         return getElementAttributeValue("value", jobTitle).trim();
     }
 
     @Step("Get 'Own or Rent' value")
     public String getOwnOrRent() {
-        waitForElementVisibility(ownOrRent);
+//        waitForElementVisibility(ownOrRent);
         return getElementText(ownOrRent).trim();
     }
 
     @Step("Get 'Mail Code' value")
     public String getMailCode() {
-        waitForElementVisibility(mailCode);
+//        waitForElementVisibility(mailCode);
         return getElementText(mailCode).trim();
     }
 
     @Step("Get 'Select Officer' value")
     public String getSelectOfficer() {
-        waitForElementVisibility(selectOfficer);
+//        waitForElementVisibility(selectOfficer);
         return getElementText(selectOfficer).trim();
     }
 
     @Step("Get 'User Defined 1' value")
     public String getUserDefined1() {
-        waitForElementVisibility(userDefined_1);
+//        waitForElementVisibility(userDefined_1);
         return getElementAttributeValue("value", userDefined_1).trim();
     }
 
     @Step("Get 'User Defined 2' value")
     public String getUserDefined2() {
-        waitForElementVisibility(userDefined_2);
+//        waitForElementVisibility(userDefined_2);
         return getElementAttributeValue("value", userDefined_2).trim();
     }
 
     @Step("Get 'User Defined 3' value")
     public String getUserDefined3() {
-        waitForElementVisibility(userDefined_3);
+//        waitForElementVisibility(userDefined_3);
         return getElementAttributeValue("value", userDefined_3).trim();
     }
 
     @Step("Get 'User Defined 4' value")
     public String getUserDefined4() {
-        waitForElementVisibility(userDefined_4);
+//        waitForElementVisibility(userDefined_4);
         return getElementAttributeValue("value", userDefined_4).trim();
     }
 
     @Step("Get 'Phone Type' value")
     public String getPhoneType() {
-        waitForElementVisibility(phoneType);
+//        waitForElementVisibility(phoneType);
         return getElementText(phoneType).trim();
     }
 
     @Step("Get 'Phone' value")
     public String getPhone() {
-        waitForElementVisibility(phone);
+//        waitForElementVisibility(phone);
         return getElementAttributeValue("value", phone).trim().replaceAll("[\\W_&&[^°]]+","");
     }
 
     @Step("Get 'Email Type' value")
     public String getEmailType() {
-        waitForElementVisibility(emailType);
+//        waitForElementVisibility(emailType);
         return getElementText(emailType).trim();
     }
 
     @Step("Get 'Email' value")
     public String getEmail() {
-        waitForElementVisibility(email);
+//        waitForElementVisibility(email);
         return getElementAttributeValue("value", email).trim();
     }
 
     @Step("Get 'Address Type' value")
     public String getAddressType() {
-        waitForElementVisibility(addressType);
+//        waitForElementVisibility(addressType);
         return getElementText(addressType).trim();
     }
 
     @Step("Get 'Country' value")
     public String getAddressCountry() {
-        waitForElementVisibility(addressCountry);
+//        waitForElementVisibility(addressCountry);
         return getElementText(addressCountry).trim();
     }
 
