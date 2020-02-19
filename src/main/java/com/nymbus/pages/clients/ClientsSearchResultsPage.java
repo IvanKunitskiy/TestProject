@@ -14,6 +14,20 @@ public class ClientsSearchResultsPage extends BasePage {
     private Locator loadMoreResultsButton = new XPath("//button[text()='Load More Results']");
     private Locator clientNameFromResultByIndex
             = new XPath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][1])[%s]");
+    private Locator clientIDFromResultByIndex
+            = new XPath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][2])[%s]");
+    private Locator clientTypeFromResultByIndex
+            = new XPath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][3])[%s]");
+    private Locator clientAddressFromResultByIndex
+            = new XPath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][4])[%s]");
+    private Locator clientAKAFromResultByIndex
+            = new XPath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][5])[%s]");
+
+    @Step("Wait for search results")
+    public void waitForSearchResults() {
+        waitForElementVisibility(searchResults);
+        waitForElementClickable(searchResults);
+    }
 
     @Step("Getting search results count")
     public int getSearchResultsCount() {
@@ -29,13 +43,37 @@ public class ClientsSearchResultsPage extends BasePage {
     @Step("Getting clients first name from results by index '{index}'")
     public String getClientFirstNameFromResultByIndex(int index) {
         waitForElementVisibility(clientNameFromResultByIndex, index);
-        return getElementText(clientNameFromResultByIndex, index).split(" ")[1];
+        return getElementText(clientNameFromResultByIndex, index).split(" ")[0];
     }
 
     @Step("Getting clients first name from results by index '{index}'")
     public String getClientLastNameFromResultByIndex(int index) {
         waitForElementVisibility(clientNameFromResultByIndex, index);
-        return getElementText(clientNameFromResultByIndex, index).split(" ")[0];
+        return getElementText(clientNameFromResultByIndex, index).split(" ")[1];
+    }
+
+    @Step("Getting clients id from results by index '{index}'")
+    public String getClientIDFromResultByIndex(int index) {
+        waitForElementVisibility(clientIDFromResultByIndex, index);
+        return getElementText(clientIDFromResultByIndex, index);
+    }
+
+    @Step("Getting clients type from results by index '{index}'")
+    public String getClientTypeFromResultByIndex(int index) {
+        waitForElementVisibility(clientTypeFromResultByIndex, index);
+        return getElementText(clientTypeFromResultByIndex, index);
+    }
+
+    @Step("Getting clients type from results by index '{index}'")
+    public String getClientAddressFromResultByIndex(int index) {
+        waitForElementVisibility(clientAddressFromResultByIndex, index);
+        return getElementText(clientAddressFromResultByIndex, index);
+    }
+
+    @Step("Getting clients AKA from results by index '{index}'")
+    public String getClientAKAFromResultByIndex(int index) {
+        waitForElementVisibility(clientAKAFromResultByIndex, index);
+        return getElementText(clientAKAFromResultByIndex, index);
     }
 
     @Step("Getting account numbers from search results")

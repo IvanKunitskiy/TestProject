@@ -78,4 +78,15 @@ public class ClientsSearchPage extends BasePage {
         waitForElementClickable(addNewClientButton);
         click(addNewClientButton);
     }
+
+    @Step("Check that all results in search list are relevant")
+    public boolean isSearchResultsRelative(List<String> listOfSearchResults, String query) {
+        int match = 0;
+        for (String client : listOfSearchResults) {
+            if (client.contains(query)) {
+                match++;
+            }
+        }
+        return listOfSearchResults.size() == match;
+    }
 }

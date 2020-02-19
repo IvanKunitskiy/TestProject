@@ -18,7 +18,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 @Epic("Frontoffice")
-@Feature("User Management")
+@Feature("Clients search")
 @Owner("Dmytro")
 public class C22528_SearchByDebitCard extends BaseTest {
     private Client client;
