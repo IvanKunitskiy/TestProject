@@ -46,7 +46,7 @@ public class C22532_SearchByTaxID extends BaseTest {
 
         Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() > 0, "There are no relevant lookup results");
         if (Pages.clientsPage().getAllLookupResults().size() == 8) {
-            Pages.clientsPage().isLoadMoreResultsButtonVisible();
+            Assert.assertTrue(Pages.clientsPage().isLoadMoreResultsButtonVisible(), "'Load more results' button is not visible in search lookup list");
         }
         Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), taxIDQuery), "Search results are not relevant");
 
