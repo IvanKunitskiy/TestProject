@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 @Epic("Frontoffice")
-@Feature("User Managenment")
+@Feature("Clients search")
 @Severity(SeverityLevel.CRITICAL)
 @Owner("Dmytro")
 public class C22529_SearchClientByID extends BaseTest {
@@ -24,8 +24,6 @@ public class C22529_SearchClientByID extends BaseTest {
     @BeforeMethod
     public void preCondition() {
         client = new Client().setDefaultClientData();
-        client.setClientType("Individual");
-        client.setClientStatus("Member");
     }
 
     @Test(description = "C22529, Search client by ID")

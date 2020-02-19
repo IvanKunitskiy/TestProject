@@ -18,7 +18,7 @@ import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 
 @Epic("Frontoffice")
-@Feature("User Management")
+@Feature("Clients search")
 @Owner("Dmytro")
 public class C22527_SearchByNumber extends BaseTest {
     private Client client;

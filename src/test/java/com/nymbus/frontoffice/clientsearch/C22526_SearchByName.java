@@ -18,7 +18,7 @@ import java.util.List;
 import static org.testng.Assert.assertTrue;
 
 @Epic("Frontoffice")
-@Feature("User Management")
+@Feature("Clients search")
 @Owner("Dmytro")
 public class C22526_SearchByName extends BaseTest {
     private Client client;
