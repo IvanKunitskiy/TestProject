@@ -11,8 +11,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.List;
-
 @Epic("Frontoffice")
 @Feature("Clients search")
 @Severity(SeverityLevel.CRITICAL)
@@ -24,8 +22,6 @@ public class C22532_SearchByTaxID extends BaseTest {
     @BeforeMethod
     public void preConditions() {
         client = new Client().setDefaultClientData();
-        client.setClientType("Individual");
-        client.setClientStatus("Member");
     }
 
     @Test
