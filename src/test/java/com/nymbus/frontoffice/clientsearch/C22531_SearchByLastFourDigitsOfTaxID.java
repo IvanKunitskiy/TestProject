@@ -11,9 +11,10 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 @Epic("Frontoffice")
 @Feature("Clients search")
-@Severity(SeverityLevel.CRITICAL)
 @Owner("Dmytro")
 public class C22531_SearchByLastFourDigitsOfTaxID extends BaseTest {
 
@@ -24,7 +25,8 @@ public class C22531_SearchByLastFourDigitsOfTaxID extends BaseTest {
         client = new Client().setDefaultClientData();
     }
 
-    @Test
+    @Test(description = "C22531, Search by last four digits of TaxID")
+    @Severity(SeverityLevel.CRITICAL)
     public void searchByTaxID() {
 
         LOG.info("Step 1: Log in to the system as the User from the precondition");
@@ -49,6 +51,18 @@ public class C22531_SearchByLastFourDigitsOfTaxID extends BaseTest {
         LOG.info("Step 3: Click the 'Search' button");
         Pages.clientsPage().clickOnSearchButton();
 
-        Pages.clientsSearchResultsPage().getSearchResultsCount();
+        List<String> accountNumbers = Pages.clientsSearchResultsPage().getAccountNumbersFromSearchResults();
+        Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(accountNumbers, taxIDQuery));
+
+        // TODO: Need to implement assertion for tax id matches in the search list
+//        List<String> searchResults = Pages.clientsSearchResultsPage().getSearchResults();
+//        boolean isClientPresent = false;
+//
+//        for (String res : searchResults) {
+//            if (res.contains("-")) continue;
+//            if (res.split(("\n"))[1].equals(clientID)) isClientPresent = true;
+//        }
+//
+//        Assert.assertTrue(isClientPresent, "Client nor found in search results");
     }
 }
