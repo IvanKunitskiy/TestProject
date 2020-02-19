@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 @Epic("Frontoffice")
-@Feature("User Management")
+@Feature("Clients search")
 @Severity(SeverityLevel.CRITICAL)
 @Owner("Dmytro")
 public class C22532_SearchByTaxID extends BaseTest {
