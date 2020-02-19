@@ -19,6 +19,7 @@ public class Client {
     private String taxID;
     private String birthDate;
     private String accountNumber;
+    private String cardNumber;
     private List<IdentityDocument> identityDocument;
     private Address address;
 
@@ -75,6 +76,43 @@ public class Client {
         client.setPhone(Random.genMobilePhone());
         client.setEmail(Random.genEmail("test@test.ts"));
 
+        return client;
+    }
+
+    public Client setConsumerClientData() {
+        Client client = new Client();
+        client.setClientStatus("Consumer");
+        client.setFirstName(Random.genString(5));
+        client.setFirstName(Random.genString(5));
+        client.setMiddleName(Random.genString(5));
+        client.setLastName(Random.genString(5));
+        client.setTaxPayerIDType("Individual SSN");
+        client.setTaxID(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        client.setAddress(new Address().setDefaultPhysicalData());
+
+        List<IdentityDocument> identityDocuments = new ArrayList<>();
+        identityDocuments.add(new IdentityDocument().setDefaultIdentityDocumentData());
+        client.setIdentityDocument(identityDocuments);
+        client.setBirthDate("01/01/1990");
+        client.setSuffix("");
+        client.setGender("");
+        client.setEducation("");
+        client.setIncome("");
+        client.setMaritalStatus("");
+        client.setMaidenFamilyName("");
+        client.setAKA_1("");
+        client.setOccupation("");
+        client.setConsumerInfoIndicator("");
+        client.setOwnOrRent("");
+        client.setMailCode("");
+        client.setSelectOfficer("");
+        client.setJobTitle("");
+        client.setUserDefined_1("");
+        client.setUserDefined_2("");
+        client.setUserDefined_3("");
+        client.setUserDefined_4("");
+        client.setPhone("");
+        client.setEmail("");
 
         return client;
     }
@@ -91,6 +129,7 @@ public class Client {
                 ", taxID='" + taxID + '\'' +
                 ", birthDate='" + birthDate + '\'' +
                 ", accountNumber='" + accountNumber + '\'' +
+                ", cardNumber='" + cardNumber + '\'' +
                 ", identityDocument=" + identityDocument +
                 ", address=" + address +
                 ", suffix='" + suffix + '\'' +
@@ -129,6 +168,7 @@ public class Client {
                 taxID.equals(client.taxID) &&
                 birthDate.equals(client.birthDate) &&
                 Objects.equals(accountNumber, client.accountNumber) &&
+                Objects.equals(cardNumber, client.cardNumber) &&
                 identityDocument.equals(client.identityDocument) &&
                 address.equals(client.address) &&
                 Objects.equals(suffix, client.suffix) &&
@@ -154,7 +194,7 @@ public class Client {
 
     @Override
     public int hashCode() {
-        return Objects.hash(clientType, clientStatus, firstName, middleName, lastName, taxPayerIDType, taxID, birthDate, accountNumber, identityDocument, address, suffix, maidenFamilyName, AKA_1, gender, education, income, maritalStatus, occupation, consumerInfoIndicator, jobTitle, ownOrRent, mailCode, selectOfficer, userDefined_1, userDefined_2, userDefined_3, userDefined_4, phone, email);
+        return Objects.hash(clientType, clientStatus, firstName, middleName, lastName, taxPayerIDType, taxID, birthDate, accountNumber, cardNumber, identityDocument, address, suffix, maidenFamilyName, AKA_1, gender, education, income, maritalStatus, occupation, consumerInfoIndicator, jobTitle, ownOrRent, mailCode, selectOfficer, userDefined_1, userDefined_2, userDefined_3, userDefined_4, phone, email);
     }
 
     public String getClientID() {
@@ -403,6 +443,14 @@ public class Client {
 
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 
     public List<IdentityDocument> getIdentityDocument() {
