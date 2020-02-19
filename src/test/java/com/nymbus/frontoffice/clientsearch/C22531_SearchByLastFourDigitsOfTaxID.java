@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 @Severity(SeverityLevel.CRITICAL)
 @Owner("Dmytro")
 public class C22531_SearchByLastFourDigitsOfTaxID extends BaseTest {
+
     private Client client;
 
     @BeforeMethod
@@ -44,5 +45,10 @@ public class C22531_SearchByLastFourDigitsOfTaxID extends BaseTest {
             Assert.assertTrue(Pages.clientsPage().isLoadMoreResultsButtonVisible(), "'Load more results' button is not visible in search lookup list");
         }
         Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), taxIDQuery), "Search results are not relevant");
+
+        LOG.info("Step 3: Click the 'Search' button");
+        Pages.clientsPage().clickOnSearchButton();
+
+        Pages.clientsSearchResultsPage().getSearchResultsCount();
     }
 }
