@@ -32,7 +32,7 @@ public class C22530_SearchByLastFourOfAccountNumber extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         LOG.info("Step 2: Click within search field and try to search for an existing account (by 4 last digits of account number)");
-        final String accountNumberQuery = client.getAccountNumber().substring(7);
+        final String accountNumberQuery = client.getAccountNumber().substring(client.getAccountNumber().length()-4);
         Pages.clientsPage().typeToClientsSearchInputField(accountNumberQuery);
 
         Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() > 0, "There are no relevant lookup results");
