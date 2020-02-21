@@ -84,4 +84,13 @@ public class ClientsSearchResultsPage extends BasePage {
                 .map(n -> n.split(" - ")[1])
                 .collect(Collectors.toList());
     }
+
+    @Step("Getting client ids from search results")
+    public List<String> getClientIDsFromSearchResults() {
+        waitForElementVisibility(searchResults);
+        return getElementsText(searchResults).stream()
+                .filter(result -> !result.contains("-"))
+                .map(result -> result.split("\n")[1])
+                .collect(Collectors.toList());
+    }
 }
