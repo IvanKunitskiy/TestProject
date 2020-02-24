@@ -5,14 +5,12 @@ import com.nymbus.locator.Locator;
 import com.nymbus.locator.XPath;
 import io.qameta.allure.Step;
 
-import java.nio.file.LinkOption;
-
 public class AccountDetailsPage extends BasePage {
 
     /**
      * Tabs button
      */
-    private Locator maintenanceTab = new XPath("a[tabindex='6']");
+    private Locator maintenanceTab = new XPath("//a[contains(text(), 'Maintenance')]");
 
 
     /**
@@ -29,6 +27,7 @@ public class AccountDetailsPage extends BasePage {
      * Maintenance tab
      */
     private Locator viewAllMaintenanceHistoryLink = new XPath("//button//span[contains(text(), 'View All History')]");
+    private Locator viewMoreButton = new XPath("//button[@data-test-id='action-loadMore']");
 
     /**
      * Tabs button
@@ -44,11 +43,16 @@ public class AccountDetailsPage extends BasePage {
      * Maintenance tab
      */
     public void clickViewAllMaintenanceHistoryLink() {
-        waitForElementVisibility(maintenanceTab);
-        waitForElementClickable(maintenanceTab);
-        click(maintenanceTab);
+        waitForElementVisibility(viewAllMaintenanceHistoryLink);
+        waitForElementClickable(viewAllMaintenanceHistoryLink);
+        click(viewAllMaintenanceHistoryLink);
     }
 
+    public void clickViewMoreButton() {
+        waitForElementVisibility(viewMoreButton);
+        waitForElementClickable(viewMoreButton);
+        click(viewMoreButton);
+    }
 
 
     /**
@@ -90,7 +94,4 @@ public class AccountDetailsPage extends BasePage {
         return getElementText(bankBranch);
     }
 
-    /**
-     * Maintenance tab
-     */
 }
