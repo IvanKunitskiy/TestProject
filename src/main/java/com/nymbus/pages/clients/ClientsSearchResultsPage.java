@@ -22,6 +22,7 @@ public class ClientsSearchResultsPage extends BasePage {
             = new XPath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][4])[%s]");
     private Locator clientAKAFromResultByIndex
             = new XPath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][5])[%s]");
+    private Locator exactMatchInSearchResults = new XPath("//div[contains(@class, 'selected')]");
 
     @Step("Wait for search results")
     public void waitForSearchResults() {
@@ -93,4 +94,11 @@ public class ClientsSearchResultsPage extends BasePage {
                 .map(result -> result.split("\n")[1])
                 .collect(Collectors.toList());
     }
+
+    @Step("Click the client fromsearch results by order number")
+    public void clickTheExactlyMatchedClientInSearchResults() {
+        waitForElementVisibility(exactMatchInSearchResults);
+        click(exactMatchInSearchResults);
+    }
+
 }

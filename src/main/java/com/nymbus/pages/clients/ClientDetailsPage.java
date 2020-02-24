@@ -7,6 +7,8 @@ import com.nymbus.locator.Name;
 import com.nymbus.locator.XPath;
 import io.qameta.allure.Step;
 
+import java.util.List;
+
 public class ClientDetailsPage extends BasePage {
 
     private Locator profileForm = new XPath("//div[@name='profileForm']");
@@ -16,6 +18,7 @@ public class ClientDetailsPage extends BasePage {
      */
     private Locator profileTab = new ID("app-customer-profile");
     private Locator documentsTab = new ID("app-customer-documents");
+    private Locator accountsTab = new ID("app-customer-accounts");
 
     /**
      * Profile Tab
@@ -70,6 +73,14 @@ public class ClientDetailsPage extends BasePage {
     private Locator expirationDate = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[7]");
     private Locator createdBy = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[8]");
 
+    /**
+     * Accounts Tab
+     */
+    private Locator addNewButton = new ID("newAccountOrCreditPlan");
+    private Locator accountOption = new XPath("//div[contains(@class, 'select2-result-label')]//span[contains(text(), 'Account')]");
+    private Locator creditPlanOption = new ID("//div[contains(@class, 'select2-result-label')]//span[contains(text(), 'Credit Plan')]");
+
+
     @Step("Wait for Client Details page loaded")
     public void waitForPageLoaded(){
         waitForElementVisibility(profileForm);
@@ -92,6 +103,14 @@ public class ClientDetailsPage extends BasePage {
         waitForElementClickable(documentsTab);
         click(documentsTab);
     }
+
+    @Step("Click 'Accounts' tab")
+    public void clickAccountsTab(){
+        waitForElementVisibility(accountsTab);
+        waitForElementClickable(accountsTab);
+        click(accountsTab);
+    }
+
 
     /**
      * Profile Tab
@@ -370,4 +389,22 @@ public class ClientDetailsPage extends BasePage {
         return getElementText(createdBy, index).trim();
     }
 
+    /**
+     * Accounts Tab
+     */
+
+    @Step("Click the 'Add New' button")
+    public void clickAddNewButton(){
+        waitForElementVisibility(addNewButton);
+        waitForElementClickable(addNewButton);
+        click(addNewButton);
+    }
+
+    @Step("Click the 'Account' option in 'Add New' dropdown")
+    public void clickAccountOption(){
+        waitForElementVisibility(accountOption);
+        waitForElementClickable(accountOption);
+        wait(1);
+        click(accountOption);
+    }
 }
