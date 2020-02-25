@@ -87,7 +87,7 @@ public class ClientDetailsPage extends BasePage {
     }
 
     @Step("Wait for Client Details page loaded")
-    public void waitForIndividualInformationLoaded(){
+    public void waitForPageLoaded(){
         waitForElementVisibility(profileForm);
         waitForElementClickable(profileForm);
     }
