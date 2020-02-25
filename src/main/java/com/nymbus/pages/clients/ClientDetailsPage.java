@@ -77,7 +77,14 @@ public class ClientDetailsPage extends BasePage {
     private Locator addNewButton = new ID("newAccountOrCreditPlan");
     private Locator accountOption = new XPath("//div[contains(@class, 'select2-result-label')]//span[contains(text(), 'Account')]");
     private Locator creditPlanOption = new ID("//div[contains(@class, 'select2-result-label')]//span[contains(text(), 'Credit Plan')]");
+    private Locator clientAccountByNumber = new XPath("//span[contains(text(), '%s')]");
 
+    @Step("Open account by its number")
+    public void openAccountByNumber(String accountNumber) {
+        waitForElementVisibility(clientAccountByNumber, accountNumber);
+        waitForElementClickable(clientAccountByNumber, accountNumber);
+        click(clientAccountByNumber, accountNumber);
+    }
 
     @Step("Wait for Client Details page loaded")
     public void waitForIndividualInformationLoaded(){

@@ -9,14 +9,15 @@ import java.util.Random;
 
 public class CreateAccount {
 
-    public void openAccountsTab() {
-//        if (Pages.accountDetailsPage().is)
+    public void clickAccountsTab() {
         Pages.clientDetailsPage().clickAccountsTab();
     }
 
 
     public void createSafeDepositBoxAccount(Account account) {
-        // create account here
+        clickAccountsTab();
+        Pages.clientDetailsPage().openAccountByNumber(account.getAccountNumber());
+
     }
 
     public void setProductType(Account account) {

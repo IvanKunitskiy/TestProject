@@ -1,6 +1,7 @@
 package com.nymbus.frontoffice.boxaccountsmanagement;
 
 import com.nymbus.actions.Actions;
+import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.base.BaseTest;
 import com.nymbus.models.account.Account;
@@ -37,7 +38,8 @@ public class C15042_ViewNewSafeBoxAccount extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         ClientsActions.createClient().createClient(client);
-//        AccountActions.createAccount().createSafeDepositBoxAccount(safeDepositBoxAccount);
+        AccountActions.createAccount().createSafeDepositBoxAccount(safeDepositBoxAccount);
+
         final String clientID = Pages.clientDetailsPage().getClientID();
 
         LOG.info("Step 2: Go to Clients screen and search for client from preconditions");
@@ -50,7 +52,7 @@ public class C15042_ViewNewSafeBoxAccount extends BaseTest {
 
         LOG.info("Step 3: Open the account");
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
-        Pages.clientDetailsPage().waitForPageLoaded();
+        Pages.clientDetailsPage().waitForIndividualInformationLoaded();
         Pages.clientDetailsPage().clickAccountsTab();
 
         // open the account
