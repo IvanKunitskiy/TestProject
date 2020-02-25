@@ -7,6 +7,8 @@ import com.nymbus.locator.Name;
 import com.nymbus.locator.XPath;
 import io.qameta.allure.Step;
 
+import java.util.List;
+
 public class ClientDetailsPage extends BasePage {
 
     private Locator profileForm = new XPath("//div[@name='profileForm']");
@@ -78,13 +80,10 @@ public class ClientDetailsPage extends BasePage {
     private Locator accountOption = new XPath("//div[contains(@class, 'select2-result-label')]//span[contains(text(), 'Account')]");
     private Locator creditPlanOption = new ID("//div[contains(@class, 'select2-result-label')]//span[contains(text(), 'Credit Plan')]");
     private Locator clientAccountByNumber = new XPath("//span[contains(text(), '%s')]");
+    private Locator addNewList = new XPath("//div[contains(@class, 'select2-result-label')]//span");
+    private Locator addNewField = new XPath("//div[@id='newAccountOrCreditPlan']//input[contains(@class, 'nb-select-search')]");
+    private Locator addNewSelectorOption = new XPath("//div[@id='newAccountOrCreditPlan']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    @Step("Open account by its number")
-    public void openAccountByNumber(String accountNumber) {
-        waitForElementVisibility(clientAccountByNumber, accountNumber);
-        waitForElementClickable(clientAccountByNumber, accountNumber);
-        click(clientAccountByNumber, accountNumber);
-    }
 
     @Step("Wait for Client Details page loaded")
     public void waitForPageLoaded(){
@@ -411,5 +410,26 @@ public class ClientDetailsPage extends BasePage {
         waitForElementClickable(accountOption);
         wait(1);
         click(accountOption);
+    }
+
+    @Step("Return the 'Add New' list of options")
+    public List<String> getAddNewList(){
+        waitForElementVisibility(addNewList);
+        waitForElementClickable(addNewList);
+        return getElementsText(addNewList);
+    }
+
+    @Step("Open account by its number")
+    public void openAccountByNumber(String accountNumber) {
+        waitForElementVisibility(clientAccountByNumber, accountNumber);
+        waitForElementClickable(clientAccountByNumber, accountNumber);
+        click(clientAccountByNumber, accountNumber);
+    }
+
+    @Step("Click 'Add New' option")
+    public void clickAddNewValueOption(String addNewValue) {
+        waitForElementVisibility(addNewSelectorOption, addNewValue);
+        waitForElementClickable(addNewSelectorOption, addNewValue);
+        click(addNewSelectorOption, addNewValue);
     }
 }

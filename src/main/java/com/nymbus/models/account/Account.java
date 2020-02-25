@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 
 public class Account {
 
+    private String addNewOption;
     private String productType;
     private String boxSize;
     private String rentalAmount;
@@ -26,13 +27,26 @@ public class Account {
     private String discountPeriods;
     private String discountReason;
 
+    public Account setDefaultAccountData() {
+        Account account = new Account();
+        // default account data
+
+        return account;
+    }
+
     public Account setSafeDepositBoxData() {
         Account account = new Account();
 
+        account.setAddNewOption("Account");
         account.setProductType("Safe Deposit Box");
         account.setAccountNumber(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setAccountTitle(Random.genString(5));
         account.setBankBranch("Inspire - Langhorne");
+        account.setStatementFlag("R");
+        account.setUserDefinedField_1(Random.genString(5));
+        account.setUserDefinedField_2(Random.genString(5));
+        account.setUserDefinedField_3(Random.genString(5));
+        account.setUserDefinedField_4(Random.genString(5));
 
         return account;
     }
@@ -189,4 +203,11 @@ public class Account {
         this.discountReason = discountReason;
     }
 
+    public String getAddNewOption() {
+        return addNewOption;
+    }
+
+    public void setAddNewOption(String addNewOption) {
+        this.addNewOption = addNewOption;
+    }
 }

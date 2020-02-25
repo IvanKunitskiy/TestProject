@@ -1,7 +1,6 @@
 package com.nymbus.pages.accounts;
 
 import com.nymbus.base.BasePage;
-import com.nymbus.base.BaseTest;
 import com.nymbus.locator.ID;
 import com.nymbus.locator.Locator;
 import com.nymbus.locator.XPath;
@@ -13,16 +12,26 @@ public class AddAccountPage extends BasePage {
 
     private Locator productTypeSelectorButton = new ID("accounttype");
     private Locator productTypeSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private Locator productTypeList = new XPath("//li[contains(@role, 'option')]/div/span");
     private Locator boxSizeSelectorButton = new ID("boxsize");
     private Locator boxSizeSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private Locator boxSizeList = new XPath("//li[contains(@role, 'option')]/div/span");
     private Locator boxSizeField = new XPath("//*[@id='boxsize']//input[contains(@class, 'nb-select-search')]");
-    private Locator productTypeField = new XPath("//div[@id='accounttype']" + "//input[contains(@class, 'nb-select-search')]");
+    private Locator selectProductTypeField = new XPath("//*[@id='accounttype']/a/span[contains(text(), 'Select')]");
+    private Locator productTypeInputField = new XPath("//div[@data-test-id='field-accounttype']//input[contains(@class, 'nb-select-search')]");
     private Locator accountNumberField = new XPath("//input[@data-test-id='field-accountnumber']");
     private Locator accountTitleField = new XPath("//input[@data-test-id='field-accounttitlemailinginstructions']");
     private Locator bankBranchSelectorButton = new XPath("//*[@id='bankbranch']");
     private Locator bankBranchSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private Locator saveAccountButton = new XPath("//button[@data-test-id='action-save']");
+    private Locator bankBranchList = new XPath("//li[contains(@role, 'option')]/div/span");
+
+    @Step("Returning list of 'Product Type'")
+    public List<String> getBankBranchList() {
+        waitForElementVisibility(bankBranchList);
+        waitForElementClickable(bankBranchList);
+        return getElementsText(bankBranchList);
+    }
 
     @Step("Click the 'Product Type' selector button")
     public void clickProductTypeSelectorButton() {
@@ -68,16 +77,19 @@ public class AddAccountPage extends BasePage {
 
     @Step("Returning list of 'Product Type'")
     public List<String> getProductTypeList() {
-        waitForElementVisibility(boxSizeSelectorOption);
-        waitForElementClickable(boxSizeSelectorOption);
-        return getElementsText(boxSizeSelectorOption);
+        waitForElementVisibility(productTypeList);
+        waitForElementClickable(productTypeList);
+        return getElementsText(productTypeList);
     }
 
     @Step("Set 'Product Type' option")
     public void setProductTypeOption(String productTypeOptionValue) {
-        waitForElementVisibility(productTypeField);
-        waitForElementClickable(productTypeField);
-        type(productTypeOptionValue, productTypeField);
+        waitForElementVisibility(productTypeSelectorButton);
+        waitForElementClickable(productTypeSelectorButton);
+        click(productTypeSelectorButton);
+        waitForElementVisibility(productTypeInputField);
+        waitForElementClickable(productTypeInputField);
+        type(productTypeOptionValue, productTypeInputField);
     }
 
     @Step("Set 'Account Number' value")

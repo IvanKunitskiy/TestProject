@@ -10,14 +10,43 @@ import java.util.Random;
 public class CreateAccount {
 
     public void clickAccountsTab() {
+        // check if page is visible
         Pages.clientDetailsPage().clickAccountsTab();
     }
 
 
-    public void createSafeDepositBoxAccount(Account account) {
+    public void createAccount(Account account) {
         clickAccountsTab();
-        Pages.clientDetailsPage().openAccountByNumber(account.getAccountNumber());
+        setAddNewOption(account);
+        setProductType(account);
+        setBoxSize(account);
+        Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
+        setBankBranch(account);
+        Pages.addAccountPage().clickSaveAccountButton();
+        Pages.accountDetailsPage().waitForFullProfileButton();
+    }
 
+    public void setBankBranch(Account account) {
+        Pages.addAccountPage().clickBankBranchSelectorButton();
+        List<String> listOfBankBranchOptions = Pages.addAccountPage().getBankBranchList();
+
+        Assert.assertTrue(listOfBankBranchOptions.size() > 0, "There are no options available");
+        if (account.getAddNewOption() == null) {
+            account.setAddNewOption(listOfBankBranchOptions.get(new Random().nextInt(listOfBankBranchOptions.size())).trim());
+        }
+        Pages.addAccountPage().clickBankBranchOption(account.getBankBranch());
+    }
+
+    public void setAddNewOption(Account account) {
+        Pages.clientDetailsPage().clickAddNewButton();
+        List<String> listOfAddNewOptions = Pages.clientDetailsPage().getAddNewList();
+
+        Assert.assertTrue(listOfAddNewOptions.size() > 0, "There are no options available");
+        if (account.getAddNewOption() == null) {
+            account.setAddNewOption(listOfAddNewOptions.get(new Random().nextInt(listOfAddNewOptions.size())).trim());
+        }
+        Pages.clientDetailsPage().clickAddNewValueOption(account.getAddNewOption());
     }
 
     public void setProductType(Account account) {
@@ -25,12 +54,11 @@ public class CreateAccount {
         List<String> listOfProductType = Pages.addAccountPage().getProductTypeList();
 
         Assert.assertTrue(listOfProductType.size() > 0, "There are no product types available");
-        if (account.getProductType() == null)
+        if (account.getProductType() == null) {
             account.setProductType(listOfProductType.get(new Random().nextInt(listOfProductType.size())).trim());
+        }
 
-        Pages.addAccountPage().setProductTypeOption(account.getProductType());
         Pages.addAccountPage().clickProductTypeOption(account.getProductType());
-
     }
 
     public void setBoxSize(Account account) {
@@ -38,8 +66,10 @@ public class CreateAccount {
         List<String> listOfBoxSize = Pages.addAccountPage().getBoxSizeList();
 
         Assert.assertTrue(listOfBoxSize.size() > 0, "There are no box sizes available");
-        if (account.getBoxSize() == null)
+        if (account.getBoxSize() == null) {
             account.setBoxSize(listOfBoxSize.get(new Random().nextInt(listOfBoxSize.size())).trim());
+        }
+
         Pages.addAccountPage().setBoxSizeOption(account.getBoxSize());
         Pages.addAccountPage().clickBoxSizeSelectorOption(account.getBoxSize());
     }
