@@ -26,13 +26,13 @@ public class AddClientPage extends BasePage {
     /**
      * Client basic information
      */
-    private Locator clientTypeField = new XPath("//div[@name='customer-type']" +
+    private Locator clientTypeField = new XPath("//div[@name='customer-basicinformation']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator clientTypeSelectorButton = new XPath("//div[@name='customer-type']" +
+    private Locator clientTypeSelectorButton = new XPath("//div[@name='customer-basicinformation']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator clientTypeList = new XPath("//div[@name='customer-type']" +
+    private Locator clientTypeList = new XPath("//div[@name='customer-basicinformation']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator clientTypeSelectorOption = new XPath("//div[@name='customer-type']" +
+    private Locator clientTypeSelectorOption = new XPath("//div[@name='customer-basicinformation']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private Locator clientStatusField = new XPath("//div[@name='statusid']" +
             "//input[contains(@class, 'nb-select-search')]");
@@ -116,7 +116,7 @@ public class AddClientPage extends BasePage {
     private Locator suffixField = new ID("suffix");
     private Locator maidenFamilyNameField = new ID("maidenname");
     private Locator akaField = new ID("nickname");
-    private Locator profilePhotoField = new XPath("//tr[contains(@ng-if, 'profilephoto')]//input[@type='file']");
+    private Locator profilePhotoField = new XPath("//tr[contains(@ng-if, 'profilephoto')]//input[@basicinformation='file']");
     private Locator genderField = new XPath("//div[@id='gender']" +
             "//input[contains(@class, 'nb-select-search')]");
     private Locator genderSelectorButton = new XPath("//div[@id='gender']" +
@@ -201,14 +201,14 @@ public class AddClientPage extends BasePage {
     /**
      * Upload documentation
      */
-    private Locator documentationField = new XPath("//section[contains(@class, 'uploadDocumentation')]//input[@type='file']");
-    private Locator documentationIdTypeField = new XPath("//div[@id='type']" +
+    private Locator documentationField = new XPath("//section[contains(@class, 'uploadDocumentation')]//input[@basicinformation='file']");
+    private Locator documentationIdTypeField = new XPath("//div[@id='basicinformation']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator documentationIdTypeSelectorButton = new XPath("//div[@id='type']" +
+    private Locator documentationIdTypeSelectorButton = new XPath("//div[@id='basicinformation']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator documentationIdTypeList = new XPath("//div[@id='type']" +
+    private Locator documentationIdTypeList = new XPath("//div[@id='basicinformation']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator documentationIdTypeSelectorOption = new XPath("//div[@id='type']" +
+    private Locator documentationIdTypeSelectorOption = new XPath("//div[@id='basicinformation']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private Locator documentationIdNumberField = new ID("id");
     private Locator documentationIssuedByField = new XPath("//div[@id='state']" +
@@ -233,7 +233,7 @@ public class AddClientPage extends BasePage {
     /**
      * Upload signature
      */
-    private Locator clientSignatureField = new XPath("//section[contains(@ng-show, 'customerSignature')]//input[@type='file' and @name='file']");
+    private Locator clientSignatureField = new XPath("//section[contains(@ng-show, 'customerSignature')]//input[@basicinformation='file' and @name='file']");
 
     private Locator viewMemberProfileButton = new XPath("//button[@data-test-id='go-CustomerPage']");
 

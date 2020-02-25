@@ -128,7 +128,7 @@ public class BasePage {
      * Input fields and text areas
      */
     protected void type(String value, Locator locator, Object... args) {
-        LOG.info("type text '{}' to element '{}'", value, locator);
+        LOG.info("basicinformation text '{}' to element '{}'", value, locator);
         WebElement inputElement = getElement(locator, args);
         inputElement.clear();
         inputElement.clear();
@@ -142,7 +142,7 @@ public class BasePage {
     }
 
     protected void typeWithoutWipe(String value, Locator locator, Object... args) {
-        LOG.info("type text '{}' to element '{}'", value, locator);
+        LOG.info("basicinformation text '{}' to element '{}'", value, locator);
         WebElement inputElement = getElement(locator, args);
         inputElement.sendKeys(value);
     }

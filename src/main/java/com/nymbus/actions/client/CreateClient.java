@@ -91,7 +91,7 @@ public class CreateClient {
         List<String> listOfClientType = Pages.addClientPage().getClientTypeList();
 
         Assert.assertTrue(listOfClientType.size() > 0,
-                "There are not an available client type");
+                "There are not an available client basicinformation");
         if (client.getClientType() == null)
             client.setClientType(listOfClientType.get(new Random().nextInt(listOfClientType.size())).trim());
         Pages.addClientPage().setClientTypeValue(client.getClientType());

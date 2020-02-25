@@ -58,13 +58,13 @@ public class ClientsSearchResultsPage extends BasePage {
         return getElementText(clientIDFromResultByIndex, index);
     }
 
-    @Step("Getting clients type from results by index '{index}'")
+    @Step("Getting clients basicinformation from results by index '{index}'")
     public String getClientTypeFromResultByIndex(int index) {
         waitForElementVisibility(clientTypeFromResultByIndex, index);
         return getElementText(clientTypeFromResultByIndex, index);
     }
 
-    @Step("Getting clients type from results by index '{index}'")
+    @Step("Getting clients basicinformation from results by index '{index}'")
     public String getClientAddressFromResultByIndex(int index) {
         waitForElementVisibility(clientAddressFromResultByIndex, index);
         return getElementText(clientAddressFromResultByIndex, index);

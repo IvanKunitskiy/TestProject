@@ -31,7 +31,7 @@ public class Locator {
             case PARTIAL_LINK_TEXT:
                 return By.partialLinkText(locator);
         }
-        throw new IllegalLocatorException(String.format("Locator type \"%s\" is unknown!", type));
+        throw new IllegalLocatorException(String.format("Locator basicinformation \"%s\" is unknown!", type));
     }
 
     public LocatorTypes getType() {

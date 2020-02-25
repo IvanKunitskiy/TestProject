@@ -20,11 +20,11 @@ public class C22541_CreateIndividualMemberClient extends BaseTest {
     @BeforeMethod
     public void prepareClientData(){
         client = new Client().setDefaultClientData();
-        client.setClientType("Individual");
+        client.setClientType("IndividualType");
         client.setClientStatus("Member");
     }
 
-    @Test(description = "C22541, Create Client - Individual - Member")
+    @Test(description = "C22541, Create Client - IndividualType - Member")
     @Severity(SeverityLevel.CRITICAL)
     public void firstTest() {
         navigateToUrl(Constants.URL);

@@ -9,15 +9,16 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ClientsSearchPage extends BasePage {
+public class ClientsPage extends BasePage {
 
     private Locator addNewClientButton = new XPath("//a[@*='action-addNewCustomer']");
-    private Locator clientsSearchInputField = new XPath("//input[@type='search']");
+    private Locator clientsSearchInputField = new XPath("//input[@basicinformation='search']");
     private Locator searchButton = new XPath("//button[text()='Search']");
     private Locator lookupResults = new XPath("//div[contains(text(),'View')]/preceding-sibling::*[1]");
     private Locator lookupResultByIndex = new XPath("(//div[contains(text(),'View')]/preceding-sibling::*[1])[%s]");
     private Locator loadMoreResultsButton = new XPath("//div[text()='Load More Results']");
     private Locator clearSearchInputFieldButton = new XPath("//button[@class='btn btn-link btnIcon']");
+    private Locator viewAccountButtonByValue = new XPath("//div[contains(text(),'%s')]/parent::div");
 
     @Step("Wait for 'Add new client' button")
     public void waitForAddNewClientButton(){
@@ -77,6 +78,13 @@ public class ClientsSearchPage extends BasePage {
         waitForElementVisibility(addNewClientButton);
         waitForElementClickable(addNewClientButton);
         click(addNewClientButton);
+    }
+
+    @Step("Click on 'View Account' button by value {value}")
+    public void clickOnViewAccountButtonByValue(String value) {
+        waitForElementVisibility(viewAccountButtonByValue, value);
+        waitForElementClickable(viewAccountButtonByValue, value);
+        click(viewAccountButtonByValue, value);
     }
 
     @Step("Check that all results in search list are relevant")

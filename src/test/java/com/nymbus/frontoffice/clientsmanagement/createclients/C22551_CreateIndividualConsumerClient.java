@@ -21,7 +21,7 @@ public class C22551_CreateIndividualConsumerClient extends BaseTest {
     @BeforeMethod
     public void prepareClientData(){
         client = new Client().setConsumerClientData();
-        client.setClientType("Individual");
+        client.setClientType("IndividualType");
     }
 
     @Test(description = "C22551, Create Client - Consumer")

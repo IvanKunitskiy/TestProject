@@ -8,12 +8,14 @@ import com.nymbus.util.Constants;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
+import static io.qameta.allure.SeverityLevel.CRITICAL;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -35,6 +37,7 @@ public class C22528_SearchByDebitCard extends BaseTest {
         Pages.navigationPage().waitForUserMenuVisible();
     }
 
+    @Severity(CRITICAL)
     @Test(description = "C22528, Search client by card number")
     public void searchByCardNumber() {
         String cardNumber = client.getCardNumber();

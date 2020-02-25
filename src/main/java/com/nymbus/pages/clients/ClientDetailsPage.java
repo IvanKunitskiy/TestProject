@@ -16,6 +16,7 @@ public class ClientDetailsPage extends BasePage {
      */
     private Locator profileTab = new ID("app-customer-profile");
     private Locator documentsTab = new ID("app-customer-documents");
+    private Locator maintenanceTab = new ID("app-customer-maintenance");
 
     /**
      * Profile Tab
@@ -91,6 +92,13 @@ public class ClientDetailsPage extends BasePage {
         waitForElementVisibility(documentsTab);
         waitForElementClickable(documentsTab);
         click(documentsTab);
+    }
+
+    @Step("Click 'Maintenance' tab")
+    public void clickOnMaintenanceTab() {
+        waitForElementVisibility(maintenanceTab);
+        waitForElementClickable(maintenanceTab);
+        click(maintenanceTab);
     }
 
     /**
@@ -328,7 +336,7 @@ public class ClientDetailsPage extends BasePage {
         return getElements(listOfDocuments).size();
     }
 
-    @Step("Get document type by index")
+    @Step("Get document basicinformation by index")
     public String getDocumentTypeByIndex(int index){
         waitForElementVisibility(documentType, index);
         return getElementText(documentType, index).trim();

@@ -2,8 +2,9 @@ package com.nymbus.pages;
 
 import com.nymbus.pages.clients.AddClientPage;
 import com.nymbus.pages.clients.ClientDetailsPage;
-import com.nymbus.pages.clients.ClientsSearchPage;
+import com.nymbus.pages.clients.ClientsPage;
 import com.nymbus.pages.clients.ClientsSearchResultsPage;
+import com.nymbus.pages.clients.maintenance.MaintenancePage;
 import com.nymbus.pages.loans.LoansPage;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
 import com.nymbus.pages.teller.TellerPage;
@@ -18,7 +19,7 @@ public class Pages {
     private static NavigationPage navigationPage;
     private static ASideMenuPage aSideMenuPage;
     private static AddClientPage addClientPage;
-    private static ClientsSearchPage clientsSearchPage;
+    private static ClientsPage clientsPage;
     private static ClientDetailsPage clientDetailsPage;
     private static TellerPage tellerPage;
     private static LoansPage loansPage;
@@ -26,6 +27,7 @@ public class Pages {
     private static TellerToTellerPage tellerToTellerPage;
     private static Settings settings;
     private static ClientsSearchResultsPage clientsSearchResultsPage;
+    private static MaintenancePage maintenancePage;
 
     /**
      * This function return an instance of `LoginPage`
@@ -58,7 +60,7 @@ public class Pages {
     }
 
     /**
-     * This function return an instance of `ClientsSearchPage`
+     * This function return an instance of `ClientsPage`
      */
     public static AddClientPage addClientPage() {
         if (addClientPage == null) {
@@ -68,13 +70,13 @@ public class Pages {
     }
 
     /**
-     * This function return an instance of `ClientsSearchPage`
+     * This function return an instance of `ClientsPage`
      */
-    public static ClientsSearchPage clientsPage() {
-        if (clientsSearchPage == null) {
-            clientsSearchPage = new ClientsSearchPage();
+    public static ClientsPage clientsPage() {
+        if (clientsPage == null) {
+            clientsPage = new ClientsPage();
         }
-        return clientsSearchPage;
+        return clientsPage;
     }
 
     /**
@@ -145,5 +147,15 @@ public class Pages {
             clientsSearchResultsPage = new ClientsSearchResultsPage();
         }
         return clientsSearchResultsPage;
+    }
+
+    /**
+     * This function return an instance of `MaintenancePage`
+     */
+    public static MaintenancePage maintenancePage() {
+        if (maintenancePage == null) {
+            maintenancePage = new MaintenancePage();
+        }
+        return maintenancePage;
     }
 }

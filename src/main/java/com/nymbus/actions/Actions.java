@@ -2,6 +2,7 @@ package com.nymbus.actions;
 
 import com.nymbus.actions.clients.ClientPageActions;
 import com.nymbus.actions.clients.ClientsSearchResultsPageActions;
+import com.nymbus.actions.clients.maintenance.MaintenancePageActions;
 import com.nymbus.actions.settings.CashDrawerAction;
 import com.nymbus.actions.settings.UsersActions;
 
@@ -12,6 +13,7 @@ public class Actions {
     private static CashDrawerAction cashDrawerAction;
     private static ClientPageActions clientPageActions;
     private static ClientsSearchResultsPageActions clientsSearchResultsPageActions;
+    private static MaintenancePageActions maintenancePageActions;
 
     /**
      * This function returns an instance of `LoginActions`
@@ -61,5 +63,15 @@ public class Actions {
             clientsSearchResultsPageActions = new ClientsSearchResultsPageActions();
         }
         return clientsSearchResultsPageActions;
+    }
+
+    /**
+     * This function returns an instance of `MaintenancePageActions`
+     */
+    public static MaintenancePageActions maintenancePageActions() {
+        if (maintenancePageActions == null) {
+            maintenancePageActions = new MaintenancePageActions();
+        }
+        return maintenancePageActions;
     }
 }

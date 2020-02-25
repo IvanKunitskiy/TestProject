@@ -21,7 +21,7 @@ public class AddCashDrawerPage extends BasePage {
     private Locator nameField = new XPath("//div[@id='bank.data.cashdrawer-(databean)name']" +
             "//input[@name='field[(databean)name]']");
     private Locator cashDrawerTypeField = new XPath("//div[@id='bank.data.cashdrawer-cashdrawertype']" +
-            "//input[@type='text']");
+            "//input[@basicinformation='text']");
     private Locator cashDrawerTypeList = new XPath("//div[@id='bank.data.cashdrawer-cashdrawertype']" +
             "//li[contains(@class, 'xwidget_item')]/a");
     private Locator cashDrawerTypeSelectorButton = new XPath("//div[@id='bank.data.cashdrawer-cashdrawertype']" +
@@ -29,7 +29,7 @@ public class AddCashDrawerPage extends BasePage {
     private Locator cashDrawerTypeSelectorOption = new XPath("//div[@id='bank.data.cashdrawer-cashdrawertype']" +
             "//ul/li/a[contains(text(),'%s')]");
     private Locator defaultUserField = new XPath("//div[@id='bank.data.cashdrawer-defaultuserid']" +
-            "//input[@type='text']");
+            "//input[@basicinformation='text']");
     private Locator defaultUserList = new XPath("//div[@id='bank.data.cashdrawer-defaultuserid']" +
             "//li[contains(@class, 'xwidget_item')]/a");
     private Locator defaultUserSearchButton = new XPath("//div[@id='bank.data.cashdrawer-defaultuserid']" +
@@ -37,7 +37,7 @@ public class AddCashDrawerPage extends BasePage {
     private Locator defaultUserOption = new XPath("//div[@id='bank.data.cashdrawer-defaultuserid']" +
             "//ul/li/a[contains(text(),'%s')]");
     private Locator brandField = new XPath("//div[@id='bank.data.cashdrawer-bankbranchid']" +
-            "//input[@type='text']");
+            "//input[@basicinformation='text']");
     private Locator brandSelectorButton = new XPath("//div[@id='bank.data.cashdrawer-bankbranchid']" +
             "//div[contains(@class, 'action_icon')]");
     private Locator brandList = new XPath("//div[@id='bank.data.cashdrawer-bankbranchid']" +
@@ -45,7 +45,7 @@ public class AddCashDrawerPage extends BasePage {
     private Locator brandSelectorOption = new XPath("//div[@id='bank.data.cashdrawer-bankbranchid']" +
             "//ul/li/a[contains(text(),'%s')]");
     private Locator locationField = new XPath("//div[@id='bank.data.cashdrawer-locationid']" +
-            "//input[@type='text']");
+            "//input[@basicinformation='text']");
     private Locator locationList = new XPath("//div[@id='bank.data.cashdrawer-locationid']" +
             "//li[contains(@class, 'xwidget_item')]/a");
     private Locator locationSelectorButton = new XPath("//div[@id='bank.data.cashdrawer-locationid']" +
@@ -53,14 +53,14 @@ public class AddCashDrawerPage extends BasePage {
     private Locator locationSelectorOption = new XPath("//div[@id='bank.data.cashdrawer-locationid']" +
             "//ul/li/a[contains(text(),'%s')]");
     private Locator glAccountNumberField = new XPath("//div[@id='bank.data.cashdrawer-glaccountid']" +
-            "//input[@type='text']");
+            "//input[@basicinformation='text']");
     private Locator glAccountNumberList = new XPath("//div[@id='bank.data.cashdrawer-glaccountid']" +
             "//li[contains(@class, 'xwidget_item')]/a");
     private Locator glAccountNumberSearchButton = new XPath("//div[@id='bank.data.cashdrawer-glaccountid']" +
             "//div[contains(@class, 'action_icon')]");
     private Locator glAccountNumberOption = new XPath("//div[@id='bank.data.cashdrawer-glaccountid']" +
             "//ul/li/a[contains(text(),'%s')]");
-    private Locator floatingToggle = new XPath("//div[@id='bank.data.cashdrawer-floating']//div[input[@type='checkbox']]");
+    private Locator floatingToggle = new XPath("//div[@id='bank.data.cashdrawer-floating']//div[input[@basicinformation='checkbox']]");
 
     /**
      * Actions with controls
@@ -100,7 +100,7 @@ public class AddCashDrawerPage extends BasePage {
         click(defaultUserSearchButton);
     }
 
-    @Step("Returning list of cash drawer's type")
+    @Step("Returning list of cash drawer's basicinformation")
     public List<String> getCashDrawerTypeList(){
         waitForElementVisibility(cashDrawerTypeList);
         waitForElementClickable(cashDrawerTypeList);
