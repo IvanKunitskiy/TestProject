@@ -7,8 +7,6 @@ import com.nymbus.locator.Name;
 import com.nymbus.locator.XPath;
 import io.qameta.allure.Step;
 
-import java.util.List;
-
 public class ClientDetailsPage extends BasePage {
 
     private Locator profileForm = new XPath("//div[@name='profileForm']");
@@ -82,7 +80,7 @@ public class ClientDetailsPage extends BasePage {
 
 
     @Step("Wait for Client Details page loaded")
-    public void waitForPageLoaded(){
+    public void waitForIndividualInformationLoaded(){
         waitForElementVisibility(profileForm);
         waitForElementClickable(profileForm);
     }
