@@ -50,7 +50,7 @@ public class C15040_CreateSafeBoxAccount extends BaseTest {
 
         LOG.info("Step 3: Open it on Accounts tab");
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
-        Pages.clientDetailsPage().waitForPageLoaded();
+        Pages.clientDetailsPage().waitForIndividualInformationLoaded();
         Pages.clientDetailsPage().clickAccountsTab();
 
         LOG.info("Step 4: Click [Add New] --> select 'Account' in the drop down");

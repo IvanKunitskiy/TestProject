@@ -10,7 +10,6 @@ import io.qameta.allure.Step;
 public class ClientDetailsPage extends BasePage {
 
     private Locator profileForm = new XPath("//div[@name='profileForm']");
-    private Locator clientProfileNavigationTabs = new XPath("//ul[@role='tablist']");
 
     /**
      * Tabs button
@@ -80,8 +79,8 @@ public class ClientDetailsPage extends BasePage {
     private Locator creditPlanOption = new ID("//div[contains(@class, 'select2-result-label')]//span[contains(text(), 'Credit Plan')]");
 
 
-    @Step("Wait for client profile navigation tabs loaded")
-    public void waitForProfilePageLoaded(){
+    @Step("Wait for Client Details page loaded")
+    public void waitForIndividualInformationLoaded(){
         waitForElementVisibility(profileForm);
         waitForElementClickable(profileForm);
     }
