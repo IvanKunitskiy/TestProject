@@ -7,11 +7,10 @@ import com.nymbus.locator.Name;
 import com.nymbus.locator.XPath;
 import io.qameta.allure.Step;
 
-import java.util.List;
-
 public class ClientDetailsPage extends BasePage {
 
     private Locator profileForm = new XPath("//div[@name='profileForm']");
+    private Locator clientProfileNavigationTabs = new XPath("//ul[@role='tablist']");
 
     /**
      * Tabs button
@@ -81,8 +80,8 @@ public class ClientDetailsPage extends BasePage {
     private Locator creditPlanOption = new ID("//div[contains(@class, 'select2-result-label')]//span[contains(text(), 'Credit Plan')]");
 
 
-    @Step("Wait for Client Details page loaded")
-    public void waitForPageLoaded(){
+    @Step("Wait for client profile navigation tabs loaded")
+    public void waitForProfilePageLoaded(){
         waitForElementVisibility(profileForm);
         waitForElementClickable(profileForm);
     }
