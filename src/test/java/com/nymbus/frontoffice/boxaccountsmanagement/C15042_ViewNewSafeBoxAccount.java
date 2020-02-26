@@ -40,7 +40,7 @@ public class C15042_ViewNewSafeBoxAccount extends BaseTest {
 
         ClientsActions.createClient().createClient(client);
         final String clientID = Pages.clientDetailsPage().getClientID();
-        AccountActions.createAccount().createAccount(safeDepositBoxAccount);
+        AccountActions.createAccount().createSafeDepositBoxAccount(safeDepositBoxAccount);
 
         LOG.info("Step 2: Go to Clients screen and search for client from preconditions");
         Pages.aSideMenuPage().clickClientMenuItem();
