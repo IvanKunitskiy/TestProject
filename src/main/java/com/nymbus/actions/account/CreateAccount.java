@@ -32,8 +32,8 @@ public class CreateAccount {
         List<String> listOfBankBranchOptions = Pages.addAccountPage().getBankBranchList();
 
         Assert.assertTrue(listOfBankBranchOptions.size() > 0, "There are no options available");
-        if (account.getAddNewOption() == null) {
-            account.setAddNewOption(listOfBankBranchOptions.get(new Random().nextInt(listOfBankBranchOptions.size())).trim());
+        if (account.getBankBranch() == null) {
+            account.setBankBranch(listOfBankBranchOptions.get(new Random().nextInt(listOfBankBranchOptions.size())).trim());
         }
         Pages.addAccountPage().clickBankBranchOption(account.getBankBranch());
     }

@@ -26,6 +26,7 @@ public class C15042_ViewNewSafeBoxAccount extends BaseTest {
     @BeforeMethod
     public void preConditions() {
         client = new Client().setDefaultClientData();
+        client.setClientStatus("Member");
         safeDepositBoxAccount = new Account().setSafeDepositBoxData();
     }
 
@@ -62,6 +63,8 @@ public class C15042_ViewNewSafeBoxAccount extends BaseTest {
         Assert.assertEquals(safeDepositBoxAccount.getAccountNumber(), Pages.accountDetailsPage().getAccountNumberValue(), "Account number is not relevant");
         Assert.assertEquals(safeDepositBoxAccount.getAccountTitle(), Pages.accountDetailsPage().getAccountTitleValue(), "Account title is not relevant");
         Assert.assertEquals(safeDepositBoxAccount.getBankBranch(), Pages.accountDetailsPage().getBankBranchValue(), "Bank branch is not relevant");
+
+        // TODO: Wait for initial test case update and change respectively
     }
 
 }

@@ -41,8 +41,6 @@ public class Account {
         account.setProductType("Safe Deposit Box");
         account.setAccountNumber(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setAccountTitle(Random.genString(5));
-        account.setBankBranch("Inspire - Langhorne");
-        account.setStatementFlag("R");
         account.setUserDefinedField_1(Random.genString(5));
         account.setUserDefinedField_2(Random.genString(5));
         account.setUserDefinedField_3(Random.genString(5));
