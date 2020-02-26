@@ -15,7 +15,7 @@ public class CreateAccount {
     }
 
 
-    public void createAccount(Account account) {
+    public void createSafeDepositBoxAccount(Account account) {
         clickAccountsTab();
         setAddNewOption(account);
         setProductType(account);
