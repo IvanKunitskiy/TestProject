@@ -37,7 +37,7 @@ public class Account {
     public Account setCHKAccountData() {
         Account account = new Account();
 
-        account.setAddNewOption("Acount");
+        account.setAddNewOption("Account");
         account.setProductType("CHK Account");
 
         return account;

@@ -14,7 +14,6 @@ public class CreateAccount {
         Pages.clientDetailsPage().clickAccountsTab();
     }
 
-
     public void createSafeDepositBoxAccount(Account account) {
         clickAccountsTab();
         setAddNewOption(account);

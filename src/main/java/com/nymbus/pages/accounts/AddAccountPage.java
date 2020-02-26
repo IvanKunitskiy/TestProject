@@ -25,6 +25,14 @@ public class AddAccountPage extends BasePage {
     private Locator bankBranchSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private Locator saveAccountButton = new XPath("//button[@data-test-id='action-save']");
     private Locator bankBranchList = new XPath("//li[contains(@role, 'option')]/div/span");
+    private Locator accountType = new XPath("//div[@data-test-id='field-customertype']/a/span/span");
+
+    @Step("Returnin the 'Account type' value")
+    public String getAccountType() {
+        waitForElementVisibility(accountType);
+        waitForElementClickable(accountType);
+        return getElementText(accountType);
+    }
 
     @Step("Returning list of 'Product Type'")
     public List<String> getBankBranchList() {
