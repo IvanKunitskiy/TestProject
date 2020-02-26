@@ -34,6 +34,15 @@ public class Account {
         return account;
     }
 
+    public Account setCHKAccountData() {
+        Account account = new Account();
+
+        account.setAddNewOption("Acount");
+        account.setProductType("CHK Account");
+
+        return account;
+    }
+
     public Account setSafeDepositBoxData() {
         Account account = new Account();
 
