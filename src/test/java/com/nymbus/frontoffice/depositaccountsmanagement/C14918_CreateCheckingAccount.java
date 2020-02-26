@@ -60,5 +60,7 @@ public class C14918_CreateCheckingAccount extends BaseTest {
         LOG.info("Step 5: Look through the fields. Check that fields are prefilled by default");
         Assert.assertEquals(client.getClientType(), Pages.addAccountPage().getAccountType());
 
+        // TODO: Proceed implementing the test case
+
     }
 }
