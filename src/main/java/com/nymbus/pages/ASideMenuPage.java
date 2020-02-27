@@ -28,7 +28,7 @@ public class ASideMenuPage extends BasePage {
         click(clientMenuItem);
     }
 
-    @Step("Check is client page opened")
+    @Step("Check is individualClient page opened")
     public boolean isClientPageOpened(){
         waitForElementVisibility(clientMenuItem);
         return getElementAttributeValue("class", clientMenuItem).contains("active");

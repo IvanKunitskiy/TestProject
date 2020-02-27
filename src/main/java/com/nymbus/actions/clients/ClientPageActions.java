@@ -1,6 +1,6 @@
 package com.nymbus.actions.clients;
 
-import com.nymbus.models.TempClient;
+import com.nymbus.model.TempClient;
 import com.nymbus.pages.Pages;
 
 import java.util.ArrayList;

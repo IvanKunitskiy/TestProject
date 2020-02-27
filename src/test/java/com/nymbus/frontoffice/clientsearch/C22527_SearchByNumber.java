@@ -2,7 +2,7 @@ package com.nymbus.frontoffice.clientsearch;
 
 import com.nymbus.actions.Actions;
 import com.nymbus.base.BaseTest;
-import com.nymbus.models.client.Client;
+import com.nymbus.model.client.Client;
 import com.nymbus.pages.Pages;
 import com.nymbus.util.Constants;
 import io.qameta.allure.Epic;
@@ -38,9 +38,9 @@ public class C22527_SearchByNumber extends BaseTest {
     }
 
     @Severity(CRITICAL)
-    @Test(description = "C22527, Search client by number")
+    @Test(description = "C22527, Search individualClient by number")
     public void searchByNumber() {
-        LOG.info("Step 2: Click within search field and try to search for an existing client (by first name)");
+        LOG.info("Step 2: Click within search field and try to search for an existing individualClient (by first name)");
         String accountNumber = client.getAccountNumber();
         String lastFourNumbers = accountNumber.substring(accountNumber.length()-4);
         Pages.clientsPage().typeToClientsSearchInputField(lastFourNumbers);
@@ -61,7 +61,7 @@ public class C22527_SearchByNumber extends BaseTest {
         clients = Pages.clientsSearchResultsPage().getAccountNumbersFromSearchResults();
         clients.stream().forEach(s -> assertTrue(s.substring(s.length()-4).contains(lastFourNumbers)));
 
-        LOG.info("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
+        LOG.info("Step 4: Clear the data from the field and try to search for an existing individualClient (by last name)");
         Pages.clientsPage().clickOnSearchInputFieldClearButton();
 
         Pages.clientsPage().typeToClientsSearchInputField(client.getAccountNumber());

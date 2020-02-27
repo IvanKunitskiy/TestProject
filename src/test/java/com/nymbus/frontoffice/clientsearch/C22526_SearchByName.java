@@ -2,8 +2,8 @@ package com.nymbus.frontoffice.clientsearch;
 
 import com.nymbus.actions.Actions;
 import com.nymbus.base.BaseTest;
-import com.nymbus.models.TempClient;
-import com.nymbus.models.client.Client;
+import com.nymbus.model.TempClient;
+import com.nymbus.model.client.Client;
 import com.nymbus.pages.Pages;
 import com.nymbus.util.Constants;
 import io.qameta.allure.Epic;
@@ -39,9 +39,9 @@ public class C22526_SearchByName extends BaseTest {
     }
 
     @Severity(CRITICAL)
-    @Test(description = "C22526, Search client by name")
+    @Test(description = "C22526, Search individualClient by name")
     public void searchByName() {
-        LOG.info("Step 2: Click within search field and try to search for an existing client (by first name)");
+        LOG.info("Step 2: Click within search field and try to search for an existing individualClient (by first name)");
         final String firstNameLetters = client.getFirstName().substring(0, 3);
         Pages.clientsPage().typeToClientsSearchInputField(firstNameLetters);
 
@@ -61,7 +61,7 @@ public class C22526_SearchByName extends BaseTest {
         clients = Actions.clientsSearchResultsPageActions().getAllClientsFromResult(searchResults);
         clients.stream().forEach(c -> assertTrue(c.getFirstName().contains(firstNameLetters)));
 
-        LOG.info("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
+        LOG.info("Step 4: Clear the data from the field and try to search for an existing individualClient (by last name)");
         Pages.clientsPage().clickOnSearchInputFieldClearButton();
 
         final String lastNameLetters = client.getLastName().substring(0, 3);

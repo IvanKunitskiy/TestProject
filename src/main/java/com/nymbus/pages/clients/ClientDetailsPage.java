@@ -286,7 +286,7 @@ public class ClientDetailsPage extends BasePage {
 
     @Step("Get 'Address Type' value")
     public String getAddressType() {
-//        waitForElementVisibility(addressType);
+//        waitForElementVisibility(type);
         return getElementText(addressType).trim();
     }
 

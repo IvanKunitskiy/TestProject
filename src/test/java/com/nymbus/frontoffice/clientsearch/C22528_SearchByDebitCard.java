@@ -2,7 +2,7 @@ package com.nymbus.frontoffice.clientsearch;
 
 import com.nymbus.actions.Actions;
 import com.nymbus.base.BaseTest;
-import com.nymbus.models.client.Client;
+import com.nymbus.model.client.Client;
 import com.nymbus.pages.Pages;
 import com.nymbus.util.Constants;
 import io.qameta.allure.Epic;
@@ -38,7 +38,7 @@ public class C22528_SearchByDebitCard extends BaseTest {
     }
 
     @Severity(CRITICAL)
-    @Test(description = "C22528, Search client by card number")
+    @Test(description = "C22528, Search individualClient by debitcard number")
     public void searchByCardNumber() {
         String cardNumber = client.getCardNumber();
         String lastFourNumbers = cardNumber.substring(cardNumber.length()-4);
@@ -58,7 +58,7 @@ public class C22528_SearchByDebitCard extends BaseTest {
                 .filter(s -> s.contains("XXXX-XXXX-XXXX-"))
                 .forEach(s -> Assert.assertEquals(s, hiddenNumber));
 
-        LOG.info("Step 4: Clear the data from the field and try to search for an existing client");
+        LOG.info("Step 4: Clear the data from the field and try to search for an existing individualClient");
         Pages.clientsPage().clickOnSearchInputFieldClearButton();
         Pages.clientsPage().typeToClientsSearchInputField(cardNumber);
 

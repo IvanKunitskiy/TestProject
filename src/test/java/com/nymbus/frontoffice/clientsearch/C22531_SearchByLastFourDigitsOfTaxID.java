@@ -3,7 +3,7 @@ package com.nymbus.frontoffice.clientsearch;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.base.BaseTest;
-import com.nymbus.models.client.Client;
+import com.nymbus.model.client.Client;
 import com.nymbus.pages.Pages;
 import com.nymbus.util.Constants;
 import io.qameta.allure.*;
@@ -35,7 +35,7 @@ public class C22531_SearchByLastFourDigitsOfTaxID extends BaseTest {
         final String clientTaxID = client.getTaxID();
         Pages.aSideMenuPage().clickClientMenuItem();
 
-        LOG.info("Step 2: Click within search field and try to search for an existing client (by 4 last digits of tax id number)");
+        LOG.info("Step 2: Click within search field and try to search for an existing individualClient (by 4 last digits of tax id number)");
         final String taxIDQuery = clientTaxID.substring(5);
         Pages.clientsPage().typeToClientsSearchInputField(taxIDQuery);
 

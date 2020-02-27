@@ -1,6 +1,6 @@
 package com.nymbus.actions.client;
 
-import com.nymbus.models.client.Client;
+import com.nymbus.model.client.Client;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 
@@ -31,7 +31,7 @@ public class CreateClient {
         setClientDetailsData(client);
         setDocumentation(client);
         Pages.addClientPage().clickSaveAndContinueButton();
-        Pages.addClientPage().uploadClientSignature(System.getProperty("client.resource.dir")
+        Pages.addClientPage().uploadClientSignature(System.getProperty("individualClient.resource.dir")
                 + File.separator + "clientSignature.png");
         Pages.addClientPage().clickSaveAndContinueButton();
         Pages.addClientPage().clickViewMemberProfileButton();
@@ -63,7 +63,7 @@ public class CreateClient {
         Pages.addClientPage().setSuffixField(client.getSuffix());
         Pages.addClientPage().setMaidenFamilyNameField(client.getMaidenFamilyName());
         Pages.addClientPage().setAkaField(client.getAKA_1());
-        Pages.addClientPage().uploadProfilePhoto(System.getProperty("client.resource.dir")
+        Pages.addClientPage().uploadProfilePhoto(System.getProperty("individualClient.resource.dir")
                 + File.separator + "profilePhoto.png");
         setGender(client);
         setEducation(client);
@@ -91,7 +91,7 @@ public class CreateClient {
         List<String> listOfClientType = Pages.addClientPage().getClientTypeList();
 
         Assert.assertTrue(listOfClientType.size() > 0,
-                "There are not an available client basicinformation");
+                "There are not an available individualClient basicinformation");
         if (client.getClientType() == null)
             client.setClientType(listOfClientType.get(new Random().nextInt(listOfClientType.size())).trim());
         Pages.addClientPage().setClientTypeValue(client.getClientType());
@@ -104,10 +104,10 @@ public class CreateClient {
         List<String> listOfClientStatus = Pages.addClientPage().getClientStatusList();
 
         Assert.assertTrue(listOfClientStatus.size() > 0,
-                "There are not an available client status");
+                "There are not an available individualClient status");
         if (client.getClientStatus() == null)
             client.setClientStatus(listOfClientStatus.get(new Random().nextInt(listOfClientStatus.size())).trim());
-//        Pages.addClientPage().setClientStatusValue(client.getClientStatus());
+//        Pages.addClientPage().setClientStatusValue(individualClient.getClientStatus());
         Pages.addClientPage().clickClientStatusOption(client.getClientStatus());
     }
 
@@ -117,7 +117,7 @@ public class CreateClient {
         List<String> listOfTaxPayerIDType = Pages.addClientPage().getTaxPayerIDTypeList();
 
         Assert.assertTrue(listOfTaxPayerIDType.size() > 0,
-                "There are not an available client status");
+                "There are not an available individualClient status");
         if (client.getTaxPayerIDType() == null)
             client.setTaxPayerIDType(listOfTaxPayerIDType.get(new Random().nextInt(listOfTaxPayerIDType.size())).trim());
         Pages.addClientPage().setTaxPayerIDTypeValue(client.getTaxPayerIDType());
@@ -317,7 +317,7 @@ public class CreateClient {
     }
 
     private void setDocumentation(Client client) {
-        Pages.addClientPage().uploadClientDocumentation(System.getProperty("client.resource.dir")
+        Pages.addClientPage().uploadClientDocumentation(System.getProperty("individualClient.resource.dir")
                 + File.separator + "clientDocument.png");
         setDocumentationIDType(client);
         Pages.addClientPage().setDocumentIDNumberValue(client.getIdentityDocument().get(1).getNumber());

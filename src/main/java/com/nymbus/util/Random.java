@@ -50,7 +50,7 @@ public class Random {
     }
 
     public static String genTimestart() {
-        String[] times = {"Immediatelly", "In about a week", "In about a month"};
+        String[] times = {"Immediately", "In about a week", "In about a month"};
         int value = Random.genInt(0, 2);
         return times[value];
     }

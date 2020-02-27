@@ -1,9 +1,8 @@
 package com.nymbus.actions.webadmin;
 
-import com.nymbus.models.User;
+import com.nymbus.model.User;
 import com.nymbus.pages.webadmin.WebAdminPages;
 import com.nymbus.util.Random;
-import org.testng.Assert;
 
 public class WebAdminUsersActions {
 

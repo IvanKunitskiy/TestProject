@@ -20,12 +20,12 @@ public class ClientsPage extends BasePage {
     private Locator clearSearchInputFieldButton = new XPath("//button[@class='btn btn-link btnIcon']");
     private Locator viewAccountButtonByValue = new XPath("//div[contains(text(),'%s')]/parent::div");
 
-    @Step("Wait for 'Add new client' button")
+    @Step("Wait for 'Add new individualClient' button")
     public void waitForAddNewClientButton(){
         waitForElementVisibility(addNewClientButton);
     }
 
-    @Step("Type '{client}' to clients input field")
+    @Step("Type '{individualClient}' to clients input field")
     public void typeToClientsSearchInputField(String client) {
         waitForElementVisibility(clientsSearchInputField);
         type(client, clientsSearchInputField);
@@ -73,7 +73,7 @@ public class ClientsPage extends BasePage {
         wait(1);
     }
 
-    @Step("Click 'Add new client' button")
+    @Step("Click 'Add new individualClient' button")
     public void clickAddNewClient(){
         waitForElementVisibility(addNewClientButton);
         waitForElementClickable(addNewClientButton);

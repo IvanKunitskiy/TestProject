@@ -2,7 +2,7 @@ package com.nymbus.frontoffice.clientsmanagement;
 
 import com.nymbus.actions.Actions;
 import com.nymbus.base.BaseTest;
-import com.nymbus.models.client.Client;
+import com.nymbus.model.client.Client;
 import com.nymbus.pages.Pages;
 import com.nymbus.util.Constants;
 import io.qameta.allure.Epic;
@@ -25,7 +25,7 @@ public class C22552_CreateNewDebitCard extends BaseTest {
     public void preCondition() {
         client = new Client();
         client.setLastName("ndjws");
-//        client.setBinControl(new BinControl().getDefaultBinControl());
+//        individualClient.setBinControl(new BinControl().getDefaultBinControl());
 
         navigateToUrl(Constants.URL);
 
@@ -37,9 +37,9 @@ public class C22552_CreateNewDebitCard extends BaseTest {
     }
 
     @Severity(CRITICAL)
-    @Test(description = "C22552, Clients Profile: Create new debit card")
+    @Test(description = "C22552, Clients Profile: Create new debit debitcard")
     public void createNewDebitCard() throws InterruptedException {
-        LOG.info("Step 2: Search for any client and open his profile on the Maintenance tab");
+        LOG.info("Step 2: Search for any individualClient and open his profile on the Maintenance tab");
         Pages.clientsPage().typeToClientsSearchInputField(client.getLastName());
 
         Assert.assertEquals(Pages.clientsPage().getLookupResultsCount(), 1);

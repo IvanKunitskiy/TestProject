@@ -85,7 +85,7 @@ public class ClientsSearchResultsPage extends BasePage {
                 .collect(Collectors.toList());
     }
 
-    @Step("Getting client ids from search results")
+    @Step("Getting individualClient ids from search results")
     public List<String> getClientIDsFromSearchResults() {
         waitForElementVisibility(searchResults);
         return getElementsText(searchResults).stream()
