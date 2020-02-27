@@ -1,4 +1,4 @@
-package com.nymbus.models.client.details.type.individual;
+package com.nymbus.models.client.clientdetails.type.individual;
 
 public enum ConsumerInformationIndicator {
     A1_PERSONAL_RECEIVERSHIP("1A - Personal Receivership"),

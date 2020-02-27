@@ -1,4 +1,4 @@
-package com.nymbus.models.client.details.type;
+package com.nymbus.models.client.clientdetails.type;
 
 public enum ClientStatus {
     MEMBER("Member"),

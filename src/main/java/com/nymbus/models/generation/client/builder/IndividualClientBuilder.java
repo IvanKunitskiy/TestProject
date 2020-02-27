@@ -3,8 +3,8 @@ package com.nymbus.models.generation.client.builder;
 import com.nymbus.models.client.IndividualClient;
 import com.nymbus.models.generation.client.builder.type.individual.IndividualTypeBuilder;
 import com.nymbus.models.generation.client.factory.basicinformation.AddressFactory;
-import com.nymbus.models.generation.client.factory.details.contactinformation.EmailFactory;
-import com.nymbus.models.generation.client.factory.details.contactinformation.PhoneFactory;
+import com.nymbus.models.generation.client.factory.clientdetails.contactinformation.EmailFactory;
+import com.nymbus.models.generation.client.factory.clientdetails.contactinformation.PhoneFactory;
 
 import java.util.Arrays;
 import java.util.Collections;

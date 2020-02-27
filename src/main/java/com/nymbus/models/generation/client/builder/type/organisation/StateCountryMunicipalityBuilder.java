@@ -2,7 +2,7 @@ package com.nymbus.models.generation.client.builder.type.organisation;
 
 import com.nymbus.models.generation.client.factory.basicinformation.type.organisation.OrganisationTypeFactory;
 import com.nymbus.models.generation.client.factory.basicinformation.type.organisation.StateCountryMunicipalityFactory;
-import com.nymbus.models.generation.client.factory.details.type.OrganisationClientDetailsFactory;
+import com.nymbus.models.generation.client.factory.clientdetails.type.OrganisationClientDetailsFactory;
 
 public class StateCountryMunicipalityBuilder extends OrganisationTypeBuilder {
     private OrganisationTypeFactory organisationTypeFactory;

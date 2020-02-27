@@ -1,7 +1,7 @@
-package com.nymbus.models.generation.client.factory.details.contactinformation;
+package com.nymbus.models.generation.client.factory.clientdetails.contactinformation;
 
-import com.nymbus.models.client.details.contactinformation.email.Email;
-import com.nymbus.models.client.details.contactinformation.email.EmailType;
+import com.nymbus.models.client.clientdetails.contactinformation.email.Email;
+import com.nymbus.models.client.clientdetails.contactinformation.email.EmailType;
 import com.nymbus.util.Random;
 
 public class EmailFactory {

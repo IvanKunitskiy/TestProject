@@ -3,7 +3,7 @@ package com.nymbus.models.generation.client.factory.basicinformation.type.organi
 import com.nymbus.models.client.basicinformation.type.TaxPayerIDType;
 import com.nymbus.models.client.basicinformation.type.organisation.OrganisationType;
 import com.nymbus.models.client.basicinformation.type.organisation.Partnership;
-import com.nymbus.models.client.details.type.ClientStatus;
+import com.nymbus.models.client.clientdetails.type.ClientStatus;
 import com.nymbus.util.Random;
 
 import java.sql.Timestamp;

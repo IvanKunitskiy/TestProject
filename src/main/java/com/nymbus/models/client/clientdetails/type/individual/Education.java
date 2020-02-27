@@ -1,4 +1,4 @@
-package com.nymbus.models.client.details.type.individual;
+package com.nymbus.models.client.clientdetails.type.individual;
 
 public enum Education {
     ASSOCIATES_DEGREE("Associates Degree"),

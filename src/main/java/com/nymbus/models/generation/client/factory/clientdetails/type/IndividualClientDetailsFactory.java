@@ -1,7 +1,7 @@
-package com.nymbus.models.generation.client.factory.details.type;
+package com.nymbus.models.generation.client.factory.clientdetails.type;
 
-import com.nymbus.models.client.details.type.individual.*;
-import com.nymbus.models.client.details.type.organisation.MailCode;
+import com.nymbus.models.client.clientdetails.type.individual.*;
+import com.nymbus.models.client.clientdetails.type.organisation.MailCode;
 import com.nymbus.models.client.other.File;
 import com.nymbus.util.Random;
 

@@ -2,7 +2,7 @@ package com.nymbus.models.generation.client.builder.type.individual;
 
 import com.nymbus.models.generation.client.factory.basicinformation.type.individual.IndividualTypeFactory;
 import com.nymbus.models.generation.client.factory.basicinformation.type.individual.OfficerFactory;
-import com.nymbus.models.generation.client.factory.details.type.IndividualClientDetailsFactory;
+import com.nymbus.models.generation.client.factory.clientdetails.type.IndividualClientDetailsFactory;
 
 public class OfficerBuilder extends IndividualTypeBuilder {
     private IndividualTypeFactory individualTypeFactory;

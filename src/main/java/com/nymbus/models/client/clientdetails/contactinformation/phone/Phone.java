@@ -1,4 +1,4 @@
-package com.nymbus.models.client.details.contactinformation.phone;
+package com.nymbus.models.client.clientdetails.contactinformation.phone;
 
 import com.nymbus.models.RequiredField;
 import com.nymbus.models.client.basicinformation.address.Country;

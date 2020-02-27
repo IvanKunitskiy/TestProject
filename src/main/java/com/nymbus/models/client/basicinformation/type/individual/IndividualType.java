@@ -6,7 +6,7 @@ import com.nymbus.models.client.basicinformation.address.Country;
 import com.nymbus.models.client.basicinformation.address.State;
 import com.nymbus.models.client.basicinformation.type.ClientType;
 import com.nymbus.models.client.basicinformation.type.TaxPayerIDType;
-import com.nymbus.models.client.details.type.ClientStatus;
+import com.nymbus.models.client.clientdetails.type.ClientStatus;
 import com.nymbus.models.client.other.document.IDType;
 import lombok.Data;
 

@@ -2,7 +2,7 @@ package com.nymbus.models.client;
 
 import com.nymbus.models.RequiredField;
 import com.nymbus.models.client.basicinformation.type.organisation.OrganisationType;
-import com.nymbus.models.client.details.type.organisation.OrganisationClientDetails;
+import com.nymbus.models.client.clientdetails.type.organisation.OrganisationClientDetails;
 import lombok.Getter;
 import lombok.Setter;
 

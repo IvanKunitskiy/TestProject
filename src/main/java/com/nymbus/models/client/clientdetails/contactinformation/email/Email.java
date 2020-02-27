@@ -1,4 +1,4 @@
-package com.nymbus.models.client.details.contactinformation.email;
+package com.nymbus.models.client.clientdetails.contactinformation.email;
 
 import com.nymbus.models.RequiredField;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.nymbus.models.client.details.type.individual;
+package com.nymbus.models.client.clientdetails.type.individual;
 
 public enum Income {
     FROM_0_TO_10K("0 - 10,000"),

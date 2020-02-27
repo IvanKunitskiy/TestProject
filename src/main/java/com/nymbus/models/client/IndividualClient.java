@@ -2,7 +2,7 @@ package com.nymbus.models.client;
 
 import com.nymbus.models.RequiredField;
 import com.nymbus.models.client.basicinformation.type.individual.IndividualType;
-import com.nymbus.models.client.details.type.individual.IndividualClientDetails;
+import com.nymbus.models.client.clientdetails.type.individual.IndividualClientDetails;
 import lombok.Getter;
 import lombok.Setter;
 

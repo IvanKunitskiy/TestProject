@@ -1,4 +1,4 @@
-package com.nymbus.models.client.details.type.organisation;
+package com.nymbus.models.client.clientdetails.type.organisation;
 
 public enum MailCode {
     DO_NOT_MAIL_STMT("Do not mail stmt"),

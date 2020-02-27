@@ -1,8 +1,8 @@
-package com.nymbus.models.generation.client.factory.details.contactinformation;
+package com.nymbus.models.generation.client.factory.clientdetails.contactinformation;
 
 import com.nymbus.models.client.basicinformation.address.Country;
-import com.nymbus.models.client.details.contactinformation.phone.Phone;
-import com.nymbus.models.client.details.contactinformation.phone.PhoneType;
+import com.nymbus.models.client.clientdetails.contactinformation.phone.Phone;
+import com.nymbus.models.client.clientdetails.contactinformation.phone.PhoneType;
 import com.nymbus.util.Random;
 
 public class PhoneFactory {

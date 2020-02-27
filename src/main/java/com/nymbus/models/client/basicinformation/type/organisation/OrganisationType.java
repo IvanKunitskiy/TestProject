@@ -5,7 +5,7 @@ import com.nymbus.models.client.Client;
 import com.nymbus.models.client.basicinformation.address.Address;
 import com.nymbus.models.client.basicinformation.type.ClientType;
 import com.nymbus.models.client.basicinformation.type.TaxPayerIDType;
-import com.nymbus.models.client.details.type.ClientStatus;
+import com.nymbus.models.client.clientdetails.type.ClientStatus;
 import lombok.Data;
 
 import java.util.Set;

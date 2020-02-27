@@ -1,4 +1,4 @@
-package com.nymbus.models.client.details.contactinformation.phone;
+package com.nymbus.models.client.clientdetails.contactinformation.phone;
 
 public enum PhoneType {
     DAYTIME,

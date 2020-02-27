@@ -1,9 +1,9 @@
-package com.nymbus.models.client.details.type.individual;
+package com.nymbus.models.client.clientdetails.type.individual;
 
 import com.nymbus.models.RequiredField;
-import com.nymbus.models.client.details.contactinformation.email.Email;
-import com.nymbus.models.client.details.contactinformation.phone.Phone;
-import com.nymbus.models.client.details.type.organisation.MailCode;
+import com.nymbus.models.client.clientdetails.contactinformation.email.Email;
+import com.nymbus.models.client.clientdetails.contactinformation.phone.Phone;
+import com.nymbus.models.client.clientdetails.type.organisation.MailCode;
 import com.nymbus.models.client.other.File;
 import lombok.Data;
 
