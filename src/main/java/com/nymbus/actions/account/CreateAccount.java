@@ -26,6 +26,30 @@ public class CreateAccount {
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
 
+    public void setStatementCycle(Account account) {
+        Pages.addAccountPage().clickStatementCycleSelectorButton();
+        List<String> listOfStatementCycle = Pages.addAccountPage().getStatementCycleList();
+
+        Assert.assertTrue(listOfStatementCycle.size() > 0, "There are no product types available");
+        if (account.getStatementCycle() == null) {
+            account.setStatementCycle(listOfStatementCycle.get(new Random().nextInt(listOfStatementCycle.size())).trim());
+        }
+
+        Pages.addAccountPage().clickStatementCycleOption(account.getStatementCycle());
+    }
+
+    public void setProduct(Account account) {
+        Pages.addAccountPage().clickProductSelectorButton();
+        List<String> listOfProduct = Pages.addAccountPage().getProductList();
+
+        Assert.assertTrue(listOfProduct.size() > 0, "There are no product types available");
+        if (account.getProduct() == null) {
+            account.setProduct(listOfProduct.get(new Random().nextInt(listOfProduct.size())).trim());
+        }
+
+        Pages.addAccountPage().clickProductOption(account.getProduct());
+    }
+
     public void setBankBranch(Account account) {
         Pages.addAccountPage().clickBankBranchSelectorButton();
         List<String> listOfBankBranchOptions = Pages.addAccountPage().getBankBranchList();

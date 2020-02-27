@@ -8,6 +8,7 @@ public class Account {
 
     private String addNewOption;
     private String productType;
+    private String product;
     private String boxSize;
     private String rentalAmount;
     private String accountNumber;
@@ -17,6 +18,7 @@ public class Account {
     private String dateOpened;
     private String bankBranch;
     private String statementFlag;
+    private String statementCycle;
     private String correspondingAccount;
     private String primaryAccountForCombinedStatement;
     private String userDefinedField_1;
@@ -216,5 +218,21 @@ public class Account {
 
     public void setAddNewOption(String addNewOption) {
         this.addNewOption = addNewOption;
+    }
+
+    public String getProduct() {
+        return product;
+    }
+
+    public void setProduct(String product) {
+        this.product = product;
+    }
+
+    public String getStatementCycle() {
+        return statementCycle;
+    }
+
+    public void setStatementCycle(String statementCycle) {
+        this.statementCycle = statementCycle;
     }
 }
