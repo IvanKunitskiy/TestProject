@@ -32,6 +32,8 @@ public class AddAccountPage extends BasePage {
     private Locator productSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private Locator statementCycleSelectorButton = new XPath("//*[@id='statementcycle']");
     private Locator statementCycleList = new XPath("//li[contains(@role, 'option')]/div/span");
+    private Locator bankBranch = new XPath("//div[@data-test-id='field-bankbranch']/a/span[contains(@class, 'ng-binding')]");
+
 
     /**
      * Account holders and signers
@@ -42,6 +44,7 @@ public class AddAccountPage extends BasePage {
     private Locator accountHolderClientType = new XPath("//input[@data-test-id='field-typeid_0']");
     private Locator accountHolderTaxID = new XPath("//input[@data-test-id='field-taxIdNumber']");
     private Locator statementCycleSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private Locator accountHolderAddress = new XPath("//div[@data-test-id='field-addressid_0']/a/span/span");
 
     /**
      * Originating officer
@@ -50,6 +53,92 @@ public class AddAccountPage extends BasePage {
     private Locator originatingOfficer = new XPath("//div[@data-test-id='field-originatingOfficer']/a/span/span");
     private Locator currentOfficer = new XPath("//div[@data-test-id='field-officer']/a/span/span");
     private Locator optInOutStatus = new XPath("//div[@data-test-id='field-dbcodpstatus']/a/span/span");
+    private Locator currentOfficerSelectorButton = new XPath("//div[@data-test-id='field-officer']");
+    private Locator currentOfficerList = new XPath("//li[contains(@role, 'option')]/div/span");
+    private Locator currentOfficerOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private Locator callClassCodeSelectorButton = new XPath("//div[@data-test-id='field-callclasscode']");
+    private Locator callClassCodeList = new XPath("//li[contains(@role, 'option')]/div/span");
+    private Locator callClassCodeSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private Locator accountAnalysisSelectorButton = new XPath("//div[@data-test-id='field-accountanalysis']");
+    private Locator accountAnalysisList = new XPath("//li[contains(@role, 'option')]/div/span");
+    private Locator accountAnalysisSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    @Step("Click the 'Account Analysis' option")
+    public void clickAccountAnalysisSelectorOption(String callClassCodeOption) {
+        waitForElementVisibility(accountAnalysisSelectorOption, callClassCodeOption);
+        waitForElementClickable(accountAnalysisSelectorOption, callClassCodeOption);
+        click(accountAnalysisSelectorOption, callClassCodeOption);
+    }
+
+    @Step("Returning list of 'Account Analysis' options")
+    public List<String> getAccountAnalysisList() {
+        waitForElementVisibility(accountAnalysisList);
+        waitForElementClickable(accountAnalysisList);
+        return getElementsText(accountAnalysisList);
+    }
+
+    @Step("Click the 'Account Analysis' selector button")
+    public void clickAccountAnalysisSelectorButton() {
+        waitForElementVisibility(accountAnalysisSelectorButton);
+        waitForElementClickable(accountAnalysisSelectorButton);
+        click(accountAnalysisSelectorButton);
+    }
+
+    @Step("Click the 'Call Class Code' option")
+    public void clickCallClassCodeSelectorOption(String callClassCodeOption) {
+        waitForElementVisibility(callClassCodeSelectorOption, callClassCodeOption);
+        waitForElementClickable(callClassCodeSelectorOption, callClassCodeOption);
+        click(callClassCodeSelectorOption, callClassCodeOption);
+    }
+
+    @Step("Returning list of 'Call Class Code' options")
+    public List<String> getCallClassCodeList() {
+        waitForElementVisibility(callClassCodeList);
+        waitForElementClickable(callClassCodeList);
+        return getElementsText(callClassCodeList);
+    }
+
+    @Step("Click the 'Call Class Code' selector button")
+    public void clickCallClassCodeSelectorButton() {
+        waitForElementVisibility(callClassCodeSelectorButton);
+        waitForElementClickable(callClassCodeSelectorButton);
+        click(callClassCodeSelectorButton);
+    }
+
+    @Step("Click the 'Statement Cycle' option")
+    public void clickCurrentOfficerOption(String currentOfficerOption) {
+        waitForElementVisibility(statementCycleSelectorOption, currentOfficerOption);
+        waitForElementClickable(statementCycleSelectorOption, currentOfficerOption);
+        click(statementCycleSelectorOption, currentOfficerOption);
+    }
+
+    @Step("Returning list of 'Current Officer' options")
+    public List<String> getCurrentOfficerList() {
+        waitForElementVisibility(currentOfficerList);
+        waitForElementClickable(currentOfficerList);
+        return getElementsText(currentOfficerList);
+    }
+
+    @Step("Click the 'Statement Cycle' selector button")
+    public void clickCurrentOfficerSelectorButton() {
+        waitForElementVisibility(currentOfficerSelectorButton);
+        waitForElementClickable(currentOfficerSelectorButton);
+        click(currentOfficerSelectorButton);
+    }
+
+    @Step("Returning the 'Address' value")
+    public String getAccountHolderAddress() {
+        waitForElementVisibility(accountHolderAddress);
+        waitForElementClickable(accountHolderAddress);
+        return getElementText(accountHolderAddress);
+    }
+
+    @Step("Returning the 'Bank Branch' value")
+    public String getBankBranch() {
+        waitForElementVisibility(bankBranch);
+        waitForElementClickable(bankBranch);
+        return getElementText(bankBranch);
+    }
 
     @Step("Click the 'Statement Cycle' option")
     public void clickStatementCycleOption(String statementCycleOption) {

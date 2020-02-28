@@ -14,6 +14,9 @@ public class Account {
     private String accountNumber;
     private String accountTitle;
     private String accountType;
+    private String currentOfficer;
+    private String callClassCode;
+    private String accountAnalysis;
     private String mailCode;
     private String dateOpened;
     private String bankBranch;
@@ -41,6 +44,7 @@ public class Account {
 
         account.setAddNewOption("Account");
         account.setProductType("CHK Account");
+        account.setAccountTitle(Random.genString(5));
 
         return account;
     }
@@ -234,5 +238,29 @@ public class Account {
 
     public void setStatementCycle(String statementCycle) {
         this.statementCycle = statementCycle;
+    }
+
+    public String getCurrentOfficer() {
+        return currentOfficer;
+    }
+
+    public void setCurrentOfficer(String currentOfficer) {
+        this.currentOfficer = currentOfficer;
+    }
+
+    public String getCallClassCode() {
+        return callClassCode;
+    }
+
+    public void setCallClassCode(String callClassCode) {
+        this.callClassCode = callClassCode;
+    }
+
+    public String getAccountAnalysis() {
+        return accountAnalysis;
+    }
+
+    public void setAccountAnalysis(String accountAnalysis) {
+        this.accountAnalysis = accountAnalysis;
     }
 }

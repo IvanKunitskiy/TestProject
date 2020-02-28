@@ -26,6 +26,42 @@ public class CreateAccount {
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
 
+    public void setAccountAnalysis(Account account) {
+        Pages.addAccountPage().clickAccountAnalysisSelectorButton();
+        List<String> listOfAccountAnalysis = Pages.addAccountPage().getAccountAnalysisList();
+
+        Assert.assertTrue(listOfAccountAnalysis.size() > 0, "There are no product types available");
+        if (account.getAccountAnalysis() == null) {
+            account.setAccountAnalysis(listOfAccountAnalysis.get(new Random().nextInt(listOfAccountAnalysis.size())).trim());
+        }
+
+        Pages.addAccountPage().clickAccountAnalysisSelectorOption(account.getAccountAnalysis());
+    }
+
+    public void setCallClassCode(Account account) {
+        Pages.addAccountPage().clickCallClassCodeSelectorButton();
+        List<String> listOfCallClassCode = Pages.addAccountPage().getCallClassCodeList();
+
+        Assert.assertTrue(listOfCallClassCode.size() > 0, "There are no product types available");
+        if (account.getCallClassCode() == null) {
+            account.setCallClassCode(listOfCallClassCode.get(new Random().nextInt(listOfCallClassCode.size())).trim());
+        }
+
+        Pages.addAccountPage().clickCallClassCodeSelectorOption(account.getCallClassCode());
+    }
+
+    public void setCurrentOfficer(Account account) {
+        Pages.addAccountPage().clickCurrentOfficerSelectorButton();
+        List<String> listOfCurrentOfficers = Pages.addAccountPage().getCurrentOfficerList();
+
+        Assert.assertTrue(listOfCurrentOfficers.size() > 0, "There are no product types available");
+        if (account.getCurrentOfficer() == null) {
+            account.setCurrentOfficer(listOfCurrentOfficers.get(new Random().nextInt(listOfCurrentOfficers.size())).trim());
+        }
+
+        Pages.addAccountPage().clickCurrentOfficerOption(account.getCurrentOfficer());
+    }
+
     public void setStatementCycle(Account account) {
         Pages.addAccountPage().clickStatementCycleSelectorButton();
         List<String> listOfStatementCycle = Pages.addAccountPage().getStatementCycleList();
