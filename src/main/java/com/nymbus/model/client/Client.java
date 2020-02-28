@@ -1,6 +1,6 @@
 package com.nymbus.model.client;
 
-import com.nymbus.models.settings.BinControl;
+import com.nymbus.models.settings.bincontrol.BinControl;
 import com.nymbus.util.Random;
 
 import java.sql.Timestamp;

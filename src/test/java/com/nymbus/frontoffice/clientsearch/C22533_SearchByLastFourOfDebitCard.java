@@ -2,7 +2,7 @@ package com.nymbus.frontoffice.clientsearch;
 
 import com.nymbus.actions.Actions;
 import com.nymbus.base.BaseTest;
-import com.nymbus.models.client.Client;
+import com.nymbus.model.client.Client;
 import com.nymbus.pages.Pages;
 import com.nymbus.util.Constants;
 import io.qameta.allure.*;
@@ -28,7 +28,6 @@ public class C22533_SearchByLastFourOfDebitCard extends BaseTest {
     @Test(description = "C22533, Search by last four of debit card number")
     @Severity(SeverityLevel.CRITICAL)
     public void searchByCardNumber() {
-
         LOG.info("Step 1: Log in to the system as the User from the precondition");
         navigateToUrl(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
