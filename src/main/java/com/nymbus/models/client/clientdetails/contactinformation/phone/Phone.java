@@ -1,12 +1,14 @@
 package com.nymbus.models.client.clientdetails.contactinformation.phone;
 
-import com.nymbus.models.RequiredField;
 import com.nymbus.models.client.basicinformation.address.Country;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
+@NoArgsConstructor
 public class Phone {
-    @RequiredField PhoneType phoneType;
-    @RequiredField Country country;
-    @RequiredField String phoneNumber;
+    @NonNull PhoneType phoneType;
+    @NonNull Country country;
+    @NonNull String phoneNumber;
 }

@@ -1,5 +1,10 @@
 package com.nymbus.models.client.other.document;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum IDType {
     ALIEN_REG_CARD("Alien Reg Card"),
     BIRTH_CERTIFICATE("Birth Certificate"),
@@ -19,12 +24,4 @@ public enum IDType {
     US_MILITARY("US Military");
 
     private final String idType;
-
-    IDType(String idType) {
-        this.idType = idType;
-    }
-
-    public String getIdType() {
-        return idType;
-    }
 }

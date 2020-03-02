@@ -1,5 +1,10 @@
 package com.nymbus.models.client.clientdetails.type.individual;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum Education {
     ASSOCIATES_DEGREE("Associates Degree"),
     BACHELORS_DEGREE("Bachelors Degree"),
@@ -11,12 +16,4 @@ public enum Education {
     TECHNICAL_SCHOOL("Technical School");
 
     private final String education;
-
-    Education(String education) {
-        this.education = education;
-    }
-
-    public String getEducation() {
-        return education;
-    }
 }

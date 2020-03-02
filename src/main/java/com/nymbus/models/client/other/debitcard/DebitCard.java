@@ -1,24 +1,26 @@
 package com.nymbus.models.client.other.debitcard;
 
-import com.nymbus.models.RequiredField;
-import com.nymbus.models.client.other.account.Account;
+import com.nymbus.models.client.other.account.type.Account;
 import com.nymbus.models.settings.bincontrol.BinControl;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class DebitCard {
-    @RequiredField private BinControl binControl;
-    @RequiredField private boolean isInstantIssue;
+    @NonNull private BinControl binControl;
+    @NonNull private boolean isInstantIssue;
 
     private String cardNumber;
     private String clientNumber;
-    @RequiredField private String nameOfCard;
+    @NonNull private String nameOfCard;
     private String secondLineEmbossing;
-    @RequiredField private List<Account> accounts; // At least one
+    @NonNull private List<Account> accounts; // At least one
     private String cardDesign;
-    @RequiredField CardStatus cardStatus;
+    @NonNull CardStatus cardStatus;
     private String pinOffset;
     private String dateEffective;
     private double ATMDailyDollarLimit;

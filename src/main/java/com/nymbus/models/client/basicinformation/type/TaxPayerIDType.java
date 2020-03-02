@@ -1,5 +1,10 @@
 package com.nymbus.models.client.basicinformation.type;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum TaxPayerIDType {
     BUSINESS_TIN("Business TIN"),
     INDIVIDUAL_SSN("Individual SSN"),
@@ -7,12 +12,4 @@ public enum TaxPayerIDType {
     UNDETERMINABLE("Undeterminable");
 
     private final String taxPayerIDType;
-
-    TaxPayerIDType(String taxPayerIDType) {
-        this.taxPayerIDType = taxPayerIDType;
-    }
-
-    public String getTaxPayerIDType() {
-        return taxPayerIDType;
-    }
 }

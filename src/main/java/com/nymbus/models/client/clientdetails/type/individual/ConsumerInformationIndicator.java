@@ -1,5 +1,10 @@
 package com.nymbus.models.client.clientdetails.type.individual;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum ConsumerInformationIndicator {
     A1_PERSONAL_RECEIVERSHIP("1A - Personal Receivership"),
     A2_LEASE_ASSUMPTION("2A - Lease Assumption"),
@@ -28,12 +33,4 @@ public enum ConsumerInformationIndicator {
     Z_BANKRUPTCY_UNDESIGNATED_CHAPTER("Z - Bankruptcy -- Undesignated Chapter");
 
     private final String indicator;
-
-    ConsumerInformationIndicator(String indicator) {
-        this.indicator = indicator;
-    }
-
-    public String getIndicator() {
-        return indicator;
-    }
 }

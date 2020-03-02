@@ -1,6 +1,6 @@
 package com.nymbus.models.client;
 
-import com.nymbus.models.client.other.account.Account;
+import com.nymbus.models.client.other.account.type.Account;
 import com.nymbus.models.client.other.debitcard.DebitCard;
 import com.nymbus.models.client.other.document.Document;
 import lombok.Data;

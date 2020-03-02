@@ -1,5 +1,10 @@
 package com.nymbus.models.client.clientdetails.type.individual;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum Gender {
     FEMALE("Female"),
     MALE("Male"),
@@ -7,12 +12,4 @@ public enum Gender {
     UNKNOWN("Unknown");
 
     private final String gender;
-
-    Gender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getGender() {
-        return gender;
-    }
 }

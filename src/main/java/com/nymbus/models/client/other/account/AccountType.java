@@ -1,19 +1,17 @@
-package com.nymbus.models.client.basicinformation.type;
+package com.nymbus.models.client.other.account;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ClientType {
+public enum AccountType {
     CORPORATION("Corporation"),
     DIRECTOR("Director"),
     EMPLOYEE("Employee"),
     ESTATE("Estate"),
     FEDERAL_GOVERNMENT("Federal Government"),
     INDIVIDUAL("Individual"),
-    INTERNAL_FI_OWNED("Internal FI Owned"),
-    IOLTA("IOLTA"),
     JOINT_ACCOUNT("Joint Account"),
     NONPROFIT_ORGANIZATION("Nonprofit/Organization"),
     OFFICER("Officer"),
@@ -22,5 +20,5 @@ public enum ClientType {
     STATE_COUNTRY_MUNICIPALITY("State/County/Municipality"),
     TRUST_ACCOUNT("Trust Account");
 
-    private final String clientType;
+    private final String accountType;
 }

@@ -1,5 +1,10 @@
 package com.nymbus.models.settings.bincontrol;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum ReplacementCardCode {
     ACCOUNT_ANALYSIS("Account Analysis"),
     ACCOUNT_FEE("Account Fee"),
@@ -7,12 +12,4 @@ public enum ReplacementCardCode {
     ACTIVITY_FEE("Activity Fee");
 
     private final String replacementCardCode;
-
-    ReplacementCardCode(String replacementCardCode) {
-        this.replacementCardCode = replacementCardCode;
-    }
-
-    public String getReplacementCardCode() {
-        return replacementCardCode;
-    }
 }

@@ -1,5 +1,10 @@
 package com.nymbus.models.client.clientdetails.type.individual;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum Income {
     FROM_0_TO_10K("0 - 10,000"),
     FROM_10K_TO_20K("10,000 - 20,000"),
@@ -17,12 +22,4 @@ public enum Income {
     MORE_THAN_175K("> 175,000");
 
     private final String income;
-
-    Income(String income) {
-        this.income = income;
-    }
-
-    public String getIncome() {
-        return income;
-    }
 }

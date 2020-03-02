@@ -1,6 +1,5 @@
 package com.nymbus.models.client.basicinformation.type.individual;
 
-import com.nymbus.models.RequiredField;
 import com.nymbus.models.client.basicinformation.address.Address;
 import com.nymbus.models.client.basicinformation.address.Country;
 import com.nymbus.models.client.basicinformation.address.State;
@@ -9,26 +8,29 @@ import com.nymbus.models.client.basicinformation.type.TaxPayerIDType;
 import com.nymbus.models.client.clientdetails.type.ClientStatus;
 import com.nymbus.models.client.other.document.IDType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.Set;
 
 @Data
+@NoArgsConstructor
 public abstract class IndividualType {
-    @RequiredField private ClientType clientType;
+    @NonNull private ClientType clientType;
     private ClientStatus clientStatus;
-    @RequiredField private String firstName;
+    @NonNull private String firstName;
     private String middleName;
-    @RequiredField private String lastName;
-    @RequiredField private TaxPayerIDType taxPayerIDType;
-    @RequiredField private String taxID;
-    @RequiredField private String birthDate;
-    @RequiredField private IDType idType;
-    @RequiredField private String idNumber;
+    @NonNull private String lastName;
+    @NonNull private TaxPayerIDType taxPayerIDType;
+    @NonNull private String taxID;
+    @NonNull private String birthDate;
+    @NonNull private IDType idType;
+    @NonNull private String idNumber;
     private State issuedBy;
     private Country country;
     private String expirationDate;
 
-    @RequiredField private Set<Address> addresses; // At least one
+    @NonNull private Set<Address> addresses; // At least one
 
     protected IndividualType(ClientType clientType) {
         this.clientType = clientType;

@@ -1,10 +1,12 @@
 package com.nymbus.models.client.clientdetails.contactinformation.email;
 
-import com.nymbus.models.RequiredField;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
+@NoArgsConstructor
 public class Email {
-    @RequiredField private EmailType emailType;
-    @RequiredField private String email;
+    @NonNull private EmailType emailType;
+    @NonNull private String email;
 }

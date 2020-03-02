@@ -1,5 +1,10 @@
 package com.nymbus.models.client.clientdetails.type.individual;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum MaritalStatus {
     DIVORCED("Divorced"),
     LEGALLY_SEPARATED("Legally Separated"),
@@ -8,12 +13,4 @@ public enum MaritalStatus {
     SINGLE("Single");
 
     private final String maritalStatus;
-
-    MaritalStatus(String maritalStatus) {
-        this.maritalStatus = maritalStatus;
-    }
-
-    public String getMaritalStatus() {
-        return maritalStatus;
-    }
 }

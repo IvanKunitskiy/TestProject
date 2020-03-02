@@ -1,18 +1,18 @@
 package com.nymbus.models.client;
 
-import com.nymbus.models.RequiredField;
 import com.nymbus.models.client.basicinformation.type.individual.IndividualType;
 import com.nymbus.models.client.clientdetails.type.individual.IndividualClientDetails;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class IndividualClient extends Client {
-    @RequiredField private IndividualType individualType;
-    @RequiredField private IndividualClientDetails individualClientDetails;
+    @NonNull private IndividualType individualType;
+    @NonNull private IndividualClientDetails individualClientDetails;
 
     @Override
     public boolean equals(Object o) {

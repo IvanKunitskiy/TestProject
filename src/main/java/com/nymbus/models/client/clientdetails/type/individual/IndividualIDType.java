@@ -1,5 +1,10 @@
 package com.nymbus.models.client.clientdetails.type.individual;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum IndividualIDType {
     ALIEN_REG_CARD("Alien Reg Card"),
     SOCIAL_SECURITY_CARD("Social Security Card"),
@@ -9,12 +14,4 @@ public enum IndividualIDType {
     US_MILITARY("US Military");
 
     private final String idType;
-
-    IndividualIDType(String idType) {
-        this.idType = idType;
-    }
-
-    public String getIdType() {
-        return idType;
-    }
 }

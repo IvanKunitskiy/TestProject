@@ -1,18 +1,18 @@
 package com.nymbus.models.client;
 
-import com.nymbus.models.RequiredField;
 import com.nymbus.models.client.basicinformation.type.organisation.OrganisationType;
 import com.nymbus.models.client.clientdetails.type.organisation.OrganisationClientDetails;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class OrganisationClient extends Client {
-    @RequiredField private OrganisationType organisationType;
-    @RequiredField private OrganisationClientDetails organisationClientDetails;
+    @NonNull private OrganisationType organisationType;
+    @NonNull private OrganisationClientDetails organisationClientDetails;
 
     @Override
     public boolean equals(Object o) {

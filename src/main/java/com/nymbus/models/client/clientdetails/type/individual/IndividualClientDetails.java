@@ -1,37 +1,39 @@
 package com.nymbus.models.client.clientdetails.type.individual;
 
-import com.nymbus.models.RequiredField;
 import com.nymbus.models.client.clientdetails.contactinformation.email.Email;
 import com.nymbus.models.client.clientdetails.contactinformation.phone.Phone;
 import com.nymbus.models.client.clientdetails.type.organisation.MailCode;
 import com.nymbus.models.client.other.File;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.List;
 import java.util.Set;
 
 @Data
+@NoArgsConstructor
 public class IndividualClientDetails {
     private String suffix;
     private String maidenFamilyName;
     private List<String> AKAs;
-    @RequiredField File profilePhoto;
+    @NonNull File profilePhoto;
     private Gender gender;
     private Education education;
     private Income income;
     private MaritalStatus maritalStatus;
-    @RequiredField private String occupation;
+    @NonNull private String occupation;
     private ConsumerInformationIndicator consumerInformationIndicator;
     private String jobTitle;
     private OwnOrRent ownOrRent;
     private MailCode mailCode;
-    @RequiredField String selectOfficer;
+    @NonNull String selectOfficer;
     private boolean serviceMember;
     private boolean truStageMembershipOptOut;
     private List<String> userDefinedFields;
     private boolean usingOnlineBank;
 
-    @RequiredField private Set<Phone> phones; // At least one
+    @NonNull private Set<Phone> phones; // At least one
     private Set<Email> emails;
 
 

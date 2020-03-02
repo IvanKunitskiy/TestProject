@@ -1,24 +1,26 @@
 package com.nymbus.models.client.basicinformation.type.organisation;
 
-import com.nymbus.models.RequiredField;
 import com.nymbus.models.client.Client;
 import com.nymbus.models.client.basicinformation.address.Address;
 import com.nymbus.models.client.basicinformation.type.ClientType;
 import com.nymbus.models.client.basicinformation.type.TaxPayerIDType;
 import com.nymbus.models.client.clientdetails.type.ClientStatus;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.Set;
 
 @Data
+@NoArgsConstructor
 public abstract class OrganisationType extends Client {
-    @RequiredField private ClientType clientType;
+    @NonNull private ClientType clientType;
     private ClientStatus clientStatus;
-    @RequiredField String name;
-    @RequiredField private TaxPayerIDType taxPayerIDType;
-    @RequiredField private String taxID;
+    @NonNull String name;
+    @NonNull private TaxPayerIDType taxPayerIDType;
+    @NonNull private String taxID;
 
-    @RequiredField private Set<Address> addresses; // At least one
+    @NonNull private Set<Address> addresses; // At least one
 
     protected OrganisationType(ClientType clientType) {
         this.clientType = clientType;

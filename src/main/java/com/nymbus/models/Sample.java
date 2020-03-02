@@ -63,7 +63,7 @@ public class Sample {
         clientDetails.setEmails(new HashSet<>(Arrays.asList(email11, email12)));
 
         Document document = new CompanyID();
-        document.setIdType(IDType.COMPANY_ID);
+        ((CompanyID) document).setIdType(IDType.COMPANY_ID);
         ((CompanyID) document).setCountry(Country.UNITED_STATES);
         ((CompanyID) document).setIssuedBy(State.ALABAMA);
         ((CompanyID) document).setIdNumber("qwe");
@@ -117,11 +117,8 @@ public class Sample {
         clientDetails1.setPhones(new HashSet<>(Arrays.asList(phone21, phone22)));
         clientDetails1.setEmails(new HashSet<>(Arrays.asList(email21, email22)));
 
-        Document document1 = new CompanyID();
-        document1.setIdType(IDType.COMPANY_ID);
-        ((CompanyID) document1).setCountry(Country.UNITED_STATES);
-        ((CompanyID) document1).setIssuedBy(State.ALABAMA);
-        ((CompanyID) document1).setIdNumber("qwe");
+        Document document1 = qwe();
+
 
         Client client1 = new OrganisationClient();
         ((OrganisationClient) client1).setOrganisationType(organisationType1);
@@ -136,5 +133,15 @@ public class Sample {
         /*OrganisationClientBuilder organisationClientBuilder = new OrganisationClientBuilder();
         organisationClientBuilder.setOrganisationTypeBuilder(new TrustAccountBuilder());
         System.out.println(organisationClientBuilder.buildClient());*/
+    }
+
+    private static CompanyID qwe() {
+        CompanyID companyID = new CompanyID();
+        companyID.setIdType(IDType.COMPANY_ID);
+        companyID.setCountry(Country.UNITED_STATES);
+        companyID.setIssuedBy(State.ALABAMA);
+        companyID.setIdNumber("qwe");
+
+        return companyID;
     }
 }

@@ -1,5 +1,10 @@
 package com.nymbus.models.client.basicinformation.address;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum AddressType {
     ALTERNATE("Alternate"),
     MAILING("Mailing"),
@@ -8,12 +13,4 @@ public enum AddressType {
     SEASONAL("Seasonal");
 
     private final String addressType;
-
-    AddressType(String addressType) {
-        this.addressType = addressType;
-    }
-
-    public String getAddressType() {
-        return addressType;
-    }
 }
