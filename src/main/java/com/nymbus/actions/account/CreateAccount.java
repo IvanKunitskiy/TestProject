@@ -26,6 +26,17 @@ public class CreateAccount {
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
 
+    public void setChargeOrAnalyze(Account account) {
+        Pages.addAccountPage().clickChargeOrAnalyzeSelectorButton();
+        List<String> listOfChargeOrAnalyze = Pages.addAccountPage().getChargeOrAnalyzeList();
+
+        Assert.assertTrue(listOfChargeOrAnalyze.size() > 0, "There are no product types available");
+        if (account.getChargeOrAnalyze() == null) {
+            account.setChargeOrAnalyze(listOfChargeOrAnalyze.get(new Random().nextInt(listOfChargeOrAnalyze.size())).trim());
+        }
+        Pages.addAccountPage().clickChargeOrAnalyzeSelectorOption(account.getChargeOrAnalyze());
+    }
+
     public void setAccountAnalysis(Account account) {
         Pages.addAccountPage().clickAccountAnalysisSelectorButton();
         List<String> listOfAccountAnalysis = Pages.addAccountPage().getAccountAnalysisList();
@@ -34,7 +45,6 @@ public class CreateAccount {
         if (account.getAccountAnalysis() == null) {
             account.setAccountAnalysis(listOfAccountAnalysis.get(new Random().nextInt(listOfAccountAnalysis.size())).trim());
         }
-
         Pages.addAccountPage().clickAccountAnalysisSelectorOption(account.getAccountAnalysis());
     }
 

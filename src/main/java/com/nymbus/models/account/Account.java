@@ -17,6 +17,10 @@ public class Account {
     private String currentOfficer;
     private String callClassCode;
     private String accountAnalysis;
+    private String chargeOrAnalyze;
+    private String optInOutDate;
+    private String interestRate;
+    private String earningCreditRate;
     private String mailCode;
     private String dateOpened;
     private String bankBranch;
@@ -262,5 +266,37 @@ public class Account {
 
     public void setAccountAnalysis(String accountAnalysis) {
         this.accountAnalysis = accountAnalysis;
+    }
+
+    public String getChargeOrAnalyze() {
+        return chargeOrAnalyze;
+    }
+
+    public void setChargeOrAnalyze(String chargeOrAnalyze) {
+        this.chargeOrAnalyze = chargeOrAnalyze;
+    }
+
+    public String getOptInOutDate() {
+        return optInOutDate;
+    }
+
+    public void setOptInOutDate(String optInOutDate) {
+        this.optInOutDate = optInOutDate;
+    }
+
+    public String getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(String interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    public String getEarningCreditRate() {
+        return earningCreditRate;
+    }
+
+    public void setEarningCreditRate(String earningCreditRate) {
+        this.earningCreditRate = earningCreditRate;
     }
 }

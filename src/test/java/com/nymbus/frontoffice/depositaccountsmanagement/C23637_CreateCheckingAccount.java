@@ -29,6 +29,9 @@ public class C23637_CreateCheckingAccount extends BaseTest {
         client.setClientStatus("Member");
         client.setClientType("Individual");
         checkingAccount = new Account().setCHKAccountData();
+        checkingAccount.setProduct("Basic Business Checking");
+        checkingAccount.setOptInOutDate("01/01/2020");
+        checkingAccount.setDateOpened("02/27/2020");
     }
 
     @Test(description = "C14918, Create checking account")
@@ -60,10 +63,7 @@ public class C23637_CreateCheckingAccount extends BaseTest {
         AccountActions.createAccount().setProductType(checkingAccount);
 
         LOG.info("Step 5: Look through the fields. Check that fields are prefilled by default");
-
-        // Account type
         Assert.assertEquals(Pages.addAccountPage().getAccountType(), client.getClientType(), "'Account type' is prefilled with wrong value");
-
         // Account Holders and Signers section
         final String accountHolderName = client.getFirstName() + " " + client.getLastName() + " (" + client.getClientID() + ")";
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderName(), accountHolderName, "'Name' is prefilled with wrong value");
@@ -78,52 +78,56 @@ public class C23637_CreateCheckingAccount extends BaseTest {
 //        LocalDate localDate = LocalDate.now();
 //        Assert.assertEquals(Pages.addAccountPage().getDateOpened(), dtf.format(localDate), "'Date' is prefilled with wrong value");
 
-        // Originating Officer And Current Officer
         Assert.assertEquals(Pages.addAccountPage().getOriginatingOfficer(), client.getSelectOfficer(), "'Originating officer' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getCurrentOfficer(), client.getSelectOfficer(), "'Current officer' is prefilled with wrong value");
-
-        // Bank Branch
         Assert.assertEquals(Pages.addAccountPage().getBankBranch(), "Select", "'Bank branch' is prefilled with wrong value");
-
-        // DBC ODP Opt In/Out Status
         Assert.assertEquals(Pages.addAccountPage().getOptInOutStatus(), "Client Has Not Responded", "'DBC ODP Opt In/Out Status' is prefilled with wrong value");
 
         LOG.info("Step 6: Select any values in drop-down fields");
-        // Select a 'Product Type'
         AccountActions.createAccount().setProduct(checkingAccount);
-        // Select a 'Bank branch'
-        AccountActions.createAccount().setBankBranch(checkingAccount);
-        // Current Officer (any value that differs from the default Officer)
+        Pages.addAccountPage().setDateOpenedValue(checkingAccount.getDateOpened());
         AccountActions.createAccount().setCurrentOfficer(checkingAccount);
-        // Statement Cycle
+        AccountActions.createAccount().setBankBranch(checkingAccount);
         AccountActions.createAccount().setStatementCycle(checkingAccount);
-        // Call class code
         AccountActions.createAccount().setCallClassCode(checkingAccount);
-        // Account analysis
+        AccountActions.createAccount().setChargeOrAnalyze(checkingAccount);
         AccountActions.createAccount().setAccountAnalysis(checkingAccount);
-        // Charge or analyze
 
         LOG.info("Step 7: Fill in text fields with valid data. NOTE: do not fill in Account Number field");
-        // Account title
         Pages.addAccountPage().setAccountTitleValue(checkingAccount.getAccountTitle());
-        // Statement Flag - 'R' or 'S'
-        // Interest Rate - min - 4 digits pass the decimal, max - 100%
-        // Earning Credit Rate - max 100%
+        checkingAccount.setStatementFlag(Pages.addAccountPage().generateStatementFlagValue());
+        Pages.addAccountPage().setStatementFlag(checkingAccount.getStatementFlag());
+        checkingAccount.setInterestRate(Pages.addAccountPage().generateInterestRateValue());
+        Pages.addAccountPage().setInterestRate(checkingAccount.getInterestRate());
+        checkingAccount.setEarningCreditRate(Pages.addAccountPage().generateEarningCreditRateValue());
+        Pages.addAccountPage().setEarningCreditRate(checkingAccount.getEarningCreditRate());
 
         LOG.info("Step 8: Select any date ≤ Current Date in DBC ODP Opt In/Out Status Date field");
-        // select date
+        Pages.addAccountPage().setOptInOutDateValue(checkingAccount.getOptInOutDate());
 
         LOG.info("Step 9: Submit the account creation by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
 
         LOG.info("Step 10: Pay attention to the fields that were filled in during account creation");
-        // Check all fields filled in steps 6 and 7
-        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), checkingAccount.getAccountTitle(), "Account title is not relevant");
+        Pages.accountDetailsPage().clickMoreButton();
+        Assert.assertEquals(Pages.accountDetailsPage().getProductValue(), checkingAccount.getProduct(), "'Product' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), checkingAccount.getDateOpened(), "'Date Opened' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), checkingAccount.getCurrentOfficer(), "'Current Officer' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), checkingAccount.getBankBranch(), "'Bank Branch' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getStatementCycle(), checkingAccount.getStatementCycle(), "'Statement Cycle' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), checkingAccount.getCallClassCode(), "'Call Class' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getChargeOrAnalyze(), checkingAccount.getChargeOrAnalyze(), "'Charge or Analyze' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getAccountAnalysisValue(), checkingAccount.getAccountAnalysis(), "'Account Analysis' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), checkingAccount.getAccountTitle(), "'Title' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getStatementFlagValue(), checkingAccount.getStatementFlag(), "'Statement Flag' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), checkingAccount.getInterestRate(), "'Interest Rate' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getEarningCreditRate(), checkingAccount.getEarningCreditRate(), "'Earning Rate' value does not match");
 
         LOG.info("Step 11: Click [Edit] button and pay attention to the fields that were filled in during account creation");
-        // Check all fields filled in steps 6 and 7
-        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), checkingAccount.getAccountTitle(), "Account title is not relevant");
+        Pages.accountDetailsPage().clickEditButton();
+
+        // Implement all the verifications as in previous step
 
         // TODO: Proceed implementing steps
 

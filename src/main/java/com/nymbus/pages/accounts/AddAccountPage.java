@@ -6,7 +6,9 @@ import com.nymbus.locator.Locator;
 import com.nymbus.locator.XPath;
 import io.qameta.allure.Step;
 
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Random;
 
 public class AddAccountPage extends BasePage {
 
@@ -33,6 +35,12 @@ public class AddAccountPage extends BasePage {
     private Locator statementCycleSelectorButton = new XPath("//*[@id='statementcycle']");
     private Locator statementCycleList = new XPath("//li[contains(@role, 'option')]/div/span");
     private Locator bankBranch = new XPath("//div[@data-test-id='field-bankbranch']/a/span[contains(@class, 'ng-binding')]");
+    private Locator statementFlagInput = new XPath("//input[@data-test-id='field-statementflag']");
+    private Locator interestRateInput = new XPath("//input[@data-test-id='field-interestrate']");
+    private Locator earningCreditRateInput = new XPath("//input[@data-test-id='field-earningscreditrate']");
+    private Locator optInOutDateCalendarIcon = new XPath("//div[input[@id='dbcodpstatusdate']]/div[span[@class='nyb-icon-calendar']]");
+    private Locator optInOutDateInputField = new XPath("//input[@id='dbcodpstatusdate']");
+    private Locator dateOpenedField = new XPath("//input[@id='dateopened']");
 
 
     /**
@@ -59,9 +67,98 @@ public class AddAccountPage extends BasePage {
     private Locator callClassCodeSelectorButton = new XPath("//div[@data-test-id='field-callclasscode']");
     private Locator callClassCodeList = new XPath("//li[contains(@role, 'option')]/div/span");
     private Locator callClassCodeSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator accountAnalysisSelectorButton = new XPath("//div[@data-test-id='field-accountanalysis']");
+    private Locator accountAnalysisSelectorButton = new XPath("//div[@id='accountanalysis']");
     private Locator accountAnalysisList = new XPath("//li[contains(@role, 'option')]/div/span");
     private Locator accountAnalysisSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private Locator chargeOrAnalyzeSelectorButton = new XPath("//div[@id='chargeoranalyze']");
+    private Locator chargeOrAnalyzeList = new XPath("//li[contains(@role, 'option')]/div/span");
+    private Locator chargeOrAnalyzeSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    @Step("Set 'DBC ODP Opt In/Out Status Date' value")
+    public void setDateOpenedValue(String dateOpenedValue) {
+        waitForElementVisibility(dateOpenedField);
+        waitForElementClickable(dateOpenedField);
+        typeWithoutWipe("", dateOpenedField);
+        wait(1);
+        typeWithoutWipe(dateOpenedValue, dateOpenedField);
+    }
+
+    @Step("Set 'DBC ODP Opt In/Out Status Date' value")
+    public void setOptInOutDateValue(String optInOutDateValue) {
+        waitForElementVisibility(optInOutDateInputField);
+        waitForElementClickable(optInOutDateInputField);
+        typeWithoutWipe("", optInOutDateInputField);
+        wait(1);
+        typeWithoutWipe(optInOutDateValue, optInOutDateInputField);
+    }
+
+    @Step("Click on 'DBC ODP Opt In/Out Status Date' calendar icon")
+    public void clickOptInOutDateCalendarIcon() {
+        waitForElementClickable(optInOutDateCalendarIcon);
+        click(optInOutDateCalendarIcon);
+    }
+
+    @Step("Click the 'Account Analysis' option")
+    public void clickChargeOrAnalyzeSelectorOption(String chargeOrAnalyzeOption) {
+        waitForElementVisibility(chargeOrAnalyzeSelectorOption, chargeOrAnalyzeOption);
+        waitForElementClickable(chargeOrAnalyzeSelectorOption, chargeOrAnalyzeOption);
+        click(chargeOrAnalyzeSelectorOption, chargeOrAnalyzeOption);
+    }
+
+    @Step("Returning list of 'Charge or Analyze' options")
+    public List<String> getChargeOrAnalyzeList() {
+        waitForElementVisibility(chargeOrAnalyzeList);
+        waitForElementClickable(chargeOrAnalyzeList);
+        return getElementsText(chargeOrAnalyzeList);
+    }
+
+    @Step("Click the 'Charge or Analyze' selector button")
+    public void clickChargeOrAnalyzeSelectorButton() {
+        waitForElementVisibility(chargeOrAnalyzeSelectorButton);
+        waitForElementClickable(chargeOrAnalyzeSelectorButton);
+        click(chargeOrAnalyzeSelectorButton);
+    }
+
+    @Step("Generate 'Earning Credit Rate' value")
+    public String generateEarningCreditRateValue() {
+        Random ran = new Random();
+        return String.valueOf(ran.nextInt(100));
+    }
+
+    @Step("Set 'Earning Credit Rate' option")
+    public void setEarningCreditRate(String earningCreditRateValue) {
+        waitForElementVisibility(earningCreditRateInput);
+        waitForElementClickable(earningCreditRateInput);
+        type(earningCreditRateValue, earningCreditRateInput);
+    }
+
+    @Step("Geterate 'Interest Rate' value")
+    public String generateInterestRateValue() {
+        Random ran = new Random();
+        DecimalFormat df = new DecimalFormat("###.####");
+        return String.valueOf(df.format(ran.nextFloat() * 100));
+    }
+
+    @Step("Set 'Interest Rate' option")
+    public void setInterestRate(String interestRateValue) {
+        waitForElementVisibility(interestRateInput);
+        waitForElementClickable(interestRateInput);
+        type(interestRateValue, interestRateInput);
+    }
+
+    @Step("Generate 'Statement Flag' value")
+    public String generateStatementFlagValue() {
+        String[] flags = {"R", "S"};
+        Random random = new Random();
+        return flags[random.nextInt(flags.length)];
+    }
+
+    @Step("Set 'Statement flag' option")
+    public void setStatementFlag(String flagValue) {
+        waitForElementVisibility(statementFlagInput);
+        waitForElementClickable(statementFlagInput);
+        type(flagValue, statementFlagInput);
+    }
 
     @Step("Click the 'Account Analysis' option")
     public void clickAccountAnalysisSelectorOption(String callClassCodeOption) {
@@ -79,6 +176,7 @@ public class AddAccountPage extends BasePage {
 
     @Step("Click the 'Account Analysis' selector button")
     public void clickAccountAnalysisSelectorButton() {
+        wait(2);
         waitForElementVisibility(accountAnalysisSelectorButton);
         waitForElementClickable(accountAnalysisSelectorButton);
         click(accountAnalysisSelectorButton);
