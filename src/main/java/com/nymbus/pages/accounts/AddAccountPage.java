@@ -30,7 +30,7 @@ public class AddAccountPage extends BasePage {
     private Locator saveAccountButton = new XPath("//button[@data-test-id='action-save']");
     private Locator bankBranchList = new XPath("//li[contains(@role, 'option')]/div/span");
     private Locator accountType = new XPath("//div[@data-test-id='field-customertype']/a/span/span");
-    private Locator dateOpened = new XPath("//*[@data-test-id='field-dateopened']");
+    private Locator dateOpened = new XPath("//input[@data-test-id='field-dateopened']");
     private Locator productSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private Locator statementCycleSelectorButton = new XPath("//*[@id='statementcycle']");
     private Locator statementCycleList = new XPath("//li[contains(@role, 'option')]/div/span");
@@ -305,19 +305,20 @@ public class AddAccountPage extends BasePage {
     public String getDateOpened() {
         waitForElementVisibility(dateOpened);
         waitForElementClickable(dateOpened);
-        return getElementText(dateOpened);
+        return getElementAttributeValue("value", dateOpened);
     }
 
     @Step("Returning the 'Account Holder Tax ID' value")
     public String getAccountHolderTaxID() {
         waitForElementVisibility(accountHolderTaxID);
-        return getElementText(accountHolderTaxID);
+        String taxid = getElementAttributeValue("value", accountHolderTaxID);
+        return taxid.replaceAll("-", "");
     }
 
     @Step("Returning the 'Account Holder Client type' value")
     public String getAccountHolderClientType() {
         waitForElementVisibility(accountHolderClientType);
-        return getElementText(accountHolderClientType);
+        return getElementAttributeValue("value", accountHolderClientType);
     }
 
     @Step("Returning the 'Account Holder Relationship' value")

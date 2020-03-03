@@ -39,10 +39,104 @@ public class AccountDetailsPage extends BasePage {
     private Locator earningCreditRate = new XPath("//tr[@data-config-name='earningscreditrate']//span[contains(@class, 'dnTextFixedWidthText')]");
 
     /**
+     * Edit Account
+     */
+
+    private Locator editAccountTitle = new XPath("//input[@id='accounttitlemailinginstructions']");
+    private Locator editBankBranch = new XPath("//div[@id='bankbranch']//span[contains(@class, 'ng-scope')]");
+    private Locator editProduct = new XPath("//div[@id='accountclasstype']//span[contains(@class, 'ng-scope')]");
+    private Locator editDateOpened = new XPath("//input[@id='dateopened']");
+    private Locator editCurrentOfficer = new XPath("//div[@id='officer']//span[contains(@class, 'ng-scope')]");
+    private Locator editStatementCycle = new XPath("//div[@id='statementcycle']//span[contains(@class, 'ng-scope')]");
+    private Locator editCallClassCode = new XPath("//div[@id='callclasscode']//span[contains(@class, 'ng-scope')]");
+    private Locator editChargeOrAnalyze = new XPath("//div[@id='chargeoranalyze']//span[contains(@class, 'ng-scope')]");
+    private Locator editAccountAnalysis = new XPath("//div[@id='accountanalysis']//span[contains(@class, 'ng-scope')]");
+    private Locator editStatementFlag = new XPath("//input[@id='statementflag']");
+    private Locator editInterestRate = new XPath("//input[@id='interestrate']");
+    private Locator editEarningCreditRate = new XPath("//input[@id='earningscreditrate']");
+
+    /**
      * Maintenance tab
      */
     private Locator viewAllMaintenanceHistoryLink = new XPath("//button//span[contains(text(), 'View All History')]");
     private Locator viewMoreButton = new XPath("//button[@data-test-id='action-loadMore']");
+
+    /**
+     * Edit Account
+     */
+    @Step("Get 'Earning Credit Rate' value in edit mode")
+    public String getEarningCreditRateInEditMode() {
+        waitForElementVisibility(editEarningCreditRate);
+        String rate = getElementAttributeValue("value", editEarningCreditRate);
+        return rate.substring(0, rate.length() - 1);
+    }
+
+    @Step("Get 'Account Analyzis' value in edit mode")
+    public String getAccountAnalysisValueInEditMode() {
+        waitForElementVisibility(editAccountAnalysis);
+        return getElementText(editAccountAnalysis);
+    }
+
+    @Step("Get 'Charge or Analyze' value in edit mode")
+    public String getChargeOrAnalyzeInEditMode() {
+        waitForElementVisibility(editChargeOrAnalyze);
+        return getElementText(editChargeOrAnalyze);
+    }
+
+    @Step("Get 'Interest Rate' value in edit mode")
+    public String getInterestRateValueInEditMode() {
+        waitForElementVisibility(editInterestRate);
+        String rate = getElementAttributeValue("value", editInterestRate);
+        return rate.substring(0, rate.length() - 1);
+    }
+
+    @Step("Get 'Statement Flag' value in edit mode")
+    public String getStatementFlagValueInEditMode() {
+        waitForElementVisibility(editStatementFlag);
+        return getElementAttributeValue("value", editStatementFlag);
+    }
+
+    @Step("Get 'Call Class Code' value in edit mode")
+    public String getCallClassCodeValueInEditMode() {
+        waitForElementVisibility(editCallClassCode);
+        return getElementText(editCallClassCode);
+    }
+
+    @Step("Get 'Statement Cycle' value in edit mode")
+    public String getStatementCycleValueInEditMode() {
+        waitForElementVisibility(editStatementCycle);
+        return getElementText(editStatementCycle);
+    }
+
+    @Step("Get 'Current Officer' value in edit mode")
+    public String getCurrentOfficerValueInEditMode() {
+        waitForElementVisibility(editCurrentOfficer);
+        return getElementText(editCurrentOfficer);
+    }
+
+    @Step("Get 'Date Opened' value in edit mode")
+    public String getDateOpenedValueInEditMode() {
+        waitForElementVisibility(editDateOpened);
+        return getElementAttributeValue("value", editDateOpened);
+    }
+
+    @Step("Get 'Product' value in edit mode")
+    public String getProductValueInEditMode() {
+        waitForElementVisibility(editProduct);
+        return getElementText(editProduct);
+    }
+
+    @Step("Get 'Bank Branch' value in edit mode")
+    public String getBankBranchValueInEditMode() {
+        waitForElementVisibility(editBankBranch);
+        return getElementText(editBankBranch);
+    }
+
+    @Step("Get 'Account Title' value in edit mode")
+    public String getAccountTitleValueInEditMode() {
+        waitForElementVisibility(editAccountTitle);
+        return getElementAttributeValue("value", editAccountTitle);
+    }
 
     /**
      * Details tab
