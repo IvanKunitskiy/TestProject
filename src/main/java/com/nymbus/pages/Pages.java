@@ -6,6 +6,7 @@ import com.nymbus.pages.clients.ClientsPage;
 import com.nymbus.pages.clients.ClientsSearchResultsPage;
 import com.nymbus.pages.clients.maintenance.MaintenancePage;
 import com.nymbus.pages.loans.LoansPage;
+import com.nymbus.pages.modalwindow.DebitCardModalWindow;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
 import com.nymbus.pages.teller.TellerPage;
 import com.nymbus.pages.tellertotellertransfer.TellerToTellerPage;
@@ -28,6 +29,11 @@ public class Pages {
     private static Settings settings;
     private static ClientsSearchResultsPage clientsSearchResultsPage;
     private static MaintenancePage maintenancePage;
+
+    /**
+     * Modal Windows
+     * */
+    private static DebitCardModalWindow debitCardModalWindow;
 
     /**
      * This function return an instance of `LoginPage`
@@ -157,5 +163,15 @@ public class Pages {
             maintenancePage = new MaintenancePage();
         }
         return maintenancePage;
+    }
+
+    /**
+     * This function return an instance of `DebitCardModalWindow`
+     */
+    public static DebitCardModalWindow debitCardModalWindow() {
+        if (debitCardModalWindow == null) {
+            debitCardModalWindow = new DebitCardModalWindow();
+        }
+        return debitCardModalWindow;
     }
 }

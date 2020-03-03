@@ -10,9 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ClientsPage extends BasePage {
-
     private Locator addNewClientButton = new XPath("//a[@*='action-addNewCustomer']");
-    private Locator clientsSearchInputField = new XPath("//input[@basicinformation='search']");
+    private Locator clientsSearchInputField = new XPath("//input[@type='search']");
     private Locator searchButton = new XPath("//button[text()='Search']");
     private Locator lookupResults = new XPath("//div[contains(text(),'View')]/preceding-sibling::*[1]");
     private Locator lookupResultByIndex = new XPath("(//div[contains(text(),'View')]/preceding-sibling::*[1])[%s]");

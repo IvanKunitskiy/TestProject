@@ -10,11 +10,13 @@ import com.nymbus.models.settings.product.Product;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class CDAccount implements Account {
     @NonNull private ProductType productType;
     @NonNull private Product product;
@@ -22,7 +24,7 @@ public class CDAccount implements Account {
     private String accountTitle;
     @NonNull private AccountType accountType;
     private MailCode mailCode;
-    @NonNull private List<Client> accountHoldersAndSigners; // TODO: Need to refactor
+    @NonNull private List<Client> accountHoldersAndSigners; // TODO: Need to refactor (recursion warning)
     private String dateOpened;
     private String originatingOfficer; // TODO: Need to refactor
     @NonNull private BankBranch bankBranch;

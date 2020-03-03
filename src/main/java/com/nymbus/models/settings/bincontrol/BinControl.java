@@ -4,12 +4,14 @@ import com.nymbus.models.client.basicinformation.type.ClientType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class BinControl {
     @NonNull private String binNumber;
     @NonNull private String cardDescription;

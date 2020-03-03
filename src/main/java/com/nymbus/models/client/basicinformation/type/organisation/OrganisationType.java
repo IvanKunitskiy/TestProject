@@ -8,11 +8,13 @@ import com.nymbus.models.client.clientdetails.type.ClientStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
 public abstract class OrganisationType extends Client {
     @NonNull private ClientType clientType;
     private ClientStatus clientStatus;

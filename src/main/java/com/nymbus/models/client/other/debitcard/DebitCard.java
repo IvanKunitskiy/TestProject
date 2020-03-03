@@ -5,18 +5,20 @@ import com.nymbus.models.settings.bincontrol.BinControl;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class DebitCard {
     @NonNull private BinControl binControl;
     @NonNull private boolean isInstantIssue;
 
     private String cardNumber;
     private String clientNumber;
-    @NonNull private String nameOfCard;
+    @NonNull private String nameOnCard;
     private String secondLineEmbossing;
     @NonNull private List<Account> accounts; // At least one
     private String cardDesign;

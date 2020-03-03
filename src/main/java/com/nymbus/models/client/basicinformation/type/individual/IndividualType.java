@@ -10,11 +10,13 @@ import com.nymbus.models.client.other.document.IDType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
 public abstract class IndividualType {
     @NonNull private ClientType clientType;
     private ClientStatus clientStatus;

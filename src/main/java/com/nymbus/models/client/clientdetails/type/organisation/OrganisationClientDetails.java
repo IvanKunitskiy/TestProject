@@ -6,12 +6,14 @@ import com.nymbus.models.client.other.File;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class OrganisationClientDetails {
     private String industry;
     private MailCode mailCode;
