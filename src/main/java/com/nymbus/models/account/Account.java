@@ -49,6 +49,10 @@ public class Account {
         account.setAddNewOption("Account");
         account.setProductType("CHK Account");
         account.setAccountTitle(Random.genString(5));
+        account.setAccountNumber(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setProduct("Basic Business Checking");
+        account.setOptInOutDate("01/01/2020");
+        account.setDateOpened("02/27/2020");
 
         return account;
     }

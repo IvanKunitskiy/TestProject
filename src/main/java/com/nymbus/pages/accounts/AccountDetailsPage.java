@@ -21,6 +21,7 @@ public class AccountDetailsPage extends BasePage {
      * Details tab
      */
     private Locator moreButton = new XPath("//button[@data-test-id='action-showMoreFields']");
+    private Locator lessButton = new XPath("//button[@data-test-id='action-hideLessFields']");
     private Locator fullProfileButton = new XPath("//button[@data-test-id='go-fullProfile']");
     private Locator productType = new XPath("//tr[@data-config-name='accounttype']//span[contains(@class, 'dnTextFixedWidthText')]");
     private Locator boxSize = new XPath("//tr[@data-config-name='boxsize']//span[contains(@class, 'dnTextFixedWidthText')]");
@@ -252,6 +253,19 @@ public class AccountDetailsPage extends BasePage {
         waitForElementVisibility(moreButton);
         waitForElementClickable(moreButton);
         click(moreButton);
+    }
+
+    public boolean isMoreButtonVisible() {
+        waitForElementVisibility(moreButton);
+        waitForElementClickable(moreButton);
+        return isElementVisible(moreButton);
+    }
+
+    @Step("Click the 'Less' button")
+    public void clickLessButton() {
+        waitForElementVisibility(lessButton);
+        waitForElementClickable(lessButton);
+        click(lessButton);
     }
 
     /**
