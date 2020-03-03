@@ -8,10 +8,7 @@ import com.nymbus.models.account.Account;
 import com.nymbus.models.client.Client;
 import com.nymbus.pages.Pages;
 import com.nymbus.util.Constants;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Owner;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -19,6 +16,7 @@ import org.testng.annotations.Test;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+@Epic("Frontoffice")
 @Feature("Deposit Accounts Management")
 @Owner("Dmytro")
 public class C23637_CreateCheckingAccount extends BaseTest {
