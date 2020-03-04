@@ -19,6 +19,14 @@ public class DebitCardModalWindowActions {
         Pages.debitCardModalWindow().typeToNameOnCardInputField(debitCard.getNameOnCard());
         Pages.debitCardModalWindow().typeToSecondLineEmbossingInputField(debitCard.getSecondLineEmbossing());
 //        Pages.debitCardModalWindow().typeToAccountInputField(debitCard.getAccounts().get(0)); // TODO: Need to think about this field
-
+//        Pages.debitCardModalWindow().selectCardDesign(debitCard.getCardDesign());
+        Pages.debitCardModalWindow().selectCardStatus(debitCard.getCardStatus());
+        Pages.debitCardModalWindow().clickOnYesButton();
+        Pages.debitCardModalWindow().typeToPinOffsetInputField(debitCard.getPinOffset());
+//        Pages.debitCardModalWindow().typeToDateEffectiveInputField(debitCard.getDateEffective()); // TODO: Contains value by the default. Maybe solution is the set current day on 'DebitCardFactory' class
+        Pages.debitCardModalWindow().typeToATMDailyLimitNumberAmtInputField(String.valueOf(debitCard.getATMDailyDollarLimit()));
+        Pages.debitCardModalWindow().typeToATMDailyLimitNumberNbrInputField(String.valueOf(debitCard.getATMTransactionLimit()));
+        Pages.debitCardModalWindow().typeToDebitPurchaseDailyLimitNumberAmtInputField(String.valueOf(debitCard.getDBCDailyDollarLimit()));
+        Pages.debitCardModalWindow().typeToDebitPurchaseDailyLimitNumberNbrInputField(String.valueOf(debitCard.getDBCTransactionLimit()));
     }
 }
