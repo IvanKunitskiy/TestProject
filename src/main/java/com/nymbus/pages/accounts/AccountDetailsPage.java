@@ -57,6 +57,25 @@ public class AccountDetailsPage extends BasePage {
     private Locator editEarningCreditRate = new XPath("//input[@id='earningscreditrate']");
 
     /**
+     * Disabled fields in edit mode
+     */
+    private Locator productTypeField = new XPath("//div[@id='accounttype']");
+    private Locator productField = new XPath("//div[@id='accountclasstype']");
+    private Locator accountNumberField = new XPath("//input[@id='accountnumber']");
+    private Locator accountTypeField = new XPath("//div[@id='customertype']");
+    private Locator originatingOfficerField = new XPath("//div[@id='originatingofficer']");
+    private Locator accountStatusField = new XPath("//input[@id='accountstatus']");
+    private Locator dateOpenedField = new XPath("//input[@id='dateopened']");
+    private Locator dateClosedField = new XPath("//input[@id='dateclosed']");
+    private Locator annualPercentageYieldField = new XPath("//input[@id='apy']");
+    private Locator daysOverdraftField = new XPath("//input[@id='daysoverdraftregcc']");
+    private Locator daysOverdraftAboveLimitField = new XPath("//input[@id='daysoverdraftabovelimitregcc']");
+    private Locator lastDebitAmountField = new XPath("//input[@id='lastwithdrawalamount']");
+    private Locator automaticOverdraftLimitField = new XPath("//input[@id='automaticoverdraftlimit']");
+    private Locator totalEarningsField = new XPath("//input[@id='totalEarnings']");
+
+
+    /**
      * Maintenance tab
      */
     private Locator viewAllMaintenanceHistoryLink = new XPath("//button//span[contains(text(), 'View All History')]");
@@ -65,6 +84,91 @@ public class AccountDetailsPage extends BasePage {
     /**
      * Edit Account
      */
+
+    @Step("Check if 'Total Earnings' field is disabled edit mode")
+    public boolean isTotalEarningsFieldDisabledInEditMode() {
+        waitForElementVisibility(totalEarningsField);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", totalEarningsField));
+    }
+
+    @Step("Check if 'Automatic Overdraft Limit Field' field is disabled edit mode")
+    public boolean isAutomaticOverdraftLimitFieldDisabledInEditMode() {
+        waitForElementVisibility(automaticOverdraftLimitField);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", automaticOverdraftLimitField));
+    }
+
+    @Step("Check if 'Last Debit Amount' field is disabled edit mode")
+    public boolean isLastDebitAmountFieldDisabledInEditMode() {
+        waitForElementVisibility(lastDebitAmountField);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", lastDebitAmountField));
+    }
+
+    @Step("Check if 'Times $5000 Overdrawn-6 Months' field is disabled edit mode")
+    public boolean isDaysOverdraftAboveLimitFieldDisabledInEditMode() {
+        waitForElementVisibility(daysOverdraftAboveLimitField);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", daysOverdraftAboveLimitField));
+    }
+
+    @Step("Check if 'Times Overdrawn-6 Months' field is disabled edit mode")
+    public boolean isDaysOverdraftFieldDisabledInEditMode() {
+        waitForElementVisibility(daysOverdraftField);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", daysOverdraftField));
+    }
+
+    @Step("Check if 'Annual Percentage Yield' field is disabled edit mode")
+    public boolean isAnnualPercentageYieldFieldDisabledInEditMode() {
+        waitForElementVisibility(annualPercentageYieldField);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", annualPercentageYieldField));
+    }
+
+    @Step("Check if 'Date Opened' field is disabled edit mode")
+    public boolean isDateClosedFieldDisabledInEditMode() {
+        waitForElementVisibility(dateClosedField);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", dateClosedField));
+    }
+
+    @Step("Check if 'Date Opened' field is disabled edit mode")
+    public boolean isDateOpenedFieldDisabledInEditMode() {
+        waitForElementVisibility(dateOpenedField);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", dateOpenedField));
+    }
+
+    @Step("Check if 'Account Status' field is disabled edit mode")
+    public boolean isAccountStatusFieldDisabledInEditMode() {
+        waitForElementVisibility(accountStatusField);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", accountStatusField));
+    }
+
+    @Step("Check if 'Originating Officer' field is disabled edit mode")
+    public boolean isOriginatingOfficerFieldDisabledInEditMode() {
+        waitForElementVisibility(originatingOfficerField);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", originatingOfficerField));
+    }
+
+    @Step("Check if 'Account Type' field is disabled edit mode")
+    public boolean isAccountTypeFieldDisabledInEditMode() {
+        waitForElementVisibility(accountTypeField);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", accountTypeField));
+    }
+
+    @Step("Check if 'Account Number' field is disabled edit mode")
+    public boolean isAccountNumberFieldDisabledInEditMode() {
+        waitForElementVisibility(accountNumberField);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", accountNumberField));
+    }
+
+    @Step("Check if 'Product' field is disabled edit mode")
+    public boolean isProductFieldDisabledInEditMode() {
+        waitForElementVisibility(productField);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", productField));
+    }
+
+    @Step("Check if 'Product type' field is disabled edit mode")
+    public boolean isProductTypeFieldDisabledInEditMode() {
+        waitForElementVisibility(productTypeField);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", productTypeField));
+    }
+
     @Step("Get 'Earning Credit Rate' value in edit mode")
     public String getEarningCreditRateInEditMode() {
         waitForElementVisibility(editEarningCreditRate);
