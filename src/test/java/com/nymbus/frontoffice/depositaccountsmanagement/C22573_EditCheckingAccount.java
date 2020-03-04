@@ -78,8 +78,6 @@ public class C22573_EditCheckingAccount extends BaseTest {
 //        - Automatic Overdraft Status = Active
 //        - Reason auto OD chg waived
 //        - When surcharges refunded
-
-
     }
 
 }
