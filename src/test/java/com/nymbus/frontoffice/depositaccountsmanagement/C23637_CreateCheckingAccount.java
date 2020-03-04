@@ -30,9 +30,6 @@ public class C23637_CreateCheckingAccount extends BaseTest {
         client.setClientStatus("Member");
         client.setClientType("Individual");
         checkingAccount = new Account().setCHKAccountData();
-        checkingAccount.setProduct("Basic Business Checking");
-        checkingAccount.setOptInOutDate("01/01/2020");
-        checkingAccount.setDateOpened("02/27/2020");
     }
 
     @Test(description = "C14918, Create checking account")
