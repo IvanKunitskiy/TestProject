@@ -21,6 +21,8 @@ public class Account {
     private String optInOutDate;
     private String interestRate;
     private String earningCreditRate;
+    private String federalWHReason;
+    private String reasonATMChargeWaived;
     private String mailCode;
     private String dateOpened;
     private String bankBranch;
@@ -302,5 +304,21 @@ public class Account {
 
     public void setEarningCreditRate(String earningCreditRate) {
         this.earningCreditRate = earningCreditRate;
+    }
+
+    public String getFederalWHReason() {
+        return federalWHReason;
+    }
+
+    public void setFederalWHReason(String federalWHReason) {
+        this.federalWHReason = federalWHReason;
+    }
+
+    public String getReasonATMChargeWaived() {
+        return reasonATMChargeWaived;
+    }
+
+    public void setReasonATMChargeWaived(String reasonATMChargeWaived) {
+        this.reasonATMChargeWaived = reasonATMChargeWaived;
     }
 }

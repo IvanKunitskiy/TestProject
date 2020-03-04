@@ -5,6 +5,8 @@ import com.nymbus.locator.Locator;
 import com.nymbus.locator.XPath;
 import io.qameta.allure.Step;
 
+import java.util.List;
+
 public class AccountDetailsPage extends BasePage {
 
     /**
@@ -55,6 +57,12 @@ public class AccountDetailsPage extends BasePage {
     private Locator editStatementFlag = new XPath("//input[@id='statementflag']");
     private Locator editInterestRate = new XPath("//input[@id='interestrate']");
     private Locator editEarningCreditRate = new XPath("//input[@id='earningscreditrate']");
+    private Locator federalWHReasonSelectorButton = new XPath("//div[@id='federalwithholdingreason']");
+    private Locator federalWHReasonList = new XPath("//li[contains(@role, 'option')]/div/span");
+    private Locator federalWHReasonSelectorOption = new XPath("//div[@name='federalwithholdingreason']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private Locator reasonATMChargeWaivedSelectorButton = new XPath("//div[@id='reasonatmchargeswaived']");
+    private Locator reasonATMChargeWaivedList = new XPath("//li[contains(@role, 'option')]/div/span");
+    private Locator reasonATMChargeWaivedSelectorOption = new XPath("//div[@name='reasonatmchargeswaived']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
     /**
      * Disabled fields in edit mode
@@ -84,6 +92,50 @@ public class AccountDetailsPage extends BasePage {
     /**
      * Edit Account
      */
+
+    @Step("Click on 'Reason ATM charge waived' option")
+    public void clickReasonATMChargeWaivedSelectorOption(String reasonATMChargeWaivedOption) {
+        waitForElementVisibility(reasonATMChargeWaivedSelectorOption, reasonATMChargeWaivedOption);
+        waitForElementClickable(reasonATMChargeWaivedSelectorOption, reasonATMChargeWaivedOption);
+        click(reasonATMChargeWaivedSelectorOption, reasonATMChargeWaivedOption);
+    }
+
+    @Step("Returning list of 'Reason ATM charge waived'")
+    public List<String> getReasonATMChargeWaivedList() {
+        waitForElementVisibility(reasonATMChargeWaivedList);
+        waitForElementClickable(reasonATMChargeWaivedList);
+        return getElementsText(reasonATMChargeWaivedList);
+    }
+
+    @Step("Click the 'Reason ATM charge waivedn' selector button")
+    public void clickReasonATMChargeWaivedSelectorButton() {
+        waitForElementVisibility(reasonATMChargeWaivedSelectorButton);
+        waitForElementClickable(reasonATMChargeWaivedSelectorButton);
+        click(reasonATMChargeWaivedSelectorButton);
+    }
+
+    // ----------
+
+    @Step("Click on 'Federal W/H Reason' option")
+    public void clickFederalWHReasonSelectorOption(String federalWHReasonOption) {
+        waitForElementVisibility(federalWHReasonSelectorOption, federalWHReasonOption);
+        waitForElementClickable(federalWHReasonSelectorOption, federalWHReasonOption);
+        click(federalWHReasonSelectorOption, federalWHReasonOption);
+    }
+
+    @Step("Returning list of 'Federal W/H Reason'")
+    public List<String> getFederalWHReasonList() {
+        waitForElementVisibility(federalWHReasonList);
+        waitForElementClickable(federalWHReasonList);
+        return getElementsText(federalWHReasonList);
+    }
+
+    @Step("Click the 'Federal W/H Reason' selector button")
+    public void clickFederalWHReasonSelectorButton() {
+        waitForElementVisibility(federalWHReasonSelectorButton);
+        waitForElementClickable(federalWHReasonSelectorButton);
+        click(federalWHReasonSelectorButton);
+    }
 
     @Step("Check if 'Total Earnings' field is disabled edit mode")
     public boolean isTotalEarningsFieldDisabledInEditMode() {

@@ -68,6 +68,18 @@ public class C22573_EditCheckingAccount extends BaseTest {
         Assert.assertTrue(Pages.accountDetailsPage().isLastDebitAmountFieldDisabledInEditMode(), "'Last Debit Amount' field is not disabled");
         Assert.assertTrue(Pages.accountDetailsPage().isAutomaticOverdraftLimitFieldDisabledInEditMode(), "'Automatic Overdraft Limit Field' field is not disabled");
         Assert.assertTrue(Pages.accountDetailsPage().isTotalEarningsFieldDisabledInEditMode(), "'Total Earnings' field is not disabled");
+
+        LOG.info("Step 5: Select data in such dropdown fields that were not available in Add New mode");
+        AccountActions.editAccount().setFederalWHReason(checkingAccount);
+        AccountActions.editAccount().setReasonATMChargeWaived(checkingAccount);
+//        - OD protection acct #
+//        - Reason auto NSF chg waived
+//        - Reason Debit Card Charge Waived
+//        - Automatic Overdraft Status = Active
+//        - Reason auto OD chg waived
+//        - When surcharges refunded
+
+
     }
 
 }
