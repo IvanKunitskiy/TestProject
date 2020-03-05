@@ -23,10 +23,19 @@ public class C22573_EditCheckingAccount extends BaseTest {
 
     @BeforeMethod
     public void preCondition() {
+        // set up client and account
         client = new Client().setDefaultClientData();
         client.setClientStatus("Member");
         client.setClientType("Individual");
         checkingAccount = new Account().setCHKAccountData();
+        checkingAccount.setAutomaticOverdraftStatus("Active");
+
+        // login to the system and create a client with checking account
+        navigateToUrl(Constants.URL);
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        ClientsActions.createClient().createClient(client);
+        AccountActions.createAccount().createCHKAccount(checkingAccount);
+        Actions.loginActions().doLogOut();
     }
 
     @Test(description = "C22573, Edit checking account")
@@ -36,11 +45,8 @@ public class C22573_EditCheckingAccount extends BaseTest {
         LOG.info("Step 1: Log in to the system");
         navigateToUrl(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
-        AccountActions.createAccount().createCHKAccount(checkingAccount);
 
         LOG.info("Step 2: Search for the CHK account from the precondition and open it on Details");
-        Pages.aSideMenuPage().clickClientMenuItem();
         Pages.clientsPage().typeToClientsSearchInputField(checkingAccount.getAccountNumber());
         Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() == 1, "There is more than one client found");
         Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), checkingAccount.getAccountNumber()));
@@ -72,12 +78,12 @@ public class C22573_EditCheckingAccount extends BaseTest {
         LOG.info("Step 5: Select data in such dropdown fields that were not available in Add New mode");
         AccountActions.editAccount().setFederalWHReason(checkingAccount);
         AccountActions.editAccount().setReasonATMChargeWaived(checkingAccount);
-//        - OD protection acct #
-//        - Reason auto NSF chg waived
-//        - Reason Debit Card Charge Waived
-//        - Automatic Overdraft Status = Active
-//        - Reason auto OD chg waived
-//        - When surcharges refunded
+//        AccountActions.editAccount().setOdProtectionAcct(checkingAccount);
+        AccountActions.editAccount().setReasonAutoNSFChgWaived(checkingAccount);
+        AccountActions.editAccount().setReasonDebitCardChargeWaived(checkingAccount);
+        AccountActions.editAccount().setAutomaticOverdraftStatus(checkingAccount);
+        AccountActions.editAccount().setReasonAutoOdChgWaived(checkingAccount);
+        AccountActions.editAccount().setWhenSurchargesRefunded(checkingAccount);
     }
 
 }

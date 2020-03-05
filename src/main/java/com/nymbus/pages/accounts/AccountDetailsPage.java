@@ -57,12 +57,38 @@ public class AccountDetailsPage extends BasePage {
     private Locator editStatementFlag = new XPath("//input[@id='statementflag']");
     private Locator editInterestRate = new XPath("//input[@id='interestrate']");
     private Locator editEarningCreditRate = new XPath("//input[@id='earningscreditrate']");
+
     private Locator federalWHReasonSelectorButton = new XPath("//div[@id='federalwithholdingreason']");
     private Locator federalWHReasonList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator federalWHReasonSelectorOption = new XPath("//div[@name='federalwithholdingreason']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private Locator federalWHReasonSelectorOption = new XPath("//div[@id='federalwithholdingreason']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
     private Locator reasonATMChargeWaivedSelectorButton = new XPath("//div[@id='reasonatmchargeswaived']");
     private Locator reasonATMChargeWaivedList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator reasonATMChargeWaivedSelectorOption = new XPath("//div[@name='reasonatmchargeswaived']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private Locator reasonATMChargeWaivedSelectorOption = new XPath("//div[@id='reasonatmchargeswaived']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private Locator odProtectionAcctSelectorButton = new XPath("//div[@id='overdraftprotectionaccountnumber']");
+    private Locator odProtectionAcctList = new XPath("//li[contains(@role, 'option')]/div/span");
+    private Locator odProtectionAcctSelectorOption = new XPath("//div[@id='overdraftprotectionaccountnumber']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private Locator reasonAutoNSFChgWaivedSelectorButton = new XPath("//div[@id='reasonautonsfchargeswaived']");
+    private Locator reasonAutoNSFChgWaivedList = new XPath("//li[contains(@role, 'option')]/div/span");
+    private Locator reasonAutoNSFChgWaivedSelectorOption = new XPath("//div[@id='reasonautonsfchargeswaived']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private Locator reasonReasonDebitCardChargeWaivedSelectorButton = new XPath("//div[@id='reasondebitcardchargeswaived']");
+    private Locator reasonReasonDebitCardChargeWaivedList = new XPath("//li[contains(@role, 'option')]/div/span");
+    private Locator reasonReasonDebitCardChargeWaivedSelectorOption = new XPath("//div[@id='reasondebitcardchargeswaived']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private Locator automaticOverdraftStatusSelectorButton = new XPath("//div[@id='automaticoverdraftstatus']");
+    private Locator automaticOverdraftStatusList = new XPath("//li[contains(@role, 'option')]/div/span");
+    private Locator automaticOverdraftStatusSelectorOption = new XPath("//div[@id='automaticoverdraftstatus']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private Locator reasonAutoOdChgWaivedSelectorButton = new XPath("//div[@id='reasonautoodchargeswaived']");
+    private Locator reasonAutoOdChgWaivedList = new XPath("//li[contains(@role, 'option')]/div/span");
+    private Locator reasonAutoOdChgWaivedSelectorOption = new XPath("//div[@id='reasonautoodchargeswaived']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private Locator whenSurchargesRefundedSelectorButton = new XPath("//div[@id='whensurchargesrefunded']");
+    private Locator whenSurchargesRefundedList = new XPath("//li[contains(@role, 'option')]/div/span");
+    private Locator whenSurchargesRefundedSelectorOption = new XPath("//div[@id='whensurchargesrefunded']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
     /**
      * Disabled fields in edit mode
@@ -93,6 +119,138 @@ public class AccountDetailsPage extends BasePage {
      * Edit Account
      */
 
+    @Step("Click on 'When surcharges refunded' option")
+    public void clickWhenSurchargesRefundedSelectorOption(String whenSurchargesRefunded) {
+        waitForElementVisibility(whenSurchargesRefundedSelectorOption, whenSurchargesRefunded);
+        waitForElementClickable(whenSurchargesRefundedSelectorOption, whenSurchargesRefunded);
+        click(whenSurchargesRefundedSelectorOption, whenSurchargesRefunded);
+    }
+
+    @Step("Returning list of 'When surcharges refunded'")
+    public List<String> getWhenSurchargesRefundedList() {
+        waitForElementVisibility(whenSurchargesRefundedList);
+        waitForElementClickable(whenSurchargesRefundedList);
+        return getElementsText(whenSurchargesRefundedList);
+    }
+
+    @Step("Click the 'When surcharges refunded' selector button")
+    public void clickWhenSurchargesRefundedSelectorButton() {
+        waitForElementVisibility(whenSurchargesRefundedSelectorButton);
+        scrollToElement(whenSurchargesRefundedSelectorButton);
+        waitForElementClickable(whenSurchargesRefundedSelectorButton);
+        click(whenSurchargesRefundedSelectorButton);
+    }
+
+    @Step("Click on 'Reason Auto Od Chg Waived' option")
+    public void clickReasonAutoOdChgWaivedSelectorOption(String reasonAutoOdChgWaivedOption) {
+        waitForElementVisibility(reasonAutoOdChgWaivedSelectorOption, reasonAutoOdChgWaivedOption);
+        waitForElementClickable(reasonAutoOdChgWaivedSelectorOption, reasonAutoOdChgWaivedOption);
+        click(reasonAutoOdChgWaivedSelectorOption, reasonAutoOdChgWaivedOption);
+    }
+
+    @Step("Returning list of 'Reason Auto Od Chg Waived'")
+    public List<String> getReasonAutoOdChgWaivedList() {
+        waitForElementVisibility(reasonAutoOdChgWaivedList);
+        waitForElementClickable(reasonAutoOdChgWaivedList);
+        return getElementsText(reasonAutoOdChgWaivedList);
+    }
+
+    @Step("Click the 'Reason Auto Od Chg Waived' selector button")
+    public void clickReasonAutoOdChgWaivedSelectorButton() {
+        waitForElementVisibility(reasonAutoOdChgWaivedSelectorButton);
+        scrollToElement(reasonAutoOdChgWaivedSelectorButton);
+        waitForElementClickable(reasonAutoOdChgWaivedSelectorButton);
+        click(reasonAutoOdChgWaivedSelectorButton);
+    }
+
+    @Step("Click on 'Automatic Overdraft Status' option")
+    public void clickAutomaticOverdraftStatusSelectorOption(String automaticOverdraftStatusOption) {
+        waitForElementVisibility(automaticOverdraftStatusSelectorOption, automaticOverdraftStatusOption);
+        waitForElementClickable(automaticOverdraftStatusSelectorOption, automaticOverdraftStatusOption);
+        click(automaticOverdraftStatusSelectorOption, automaticOverdraftStatusOption);
+    }
+
+    @Step("Returning list of 'Automatic Overdraft Status'")
+    public List<String> getAutomaticOverdraftStatusList() {
+        waitForElementVisibility(automaticOverdraftStatusList);
+        waitForElementClickable(automaticOverdraftStatusList);
+        return getElementsText(automaticOverdraftStatusList);
+    }
+
+    @Step("Click the 'Automatic Overdraft Status' selector button")
+    public void clickAutomaticOverdraftStatusSelectorButton() {
+        waitForElementVisibility(automaticOverdraftStatusSelectorButton);
+        scrollToElement(automaticOverdraftStatusSelectorButton);
+        waitForElementClickable(automaticOverdraftStatusSelectorButton);
+        click(automaticOverdraftStatusSelectorButton);
+    }
+
+    @Step("Click on 'Reason Debit Card Charge Waived' option")
+    public void clickReasonDebitCardChargeWaivedSelectorOption(String reasonDebitCardChargeWaivedOption) {
+        waitForElementVisibility(reasonReasonDebitCardChargeWaivedSelectorOption, reasonDebitCardChargeWaivedOption);
+        waitForElementClickable(reasonReasonDebitCardChargeWaivedSelectorOption, reasonDebitCardChargeWaivedOption);
+        click(reasonReasonDebitCardChargeWaivedSelectorOption, reasonDebitCardChargeWaivedOption);
+    }
+
+    @Step("Returning list of 'Reason Debit Card Charge Waived'")
+    public List<String> getReasonDebitCardChargeWaivedList() {
+        waitForElementVisibility(reasonReasonDebitCardChargeWaivedList);
+        waitForElementClickable(reasonReasonDebitCardChargeWaivedList);
+        return getElementsText(reasonReasonDebitCardChargeWaivedList);
+    }
+
+    @Step("Click the 'Reason Debit Card Charge Waived' selector button")
+    public void clickReasonDebitCardChargeWaivedOptionSelectorButton() {
+        waitForElementVisibility(reasonReasonDebitCardChargeWaivedSelectorButton);
+        scrollToElement(reasonReasonDebitCardChargeWaivedSelectorButton);
+        waitForElementClickable(reasonReasonDebitCardChargeWaivedSelectorButton);
+        click(reasonReasonDebitCardChargeWaivedSelectorButton);
+    }
+
+    @Step("Click on 'Auto NSF Chg Waived' option")
+    public void clickReasonAutoNSFChgWaivedSelectorOption(String reasonAutoNSFChgWaivedOption) {
+        waitForElementVisibility(reasonAutoNSFChgWaivedSelectorOption, reasonAutoNSFChgWaivedOption);
+        waitForElementClickable(reasonAutoNSFChgWaivedSelectorOption, reasonAutoNSFChgWaivedOption);
+        click(reasonAutoNSFChgWaivedSelectorOption, reasonAutoNSFChgWaivedOption);
+    }
+
+    @Step("Returning list of 'Auto NSF Chg Waived'")
+    public List<String> getReasonAutoNSFChgWaivedList() {
+        waitForElementVisibility(reasonAutoNSFChgWaivedList);
+        waitForElementClickable(reasonAutoNSFChgWaivedList);
+        return getElementsText(reasonAutoNSFChgWaivedList);
+    }
+
+    @Step("Click the 'Auto NSF Chg Waived' selector button")
+    public void clickReasonAutoNSFChgWaivedSelectorButton() {
+        waitForElementVisibility(reasonAutoNSFChgWaivedSelectorButton);
+        scrollToElement(reasonAutoNSFChgWaivedSelectorButton);
+        waitForElementClickable(reasonAutoNSFChgWaivedSelectorButton);
+        click(reasonAutoNSFChgWaivedSelectorButton);
+    }
+
+    @Step("Click on 'Od Protection Acct #' option")
+    public void clickOdProtectionAcctSelectorOption(String odProtectionAcctOption) {
+        waitForElementVisibility(odProtectionAcctSelectorOption, odProtectionAcctOption);
+        waitForElementClickable(odProtectionAcctSelectorOption, odProtectionAcctOption);
+        click(odProtectionAcctSelectorOption, odProtectionAcctOption);
+    }
+
+    @Step("Returning list of 'Od Protection Acct #'")
+    public List<String> getOdProtectionAcctList() {
+        waitForElementVisibility(odProtectionAcctList);
+        waitForElementClickable(odProtectionAcctList);
+        return getElementsText(odProtectionAcctList);
+    }
+
+    @Step("Click the 'Od Protection Acct #' selector button")
+    public void clickOdProtectionAcctSelectorButton() {
+        waitForElementVisibility(odProtectionAcctSelectorButton);
+        scrollToElement(odProtectionAcctSelectorButton);
+        waitForElementClickable(odProtectionAcctSelectorButton);
+        click(odProtectionAcctSelectorButton);
+    }
+
     @Step("Click on 'Reason ATM charge waived' option")
     public void clickReasonATMChargeWaivedSelectorOption(String reasonATMChargeWaivedOption) {
         waitForElementVisibility(reasonATMChargeWaivedSelectorOption, reasonATMChargeWaivedOption);
@@ -107,14 +265,13 @@ public class AccountDetailsPage extends BasePage {
         return getElementsText(reasonATMChargeWaivedList);
     }
 
-    @Step("Click the 'Reason ATM charge waivedn' selector button")
+    @Step("Click the 'Reason ATM charge waived' selector button")
     public void clickReasonATMChargeWaivedSelectorButton() {
         waitForElementVisibility(reasonATMChargeWaivedSelectorButton);
+        scrollToElement(reasonATMChargeWaivedSelectorButton);
         waitForElementClickable(reasonATMChargeWaivedSelectorButton);
         click(reasonATMChargeWaivedSelectorButton);
     }
-
-    // ----------
 
     @Step("Click on 'Federal W/H Reason' option")
     public void clickFederalWHReasonSelectorOption(String federalWHReasonOption) {
@@ -133,6 +290,7 @@ public class AccountDetailsPage extends BasePage {
     @Step("Click the 'Federal W/H Reason' selector button")
     public void clickFederalWHReasonSelectorButton() {
         waitForElementVisibility(federalWHReasonSelectorButton);
+        scrollToElement(federalWHReasonSelectorButton);
         waitForElementClickable(federalWHReasonSelectorButton);
         click(federalWHReasonSelectorButton);
     }

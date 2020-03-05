@@ -23,6 +23,12 @@ public class Account {
     private String earningCreditRate;
     private String federalWHReason;
     private String reasonATMChargeWaived;
+    private String odProtectionAcct;
+    private String reasonAutoNSFChgWaived;
+    private String reasonDebitCardChargeWaived;
+    private String automaticOverdraftStatus;
+    private String reasonAutoOdChgWaived;
+    private String whenSurchargesRefunded;
     private String mailCode;
     private String dateOpened;
     private String bankBranch;
@@ -320,5 +326,53 @@ public class Account {
 
     public void setReasonATMChargeWaived(String reasonATMChargeWaived) {
         this.reasonATMChargeWaived = reasonATMChargeWaived;
+    }
+
+    public String getOdProtectionAcct() {
+        return odProtectionAcct;
+    }
+
+    public void setOdProtectionAcct(String odProtectionAcct) {
+        this.odProtectionAcct = odProtectionAcct;
+    }
+
+    public String getReasonAutoNSFChgWaived() {
+        return reasonAutoNSFChgWaived;
+    }
+
+    public void setReasonAutoNSFChgWaived(String reasonAutoNSFChgWaived) {
+        this.reasonAutoNSFChgWaived = reasonAutoNSFChgWaived;
+    }
+
+    public String getReasonDebitCardChargeWaived() {
+        return reasonDebitCardChargeWaived;
+    }
+
+    public void setReasonDebitCardChargeWaived(String reasonDebitCardChargeWaived) {
+        this.reasonDebitCardChargeWaived = reasonDebitCardChargeWaived;
+    }
+
+    public String getAutomaticOverdraftStatus() {
+        return automaticOverdraftStatus;
+    }
+
+    public void setAutomaticOverdraftStatus(String automaticOverdraftStatus) {
+        this.automaticOverdraftStatus = automaticOverdraftStatus;
+    }
+
+    public String getReasonAutoOdChgWaived() {
+        return reasonAutoOdChgWaived;
+    }
+
+    public void setReasonAutoOdChgWaived(String reasonAutoOdChgWaived) {
+        this.reasonAutoOdChgWaived = reasonAutoOdChgWaived;
+    }
+
+    public String getWhenSurchargesRefunded() {
+        return whenSurchargesRefunded;
+    }
+
+    public void setWhenSurchargesRefunded(String whenSurchargesRefunded) {
+        this.whenSurchargesRefunded = whenSurchargesRefunded;
     }
 }
