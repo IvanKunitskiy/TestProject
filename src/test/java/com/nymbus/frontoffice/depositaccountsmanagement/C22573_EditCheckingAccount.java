@@ -101,6 +101,13 @@ public class C22573_EditCheckingAccount extends BaseTest {
         Pages.accountDetailsPage().setCashCollInterestChg(checkingAccount.getCashCollInterestChg());
         Pages.accountDetailsPage().setCashCollFloat(checkingAccount.getCashCollFloat());
         Pages.accountDetailsPage().setPositivePay(checkingAccount.getPositivePay());
+
+        LOG.info("Step 7: Select any other value in such fields");
+        AccountActions.createAccount().setCurrentOfficer(checkingAccount);
+        AccountActions.createAccount().setBankBranch(checkingAccount);
+        Pages.accountDetailsPage().setInterestRate(checkingAccount.getInterestRate());
+        AccountActions.createAccount().setCallClassCode(checkingAccount);
+        AccountActions.createAccount().setChargeOrAnalyze(checkingAccount);
     }
 
 }

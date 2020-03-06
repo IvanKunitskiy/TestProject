@@ -105,6 +105,8 @@ public class AccountDetailsPage extends BasePage {
     private Locator cashCollInterestChgInput = new XPath("//input[@id='cashcollectioninterestchargesperstatementcycle']");
     private Locator positivePayInput = new XPath("//input[@id='positivepaycustomer']");
     private Locator cashColFloatInput = new XPath("//input[@id='cashcollectionfloat']");
+    private Locator earningCreditRateInput = new XPath("//input[@id='earningscreditrate']");
+    private Locator interestRateInput = new XPath("//input[@id='interestrate']");
 
     /**
      * Disabled fields in edit mode
@@ -123,7 +125,6 @@ public class AccountDetailsPage extends BasePage {
     private Locator lastDebitAmountField = new XPath("//input[@id='lastwithdrawalamount']");
     private Locator automaticOverdraftLimitField = new XPath("//input[@id='automaticoverdraftlimit']");
     private Locator totalEarningsField = new XPath("//input[@id='totalEarnings']");
-    private Locator earningCreditRateInput = new XPath("//input[@id='earningscreditrate']");
 
     /**
      * Maintenance tab
@@ -134,6 +135,13 @@ public class AccountDetailsPage extends BasePage {
     /**
      * Edit Account
      */
+
+    @Step("Set 'Interest rate' option")
+    public void setInterestRate(String interestRateValue) {
+        waitForElementVisibility(interestRateInput);
+        waitForElementClickable(interestRateInput);
+        type(interestRateValue, interestRateInput);
+    }
 
     @Step("Set 'Cash coll float' value")
     public void setCashCollFloat(String cashCollFloatValue) {

@@ -81,7 +81,6 @@ public class CreateAccount {
         if (account.getCallClassCode() == null) {
             account.setCallClassCode(listOfCallClassCode.get(new Random().nextInt(listOfCallClassCode.size())).trim());
         }
-
         Pages.addAccountPage().clickCallClassCodeSelectorOption(account.getCallClassCode());
     }
 
@@ -93,8 +92,7 @@ public class CreateAccount {
         if (account.getCurrentOfficer() == null) {
             account.setCurrentOfficer(listOfCurrentOfficers.get(new Random().nextInt(listOfCurrentOfficers.size())).trim());
         }
-
-        Pages.addAccountPage().clickCurrentOfficerOption(account.getCurrentOfficer());
+        Pages.addAccountPage().clickCurrentOfficerSelectorOption(account.getCurrentOfficer());
     }
 
     public void setStatementCycle(Account account) {
@@ -105,7 +103,6 @@ public class CreateAccount {
         if (account.getStatementCycle() == null) {
             account.setStatementCycle(listOfStatementCycle.get(new Random().nextInt(listOfStatementCycle.size())).trim());
         }
-
         Pages.addAccountPage().clickStatementCycleOption(account.getStatementCycle());
     }
 
@@ -117,7 +114,6 @@ public class CreateAccount {
         if (account.getProduct() == null) {
             account.setProduct(listOfProduct.get(new Random().nextInt(listOfProduct.size())).trim());
         }
-
         Pages.addAccountPage().clickProductOption(account.getProduct());
     }
 
@@ -151,7 +147,6 @@ public class CreateAccount {
         if (account.getProductType() == null) {
             account.setProductType(listOfProductType.get(new Random().nextInt(listOfProductType.size())).trim());
         }
-
         Pages.addAccountPage().clickProductTypeOption(account.getProductType());
     }
 
@@ -163,7 +158,6 @@ public class CreateAccount {
         if (account.getBoxSize() == null) {
             account.setBoxSize(listOfBoxSize.get(new Random().nextInt(listOfBoxSize.size())).trim());
         }
-
         Pages.addAccountPage().setBoxSizeOption(account.getBoxSize());
         Pages.addAccountPage().clickBoxSizeSelectorOption(account.getBoxSize());
     }
