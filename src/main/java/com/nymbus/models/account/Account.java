@@ -21,7 +21,15 @@ public class Account {
     private String optInOutDate;
     private String interestRate;
     private String earningCreditRate;
+    private String numberOfDebitCardsIssued;
+    private String cashCollDaysBeforeChg;
+    private String cashCollInterestRate;
+    private String cashCollInterestChg;
+    private String cashCollFloat;
+    private String positivePay;
+    private String imageStatementCode;
     private String federalWHReason;
+    private String federalWHPercent;
     private String reasonATMChargeWaived;
     private String odProtectionAcct;
     private String reasonAutoNSFChgWaived;
@@ -29,6 +37,7 @@ public class Account {
     private String automaticOverdraftStatus;
     private String reasonAutoOdChgWaived;
     private String whenSurchargesRefunded;
+    private String numberOfATMCardsIssued;
     private String mailCode;
     private String dateOpened;
     private String bankBranch;
@@ -61,6 +70,21 @@ public class Account {
         account.setProduct("Basic Business Checking");
         account.setOptInOutDate("01/01/2020");
         account.setDateOpened("02/27/2020");
+        account.setNumberOfATMCardsIssued(String.valueOf(Random.genInt(0, 100)));
+        account.setNumberOfDebitCardsIssued(String.valueOf(Random.genInt(0, 100)));
+//        account.setFederalWHPercent();
+        account.setFederalWHPercent(String.valueOf(Random.genFloat(0.0001, 99.9999, 100)));
+        account.setEarningCreditRate(String.valueOf(Random.genFloat(0.0001, 99.9999, 100)));
+        account.setCashCollDaysBeforeChg(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setCashCollInterestChg(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setCashCollFloat(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setUserDefinedField_1(Random.genString(5));
+        account.setUserDefinedField_2(Random.genString(5));
+        account.setUserDefinedField_3(Random.genString(5));
+        account.setUserDefinedField_4(Random.genString(5));
+        account.setImageStatementCode(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setPositivePay(Random.genString(5));
 
         return account;
     }
@@ -374,5 +398,77 @@ public class Account {
 
     public void setWhenSurchargesRefunded(String whenSurchargesRefunded) {
         this.whenSurchargesRefunded = whenSurchargesRefunded;
+    }
+
+    public String getNumberOfATMCardsIssued() {
+        return numberOfATMCardsIssued;
+    }
+
+    public void setNumberOfATMCardsIssued(String numberOfATMCardsIssued) {
+        this.numberOfATMCardsIssued = numberOfATMCardsIssued;
+    }
+
+    public String getImageStatementCode() {
+        return imageStatementCode;
+    }
+
+    public void setImageStatementCode(String imageStatementCode) {
+        this.imageStatementCode = imageStatementCode;
+    }
+
+    public String getFederalWHPercent() {
+        return federalWHPercent;
+    }
+
+    public void setFederalWHPercent(String federalWHPercent) {
+        this.federalWHPercent = federalWHPercent;
+    }
+
+    public String getNumberOfDebitCardsIssued() {
+        return numberOfDebitCardsIssued;
+    }
+
+    public void setNumberOfDebitCardsIssued(String numberOfDebitCardsIssued) {
+        this.numberOfDebitCardsIssued = numberOfDebitCardsIssued;
+    }
+
+    public String getCashCollDaysBeforeChg() {
+        return cashCollDaysBeforeChg;
+    }
+
+    public void setCashCollDaysBeforeChg(String cashCollDaysBeforeChg) {
+        this.cashCollDaysBeforeChg = cashCollDaysBeforeChg;
+    }
+
+    public String getCashCollInterestRate() {
+        return cashCollInterestRate;
+    }
+
+    public void setCashCollInterestRate(String cashCollInterestRate) {
+        this.cashCollInterestRate = cashCollInterestRate;
+    }
+
+    public String getCashCollInterestChg() {
+        return cashCollInterestChg;
+    }
+
+    public void setCashCollInterestChg(String cashCollInterestChg) {
+        this.cashCollInterestChg = cashCollInterestChg;
+    }
+
+    public String getPositivePay() {
+        return positivePay;
+    }
+
+    public void setPositivePay(String positivePay) {
+        this.positivePay = positivePay;
+    }
+
+    public String getCashCollFloat() {
+        return cashCollFloat;
+    }
+
+    public void setCashCollFloat(String cashCollFloat) {
+        this.cashCollFloat = cashCollFloat;
     }
 }

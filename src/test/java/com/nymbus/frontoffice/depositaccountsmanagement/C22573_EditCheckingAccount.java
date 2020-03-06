@@ -84,6 +84,23 @@ public class C22573_EditCheckingAccount extends BaseTest {
         AccountActions.editAccount().setAutomaticOverdraftStatus(checkingAccount);
         AccountActions.editAccount().setReasonAutoOdChgWaived(checkingAccount);
         AccountActions.editAccount().setWhenSurchargesRefunded(checkingAccount);
+
+        LOG.info("Step 6: Fill in such text fields that were not displayed in Add new mode");
+        Pages.accountDetailsPage().setFederalWHPercent(checkingAccount.getFederalWHPercent()); // pass from account object
+        Pages.accountDetailsPage().setNumberOfATMCardsIssued(checkingAccount.getNumberOfATMCardsIssued());
+        Pages.accountDetailsPage().setEarningCreditRate(checkingAccount.getEarningCreditRate()); // pass from account object
+        Pages.accountDetailsPage().setUserDefinedField_1(checkingAccount.getUserDefinedField_1());
+        Pages.accountDetailsPage().setUserDefinedField_2(checkingAccount.getUserDefinedField_1());
+        Pages.accountDetailsPage().setUserDefinedField_3(checkingAccount.getUserDefinedField_1());
+        Pages.accountDetailsPage().setUserDefinedField_4(checkingAccount.getUserDefinedField_1());
+        Pages.accountDetailsPage().setImageStatementCode(checkingAccount.getImageStatementCode());
+        Pages.accountDetailsPage().setNumberOfDebitCardsIssued(checkingAccount.getNumberOfDebitCardsIssued());
+//        - Automatic Overdraft Limit - numeric value (12 digits value)
+        Pages.accountDetailsPage().setCashCollDaysBeforeChg(checkingAccount.getCashCollDaysBeforeChg());
+        Pages.accountDetailsPage().setCashCollInterestRate(checkingAccount.getCashCollInterestRate());
+        Pages.accountDetailsPage().setCashCollInterestChg(checkingAccount.getCashCollInterestChg());
+        Pages.accountDetailsPage().setCashCollFloat(checkingAccount.getCashCollFloat());
+        Pages.accountDetailsPage().setPositivePay(checkingAccount.getPositivePay());
     }
 
 }

@@ -5,7 +5,9 @@ import com.nymbus.locator.Locator;
 import com.nymbus.locator.XPath;
 import io.qameta.allure.Step;
 
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Random;
 
 public class AccountDetailsPage extends BasePage {
 
@@ -90,6 +92,20 @@ public class AccountDetailsPage extends BasePage {
     private Locator whenSurchargesRefundedList = new XPath("//li[contains(@role, 'option')]/div/span");
     private Locator whenSurchargesRefundedSelectorOption = new XPath("//div[@id='whensurchargesrefunded']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
+    private Locator federalWHPercentInput = new XPath("//input[@id='federalwithholdingpercent']");
+    private Locator numberOfATMCardsIssuedInput = new XPath("//input[@id='numberofatmcardissued']");
+    private Locator userDefinedFieldInput_1 = new XPath("//input[@id='userdefinedfield1']");
+    private Locator userDefinedFieldInput_2 = new XPath("//input[@id='userdefinedfield2']");
+    private Locator userDefinedFieldInput_3 = new XPath("//input[@id='userdefinedfield3']");
+    private Locator userDefinedFieldInput_4 = new XPath("//input[@id='userdefinedfield4']");
+    private Locator imageStatementCodeInput = new XPath("//input[@id='imagestatementcode']");
+    private Locator numberOfDebitCardsIssuedInput = new XPath("//input[@id='numberofdebitcardsissued']");
+    private Locator cashCollDaysBeforeChgInput = new XPath("//input[@id='cashcollectionnumberofdaysbeforeinterestcharge']");
+    private Locator cashCollInterestRateInput = new XPath("//input[@id='cashcollectioninterestrate']");
+    private Locator cashCollInterestChgInput = new XPath("//input[@id='cashcollectioninterestchargesperstatementcycle']");
+    private Locator positivePayInput = new XPath("//input[@id='positivepaycustomer']");
+    private Locator cashColFloatInput = new XPath("//input[@id='cashcollectionfloat']");
+
     /**
      * Disabled fields in edit mode
      */
@@ -107,7 +123,7 @@ public class AccountDetailsPage extends BasePage {
     private Locator lastDebitAmountField = new XPath("//input[@id='lastwithdrawalamount']");
     private Locator automaticOverdraftLimitField = new XPath("//input[@id='automaticoverdraftlimit']");
     private Locator totalEarningsField = new XPath("//input[@id='totalEarnings']");
-
+    private Locator earningCreditRateInput = new XPath("//input[@id='earningscreditrate']");
 
     /**
      * Maintenance tab
@@ -119,7 +135,118 @@ public class AccountDetailsPage extends BasePage {
      * Edit Account
      */
 
-    @Step("Click on 'When surcharges refunded' option")
+    @Step("Set 'Cash coll float' value")
+    public void setCashCollFloat(String cashCollFloatValue) {
+        waitForElementClickable(cashColFloatInput);
+        type(cashCollFloatValue, cashColFloatInput);
+    }
+
+    @Step("Set 'Positive Pay' value")
+    public void setPositivePay(String positivePayValue) {
+        waitForElementVisibility(positivePayInput);
+        waitForElementClickable(positivePayInput);
+        type(positivePayValue, positivePayInput);
+    }
+
+    @Step("Set 'Cash Coll interest chg' value")
+    public void setCashCollInterestChg(String cashCollInterestChgValue) {
+        waitForElementVisibility(cashCollInterestChgInput);
+        waitForElementClickable(cashCollInterestChgInput);
+        type(cashCollInterestChgValue, cashCollInterestChgInput);
+    }
+
+    @Step("Set 'Cash Coll interest rate' value")
+    public void setCashCollInterestRate(String cashCollInterestRateValue) {
+        waitForElementVisibility(cashCollInterestRateInput);
+        waitForElementClickable(cashCollInterestRateInput);
+        type(cashCollInterestRateValue, cashCollInterestRateInput);
+    }
+
+    @Step("Set 'Cash Coll # Days Before Chg' value")
+    public void setCashCollDaysBeforeChg(String cashCollDaysBeforeChgValue) {
+        waitForElementVisibility(cashCollDaysBeforeChgInput);
+        waitForElementClickable(cashCollDaysBeforeChgInput);
+        type(cashCollDaysBeforeChgValue, cashCollDaysBeforeChgInput);
+    }
+
+    @Step("Set 'Number of Debit Cards issued' value")
+    public void setNumberOfDebitCardsIssued(String numberOfDebitCardsIssuedValue) {
+        waitForElementVisibility(numberOfDebitCardsIssuedInput);
+        waitForElementClickable(numberOfDebitCardsIssuedInput);
+        type(numberOfDebitCardsIssuedValue, numberOfDebitCardsIssuedInput);
+    }
+
+    @Step("Set 'Image Statement Code' value")
+    public void setImageStatementCode(String imageStatementCodeValue) {
+        waitForElementVisibility(imageStatementCodeInput);
+        waitForElementClickable(imageStatementCodeInput);
+        type(imageStatementCodeValue, imageStatementCodeInput);
+    }
+
+    @Step("Set 'User Defined Field 4' value")
+    public void setUserDefinedField_4(String value) {
+        waitForElementVisibility(userDefinedFieldInput_4);
+        waitForElementClickable(userDefinedFieldInput_4);
+        type(value, userDefinedFieldInput_4);
+    }
+
+    @Step("Set 'User Defined Field 3' value")
+    public void setUserDefinedField_3(String value) {
+        waitForElementVisibility(userDefinedFieldInput_3);
+        waitForElementClickable(userDefinedFieldInput_3);
+        type(value, userDefinedFieldInput_3);
+    }
+
+    @Step("Set 'User Defined Field 2' value")
+    public void setUserDefinedField_2(String value) {
+        waitForElementVisibility(userDefinedFieldInput_2);
+        waitForElementClickable(userDefinedFieldInput_2);
+        type(value, userDefinedFieldInput_2);
+    }
+
+    @Step("Set 'User Defined Field 1' value")
+    public void setUserDefinedField_1(String value) {
+        waitForElementVisibility(userDefinedFieldInput_1);
+        waitForElementClickable(userDefinedFieldInput_1);
+        type(value, userDefinedFieldInput_1);
+    }
+
+    @Step("Generate 'Earning Credit Rate' value")
+    public String generateEarningCreditRateValue() {
+        Random ran = new Random();
+        DecimalFormat df = new DecimalFormat("##.####");
+        return String.valueOf(df.format(ran.nextFloat() * 100));
+    }
+
+    @Step("Set 'Earning Credit Rate' value")
+    public void setEarningCreditRate(String earningCreditRateValue) {
+        waitForElementVisibility(earningCreditRateInput);
+        waitForElementClickable(earningCreditRateInput);
+        type(earningCreditRateValue, earningCreditRateInput);
+    }
+
+    @Step("Set 'Federal W/H percent' value")
+    public void setNumberOfATMCardsIssued(String numberOfATMCardsIssuedValue) {
+        waitForElementVisibility(numberOfATMCardsIssuedInput);
+        waitForElementClickable(numberOfATMCardsIssuedInput);
+        type(numberOfATMCardsIssuedValue, numberOfATMCardsIssuedInput);
+    }
+
+    @Step("Generate 'Federal W/H percent' value")
+    public String generateFederalWHPercentValue() {
+        Random ran = new Random();
+        DecimalFormat df = new DecimalFormat("##.####");
+        return String.valueOf(df.format(ran.nextFloat() * 100));
+    }
+
+    @Step("Set 'Federal W/H percent' value")
+    public void setFederalWHPercent(String federalWHPercentValue) {
+        waitForElementVisibility(federalWHPercentInput);
+        waitForElementClickable(federalWHPercentInput);
+        type(federalWHPercentValue, federalWHPercentInput);
+    }
+
+    @Step("Click on 'When surcharges refunded' value")
     public void clickWhenSurchargesRefundedSelectorOption(String whenSurchargesRefunded) {
         waitForElementVisibility(whenSurchargesRefundedSelectorOption, whenSurchargesRefunded);
         waitForElementClickable(whenSurchargesRefundedSelectorOption, whenSurchargesRefunded);
