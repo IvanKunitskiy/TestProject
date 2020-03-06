@@ -43,6 +43,12 @@ public class AccountDetailsPage extends BasePage {
     private Locator interestRate = new XPath("//tr[@data-config-name='interestrate']//span[contains(@class, 'dnTextFixedWidthText')]");
     private Locator earningCreditRate = new XPath("//tr[@data-config-name='earningscreditrate']//span[contains(@class, 'dnTextFixedWidthText')]");
 
+    private Locator federalWHReason = new XPath("//tr[@data-config-name='federalwithholdingreason']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator reasonDebitCardChargeWaived = new XPath("//tr[@data-config-name='reasondebitcardchargeswaived']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator reasonAutoNSFChgWaived = new XPath("//tr[@data-config-name='reasonautonsfchargeswaived']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator odProtectionAcct = new XPath("//tr[@data-config-name='overdraftprotectionaccountnumber']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator reasonATMChargeWaived = new XPath("//tr[@data-config-name='reasonatmchargeswaived']//span[contains(@class, 'dnTextFixedWidthText')]");
+
     /**
      * Edit Account
      */
@@ -430,6 +436,10 @@ public class AccountDetailsPage extends BasePage {
         click(federalWHReasonSelectorButton);
     }
 
+    /**
+    * Edit account
+     */
+
     @Step("Check if 'Total Earnings' field is disabled edit mode")
     public boolean isTotalEarningsFieldDisabledInEditMode() {
         waitForElementVisibility(totalEarningsField);
@@ -591,6 +601,36 @@ public class AccountDetailsPage extends BasePage {
     /**
      * Details tab
      */
+
+    @Step("Get account 'Reason Debit Card Charge Waived' value")
+    public String getReasonDebitCardChargeWaived() {
+        waitForElementVisibility(reasonDebitCardChargeWaived);
+        return getElementText(reasonDebitCardChargeWaived);
+    }
+
+    @Step("Get account 'Reason Auto NSF Chg Waived' value")
+    public String getReasonAutoNSFChgWaived() {
+        waitForElementVisibility(reasonAutoNSFChgWaived);
+        return getElementText(reasonAutoNSFChgWaived);
+    }
+
+    @Step("Get account 'OD Protection Acct' value")
+    public String getOdProtectionAcct() {
+        waitForElementVisibility(odProtectionAcct);
+        return getElementText(odProtectionAcct);
+    }
+
+    @Step("Get account 'Reason ATM Charge Waived' value")
+    public String getReasonATMChargeWaived() {
+        waitForElementVisibility(reasonATMChargeWaived);
+        return getElementText(reasonATMChargeWaived);
+    }
+
+    @Step("Get account 'Federal W/H reason' value")
+    public String getFederalWHReason() {
+        waitForElementVisibility(federalWHReason);
+        return getElementText(federalWHReason);
+    }
 
     @Step("Click the 'Edit' button")
     public void clickEditButton() {

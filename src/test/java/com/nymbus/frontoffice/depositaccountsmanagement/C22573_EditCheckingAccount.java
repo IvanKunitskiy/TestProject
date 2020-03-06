@@ -108,6 +108,79 @@ public class C22573_EditCheckingAccount extends BaseTest {
         Pages.accountDetailsPage().setInterestRate(checkingAccount.getInterestRate());
         AccountActions.createAccount().setCallClassCode(checkingAccount);
         AccountActions.createAccount().setChargeOrAnalyze(checkingAccount);
+
+        LOG.info("Step 8: Submit the account editing by clicking [Save] button");
+        Pages.addAccountPage().clickSaveAccountButton();
+        Pages.accountDetailsPage().waitForFullProfileButton();
+
+        LOG.info("Step 9: Pay attention to CHK account fields");
+        Pages.accountDetailsPage().clickMoreButton();
+
+        Assert.assertEquals(Pages.accountDetailsPage().getFederalWHReason(), checkingAccount.getFederalWHReason());
+        Assert.assertEquals(Pages.accountDetailsPage().getReasonATMChargeWaived(), checkingAccount.getReasonATMChargeWaived());
+//        Assert.assertEquals(Pages.accountDetailsPage().getOdProtectionAcct(), checkingAccount.getOdProtectionAcct());
+        Assert.assertEquals(Pages.accountDetailsPage().getReasonAutoNSFChgWaived(), checkingAccount.getReasonAutoNSFChgWaived());
+        Assert.assertEquals(Pages.accountDetailsPage().getReasonDebitCardChargeWaived(), checkingAccount.getReasonDebitCardChargeWaived());
+//        - Automatic Overdraft Status = Active
+//        - Reason auto OD chg waived
+//        - When surcharges refunded
+//        - Federal W/H percent - min - 4 digits pass the decimal, max - 100%
+//        - Number of ATM cards issue- any numeric value
+//        - Earning Credit Rate min - 4 digits pass the decimal, max - 100%
+//        - User Defined Field 1
+//        - User Defined Field 2
+//        - User Defined Field 3
+//        - User Defined Field 4
+//        - Image statement code - numeric value
+//        - Number of Debit Cards issued
+//        - Automatic Overdraft Limit - numeric value (12 digits value)
+//        - Cash coll # days before chg - numeric value
+//        - Cash coll interest chg - numeric value
+//        - Cash coll float - numeric value
+//        - Positive pay - alphanumeric
+        Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), checkingAccount.getCurrentOfficer(), "'Current Officer' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), checkingAccount.getInterestRate(), "'Interest Rate' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), checkingAccount.getBankBranch(), "'Bank Branch' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), checkingAccount.getCallClassCode(), "'Call Class' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getChargeOrAnalyze(), checkingAccount.getChargeOrAnalyze(), "'Charge or Analyze' value does not match");
+
+        LOG.info("Step 10: Click [Edit] button and pay attention to the fields");
+        Pages.accountDetailsPage().clickEditButton();
+
+//        - Federal W/H reason
+//        - Reason ATM charge waived
+//        - OD protection acct #
+//        - Reason auto NSF chg waived
+//        - Reason Debit Card Charge Waived
+//        - Automatic Overdraft Status = Active
+//        - Reason auto OD chg waived
+//        - When surcharges refunded
+//        - Federal W/H percent - min - 4 digits pass the decimal, max - 100%
+//        - Number of ATM cards issue- any numeric value
+//        - Earning Credit Rate min - 4 digits pass the decimal, max - 100%
+//        - User Defined Field 1
+//        - User Defined Field 2
+//        - User Defined Field 3
+//        - User Defined Field 4
+//        - Image statement code - numeric value
+//        - Number of Debit Cards issued
+//        - Automatic Overdraft Limit - numeric value (12 digits value)
+//        - Cash coll # days before chg - numeric value
+//        - Cash coll interest chg - numeric value
+//        - Cash coll float - numeric value
+//        - Positive pay - alphanumeric
+        Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValueInEditMode(), checkingAccount.getCurrentOfficer(), "'Current Officer' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValueInEditMode(), checkingAccount.getInterestRate(), "'Interest Rate' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValueInEditMode(), checkingAccount.getBankBranch(), "'Bank Branch' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getCallClassCodeValueInEditMode(), checkingAccount.getCallClassCode(), "'Call Class' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getChargeOrAnalyzeInEditMode(), checkingAccount.getChargeOrAnalyze(), "'Charge or Analyze' value does not match");
+
+        LOG.info("Step 11: Do not make any changes and go to Account Maintenance -> Maintenance History page");
+        Pages.accountDetailsPage().clickMaintenanceTab();
+        Pages.accountDetailsPage().clickViewAllMaintenanceHistoryLink();
+
+        LOG.info("Step 12: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
+        // TODO: Implement verification at Maintenance History page
     }
 
 }
