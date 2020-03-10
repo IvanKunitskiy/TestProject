@@ -34,7 +34,7 @@ public class AddAccountPage extends BasePage {
     private Locator productSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private Locator statementCycleSelectorButton = new XPath("//*[@id='statementcycle']");
     private Locator statementCycleList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator bankBranch = new XPath("//div[@data-test-id='field-bankbranch']/a/span[contains(@class, 'ng-binding')]");
+    private Locator bankBranch = new XPath("//div[@id='bankbranch']//span[contains(@class, 'ng-scope')]");
     private Locator statementFlagInput = new XPath("//input[@data-test-id='field-statementflag']");
     private Locator interestRateInput = new XPath("//input[@data-test-id='field-interestrate']");
     private Locator earningCreditRateInput = new XPath("//input[@data-test-id='field-earningscreditrate']");
