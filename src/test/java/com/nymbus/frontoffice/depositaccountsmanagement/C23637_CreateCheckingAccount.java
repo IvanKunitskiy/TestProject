@@ -118,22 +118,22 @@ public class C23637_CreateCheckingAccount extends BaseTest {
 
         LOG.info("Step 11: Click [Edit] button and pay attention to the fields that were filled in during account creation");
         Pages.accountDetailsPage().clickEditButton();
-        Assert.assertEquals(Pages.accountDetailsPage().getProductValueInEditMode(), checkingAccount.getProduct(), "'Product' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValueInEditMode(), checkingAccount.getDateOpened(), "'Date Opened' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValueInEditMode(), checkingAccount.getCurrentOfficer(), "'Current Officer' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValueInEditMode(), checkingAccount.getBankBranch(), "'Bank Branch' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getStatementCycleValueInEditMode(), checkingAccount.getStatementCycle(), "'Statement Cycle' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getCallClassCodeValueInEditMode(), checkingAccount.getCallClassCode(), "'Call Class' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getChargeOrAnalyzeInEditMode(), checkingAccount.getChargeOrAnalyze(), "'Charge or Analyze' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getAccountAnalysisValueInEditMode(), checkingAccount.getAccountAnalysis(), "'Account Analysis' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValueInEditMode(), checkingAccount.getAccountTitle(), "'Title' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getStatementFlagValueInEditMode(), checkingAccount.getStatementFlag(), "'Statement Flag' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValueInEditMode(), checkingAccount.getInterestRate(), "'Interest Rate' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getEarningCreditRateInEditMode(), checkingAccount.getEarningCreditRate(), "'Earning Rate' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getProductValueInEditMode(), checkingAccount.getProduct(), "'Product' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getDateOpenedValueInEditMode(), checkingAccount.getDateOpened(), "'Date Opened' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), checkingAccount.getCurrentOfficer(), "'Current Officer' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), checkingAccount.getBankBranch(), "'Bank Branch' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getStatementCycleValueInEditMode(), checkingAccount.getStatementCycle(), "'Statement Cycle' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), checkingAccount.getCallClassCode(), "'Call Class' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getChargeOrAnalyzeInEditMode(), checkingAccount.getChargeOrAnalyze(), "'Charge or Analyze' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getAccountAnalysisValueInEditMode(), checkingAccount.getAccountAnalysis(), "'Account Analysis' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getAccountTitleValueInEditMode(), checkingAccount.getAccountTitle(), "'Title' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getStatementFlagValueInEditMode(), checkingAccount.getStatementFlag(), "'Statement Flag' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), checkingAccount.getInterestRate(), "'Interest Rate' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getEarningCreditRateInEditMode(), checkingAccount.getEarningCreditRate(), "'Earning Rate' value does not match");
 
         LOG.info("Step 12: Do not make any changes and go to Account Maintenance -> Maintenance History page");
-        Pages.accountDetailsPage().clickMaintenanceTab();
-        Pages.accountDetailsPage().clickViewAllMaintenanceHistoryLink();
+        Pages.accountNavigationPage().clickMaintenanceTab();
+        Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         LOG.info("Step 13: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         // TODO: Implement verification at Maintenance History page
