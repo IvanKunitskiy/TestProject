@@ -60,20 +60,20 @@ public class C22573_EditCheckingAccount extends BaseTest {
         Pages.accountDetailsPage().clickEditButton();
 
         LOG.info("Step 4: Look at the fields and verify that such fields are disabled for editing");
-        Assert.assertTrue(Pages.accountDetailsPage().isProductTypeFieldDisabledInEditMode(), "'Product Type' field is not disabled");
-        Assert.assertTrue(Pages.accountDetailsPage().isProductFieldDisabledInEditMode(), "'Product' field is not disabled");
-        Assert.assertTrue(Pages.accountDetailsPage().isAccountNumberFieldDisabledInEditMode(), "'Account Number' field is not disabled");
-        Assert.assertTrue(Pages.accountDetailsPage().isAccountTypeFieldDisabledInEditMode(), "'Account Type' field is not disabled");
-        Assert.assertTrue(Pages.accountDetailsPage().isOriginatingOfficerFieldDisabledInEditMode(), "'Originating Officer' field is not disabled");
-        Assert.assertTrue(Pages.accountDetailsPage().isAccountStatusFieldDisabledInEditMode(), "'Account Status' field is not disabled");
-        Assert.assertTrue(Pages.accountDetailsPage().isDateOpenedFieldDisabledInEditMode(), "'Date Opened' field is not disabled");
-        Assert.assertTrue(Pages.accountDetailsPage().isDateClosedFieldDisabledInEditMode(), "'Date Closed field is not disabled");
-        Assert.assertTrue(Pages.accountDetailsPage().isAnnualPercentageYieldFieldDisabledInEditMode(), "'Annual Percentage Yield' field is not disabled");
-        Assert.assertTrue(Pages.accountDetailsPage().isDaysOverdraftFieldDisabledInEditMode(), "'Times Overdrawn-6 Months' field is not disabled");
-        Assert.assertTrue(Pages.accountDetailsPage().isDaysOverdraftAboveLimitFieldDisabledInEditMode(), "'Times $5000 Overdrawn-6 Months' field is not disabled");
-        Assert.assertTrue(Pages.accountDetailsPage().isLastDebitAmountFieldDisabledInEditMode(), "'Last Debit Amount' field is not disabled");
-        Assert.assertTrue(Pages.accountDetailsPage().isAutomaticOverdraftLimitFieldDisabledInEditMode(), "'Automatic Overdraft Limit Field' field is not disabled");
-        Assert.assertTrue(Pages.accountDetailsPage().isTotalEarningsFieldDisabledInEditMode(), "'Total Earnings' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isProductTypeFieldDisabledInEditMode(), "'Product Type' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isProductFieldDisabledInEditMode(), "'Product' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isAccountNumberFieldDisabledInEditMode(), "'Account Number' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isAccountTypeFieldDisabledInEditMode(), "'Account Type' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isOriginatingOfficerFieldDisabledInEditMode(), "'Originating Officer' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isAccountStatusFieldDisabledInEditMode(), "'Account Status' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isDateOpenedFieldDisabledInEditMode(), "'Date Opened' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isDateClosedFieldDisabledInEditMode(), "'Date Closed field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isAnnualPercentageYieldFieldDisabledInEditMode(), "'Annual Percentage Yield' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isDaysOverdraftFieldDisabledInEditMode(), "'Times Overdrawn-6 Months' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isDaysOverdraftAboveLimitFieldDisabledInEditMode(), "'Times $5000 Overdrawn-6 Months' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isLastDebitAmountFieldDisabledInEditMode(), "'Last Debit Amount' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isAutomaticOverdraftLimitFieldDisabledInEditMode(), "'Automatic Overdraft Limit Field' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isTotalEarningsFieldDisabledInEditMode(), "'Total Earnings' field is not disabled");
 
         LOG.info("Step 5: Select data in such dropdown fields that were not available in Add New mode");
         AccountActions.editAccount().setFederalWHReason(checkingAccount);
@@ -86,26 +86,26 @@ public class C22573_EditCheckingAccount extends BaseTest {
         AccountActions.editAccount().setWhenSurchargesRefunded(checkingAccount);
 
         LOG.info("Step 6: Fill in such text fields that were not displayed in Add new mode");
-        Pages.accountDetailsPage().setFederalWHPercent(checkingAccount.getFederalWHPercent()); // pass from account object
-        Pages.accountDetailsPage().setNumberOfATMCardsIssued(checkingAccount.getNumberOfATMCardsIssued());
-        Pages.accountDetailsPage().setEarningCreditRate(checkingAccount.getEarningCreditRate()); // pass from account object
-        Pages.accountDetailsPage().setUserDefinedField_1(checkingAccount.getUserDefinedField_1());
-        Pages.accountDetailsPage().setUserDefinedField_2(checkingAccount.getUserDefinedField_1());
-        Pages.accountDetailsPage().setUserDefinedField_3(checkingAccount.getUserDefinedField_1());
-        Pages.accountDetailsPage().setUserDefinedField_4(checkingAccount.getUserDefinedField_1());
-        Pages.accountDetailsPage().setImageStatementCode(checkingAccount.getImageStatementCode());
-        Pages.accountDetailsPage().setNumberOfDebitCardsIssued(checkingAccount.getNumberOfDebitCardsIssued());
+        Pages.editAccountPage().setFederalWHPercent(checkingAccount.getFederalWHPercent()); // pass from account object
+        Pages.editAccountPage().setNumberOfATMCardsIssued(checkingAccount.getNumberOfATMCardsIssued());
+        Pages.editAccountPage().setEarningCreditRate(checkingAccount.getEarningCreditRate()); // pass from account object
+        Pages.editAccountPage().setUserDefinedField_1(checkingAccount.getUserDefinedField_1());
+        Pages.editAccountPage().setUserDefinedField_2(checkingAccount.getUserDefinedField_1());
+        Pages.editAccountPage().setUserDefinedField_3(checkingAccount.getUserDefinedField_1());
+        Pages.editAccountPage().setUserDefinedField_4(checkingAccount.getUserDefinedField_1());
+        Pages.editAccountPage().setImageStatementCode(checkingAccount.getImageStatementCode());
+        Pages.editAccountPage().setNumberOfDebitCardsIssued(checkingAccount.getNumberOfDebitCardsIssued());
 //        - Automatic Overdraft Limit - numeric value (12 digits value)
-        Pages.accountDetailsPage().setCashCollDaysBeforeChg(checkingAccount.getCashCollDaysBeforeChg());
-        Pages.accountDetailsPage().setCashCollInterestRate(checkingAccount.getCashCollInterestRate());
-        Pages.accountDetailsPage().setCashCollInterestChg(checkingAccount.getCashCollInterestChg());
-        Pages.accountDetailsPage().setCashCollFloat(checkingAccount.getCashCollFloat());
-        Pages.accountDetailsPage().setPositivePay(checkingAccount.getPositivePay());
+        Pages.editAccountPage().setCashCollDaysBeforeChg(checkingAccount.getCashCollDaysBeforeChg());
+        Pages.editAccountPage().setCashCollInterestRate(checkingAccount.getCashCollInterestRate());
+        Pages.editAccountPage().setCashCollInterestChg(checkingAccount.getCashCollInterestChg());
+        Pages.editAccountPage().setCashCollFloat(checkingAccount.getCashCollFloat());
+        Pages.editAccountPage().setPositivePay(checkingAccount.getPositivePay());
 
         LOG.info("Step 7: Select any other value in such fields");
         AccountActions.createAccount().setCurrentOfficer(checkingAccount);
         AccountActions.createAccount().setBankBranch(checkingAccount);
-        Pages.accountDetailsPage().setInterestRate(checkingAccount.getInterestRate());
+        Pages.editAccountPage().setInterestRate(checkingAccount.getInterestRate());
         AccountActions.createAccount().setCallClassCode(checkingAccount);
         AccountActions.createAccount().setChargeOrAnalyze(checkingAccount);
 
@@ -122,7 +122,7 @@ public class C22573_EditCheckingAccount extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getReasonAutoNSFChgWaived(), checkingAccount.getReasonAutoNSFChgWaived());
         Assert.assertEquals(Pages.accountDetailsPage().getReasonDebitCardChargeWaived(), checkingAccount.getReasonDebitCardChargeWaived());
         Assert.assertEquals(Pages.accountDetailsPage().getAutomaticOverdraftStatus(), checkingAccount.getAutomaticOverdraftStatus());
-        Assert.assertEquals(Pages.accountDetailsPage().getReasonAutoOdChgWaived(), checkingAccount.getReasonAutoOdChgWaived());
+//        Assert.assertEquals(Pages.accountDetailsPage().getReasonAutoOdChgWaived(), checkingAccount.getReasonAutoOdChgWaived());
 //        - When surcharges refunded
 //        - Federal W/H percent - min - 4 digits pass the decimal, max - 100%
 //        - Number of ATM cards issue- any numeric value
@@ -169,15 +169,15 @@ public class C22573_EditCheckingAccount extends BaseTest {
 //        - Cash coll interest chg - numeric value
 //        - Cash coll float - numeric value
 //        - Positive pay - alphanumeric
-        Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValueInEditMode(), checkingAccount.getCurrentOfficer(), "'Current Officer' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValueInEditMode(), checkingAccount.getInterestRate(), "'Interest Rate' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValueInEditMode(), checkingAccount.getBankBranch(), "'Bank Branch' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getCallClassCodeValueInEditMode(), checkingAccount.getCallClassCode(), "'Call Class' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getChargeOrAnalyzeInEditMode(), checkingAccount.getChargeOrAnalyze(), "'Charge or Analyze' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), checkingAccount.getCurrentOfficer(), "'Current Officer' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), checkingAccount.getInterestRate(), "'Interest Rate' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), checkingAccount.getBankBranch(), "'Bank Branch' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), checkingAccount.getCallClassCode(), "'Call Class' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getChargeOrAnalyzeInEditMode(), checkingAccount.getChargeOrAnalyze(), "'Charge or Analyze' value does not match");
 
         LOG.info("Step 11: Do not make any changes and go to Account Maintenance -> Maintenance History page");
-        Pages.accountDetailsPage().clickMaintenanceTab();
-        Pages.accountDetailsPage().clickViewAllMaintenanceHistoryLink();
+        Pages.accountNavigationPage().clickMaintenanceTab();
+        Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         LOG.info("Step 12: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         // TODO: Implement verification at Maintenance History page
