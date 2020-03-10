@@ -1,8 +1,10 @@
 package com.nymbus.pages;
 
-import com.nymbus.pages.accounts.AccountDetailsPage;
-import com.nymbus.pages.accounts.AddAccountPage;
-import com.nymbus.pages.clients.*;
+import com.nymbus.pages.accounts.*;
+import com.nymbus.pages.clients.AddClientPage;
+import com.nymbus.pages.clients.ClientDetailsPage;
+import com.nymbus.pages.clients.ClientsSearchPage;
+import com.nymbus.pages.clients.ClientsSearchResultsPage;
 import com.nymbus.pages.loans.LoansPage;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
 import com.nymbus.pages.teller.TellerPage;
@@ -27,6 +29,9 @@ public class Pages {
     private static ClientsSearchResultsPage clientsSearchResultsPage;
     private static AddAccountPage addAccountPage;
     private static AccountDetailsPage accountDetailsPage;
+    private static EditAccountPage editAccountPage;
+    private static AccountNavigationPage accountNavigationPage;
+    private static AccountMaintenancePage accountMaintenancePage;
 
     /**
      * This function return an instance of `LoginPage`
@@ -166,5 +171,35 @@ public class Pages {
             accountDetailsPage = new AccountDetailsPage();
         }
         return accountDetailsPage;
+    }
+
+    /**
+     * This function return an instance of `EditAccountPage`
+     */
+    public static EditAccountPage editAccountPage() {
+        if (editAccountPage == null) {
+            editAccountPage = new EditAccountPage();
+        }
+        return editAccountPage;
+    }
+
+    /**
+     * This function return an instance of `AccountMaintenancePage`
+     */
+    public static AccountMaintenancePage accountMaintenancePage() {
+        if (accountMaintenancePage == null) {
+            accountMaintenancePage = new AccountMaintenancePage();
+        }
+        return accountMaintenancePage;
+    }
+
+    /**
+     * This function return an instance of `AccountNavigationPage`
+     */
+    public static AccountNavigationPage accountNavigationPage() {
+        if (accountNavigationPage == null) {
+            accountNavigationPage = new AccountNavigationPage();
+        }
+        return accountNavigationPage;
     }
 }
