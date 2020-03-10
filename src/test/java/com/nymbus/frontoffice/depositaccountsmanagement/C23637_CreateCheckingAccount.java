@@ -32,7 +32,7 @@ public class C23637_CreateCheckingAccount extends BaseTest {
         checkingAccount = new Account().setCHKAccountData();
     }
 
-    @Test(description = "C14918, Create checking account")
+    @Test(description = "C23637, Create checking account")
     @Severity(SeverityLevel.CRITICAL)
     public void createCheckingAccount() {
 

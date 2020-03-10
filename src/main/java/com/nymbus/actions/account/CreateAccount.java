@@ -14,6 +14,31 @@ public class CreateAccount {
         Pages.clientDetailsPage().clickAccountsTab();
     }
 
+    public void createCHKAccount(Account account) {
+        clickAccountsTab();
+        setAddNewOption(account);
+        setProductType(account);
+        setProduct(account);
+        Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        account.setStatementFlag(Pages.addAccountPage().generateStatementFlagValue());
+        Pages.addAccountPage().setStatementFlag(account.getStatementFlag());
+        account.setInterestRate(Pages.addAccountPage().generateInterestRateValue());
+        Pages.addAccountPage().setInterestRate(account.getInterestRate());
+        setStatementCycle(account);
+        setCallClassCode(account);
+        setChargeOrAnalyze(account);
+        setAccountAnalysis(account);
+        account.setEarningCreditRate(Pages.addAccountPage().generateEarningCreditRateValue());
+        Pages.addAccountPage().setEarningCreditRate(account.getEarningCreditRate());
+        Pages.addAccountPage().setOptInOutDateValue(account.getOptInOutDate());
+        Pages.addAccountPage().clickSaveAccountButton();
+        Pages.accountDetailsPage().waitForFullProfileButton();
+    }
+
     public void createSafeDepositBoxAccount(Account account) {
         clickAccountsTab();
         setAddNewOption(account);
@@ -56,7 +81,6 @@ public class CreateAccount {
         if (account.getCallClassCode() == null) {
             account.setCallClassCode(listOfCallClassCode.get(new Random().nextInt(listOfCallClassCode.size())).trim());
         }
-
         Pages.addAccountPage().clickCallClassCodeSelectorOption(account.getCallClassCode());
     }
 
@@ -68,8 +92,7 @@ public class CreateAccount {
         if (account.getCurrentOfficer() == null) {
             account.setCurrentOfficer(listOfCurrentOfficers.get(new Random().nextInt(listOfCurrentOfficers.size())).trim());
         }
-
-        Pages.addAccountPage().clickCurrentOfficerOption(account.getCurrentOfficer());
+        Pages.addAccountPage().clickCurrentOfficerSelectorOption(account.getCurrentOfficer());
     }
 
     public void setStatementCycle(Account account) {
@@ -80,7 +103,6 @@ public class CreateAccount {
         if (account.getStatementCycle() == null) {
             account.setStatementCycle(listOfStatementCycle.get(new Random().nextInt(listOfStatementCycle.size())).trim());
         }
-
         Pages.addAccountPage().clickStatementCycleOption(account.getStatementCycle());
     }
 
@@ -92,7 +114,6 @@ public class CreateAccount {
         if (account.getProduct() == null) {
             account.setProduct(listOfProduct.get(new Random().nextInt(listOfProduct.size())).trim());
         }
-
         Pages.addAccountPage().clickProductOption(account.getProduct());
     }
 
@@ -126,7 +147,6 @@ public class CreateAccount {
         if (account.getProductType() == null) {
             account.setProductType(listOfProductType.get(new Random().nextInt(listOfProductType.size())).trim());
         }
-
         Pages.addAccountPage().clickProductTypeOption(account.getProductType());
     }
 
@@ -138,7 +158,6 @@ public class CreateAccount {
         if (account.getBoxSize() == null) {
             account.setBoxSize(listOfBoxSize.get(new Random().nextInt(listOfBoxSize.size())).trim());
         }
-
         Pages.addAccountPage().setBoxSizeOption(account.getBoxSize());
         Pages.addAccountPage().clickBoxSizeSelectorOption(account.getBoxSize());
     }

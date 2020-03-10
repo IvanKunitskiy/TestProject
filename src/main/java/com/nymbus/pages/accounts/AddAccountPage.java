@@ -63,7 +63,7 @@ public class AddAccountPage extends BasePage {
     private Locator optInOutStatus = new XPath("//div[@data-test-id='field-dbcodpstatus']/a/span/span");
     private Locator currentOfficerSelectorButton = new XPath("//div[@data-test-id='field-officer']");
     private Locator currentOfficerList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator currentOfficerOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private Locator currentOfficerSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private Locator callClassCodeSelectorButton = new XPath("//div[@data-test-id='field-callclasscode']");
     private Locator callClassCodeList = new XPath("//li[contains(@role, 'option')]/div/span");
     private Locator callClassCodeSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
@@ -115,6 +115,7 @@ public class AddAccountPage extends BasePage {
     @Step("Click the 'Charge or Analyze' selector button")
     public void clickChargeOrAnalyzeSelectorButton() {
         waitForElementVisibility(chargeOrAnalyzeSelectorButton);
+        scrollToElement(callClassCodeSelectorButton);
         waitForElementClickable(chargeOrAnalyzeSelectorButton);
         click(chargeOrAnalyzeSelectorButton);
     }
@@ -199,15 +200,17 @@ public class AddAccountPage extends BasePage {
     @Step("Click the 'Call Class Code' selector button")
     public void clickCallClassCodeSelectorButton() {
         waitForElementVisibility(callClassCodeSelectorButton);
+        scrollToElement(callClassCodeSelectorButton);
         waitForElementClickable(callClassCodeSelectorButton);
         click(callClassCodeSelectorButton);
     }
 
-    @Step("Click the 'Statement Cycle' option")
-    public void clickCurrentOfficerOption(String currentOfficerOption) {
-        waitForElementVisibility(statementCycleSelectorOption, currentOfficerOption);
-        waitForElementClickable(statementCycleSelectorOption, currentOfficerOption);
-        click(statementCycleSelectorOption, currentOfficerOption);
+    // --- !
+    @Step("Click the 'Current Officer' option")
+    public void clickCurrentOfficerSelectorOption(String currentOfficerOption) {
+        waitForElementVisibility(currentOfficerSelectorOption, currentOfficerOption);
+        waitForElementClickable(currentOfficerSelectorOption, currentOfficerOption);
+        click(currentOfficerSelectorOption, currentOfficerOption);
     }
 
     @Step("Returning list of 'Current Officer' options")
@@ -217,7 +220,7 @@ public class AddAccountPage extends BasePage {
         return getElementsText(currentOfficerList);
     }
 
-    @Step("Click the 'Statement Cycle' selector button")
+    @Step("Click the 'Current Officer' selector button")
     public void clickCurrentOfficerSelectorButton() {
         waitForElementVisibility(currentOfficerSelectorButton);
         waitForElementClickable(currentOfficerSelectorButton);
