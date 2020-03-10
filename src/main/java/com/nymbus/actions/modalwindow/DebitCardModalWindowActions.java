@@ -1,5 +1,6 @@
 package com.nymbus.actions.modalwindow;
 
+import com.nymbus.models.client.other.account.type.CHKAccount;
 import com.nymbus.models.client.other.debitcard.DebitCard;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
@@ -11,22 +12,24 @@ public class DebitCardModalWindowActions {
         Assert.assertFalse(Pages.debitCardModalWindow().getDescriptionInputFieldValue().isEmpty());
     }
 
-    public void addNewDebitCard(DebitCard debitCard) {
+    public void fillDebitCard(DebitCard debitCard) {
         selectBinControl(debitCard);
         Pages.debitCardModalWindow().clickOnNextButton();
 
         Pages.debitCardModalWindow().typeToCardNumberInputField(debitCard.getCardNumber());
         Pages.debitCardModalWindow().typeToNameOnCardInputField(debitCard.getNameOnCard());
         Pages.debitCardModalWindow().typeToSecondLineEmbossingInputField(debitCard.getSecondLineEmbossing());
-//        Pages.debitCardModalWindow().typeToAccountInputField(debitCard.getAccounts().get(0)); // TODO: Need to think about this field
-//        Pages.debitCardModalWindow().selectCardDesign(debitCard.getCardDesign());
+        Pages.debitCardModalWindow().selectAccount(((CHKAccount) debitCard.getAccounts().get(0)).getAccountNumber());
+//        Pages.debitCardModalWindow().selectCardDesign(debitCard.getCardDesign()); // TODO: Need for find where I can fill card designs
         Pages.debitCardModalWindow().selectCardStatus(debitCard.getCardStatus());
         Pages.debitCardModalWindow().clickOnYesButton();
         Pages.debitCardModalWindow().typeToPinOffsetInputField(debitCard.getPinOffset());
-//        Pages.debitCardModalWindow().typeToDateEffectiveInputField(debitCard.getDateEffective()); // TODO: Contains value by the default. Maybe solution is the set current day on 'DebitCardFactory' class
-        Pages.debitCardModalWindow().typeToATMDailyLimitNumberAmtInputField(String.valueOf(debitCard.getATMDailyDollarLimit()));
-        Pages.debitCardModalWindow().typeToATMDailyLimitNumberNbrInputField(String.valueOf(debitCard.getATMTransactionLimit()));
-        Pages.debitCardModalWindow().typeToDebitPurchaseDailyLimitNumberAmtInputField(String.valueOf(debitCard.getDBCDailyDollarLimit()));
-        Pages.debitCardModalWindow().typeToDebitPurchaseDailyLimitNumberNbrInputField(String.valueOf(debitCard.getDBCTransactionLimit()));
+        /*Pages.debitCardModalWindow().typeToATMDailyLimitNumberAmtInputField(debitCard.getATMDailyDollarLimit());          // This values will fill automatically
+        Pages.debitCardModalWindow().typeToATMDailyLimitNumberNbrInputField(debitCard.getATMTransactionLimit());            // Values described on Bin Control settings
+        Pages.debitCardModalWindow().typeToDebitPurchaseDailyLimitNumberAmtInputField(debitCard.getDBCDailyDollarLimit());
+        Pages.debitCardModalWindow().typeToDebitPurchaseDailyLimitNumberNbrInputField(debitCard.getDBCTransactionLimit());*/
+        Pages.debitCardModalWindow().selectTransactionTypeAllowedSelect(debitCard.getTranslationTypeAllowed());
+        Pages.debitCardModalWindow().setChargeForCardReplacementToggle(debitCard.isChargeForCardReplacement());
+        Pages.debitCardModalWindow().setAllowForeignTransactionsToggle(debitCard.isAllowForeignTransactions());
     }
 }

@@ -35,11 +35,9 @@ public class IndividualClientBuilder {
         individualClient.getIndividualType().setAddresses(Collections.singleton(addressFactory.getAddress()));
         individualClient.getIndividualClientDetails().setPhones(new HashSet<>(Arrays.asList(
                 phoneFactory.getPhone(),
-                phoneFactory.getPhone(),
                 phoneFactory.getPhone()
         )));
         individualClient.getIndividualClientDetails().setEmails(new HashSet<>(Arrays.asList(
-                emailFactory.getEmail(),
                 emailFactory.getEmail(),
                 emailFactory.getEmail()
         )));

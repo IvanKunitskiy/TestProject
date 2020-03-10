@@ -78,4 +78,32 @@ public class Random {
     public static synchronized long genRandNumberByTime() {
         return System.currentTimeMillis() % 10_000_000_000L + longRandAdd++;
     }
+
+    /**
+     * Card Number Generation
+     * */
+    public static String genCardNumber() {
+        long from = 1000_0000_0000_0000L;
+        long to = 9999_9999_9999_9999L;
+        return String.valueOf((from + Math.round((Math.random() * (to - from)))));
+    }
+
+    public static String genCardNumberStartWith(String startWith) {
+        String cardNumber = genCardNumber();
+        String editedCardNumber = startWith + cardNumber.substring(4);
+        return editedCardNumber;
+    }
+
+    public static String genCardNumberEndWith(String endWith) {
+
+        String cardNumber = genCardNumber();
+        String editedCardNumber = cardNumber.substring(0, cardNumber.length() - 4) + endWith;
+        return editedCardNumber;
+    }
+
+    public static String genCardNumberStartWithEndWith(String startWith, String endWith) {
+        String cardNumber = genCardNumberStartWith(startWith);
+        String editedCardNumber = cardNumber.substring(0, cardNumber.length() - 4) + endWith;
+        return editedCardNumber;
+    }
 }

@@ -1,9 +1,11 @@
 package com.nymbus.util;
 
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -92,5 +94,14 @@ public class DateTime {
             }
         }
         return daysList;
+    }
+
+    public static String plusMonthsToCurrentDate(int months) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, months);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
+        String futureDate = simpleDateFormat.format(calendar.getTime());
+
+        return futureDate;
     }
 }

@@ -71,6 +71,13 @@ public class ClientDetailsPage extends BasePage {
     private Locator expirationDate = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[7]");
     private Locator createdBy = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[8]");
 
+    /**
+     * Maintenance Tab
+     */
+    private Locator newDebitCardButton = new XPath("//button[span[text()='New Debit Card']]");
+    private Locator viewAllCardsButton = new XPath("//button[span[text()='View All Cards']]");
+    private Locator cardList = new XPath("");
+
     @Step("Wait for Client Details page loaded")
     public void waitForPageLoaded(){
         waitForElementVisibility(profileForm);
@@ -378,4 +385,25 @@ public class ClientDetailsPage extends BasePage {
         return getElementText(createdBy, index).trim();
     }
 
+    /**
+     * Maintenance Tab
+     */
+    @Step("Click on 'New Debit Card' button")
+    public void clickOnNewDebitCardButton() {
+        waitForElementVisibility(newDebitCardButton);
+        waitForElementClickable(newDebitCardButton);
+        click(newDebitCardButton);
+    }
+
+    @Step("Click on 'View All Cards' button")
+    public void clickOnViewAllCardsButton() {
+        waitForElementVisibility(viewAllCardsButton);
+        waitForElementClickable(viewAllCardsButton);
+        click(viewAllCardsButton);
+    }
+
+    @Step("Checking is card list displayed")
+    public boolean isCardListDisplayed() {
+        return !getElements(cardList).isEmpty();
+    }
 }

@@ -25,10 +25,10 @@ public class BinControl {
     @NonNull private int cardLifeInMonths;
     @NonNull private boolean issueReplacementCardBySameNumber;
     @NonNull private boolean includeOverdraftProtectionInAvailableBalance;
-    @NonNull private double ATMDailyDollarLimit;
-    @NonNull private int ATMTransactionLimit;
-    @NonNull private double DBCDailyDollarLimit;
-    @NonNull private int DBCTransactionLimit;
-    @NonNull private double replacementCardFee;
+    @NonNull private String ATMDailyDollarLimit;
+    @NonNull private String ATMTransactionLimit;
+    @NonNull private String DBCDailyDollarLimit;
+    @NonNull private String DBCTransactionLimit;
+    @NonNull private String replacementCardFee;
     @NonNull private ReplacementCardCode replacementCardCode;
 }

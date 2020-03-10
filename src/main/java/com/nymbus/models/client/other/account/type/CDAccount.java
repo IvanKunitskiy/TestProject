@@ -1,6 +1,5 @@
 package com.nymbus.models.client.other.account.type;
 
-import com.nymbus.models.client.Client;
 import com.nymbus.models.client.clientdetails.type.organisation.MailCode;
 import com.nymbus.models.client.other.account.AccountType;
 import com.nymbus.models.client.other.account.BankBranch;
@@ -12,8 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
@@ -24,7 +21,7 @@ public class CDAccount implements Account {
     private String accountTitle;
     @NonNull private AccountType accountType;
     private MailCode mailCode;
-    @NonNull private List<Client> accountHoldersAndSigners; // TODO: Need to refactor (recursion warning)
+//    @NonNull private List<Client> accountHoldersAndSigners; // TODO: Need to refactor (recursion warning)
     private String dateOpened;
     private String originatingOfficer; // TODO: Need to refactor
     @NonNull private BankBranch bankBranch;

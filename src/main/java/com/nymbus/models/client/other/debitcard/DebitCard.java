@@ -23,13 +23,13 @@ public class DebitCard {
     @NonNull private List<Account> accounts; // At least one
     private String cardDesign;
     @NonNull CardStatus cardStatus;
-    private String pinOffset;
+    private int pinOffset;
     private String dateEffective;
-    private double ATMDailyDollarLimit;
-    private int ATMTransactionLimit;
-    private double DBCDailyDollarLimit;
-    private int DBCTransactionLimit;
+    private String ATMDailyDollarLimit;
+    private String ATMTransactionLimit;
+    private String DBCDailyDollarLimit;
+    private String DBCTransactionLimit;
     private TranslationTypeAllowed translationTypeAllowed;
-    private boolean changeForCardReplacement;
+    private boolean chargeForCardReplacement;
     private boolean allowForeignTransactions;
 }

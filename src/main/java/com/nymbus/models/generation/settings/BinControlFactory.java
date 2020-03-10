@@ -19,14 +19,14 @@ public class BinControlFactory {
         binControl.setClientTypes(Collections.singletonList(ClientType.DIRECTOR));
         binControl.setCardDesigns(Collections.EMPTY_SET);
         binControl.setIncrementCardNumberBy(String.valueOf(Random.genInt(1_000_000, 9_999_999)));
-        binControl.setCardLifeInMonths(Random.genInt(1, 12));
+        binControl.setCardLifeInMonths(48);
         binControl.setIssueReplacementCardBySameNumber(true);
         binControl.setIncludeOverdraftProtectionInAvailableBalance(false);
-        binControl.setATMDailyDollarLimit(1_500.00);
-        binControl.setATMTransactionLimit(15);
-        binControl.setDBCDailyDollarLimit(1_500.00);
-        binControl.setDBCTransactionLimit(15);
-        binControl.setReplacementCardFee(150.00);
+        binControl.setATMDailyDollarLimit("500.00");
+        binControl.setATMTransactionLimit("45");
+        binControl.setDBCDailyDollarLimit("2,500.00");
+        binControl.setDBCTransactionLimit("45");
+        binControl.setReplacementCardFee("150.00");
         binControl.setReplacementCardCode(ReplacementCardCode.ACCOUNT_FEE);
 
         return binControl;
