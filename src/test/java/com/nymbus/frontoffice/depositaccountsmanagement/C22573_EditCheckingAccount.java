@@ -121,8 +121,8 @@ public class C22573_EditCheckingAccount extends BaseTest {
 //        Assert.assertEquals(Pages.accountDetailsPage().getOdProtectionAcct(), checkingAccount.getOdProtectionAcct());
         Assert.assertEquals(Pages.accountDetailsPage().getReasonAutoNSFChgWaived(), checkingAccount.getReasonAutoNSFChgWaived());
         Assert.assertEquals(Pages.accountDetailsPage().getReasonDebitCardChargeWaived(), checkingAccount.getReasonDebitCardChargeWaived());
-//        - Automatic Overdraft Status = Active
-//        - Reason auto OD chg waived
+        Assert.assertEquals(Pages.accountDetailsPage().getAutomaticOverdraftStatus(), checkingAccount.getAutomaticOverdraftStatus());
+        Assert.assertEquals(Pages.accountDetailsPage().getReasonAutoOdChgWaived(), checkingAccount.getReasonAutoOdChgWaived());
 //        - When surcharges refunded
 //        - Federal W/H percent - min - 4 digits pass the decimal, max - 100%
 //        - Number of ATM cards issue- any numeric value

@@ -65,6 +65,7 @@ public class AccountDetailsPage extends BasePage {
     private Locator editStatementFlag = new XPath("//input[@id='statementflag']");
     private Locator editInterestRate = new XPath("//input[@id='interestrate']");
     private Locator editEarningCreditRate = new XPath("//input[@id='earningscreditrate']");
+    private Locator editAutomaticOverdraftStatus = new XPath("//div[@id='automaticoverdraftstatus']//span[contains(@class, 'ng-scope')]");
 
     private Locator federalWHReasonSelectorButton = new XPath("//div[@id='federalwithholdingreason']");
     private Locator federalWHReasonList = new XPath("//li[contains(@role, 'option')]/div/span");
@@ -113,6 +114,7 @@ public class AccountDetailsPage extends BasePage {
     private Locator cashColFloatInput = new XPath("//input[@id='cashcollectionfloat']");
     private Locator earningCreditRateInput = new XPath("//input[@id='earningscreditrate']");
     private Locator interestRateInput = new XPath("//input[@id='interestrate']");
+    private Locator reasonAutoOdChgWaived = new XPath("//div[@id='reasonautoodchargeswaived']");
 
     /**
      * Disabled fields in edit mode
@@ -439,6 +441,18 @@ public class AccountDetailsPage extends BasePage {
     /**
     * Edit account
      */
+
+    @Step("Get 'Reason Auto Od Chg Waived' value in edit mode")
+    public String getReasonAutoOdChgWaived() {
+        waitForElementVisibility(reasonAutoOdChgWaived);
+        return getElementAttributeValue("value", reasonAutoOdChgWaived);
+    }
+
+    @Step("Get 'Automatic Overdraft Status' value in edit mode")
+    public String getAutomaticOverdraftStatus() {
+        waitForElementVisibility(editAutomaticOverdraftStatus);
+        return getElementText(editAutomaticOverdraftStatus);
+    }
 
     @Step("Check if 'Total Earnings' field is disabled edit mode")
     public boolean isTotalEarningsFieldDisabledInEditMode() {
