@@ -7,6 +7,8 @@ import com.nymbus.locator.Name;
 import com.nymbus.locator.XPath;
 import io.qameta.allure.Step;
 
+import java.util.List;
+
 public class ClientDetailsPage extends BasePage {
 
     private Locator profileForm = new XPath("//div[@name='profileForm']");
@@ -16,6 +18,7 @@ public class ClientDetailsPage extends BasePage {
      */
     private Locator profileTab = new ID("app-customer-profile");
     private Locator documentsTab = new ID("app-customer-documents");
+    private Locator accountsTab = new ID("app-customer-accounts");
     private Locator maintenanceTab = new ID("app-customer-maintenance");
 
     /**
@@ -72,6 +75,18 @@ public class ClientDetailsPage extends BasePage {
     private Locator createdBy = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[8]");
 
     /**
+     * Accounts Tab
+     */
+    private Locator addNewButton = new ID("newAccountOrCreditPlan");
+    private Locator accountOption = new XPath("//div[contains(@class, 'select2-result-label')]//span[contains(text(), 'Account')]");
+    private Locator creditPlanOption = new ID("//div[contains(@class, 'select2-result-label')]//span[contains(text(), 'Credit Plan')]");
+    private Locator clientAccountByNumber = new XPath("//span[contains(text(), '%s')]");
+    private Locator addNewList = new XPath("//div[contains(@class, 'select2-result-label')]//span");
+    private Locator addNewField = new XPath("//div[@id='newAccountOrCreditPlan']//input[contains(@class, 'nb-select-search')]");
+    private Locator addNewSelectorOption = new XPath("//div[@id='newAccountOrCreditPlan']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+
+    /**
      * Maintenance Tab
      */
     private Locator newDebitCardButton = new XPath("//button[span[text()='New Debit Card']]");
@@ -100,6 +115,14 @@ public class ClientDetailsPage extends BasePage {
         waitForElementClickable(documentsTab);
         click(documentsTab);
     }
+
+    @Step("Click 'Accounts' tab")
+    public void clickAccountsTab(){
+        waitForElementVisibility(accountsTab);
+        waitForElementClickable(accountsTab);
+        click(accountsTab);
+    }
+
 
     @Step("Click 'Maintenance' tab")
     public void clickOnMaintenanceTab() {
@@ -385,6 +408,45 @@ public class ClientDetailsPage extends BasePage {
         return getElementText(createdBy, index).trim();
     }
 
+    /**
+     * Accounts Tab
+     */
+
+    @Step("Click the 'Add New' button")
+    public void clickAddNewButton(){
+        waitForElementVisibility(addNewButton);
+        waitForElementClickable(addNewButton);
+        click(addNewButton);
+    }
+
+    @Step("Click the 'Account' option in 'Add New' dropdown")
+    public void clickAccountOption(){
+        waitForElementVisibility(accountOption);
+        waitForElementClickable(accountOption);
+        wait(1);
+        click(accountOption);
+    }
+
+    @Step("Return the 'Add New' list of options")
+    public List<String> getAddNewList(){
+        waitForElementVisibility(addNewList);
+        waitForElementClickable(addNewList);
+        return getElementsText(addNewList);
+    }
+
+    @Step("Open account by its number")
+    public void openAccountByNumber(String accountNumber) {
+        waitForElementVisibility(clientAccountByNumber, accountNumber);
+        waitForElementClickable(clientAccountByNumber, accountNumber);
+        click(clientAccountByNumber, accountNumber);
+    }
+
+    @Step("Click 'Add New' option")
+    public void clickAddNewValueOption(String addNewValue) {
+        waitForElementVisibility(addNewSelectorOption, addNewValue);
+        waitForElementClickable(addNewSelectorOption, addNewValue);
+        click(addNewSelectorOption, addNewValue);
+    }
     /**
      * Maintenance Tab
      */

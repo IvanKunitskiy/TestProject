@@ -5,6 +5,9 @@ import com.nymbus.pages.clients.ClientDetailsPage;
 import com.nymbus.pages.clients.ClientsPage;
 import com.nymbus.pages.clients.ClientsSearchResultsPage;
 import com.nymbus.pages.clients.maintenance.MaintenancePage;
+import com.nymbus.pages.accounts.AccountDetailsPage;
+import com.nymbus.pages.accounts.AddAccountPage;
+import com.nymbus.pages.clients.*;
 import com.nymbus.pages.loans.LoansPage;
 import com.nymbus.pages.modalwindow.DebitCardModalWindow;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
@@ -28,6 +31,8 @@ public class Pages {
     private static TellerToTellerPage tellerToTellerPage;
     private static Settings settings;
     private static ClientsSearchResultsPage clientsSearchResultsPage;
+    private static AddAccountPage addAccountPage;
+    private static AccountDetailsPage accountDetailsPage;
     private static MaintenancePage maintenancePage;
 
     /**
@@ -153,6 +158,26 @@ public class Pages {
             clientsSearchResultsPage = new ClientsSearchResultsPage();
         }
         return clientsSearchResultsPage;
+    }
+
+    /**
+     * This function return an instance of `AddAccountPage`
+     */
+    public static AddAccountPage addAccountPage() {
+        if (addAccountPage == null) {
+            addAccountPage = new AddAccountPage();
+        }
+        return addAccountPage;
+    }
+
+    /**
+     * This function return an instance of `AccountDetailsPage`
+     */
+    public static AccountDetailsPage accountDetailsPage() {
+        if (accountDetailsPage == null) {
+            accountDetailsPage = new AccountDetailsPage();
+        }
+        return accountDetailsPage;
     }
 
     /**
