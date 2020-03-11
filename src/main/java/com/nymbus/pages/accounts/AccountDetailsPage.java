@@ -92,7 +92,8 @@ public class AccountDetailsPage extends BasePage {
     @Step("Get 'Automatic Overdraft Limit' value")
     public String getAutomaticOverdraftLimit() {
         waitForElementVisibility(automaticOverdraftLimit);
-        return getElementText(automaticOverdraftLimit);
+        String limitValue = getElementText(automaticOverdraftLimit);
+        return limitValue.replaceAll("[^0-9]", "");
     }
 
     @Step("Get 'Number Of Debit Cards Issued' value")
@@ -153,7 +154,7 @@ public class AccountDetailsPage extends BasePage {
     @Step("Get 'Reason Auto Od Chg Waived' value")
     public String getReasonAutoOdChgWaived() {
         waitForElementVisibility(reasonAutoOdChgWaived);
-        return getElementAttributeValue("value", reasonAutoOdChgWaived);
+        return getElementText(reasonAutoOdChgWaived);
     }
 
     @Step("Get 'Automatic Overdraft Status' value")

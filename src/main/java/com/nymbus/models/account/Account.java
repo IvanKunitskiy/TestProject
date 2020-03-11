@@ -52,6 +52,7 @@ public class Account {
     private String discount;
     private String discountPeriods;
     private String discountReason;
+    private String automaticOverdraftLimit;
 
     public Account setDefaultAccountData() {
         Account account = new Account();
@@ -71,6 +72,7 @@ public class Account {
         account.setOptInOutDate("01/01/2020");
         account.setDateOpened("02/27/2020");
         account.setAutomaticOverdraftStatus("Active");
+        account.setAutomaticOverdraftLimit(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setNumberOfATMCardsIssued(String.valueOf(Random.genInt(0, 100)));
         account.setNumberOfDebitCardsIssued(String.valueOf(Random.genInt(0, 100)));
         account.setFederalWHPercent(String.valueOf(Random.genInt(0, 100)));
@@ -470,5 +472,13 @@ public class Account {
 
     public void setCashCollFloat(String cashCollFloat) {
         this.cashCollFloat = cashCollFloat;
+    }
+
+    public String getAutomaticOverdraftLimit() {
+        return automaticOverdraftLimit;
+    }
+
+    public void setAutomaticOverdraftLimit(String automaticOverdraftLimit) {
+        this.automaticOverdraftLimit = automaticOverdraftLimit;
     }
 }

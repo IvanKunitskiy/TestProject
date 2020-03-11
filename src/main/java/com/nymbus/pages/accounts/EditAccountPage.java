@@ -48,6 +48,7 @@ public class EditAccountPage extends BasePage {
     private Locator earningCreditRateInput = new XPath("//input[@id='earningscreditrate']");
     private Locator interestRateInput = new XPath("//input[@id='interestrate']");
     private Locator cashCollFloatInput = new XPath("//input[@id='cashcollectionfloat']");
+    private Locator automaticOverdraftLimitInput = new XPath("//input[@id='automaticoverdraftlimit']");
 
     private Locator federalWHReasonSelectorButton = new XPath("//div[@id='federalwithholdingreason']");
     private Locator federalWHReasonList = new XPath("//li[contains(@role, 'option')]/div/span");
@@ -103,6 +104,13 @@ public class EditAccountPage extends BasePage {
     /**
      * Get values in edit mode
      */
+
+    @Step("Get 'Automatic Overdraft Limit' value in edit mode")
+    public String getAutomaticOverdraftLimit() {
+        waitForElementVisibility(automaticOverdraftLimitInput);
+        String overdraftValue = getElementAttributeValue("value", automaticOverdraftLimitInput);
+        return overdraftValue.replaceAll("[^0-9]", "");
+    }
 
     @Step("Get 'Positive Pay' value in edit mode")
     public String getPositivePay() {
@@ -513,6 +521,13 @@ public class EditAccountPage extends BasePage {
         waitForElementVisibility(federalWHPercentInput);
         waitForElementClickable(federalWHPercentInput);
         type(federalWHPercentValue, federalWHPercentInput);
+    }
+
+    @Step("Set 'Federal W/H percent' value")
+    public void setAutomaticOverdraftLimit(String automaticOverdraftLimitValue) {
+        waitForElementVisibility(automaticOverdraftLimitInput);
+        waitForElementClickable(automaticOverdraftLimitInput);
+        type(automaticOverdraftLimitValue, automaticOverdraftLimitInput);
     }
 
     @Step("Click on 'When surcharges refunded' value")
