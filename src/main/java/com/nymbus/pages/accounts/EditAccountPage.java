@@ -23,6 +23,14 @@ public class EditAccountPage extends BasePage {
     private Locator statementFlag = new XPath("//input[@id='statementflag']");
     private Locator interestRate = new XPath("//input[@id='interestrate']");
     private Locator earningCreditRate = new XPath("//input[@id='earningscreditrate']");
+    private Locator federalWHReason = new XPath("//div[@id='federalwithholdingreason']//span[contains(@class, 'ng-scope')]");
+    private Locator reasonATMChargeWaived = new XPath("//div[@id='reasonatmchargeswaived']//span[contains(@class, 'ng-scope')]");
+    private Locator odProtectionAcct = new XPath("//div[@id='overdraftprotectionaccountnumber']//span[contains(@class, 'ng-scope')]");
+    private Locator reasonAutoNSFChgWaived = new XPath("//div[@id='reasonautonsfchargeswaived']//span[contains(@class, 'ng-scope')]");
+    private Locator reasonDebitCardChargeWaived = new XPath("//div[@id='reasondebitcardchargeswaived']//span[contains(@class, 'ng-scope')]");
+    private Locator automaticOverdraftStatus = new XPath("//div[@id='automaticoverdraftstatus']//span[contains(@class, 'ng-scope')]");
+    private Locator reasonAutoOdChgWaived = new XPath("//div[@id='reasonautoodchargeswaived']//span[contains(@class, 'ng-scope')]");
+    private Locator whenSurchargesRefunded = new XPath("//div[@id='whensurchargesrefunded']//span[contains(@class, 'ng-scope')]");
 
     private Locator federalWHPercentInput = new XPath("//input[@id='federalwithholdingpercent']");
     private Locator numberOfATMCardsIssuedInput = new XPath("//input[@id='numberofatmcardissued']");
@@ -39,6 +47,7 @@ public class EditAccountPage extends BasePage {
     private Locator cashColFloatInput = new XPath("//input[@id='cashcollectionfloat']");
     private Locator earningCreditRateInput = new XPath("//input[@id='earningscreditrate']");
     private Locator interestRateInput = new XPath("//input[@id='interestrate']");
+    private Locator cashCollFloatInput = new XPath("//input[@id='cashcollectionfloat']");
 
     private Locator federalWHReasonSelectorButton = new XPath("//div[@id='federalwithholdingreason']");
     private Locator federalWHReasonList = new XPath("//li[contains(@role, 'option')]/div/span");
@@ -75,6 +84,7 @@ public class EditAccountPage extends BasePage {
     /**
      * Disabled fields in edit mode
      */
+
     private Locator productTypeField = new XPath("//div[@id='accounttype']");
     private Locator productField = new XPath("//div[@id='accountclasstype']");
     private Locator accountNumberField = new XPath("//input[@id='accountnumber']");
@@ -92,6 +102,215 @@ public class EditAccountPage extends BasePage {
 
     /**
      * Get values in edit mode
+     */
+
+    @Step("Get 'Positive Pay' value in edit mode")
+    public String getPositivePay() {
+        waitForElementVisibility(positivePayInput);
+        return getElementAttributeValue("value", positivePayInput);
+    }
+
+    @Step("Get 'Cash Coll Float' value in edit mode")
+    public String getCashCollFloat() {
+        waitForElementVisibility(cashCollFloatInput);
+        String cashCollFloatValue = getElementAttributeValue("value", cashCollFloatInput);
+        return cashCollFloatValue.replaceAll("[^0-9]", "");
+    }
+
+    @Step("Get 'Cash Coll Interest Chg' value in edit mode")
+    public String getCashCollInterestChg() {
+        waitForElementVisibility(cashCollInterestChgInput);
+        String cashCollValue = getElementAttributeValue("value", cashCollInterestChgInput);
+        return cashCollValue.replaceAll("[^0-9]", "");
+    }
+
+    @Step("Get 'Cash Coll Days Before Chg' value in edit mode")
+    public String getCashCollDaysBeforeChg() {
+        waitForElementVisibility(cashCollDaysBeforeChgInput);
+        String cashCollDaysValue = getElementAttributeValue("value", cashCollDaysBeforeChgInput);
+        return cashCollDaysValue.replaceAll("[^0-9]", "");
+    }
+
+    @Step("Get 'Number Of Debit Cards Issued' value in edit mode")
+    public String getNumberOfDebitCardsIssued() {
+        waitForElementVisibility(numberOfDebitCardsIssuedInput);
+        return getElementAttributeValue("value", numberOfDebitCardsIssuedInput);
+    }
+
+    @Step("Get 'Image Statement Code' value in edit mode")
+    public String getImageStatementCode() {
+        waitForElementVisibility(imageStatementCodeInput);
+        return getElementAttributeValue("value", imageStatementCodeInput);
+    }
+
+    @Step("Get 'When Surcharges Refunded' value in edit mode")
+    public String getWhenSurchargesRefunded() {
+        waitForElementVisibility(whenSurchargesRefunded);
+        return getElementText(whenSurchargesRefunded);
+    }
+
+    @Step("Get 'Federal WH Percent' value in edit mode")
+    public String getFederalWHPercent() {
+        waitForElementVisibility(federalWHPercentInput);
+        String percentValue = getElementAttributeValue("value", federalWHPercentInput);
+        return percentValue.substring(0, percentValue.length() - 1);
+    }
+
+    @Step("Get 'Number Of ATM Cards Issued' value in edit mode")
+    public String getNumberOfATMCardsIssued() {
+        waitForElementVisibility(numberOfATMCardsIssuedInput);
+        return getElementAttributeValue("value", numberOfATMCardsIssuedInput);
+    }
+
+    @Step("Get 'Earning Credit Rate' value in edit mode")
+    public String getEarningCreditRate() {
+        waitForElementVisibility(earningCreditRate);
+        String rate = getElementAttributeValue("value", earningCreditRate);
+        return rate.substring(0, rate.length() - 1);
+    }
+
+    @Step("Get 'User Defined Field 1' value in edit mode")
+    public String getUserDefinedField4() {
+        waitForElementVisibility(userDefinedFieldInput_4);
+        return getElementAttributeValue("value", userDefinedFieldInput_4);
+    }
+
+    @Step("Get 'User Defined Field 1' value in edit mode")
+    public String getUserDefinedField3() {
+        waitForElementVisibility(userDefinedFieldInput_3);
+        return getElementAttributeValue("value", userDefinedFieldInput_3);
+    }
+
+    @Step("Get 'User Defined Field 2' value in edit mode")
+    public String getUserDefinedField2() {
+        waitForElementVisibility(userDefinedFieldInput_2);
+        return getElementAttributeValue("value", userDefinedFieldInput_2);
+    }
+
+    @Step("Get 'User Defined Field 1' value in edit mode")
+    public String getUserDefinedField1() {
+        waitForElementVisibility(userDefinedFieldInput_1);
+        return getElementAttributeValue("value", userDefinedFieldInput_1);
+    }
+
+    @Step("Get 'Reason Auto NSF Chg Waived' value in edit mode")
+    public String getReasonAutoNSFChgWaived() {
+        waitForElementVisibility(reasonAutoNSFChgWaived);
+        return getElementText(reasonAutoNSFChgWaived);
+    }
+
+    @Step("Get 'Reason Debit Card Charge Waived' value in edit mode")
+    public String getReasonDebitCardChargeWaived() {
+        waitForElementVisibility(reasonDebitCardChargeWaived);
+        return getElementText(reasonDebitCardChargeWaived);
+    }
+
+    @Step("Get 'Automatic Overdraft Status' value in edit mode")
+    public String getAutomaticOverdraftStatus() {
+        waitForElementVisibility(automaticOverdraftStatus);
+        return getElementText(automaticOverdraftStatus);
+    }
+
+    @Step("Get 'Reason Auto Od Chg Waived' value in edit mode")
+    public String getReasonAutoOdChgWaived() {
+        waitForElementVisibility(reasonAutoOdChgWaived);
+        return getElementText(reasonAutoOdChgWaived);
+    }
+
+    @Step("Get 'OD Protection Acct' value in edit mode")
+    public String getOdProtectionAcct() {
+        waitForElementVisibility(odProtectionAcct);
+        return getElementText(odProtectionAcct);
+    }
+
+    @Step("Get 'Reason ATM Charge Waived' value in edit mode")
+    public String getReasonATMChargeWaived() {
+        waitForElementVisibility(reasonATMChargeWaived);
+        return getElementText(reasonATMChargeWaived);
+    }
+
+    @Step("Get 'Federal W/H Reason' value in edit mode")
+    public String getFederalWHReasonInEditMode() {
+        waitForElementVisibility(federalWHReason);
+        return getElementText(federalWHReason);
+    }
+
+    @Step("Get 'Earning Credit Rate' value in edit mode")
+    public String getEarningCreditRateInEditMode() {
+        waitForElementVisibility(earningCreditRate);
+        String rate = getElementAttributeValue("value", earningCreditRate);
+        return rate.substring(0, rate.length() - 1);
+    }
+
+    @Step("Get 'Account Analyzis' value in edit mode")
+    public String getAccountAnalysisValueInEditMode() {
+        waitForElementVisibility(accountAnalysis);
+        return getElementText(accountAnalysis);
+    }
+
+    @Step("Get 'Charge or Analyze' value in edit mode")
+    public String getChargeOrAnalyzeInEditMode() {
+        waitForElementVisibility(chargeOrAnalyze);
+        return getElementText(chargeOrAnalyze);
+    }
+
+    @Step("Get 'Interest Rate' value in edit mode")
+    public String getInterestRateValueInEditMode() {
+        waitForElementVisibility(interestRate);
+        String rate = getElementAttributeValue("value", interestRate);
+        return rate.substring(0, rate.length() - 1);
+    }
+
+    @Step("Get 'Statement Flag' value in edit mode")
+    public String getStatementFlagValueInEditMode() {
+        waitForElementVisibility(statementFlag);
+        return getElementAttributeValue("value", statementFlag);
+    }
+
+    @Step("Get 'Call Class Code' value in edit mode")
+    public String getCallClassCodeValueInEditMode() {
+        waitForElementVisibility(callClassCode);
+        return getElementText(callClassCode);
+    }
+
+    @Step("Get 'Statement Cycle' value in edit mode")
+    public String getStatementCycleValueInEditMode() {
+        waitForElementVisibility(statementCycle);
+        return getElementText(statementCycle);
+    }
+
+    @Step("Get 'Current Officer' value in edit mode")
+    public String getCurrentOfficerValueInEditMode() {
+        waitForElementVisibility(currentOfficer);
+        return getElementText(currentOfficer);
+    }
+
+    @Step("Get 'Date Opened' value in edit mode")
+    public String getDateOpenedValueInEditMode() {
+        waitForElementVisibility(dateOpened);
+        return getElementAttributeValue("value", dateOpened);
+    }
+
+    @Step("Get 'Product' value in edit mode")
+    public String getProductValueInEditMode() {
+        waitForElementVisibility(product);
+        return getElementText(product);
+    }
+
+    @Step("Get 'Bank Branch' value in edit mode")
+    public String getBankBranchValueInEditMode() {
+        waitForElementVisibility(bankBranch);
+        return getElementText(bankBranch);
+    }
+
+    @Step("Get 'Account Title' value in edit mode")
+    public String getAccountTitleValueInEditMode() {
+        waitForElementVisibility(accountTitle);
+        return getElementAttributeValue("value", accountTitle);
+    }
+
+    /**
+    * Check if field is disabled in edit mode
      */
 
     @Step("Check if 'Total Earnings' field is disabled edit mode")
@@ -176,80 +395,6 @@ public class EditAccountPage extends BasePage {
     public boolean isProductTypeFieldDisabledInEditMode() {
         waitForElementVisibility(productTypeField);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", productTypeField));
-    }
-
-    @Step("Get 'Earning Credit Rate' value in edit mode")
-    public String getEarningCreditRateInEditMode() {
-        waitForElementVisibility(earningCreditRate);
-        String rate = getElementAttributeValue("value", earningCreditRate);
-        return rate.substring(0, rate.length() - 1);
-    }
-
-    @Step("Get 'Account Analyzis' value in edit mode")
-    public String getAccountAnalysisValueInEditMode() {
-        waitForElementVisibility(accountAnalysis);
-        return getElementText(accountAnalysis);
-    }
-
-    @Step("Get 'Charge or Analyze' value in edit mode")
-    public String getChargeOrAnalyzeInEditMode() {
-        waitForElementVisibility(chargeOrAnalyze);
-        return getElementText(chargeOrAnalyze);
-    }
-
-    @Step("Get 'Interest Rate' value in edit mode")
-    public String getInterestRateValueInEditMode() {
-        waitForElementVisibility(interestRate);
-        String rate = getElementAttributeValue("value", interestRate);
-        return rate.substring(0, rate.length() - 1);
-    }
-
-    @Step("Get 'Statement Flag' value in edit mode")
-    public String getStatementFlagValueInEditMode() {
-        waitForElementVisibility(statementFlag);
-        return getElementAttributeValue("value", statementFlag);
-    }
-
-    @Step("Get 'Call Class Code' value in edit mode")
-    public String getCallClassCodeValueInEditMode() {
-        waitForElementVisibility(callClassCode);
-        return getElementText(callClassCode);
-    }
-
-    @Step("Get 'Statement Cycle' value in edit mode")
-    public String getStatementCycleValueInEditMode() {
-        waitForElementVisibility(statementCycle);
-        return getElementText(statementCycle);
-    }
-
-    @Step("Get 'Current Officer' value in edit mode")
-    public String getCurrentOfficerValueInEditMode() {
-        waitForElementVisibility(currentOfficer);
-        return getElementText(currentOfficer);
-    }
-
-    @Step("Get 'Date Opened' value in edit mode")
-    public String getDateOpenedValueInEditMode() {
-        waitForElementVisibility(dateOpened);
-        return getElementAttributeValue("value", dateOpened);
-    }
-
-    @Step("Get 'Product' value in edit mode")
-    public String getProductValueInEditMode() {
-        waitForElementVisibility(product);
-        return getElementText(product);
-    }
-
-    @Step("Get 'Bank Branch' value in edit mode")
-    public String getBankBranchValueInEditMode() {
-        waitForElementVisibility(bankBranch);
-        return getElementText(bankBranch);
-    }
-
-    @Step("Get 'Account Title' value in edit mode")
-    public String getAccountTitleValueInEditMode() {
-        waitForElementVisibility(accountTitle);
-        return getElementAttributeValue("value", accountTitle);
     }
 
     @Step("Set 'Interest rate' option")

@@ -70,11 +70,11 @@ public class Account {
         account.setProduct("Basic Business Checking");
         account.setOptInOutDate("01/01/2020");
         account.setDateOpened("02/27/2020");
+        account.setAutomaticOverdraftStatus("Active");
         account.setNumberOfATMCardsIssued(String.valueOf(Random.genInt(0, 100)));
         account.setNumberOfDebitCardsIssued(String.valueOf(Random.genInt(0, 100)));
-//        account.setFederalWHPercent();
-        account.setFederalWHPercent(String.valueOf(Random.genFloat(0.0001, 99.9999, 100)));
-        account.setEarningCreditRate(String.valueOf(Random.genFloat(0.0001, 99.9999, 100)));
+        account.setFederalWHPercent(String.valueOf(Random.genInt(0, 100)));
+        account.setEarningCreditRate(String.valueOf(Random.genInt(0, 100)));
         account.setCashCollDaysBeforeChg(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setCashCollInterestChg(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));

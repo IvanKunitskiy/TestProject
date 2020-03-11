@@ -42,18 +42,121 @@ public class AccountDetailsPage extends BasePage {
     private Locator reasonATMChargeWaived = new XPath("//tr[@data-config-name='reasonatmchargeswaived']//span[contains(@class, 'dnTextFixedWidthText')]");
     private Locator automaticOverdraftStatus = new XPath("//tr[@data-config-name='automaticoverdraftstatus']//span[contains(@class, 'dnTextFixedWidthText')]");
     private Locator reasonAutoOdChgWaived = new XPath("//tr[@data-config-name='reasonautoodchargeswaived']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator whenSurchargesRefunded = new XPath("//tr[@data-config-name='whensurchargesrefunded']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator federalWHPercent = new XPath("//tr[@data-config-name='federalwithholdingpercent']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator numberOfATMCardsIssued = new XPath("//tr[@data-config-name='numberofatmcardissued']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator userDefinedField_1 = new XPath("//tr[@data-config-name='userdefinedfield1']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator userDefinedField_2 = new XPath("//tr[@data-config-name='userdefinedfield2']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator userDefinedField_3 = new XPath("//tr[@data-config-name='userdefinedfield3']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator userDefinedField_4 = new XPath("//tr[@data-config-name='userdefinedfield4']//span[contains(@class, 'dnTextFixedWidthText')]");
+
+    private Locator imageStatementCode= new XPath("//tr[@data-config-name='imagestatementcode']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator numberOfDebitCardsIssued= new XPath("//tr[@data-config-name='numberofdebitcardsissued']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator automaticOverdraftLimit= new XPath("//tr[@data-config-name='automaticoverdraftlimit']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator cashCollDaysBeforeChg= new XPath("//tr[@data-config-name='cashcollectionnumberofdaysbeforeinterestcharge']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator cashCollInterestChg= new XPath("//tr[@data-config-name='cashcollectioninterestchargesperstatementcycle']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator cashCollFloat= new XPath("//tr[@data-config-name='cashcollectionfloat']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator positivePay= new XPath("//tr[@data-config-name='positivepaycustomer']//span[contains(@class, 'dnTextFixedWidthText')]");
+
 
     /**
      * Details tab
      */
 
-    @Step("Get 'Reason Auto Od Chg Waived' value in edit mode")
+    @Step("Get 'Positive Pay' value")
+    public String getPositivePay() {
+        waitForElementVisibility(positivePay);
+        return getElementText(positivePay);
+    }
+
+    @Step("Get 'Cash Coll Float' value")
+    public String getCashCollFloat() {
+        waitForElementVisibility(cashCollFloat);
+        String cashCollFloatValue = getElementText(cashCollFloat);
+        return cashCollFloatValue.replaceAll("[^0-9]", "");
+    }
+
+    @Step("Get 'Cash Coll Interest Chg' value")
+    public String getCashCollInterestChg() {
+        waitForElementVisibility(cashCollInterestChg);
+        String cashCollValue = getElementText(cashCollInterestChg);
+        return cashCollValue.replaceAll("[^0-9]", "");
+    }
+
+    @Step("Get 'Cash Coll Days Before Chg' value")
+    public String getCashCollDaysBeforeChg() {
+        waitForElementVisibility(cashCollDaysBeforeChg);
+        return getElementText(cashCollDaysBeforeChg);
+    }
+
+    @Step("Get 'Automatic Overdraft Limit' value")
+    public String getAutomaticOverdraftLimit() {
+        waitForElementVisibility(automaticOverdraftLimit);
+        return getElementText(automaticOverdraftLimit);
+    }
+
+    @Step("Get 'Number Of Debit Cards Issued' value")
+    public String getNumberOfDebitCardsIssued() {
+        waitForElementVisibility(numberOfDebitCardsIssued);
+        return getElementText(numberOfDebitCardsIssued);
+    }
+
+    @Step("Get 'Image Statement Code' value")
+    public String getImageStatementCode() {
+        waitForElementVisibility(imageStatementCode);
+        return getElementText(imageStatementCode);
+    }
+
+    @Step("Get 'User Defined Field 1' value")
+    public String getUserDefinedField_4() {
+        waitForElementVisibility(userDefinedField_4);
+        return getElementText(userDefinedField_4);
+    }
+
+    @Step("Get 'User Defined Field 3' value")
+    public String getUserDefinedField_3() {
+        waitForElementVisibility(userDefinedField_3);
+        return getElementText(userDefinedField_3);
+    }
+
+    @Step("Get 'User Defined Field 2' value")
+    public String getUserDefinedField_2() {
+        waitForElementVisibility(userDefinedField_2);
+        return getElementText(userDefinedField_2);
+    }
+
+    @Step("Get 'User Defined Field 1' value")
+    public String getUserDefinedField_1() {
+        waitForElementVisibility(userDefinedField_1);
+        return getElementText(userDefinedField_1);
+    }
+
+    @Step("Get 'Number Of ATM Cards Issued' value")
+    public String getNumberOfATMCardsIssued() {
+        waitForElementVisibility(numberOfATMCardsIssued);
+        return getElementText(numberOfATMCardsIssued);
+    }
+
+    @Step("Get 'Federal WH Percent' value")
+    public String getFederalWHPercent() {
+        waitForElementVisibility(federalWHPercent);
+        String whPercent = getElementText(federalWHPercent);
+        return whPercent.substring(0, whPercent.length() - 1);
+    }
+
+    @Step("Get 'When Surcharges Refunded' value")
+    public String getWhenSurchargesRefunded() {
+        waitForElementVisibility(whenSurchargesRefunded);
+        return getElementText(whenSurchargesRefunded);
+    }
+
+    @Step("Get 'Reason Auto Od Chg Waived' value")
     public String getReasonAutoOdChgWaived() {
         waitForElementVisibility(reasonAutoOdChgWaived);
         return getElementAttributeValue("value", reasonAutoOdChgWaived);
     }
 
-    @Step("Get 'Automatic Overdraft Status' value in edit mode")
+    @Step("Get 'Automatic Overdraft Status' value")
     public String getAutomaticOverdraftStatus() {
         waitForElementVisibility(automaticOverdraftStatus);
         return getElementText(automaticOverdraftStatus);

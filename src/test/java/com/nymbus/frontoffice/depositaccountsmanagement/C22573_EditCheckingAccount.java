@@ -23,14 +23,13 @@ public class C22573_EditCheckingAccount extends BaseTest {
 
     @BeforeMethod
     public void preCondition() {
-        // set up client and account
+        // Set up Client and Account
         client = new Client().setDefaultClientData();
         client.setClientStatus("Member");
         client.setClientType("Individual");
         checkingAccount = new Account().setCHKAccountData();
-        checkingAccount.setAutomaticOverdraftStatus("Active");
 
-        // login to the system and create a client with checking account
+        // Login to the system and create a client with checking account
         navigateToUrl(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client);
@@ -86,13 +85,13 @@ public class C22573_EditCheckingAccount extends BaseTest {
         AccountActions.editAccount().setWhenSurchargesRefunded(checkingAccount);
 
         LOG.info("Step 6: Fill in such text fields that were not displayed in Add new mode");
-        Pages.editAccountPage().setFederalWHPercent(checkingAccount.getFederalWHPercent()); // pass from account object
+        Pages.editAccountPage().setFederalWHPercent(checkingAccount.getFederalWHPercent());
         Pages.editAccountPage().setNumberOfATMCardsIssued(checkingAccount.getNumberOfATMCardsIssued());
-        Pages.editAccountPage().setEarningCreditRate(checkingAccount.getEarningCreditRate()); // pass from account object
+        Pages.editAccountPage().setEarningCreditRate(checkingAccount.getEarningCreditRate());
         Pages.editAccountPage().setUserDefinedField_1(checkingAccount.getUserDefinedField_1());
-        Pages.editAccountPage().setUserDefinedField_2(checkingAccount.getUserDefinedField_1());
-        Pages.editAccountPage().setUserDefinedField_3(checkingAccount.getUserDefinedField_1());
-        Pages.editAccountPage().setUserDefinedField_4(checkingAccount.getUserDefinedField_1());
+        Pages.editAccountPage().setUserDefinedField_2(checkingAccount.getUserDefinedField_2());
+        Pages.editAccountPage().setUserDefinedField_3(checkingAccount.getUserDefinedField_3());
+        Pages.editAccountPage().setUserDefinedField_4(checkingAccount.getUserDefinedField_4());
         Pages.editAccountPage().setImageStatementCode(checkingAccount.getImageStatementCode());
         Pages.editAccountPage().setNumberOfDebitCardsIssued(checkingAccount.getNumberOfDebitCardsIssued());
 //        - Automatic Overdraft Limit - numeric value (12 digits value)
@@ -123,21 +122,21 @@ public class C22573_EditCheckingAccount extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getReasonDebitCardChargeWaived(), checkingAccount.getReasonDebitCardChargeWaived());
         Assert.assertEquals(Pages.accountDetailsPage().getAutomaticOverdraftStatus(), checkingAccount.getAutomaticOverdraftStatus());
 //        Assert.assertEquals(Pages.accountDetailsPage().getReasonAutoOdChgWaived(), checkingAccount.getReasonAutoOdChgWaived());
-//        - When surcharges refunded
-//        - Federal W/H percent - min - 4 digits pass the decimal, max - 100%
-//        - Number of ATM cards issue- any numeric value
-//        - Earning Credit Rate min - 4 digits pass the decimal, max - 100%
-//        - User Defined Field 1
-//        - User Defined Field 2
-//        - User Defined Field 3
-//        - User Defined Field 4
-//        - Image statement code - numeric value
-//        - Number of Debit Cards issued
-//        - Automatic Overdraft Limit - numeric value (12 digits value)
-//        - Cash coll # days before chg - numeric value
-//        - Cash coll interest chg - numeric value
-//        - Cash coll float - numeric value
-//        - Positive pay - alphanumeric
+        Assert.assertEquals(Pages.accountDetailsPage().getWhenSurchargesRefunded(), checkingAccount.getWhenSurchargesRefunded());
+        Assert.assertEquals(Pages.accountDetailsPage().getFederalWHPercent(), checkingAccount.getFederalWHPercent());
+        Assert.assertEquals(Pages.accountDetailsPage().getNumberOfATMCardsIssued(), checkingAccount.getNumberOfATMCardsIssued());
+        Assert.assertEquals(Pages.accountDetailsPage().getEarningCreditRate(), checkingAccount.getEarningCreditRate());
+        Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_1(), checkingAccount.getUserDefinedField_1());
+        Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_2(), checkingAccount.getUserDefinedField_2());
+        Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_3(), checkingAccount.getUserDefinedField_3());
+        Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_4(), checkingAccount.getUserDefinedField_4());
+        Assert.assertEquals(Pages.accountDetailsPage().getImageStatementCode(), checkingAccount.getImageStatementCode());
+        Assert.assertEquals(Pages.accountDetailsPage().getNumberOfDebitCardsIssued(), checkingAccount.getNumberOfDebitCardsIssued());
+//        Assert.assertEquals(Pages.accountDetailsPage().getAutomaticOverdraftLimit(), checkingAccount.getAutomaticOverdraftLimit());
+        Assert.assertEquals(Pages.accountDetailsPage().getCashCollDaysBeforeChg(), checkingAccount.getCashCollDaysBeforeChg());
+        Assert.assertEquals(Pages.accountDetailsPage().getCashCollInterestChg(), checkingAccount.getCashCollInterestChg());
+        Assert.assertEquals(Pages.accountDetailsPage().getCashCollFloat(), checkingAccount.getCashCollFloat());
+        Assert.assertEquals(Pages.accountDetailsPage().getPositivePay(), checkingAccount.getPositivePay());
         Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), checkingAccount.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), checkingAccount.getInterestRate(), "'Interest Rate' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), checkingAccount.getBankBranch(), "'Bank Branch' value does not match");
@@ -147,28 +146,28 @@ public class C22573_EditCheckingAccount extends BaseTest {
         LOG.info("Step 10: Click [Edit] button and pay attention to the fields");
         Pages.accountDetailsPage().clickEditButton();
 
-//        - Federal W/H reason
-//        - Reason ATM charge waived
-//        - OD protection acct #
-//        - Reason auto NSF chg waived
-//        - Reason Debit Card Charge Waived
-//        - Automatic Overdraft Status = Active
-//        - Reason auto OD chg waived
-//        - When surcharges refunded
-//        - Federal W/H percent - min - 4 digits pass the decimal, max - 100%
-//        - Number of ATM cards issue- any numeric value
-//        - Earning Credit Rate min - 4 digits pass the decimal, max - 100%
-//        - User Defined Field 1
-//        - User Defined Field 2
-//        - User Defined Field 3
-//        - User Defined Field 4
-//        - Image statement code - numeric value
-//        - Number of Debit Cards issued
-//        - Automatic Overdraft Limit - numeric value (12 digits value)
-//        - Cash coll # days before chg - numeric value
-//        - Cash coll interest chg - numeric value
-//        - Cash coll float - numeric value
-//        - Positive pay - alphanumeric
+        Assert.assertEquals(Pages.editAccountPage().getFederalWHReasonInEditMode(), checkingAccount.getFederalWHReason(), "'Current Officer' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getReasonATMChargeWaived(), checkingAccount.getReasonATMChargeWaived(), "'Reason ATM Charge Waived' value does not match");
+//        Assert.assertEquals(Pages.editAccountPage().getOdProtectionAcct(), checkingAccount.getOdProtectionAcct(), "'Od Protection Acct' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getReasonAutoNSFChgWaived(), checkingAccount.getReasonAutoNSFChgWaived(), "'Reason Auto NSF Chg Waived' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getReasonDebitCardChargeWaived(), checkingAccount.getReasonDebitCardChargeWaived(), "'Reason Debit Card Charge Waived' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getAutomaticOverdraftStatus(), checkingAccount.getAutomaticOverdraftStatus(), "'Automatic Overdraft Status' value does not match");
+//        Assert.assertEquals(Pages.editAccountPage().getReasonAutoOdChgWaived(), checkingAccount.getReasonAutoOdChgWaived(), "'Reason Auto Od Chg Waived' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getWhenSurchargesRefunded(), checkingAccount.getWhenSurchargesRefunded(), "'When Surcharges Refunded' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getFederalWHPercent(), checkingAccount.getFederalWHPercent(), "'Federal WH Percent' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getNumberOfATMCardsIssued(), checkingAccount.getNumberOfATMCardsIssued(), "'Number Of ATM Cards Issued' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getEarningCreditRate(), checkingAccount.getEarningCreditRate(), "'Earning Credit Rate' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField1(), checkingAccount.getUserDefinedField_1(), "'User Defined Field 1' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField2(), checkingAccount.getUserDefinedField_2(), "'User Defined Field 2' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField3(), checkingAccount.getUserDefinedField_3(), "'User Defined Field 3' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField4(), checkingAccount.getUserDefinedField_4(), "'User Defined Field 4' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getImageStatementCode(), checkingAccount.getImageStatementCode());
+        Assert.assertEquals(Pages.editAccountPage().getNumberOfDebitCardsIssued(), checkingAccount.getNumberOfDebitCardsIssued());
+//        Assert.assertEquals(Pages.editAccountPage().getAutomaticOverdraftLimit(), checkingAccount.getAutomaticOverdraftLimit());
+        Assert.assertEquals(Pages.editAccountPage().getCashCollDaysBeforeChg(), checkingAccount.getCashCollDaysBeforeChg());
+        Assert.assertEquals(Pages.editAccountPage().getCashCollInterestChg(), checkingAccount.getCashCollInterestChg());
+        Assert.assertEquals(Pages.editAccountPage().getCashCollFloat(), checkingAccount.getCashCollFloat());
+        Assert.assertEquals(Pages.editAccountPage().getPositivePay(), checkingAccount.getPositivePay());
         Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), checkingAccount.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), checkingAccount.getInterestRate(), "'Interest Rate' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), checkingAccount.getBankBranch(), "'Bank Branch' value does not match");
