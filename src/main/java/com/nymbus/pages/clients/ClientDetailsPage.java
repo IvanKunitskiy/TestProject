@@ -91,7 +91,13 @@ public class ClientDetailsPage extends BasePage {
      */
     private Locator newDebitCardButton = new XPath("//button[span[text()='New Debit Card']]");
     private Locator viewAllCardsButton = new XPath("//button[span[text()='View All Cards']]");
-    private Locator cardList = new XPath("");
+    private Locator cardList = new XPath("//tbody/tr");
+    // Card list
+    private Locator debitCardNumber = new XPath("//tbody/tr/td[1]//span");
+    private Locator nameOfCardColumn = new XPath("//tbody/tr[1]/td[2]");
+    private Locator secondLineEmbossingColumn = new XPath("//tbody/tr[1]/td[3]");
+    private Locator expirationDateColumn = new XPath("//tbody/tr[1]/td[4]");
+    private Locator cardStatusColumn = new XPath("//tbody/tr[1]/td[5]");
 
     @Step("Wait for Client Details page loaded")
     public void waitForPageLoaded(){
@@ -316,7 +322,7 @@ public class ClientDetailsPage extends BasePage {
 
     @Step("Get 'Address Type' value")
     public String getAddressType() {
-//        waitForElementVisibility(type);
+//        waitForElementVisibility(addressType);
         return getElementText(addressType).trim();
     }
 
@@ -366,7 +372,7 @@ public class ClientDetailsPage extends BasePage {
         return getElements(listOfDocuments).size();
     }
 
-    @Step("Get document basicinformation by index")
+    @Step("Get document type by index")
     public String getDocumentTypeByIndex(int index){
         waitForElementVisibility(documentType, index);
         return getElementText(documentType, index).trim();
@@ -411,7 +417,6 @@ public class ClientDetailsPage extends BasePage {
     /**
      * Accounts Tab
      */
-
     @Step("Click the 'Add New' button")
     public void clickAddNewButton(){
         waitForElementVisibility(addNewButton);
@@ -447,25 +452,53 @@ public class ClientDetailsPage extends BasePage {
         waitForElementClickable(addNewSelectorOption, addNewValue);
         click(addNewSelectorOption, addNewValue);
     }
-    /**
-     * Maintenance Tab
-     */
+
     @Step("Click on 'New Debit Card' button")
     public void clickOnNewDebitCardButton() {
         waitForElementVisibility(newDebitCardButton);
-        waitForElementClickable(newDebitCardButton);
         click(newDebitCardButton);
     }
 
     @Step("Click on 'View All Cards' button")
     public void clickOnViewAllCardsButton() {
         waitForElementVisibility(viewAllCardsButton);
-        waitForElementClickable(viewAllCardsButton);
         click(viewAllCardsButton);
     }
 
     @Step("Checking is card list displayed")
     public boolean isCardListDisplayed() {
+        wait(5);
         return !getElements(cardList).isEmpty();
+    }
+
+    // Card list
+    @Step("Getting debit card number")
+    public String getDebitCardNumber() {
+        waitForElementVisibility(debitCardNumber);
+        return getElementText(debitCardNumber);
+    }
+
+    @Step("Getting debit card 'Name of Card'")
+    public String getNameOfCard() {
+        waitForElementVisibility(nameOfCardColumn);
+        return getElementText(nameOfCardColumn);
+    }
+
+    @Step("Getting debit card 'Second Line Embossing'")
+    public String getSecondLineEmbossing() {
+        waitForElementVisibility(secondLineEmbossingColumn);
+        return getElementText(secondLineEmbossingColumn);
+    }
+
+    @Step("Getting debit card 'Second Line Embossing'")
+    public String getExpirationDate() {
+        waitForElementVisibility(expirationDateColumn);
+        return getElementText(expirationDateColumn);
+    }
+
+    @Step("Getting debit card 'Card Status'")
+    public String getCardStatus() {
+        waitForElementVisibility(cardStatusColumn);
+        return getElementText(cardStatusColumn);
     }
 }

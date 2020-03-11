@@ -4,7 +4,7 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.base.BaseTest;
-import com.nymbus.model.client.Client;
+import com.nymbus.models.client.Client;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
 import com.nymbus.util.Constants;

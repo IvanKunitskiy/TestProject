@@ -2,8 +2,8 @@ package com.nymbus.frontoffice.clientsearch;
 
 import com.nymbus.actions.Actions;
 import com.nymbus.base.BaseTest;
-import com.nymbus.model.TempClient;
-import com.nymbus.model.client.Client;
+import com.nymbus.models.TempClient;
+import com.nymbus.models.client.Client;
 import com.nymbus.pages.Pages;
 import com.nymbus.util.Constants;
 import io.qameta.allure.Epic;

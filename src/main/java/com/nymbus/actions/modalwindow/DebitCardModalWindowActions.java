@@ -1,8 +1,9 @@
 package com.nymbus.actions.modalwindow;
 
-import com.nymbus.models.client.other.account.type.CHKAccount;
-import com.nymbus.models.client.other.debitcard.DebitCard;
+import com.nymbus.newmodels.client.other.account.type.CHKAccount;
+import com.nymbus.newmodels.client.other.debitcard.DebitCard;
 import com.nymbus.pages.Pages;
+import com.nymbus.util.DateTime;
 import org.testng.Assert;
 
 public class DebitCardModalWindowActions {
@@ -31,5 +32,40 @@ public class DebitCardModalWindowActions {
         Pages.debitCardModalWindow().selectTransactionTypeAllowedSelect(debitCard.getTranslationTypeAllowed());
         Pages.debitCardModalWindow().setChargeForCardReplacementToggle(debitCard.isChargeForCardReplacement());
         Pages.debitCardModalWindow().setAllowForeignTransactionsToggle(debitCard.isAllowForeignTransactions());
+    }
+
+    public void verifyDebitCardFilledValues(DebitCard debitCard) {
+        Assert.assertEquals(
+                Pages.debitCardModalWindow().getATMDailyLimitNumberAmt(),
+                debitCard.getBinControl().getATMDailyDollarLimit(),
+                "Value from 'ATM Daily Limit Number Amt' field is not equal to value from 'Bin Control' daily limit"
+        );
+        Assert.assertEquals(
+                Pages.debitCardModalWindow().getATMDailyLimitNumberNbr(),
+                debitCard.getBinControl().getATMTransactionLimit(),
+                "Value from 'ATM Daily Limit Number Nbr' field is not equal to 'Bin Control' transaction limit"
+        );
+        Assert.assertEquals(
+                Pages.debitCardModalWindow().getDebitPurchaseDailyLimitNumberAmt(),
+                debitCard.getBinControl().getDBCDailyDollarLimit(),
+                "Value from 'Debit Purchase Daily Limit Number Amt' field is not equal to value from 'Bin Control' daily limit"
+        );
+        Assert.assertEquals(
+                Pages.debitCardModalWindow().getDebitPurchaseDailyLimitNumberNbr(),
+                debitCard.getBinControl().getDBCTransactionLimit(),
+                "Value from 'Debit Purchase Daily Limit Number Nbr' field is not equal to value from 'Bin Control' transaction limit"
+        );
+
+        String futureDate = DateTime.plusMonthsToCurrentDateWithLastDayOfMonth(debitCard.getBinControl().getCardLifeInMonths());
+        Assert.assertEquals(
+                Pages.debitCardModalWindow().getExpirationDateMonth(),
+                futureDate.split(" ")[0],
+                "Wrong 'Expiration Date' month"
+        );
+        Assert.assertEquals(
+                Pages.debitCardModalWindow().getExpirationDateYear(),
+                futureDate.split(" ")[1],
+                "Wrong 'Expiration Date' year"
+        );
     }
 }

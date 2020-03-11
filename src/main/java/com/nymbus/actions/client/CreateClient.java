@@ -1,6 +1,6 @@
 package com.nymbus.actions.client;
 
-import com.nymbus.model.client.Client;
+import com.nymbus.models.client.Client;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 

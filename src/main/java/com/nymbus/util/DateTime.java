@@ -96,10 +96,20 @@ public class DateTime {
         return daysList;
     }
 
-    public static String plusMonthsToCurrentDate(int months) {
+    public static String plusMonthsToCurrentDateWithLastDayOfMonth(int months) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, months);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
+        String futureDate = simpleDateFormat.format(calendar.getTime());
+
+        return futureDate;
+    }
+
+    public static String plusMonthsToCurrentDateWithLastDayOfMonth(int months, String pattern) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, months);
+        calendar.add(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH) - calendar.get(Calendar.DAY_OF_MONTH));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.ENGLISH);
         String futureDate = simpleDateFormat.format(calendar.getTime());
 
         return futureDate;

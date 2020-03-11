@@ -3,7 +3,7 @@ package com.nymbus.frontoffice.clientsmanagement.createclients;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.base.BaseTest;
-import com.nymbus.model.client.Client;
+import com.nymbus.models.client.Client;
 import com.nymbus.util.Constants;
 import io.qameta.allure.*;
 import org.testng.Assert;

@@ -3,7 +3,7 @@ package com.nymbus.frontoffice.usermanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.base.BaseTest;
-import com.nymbus.model.User;
+import com.nymbus.models.User;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
 import com.nymbus.util.Constants;

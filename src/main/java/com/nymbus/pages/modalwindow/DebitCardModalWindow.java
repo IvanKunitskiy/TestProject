@@ -4,8 +4,8 @@ import com.nymbus.base.BasePage;
 import com.nymbus.locator.ID;
 import com.nymbus.locator.Locator;
 import com.nymbus.locator.XPath;
-import com.nymbus.models.client.other.debitcard.CardStatus;
-import com.nymbus.models.client.other.debitcard.TranslationTypeAllowed;
+import com.nymbus.newmodels.client.other.debitcard.CardStatus;
+import com.nymbus.newmodels.client.other.debitcard.TranslationTypeAllowed;
 import io.qameta.allure.Step;
 
 public class DebitCardModalWindow extends BasePage {

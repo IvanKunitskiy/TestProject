@@ -1,6 +1,6 @@
 package com.nymbus.actions.settings;
 
-import com.nymbus.model.CashDrawer;
+import com.nymbus.models.CashDrawer;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
 import org.testng.Assert;

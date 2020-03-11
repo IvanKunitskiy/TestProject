@@ -1,8 +1,8 @@
 package com.nymbus.actions.client;
 
-import com.nymbus.model.client.Address;
-import com.nymbus.model.client.Client;
-import com.nymbus.model.client.IdentityDocument;
+import com.nymbus.models.client.Address;
+import com.nymbus.models.client.Client;
+import com.nymbus.models.client.IdentityDocument;
 import com.nymbus.pages.Pages;
 
 import java.util.ArrayList;
