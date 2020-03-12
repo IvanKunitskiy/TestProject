@@ -23,6 +23,7 @@ public class C22577_AddNewRegularSavingsAccount extends BaseTest {
 
     Client client;
     Account regularSavingsAccount;
+    Account checkingAccount;
 
     @BeforeMethod
     public void preCondition() {
@@ -31,14 +32,20 @@ public class C22577_AddNewRegularSavingsAccount extends BaseTest {
         client.setClientStatus("Member");
         client.setClientType("Individual");
         client.setSelectOfficer("autotest autotest"); // Controlling officer to validate 'Bank Branch' value
+
+        // Set up Savings account
         regularSavingsAccount = new Account().setSavingsAccountData();
         regularSavingsAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
+
+        // Set up CHK account (required to point the 'Primary Account for Combined Statement' / 'Primary Account for Combined Statement' value)
+        checkingAccount = new Account().setCHKAccountData();
 
         // Login to the system and create a client
         navigateToUrl(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client);
         client.setClientID(Pages.clientDetailsPage().getClientID());
+        AccountActions.createAccount().createCHKAccount(checkingAccount);
         Actions.loginActions().doLogOut();
     }
 
@@ -86,10 +93,10 @@ public class C22577_AddNewRegularSavingsAccount extends BaseTest {
         LOG.info("Step 7: Select any values in drop-down fields");
         AccountActions.createAccount().setCurrentOfficer(regularSavingsAccount);
         AccountActions.createAccount().setBankBranch(regularSavingsAccount);
-//        - Interest Frequency
-//        - Primary Account for Combined Statement (if another active CHK/Savings account exists for selected Client)
+        AccountActions.createAccount().setInterestFrequency(regularSavingsAccount);
+//        AccountActions.createAccount().setPrimaryAccountForCombinedStatement(regularSavingsAccount);
         AccountActions.createAccount().setStatementCycle(regularSavingsAccount);
-//        - Corresponding Account (if another active CHK/Savings account exists for selected Client)
+//        AccountActions.createAccount().setCorrespondingAccount(regularSavingsAccount);
         AccountActions.createAccount().setCallClassCode(regularSavingsAccount);
 
         LOG.info("Step 8: Fill in text fields with valid data. NOTE: do not fill in Account Number field");
@@ -109,10 +116,10 @@ public class C22577_AddNewRegularSavingsAccount extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getProductValue(), regularSavingsAccount.getProduct(), "'Product' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), regularSavingsAccount.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), regularSavingsAccount.getBankBranch(), "'Bank Branch' value does not match");
-//        - Interest Frequency
-//        - Primary Account for Combined Statement (if another active CHK/Savings account exists for selected Client)
+        Assert.assertEquals(Pages.accountDetailsPage().getInterestFrequency(), regularSavingsAccount.getInterestFrequency());
+//        Assert.assertEquals(Pages.accountDetailsPage().getPrimaryAccountForCombinedStatement(), regularSavingsAccount.getPrimaryAccountForCombinedStatement());
         Assert.assertEquals(Pages.accountDetailsPage().getStatementCycle(), regularSavingsAccount.getStatementCycle(), "'Statement Cycle' value does not match");
-//        - Corresponding Account (if another active CHK/Savings account exists for selected Client)
+//        Assert.assertEquals(Pages.accountDetailsPage().getCorrespondingAccount(), regularSavingsAccount.getCorrespondingAccount());
         Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), regularSavingsAccount.getCallClassCode(), "'Call Class' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), regularSavingsAccount.getAccountTitle(), "'Title' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), regularSavingsAccount.getInterestRate(), "'Interest Rate' value does not match");
@@ -124,10 +131,10 @@ public class C22577_AddNewRegularSavingsAccount extends BaseTest {
         Assert.assertEquals(Pages.editAccountPage().getProductValueInEditMode(), regularSavingsAccount.getProduct(), "'Product' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), regularSavingsAccount.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), regularSavingsAccount.getBankBranch(), "'Bank Branch' value does not match");
-//        - Interest Frequency
-//        - Primary Account for Combined Statement (if another active CHK/Savings account exists for selected Client)
+        Assert.assertEquals(Pages.editAccountPage().getInterestFrequency(), regularSavingsAccount.getInterestFrequency(), "'Interest Frequency' value does not match");
+//        Assert.assertEquals(Pages.editAccountPage().getPrimaryAccountForCombinedStatement(), regularSavingsAccount.getPrimaryAccountForCombinedStatement(), "'Primary Account for Combined Statement' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getStatementCycleValueInEditMode(), regularSavingsAccount.getStatementCycle(), "'Statement Cycle' value does not match");
-//        - Corresponding Account (if another active CHK/Savings account exists for selected Client)
+//        Assert.assertEquals(Pages.editAccountPage().getCorrespondingAccount(), regularSavingsAccount.getCorrespondingAccount(), "'Corresponding Account' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), regularSavingsAccount.getCallClassCode(), "'Call Class' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getAccountTitleValueInEditMode(), regularSavingsAccount.getAccountTitle(), "'Title' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), regularSavingsAccount.getInterestRate(), "'Interest Rate' value does not match");

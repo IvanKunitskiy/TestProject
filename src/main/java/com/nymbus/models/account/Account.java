@@ -53,6 +53,7 @@ public class Account {
     private String discountPeriods;
     private String discountReason;
     private String automaticOverdraftLimit;
+    private String interestFrequency;
 
     public Account setDefaultAccountData() {
         Account account = new Account();
@@ -493,5 +494,13 @@ public class Account {
 
     public void setAutomaticOverdraftLimit(String automaticOverdraftLimit) {
         this.automaticOverdraftLimit = automaticOverdraftLimit;
+    }
+
+    public String getInterestFrequency() {
+        return interestFrequency;
+    }
+
+    public void setInterestFrequency(String interestFrequency) {
+        this.interestFrequency = interestFrequency;
     }
 }

@@ -51,6 +51,39 @@ public class CreateAccount {
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
 
+    public void setCorrespondingAccount(Account account) {
+        Pages.addAccountPage().clickCorrespondingAccountSelectorButton();
+        List<String> listOfCorrespondingAccount = Pages.addAccountPage().getCorrespondingAccountList();
+
+        Assert.assertTrue(listOfCorrespondingAccount.size() > 0, "There are no product types available");
+        if (account.getCorrespondingAccount() == null) {
+            account.setCorrespondingAccount(listOfCorrespondingAccount.get(new Random().nextInt(listOfCorrespondingAccount.size())).trim());
+        }
+        Pages.addAccountPage().clickCorrespondingAccountSelectorOption(account.getCorrespondingAccount());
+    }
+
+    public void setPrimaryAccountForCombinedStatement(Account account) {
+        Pages.addAccountPage().clickPrimaryAccountForCombinedStatementSelectorButton();
+        List<String> listOfPrimaryAccountForCombinedStatement = Pages.addAccountPage().getPrimaryAccountForCombinedStatementList();
+
+        Assert.assertTrue(listOfPrimaryAccountForCombinedStatement.size() > 0, "There are no product types available");
+        if (account.getPrimaryAccountForCombinedStatement() == null) {
+            account.setPrimaryAccountForCombinedStatement(listOfPrimaryAccountForCombinedStatement.get(new Random().nextInt(listOfPrimaryAccountForCombinedStatement.size())).trim());
+        }
+        Pages.addAccountPage().clickSetPrimaryAccountForCombinedStatementSelectorOption(account.getPrimaryAccountForCombinedStatement());
+    }
+
+    public void setInterestFrequency(Account account) {
+        Pages.addAccountPage().clickInterestFrequencySelectorButton();
+        List<String> listOfInterestFrequency = Pages.addAccountPage().getInterestFrequencyList();
+
+        Assert.assertTrue(listOfInterestFrequency.size() > 0, "There are no product types available");
+        if (account.getInterestFrequency() == null) {
+            account.setInterestFrequency(listOfInterestFrequency.get(new Random().nextInt(listOfInterestFrequency.size())).trim());
+        }
+        Pages.addAccountPage().clickInterestFrequencySelectorOption(account.getInterestFrequency());
+    }
+
     public void setChargeOrAnalyze(Account account) {
         Pages.addAccountPage().clickChargeOrAnalyzeSelectorButton();
         List<String> listOfChargeOrAnalyze = Pages.addAccountPage().getChargeOrAnalyzeList();
