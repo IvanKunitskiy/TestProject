@@ -98,7 +98,7 @@ public class C22577_AddNewRegularSavingsAccount extends BaseTest {
         Pages.addAccountPage().setInterestRate(regularSavingsAccount.getInterestRate());
 
         LOG.info("Step 9: Select Date Opened as any date < Current Date");
-        Pages.addAccountPage().setDateOpenedValue(regularSavingsAccount.getOptInOutDate());
+        Pages.addAccountPage().setDateOpenedValue(regularSavingsAccount.getDateOpened());
 
         LOG.info("Step 10: Submit the account creation by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
