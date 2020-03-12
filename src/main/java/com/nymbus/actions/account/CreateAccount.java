@@ -59,7 +59,7 @@ public class CreateAccount {
         if (account.getCorrespondingAccount() == null) {
             account.setCorrespondingAccount(listOfCorrespondingAccount.get(new Random().nextInt(listOfCorrespondingAccount.size())).trim());
         }
-        Pages.addAccountPage().clickCorrespondingAccountSelectorOption(account.getCorrespondingAccount());
+        Pages.addAccountPage().clickCorrespondingAccountSelectorOption(account.getCorrespondingAccount().replaceAll("[^0-9]", ""));
     }
 
     public void setPrimaryAccountForCombinedStatement(Account account) {
@@ -70,7 +70,7 @@ public class CreateAccount {
         if (account.getPrimaryAccountForCombinedStatement() == null) {
             account.setPrimaryAccountForCombinedStatement(listOfPrimaryAccountForCombinedStatement.get(new Random().nextInt(listOfPrimaryAccountForCombinedStatement.size())).trim());
         }
-        Pages.addAccountPage().clickSetPrimaryAccountForCombinedStatementSelectorOption(account.getPrimaryAccountForCombinedStatement());
+        Pages.addAccountPage().clickSetPrimaryAccountForCombinedStatementSelectorOption(account.getPrimaryAccountForCombinedStatement().replaceAll("[^0-9]", ""));
     }
 
     public void setInterestFrequency(Account account) {

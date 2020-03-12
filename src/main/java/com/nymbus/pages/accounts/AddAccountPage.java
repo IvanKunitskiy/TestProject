@@ -391,6 +391,7 @@ public class AddAccountPage extends BasePage {
     public String getDateOpened() {
         waitForElementVisibility(dateOpened);
         waitForElementClickable(dateOpened);
+        wait(1);
         return getElementAttributeValue("value", dateOpened);
     }
 
