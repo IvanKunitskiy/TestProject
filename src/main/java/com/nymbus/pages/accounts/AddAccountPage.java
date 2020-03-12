@@ -223,6 +223,7 @@ public class AddAccountPage extends BasePage {
     @Step("Click the 'Current Officer' selector button")
     public void clickCurrentOfficerSelectorButton() {
         waitForElementVisibility(currentOfficerSelectorButton);
+        scrollToElement(currentOfficerSelectorButton);
         waitForElementClickable(currentOfficerSelectorButton);
         click(currentOfficerSelectorButton);
     }

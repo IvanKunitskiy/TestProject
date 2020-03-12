@@ -30,7 +30,9 @@ public class C22577_AddNewRegularSavingsAccount extends BaseTest {
         client = new Client().setDefaultClientData();
         client.setClientStatus("Member");
         client.setClientType("Individual");
+        client.setSelectOfficer("autotest autotest"); // Controlling officer to validate 'Bank Branch' value
         regularSavingsAccount = new Account().setSavingsAccountData();
+        regularSavingsAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
 
         // Login to the system and create a client
         navigateToUrl(Constants.URL);
@@ -79,8 +81,7 @@ public class C22577_AddNewRegularSavingsAccount extends BaseTest {
         Assert.assertEquals(Pages.addAccountPage().getDateOpened(), dtf.format(localDate), "'Date' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getOriginatingOfficer(), client.getSelectOfficer(), "'Originating officer' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getCurrentOfficer(), client.getSelectOfficer(), "'Current officer' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getBankBranch(), "Select", "'Bank branch' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getOptInOutStatus(), "Client Has Not Responded", "'DBC ODP Opt In/Out Status' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getBankBranch(), regularSavingsAccount.getBankBranch(), "'Bank branch' is prefilled with wrong value");
 
         LOG.info("Step 7: Select any values in drop-down fields");
         AccountActions.createAccount().setCurrentOfficer(regularSavingsAccount);
