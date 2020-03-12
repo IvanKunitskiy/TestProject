@@ -61,6 +61,19 @@ public class Account {
         return account;
     }
 
+    public Account setSavingsAccountData() {
+        Account account = new Account();
+
+        account.setAddNewOption("Account");
+        account.setProductType("Savings Account");
+        account.setAccountTitle(Random.genString(5));
+        account.setProduct("Regular Savings Account");
+        account.setOptInOutDate("01/01/2020");
+        account.setDateOpened("02/27/2020");
+
+        return account;
+    }
+
     public Account setCHKAccountData() {
         Account account = new Account();
 
