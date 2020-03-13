@@ -147,20 +147,6 @@ public class AddAccountPage extends BasePage {
         type(interestRateValue, interestRateInput);
     }
 
-    @Step("Generate 'Statement Flag' value")
-    public String generateStatementFlagValue() {
-        String[] flags = {"R", "S"};
-        Random random = new Random();
-        return flags[random.nextInt(flags.length)];
-    }
-
-    @Step("Set 'Statement flag' option")
-    public void setStatementFlag(String flagValue) {
-        waitForElementVisibility(statementFlagInput);
-        waitForElementClickable(statementFlagInput);
-        type(flagValue, statementFlagInput);
-    }
-
     @Step("Click the 'Account Analysis' option")
     public void clickAccountAnalysisSelectorOption(String callClassCodeOption) {
         waitForElementVisibility(accountAnalysisSelectorOption, callClassCodeOption);

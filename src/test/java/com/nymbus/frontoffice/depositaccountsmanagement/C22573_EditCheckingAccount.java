@@ -92,7 +92,6 @@ public class C22573_EditCheckingAccount extends BaseTest {
         Pages.editAccountPage().setUserDefinedField_2(checkingAccount.getUserDefinedField_2());
         Pages.editAccountPage().setUserDefinedField_3(checkingAccount.getUserDefinedField_3());
         Pages.editAccountPage().setUserDefinedField_4(checkingAccount.getUserDefinedField_4());
-        Pages.editAccountPage().setImageStatementCode(checkingAccount.getImageStatementCode());
         Pages.editAccountPage().setNumberOfDebitCardsIssued(checkingAccount.getNumberOfDebitCardsIssued());
         Pages.editAccountPage().setAutomaticOverdraftLimit(checkingAccount.getAutomaticOverdraftLimit());
         Pages.editAccountPage().setCashCollDaysBeforeChg(checkingAccount.getCashCollDaysBeforeChg());
@@ -130,7 +129,6 @@ public class C22573_EditCheckingAccount extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_2(), checkingAccount.getUserDefinedField_2(), "'User Defined Field 2' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_3(), checkingAccount.getUserDefinedField_3(), "'User Defined Field 3' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_4(), checkingAccount.getUserDefinedField_4(), "'User Defined Field 4' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getImageStatementCode(), checkingAccount.getImageStatementCode(), "'Image Statement Code' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getNumberOfDebitCardsIssued(), checkingAccount.getNumberOfDebitCardsIssued(), "'Number Of Debit Cards Issued' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getAutomaticOverdraftLimit(), checkingAccount.getAutomaticOverdraftLimit(), "'Automatic Overdraft Limit' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCashCollDaysBeforeChg(), checkingAccount.getCashCollDaysBeforeChg(), "'Cash Coll Days Before Chg' value does not match");
@@ -161,7 +159,6 @@ public class C22573_EditCheckingAccount extends BaseTest {
         Assert.assertEquals(Pages.editAccountPage().getUserDefinedField2(), checkingAccount.getUserDefinedField_2(), "'User Defined Field 2' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getUserDefinedField3(), checkingAccount.getUserDefinedField_3(), "'User Defined Field 3' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getUserDefinedField4(), checkingAccount.getUserDefinedField_4(), "'User Defined Field 4' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getImageStatementCode(), checkingAccount.getImageStatementCode(), "'Image Statement Code' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getNumberOfDebitCardsIssued(), checkingAccount.getNumberOfDebitCardsIssued(), "'Number Of Debit Cards Issued' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getAutomaticOverdraftLimit(), checkingAccount.getAutomaticOverdraftLimit(), "'Automatic Overdraft Limit' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getCashCollDaysBeforeChg(), checkingAccount.getCashCollDaysBeforeChg(), "'Cash Coll Days Before Chg' value does not match");
