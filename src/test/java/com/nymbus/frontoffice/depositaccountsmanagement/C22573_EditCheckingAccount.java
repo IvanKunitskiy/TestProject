@@ -77,7 +77,7 @@ public class C22573_EditCheckingAccount extends BaseTest {
         LOG.info("Step 5: Select data in such dropdown fields that were not available in Add New mode");
         AccountActions.editAccount().setFederalWHReason(checkingAccount);
         AccountActions.editAccount().setReasonATMChargeWaived(checkingAccount);
-//        AccountActions.editAccount().setOdProtectionAcct(checkingAccount);
+        AccountActions.editAccount().setOdProtectionAcct(checkingAccount);
         AccountActions.editAccount().setReasonAutoNSFChgWaived(checkingAccount);
         AccountActions.editAccount().setReasonDebitCardChargeWaived(checkingAccount);
         AccountActions.editAccount().setAutomaticOverdraftStatus(checkingAccount);
@@ -117,7 +117,7 @@ public class C22573_EditCheckingAccount extends BaseTest {
 
         Assert.assertEquals(Pages.accountDetailsPage().getFederalWHReason(), checkingAccount.getFederalWHReason(), "'Federal WH Reason' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getReasonATMChargeWaived(), checkingAccount.getReasonATMChargeWaived(), "'Reason ATM Charge Waived' value does not match");
-//        Assert.assertEquals(Pages.accountDetailsPage().getOdProtectionAcct(), checkingAccount.getOdProtectionAcct(), "'Od Protection Acct' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getOdProtectionAcct(), checkingAccount.getOdProtectionAcct(), "'Od Protection Acct' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getReasonAutoNSFChgWaived(), checkingAccount.getReasonAutoNSFChgWaived(), "'Reason Auto NSF Chg Waived' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getReasonDebitCardChargeWaived(), checkingAccount.getReasonDebitCardChargeWaived(), "'Reason Debit Card Charge Waived' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getAutomaticOverdraftStatus(), checkingAccount.getAutomaticOverdraftStatus(), "'Automatic Overdraft Status' value does not match");
@@ -132,7 +132,7 @@ public class C22573_EditCheckingAccount extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_4(), checkingAccount.getUserDefinedField_4(), "'User Defined Field 4' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getImageStatementCode(), checkingAccount.getImageStatementCode(), "'Image Statement Code' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getNumberOfDebitCardsIssued(), checkingAccount.getNumberOfDebitCardsIssued(), "'Number Of Debit Cards Issued' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getAutomaticOverdraftLimit(), checkingAccount.getAutomaticOverdraftLimit(), "'Automatic OverdraftL imit' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getAutomaticOverdraftLimit(), checkingAccount.getAutomaticOverdraftLimit(), "'Automatic Overdraft Limit' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCashCollDaysBeforeChg(), checkingAccount.getCashCollDaysBeforeChg(), "'Cash Coll Days Before Chg' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCashCollInterestChg(), checkingAccount.getCashCollInterestChg(), "'Cash Coll Interest Chg' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCashCollFloat(), checkingAccount.getCashCollFloat(), "'Cash Coll Float' value does not match");
@@ -148,7 +148,7 @@ public class C22573_EditCheckingAccount extends BaseTest {
 
         Assert.assertEquals(Pages.editAccountPage().getFederalWHReasonInEditMode(), checkingAccount.getFederalWHReason(), "'Federal WH Reason' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getReasonATMChargeWaived(), checkingAccount.getReasonATMChargeWaived(), "'Reason ATM Charge Waived' value does not match");
-//        Assert.assertEquals(Pages.editAccountPage().getOdProtectionAcct(), checkingAccount.getOdProtectionAcct(), "'Od Protection Acct' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getOdProtectionAcct(), checkingAccount.getOdProtectionAcct(), "'Od Protection Acct' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getReasonAutoNSFChgWaived(), checkingAccount.getReasonAutoNSFChgWaived(), "'Reason Auto NSF Chg Waived' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getReasonDebitCardChargeWaived(), checkingAccount.getReasonDebitCardChargeWaived(), "'Reason Debit Card Charge Waived' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getAutomaticOverdraftStatus(), checkingAccount.getAutomaticOverdraftStatus(), "'Automatic Overdraft Status' value does not match");

@@ -72,7 +72,7 @@ public class EditAccount {
         if (account.getOdProtectionAcct() == null) {
             account.setOdProtectionAcct(listOfOdProtectionAcct.get(new Random().nextInt(listOfOdProtectionAcct.size())).trim());
         }
-        Pages.editAccountPage().clickOdProtectionAcctSelectorOption(account.getOdProtectionAcct());
+        Pages.editAccountPage().clickOdProtectionAcctSelectorOption(account.getOdProtectionAcct().replaceAll("[^0-9]", ""));
     }
 
     public void setFederalWHReason(Account account) {
