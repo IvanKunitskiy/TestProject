@@ -51,7 +51,6 @@ public class C22579_ViewNewSavingsAccount extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         LOG.info("Step 2: Search for the Savings account from the precondition and open it on Details");
-        Pages.aSideMenuPage().clickClientMenuItem();
         Pages.clientsPage().typeToClientsSearchInputField(savingsAccount.getAccountNumber());
         Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() == 1, "There is more than one client found");
         Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), savingsAccount.getAccountNumber()));
@@ -66,12 +65,13 @@ public class C22579_ViewNewSavingsAccount extends BaseTest {
 
         LOG.info("Step 4: Pay attention to the fields on the page");
         Assert.assertEquals(Pages.accountDetailsPage().getProductValue(), savingsAccount.getProduct(), "'Product' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getAccountNumberValue(), savingsAccount.getAccountNumber(), "'Account Number' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), savingsAccount.getAccountTitle(), "'Title' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), savingsAccount.getDateOpened(), "'Date Opened' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), savingsAccount.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), savingsAccount.getBankBranch(), "'Bank Branch' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getStatementCycle(), savingsAccount.getStatementCycle(), "'Statement Cycle' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), savingsAccount.getCallClassCode(), "'Call Class' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), savingsAccount.getAccountTitle(), "'Title' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), savingsAccount.getInterestRate(), "'Interest Rate' value does not match");
 
         LOG.info("Step 5: Click [Less] button");
