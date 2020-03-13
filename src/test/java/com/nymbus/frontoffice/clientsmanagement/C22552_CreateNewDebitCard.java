@@ -39,9 +39,13 @@ public class C22552_CreateNewDebitCard extends BaseTest {
 
         debitCard = debitCardFactory.getDebitCard();
         debitCard.setBinControl(binControl);
+        debitCard.setATMDailyDollarLimit(binControl.getATMDailyDollarLimit());
+        debitCard.setATMTransactionLimit(binControl.getATMTransactionLimit());
+        debitCard.setDBCDailyDollarLimit(binControl.getDBCDailyDollarLimit());
+        debitCard.setDBCTransactionLimit(binControl.getDBCTransactionLimit());
 
         chkAccount = new CHKAccount();
-        chkAccount.setAccountNumber("12400584822");
+        chkAccount.setAccountNumber("12400585233");
 
         debitCard.getAccounts().add(chkAccount);
 
@@ -56,12 +60,12 @@ public class C22552_CreateNewDebitCard extends BaseTest {
         Pages.navigationPage().waitForUserMenuVisible();
 
         LOG.info("Step 2: Search for any individualClient and open his profile on the Maintenance tab");
-        Pages.clientsPage().typeToClientsSearchInputField("ndjws");
+        Pages.clientsPage().typeToClientsSearchInputField("AAA");
 
         Assert.assertEquals(Pages.clientsPage().getLookupResultsCount(), 1);
         Assert.assertFalse(Pages.clientsPage().isLoadMoreResultsButtonVisible());
 
-        Pages.clientsPage().clickOnViewAccountButtonByValue("ndjws");
+        Pages.clientsPage().clickOnViewAccountButtonByValue("AAA");
 
         LOG.info("Step 3: Open client profile on the Maintenance tab");
         Pages.clientDetailsPage().clickOnMaintenanceTab();
@@ -92,6 +96,6 @@ public class C22552_CreateNewDebitCard extends BaseTest {
         Pages.accountDetailsPage().clickViewAllMaintenanceHistoryLink();
 
         LOG.info("Step 12: Look through Account's Maintenance History and verify that there are records about the newly created Debit Card");
-
+        Actions.maintenanceHistoryPageActions().verifyMaintenanceHistoryFields(debitCard, chkAccount);
     }
 }

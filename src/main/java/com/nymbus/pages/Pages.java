@@ -1,13 +1,13 @@
 package com.nymbus.pages;
 
+import com.nymbus.pages.accounts.AccountDetailsPage;
+import com.nymbus.pages.accounts.AddAccountPage;
 import com.nymbus.pages.clients.AddClientPage;
 import com.nymbus.pages.clients.ClientDetailsPage;
 import com.nymbus.pages.clients.ClientsPage;
 import com.nymbus.pages.clients.ClientsSearchResultsPage;
+import com.nymbus.pages.clients.maintenance.MaintenanceHistoryPage;
 import com.nymbus.pages.clients.maintenance.MaintenancePage;
-import com.nymbus.pages.accounts.AccountDetailsPage;
-import com.nymbus.pages.accounts.AddAccountPage;
-import com.nymbus.pages.clients.*;
 import com.nymbus.pages.loans.LoansPage;
 import com.nymbus.pages.modalwindow.DebitCardModalWindow;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
@@ -34,6 +34,7 @@ public class Pages {
     private static AddAccountPage addAccountPage;
     private static AccountDetailsPage accountDetailsPage;
     private static MaintenancePage maintenancePage;
+    private static MaintenanceHistoryPage maintenanceHistoryPage;
 
     /**
      * Modal Windows
@@ -181,6 +182,16 @@ public class Pages {
     }
 
     /**
+     * This function return an instance of `DebitCardModalWindow`
+     */
+    public static DebitCardModalWindow debitCardModalWindow() {
+        if (debitCardModalWindow == null) {
+            debitCardModalWindow = new DebitCardModalWindow();
+        }
+        return debitCardModalWindow;
+    }
+
+    /**
      * This function return an instance of `MaintenancePage`
      */
     public static MaintenancePage maintenancePage() {
@@ -191,12 +202,12 @@ public class Pages {
     }
 
     /**
-     * This function return an instance of `DebitCardModalWindow`
+     * This function return an instance of `MaintenanceHistoryPage`
      */
-    public static DebitCardModalWindow debitCardModalWindow() {
-        if (debitCardModalWindow == null) {
-            debitCardModalWindow = new DebitCardModalWindow();
+    public static MaintenanceHistoryPage maintenanceHistoryPage() {
+        if (maintenanceHistoryPage == null) {
+            maintenanceHistoryPage = new MaintenanceHistoryPage();
         }
-        return debitCardModalWindow;
+        return maintenanceHistoryPage;
     }
 }

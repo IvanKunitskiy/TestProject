@@ -41,4 +41,8 @@ public class MaintenancePageActions {
                 "Card Status is not equal"
         );
     }
+
+    public void verifyMaintenanceHistoryFields(DebitCard debitCard) {
+        
+    }
 }
