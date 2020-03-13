@@ -57,11 +57,31 @@ public class AccountDetailsPage extends BasePage {
     private Locator cashCollInterestChg= new XPath("//tr[@data-config-name='cashcollectioninterestchargesperstatementcycle']//span[contains(@class, 'dnTextFixedWidthText')]");
     private Locator cashCollFloat= new XPath("//tr[@data-config-name='cashcollectionfloat']//span[contains(@class, 'dnTextFixedWidthText')]");
     private Locator positivePay= new XPath("//tr[@data-config-name='positivepaycustomer']//span[contains(@class, 'dnTextFixedWidthText')]");
-
+    private Locator interestFrequency= new XPath("//tr[@data-config-name='interestfrequency']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator primaryAccountForCombinedStatement= new XPath("//tr[@data-config-name='ddaaccountidforcombinedstatement']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator correspondingAccount= new XPath("//tr[@data-config-name='correspondingaccountid']//span[contains(@class, 'dnTextFixedWidthText')]");
 
     /**
      * Details tab
      */
+
+    @Step("Get 'Corresponding Account' value")
+    public String getCorrespondingAccount() {
+        waitForElementVisibility(correspondingAccount);
+        return getElementText(correspondingAccount);
+    }
+
+    @Step("Get 'PrimaryAccountForCombinedStatement' value")
+    public String getPrimaryAccountForCombinedStatement() {
+        waitForElementVisibility(primaryAccountForCombinedStatement);
+        return getElementText(primaryAccountForCombinedStatement);
+    }
+
+    @Step("Get 'Interest Frequency' value")
+    public String getInterestFrequency() {
+        waitForElementVisibility(interestFrequency);
+        return getElementText(interestFrequency);
+    }
 
     @Step("Get 'Positive Pay' value")
     public String getPositivePay() {

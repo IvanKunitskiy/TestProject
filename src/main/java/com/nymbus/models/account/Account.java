@@ -50,10 +50,24 @@ public class Account {
     private String discountPeriods;
     private String discountReason;
     private String automaticOverdraftLimit;
+    private String interestFrequency;
 
     public Account setDefaultAccountData() {
         Account account = new Account();
         // default account data
+
+        return account;
+    }
+
+    public Account setSavingsAccountData() {
+        Account account = new Account();
+
+        account.setAddNewOption("Account");
+        account.setProductType("Savings Account");
+        account.setProduct("Regular Savings Account");
+        account.setAccountNumber(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setAccountTitle(Random.genString(5));
+        account.setDateOpened("02/27/2020");
 
         return account;
     }
@@ -452,5 +466,13 @@ public class Account {
 
     public void setAutomaticOverdraftLimit(String automaticOverdraftLimit) {
         this.automaticOverdraftLimit = automaticOverdraftLimit;
+    }
+
+    public String getInterestFrequency() {
+        return interestFrequency;
+    }
+
+    public void setInterestFrequency(String interestFrequency) {
+        this.interestFrequency = interestFrequency;
     }
 }

@@ -49,6 +49,9 @@ public class EditAccountPage extends BasePage {
     private Locator interestRateInput = new XPath("//input[@id='interestrate']");
     private Locator cashCollFloatInput = new XPath("//input[@id='cashcollectionfloat']");
     private Locator automaticOverdraftLimitInput = new XPath("//input[@id='automaticoverdraftlimit']");
+    private Locator interestFrequency = new XPath("//div[@id='interestfrequency']//span[contains(@class, 'ng-scope')]");
+    private Locator primaryAccountForCombinedStatement = new XPath("//div[@id='ddaaccountidforcombinedstatement']//span[contains(@class, 'ng-scope')]");
+    private Locator correspondingAccount = new XPath("//div[@id='correspondingaccountid']//span[contains(@class, 'ng-scope')]");
 
     private Locator federalWHReasonSelectorButton = new XPath("//div[@id='federalwithholdingreason']");
     private Locator federalWHReasonList = new XPath("//li[contains(@role, 'option')]/div/span");
@@ -104,6 +107,24 @@ public class EditAccountPage extends BasePage {
     /**
      * Get values in edit mode
      */
+
+    @Step("Get 'Corresponding Account' value in edit mode")
+    public String getCorrespondingAccount() {
+        waitForElementVisibility(correspondingAccount);
+        return getElementText(correspondingAccount);
+    }
+
+    @Step("Get 'Primary Account For Combined Statement' value in edit mode")
+    public String getPrimaryAccountForCombinedStatement() {
+        waitForElementVisibility(primaryAccountForCombinedStatement);
+        return getElementText(primaryAccountForCombinedStatement);
+    }
+
+    @Step("Get 'Interest Frequency' value in edit mode")
+    public String getInterestFrequency() {
+        waitForElementVisibility(interestFrequency);
+        return getElementText(interestFrequency);
+    }
 
     @Step("Get 'Automatic Overdraft Limit' value in edit mode")
     public String getAutomaticOverdraftLimit() {

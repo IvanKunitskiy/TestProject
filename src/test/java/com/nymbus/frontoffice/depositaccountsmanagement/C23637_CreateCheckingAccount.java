@@ -26,10 +26,20 @@ public class C23637_CreateCheckingAccount extends BaseTest {
 
     @BeforeMethod
     public void preCondition() {
+        // Set up Client
         client = new Client().setDefaultClientData();
         client.setClientStatus("Member");
         client.setClientType("Individual");
+        client.setSelectOfficer("autotest autotest"); // Controlling officer to validate 'Bank Branch' value
         checkingAccount = new Account().setCHKAccountData();
+        checkingAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
+
+        // Login to the system and create a client
+        navigateToUrl(Constants.URL);
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        ClientsActions.createClient().createClient(client);
+        client.setClientID(Pages.clientDetailsPage().getClientID());
+        Actions.loginActions().doLogOut();
     }
 
     @Test(description = "C23637, Create checking account")
@@ -39,15 +49,11 @@ public class C23637_CreateCheckingAccount extends BaseTest {
         LOG.info("Step 1: Log in to the system as the User from the precondition");
         navigateToUrl(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
-        final String clientID = Pages.clientDetailsPage().getClientID();
-        client.setClientID(clientID);
-        Pages.aSideMenuPage().clickClientMenuItem();
 
         LOG.info("Step 2: Search for any client and open his profile on Accounts tab");
-        Pages.clientsPage().typeToClientsSearchInputField(clientID);
+        Pages.clientsPage().typeToClientsSearchInputField(client.getClientID());
         Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), clientID), "Search results are not relevant");
+        Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), client.getClientID()), "Search results are not relevant");
         Pages.clientsPage().clickOnSearchButton();
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
         Pages.clientDetailsPage().waitForPageLoaded();
@@ -72,7 +78,7 @@ public class C23637_CreateCheckingAccount extends BaseTest {
         Assert.assertEquals(Pages.addAccountPage().getDateOpened(), dtf.format(localDate), "'Date' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getOriginatingOfficer(), client.getSelectOfficer(), "'Originating officer' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getCurrentOfficer(), client.getSelectOfficer(), "'Current officer' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getBankBranch(), "Select", "'Bank branch' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getBankBranch(), checkingAccount.getBankBranch(), "'Bank branch' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getOptInOutStatus(), "Client Has Not Responded", "'DBC ODP Opt In/Out Status' is prefilled with wrong value");
 
         LOG.info("Step 6: Select any values in drop-down fields");

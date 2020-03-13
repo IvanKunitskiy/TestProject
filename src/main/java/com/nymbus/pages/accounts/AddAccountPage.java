@@ -61,18 +61,100 @@ public class AddAccountPage extends BasePage {
     private Locator originatingOfficer = new XPath("//div[@data-test-id='field-originatingOfficer']/a/span/span");
     private Locator currentOfficer = new XPath("//div[@data-test-id='field-officer']/a/span/span");
     private Locator optInOutStatus = new XPath("//div[@data-test-id='field-dbcodpstatus']/a/span/span");
+
     private Locator currentOfficerSelectorButton = new XPath("//div[@data-test-id='field-officer']");
     private Locator currentOfficerList = new XPath("//li[contains(@role, 'option')]/div/span");
     private Locator currentOfficerSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
     private Locator callClassCodeSelectorButton = new XPath("//div[@data-test-id='field-callclasscode']");
     private Locator callClassCodeList = new XPath("//li[contains(@role, 'option')]/div/span");
     private Locator callClassCodeSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
     private Locator accountAnalysisSelectorButton = new XPath("//div[@id='accountanalysis']");
     private Locator accountAnalysisList = new XPath("//li[contains(@role, 'option')]/div/span");
     private Locator accountAnalysisSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
     private Locator chargeOrAnalyzeSelectorButton = new XPath("//div[@id='chargeoranalyze']");
     private Locator chargeOrAnalyzeList = new XPath("//li[contains(@role, 'option')]/div/span");
     private Locator chargeOrAnalyzeSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private Locator interestFrequencySelectorButton = new XPath("//div[@id='interestfrequency']");
+    private Locator interestFrequencyList = new XPath("//li[contains(@role, 'option')]/div/span");
+    private Locator interestFrequencySelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private Locator primaryAccountForCombinedStatementSelectorButton = new XPath("//div[@id='ddaaccountidforcombinedstatement']");
+    private Locator primaryAccountForCombinedStatementList = new XPath("//li[contains(@role, 'option')]/div/span");
+    private Locator primaryAccountForCombinedStatementSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private Locator correspondingAccountSelectorButton = new XPath("//div[@id='correspondingaccountid']");
+    private Locator correspondingAccountList = new XPath("//li[contains(@role, 'option')]/div/span");
+    private Locator correspondingAccountSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    @Step("Click the 'Corresponding Account' option")
+    public void clickCorrespondingAccountSelectorOption(String correspondingAccountOption) {
+        waitForElementVisibility(correspondingAccountSelectorOption, correspondingAccountOption);
+        waitForElementClickable(correspondingAccountSelectorOption, correspondingAccountOption);
+        click(correspondingAccountSelectorOption, correspondingAccountOption);
+    }
+
+    @Step("Returning list of 'Corresponding Account' options")
+    public List<String> getCorrespondingAccountList() {
+        waitForElementVisibility(correspondingAccountList);
+        waitForElementClickable(correspondingAccountList);
+        return getElementsText(correspondingAccountList);
+    }
+
+    @Step("Click the 'Corresponding Account' selector button")
+    public void clickCorrespondingAccountSelectorButton() {
+        waitForElementVisibility(correspondingAccountSelectorButton);
+        scrollToElement(correspondingAccountSelectorButton);
+        waitForElementClickable(correspondingAccountSelectorButton);
+        click(correspondingAccountSelectorButton);
+    }
+
+    @Step("Click the 'Primary Account For Combined Statement' option")
+    public void clickSetPrimaryAccountForCombinedStatementSelectorOption(String primaryAccountForCombinedStatementOption) {
+        waitForElementVisibility(primaryAccountForCombinedStatementSelectorOption, primaryAccountForCombinedStatementOption);
+        waitForElementClickable(primaryAccountForCombinedStatementSelectorOption, primaryAccountForCombinedStatementOption);
+        click(primaryAccountForCombinedStatementSelectorOption, primaryAccountForCombinedStatementOption);
+    }
+
+    @Step("Returning list of 'Primary Account For Combined Statement' options")
+    public List<String> getPrimaryAccountForCombinedStatementList() {
+        waitForElementVisibility(primaryAccountForCombinedStatementList);
+        waitForElementClickable(primaryAccountForCombinedStatementList);
+        return getElementsText(primaryAccountForCombinedStatementList);
+    }
+
+    @Step("Click the 'Primary Account For Combined Statement' selector button")
+    public void clickPrimaryAccountForCombinedStatementSelectorButton() {
+        waitForElementVisibility(primaryAccountForCombinedStatementSelectorButton);
+        scrollToElement(primaryAccountForCombinedStatementSelectorButton);
+        waitForElementClickable(primaryAccountForCombinedStatementSelectorButton);
+        click(primaryAccountForCombinedStatementSelectorButton);
+    }
+
+    @Step("Click the 'Interest Frequency' option")
+    public void clickInterestFrequencySelectorOption(String interestFrequencyOption) {
+        waitForElementVisibility(interestFrequencySelectorOption, interestFrequencyOption);
+        waitForElementClickable(interestFrequencySelectorOption, interestFrequencyOption);
+        click(interestFrequencySelectorOption, interestFrequencyOption);
+    }
+
+    @Step("Returning list of 'Interest Frequency' options")
+    public List<String> getInterestFrequencyList() {
+        waitForElementVisibility(interestFrequencyList);
+        waitForElementClickable(interestFrequencyList);
+        return getElementsText(interestFrequencyList);
+    }
+
+    @Step("Click the 'Interest Frequency' selector button")
+    public void clickInterestFrequencySelectorButton() {
+        waitForElementVisibility(interestFrequencySelectorButton);
+        scrollToElement(interestFrequencySelectorButton);
+        waitForElementClickable(interestFrequencySelectorButton);
+        click(interestFrequencySelectorButton);
+    }
 
     @Step("Set 'DBC ODP Opt In/Out Status Date' value")
     public void setDateOpenedValue(String dateOpenedValue) {
@@ -209,6 +291,7 @@ public class AddAccountPage extends BasePage {
     @Step("Click the 'Current Officer' selector button")
     public void clickCurrentOfficerSelectorButton() {
         waitForElementVisibility(currentOfficerSelectorButton);
+        scrollToElement(currentOfficerSelectorButton);
         waitForElementClickable(currentOfficerSelectorButton);
         click(currentOfficerSelectorButton);
     }
