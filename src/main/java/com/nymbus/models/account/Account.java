@@ -67,9 +67,9 @@ public class Account {
 
         account.setAddNewOption("Account");
         account.setProductType("Savings Account");
-        account.setAccountTitle(Random.genString(5));
         account.setProduct("Regular Savings Account");
-        account.setOptInOutDate("01/01/2020");
+        account.setAccountNumber(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setAccountTitle(Random.genString(5));
         account.setDateOpened("02/27/2020");
 
         return account;
