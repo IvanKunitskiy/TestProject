@@ -78,17 +78,6 @@ public class CreateAccount {
         Pages.addAccountPage().clickCorrespondingAccountSelectorOption(account.getCorrespondingAccount());
     }
 
-    public void setPrimaryAccountForCombinedStatement(Account account) {
-        Pages.addAccountPage().clickPrimaryAccountForCombinedStatementSelectorButton();
-        List<String> listOfPrimaryAccountForCombinedStatement = Pages.addAccountPage().getPrimaryAccountForCombinedStatementList();
-
-        Assert.assertTrue(listOfPrimaryAccountForCombinedStatement.size() > 0, "There are no product types available");
-        if (account.getPrimaryAccountForCombinedStatement() == null) {
-            account.setPrimaryAccountForCombinedStatement(listOfPrimaryAccountForCombinedStatement.get(new Random().nextInt(listOfPrimaryAccountForCombinedStatement.size())).trim());
-        }
-        Pages.addAccountPage().clickSetPrimaryAccountForCombinedStatementSelectorOption(account.getPrimaryAccountForCombinedStatement());
-    }
-
     public void setInterestFrequency(Account account) {
         Pages.addAccountPage().clickInterestFrequencySelectorButton();
         List<String> listOfInterestFrequency = Pages.addAccountPage().getInterestFrequencyList();

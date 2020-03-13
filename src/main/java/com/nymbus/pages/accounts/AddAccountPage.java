@@ -112,28 +112,6 @@ public class AddAccountPage extends BasePage {
         click(correspondingAccountSelectorButton);
     }
 
-    @Step("Click the 'Primary Account For Combined Statement' option")
-    public void clickSetPrimaryAccountForCombinedStatementSelectorOption(String primaryAccountForCombinedStatementOption) {
-        waitForElementVisibility(primaryAccountForCombinedStatementSelectorOption, primaryAccountForCombinedStatementOption);
-        waitForElementClickable(primaryAccountForCombinedStatementSelectorOption, primaryAccountForCombinedStatementOption);
-        click(primaryAccountForCombinedStatementSelectorOption, primaryAccountForCombinedStatementOption);
-    }
-
-    @Step("Returning list of 'Primary Account For Combined Statement' options")
-    public List<String> getPrimaryAccountForCombinedStatementList() {
-        waitForElementVisibility(primaryAccountForCombinedStatementList);
-        waitForElementClickable(primaryAccountForCombinedStatementList);
-        return getElementsText(primaryAccountForCombinedStatementList);
-    }
-
-    @Step("Click the 'Primary Account For Combined Statement' selector button")
-    public void clickPrimaryAccountForCombinedStatementSelectorButton() {
-        waitForElementVisibility(primaryAccountForCombinedStatementSelectorButton);
-        scrollToElement(primaryAccountForCombinedStatementSelectorButton);
-        waitForElementClickable(primaryAccountForCombinedStatementSelectorButton);
-        click(primaryAccountForCombinedStatementSelectorButton);
-    }
-
     @Step("Click the 'Interest Frequency' option")
     public void clickInterestFrequencySelectorOption(String interestFrequencyOption) {
         waitForElementVisibility(interestFrequencySelectorOption, interestFrequencyOption);

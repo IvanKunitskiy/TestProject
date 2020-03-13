@@ -83,7 +83,7 @@ public class Account {
         account.setOptInOutDate("01/01/2020");
         account.setDateOpened("02/27/2020");
         account.setAutomaticOverdraftStatus("Active");
-        account.setAutomaticOverdraftLimit(String.valueOf(Random.genLong(100000000000L, 9223372036885L)));
+        account.setAutomaticOverdraftLimit(String.valueOf(Random.genLong(100000000000L, 922337203688L)));
         account.setNumberOfATMCardsIssued(String.valueOf(Random.genInt(0, 100)));
         account.setNumberOfDebitCardsIssued(String.valueOf(Random.genInt(0, 100)));
         account.setFederalWHPercent(String.valueOf(Random.genInt(0, 100)));
