@@ -93,8 +93,6 @@ public class C23637_CreateCheckingAccount extends BaseTest {
 
         LOG.info("Step 7: Fill in text fields with valid data. NOTE: do not fill in Account Number field");
         Pages.addAccountPage().setAccountTitleValue(checkingAccount.getAccountTitle());
-        checkingAccount.setStatementFlag(Pages.addAccountPage().generateStatementFlagValue());
-        Pages.addAccountPage().setStatementFlag(checkingAccount.getStatementFlag());
         checkingAccount.setInterestRate(Pages.addAccountPage().generateInterestRateValue());
         Pages.addAccountPage().setInterestRate(checkingAccount.getInterestRate());
         checkingAccount.setEarningCreditRate(Pages.addAccountPage().generateEarningCreditRateValue());
@@ -118,7 +116,6 @@ public class C23637_CreateCheckingAccount extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getChargeOrAnalyze(), checkingAccount.getChargeOrAnalyze(), "'Charge or Analyze' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getAccountAnalysisValue(), checkingAccount.getAccountAnalysis(), "'Account Analysis' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), checkingAccount.getAccountTitle(), "'Title' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getStatementFlagValue(), checkingAccount.getStatementFlag(), "'Statement Flag' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), checkingAccount.getInterestRate(), "'Interest Rate' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getEarningCreditRate(), checkingAccount.getEarningCreditRate(), "'Earning Rate' value does not match");
 
@@ -133,7 +130,6 @@ public class C23637_CreateCheckingAccount extends BaseTest {
         Assert.assertEquals(Pages.editAccountPage().getChargeOrAnalyzeInEditMode(), checkingAccount.getChargeOrAnalyze(), "'Charge or Analyze' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getAccountAnalysisValueInEditMode(), checkingAccount.getAccountAnalysis(), "'Account Analysis' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getAccountTitleValueInEditMode(), checkingAccount.getAccountTitle(), "'Title' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getStatementFlagValueInEditMode(), checkingAccount.getStatementFlag(), "'Statement Flag' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), checkingAccount.getInterestRate(), "'Interest Rate' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getEarningCreditRateInEditMode(), checkingAccount.getEarningCreditRate(), "'Earning Rate' value does not match");
 

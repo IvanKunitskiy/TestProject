@@ -112,28 +112,6 @@ public class AddAccountPage extends BasePage {
         click(correspondingAccountSelectorButton);
     }
 
-    @Step("Click the 'Primary Account For Combined Statement' option")
-    public void clickSetPrimaryAccountForCombinedStatementSelectorOption(String primaryAccountForCombinedStatementOption) {
-        waitForElementVisibility(primaryAccountForCombinedStatementSelectorOption, primaryAccountForCombinedStatementOption);
-        waitForElementClickable(primaryAccountForCombinedStatementSelectorOption, primaryAccountForCombinedStatementOption);
-        click(primaryAccountForCombinedStatementSelectorOption, primaryAccountForCombinedStatementOption);
-    }
-
-    @Step("Returning list of 'Primary Account For Combined Statement' options")
-    public List<String> getPrimaryAccountForCombinedStatementList() {
-        waitForElementVisibility(primaryAccountForCombinedStatementList);
-        waitForElementClickable(primaryAccountForCombinedStatementList);
-        return getElementsText(primaryAccountForCombinedStatementList);
-    }
-
-    @Step("Click the 'Primary Account For Combined Statement' selector button")
-    public void clickPrimaryAccountForCombinedStatementSelectorButton() {
-        waitForElementVisibility(primaryAccountForCombinedStatementSelectorButton);
-        scrollToElement(primaryAccountForCombinedStatementSelectorButton);
-        waitForElementClickable(primaryAccountForCombinedStatementSelectorButton);
-        click(primaryAccountForCombinedStatementSelectorButton);
-    }
-
     @Step("Click the 'Interest Frequency' option")
     public void clickInterestFrequencySelectorOption(String interestFrequencyOption) {
         waitForElementVisibility(interestFrequencySelectorOption, interestFrequencyOption);
@@ -227,20 +205,6 @@ public class AddAccountPage extends BasePage {
         waitForElementVisibility(interestRateInput);
         waitForElementClickable(interestRateInput);
         type(interestRateValue, interestRateInput);
-    }
-
-    @Step("Generate 'Statement Flag' value")
-    public String generateStatementFlagValue() {
-        String[] flags = {"R", "S"};
-        Random random = new Random();
-        return flags[random.nextInt(flags.length)];
-    }
-
-    @Step("Set 'Statement flag' option")
-    public void setStatementFlag(String flagValue) {
-        waitForElementVisibility(statementFlagInput);
-        waitForElementClickable(statementFlagInput);
-        type(flagValue, statementFlagInput);
     }
 
     @Step("Click the 'Account Analysis' option")
@@ -391,7 +355,7 @@ public class AddAccountPage extends BasePage {
     public String getDateOpened() {
         waitForElementVisibility(dateOpened);
         waitForElementClickable(dateOpened);
-        wait(1);
+        wait(2);
         return getElementAttributeValue("value", dateOpened);
     }
 

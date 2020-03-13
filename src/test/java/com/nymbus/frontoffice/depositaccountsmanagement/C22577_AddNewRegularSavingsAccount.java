@@ -94,7 +94,6 @@ public class C22577_AddNewRegularSavingsAccount extends BaseTest {
         AccountActions.createAccount().setCurrentOfficer(regularSavingsAccount);
         AccountActions.createAccount().setBankBranch(regularSavingsAccount);
         AccountActions.createAccount().setInterestFrequency(regularSavingsAccount);
-        AccountActions.createAccount().setPrimaryAccountForCombinedStatement(regularSavingsAccount);
         AccountActions.createAccount().setStatementCycle(regularSavingsAccount);
         AccountActions.createAccount().setCorrespondingAccount(regularSavingsAccount);
         AccountActions.createAccount().setCallClassCode(regularSavingsAccount);
@@ -117,7 +116,6 @@ public class C22577_AddNewRegularSavingsAccount extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), regularSavingsAccount.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), regularSavingsAccount.getBankBranch(), "'Bank Branch' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getInterestFrequency(), regularSavingsAccount.getInterestFrequency());
-        Assert.assertEquals(Pages.accountDetailsPage().getPrimaryAccountForCombinedStatement(), regularSavingsAccount.getPrimaryAccountForCombinedStatement());
         Assert.assertEquals(Pages.accountDetailsPage().getStatementCycle(), regularSavingsAccount.getStatementCycle(), "'Statement Cycle' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCorrespondingAccount(), regularSavingsAccount.getCorrespondingAccount());
         Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), regularSavingsAccount.getCallClassCode(), "'Call Class' value does not match");
@@ -132,7 +130,6 @@ public class C22577_AddNewRegularSavingsAccount extends BaseTest {
         Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), regularSavingsAccount.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), regularSavingsAccount.getBankBranch(), "'Bank Branch' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getInterestFrequency(), regularSavingsAccount.getInterestFrequency(), "'Interest Frequency' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getPrimaryAccountForCombinedStatement(), regularSavingsAccount.getPrimaryAccountForCombinedStatement(), "'Primary Account for Combined Statement' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getStatementCycleValueInEditMode(), regularSavingsAccount.getStatementCycle(), "'Statement Cycle' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getCorrespondingAccount(), regularSavingsAccount.getCorrespondingAccount(), "'Corresponding Account' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), regularSavingsAccount.getCallClassCode(), "'Call Class' value does not match");

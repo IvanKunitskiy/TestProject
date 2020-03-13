@@ -27,7 +27,6 @@ public class Account {
     private String cashCollInterestChg;
     private String cashCollFloat;
     private String positivePay;
-    private String imageStatementCode;
     private String federalWHReason;
     private String federalWHPercent;
     private String reasonATMChargeWaived;
@@ -41,10 +40,8 @@ public class Account {
     private String mailCode;
     private String dateOpened;
     private String bankBranch;
-    private String statementFlag;
     private String statementCycle;
     private String correspondingAccount;
-    private String primaryAccountForCombinedStatement;
     private String userDefinedField_1;
     private String userDefinedField_2;
     private String userDefinedField_3;
@@ -70,7 +67,8 @@ public class Account {
         account.setAccountTitle(Random.genString(5));
         account.setAccountNumber(String.valueOf(Random.genLong(10000000000L, 922337203685L)));
         account.setProduct("Regular Savings Account");
-        account.setOptInOutDate("01/01/2020");
+        account.setAccountNumber(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setAccountTitle(Random.genString(5));
         account.setDateOpened("02/27/2020");
 
         return account;
@@ -87,7 +85,7 @@ public class Account {
         account.setOptInOutDate("01/01/2020");
         account.setDateOpened("02/27/2020");
         account.setAutomaticOverdraftStatus("Active");
-        account.setAutomaticOverdraftLimit(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setAutomaticOverdraftLimit(String.valueOf(Random.genLong(100000000000L, 922337203688L)));
         account.setNumberOfATMCardsIssued(String.valueOf(Random.genInt(0, 100)));
         account.setNumberOfDebitCardsIssued(String.valueOf(Random.genInt(0, 100)));
         account.setFederalWHPercent(String.valueOf(Random.genInt(0, 100)));
@@ -100,7 +98,6 @@ public class Account {
         account.setUserDefinedField_2(Random.genString(5));
         account.setUserDefinedField_3(Random.genString(5));
         account.setUserDefinedField_4(Random.genString(5));
-        account.setImageStatementCode(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setPositivePay(Random.genString(5));
 
         return account;
@@ -193,28 +190,12 @@ public class Account {
         this.bankBranch = bankBranch;
     }
 
-    public String getStatementFlag() {
-        return statementFlag;
-    }
-
-    public void setStatementFlag(String statementFlag) {
-        this.statementFlag = statementFlag;
-    }
-
     public String getCorrespondingAccount() {
         return correspondingAccount;
     }
 
     public void setCorrespondingAccount(String correspondingAccount) {
         this.correspondingAccount = correspondingAccount;
-    }
-
-    public String getPrimaryAccountForCombinedStatement() {
-        return primaryAccountForCombinedStatement;
-    }
-
-    public void setPrimaryAccountForCombinedStatement(String primaryAccountForCombinedStatement) {
-        this.primaryAccountForCombinedStatement = primaryAccountForCombinedStatement;
     }
 
     public String getUserDefinedField_1() {
@@ -423,14 +404,6 @@ public class Account {
 
     public void setNumberOfATMCardsIssued(String numberOfATMCardsIssued) {
         this.numberOfATMCardsIssued = numberOfATMCardsIssued;
-    }
-
-    public String getImageStatementCode() {
-        return imageStatementCode;
-    }
-
-    public void setImageStatementCode(String imageStatementCode) {
-        this.imageStatementCode = imageStatementCode;
     }
 
     public String getFederalWHPercent() {
