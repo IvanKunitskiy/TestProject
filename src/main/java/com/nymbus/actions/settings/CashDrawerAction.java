@@ -1,6 +1,6 @@
 package com.nymbus.actions.settings;
 
-import com.nymbus.models.CashDrawer;
+import com.nymbus.data.entity.CashDrawer;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
 import org.testng.Assert;
@@ -10,23 +10,29 @@ import java.util.Random;
 
 public class CashDrawerAction {
 
-    public void openAllCashDrawerPage(){
+    public void openAllCashDrawerPage() {
         Pages.aSideMenuPage().clickSettingsMenuItem();
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().waitForCashDrawerRegion();
         SettingsPage.mainPage().clickViewAllCashDrawerLink();
     }
 
-    public void searCashDrawerOnCashDrawerSearchPage(CashDrawer cashDrawer){
+    public void searchCashDrawerOnCashDrawerSearchPage(CashDrawer cashDrawer) {
         openAllCashDrawerPage();
         SettingsPage.cashDrawerSearchPage().waitViewCashDrawerListVisible();
         SettingsPage.cashDrawerSearchPage().waitForPageLoaded();
+        //todo temp waiter
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         SettingsPage.cashDrawerSearchPage().setUserDataForSearching(cashDrawer.getName());
         SettingsPage.cashDrawerSearchPage().clickSearchButton();
         SettingsPage.cashDrawerSearchPage().clickCellByUserData(cashDrawer.getName());
     }
 
-    public void createCashDrawer(CashDrawer cashDrawer){
+    public void createCashDrawer(CashDrawer cashDrawer) {
         Pages.aSideMenuPage().clickSettingsMenuItem();
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().waitForCashDrawerRegion();
@@ -37,7 +43,7 @@ public class CashDrawerAction {
         SettingsPage.addCashDrawerPage().clickSaveChangesButton();
     }
 
-    private void setCashDrawerData(CashDrawer cashDrawer){
+    private void setCashDrawerData(CashDrawer cashDrawer) {
         SettingsPage.addCashDrawerPage().setNameValue(cashDrawer.getName());
         setCashDrawerType(cashDrawer);
         setDefaultUser(cashDrawer);
@@ -47,12 +53,12 @@ public class CashDrawerAction {
         setFloatingValue(cashDrawer);
     }
 
-    private void setCashDrawerType(CashDrawer cashDrawer){
+    private void setCashDrawerType(CashDrawer cashDrawer) {
         SettingsPage.addCashDrawerPage().setCashDrawerTypeValue(cashDrawer.getType());
         SettingsPage.addCashDrawerPage().clickCashDrawerTypeOption(cashDrawer.getType());
     }
 
-    private void setDefaultUser(CashDrawer cashDrawer){
+    private void setDefaultUser(CashDrawer cashDrawer) {
         SettingsPage.addCashDrawerPage().setDefaultUserValue(cashDrawer.getDefaultUser());
         SettingsPage.addCashDrawerPage().clickDefaultUserOption(cashDrawer.getDefaultUser());
     }
@@ -87,7 +93,7 @@ public class CashDrawerAction {
         SettingsPage.addCashDrawerPage().clickLocationOption(cashDrawer.getLocation());
     }
 
-    private void setGLAccountNumber(CashDrawer cashDrawer){
+    private void setGLAccountNumber(CashDrawer cashDrawer) {
         SettingsPage.addCashDrawerPage().setGLAccountNumberValue("%%%");
         SettingsPage.addCashDrawerPage().clickGLAccountNumberSearchButton();
         List<String> listOfAccounts = SettingsPage.addCashDrawerPage().getGLAccountNumberList();
@@ -100,7 +106,7 @@ public class CashDrawerAction {
         SettingsPage.addCashDrawerPage().clickGLAccountNumberOption(cashDrawer.getGlAccountNumber());
     }
 
-    private void setFloatingValue(CashDrawer cashDrawer){
+    private void setFloatingValue(CashDrawer cashDrawer) {
         if (cashDrawer.isFloating()) {
             if (!SettingsPage.addCashDrawerPage().isFloatingOptionActivated())
                 SettingsPage.addCashDrawerPage().clickFloatingToggle();
@@ -110,7 +116,7 @@ public class CashDrawerAction {
         }
     }
 
-    public CashDrawer getCashDrawerFromCashDrawerViewPage(){
+    public CashDrawer getCashDrawerFromCashDrawerViewPage() {
         CashDrawer cashDrawer = new CashDrawer();
         cashDrawer.setName(SettingsPage.viewCashDrawerPage().getName());
         cashDrawer.setType(SettingsPage.viewCashDrawerPage().getCashDrawerType());

@@ -1,6 +1,6 @@
 package com.nymbus.models.account;
 
-import com.nymbus.util.Random;
+import com.nymbus.core.utils.Generator;
 
 import java.sql.Timestamp;
 
@@ -65,26 +65,26 @@ public class Account {
 
         account.setAddNewOption("Account");
         account.setProductType("CHK Account");
-        account.setAccountTitle(Random.genString(5));
+        account.setAccountTitle(Generator.genString(5));
         account.setAccountNumber(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setProduct("Basic Business Checking");
         account.setOptInOutDate("01/01/2020");
         account.setDateOpened("02/27/2020");
-        account.setNumberOfATMCardsIssued(String.valueOf(Random.genInt(0, 100)));
-        account.setNumberOfDebitCardsIssued(String.valueOf(Random.genInt(0, 100)));
+        account.setNumberOfATMCardsIssued(String.valueOf(Generator.genInt(0, 100)));
+        account.setNumberOfDebitCardsIssued(String.valueOf(Generator.genInt(0, 100)));
 //        account.setFederalWHPercent();
-        account.setFederalWHPercent(String.valueOf(Random.genFloat(0.0001, 99.9999, 100)));
-        account.setEarningCreditRate(String.valueOf(Random.genFloat(0.0001, 99.9999, 100)));
+        account.setFederalWHPercent(String.valueOf(Generator.genFloat(0.0001, 99.9999, 100)));
+        account.setEarningCreditRate(String.valueOf(Generator.genFloat(0.0001, 99.9999, 100)));
         account.setCashCollDaysBeforeChg(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setCashCollInterestChg(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setCashCollFloat(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
-        account.setUserDefinedField_1(Random.genString(5));
-        account.setUserDefinedField_2(Random.genString(5));
-        account.setUserDefinedField_3(Random.genString(5));
-        account.setUserDefinedField_4(Random.genString(5));
+        account.setUserDefinedField_1(Generator.genString(5));
+        account.setUserDefinedField_2(Generator.genString(5));
+        account.setUserDefinedField_3(Generator.genString(5));
+        account.setUserDefinedField_4(Generator.genString(5));
         account.setImageStatementCode(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
-        account.setPositivePay(Random.genString(5));
+        account.setPositivePay(Generator.genString(5));
 
         return account;
     }
@@ -95,11 +95,11 @@ public class Account {
         account.setAddNewOption("Account");
         account.setProductType("Safe Deposit Box");
         account.setAccountNumber(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
-        account.setAccountTitle(Random.genString(5));
-        account.setUserDefinedField_1(Random.genString(5));
-        account.setUserDefinedField_2(Random.genString(5));
-        account.setUserDefinedField_3(Random.genString(5));
-        account.setUserDefinedField_4(Random.genString(5));
+        account.setAccountTitle(Generator.genString(5));
+        account.setUserDefinedField_1(Generator.genString(5));
+        account.setUserDefinedField_2(Generator.genString(5));
+        account.setUserDefinedField_3(Generator.genString(5));
+        account.setUserDefinedField_4(Generator.genString(5));
 
         return account;
     }

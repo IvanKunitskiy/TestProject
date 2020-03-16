@@ -1,26 +1,25 @@
 package com.nymbus.pages.clients;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.locator.Locator;
-import com.nymbus.locator.XPath;
+import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ClientsSearchPage extends BasePage {
+public class ClientsSearchPage extends PageTools {
 
-    private Locator addNewClientButton = new XPath("//a[@*='action-addNewCustomer']");
-    private Locator clientsSearchInputField = new XPath("//input[@type='search']");
-    private Locator searchButton = new XPath("//button[text()='Search']");
-    private Locator lookupResults = new XPath("//div[contains(text(),'View')]/preceding-sibling::*[1]");
-    private Locator lookupResultByIndex = new XPath("(//div[contains(text(),'View')]/preceding-sibling::*[1])[%s]");
-    private Locator loadMoreResultsButton = new XPath("//div[text()='Load More Results']");
-    private Locator clearSearchInputFieldButton = new XPath("//button[@class='btn btn-link btnIcon']");
+    private By addNewClientButton = By.xpath("//a[@*='action-addNewCustomer']");
+    private By clientsSearchInputField = By.xpath("//input[@type='search']");
+    private By searchButton = By.xpath("//button[text()='Search']");
+    private By lookupResults = By.xpath("//div[contains(text(),'View')]/preceding-sibling::*[1]");
+    private By lookupResultByIndex = By.xpath("(//div[contains(text(),'View')]/preceding-sibling::*[1])[%s]");
+    private By loadMoreResultsButton = By.xpath("//div[text()='Load More Results']");
+    private By clearSearchInputFieldButton = By.xpath("//button[@class='btn btn-link btnIcon']");
 
     @Step("Wait for 'Add new client' button")
-    public void waitForAddNewClientButton(){
+    public void waitForAddNewClientButton() {
         waitForElementVisibility(addNewClientButton);
     }
 
@@ -69,11 +68,11 @@ public class ClientsSearchPage extends BasePage {
     public void clickOnSearchInputFieldClearButton() {
         waitForElementVisibility(clearSearchInputFieldButton);
         click(clearSearchInputFieldButton);
-        wait(1);
+//        wait(1);
     }
 
     @Step("Click 'Add new client' button")
-    public void clickAddNewClient(){
+    public void clickAddNewClient() {
         waitForElementVisibility(addNewClientButton);
         waitForElementClickable(addNewClientButton);
         click(addNewClientButton);

@@ -1,13 +1,12 @@
 package com.nymbus.pages.accounts;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.locator.Locator;
-import com.nymbus.locator.XPath;
+import com.nymbus.core.base.PageTools;
+import org.openqa.selenium.By;
 
-public class AccountMaintenancePage extends BasePage {
+public class AccountMaintenancePage extends PageTools {
 
-    private Locator viewAllMaintenanceHistoryLink = new XPath("//button//span[contains(text(), 'View All History')]");
-    private Locator viewMoreButton = new XPath("//button[@data-test-id='action-loadMore']");
+    private By viewAllMaintenanceHistoryLink = By.xpath("//button//span[contains(text(), 'View All History')]");
+    private By viewMoreButton = By.xpath("//button[@data-test-id='action-loadMore']");
 
     public void clickViewAllMaintenanceHistoryLink() {
         waitForElementVisibility(viewAllMaintenanceHistoryLink);

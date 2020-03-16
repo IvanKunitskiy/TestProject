@@ -1,45 +1,44 @@
 package com.nymbus.pages.settings.users;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.locator.Locator;
-import com.nymbus.locator.XPath;
+import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
-public class UsersSearchPage extends BasePage {
+public class UsersSearchPage extends PageTools {
 
-    private Locator overlay = new XPath("//div[contains(@class, 'blockOverlay')]");
-    private Locator searchRegion = new XPath("//main[contains(@id, 'usruserssearch')]");
-    private Locator cellNyUserData = new XPath("//td[contains(text(), '%s')]");
-    private Locator searchField = new XPath("//div[contains(@id, 'usruserssearch-search')]//input[contains(@name, 'search')]");
-    private Locator searchButton = new XPath("//div[contains(@id, 'usruserssearch-search')]//button[span[text()='Search']]");
+    private By overlay = By.xpath("//div[contains(@class, 'blockOverlay')]");
+    private By searchRegion = By.xpath("//main[contains(@id, 'usruserssearch')]");
+    private By cellNyUserData = By.xpath("//td[contains(text(), '%s')]");
+    private By searchField = By.xpath("//div[contains(@id, 'usruserssearch-search')]//input[contains(@name, 'search')]");
+    private By searchButton = By.xpath("//div[contains(@id, 'usruserssearch-search')]//button[span[text()='Search']]");
 
 
-    public void waitViewUsersListVisible(){
-        waitForElementVisibility(overlay);
+    public void waitViewUsersListVisible() {
+//        waitForElementVisibility(overlay);
         waitForElementInvisibility(overlay);
     }
 
     @Step("Wait for 'User search page' loaded")
-    public void waitForPageLoaded(){
+    public void waitForPageLoaded() {
         waitForElementVisibility(searchRegion);
     }
 
     @Step("Click on cell with user data")
-    public void clickCellByUserData(String userData){
+    public void clickCellByUserData(String userData) {
         waitForElementVisibility(cellNyUserData, userData);
         waitForElementClickable(cellNyUserData, userData);
         click(cellNyUserData, userData);
     }
 
     @Step("Set user data to search field")
-    public void setUserDataForSearching(String userData){
+    public void setUserDataForSearching(String userData) {
         waitForElementClickable(searchField);
         waitForElementVisibility(searchField);
         type(userData, searchField);
     }
 
     @Step("Click 'Search' field")
-    public void clickSearchButton(){
+    public void clickSearchButton() {
         waitForElementVisibility(searchButton);
         waitForElementClickable(searchButton);
         click(searchButton);

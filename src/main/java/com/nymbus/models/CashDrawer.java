@@ -1,6 +1,6 @@
 package com.nymbus.models;
 
-import com.nymbus.util.Random;
+import com.nymbus.core.utils.Generator;
 
 import java.util.Objects;
 
@@ -15,7 +15,7 @@ public class CashDrawer {
 
     public CashDrawer setDefaultTellerValues(){
         CashDrawer cashDrawer = new CashDrawer();
-        cashDrawer.setName(Random.genString(5));
+        cashDrawer.setName(Generator.genString(5));
         cashDrawer.setType("Teller");
         return cashDrawer;
     }

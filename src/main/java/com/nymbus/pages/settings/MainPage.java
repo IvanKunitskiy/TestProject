@@ -1,51 +1,50 @@
 package com.nymbus.pages.settings;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.locator.Locator;
-import com.nymbus.locator.XPath;
+import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
-public class MainPage extends BasePage {
+public class MainPage extends PageTools {
 
     //Cash Drawer
-    private Locator cashDrawerRegion = new XPath("//div[div[h2[text()='Cash Drawer']]]");
-    private Locator addNewCashDrawerLink = new XPath("//div[div[h2[text()='Cash Drawer']]]//span");
-    private Locator searchCashDrawerField = new XPath("//div[div[h2[text()='Cash Drawer']]]//form/input[@name='productType']");
-    private Locator searchCashDrawerButton = new XPath("//div[div[h2[text()='Cash Drawer']]]//form/button");
-    private Locator viewAllCashDrawersLink = new XPath("//div[div[h2[text()='Cash Drawer']]]/div[@class='footer']//a");
+    private By cashDrawerRegion = By.xpath("//div[div[h2[text()='Cash Drawer']]]");
+    private By addNewCashDrawerLink = By.xpath("//div[div[h2[text()='Cash Drawer']]]//span");
+    private By searchCashDrawerField = By.xpath("//div[div[h2[text()='Cash Drawer']]]//form/input[@name='productType']");
+    private By searchCashDrawerButton = By.xpath("//div[div[h2[text()='Cash Drawer']]]//form/button");
+    private By viewAllCashDrawersLink = By.xpath("//div[div[h2[text()='Cash Drawer']]]/div[@class='footer']//a");
 
     // Users
-    private Locator userRegion = new XPath("//div[div[h2[text()='Users']]]");
-    private Locator addNewUserLink = new XPath("//div[div[h2[text()='Users']]]//span");
-    private Locator searchUserField = new XPath("//div[div[h2[text()='Users']]]//form/input[@name='username']");
-    private Locator searchUserButton = new XPath("//div[div[h2[text()='Users']]]//form/button");
-    private Locator viewAllUsersLink = new XPath("//div[div[h2[text()='Users']]]/div[@class='footer']//a");
+    private By userRegion = By.xpath("//div[div[h2[text()='Users']]]");
+    private By addNewUserLink = By.xpath("//div[div[h2[text()='Users']]]//span");
+    private By searchUserField = By.xpath("//div[div[h2[text()='Users']]]//form/input[@name='username']");
+    private By searchUserButton = By.xpath("//div[div[h2[text()='Users']]]//form/button");
+    private By viewAllUsersLink = By.xpath("//div[div[h2[text()='Users']]]/div[@class='footer']//a");
 
     @Step("Waiting 'Cash Drawer' region")
-    public void waitForCashDrawerRegion(){
+    public void waitForCashDrawerRegion() {
         waitForElementVisibility(cashDrawerRegion);
     }
 
     @Step("Click 'Add New' cash drawer link")
-    public void clickAddNewCashDrawerLink(){
+    public void clickAddNewCashDrawerLink() {
         waitForElementClickable(addNewCashDrawerLink);
         click(addNewCashDrawerLink);
     }
 
     @Step("Setting 'Cash Drawer' to search field")
-    public void setCashDrawerToSearchField(String cashDrawer){
+    public void setCashDrawerToSearchField(String cashDrawer) {
         waitForElementClickable(searchCashDrawerField);
         type(cashDrawer, searchCashDrawerField);
     }
 
     @Step("Click 'Search' cash drawer button")
-    public void clickSearchCashDrawerButton(){
+    public void clickSearchCashDrawerButton() {
         waitForElementClickable(searchCashDrawerButton);
         click(searchCashDrawerButton);
     }
 
     @Step("Click 'View all cash drawer' link")
-    public void clickViewAllCashDrawerLink(){
+    public void clickViewAllCashDrawerLink() {
         waitForElementClickable(viewAllCashDrawersLink);
         click(viewAllCashDrawersLink);
     }

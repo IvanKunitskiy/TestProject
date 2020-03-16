@@ -1,28 +1,27 @@
 package com.nymbus.pages.clients;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.locator.Locator;
-import com.nymbus.locator.XPath;
+import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ClientsSearchResultsPage extends BasePage {
-    private Locator searchResults = new XPath("//div[contains(@ng-repeat,'item')]");
-    private Locator accountNumberSearchResults = new XPath("//div/span[@class='spaceRight ng-binding']");
-    private Locator loadMoreResultsButton = new XPath("//button[text()='Load More Results']");
-    private Locator clientNameFromResultByIndex
-            = new XPath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][1])[%s]");
-    private Locator clientIDFromResultByIndex
-            = new XPath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][2])[%s]");
-    private Locator clientTypeFromResultByIndex
-            = new XPath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][3])[%s]");
-    private Locator clientAddressFromResultByIndex
-            = new XPath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][4])[%s]");
-    private Locator clientAKAFromResultByIndex
-            = new XPath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][5])[%s]");
-    private Locator exactMatchInSearchResults = new XPath("//div[contains(@class, 'selected')]");
+public class ClientsSearchResultsPage extends PageTools {
+    private By searchResults = By.xpath("//div[contains(@ng-repeat,'item')]");
+    private By accountNumberSearchResults = By.xpath("//div/span[@class='spaceRight ng-binding']");
+    private By loadMoreResultsButton = By.xpath("//button[text()='Load More Results']");
+    private By clientNameFromResultByIndex
+            = By.xpath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][1])[%s]");
+    private By clientIDFromResultByIndex
+            = By.xpath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][2])[%s]");
+    private By clientTypeFromResultByIndex
+            = By.xpath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][3])[%s]");
+    private By clientAddressFromResultByIndex
+            = By.xpath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][4])[%s]");
+    private By clientAKAFromResultByIndex
+            = By.xpath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][5])[%s]");
+    private By exactMatchInSearchResults = By.xpath("//div[contains(@class, 'selected')]");
 
     @Step("Wait for search results")
     public void waitForSearchResults() {

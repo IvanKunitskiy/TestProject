@@ -1,16 +1,15 @@
 package com.nymbus.pages.loans;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.locator.Locator;
-import com.nymbus.locator.XPath;
+import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
-public class LoansPage extends BasePage {
+public class LoansPage extends PageTools {
 
-    private Locator loansPageHeader = new XPath("//h1[text()='Loan']");
+    private By loansPageHeader = By.xpath("//h1[text()='Loan']");
 
     @Step("Wait for Loan page loaded")
-    public void waitForLoanPageLoaded(){
+    public void waitForLoanPageLoaded() {
         waitForElementVisibility(loansPageHeader);
     }
 

@@ -1,12 +1,13 @@
 package com.nymbus.frontoffice.usermanagement;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
-import com.nymbus.base.BaseTest;
-import com.nymbus.models.User;
+import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.data.entity.User;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
-import com.nymbus.util.Constants;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -20,14 +21,13 @@ public class C22520_DisableUserTest extends BaseTest {
     private User user;
 
     @BeforeMethod
-    public void prepareUserData(){
+    public void prepareUserData() {
         user = new User().setDefaultUserData();
     }
 
     @Test(description = "C22520, Disable User")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyUserDisabling() {
-        navigateToUrl(Constants.URL);
 
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
@@ -40,12 +40,12 @@ public class C22520_DisableUserTest extends BaseTest {
 
         Actions.loginActions().doLogOut();
 
-        navigateToUrl(Constants.WEB_ADMIN_URL);
+        Selenide.open(Constants.WEB_ADMIN_URL);
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         WebAdminActions.webAdminUsersActions().setUserPassword(user);
 
-        navigateToUrl(Constants.URL);
+        Selenide.open(Constants.URL);
 
         Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
         Actions.loginActions().doLogOut();
@@ -68,14 +68,14 @@ public class C22520_DisableUserTest extends BaseTest {
         Pages.loginPage().typeUserName(user.getLoginID());
         Pages.loginPage().typePassword(user.getPassword());
         Pages.loginPage().clickEnterButton();
-        Pages.loginPage().wait(2);
-        Assert.assertTrue(Pages.loginPage().isUserNameFieldHasError(),
-                "Error messages for user name field is not visible");
-        Assert.assertTrue(Pages.loginPage().isPasswordFieldHasError(),
-                "Error messages for password field is not visible");
 
         Assert.assertEquals(Pages.loginPage().getErrorMessage(),
                 "The user account has been disabled, please contact your system administrator",
                 "Expected message is not visible");
+
+        Assert.assertTrue(Pages.loginPage().isUserNameFieldHasError(),
+                "Error messages for user name field is not visible");
+        Assert.assertTrue(Pages.loginPage().isPasswordFieldHasError(),
+                "Error messages for password field is not visible");
     }
 }

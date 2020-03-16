@@ -1,54 +1,54 @@
 package com.nymbus.pages.settings.users;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.locator.Locator;
-import com.nymbus.locator.XPath;
+import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
+
 import java.util.List;
 
-public class ViewUserPage extends BasePage {
+public class ViewUserPage extends PageTools {
 
     /**
      * Controls
      */
 
-    private Locator overLay = new XPath("//div[contains(@ng-show, 'isLoading') and contains(@class, 'xwidget_loading_overlay')]");
-    private Locator addNewButton = new XPath("//a[span[text()='Add New']]");
-    private Locator editButton = new XPath("//button[contains(@ng-click, 'editForm')]");
+    private By overLay = By.xpath("//div[contains(@ng-show, 'isLoading') and contains(@class, 'xwidget_loading_overlay')]");
+    private By addNewButton = By.xpath("//a[span[text()='Add New']]");
+    private By editButton = By.xpath("//button[contains(@ng-click, 'editForm')]");
 
     /**
      * User data
      */
 
-    private Locator firstName = new XPath("//div[@id='usrusers-userfname']//span[@class='xwidget_readonly_value']");
-    private Locator middleName = new XPath("//div[@id='usrusers-usermname']//span[@class='xwidget_readonly_value']");
-    private Locator lastName = new XPath("//div[@id='usrusers-userlname']//span[@class='xwidget_readonly_value']");
-    private Locator userID = new XPath("//div[@id='usrusers-userid']//span[@class='xwidget_readonly_value']");
-    private Locator initials = new XPath("//div[@id='usrusers-initials']//span[@class='xwidget_readonly_value']");
-    private Locator branch = new XPath("//div[@id='usrusers-branchid']//span[@class='xwidget_readonly_value']");
-    private Locator location = new XPath("//div[@id='usrusers-locationid']//span[@class='xwidget_readonly_value']");
-    private Locator title = new XPath("//div[@id='usrusers-jobtitle']//span[@class='xwidget_readonly_value']");
-    private Locator taxID = new XPath("//div[@id='usrusers-taxidnumbers']//span[@class='xwidget_readonly_value']");
-    private Locator phone = new XPath("//div[@id='usrusers-businesstelephone']//span[@class='xwidget_readonly_value']");
-    private Locator mobile = new XPath("//div[@id='usrusers-othertelephone']//span[@class='xwidget_readonly_value']");
-    private Locator email = new XPath("//div[@id='usrusers-emailaddress']//span[@class='xwidget_readonly_value']");
-    private Locator loginID = new XPath("//div[@id='usrusers-loginname']//span[@class='xwidget_readonly_value']");
-    private Locator loginDisabled = new XPath("//div[@id='usrusers-logindisabledflag']//input[contains(@name, 'logindisabledflag')]");
-    private Locator roles = new XPath("//div[@id='usrusers-groupid']//span[@class='xwidget_readonly_value']");
-    private Locator isActive = new XPath("//div[@id='usrusers-inactive']//input[contains(@name, 'inactive')]");
-    private Locator checkDepositLimit = new XPath("//div[@id='usrusers-checksdepositslimit']//span[@class='xwidget_readonly_value']");
-    private Locator networkPrinter = new XPath("//div[@id='usrusers-networkprinter']//span[@class='xwidget_readonly_value']");
-    private Locator officialCheckLimit = new XPath("//div[@id='usrusers-officialcheckslimit']//span[@class='xwidget_readonly_value']");
-    private Locator cashOutLimit = new XPath("//div[@id='usrusers-cashoutlimit']//span");
-    private Locator teller = new XPath("//div[@id='usrusers-telleryn']//input[contains(@name, 'teller')]");
-    private Locator cashDrawer = new XPath("//div[@id='usrusers-cashdrawerid']//span[contains(@class, 'xwidget_readonly_value')]");
+    private By firstName = By.xpath("//div[@id='usrusers-userfname']//span[@class='xwidget_readonly_value']");
+    private By middleName = By.xpath("//div[@id='usrusers-usermname']//span[@class='xwidget_readonly_value']");
+    private By lastName = By.xpath("//div[@id='usrusers-userlname']//span[@class='xwidget_readonly_value']");
+    private By userID = By.xpath("//div[@id='usrusers-userid']//span[@class='xwidget_readonly_value']");
+    private By initials = By.xpath("//div[@id='usrusers-initials']//span[@class='xwidget_readonly_value']");
+    private By branch = By.xpath("//div[@id='usrusers-branchid']//span[@class='xwidget_readonly_value']");
+    private By location = By.xpath("//div[@id='usrusers-locationid']//span[@class='xwidget_readonly_value']");
+    private By title = By.xpath("//div[@id='usrusers-jobtitle']//span[@class='xwidget_readonly_value']");
+    private By taxID = By.xpath("//div[@id='usrusers-taxidnumbers']//span[@class='xwidget_readonly_value']");
+    private By phone = By.xpath("//div[@id='usrusers-businesstelephone']//span[@class='xwidget_readonly_value']");
+    private By mobile = By.xpath("//div[@id='usrusers-othertelephone']//span[@class='xwidget_readonly_value']");
+    private By email = By.xpath("//div[@id='usrusers-emailaddress']//span[@class='xwidget_readonly_value']");
+    private By loginID = By.xpath("//div[@id='usrusers-loginname']//span[@class='xwidget_readonly_value']");
+    private By loginDisabled = By.xpath("//div[@id='usrusers-logindisabledflag']//input[contains(@name, 'logindisabledflag')]");
+    private By roles = By.xpath("//div[@id='usrusers-groupid']//span[@class='xwidget_readonly_value']");
+    private By isActive = By.xpath("//div[@id='usrusers-inactive']//input[contains(@name, 'inactive')]");
+    private By checkDepositLimit = By.xpath("//div[@id='usrusers-checksdepositslimit']//span[@class='xwidget_readonly_value']");
+    private By networkPrinter = By.xpath("//div[@id='usrusers-networkprinter']//span[@class='xwidget_readonly_value']");
+    private By officialCheckLimit = By.xpath("//div[@id='usrusers-officialcheckslimit']//span[@class='xwidget_readonly_value']");
+    private By cashOutLimit = By.xpath("//div[@id='usrusers-cashoutlimit']//span");
+    private By teller = By.xpath("//div[@id='usrusers-telleryn']//input[contains(@name, 'teller')]");
+    private By cashDrawer = By.xpath("//div[@id='usrusers-cashdrawerid']//span[contains(@class, 'xwidget_readonly_value')]");
 
     /**
      * Actions with controls
      */
 
-    public void waitViewUserDataVisible(){
-        waitForElementVisibility(overLay);
+    public void waitViewUserDataVisible() {
+//        waitForElementVisibility(overLay);
         waitForElementInvisibility(overLay);
     }
 
@@ -71,136 +71,134 @@ public class ViewUserPage extends BasePage {
      */
 
     @Step("Get 'First Name' value")
-    public String getFirstNameValue(){
+    public String getFirstNameValue() {
         waitForElementVisibility(location);
         return getElementText(firstName).trim();
     }
 
     @Step("Get 'Middle name' value")
-    public String getMiddleNameValue(){
+    public String getMiddleNameValue() {
         waitForElementVisibility(location);
         return getElementText(middleName).trim();
     }
 
     @Step("Get 'Last Name' value")
-    public String getLastNameValue(){
+    public String getLastNameValue() {
         waitForElementVisibility(location);
         return getElementText(lastName).trim();
     }
 
     @Step("Get 'USERID' value")
-    public String getUSERIDValue(){
+    public String getUSERIDValue() {
         waitForElementVisibility(userID);
         return getElementText(userID).trim();
     }
 
     @Step("Get 'Initials' value")
-    public String getInitialsValue(){
+    public String getInitialsValue() {
         waitForElementVisibility(initials);
         return getElementText(initials).trim();
     }
 
     @Step("Get 'Branch' value")
-    public String getBranchValue(){
+    public String getBranchValue() {
         waitForElementVisibility(branch);
         return getElementText(branch).trim();
     }
 
     @Step("Get 'Location' value")
-    public String getLocationValue(){
+    public String getLocationValue() {
         waitForElementVisibility(location);
-        wait(2);
         return getElementText(location).trim();
     }
 
     @Step("Get 'Title' value")
-    public String getTitleValue(){
+    public String getTitleValue() {
         waitForElementVisibility(title);
         return getElementText(title).trim();
     }
 
     @Step("Get 'Tax ID' value")
-    public String getTaxIDValue(){
+    public String getTaxIDValue() {
         waitForElementVisibility(taxID);
         return getElementText(taxID).trim();
     }
 
     @Step("Get 'Phone' value")
-    public String getPhoneValue(){
+    public String getPhoneValue() {
         waitForElementVisibility(phone);
-        return getElementText(phone).trim().replaceAll("[\\W_&&[^°]]+","");
+        return getElementText(phone).trim().replaceAll("[\\W_&&[^°]]+", "");
     }
 
     @Step("Get 'Mobile' value")
-    public String getMobileValue(){
+    public String getMobileValue() {
         waitForElementVisibility(mobile);
-        return getElementText(mobile).trim().replaceAll("[\\W_&&[^°]]+","");
+        return getElementText(mobile).trim().replaceAll("[\\W_&&[^°]]+", "");
     }
 
     @Step("Get 'Email' value")
-    public String getEmailValue(){
+    public String getEmailValue() {
         waitForElementVisibility(email);
         return getElementText(email).trim();
     }
 
     @Step("Get 'Login ID' value")
-    public String getLoginIDValue(){
+    public String getLoginIDValue() {
         waitForElementVisibility(loginID);
         return getElementText(loginID).trim();
     }
 
     @Step("Returning is 'Login Disabled' result")
-    public boolean isLoginDisabled(){
+    public boolean isLoginDisabled() {
 //        waitForElementVisibility(loginDisabled);
         return getElementAttributeValue("value", loginDisabled).contains("1");
     }
 
     @Step("Get 'Roles' values")
-    public List<String> getRolesValue(){
+    public List<String> getRolesValue() {
         waitForElementVisibility(roles);
         return getElementsText(roles);
     }
 
     @Step("Returning is user 'Is Active' result")
-    public boolean isUserActive(){
+    public boolean isUserActive() {
 //        waitForElementVisibility(isActive);
         return getElementAttributeValue("value", isActive).contains("0");
     }
 
     @Step("Get 'Check Deposit Limit' value")
-    public String getCheckDepositLimitValue(){
+    public String getCheckDepositLimitValue() {
         waitForElementVisibility(checkDepositLimit);
         return getElementText(checkDepositLimit).trim();
     }
 
     @Step("Get 'Network Printer' value")
-    public String getNetworkPrinterValue(){
+    public String getNetworkPrinterValue() {
         waitForElementVisibility(networkPrinter);
         return getElementText(networkPrinter).trim();
     }
 
     @Step("Get 'Official Check Limit' value")
-    public String getOfficialCheckLimitValue(){
+    public String getOfficialCheckLimitValue() {
         waitForElementVisibility(officialCheckLimit);
         return getElementText(officialCheckLimit).trim();
     }
 
     @Step("Get 'Cash Out Limit' value")
-    public String getCashOutLimitValue(){
+    public String getCashOutLimitValue() {
         waitForElementVisibility(cashOutLimit);
         return getElementText(cashOutLimit).trim();
     }
 
     @Step("Returning is user 'Teller' result")
-    public boolean isTeller(){
+    public boolean isTeller() {
 //        waitForElementVisibility(teller);
         return getElementAttributeValue("value", teller).contains("1");
     }
 
     @Step("Get 'Cash Drawer' value")
-    public String getCashDrawerValue(){
+    public String getCashDrawerValue() {
         waitForElementVisibility(cashDrawer);
-        wait(2);
         return getElementText(cashDrawer).trim();
     }
 

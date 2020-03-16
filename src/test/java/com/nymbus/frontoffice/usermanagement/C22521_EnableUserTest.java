@@ -1,12 +1,13 @@
 package com.nymbus.frontoffice.usermanagement;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
-import com.nymbus.base.BaseTest;
-import com.nymbus.models.User;
+import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.data.entity.User;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
-import com.nymbus.util.Constants;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -20,14 +21,13 @@ public class C22521_EnableUserTest extends BaseTest {
     private User user;
 
     @BeforeMethod
-    public void prepareUserData(){
+    public void prepareUserData() {
         user = new User().setDefaultUserData();
     }
 
     @Test(description = "C22521, Enable User")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyUserEnabling() {
-        navigateToUrl(Constants.URL);
 
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Pages.aSideMenuPage().clickSettingsMenuItem();
@@ -42,18 +42,17 @@ public class C22521_EnableUserTest extends BaseTest {
 
         Actions.loginActions().doLogOut();
 
-        navigateToUrl(Constants.WEB_ADMIN_URL);
+        Selenide.open(Constants.WEB_ADMIN_URL);
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         WebAdminActions.webAdminUsersActions().setUserPassword(user);
 
-        navigateToUrl(Constants.URL);
+        Selenide.open(Constants.URL);
 
         Pages.loginPage().waitForLoginForm();
         Pages.loginPage().typeUserName(user.getLoginID());
         Pages.loginPage().typePassword(user.getPassword());
         Pages.loginPage().clickEnterButton();
-        Pages.loginPage().wait(2);
 
         Assert.assertEquals(Pages.loginPage().getErrorMessage(),
                 "The user account has been disabled, please contact your system administrator",

@@ -1,241 +1,237 @@
 package com.nymbus.pages.clients;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.base.BaseTest;
-import com.nymbus.locator.ID;
-import com.nymbus.locator.Locator;
-import com.nymbus.locator.Name;
-import com.nymbus.locator.XPath;
+import com.codeborne.selenide.Selenide;
+import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
-import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.By;
 
 import java.util.List;
 
-public class AddClientPage extends BasePage {
+public class AddClientPage extends PageTools {
 
 
-    private Locator addNewClientRegion = new XPath("//main[contains(@class, 'customerNew')]");
-    private Locator saveAndContinueButton = new XPath("//button[contains(@class,'saveAndContinue')]");
-    private Locator cancelButton = new XPath("//button[contains(@class,'btnCancel')]");
-    private Locator modalWindow = new XPath("//div[contains(@class, 'modal-content')]");
-    private Locator verificationCheckIcon = new XPath("//div[contains(@class, 'modal-content')]" +
+    private By addNewClientRegion = By.xpath("//main[contains(@class, 'customerNew')]");
+    private By saveAndContinueButton = By.xpath("//button[contains(@class,'saveAndContinue')]");
+    private By cancelButton = By.xpath("//button[contains(@class,'btnCancel')]");
+    private By modalWindow = By.xpath("//div[contains(@class, 'modal-content')]");
+    private By verificationCheckIcon = By.xpath("//div[contains(@class, 'modal-content')]" +
             "//div/h4[contains(@class, 'modal-title')]");
-    private Locator okModalButton = new XPath("//div[contains(@class, 'modal-content')]" +
+    private By okModalButton = By.xpath("//div[contains(@class, 'modal-content')]" +
             "//button[span[text()='OK']]");
 
     /**
      * Client basic information
      */
-    private Locator clientTypeField = new XPath("//div[@name='customer-type']" +
+    private By clientTypeField = By.xpath("//div[@name='customer-type']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator clientTypeSelectorButton = new XPath("//div[@name='customer-type']" +
+    private By clientTypeSelectorButton = By.xpath("//div[@name='customer-type']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator clientTypeList = new XPath("//div[@name='customer-type']" +
+    private By clientTypeList = By.xpath("//div[@name='customer-type']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator clientTypeSelectorOption = new XPath("//div[@name='customer-type']" +
+    private By clientTypeSelectorOption = By.xpath("//div[@name='customer-type']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator clientStatusField = new XPath("//div[@name='statusid']" +
+    private By clientStatusField = By.xpath("//div[@name='statusid']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator clientStatusSelectorButton = new XPath("//div[@name='statusid']" +
+    private By clientStatusSelectorButton = By.xpath("//div[@name='statusid']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator clientStatusList = new XPath("//div[@name='statusid']" +
+    private By clientStatusList = By.xpath("//div[@name='statusid']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator clientStatusSelectorOption = new XPath("//div[@name='statusid']" +
+    private By clientStatusSelectorOption = By.xpath("//div[@name='statusid']" +
             "//li[contains(@role, 'option')]/div/span[contains(text(), '%s')]");
-    private Locator firstNameField = new ID("name2");
-    private Locator middleNameField = new ID("middlename");
-    private Locator lastNameField = new ID("name1");
-    private Locator taxPayerIDTypeField = new XPath("//div[@id='taxpayeridtype']" +
+    private By firstNameField = By.id("name2");
+    private By middleNameField = By.id("middlename");
+    private By lastNameField = By.id("name1");
+    private By taxPayerIDTypeField = By.xpath("//div[@id='taxpayeridtype']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator taxPayerIDTypeSelectorButton = new XPath("//div[@id='taxpayeridtype']" +
+    private By taxPayerIDTypeSelectorButton = By.xpath("//div[@id='taxpayeridtype']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator taxPayerIDTypeList = new XPath("//div[@id='taxpayeridtype']" +
+    private By taxPayerIDTypeList = By.xpath("//div[@id='taxpayeridtype']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator taxPayerIDTypeSelectorOption = new XPath("//div[@id='taxpayeridtype']" +
+    private By taxPayerIDTypeSelectorOption = By.xpath("//div[@id='taxpayeridtype']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator taxIDField = new ID("taxidnumber");
-    private Locator birthDateCalendarIcon = new XPath("//div[input[@id='birthdate']]/div[span[@class='nyb-icon-calendar']]");
-    private Locator birthDateField = new ID("birthdate");
-    private Locator idTypeField = new XPath("//div[@id='doc_type']" +
+    private By taxIDField = By.id("taxidnumber");
+    private By birthDateCalendarIcon = By.xpath("//div[input[@id='birthdate']]/div[span[@class='nyb-icon-calendar']]");
+    private By birthDateField = By.id("birthdate");
+    private By idTypeField = By.xpath("//div[@id='doc_type']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator idTypeSelectorButton = new XPath("//div[@id='doc_type']" +
+    private By idTypeSelectorButton = By.xpath("//div[@id='doc_type']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator idTypeList = new XPath("//div[@id='doc_type']" +
+    private By idTypeList = By.xpath("//div[@id='doc_type']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator idTypeSelectorOption = new XPath("//div[@id='doc_type']" +
+    private By idTypeSelectorOption = By.xpath("//div[@id='doc_type']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator idNumberField = new ID("doc_id");
-    private Locator issuedByField = new XPath("//div[@id='doc_state']" +
+    private By idNumberField = By.id("doc_id");
+    private By issuedByField = By.xpath("//div[@id='doc_state']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator issuedBySelectorButton = new XPath("//div[@id='doc_state']" +
+    private By issuedBySelectorButton = By.xpath("//div[@id='doc_state']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator issuedByList = new XPath("//div[@id='doc_state']" +
+    private By issuedByList = By.xpath("//div[@id='doc_state']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator issuedBySelectorOption = new XPath("//div[@id='doc_state']" +
+    private By issuedBySelectorOption = By.xpath("//div[@id='doc_state']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator countryField = new XPath("//div[@id='doc_country']" +
+    private By countryField = By.xpath("//div[@id='doc_country']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator countrySelectorButton = new XPath("//div[@id='doc_country']" +
+    private By countrySelectorButton = By.xpath("//div[@id='doc_country']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator countryList = new XPath("//div[@id='doc_country']" +
+    private By countryList = By.xpath("//div[@id='doc_country']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator countrySelectorOption = new XPath("//div[@id='doc_country']" +
+    private By countrySelectorOption = By.xpath("//div[@id='doc_country']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator expirationDateField = new ID("doc_expiration");
-    private Locator addressTypeField = new XPath("//div[@name='addressuse_0']" +
+    private By expirationDateField = By.id("doc_expiration");
+    private By addressTypeField = By.xpath("//div[@name='addressuse_0']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator addressTypeSelectorButton = new XPath("//div[@name='addressuse_0']" +
+    private By addressTypeSelectorButton = By.xpath("//div[@name='addressuse_0']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator addressTypeList = new XPath("//div[@name='addressuse_0']" +
+    private By addressTypeList = By.xpath("//div[@name='addressuse_0']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator addressTypeSelectorOption = new XPath("//div[@name='addressuse_0']" +
+    private By addressTypeSelectorOption = By.xpath("//div[@name='addressuse_0']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator addressCountryField = new XPath("//div[@name='country_0']" +
+    private By addressCountryField = By.xpath("//div[@name='country_0']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator addressCountrySelectorButton = new XPath("//div[@name='country_0']" +
+    private By addressCountrySelectorButton = By.xpath("//div[@name='country_0']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator addressCountryList = new XPath("//div[@name='country_0']" +
+    private By addressCountryList = By.xpath("//div[@name='country_0']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator addressCountrySelectorOption = new XPath("//div[@name='country_0']" +
+    private By addressCountrySelectorOption = By.xpath("//div[@name='country_0']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator addressField = new XPath("//input[@name='addressline1_0']");
-    private Locator addressCityField = new XPath("//input[@name='cityname_0']");
-    private Locator addressStateField = new XPath("//div[@name='states_0']" +
+    private By addressField = By.xpath("//input[@name='addressline1_0']");
+    private By addressCityField = By.xpath("//input[@name='cityname_0']");
+    private By addressStateField = By.xpath("//div[@name='states_0']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator addressStateSelectorButton = new XPath("//div[@name='states_0']" +
+    private By addressStateSelectorButton = By.xpath("//div[@name='states_0']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator addressStateList = new XPath("//div[@name='states_0']" +
+    private By addressStateList = By.xpath("//div[@name='states_0']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator addressStateSelectorOption = new XPath("//div[@name='states_0']" +
+    private By addressStateSelectorOption = By.xpath("//div[@name='states_0']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator addressZipCodeField = new XPath("//input[@name='zipcode_0']");
+    private By addressZipCodeField = By.xpath("//input[@name='zipcode_0']");
 
     /**
      * Client detailed information
      */
-    private Locator suffixField = new ID("suffix");
-    private Locator maidenFamilyNameField = new ID("maidenname");
-    private Locator akaField = new ID("nickname");
-    private Locator profilePhotoField = new XPath("//tr[contains(@ng-if, 'profilephoto')]//input[@type='file']");
-    private Locator genderField = new XPath("//div[@id='gender']" +
+    private By suffixField = By.id("suffix");
+    private By maidenFamilyNameField = By.id("maidenname");
+    private By akaField = By.id("nickname");
+    private By profilePhotoField = By.xpath("//tr[contains(@ng-if, 'profilephoto')]//input[@type='file']");
+    private By genderField = By.xpath("//div[@id='gender']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator genderSelectorButton = new XPath("//div[@id='gender']" +
+    private By genderSelectorButton = By.xpath("//div[@id='gender']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator genderList = new XPath("//div[@id='gender']" +
+    private By genderList = By.xpath("//div[@id='gender']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator genderSelectorOption = new XPath("//div[@id='gender']" +
+    private By genderSelectorOption = By.xpath("//div[@id='gender']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator educationField = new XPath("//div[@id='education']" +
+    private By educationField = By.xpath("//div[@id='education']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator educationSelectorButton = new XPath("//div[@id='education']" +
+    private By educationSelectorButton = By.xpath("//div[@id='education']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator educationList = new XPath("//div[@id='education']" +
+    private By educationList = By.xpath("//div[@id='education']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator educationSelectorOption = new XPath("//div[@id='education']" +
+    private By educationSelectorOption = By.xpath("//div[@id='education']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator incomeField = new XPath("//div[@id='incomesalary']" +
+    private By incomeField = By.xpath("//div[@id='incomesalary']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator incomeSelectorButton = new XPath("//div[@id='incomesalary']" +
+    private By incomeSelectorButton = By.xpath("//div[@id='incomesalary']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator incomeList = new XPath("//div[@id='incomesalary']" +
+    private By incomeList = By.xpath("//div[@id='incomesalary']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator incomeSelectorOption = new XPath("//div[@id='incomesalary']" +
+    private By incomeSelectorOption = By.xpath("//div[@id='incomesalary']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator maritalStatusField = new XPath("//div[@id='maritalstatus']" +
+    private By maritalStatusField = By.xpath("//div[@id='maritalstatus']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator maritalStatusSelectorButton = new XPath("//div[@id='maritalstatus']" +
+    private By maritalStatusSelectorButton = By.xpath("//div[@id='maritalstatus']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator maritalStatusList = new XPath("//div[@id='maritalstatus']" +
+    private By maritalStatusList = By.xpath("//div[@id='maritalstatus']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator maritalStatusSelectorOption = new XPath("//div[@id='maritalstatus']" +
+    private By maritalStatusSelectorOption = By.xpath("//div[@id='maritalstatus']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator occupationField = new ID("_occupation");
-    private Locator consumerInformationIndicatorField = new XPath("//div[@id='consumerinformationindicator']" +
+    private By occupationField = By.id("_occupation");
+    private By consumerInformationIndicatorField = By.xpath("//div[@id='consumerinformationindicator']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator consumerInformationIndicatorSelectorButton = new XPath("//div[@id='consumerinformationindicator']" +
+    private By consumerInformationIndicatorSelectorButton = By.xpath("//div[@id='consumerinformationindicator']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator consumerInformationIndicatorList = new XPath("//div[@id='consumerinformationindicator']" +
+    private By consumerInformationIndicatorList = By.xpath("//div[@id='consumerinformationindicator']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator consumerInformationIndicatorSelectorOption = new XPath("//div[@id='consumerinformationindicator']" +
+    private By consumerInformationIndicatorSelectorOption = By.xpath("//div[@id='consumerinformationindicator']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator jobTitleField = new ID("jobtitle");
-    private Locator ownOrRentField = new XPath("//div[@id='ownrent']" +
+    private By jobTitleField = By.id("jobtitle");
+    private By ownOrRentField = By.xpath("//div[@id='ownrent']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator ownOrRentSelectorButton = new XPath("//div[@id='ownrent']" +
+    private By ownOrRentSelectorButton = By.xpath("//div[@id='ownrent']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator ownOrRentList = new XPath("//div[@id='ownrent']" +
+    private By ownOrRentList = By.xpath("//div[@id='ownrent']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator ownOrRentSelectorOption = new XPath("//div[@id='ownrent']" +
+    private By ownOrRentSelectorOption = By.xpath("//div[@id='ownrent']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator mailCodeField = new XPath("//div[@id='mailingcode']" +
+    private By mailCodeField = By.xpath("//div[@id='mailingcode']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator mailCodeSelectorButton = new XPath("//div[@id='mailingcode']" +
+    private By mailCodeSelectorButton = By.xpath("//div[@id='mailingcode']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator mailCodeList = new XPath("//div[@id='mailingcode']" +
+    private By mailCodeList = By.xpath("//div[@id='mailingcode']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator mailCodeSelectorOption = new XPath("//div[@id='mailingcode']" +
+    private By mailCodeSelectorOption = By.xpath("//div[@id='mailingcode']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator selectOfficerField = new XPath("//div[@id='officerid']" +
+    private By selectOfficerField = By.xpath("//div[@id='officerid']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator selectOfficerSelectorButton = new XPath("//div[@id='officerid']" +
+    private By selectOfficerSelectorButton = By.xpath("//div[@id='officerid']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator selectOfficerList = new XPath("//div[@id='officerid']" +
+    private By selectOfficerList = By.xpath("//div[@id='officerid']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator selectOfficerSelectorOption = new XPath("//div[@id='officerid']" +
+    private By selectOfficerSelectorOption = By.xpath("//div[@id='officerid']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator userDefinedField_1 = new ID("userdefinedfield1");
-    private Locator userDefinedField_2 = new ID("userdefinedfield2");
-    private Locator userDefinedField_3 = new ID("userdefinedfield3");
-    private Locator userDefinedField_4 = new ID("userdefinedfield4");
-    private Locator phoneField = new Name("fullphonenumber_0");
-    private Locator emailTypeField = new XPath("//div[@name='emailuse_0']" +
+    private By userDefinedField_1 = By.id("userdefinedfield1");
+    private By userDefinedField_2 = By.id("userdefinedfield2");
+    private By userDefinedField_3 = By.id("userdefinedfield3");
+    private By userDefinedField_4 = By.id("userdefinedfield4");
+    private By phoneField = By.name("fullphonenumber_0");
+    private By emailTypeField = By.xpath("//div[@name='emailuse_0']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator emailTypeSelectorButton = new XPath("//div[@name='emailuse_0']" +
+    private By emailTypeSelectorButton = By.xpath("//div[@name='emailuse_0']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator emailTypeList = new XPath("//div[@name='emailuse_0']" +
+    private By emailTypeList = By.xpath("//div[@name='emailuse_0']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator emailTypeSelectorOption = new XPath("//div[@name='emailuse_0']" +
+    private By emailTypeSelectorOption = By.xpath("//div[@name='emailuse_0']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator emailField = new Name("email_0");
+    private By emailField = By.name("email_0");
 
     /**
      * Upload documentation
      */
-    private Locator documentationField = new XPath("//section[contains(@class, 'uploadDocumentation')]//input[@type='file']");
-    private Locator documentationIdTypeField = new XPath("//div[@id='type']" +
+    private By documentationField = By.xpath("//section[contains(@class, 'uploadDocumentation')]//input[@type='file']");
+    private By documentationIdTypeField = By.xpath("//div[@id='type']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator documentationIdTypeSelectorButton = new XPath("//div[@id='type']" +
+    private By documentationIdTypeSelectorButton = By.xpath("//div[@id='type']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator documentationIdTypeList = new XPath("//div[@id='type']" +
+    private By documentationIdTypeList = By.xpath("//div[@id='type']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator documentationIdTypeSelectorOption = new XPath("//div[@id='type']" +
+    private By documentationIdTypeSelectorOption = By.xpath("//div[@id='type']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator documentationIdNumberField = new ID("id");
-    private Locator documentationIssuedByField = new XPath("//div[@id='state']" +
+    private By documentationIdNumberField = By.id("id");
+    private By documentationIssuedByField = By.xpath("//div[@id='state']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator documentationIssuedBySelectorButton = new XPath("//div[@id='state']" +
+    private By documentationIssuedBySelectorButton = By.xpath("//div[@id='state']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator documentationIssuedByList = new XPath("//div[@id='state']" +
+    private By documentationIssuedByList = By.xpath("//div[@id='state']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator documentationIssuedBySelectorOption = new XPath("//div[@id='state']" +
+    private By documentationIssuedBySelectorOption = By.xpath("//div[@id='state']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator documentationCountryField = new XPath("//div[@id='country']" +
+    private By documentationCountryField = By.xpath("//div[@id='country']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private Locator documentationCountrySelectorButton = new XPath("//div[@id='country']" +
+    private By documentationCountrySelectorButton = By.xpath("//div[@id='country']" +
             "//span[contains(@class, 'select2-arrow')]");
-    private Locator documentationCountryList = new XPath("//div[@id='country']" +
+    private By documentationCountryList = By.xpath("//div[@id='country']" +
             "//li[contains(@role, 'option')]/div/span");
-    private Locator documentationCountrySelectorOption = new XPath("//div[@id='country']" +
+    private By documentationCountrySelectorOption = By.xpath("//div[@id='country']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator documentationExpirationDateField = new ID("expiration");
-    private Locator documentationSaveButton = new XPath("//form[contains(@name, 'documentForm')]//button[contains(@ng-click, 'save')]");
+    private By documentationExpirationDateField = By.id("expiration");
+    private By documentationSaveButton = By.xpath("//form[contains(@name, 'documentForm')]//button[contains(@ng-click, 'save')]");
 
     /**
      * Upload signature
      */
-    private Locator clientSignatureField = new XPath("//section[contains(@ng-show, 'customerSignature')]//input[@type='file' and @name='file']");
+    private By clientSignatureField = By.xpath("//section[contains(@ng-show, 'customerSignature')]//input[@type='file' and @name='file']");
 
-    private Locator viewMemberProfileButton = new XPath("//button[@data-test-id='go-CustomerPage']");
+    private By viewMemberProfileButton = By.xpath("//button[@data-test-id='go-CustomerPage']");
 
     @Step("Click on 'Save and continue' button")
     public void clickSaveAndContinueButton() {
@@ -397,7 +393,7 @@ public class AddClientPage extends BasePage {
         waitForElementVisibility(birthDateField);
         waitForElementClickable(birthDateField);
         typeWithoutWipe("", birthDateField);
-        wait(1);
+//        wait(1);
         typeWithoutWipe(birthDateValue, birthDateField);
 //        for (char ch : birthDateValue.toCharArray()) {
 //            wait(1);
@@ -629,13 +625,14 @@ public class AddClientPage extends BasePage {
 
     @Step("Set Profile photo")
     public void uploadProfilePhoto(String profilePhotoPath) {
-        ((JavascriptExecutor) BaseTest.getDriver())
-                .executeScript("arguments[0].style.height='auto'; arguments[0].style.visibility='visible';",
-                        getElement(profilePhotoField));
-        type(profilePhotoPath, profilePhotoField);
-        ((JavascriptExecutor) BaseTest.getDriver())
-                .executeScript("arguments[0].style.height='auto'; arguments[0].style.visibility='hidden';",
-                        getElement(profilePhotoField));
+        Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='visible';"
+                , getWebElement(profilePhotoField));
+
+        uploadFile(profilePhotoPath, profilePhotoField);
+
+        Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='hidden';"
+                , getWebElement(profilePhotoField));
+
     }
 
     @Step("Set 'Gender' value")
@@ -941,13 +938,11 @@ public class AddClientPage extends BasePage {
     public void uploadClientDocumentation(String clientDocument) {
         waitForElementVisibility(saveAndContinueButton);
         waitForElementClickable(saveAndContinueButton);
-        ((JavascriptExecutor) BaseTest.getDriver())
-                .executeScript("arguments[0].style.height='auto'; arguments[0].style.visibility='visible';",
-                        getElement(documentationField));
+        Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='visible';"
+                , getWebElement(documentationField));
         type(clientDocument, documentationField);
-        ((JavascriptExecutor) BaseTest.getDriver())
-                .executeScript("arguments[0].style.height='auto'; arguments[0].style.visibility='hidden';",
-                        getElement(documentationField));
+        Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='hidden';"
+                , getWebElement(documentationField));
     }
 
     @Step("Set 'Document ID Type' value")
@@ -1043,7 +1038,7 @@ public class AddClientPage extends BasePage {
         waitForElementVisibility(documentationExpirationDateField);
         waitForElementClickable(documentationExpirationDateField);
         typeWithoutWipe("", documentationExpirationDateField);
-        wait(1);
+//        wait(1);
         typeWithoutWipe(expirationDateValue, documentationExpirationDateField);
     }
 
@@ -1058,13 +1053,13 @@ public class AddClientPage extends BasePage {
     public void uploadClientSignature(String clientDocument) {
         waitForElementVisibility(saveAndContinueButton);
         waitForElementClickable(saveAndContinueButton);
-        ((JavascriptExecutor) BaseTest.getDriver())
-                .executeScript("arguments[0].style.height='auto'; arguments[0].style.visibility='visible';",
-                        getElement(clientSignatureField));
+
+        Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='visible';"
+                , getWebElement(clientSignatureField));
         type(clientDocument, clientSignatureField);
-        ((JavascriptExecutor) BaseTest.getDriver())
-                .executeScript("arguments[0].style.height='auto'; arguments[0].style.visibility='hidden';",
-                        getElement(clientSignatureField));
+
+        Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='hidden';"
+                , getWebElement(clientSignatureField));
     }
 
     @Step("Click 'View Member Profile'")

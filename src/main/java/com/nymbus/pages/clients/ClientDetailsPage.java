@@ -1,92 +1,89 @@
 package com.nymbus.pages.clients;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.locator.ID;
-import com.nymbus.locator.Locator;
-import com.nymbus.locator.Name;
-import com.nymbus.locator.XPath;
+import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
 import java.util.List;
 
-public class ClientDetailsPage extends BasePage {
+public class ClientDetailsPage extends PageTools {
 
-    private Locator profileForm = new XPath("//div[@name='profileForm']");
+    private By profileForm = By.xpath("//div[@name='profileForm']");
 
     /**
      * Tabs button
      */
-    private Locator profileTab = new ID("app-customer-profile");
-    private Locator documentsTab = new ID("app-customer-documents");
-    private Locator accountsTab = new ID("app-customer-accounts");
+    private By profileTab = By.id("app-customer-profile");
+    private By documentsTab = By.id("app-customer-documents");
+    private By accountsTab = By.id("app-customer-accounts");
 
     /**
      * Profile Tab
      */
-    private Locator clientID = new XPath("//p[@data-test-id='display-customerNumber']");
-    private Locator type = new XPath("//div[@id='typeid_person']//span[@class='select2-chosen']/span");
-    private Locator status = new XPath("//div[@id='statusid']//span[@class='select2-chosen']/span");
-    private Locator firstName = new ID("name2");
-    private Locator middleName = new ID("middlename");
-    private Locator lastName = new ID("name1");
-    private Locator suffix = new ID("suffix");
-    private Locator maidenFamilyName = new ID("maidenname");
-    private Locator aka_1 = new ID("customerAliasSubform1");
-    private Locator taxPairIdType = new XPath("//div[@name='taxpayeridtype' and contains(@field-config, 'fieldConfig')]//span[@class='select2-chosen']/span");
-    private Locator taxID = new ID("taxidnumber");
-    private Locator birthDate = new ID("birthdate");
-    private Locator gender = new XPath("//div[@name='gender' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
-    private Locator education = new XPath("//div[@name='education' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
-    private Locator income = new XPath("//div[@name='incomesalary' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
-    private Locator martialStatus = new XPath("//div[@name='maritalstatus' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
-    private Locator occupation = new ID("_occupation");
-    private Locator consumerInformationIndicator = new XPath("//div[@name='consumerinformationindicator' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
-    private Locator jobTitle = new ID("jobtitle");
-    private Locator ownOrRent = new XPath("//div[@name='ownrent' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
-    private Locator mailCode = new XPath("//div[@name='mailingcode' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
-    private Locator selectOfficer = new XPath("//div[@name='officerid' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
-    private Locator userDefined_1 = new ID("userdefinedfield1");
-    private Locator userDefined_2 = new ID("userdefinedfield2");
-    private Locator userDefined_3 = new ID("userdefinedfield3");
-    private Locator userDefined_4 = new ID("userdefinedfield4");
-    private Locator phoneType = new XPath("//div[@name='phoneuse_0' and contains(@field-config, 'phone')]//span[contains(@class, 'select2-chosen')]/span");
-    private Locator phone = new Name("fullphonenumber_0");
-    private Locator emailType = new XPath("//div[@name='emailuse_0' and contains(@field-config, 'emailSubformConfig')]//span[contains(@class, 'select2-chosen')]/span");
-    private Locator email = new Name("email_0");
-    private Locator addressType = new XPath("//div[@name='addressuse_0' and contains(@field-config, 'address')]//span[contains(@class, 'select2-chosen')]/span");
-    private Locator addressCountry = new XPath("//div[@name='country_0' and contains(@field-config, 'address')]//span[contains(@class, 'select2-chosen')]/span");
-    private Locator address = new Name("addressline1_0");
-    private Locator addressCity = new Name("cityname_0");
-    private Locator addressState = new XPath("//div[@name='states_0']//span[contains(@class, 'select2-chosen')]/span");
-    private Locator addressZipCode = new Name("zipcode_0");
+    private By clientID = By.xpath("//p[@data-test-id='display-customerNumber']");
+    private By type = By.xpath("//div[@id='typeid_person']//span[@class='select2-chosen']/span");
+    private By status = By.xpath("//div[@id='statusid']//span[@class='select2-chosen']/span");
+    private By firstName = By.id("name2");
+    private By middleName = By.id("middlename");
+    private By lastName = By.id("name1");
+    private By suffix = By.id("suffix");
+    private By maidenFamilyName = By.id("maidenname");
+    private By aka_1 = By.id("customerAliasSubform1");
+    private By taxPairIdType = By.xpath("//div[@name='taxpayeridtype' and contains(@field-config, 'fieldConfig')]//span[@class='select2-chosen']/span");
+    private By taxID = By.id("taxidnumber");
+    private By birthDate = By.id("birthdate");
+    private By gender = By.xpath("//div[@name='gender' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
+    private By education = By.xpath("//div[@name='education' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
+    private By income = By.xpath("//div[@name='incomesalary' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
+    private By martialStatus = By.xpath("//div[@name='maritalstatus' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
+    private By occupation = By.id("_occupation");
+    private By consumerInformationIndicator = By.xpath("//div[@name='consumerinformationindicator' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
+    private By jobTitle = By.id("jobtitle");
+    private By ownOrRent = By.xpath("//div[@name='ownrent' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
+    private By mailCode = By.xpath("//div[@name='mailingcode' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
+    private By selectOfficer = By.xpath("//div[@name='officerid' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
+    private By userDefined_1 = By.id("userdefinedfield1");
+    private By userDefined_2 = By.id("userdefinedfield2");
+    private By userDefined_3 = By.id("userdefinedfield3");
+    private By userDefined_4 = By.id("userdefinedfield4");
+    private By phoneType = By.xpath("//div[@name='phoneuse_0' and contains(@field-config, 'phone')]//span[contains(@class, 'select2-chosen')]/span");
+    private By phone = By.name("fullphonenumber_0");
+    private By emailType = By.xpath("//div[@name='emailuse_0' and contains(@field-config, 'emailSubformConfig')]//span[contains(@class, 'select2-chosen')]/span");
+    private By email = By.name("email_0");
+    private By addressType = By.xpath("//div[@name='addressuse_0' and contains(@field-config, 'address')]//span[contains(@class, 'select2-chosen')]/span");
+    private By addressCountry = By.xpath("//div[@name='country_0' and contains(@field-config, 'address')]//span[contains(@class, 'select2-chosen')]/span");
+    private By address = By.name("addressline1_0");
+    private By addressCity = By.name("cityname_0");
+    private By addressState = By.xpath("//div[@name='states_0']//span[contains(@class, 'select2-chosen')]/span");
+    private By addressZipCode = By.name("zipcode_0");
 
     /**
      * Documents Tab
      */
-    private Locator listOfDocumentsRegion = new XPath("//table[contains(@ng-if, 'documents')]");
-    private Locator listOfDocuments = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]]");
-    private Locator documentType = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td/span");
-    private Locator country = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[3]");
-    private Locator state = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[4]");
-    private Locator documentID = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[5]");
-    private Locator issueDate = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[6]");
-    private Locator expirationDate = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[7]");
-    private Locator createdBy = new XPath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[8]");
+    private By listOfDocumentsRegion = By.xpath("//table[contains(@ng-if, 'documents')]");
+    private By listOfDocuments = By.xpath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]]");
+    private By documentType = By.xpath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td/span");
+    private By country = By.xpath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[3]");
+    private By state = By.xpath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[4]");
+    private By documentID = By.xpath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[5]");
+    private By issueDate = By.xpath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[6]");
+    private By expirationDate = By.xpath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[7]");
+    private By createdBy = By.xpath("//tbody/tr[td[i[contains(@class, 'icon-doc') and not(contains(@class,'document-picture'))]]][%s]/td[8]");
 
     /**
      * Accounts Tab
      */
-    private Locator addNewButton = new ID("newAccountOrCreditPlan");
-    private Locator accountOption = new XPath("//div[contains(@class, 'select2-result-label')]//span[contains(text(), 'Account')]");
-    private Locator creditPlanOption = new ID("//div[contains(@class, 'select2-result-label')]//span[contains(text(), 'Credit Plan')]");
-    private Locator clientAccountByNumber = new XPath("//span[contains(text(), '%s')]");
-    private Locator addNewList = new XPath("//div[contains(@class, 'select2-result-label')]//span");
-    private Locator addNewField = new XPath("//div[@id='newAccountOrCreditPlan']//input[contains(@class, 'nb-select-search')]");
-    private Locator addNewSelectorOption = new XPath("//div[@id='newAccountOrCreditPlan']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By addNewButton = By.id("newAccountOrCreditPlan");
+    private By accountOption = By.xpath("//div[contains(@class, 'select2-result-label')]//span[contains(text(), 'Account')]");
+    private By creditPlanOption = By.id("//div[contains(@class, 'select2-result-label')]//span[contains(text(), 'Credit Plan')]");
+    private By clientAccountByNumber = By.xpath("//span[contains(text(), '%s')]");
+    private By addNewList = By.xpath("//div[contains(@class, 'select2-result-label')]//span");
+    private By addNewField = By.xpath("//div[@id='newAccountOrCreditPlan']//input[contains(@class, 'nb-select-search')]");
+    private By addNewSelectorOption = By.xpath("//div[@id='newAccountOrCreditPlan']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
 
     @Step("Wait for Client Details page loaded")
-    public void waitForPageLoaded(){
+    public void waitForPageLoaded() {
         waitForElementVisibility(profileForm);
         waitForElementClickable(profileForm);
     }
@@ -95,21 +92,21 @@ public class ClientDetailsPage extends BasePage {
      * Tabs button
      */
     @Step("Click 'Profile' tab")
-    public void clickProfileTab(){
+    public void clickProfileTab() {
         waitForElementVisibility(profileTab);
         waitForElementClickable(profileTab);
         click(profileTab);
     }
 
     @Step("Click 'Documents' tab")
-    public void clickDocumentsTab(){
+    public void clickDocumentsTab() {
         waitForElementVisibility(documentsTab);
         waitForElementClickable(documentsTab);
         click(documentsTab);
     }
 
     @Step("Click 'Accounts' tab")
-    public void clickAccountsTab(){
+    public void clickAccountsTab() {
         waitForElementVisibility(accountsTab);
         waitForElementClickable(accountsTab);
         click(accountsTab);
@@ -182,7 +179,7 @@ public class ClientDetailsPage extends BasePage {
     @Step("Get 'Tax ID' value")
     public String getTaxID() {
         waitForElementVisibility(taxID);
-        return getElementAttributeValue("value", taxID).trim().replaceAll("[\\W_&&[^°]]+","");
+        return getElementAttributeValue("value", taxID).trim().replaceAll("[\\W_&&[^°]]+", "");
     }
 
     @Step("Get 'BirthDate' value")
@@ -284,7 +281,7 @@ public class ClientDetailsPage extends BasePage {
     @Step("Get 'Phone' value")
     public String getPhone() {
 //        waitForElementVisibility(phone);
-        return getElementAttributeValue("value", phone).trim().replaceAll("[\\W_&&[^°]]+","");
+        return getElementAttributeValue("value", phone).trim().replaceAll("[\\W_&&[^°]]+", "");
     }
 
     @Step("Get 'Email Type' value")
@@ -340,55 +337,55 @@ public class ClientDetailsPage extends BasePage {
      */
 
     @Step("Wait for documents table")
-    public void waitForDocumentsTable(){
+    public void waitForDocumentsTable() {
         waitForElementVisibility(listOfDocumentsRegion);
         waitForElementClickable(listOfDocumentsRegion);
     }
 
     @Step("Get amount of Documents")
-    public int amountOfDocuments(){
+    public int amountOfDocuments() {
         waitForElementVisibility(listOfDocuments);
         return getElements(listOfDocuments).size();
     }
 
     @Step("Get document type by index")
-    public String getDocumentTypeByIndex(int index){
+    public String getDocumentTypeByIndex(int index) {
         waitForElementVisibility(documentType, index);
         return getElementText(documentType, index).trim();
     }
 
     @Step("Get country by index")
-    public String getCountryByIndex(int index){
+    public String getCountryByIndex(int index) {
         waitForElementVisibility(country, index);
         return getElementText(country, index).trim();
     }
 
     @Step("Get state by index")
-    public String getStateByIndex(int index){
+    public String getStateByIndex(int index) {
         waitForElementVisibility(state, index);
         return getElementText(state, index).trim();
     }
 
     @Step("Get documentID by index")
-    public String getDocumentIDByIndex(int index){
+    public String getDocumentIDByIndex(int index) {
         waitForElementVisibility(documentID, index);
         return getElementText(documentID, index).trim();
     }
 
     @Step("Get issueDate by index")
-    public String getIssueDateByIndex(int index){
+    public String getIssueDateByIndex(int index) {
         waitForElementVisibility(issueDate, index);
         return getElementText(issueDate, index).trim();
     }
 
     @Step("Get expirationDate by index")
-    public String getExpirationDateByIndex(int index){
+    public String getExpirationDateByIndex(int index) {
         waitForElementVisibility(expirationDate, index);
         return getElementText(expirationDate, index).trim();
     }
 
     @Step("Get createdBy by index")
-    public String getCreatedByByIndex(int index){
+    public String getCreatedByByIndex(int index) {
         waitForElementVisibility(createdBy, index);
         return getElementText(createdBy, index).trim();
     }
@@ -398,22 +395,22 @@ public class ClientDetailsPage extends BasePage {
      */
 
     @Step("Click the 'Add New' button")
-    public void clickAddNewButton(){
+    public void clickAddNewButton() {
         waitForElementVisibility(addNewButton);
         waitForElementClickable(addNewButton);
         click(addNewButton);
     }
 
     @Step("Click the 'Account' option in 'Add New' dropdown")
-    public void clickAccountOption(){
+    public void clickAccountOption() {
         waitForElementVisibility(accountOption);
         waitForElementClickable(accountOption);
-        wait(1);
+//        wait(1);
         click(accountOption);
     }
 
     @Step("Return the 'Add New' list of options")
-    public List<String> getAddNewList(){
+    public List<String> getAddNewList() {
         waitForElementVisibility(addNewList);
         waitForElementClickable(addNewList);
         return getElementsText(addNewList);

@@ -1,16 +1,15 @@
 package com.nymbus.pages.backoffice;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.locator.Locator;
-import com.nymbus.locator.XPath;
+import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
-public class BackOfficePage extends BasePage {
+public class BackOfficePage extends PageTools {
 
-    private Locator reportGeneratorPageHeader = new XPath("//h1[text()='Ad Hoc Reporting']");
+    private By reportGeneratorPageHeader = By.xpath("//h1[text()='Ad Hoc Reporting']");
 
     @Step("Wait for Report Generator page loaded")
-    public void waitForReportGeneratorPageLoaded(){
+    public void waitForReportGeneratorPageLoaded() {
         waitForElementVisibility(reportGeneratorPageHeader);
     }
 

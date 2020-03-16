@@ -1,6 +1,6 @@
 package com.nymbus.models.client;
 
-import com.nymbus.util.Random;
+import com.nymbus.core.utils.Generator;
 
 import java.util.Objects;
 
@@ -18,10 +18,10 @@ public class Address {
 
         address.setType("Physical");
         address.setCountry("United States");
-        address.setAddress(Random.genAddress());
+        address.setAddress(Generator.genAddress());
         address.setCity("New York");
         address.setState("New York");
-        address.setZipCode("1" + Random.genInt(1000, 9999));
+        address.setZipCode("1" + Generator.genInt(1000, 9999));
 
         return address;
     }

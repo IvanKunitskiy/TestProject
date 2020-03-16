@@ -1,10 +1,11 @@
 package com.nymbus.frontoffice.clientsearch;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
-import com.nymbus.base.BaseTest;
+import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.models.client.Client;
 import com.nymbus.pages.Pages;
-import com.nymbus.util.Constants;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -29,8 +30,8 @@ public class C22533_SearchByLastFourOfDebitCard extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void searchByCardNumber() {
 
-        LOG.info("Step 1: Log in to the system as the User from the precondition");
-        navigateToUrl(Constants.URL);
+//        LOG.info("Step 1: Log in to the system as the User from the precondition");
+        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Pages.navigationPage().waitForUserMenuVisible();
 
@@ -38,7 +39,7 @@ public class C22533_SearchByLastFourOfDebitCard extends BaseTest {
         String lastFourNumbers = cardNumber.substring(cardNumber.length() - 4);
         String hiddenNumber = "XXXX-XXXX-XXXX-" + lastFourNumbers;
 
-        LOG.info("Step 2: Click within search field and try to search for an existing Debit Card (by last 4 digits)");
+//        LOG.info("Step 2: Click within search field and try to search for an existing Debit Card (by last 4 digits)");
         Pages.clientsPage().typeToClientsSearchInputField(lastFourNumbers);
         Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() > 0, "There are no relevant lookup results");
 
@@ -46,7 +47,7 @@ public class C22533_SearchByLastFourOfDebitCard extends BaseTest {
             Assert.assertTrue(Pages.clientsPage().isLoadMoreResultsButtonVisible(), "'Load more results' button is not visible in search lookup list");
         }
 
-        LOG.info("Step 3: Pay attention to the display of the Debit Card in the quick search field");
+//        LOG.info("Step 3: Pay attention to the display of the Debit Card in the quick search field");
         List<String> clients = Pages.clientsPage().getAllLookupResults();
         clients.stream()
                 .filter(s -> s.contains("XXXX-XXXX-XXXX-"))

@@ -1,6 +1,6 @@
 package com.nymbus.models;
 
-import com.nymbus.util.Random;
+import com.nymbus.core.utils.Generator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,13 +35,13 @@ public class User {
 
     public User setDefaultUserData(){
         User user = new User();
-        user.setFirstName(Random.genString(2));
-        user.setLastName(Random.genString(2));
-        user.setInitials(Random.genString(2));
-        user.setTitle(Random.genString(2));
-        user.setBusinessPhone(Random.genMobilePhone());
-        user.setEmail(Random.genEmail("test@test.ts"));
-        user.setLoginID(Random.genString(5));
+        user.setFirstName(Generator.genString(2));
+        user.setLastName(Generator.genString(2));
+        user.setInitials(Generator.genString(2));
+        user.setTitle(Generator.genString(2));
+        user.setBusinessPhone(Generator.genMobilePhone(10));
+        user.setEmail(Generator.genEmail());
+        user.setLoginID(Generator.genString(5));
         user.setIsLoginDisabledFlag(false);
         user.setRolesList(new ArrayList<String>(3) {
             {

@@ -1,13 +1,14 @@
 package com.nymbus.frontoffice.clientsmanagement.createclients;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
-import com.nymbus.base.BaseTest;
+import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.models.client.Client;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
-import com.nymbus.util.Constants;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -26,10 +27,11 @@ public class C22542_CreateClientIndividualOfacFail extends BaseTest {
     public void prepareClientData(){
         client = new Client().setDefaultClientData();
 
-        navigateToUrl(Constants.WEB_ADMIN_URL);
+        Selenide.open(Constants.WEB_ADMIN_URL);
+
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-        navigateToUrl(Constants.WEB_ADMIN_URL + "RulesUIQuery.ct?" +
+        Selenide.open(Constants.WEB_ADMIN_URL + "RulesUIQuery.ct?" +
                 "waDbName=nymbusdev6DS&" +
                 "dqlQuery=count%3A+100%0D%0A" +
                 "from%3A+security.ofac.entry%0D%0A" +
@@ -51,7 +53,7 @@ public class C22542_CreateClientIndividualOfacFail extends BaseTest {
     @Test(description = "C22542, Create Client - Individual - Ofac check fail")
     @Severity(SeverityLevel.CRITICAL)
     public void firstTest() {
-        navigateToUrl(Constants.URL);
+        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         ClientsActions.createClient().openClientPage();

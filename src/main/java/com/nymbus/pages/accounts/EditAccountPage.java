@@ -1,94 +1,93 @@
 package com.nymbus.pages.accounts;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.locator.Locator;
-import com.nymbus.locator.XPath;
+import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Random;
 
-public class EditAccountPage extends BasePage {
+public class EditAccountPage extends PageTools {
 
-    private Locator accountTitle = new XPath("//input[@id='accounttitlemailinginstructions']");
-    private Locator bankBranch = new XPath("//div[@id='bankbranch']//span[contains(@class, 'ng-scope')]");
-    private Locator product = new XPath("//div[@id='accountclasstype']//span[contains(@class, 'ng-scope')]");
-    private Locator dateOpened = new XPath("//input[@id='dateopened']");
-    private Locator currentOfficer = new XPath("//div[@id='officer']//span[contains(@class, 'ng-scope')]");
-    private Locator statementCycle = new XPath("//div[@id='statementcycle']//span[contains(@class, 'ng-scope')]");
-    private Locator callClassCode = new XPath("//div[@id='callclasscode']//span[contains(@class, 'ng-scope')]");
-    private Locator chargeOrAnalyze = new XPath("//div[@id='chargeoranalyze']//span[contains(@class, 'ng-scope')]");
-    private Locator accountAnalysis = new XPath("//div[@id='accountanalysis']//span[contains(@class, 'ng-scope')]");
-    private Locator statementFlag = new XPath("//input[@id='statementflag']");
-    private Locator interestRate = new XPath("//input[@id='interestrate']");
-    private Locator earningCreditRate = new XPath("//input[@id='earningscreditrate']");
+    private By accountTitle = By.xpath("//input[@id='accounttitlemailinginstructions']");
+    private By bankBranch = By.xpath("//div[@id='bankbranch']//span[contains(@class, 'ng-scope')]");
+    private By product = By.xpath("//div[@id='accountclasstype']//span[contains(@class, 'ng-scope')]");
+    private By dateOpened = By.xpath("//input[@id='dateopened']");
+    private By currentOfficer = By.xpath("//div[@id='officer']//span[contains(@class, 'ng-scope')]");
+    private By statementCycle = By.xpath("//div[@id='statementcycle']//span[contains(@class, 'ng-scope')]");
+    private By callClassCode = By.xpath("//div[@id='callclasscode']//span[contains(@class, 'ng-scope')]");
+    private By chargeOrAnalyze = By.xpath("//div[@id='chargeoranalyze']//span[contains(@class, 'ng-scope')]");
+    private By accountAnalysis = By.xpath("//div[@id='accountanalysis']//span[contains(@class, 'ng-scope')]");
+    private By statementFlag = By.xpath("//input[@id='statementflag']");
+    private By interestRate = By.xpath("//input[@id='interestrate']");
+    private By earningCreditRate = By.xpath("//input[@id='earningscreditrate']");
 
-    private Locator federalWHPercentInput = new XPath("//input[@id='federalwithholdingpercent']");
-    private Locator numberOfATMCardsIssuedInput = new XPath("//input[@id='numberofatmcardissued']");
-    private Locator userDefinedFieldInput_1 = new XPath("//input[@id='userdefinedfield1']");
-    private Locator userDefinedFieldInput_2 = new XPath("//input[@id='userdefinedfield2']");
-    private Locator userDefinedFieldInput_3 = new XPath("//input[@id='userdefinedfield3']");
-    private Locator userDefinedFieldInput_4 = new XPath("//input[@id='userdefinedfield4']");
-    private Locator imageStatementCodeInput = new XPath("//input[@id='imagestatementcode']");
-    private Locator numberOfDebitCardsIssuedInput = new XPath("//input[@id='numberofdebitcardsissued']");
-    private Locator cashCollDaysBeforeChgInput = new XPath("//input[@id='cashcollectionnumberofdaysbeforeinterestcharge']");
-    private Locator cashCollInterestRateInput = new XPath("//input[@id='cashcollectioninterestrate']");
-    private Locator cashCollInterestChgInput = new XPath("//input[@id='cashcollectioninterestchargesperstatementcycle']");
-    private Locator positivePayInput = new XPath("//input[@id='positivepaycustomer']");
-    private Locator cashColFloatInput = new XPath("//input[@id='cashcollectionfloat']");
-    private Locator earningCreditRateInput = new XPath("//input[@id='earningscreditrate']");
-    private Locator interestRateInput = new XPath("//input[@id='interestrate']");
+    private By federalWHPercentInput = By.xpath("//input[@id='federalwithholdingpercent']");
+    private By numberOfATMCardsIssuedInput = By.xpath("//input[@id='numberofatmcardissued']");
+    private By userDefinedFieldInput_1 = By.xpath("//input[@id='userdefinedfield1']");
+    private By userDefinedFieldInput_2 = By.xpath("//input[@id='userdefinedfield2']");
+    private By userDefinedFieldInput_3 = By.xpath("//input[@id='userdefinedfield3']");
+    private By userDefinedFieldInput_4 = By.xpath("//input[@id='userdefinedfield4']");
+    private By imageStatementCodeInput = By.xpath("//input[@id='imagestatementcode']");
+    private By numberOfDebitCardsIssuedInput = By.xpath("//input[@id='numberofdebitcardsissued']");
+    private By cashCollDaysBeforeChgInput = By.xpath("//input[@id='cashcollectionnumberofdaysbeforeinterestcharge']");
+    private By cashCollInterestRateInput = By.xpath("//input[@id='cashcollectioninterestrate']");
+    private By cashCollInterestChgInput = By.xpath("//input[@id='cashcollectioninterestchargesperstatementcycle']");
+    private By positivePayInput = By.xpath("//input[@id='positivepaycustomer']");
+    private By cashColFloatInput = By.xpath("//input[@id='cashcollectionfloat']");
+    private By earningCreditRateInput = By.xpath("//input[@id='earningscreditrate']");
+    private By interestRateInput = By.xpath("//input[@id='interestrate']");
 
-    private Locator federalWHReasonSelectorButton = new XPath("//div[@id='federalwithholdingreason']");
-    private Locator federalWHReasonList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator federalWHReasonSelectorOption = new XPath("//div[@id='federalwithholdingreason']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By federalWHReasonSelectorButton = By.xpath("//div[@id='federalwithholdingreason']");
+    private By federalWHReasonList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By federalWHReasonSelectorOption = By.xpath("//div[@id='federalwithholdingreason']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private Locator reasonATMChargeWaivedSelectorButton = new XPath("//div[@id='reasonatmchargeswaived']");
-    private Locator reasonATMChargeWaivedList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator reasonATMChargeWaivedSelectorOption = new XPath("//div[@id='reasonatmchargeswaived']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By reasonATMChargeWaivedSelectorButton = By.xpath("//div[@id='reasonatmchargeswaived']");
+    private By reasonATMChargeWaivedList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By reasonATMChargeWaivedSelectorOption = By.xpath("//div[@id='reasonatmchargeswaived']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private Locator odProtectionAcctSelectorButton = new XPath("//div[@id='overdraftprotectionaccountnumber']");
-    private Locator odProtectionAcctList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator odProtectionAcctSelectorOption = new XPath("//div[@id='overdraftprotectionaccountnumber']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By odProtectionAcctSelectorButton = By.xpath("//div[@id='overdraftprotectionaccountnumber']");
+    private By odProtectionAcctList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By odProtectionAcctSelectorOption = By.xpath("//div[@id='overdraftprotectionaccountnumber']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private Locator reasonAutoNSFChgWaivedSelectorButton = new XPath("//div[@id='reasonautonsfchargeswaived']");
-    private Locator reasonAutoNSFChgWaivedList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator reasonAutoNSFChgWaivedSelectorOption = new XPath("//div[@id='reasonautonsfchargeswaived']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By reasonAutoNSFChgWaivedSelectorButton = By.xpath("//div[@id='reasonautonsfchargeswaived']");
+    private By reasonAutoNSFChgWaivedList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By reasonAutoNSFChgWaivedSelectorOption = By.xpath("//div[@id='reasonautonsfchargeswaived']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private Locator reasonReasonDebitCardChargeWaivedSelectorButton = new XPath("//div[@id='reasondebitcardchargeswaived']");
-    private Locator reasonReasonDebitCardChargeWaivedList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator reasonReasonDebitCardChargeWaivedSelectorOption = new XPath("//div[@id='reasondebitcardchargeswaived']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By reasonReasonDebitCardChargeWaivedSelectorButton = By.xpath("//div[@id='reasondebitcardchargeswaived']");
+    private By reasonReasonDebitCardChargeWaivedList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By reasonReasonDebitCardChargeWaivedSelectorOption = By.xpath("//div[@id='reasondebitcardchargeswaived']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private Locator automaticOverdraftStatusSelectorButton = new XPath("//div[@id='automaticoverdraftstatus']");
-    private Locator automaticOverdraftStatusList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator automaticOverdraftStatusSelectorOption = new XPath("//div[@id='automaticoverdraftstatus']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By automaticOverdraftStatusSelectorButton = By.xpath("//div[@id='automaticoverdraftstatus']");
+    private By automaticOverdraftStatusList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By automaticOverdraftStatusSelectorOption = By.xpath("//div[@id='automaticoverdraftstatus']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private Locator reasonAutoOdChgWaivedSelectorButton = new XPath("//div[@id='reasonautoodchargeswaived']");
-    private Locator reasonAutoOdChgWaivedList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator reasonAutoOdChgWaivedSelectorOption = new XPath("//div[@id='reasonautoodchargeswaived']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By reasonAutoOdChgWaivedSelectorButton = By.xpath("//div[@id='reasonautoodchargeswaived']");
+    private By reasonAutoOdChgWaivedList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By reasonAutoOdChgWaivedSelectorOption = By.xpath("//div[@id='reasonautoodchargeswaived']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private Locator whenSurchargesRefundedSelectorButton = new XPath("//div[@id='whensurchargesrefunded']");
-    private Locator whenSurchargesRefundedList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator whenSurchargesRefundedSelectorOption = new XPath("//div[@id='whensurchargesrefunded']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By whenSurchargesRefundedSelectorButton = By.xpath("//div[@id='whensurchargesrefunded']");
+    private By whenSurchargesRefundedList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By whenSurchargesRefundedSelectorOption = By.xpath("//div[@id='whensurchargesrefunded']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
     /**
      * Disabled fields in edit mode
      */
-    private Locator productTypeField = new XPath("//div[@id='accounttype']");
-    private Locator productField = new XPath("//div[@id='accountclasstype']");
-    private Locator accountNumberField = new XPath("//input[@id='accountnumber']");
-    private Locator accountTypeField = new XPath("//div[@id='customertype']");
-    private Locator originatingOfficerField = new XPath("//div[@id='originatingofficer']");
-    private Locator accountStatusField = new XPath("//input[@id='accountstatus']");
-    private Locator dateOpenedField = new XPath("//input[@id='dateopened']");
-    private Locator dateClosedField = new XPath("//input[@id='dateclosed']");
-    private Locator annualPercentageYieldField = new XPath("//input[@id='apy']");
-    private Locator daysOverdraftField = new XPath("//input[@id='daysoverdraftregcc']");
-    private Locator daysOverdraftAboveLimitField = new XPath("//input[@id='daysoverdraftabovelimitregcc']");
-    private Locator lastDebitAmountField = new XPath("//input[@id='lastwithdrawalamount']");
-    private Locator automaticOverdraftLimitField = new XPath("//input[@id='automaticoverdraftlimit']");
-    private Locator totalEarningsField = new XPath("//input[@id='totalEarnings']");
+    private By productTypeField = By.xpath("//div[@id='accounttype']");
+    private By productField = By.xpath("//div[@id='accountclasstype']");
+    private By accountNumberField = By.xpath("//input[@id='accountnumber']");
+    private By accountTypeField = By.xpath("//div[@id='customertype']");
+    private By originatingOfficerField = By.xpath("//div[@id='originatingofficer']");
+    private By accountStatusField = By.xpath("//input[@id='accountstatus']");
+    private By dateOpenedField = By.xpath("//input[@id='dateopened']");
+    private By dateClosedField = By.xpath("//input[@id='dateclosed']");
+    private By annualPercentageYieldField = By.xpath("//input[@id='apy']");
+    private By daysOverdraftField = By.xpath("//input[@id='daysoverdraftregcc']");
+    private By daysOverdraftAboveLimitField = By.xpath("//input[@id='daysoverdraftabovelimitregcc']");
+    private By lastDebitAmountField = By.xpath("//input[@id='lastwithdrawalamount']");
+    private By automaticOverdraftLimitField = By.xpath("//input[@id='automaticoverdraftlimit']");
+    private By totalEarningsField = By.xpath("//input[@id='totalEarnings']");
 
     /**
      * Get values in edit mode

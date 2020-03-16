@@ -1,13 +1,14 @@
 package com.nymbus.frontoffice.boxaccountsmanagement;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
-import com.nymbus.base.BaseTest;
+import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.models.account.Account;
 import com.nymbus.models.client.Client;
 import com.nymbus.pages.Pages;
-import com.nymbus.util.Constants;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
@@ -34,15 +35,15 @@ public class C15042_ViewNewSafeBoxAccount extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void viewNewSafeBoxAccount() {
 
-        LOG.info("Step 1: Log in to Nymbus");
-        navigateToUrl(Constants.URL);
+//        LOG.info("Step 1: Log in to Nymbus");
+        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         ClientsActions.createClient().createClient(client);
         final String clientID = Pages.clientDetailsPage().getClientID();
         AccountActions.createAccount().createSafeDepositBoxAccount(safeDepositBoxAccount);
 
-        LOG.info("Step 2: Go to Clients screen and search for client from preconditions");
+//        LOG.info("Step 2: Go to Clients screen and search for client from preconditions");
         Pages.aSideMenuPage().clickClientMenuItem();
         Pages.clientsPage().typeToClientsSearchInputField(clientID);
 
@@ -51,13 +52,13 @@ public class C15042_ViewNewSafeBoxAccount extends BaseTest {
 
         Pages.clientsPage().clickOnSearchButton();
 
-        LOG.info("Step 3: Open the account");
+//        LOG.info("Step 3: Open the account");
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
         Pages.clientDetailsPage().waitForPageLoaded();
         Pages.clientDetailsPage().clickAccountsTab();
         Pages.clientDetailsPage().openAccountByNumber(safeDepositBoxAccount.getAccountNumber());
 
-        LOG.info("Step 4: Verify the displayed fields in view mode");
+//        LOG.info("Step 4: Verify the displayed fields in view mode");
         Assert.assertEquals(safeDepositBoxAccount.getProductType(), Pages.accountDetailsPage().getProductTypeValue(), "Product type is not relevant");
         Assert.assertEquals(safeDepositBoxAccount.getBoxSize(), Pages.accountDetailsPage().getBoxSizeValue(), "Box size is not relevant");
         Assert.assertEquals(safeDepositBoxAccount.getAccountNumber(), Pages.accountDetailsPage().getAccountNumberValue(), "Account number is not relevant");

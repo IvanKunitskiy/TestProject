@@ -1,85 +1,83 @@
 package com.nymbus.pages.accounts;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.locator.ID;
-import com.nymbus.locator.Locator;
-import com.nymbus.locator.XPath;
+import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Random;
 
-public class AddAccountPage extends BasePage {
+public class AddAccountPage extends PageTools {
 
-    private Locator productTypeSelectorButton = new ID("accounttype");
-    private Locator productTypeSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator productTypeList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator productSelectorButton = new XPath("//*[@id='accountclasstype']");
-    private Locator productList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator boxSizeSelectorButton = new ID("boxsize");
-    private Locator boxSizeSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator boxSizeList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator boxSizeField = new XPath("//*[@id='boxsize']//input[contains(@class, 'nb-select-search')]");
-    private Locator selectProductTypeField = new XPath("//*[@id='accounttype']/a/span[contains(text(), 'Select')]");
-    private Locator productTypeInputField = new XPath("//div[@data-test-id='field-accounttype']//input[contains(@class, 'nb-select-search')]");
-    private Locator accountNumberField = new XPath("//input[@data-test-id='field-accountnumber']");
-    private Locator accountTitleField = new XPath("//input[@data-test-id='field-accounttitlemailinginstructions']");
-    private Locator bankBranchSelectorButton = new XPath("//*[@id='bankbranch']");
-    private Locator bankBranchSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator saveAccountButton = new XPath("//button[@data-test-id='action-save']");
-    private Locator bankBranchList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator accountType = new XPath("//div[@data-test-id='field-customertype']/a/span/span");
-    private Locator dateOpened = new XPath("//input[@data-test-id='field-dateopened']");
-    private Locator productSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator statementCycleSelectorButton = new XPath("//*[@id='statementcycle']");
-    private Locator statementCycleList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator bankBranch = new XPath("//div[@data-test-id='field-bankbranch']/a/span[contains(@class, 'ng-binding')]");
-    private Locator statementFlagInput = new XPath("//input[@data-test-id='field-statementflag']");
-    private Locator interestRateInput = new XPath("//input[@data-test-id='field-interestrate']");
-    private Locator earningCreditRateInput = new XPath("//input[@data-test-id='field-earningscreditrate']");
-    private Locator optInOutDateCalendarIcon = new XPath("//div[input[@id='dbcodpstatusdate']]/div[span[@class='nyb-icon-calendar']]");
-    private Locator optInOutDateInputField = new XPath("//input[@id='dbcodpstatusdate']");
-    private Locator dateOpenedField = new XPath("//input[@id='dateopened']");
+    private By productTypeSelectorButton = By.id("accounttype");
+    private By productTypeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By productTypeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By productSelectorButton = By.xpath("//*[@id='accountclasstype']");
+    private By productList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By boxSizeSelectorButton = By.id("boxsize");
+    private By boxSizeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By boxSizeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By boxSizeField = By.xpath("//*[@id='boxsize']//input[contains(@class, 'nb-select-search')]");
+    private By selectProductTypeField = By.xpath("//*[@id='accounttype']/a/span[contains(text(), 'Select')]");
+    private By productTypeInputField = By.xpath("//div[@data-test-id='field-accounttype']//input[contains(@class, 'nb-select-search')]");
+    private By accountNumberField = By.xpath("//input[@data-test-id='field-accountnumber']");
+    private By accountTitleField = By.xpath("//input[@data-test-id='field-accounttitlemailinginstructions']");
+    private By bankBranchSelectorButton = By.xpath("//*[@id='bankbranch']");
+    private By bankBranchSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By saveAccountButton = By.xpath("//button[@data-test-id='action-save']");
+    private By bankBranchList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By accountType = By.xpath("//div[@data-test-id='field-customertype']/a/span/span");
+    private By dateOpened = By.xpath("//input[@data-test-id='field-dateopened']");
+    private By productSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By statementCycleSelectorButton = By.xpath("//*[@id='statementcycle']");
+    private By statementCycleList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By bankBranch = By.xpath("//div[@data-test-id='field-bankbranch']/a/span[contains(@class, 'ng-binding')]");
+    private By statementFlagInput = By.xpath("//input[@data-test-id='field-statementflag']");
+    private By interestRateInput = By.xpath("//input[@data-test-id='field-interestrate']");
+    private By earningCreditRateInput = By.xpath("//input[@data-test-id='field-earningscreditrate']");
+    private By optInOutDateCalendarIcon = By.xpath("//div[input[@id='dbcodpstatusdate']]/div[span[@class='nyb-icon-calendar']]");
+    private By optInOutDateInputField = By.xpath("//input[@id='dbcodpstatusdate']");
+    private By dateOpenedField = By.xpath("//input[@id='dateopened']");
 
 
     /**
      * Account holders and signers
      */
 
-    private Locator accountHolderName = new XPath("//a[@data-test-id='action-goCustomerProfile']");
-    private Locator accountHolderRelationship = new XPath("//div[@data-test-id='field-relationshiptype_0']//a//span//span");
-    private Locator accountHolderClientType = new XPath("//input[@data-test-id='field-typeid_0']");
-    private Locator accountHolderTaxID = new XPath("//input[@data-test-id='field-taxIdNumber']");
-    private Locator statementCycleSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator accountHolderAddress = new XPath("//div[@data-test-id='field-addressid_0']/a/span/span");
+    private By accountHolderName = By.xpath("//a[@data-test-id='action-goCustomerProfile']");
+    private By accountHolderRelationship = By.xpath("//div[@data-test-id='field-relationshiptype_0']//a//span//span");
+    private By accountHolderClientType = By.xpath("//input[@data-test-id='field-typeid_0']");
+    private By accountHolderTaxID = By.xpath("//input[@data-test-id='field-taxIdNumber']");
+    private By statementCycleSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By accountHolderAddress = By.xpath("//div[@data-test-id='field-addressid_0']/a/span/span");
 
     /**
      * Originating officer
      */
 
-    private Locator originatingOfficer = new XPath("//div[@data-test-id='field-originatingOfficer']/a/span/span");
-    private Locator currentOfficer = new XPath("//div[@data-test-id='field-officer']/a/span/span");
-    private Locator optInOutStatus = new XPath("//div[@data-test-id='field-dbcodpstatus']/a/span/span");
-    private Locator currentOfficerSelectorButton = new XPath("//div[@data-test-id='field-officer']");
-    private Locator currentOfficerList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator currentOfficerSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator callClassCodeSelectorButton = new XPath("//div[@data-test-id='field-callclasscode']");
-    private Locator callClassCodeList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator callClassCodeSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator accountAnalysisSelectorButton = new XPath("//div[@id='accountanalysis']");
-    private Locator accountAnalysisList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator accountAnalysisSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private Locator chargeOrAnalyzeSelectorButton = new XPath("//div[@id='chargeoranalyze']");
-    private Locator chargeOrAnalyzeList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator chargeOrAnalyzeSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By originatingOfficer = By.xpath("//div[@data-test-id='field-originatingOfficer']/a/span/span");
+    private By currentOfficer = By.xpath("//div[@data-test-id='field-officer']/a/span/span");
+    private By optInOutStatus = By.xpath("//div[@data-test-id='field-dbcodpstatus']/a/span/span");
+    private By currentOfficerSelectorButton = By.xpath("//div[@data-test-id='field-officer']");
+    private By currentOfficerList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By currentOfficerSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By callClassCodeSelectorButton = By.xpath("//div[@data-test-id='field-callclasscode']");
+    private By callClassCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By callClassCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By accountAnalysisSelectorButton = By.xpath("//div[@id='accountanalysis']");
+    private By accountAnalysisList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By accountAnalysisSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By chargeOrAnalyzeSelectorButton = By.xpath("//div[@id='chargeoranalyze']");
+    private By chargeOrAnalyzeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By chargeOrAnalyzeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
     @Step("Set 'DBC ODP Opt In/Out Status Date' value")
     public void setDateOpenedValue(String dateOpenedValue) {
         waitForElementVisibility(dateOpenedField);
         waitForElementClickable(dateOpenedField);
         typeWithoutWipe("", dateOpenedField);
-        wait(1);
+//        wait(1);
         typeWithoutWipe(dateOpenedValue, dateOpenedField);
     }
 
@@ -88,7 +86,7 @@ public class AddAccountPage extends BasePage {
         waitForElementVisibility(optInOutDateInputField);
         waitForElementClickable(optInOutDateInputField);
         typeWithoutWipe("", optInOutDateInputField);
-        wait(1);
+//        wait(1);
         typeWithoutWipe(optInOutDateValue, optInOutDateInputField);
     }
 
@@ -177,7 +175,7 @@ public class AddAccountPage extends BasePage {
 
     @Step("Click the 'Account Analysis' selector button")
     public void clickAccountAnalysisSelectorButton() {
-        wait(2);
+//        wait(2);
         waitForElementVisibility(accountAnalysisSelectorButton);
         waitForElementClickable(accountAnalysisSelectorButton);
         click(accountAnalysisSelectorButton);
@@ -367,7 +365,7 @@ public class AddAccountPage extends BasePage {
     }
 
     @Step("Click the 'Box size' selector button")
-    public void clickBoxSizeSelectorButton(){
+    public void clickBoxSizeSelectorButton() {
         waitForElementVisibility(boxSizeSelectorButton);
         waitForElementClickable(boxSizeSelectorButton);
         click(boxSizeSelectorButton);
@@ -388,7 +386,7 @@ public class AddAccountPage extends BasePage {
     }
 
     @Step("Click the 'Box size' option")
-    public void clickBoxSizeSelectorOption(String boxSizeOption){
+    public void clickBoxSizeSelectorOption(String boxSizeOption) {
         waitForElementVisibility(boxSizeSelectorOption, boxSizeOption);
         waitForElementClickable(boxSizeSelectorOption, boxSizeOption);
         click(boxSizeSelectorOption, boxSizeOption);
@@ -451,7 +449,6 @@ public class AddAccountPage extends BasePage {
     /**
      * Account holders and signers
      */
-
 
 
 }

@@ -1,6 +1,6 @@
 package com.nymbus.models.client;
 
-import com.nymbus.util.Random;
+import com.nymbus.core.utils.Generator;
 
 import java.util.Objects;
 
@@ -16,7 +16,7 @@ public class IdentityDocument {
         IdentityDocument identityDocument = new IdentityDocument();
 
         identityDocument.setType("Passport");
-        identityDocument.setNumber("C" + Random.genInt(11111111, 99999999));
+        identityDocument.setNumber("C" + Generator.genInt(11111111, 99999999));
         identityDocument.setCountry("United States");
         identityDocument.setExpirationDate("11/11/2030");
 
@@ -27,7 +27,7 @@ public class IdentityDocument {
         IdentityDocument identityDocument = new IdentityDocument();
 
         identityDocument.setType("State Drivers License");
-        identityDocument.setNumber("C" + Random.genInt(11111111, 99999999));
+        identityDocument.setNumber("C" + Generator.genInt(11111111, 99999999));
         identityDocument.setCountry("United States");
         identityDocument.setExpirationDate("11/11/2030");
 

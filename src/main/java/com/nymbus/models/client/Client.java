@@ -1,6 +1,6 @@
 package com.nymbus.models.client;
 
-import com.nymbus.util.Random;
+import com.nymbus.core.utils.Generator;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -51,10 +51,10 @@ public class Client {
     public Client setDefaultClientData() {
         Client client = new Client();
 
-        client.setFirstName(Random.genString(5));
-        client.setFirstName(Random.genString(5));
-        client.setMiddleName(Random.genString(5));
-        client.setLastName(Random.genString(5));
+        client.setFirstName(Generator.genString(5));
+        client.setFirstName(Generator.genString(5));
+        client.setMiddleName(Generator.genString(5));
+        client.setLastName(Generator.genString(5));
         client.setTaxPayerIDType("Individual SSN");
         client.setTaxID(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         client.setAddress(new Address().setDefaultPhysicalData());
@@ -64,17 +64,17 @@ public class Client {
         identityDocuments.add(new IdentityDocument().setDefaultStateDriversLicenseData());
         client.setIdentityDocument(identityDocuments);
         client.setBirthDate("01/01/1990");
-        client.setSuffix(Random.genString(3));
-        client.setMaidenFamilyName(Random.genString(5));
-        client.setAKA_1(Random.genString(5));
-        client.setOccupation(Random.genString(5));
-        client.setJobTitle(Random.genString(5));
-        client.setUserDefined_1(Random.genString(5));
-        client.setUserDefined_2(Random.genString(5));
-        client.setUserDefined_3(Random.genString(5));
-        client.setUserDefined_4(Random.genString(5));
-        client.setPhone(Random.genMobilePhone());
-        client.setEmail(Random.genEmail("test@test.ts"));
+        client.setSuffix(Generator.genString(3));
+        client.setMaidenFamilyName(Generator.genString(5));
+        client.setAKA_1(Generator.genString(5));
+        client.setOccupation(Generator.genString(5));
+        client.setJobTitle(Generator.genString(5));
+        client.setUserDefined_1(Generator.genString(5));
+        client.setUserDefined_2(Generator.genString(5));
+        client.setUserDefined_3(Generator.genString(5));
+        client.setUserDefined_4(Generator.genString(5));
+        client.setPhone(Generator.genMobilePhone(10));
+        client.setEmail(Generator.genEmail());
 
         return client;
     }
@@ -82,10 +82,10 @@ public class Client {
     public Client setConsumerClientData() {
         Client client = new Client();
         client.setClientStatus("Consumer");
-        client.setFirstName(Random.genString(5));
-        client.setFirstName(Random.genString(5));
-        client.setMiddleName(Random.genString(5));
-        client.setLastName(Random.genString(5));
+        client.setFirstName(Generator.genString(5));
+        client.setFirstName(Generator.genString(5));
+        client.setMiddleName(Generator.genString(5));
+        client.setLastName(Generator.genString(5));
         client.setTaxPayerIDType("Individual SSN");
         client.setTaxID(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         client.setAddress(new Address().setDefaultPhysicalData());

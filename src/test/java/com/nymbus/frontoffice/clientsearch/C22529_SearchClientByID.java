@@ -1,11 +1,12 @@
 package com.nymbus.frontoffice.clientsearch;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.client.ClientsActions;
-import com.nymbus.base.BaseTest;
+import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.models.client.Client;
 import com.nymbus.pages.Pages;
-import com.nymbus.util.Constants;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -29,20 +30,20 @@ public class C22529_SearchClientByID extends BaseTest {
     @Test(description = "C22529, Search client by ID")
     public void searchClientByID() {
 
-        LOG.info("Step 1: Log in to the system as the User from the precondition");
-        navigateToUrl(Constants.URL);
+//        LOG.info("Step 1: Log in to the system as the User from the precondition");
+        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client);
 
         final String clientID = Pages.clientDetailsPage().getClientID();
         Pages.aSideMenuPage().clickClientMenuItem();
 
-        LOG.info("Step 2: Click within search field and try to search for an existing client (by client id)");
+//        LOG.info("Step 2: Click within search field and try to search for an existing client (by client id)");
         Pages.clientsPage().typeToClientsSearchInputField(clientID);
         List<String> lookupResults = Pages.clientsPage().getAllLookupResults();
         Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(lookupResults, clientID));
 
-        LOG.info("Step 3: Click the 'Search' button");
+//        LOG.info("Step 3: Click the 'Search' button");
         Pages.clientsPage().clickOnSearchButton();
         Pages.clientsSearchResultsPage().waitForSearchResults();
 

@@ -1,111 +1,108 @@
 package com.nymbus.pages;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.locator.ID;
-import com.nymbus.locator.Locator;
-import com.nymbus.locator.XPath;
+import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
-public class ASideMenuPage extends BasePage {
+public class ASideMenuPage extends PageTools {
 
-    private Locator menu = new ID("menu");
-    private Locator clientMenuItem = new XPath("//li[a[@id='menu-customers']]");
-    private Locator tellerMenuItem = new XPath("//li[a[@id='menu-teller']]");
-    private Locator loansMenuItem = new XPath("//li[a[@id='menu-loans']]");
-    private Locator tellerToTellerMenuItem = new XPath("//li[a[@id='menu-tellerToTeller']]");
-    private Locator reportGeneratorMenuItem = new XPath("//li[a[@id='menu-adhocReport']]");
-    private Locator backOfficeMenuItem = new XPath("//li[a[@id='menu-backoffice']]");
-    private Locator settingsMenuItem = new XPath("//li[a[@id='menu-settings']]");
+    private By menu = By.id("menu");
+    private By clientMenuItem = By.xpath("//li[a[@id='menu-customers']]");
+    private By tellerMenuItem = By.xpath("//li[a[@id='menu-teller']]");
+    private By loansMenuItem = By.xpath("//li[a[@id='menu-loans']]");
+    private By tellerToTellerMenuItem = By.xpath("//li[a[@id='menu-tellerToTeller']]");
+    private By reportGeneratorMenuItem = By.xpath("//li[a[@id='menu-adhocReport']]");
+    private By backOfficeMenuItem = By.xpath("//li[a[@id='menu-backoffice']]");
+    private By settingsMenuItem = By.xpath("//li[a[@id='menu-settings']]");
 
     @Step("Wait for a side menu")
-    public void waitForASideMenu(){
+    public void waitForASideMenu() {
         waitForElementVisibility(menu);
     }
 
     @Step("Click 'Client' menu item")
-    public void clickClientMenuItem(){
+    public void clickClientMenuItem() {
         waitForElementVisibility(clientMenuItem);
         click(clientMenuItem);
     }
 
     @Step("Check is client page opened")
-    public boolean isClientPageOpened(){
+    public boolean isClientPageOpened() {
         waitForElementVisibility(clientMenuItem);
         return getElementAttributeValue("class", clientMenuItem).contains("active");
     }
 
     @Step("Click 'Teller' menu item")
-    public void clickTellerMenuItem(){
+    public void clickTellerMenuItem() {
         waitForElementVisibility(tellerMenuItem);
         click(tellerMenuItem);
     }
 
     @Step("Check is teller page opened")
-    public boolean isTellerPageOpened(){
+    public boolean isTellerPageOpened() {
         waitForElementVisibility(tellerMenuItem);
         return getElementAttributeValue("class", tellerMenuItem).contains("active");
     }
 
     @Step("Click 'Loans' menu item")
-    public void clickLoansMenuItem(){
+    public void clickLoansMenuItem() {
         waitForElementVisibility(loansMenuItem);
         click(loansMenuItem);
     }
 
     @Step("Check is Loan page opened")
-    public boolean isLoansPageOpened(){
+    public boolean isLoansPageOpened() {
         waitForElementVisibility(loansMenuItem);
         return getElementAttributeValue("class", loansMenuItem).contains("active");
     }
 
     @Step("Click 'Teller To Teller Transfer' menu item")
-    public void clickTellerToTellerMenuItem(){
+    public void clickTellerToTellerMenuItem() {
         waitForElementVisibility(tellerToTellerMenuItem);
         click(tellerToTellerMenuItem);
     }
 
     @Step("Check is Teller To Teller Transfer page opened")
-    public boolean isTellerToTellerPageOpened(){
+    public boolean isTellerToTellerPageOpened() {
         waitForElementVisibility(tellerToTellerMenuItem);
         return getElementAttributeValue("class", tellerToTellerMenuItem).contains("active");
     }
 
     @Step("Click 'Report Generator' menu item")
-    public void clickReportGeneratorMenuItem(){
+    public void clickReportGeneratorMenuItem() {
         waitForElementVisibility(reportGeneratorMenuItem);
         click(reportGeneratorMenuItem);
     }
 
     @Step("Check is Report Generator page opened")
-    public boolean isReportGeneratorPageOpened(){
+    public boolean isReportGeneratorPageOpened() {
         waitForElementVisibility(reportGeneratorMenuItem);
         return getElementAttributeValue("class", reportGeneratorMenuItem).contains("active");
     }
 
     @Step("Click 'Back Office' menu item")
-    public void clickBackOfficeMenuItem(){
+    public void clickBackOfficeMenuItem() {
         waitForElementVisibility(backOfficeMenuItem);
         click(backOfficeMenuItem);
     }
 
     @Step("Check is Back Office page opened")
-    public boolean isBackOfficePageOpened(){
+    public boolean isBackOfficePageOpened() {
         waitForElementVisibility(backOfficeMenuItem);
         return getElementAttributeValue("class", backOfficeMenuItem).contains("active");
     }
 
     @Step("Click 'Settings' menu item")
-    public void clickSettingsMenuItem(){
+    public void clickSettingsMenuItem() {
         waitForElementVisibility(settingsMenuItem);
         click(settingsMenuItem);
     }
 
     @Step("Check is Settings page opened")
-    public boolean isSettingsPageOpened(){
+    public boolean isSettingsPageOpened() {
         waitForElementVisibility(settingsMenuItem);
         return getElementAttributeValue("class", settingsMenuItem).contains("active");
     }
-
 
 
 }

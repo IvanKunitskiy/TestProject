@@ -1,17 +1,16 @@
 package com.nymbus.pages.accounts;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.locator.Locator;
-import com.nymbus.locator.XPath;
+import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
-public class AccountNavigationPage extends BasePage {
+public class AccountNavigationPage extends PageTools {
 
     /**
      * Tabs buttons
      */
 
-    private Locator maintenanceTab = new XPath("//a[contains(text(), 'Maintenance')]");
+    private By maintenanceTab = By.xpath("//a[contains(text(), 'Maintenance')]");
 
 
     @Step("Click the 'Maintenance' tab")

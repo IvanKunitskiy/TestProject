@@ -1,17 +1,17 @@
 package com.nymbus.pages.webadmin;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.locator.*;
+import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
-public class LoginPage extends BasePage {
+public class LoginPage extends PageTools {
 
-    private Locator loginForm = new ID("form");
-    private Locator userNameField = new ID("j_username");
-    private Locator passwordField = new Name("j_password");
-    private Locator goButton = new XPath("//input[contains(@onclick, 'submitForm')]");
+    private By loginForm = By.id("form");
+    private By userNameField = By.id("j_username");
+    private By passwordField = By.name("j_password");
+    private By goButton = By.xpath("//input[contains(@onclick, 'submitForm')]");
 
-    private Locator wrongCredentialsMessage = new XPath("//div[contains(@class, 'warningBox')]");
+    private By wrongCredentialsMessage = By.xpath("//div[contains(@class, 'warningBox')]");
 
     @Step("Wait login form")
     public void waitForLoginForm() {
@@ -41,17 +41,17 @@ public class LoginPage extends BasePage {
     }
 
     @Step("Check is login's error visible")
-    public boolean isErrorMessageVisibleOnLoginForm(){
+    public boolean isErrorMessageVisibleOnLoginForm() {
         return isElementVisible(wrongCredentialsMessage);
     }
 
     @Step("Check is user name field visible")
-    public boolean isUserNameFieldVisible(){
+    public boolean isUserNameFieldVisible() {
         return isElementVisible(userNameField);
     }
 
     @Step("Check is password field visible")
-    public boolean isPasswordFieldVisible(){
+    public boolean isPasswordFieldVisible() {
         return isElementVisible(passwordField);
     }
 

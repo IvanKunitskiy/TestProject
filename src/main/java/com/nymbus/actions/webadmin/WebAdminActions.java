@@ -1,8 +1,5 @@
 package com.nymbus.actions.webadmin;
 
-import com.nymbus.actions.webadmin.LoginActions;
-import com.nymbus.actions.settings.UsersActions;
-
 public class WebAdminActions {
 
     private static LoginActions loginActions;

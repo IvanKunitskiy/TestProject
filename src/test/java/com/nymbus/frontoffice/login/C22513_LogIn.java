@@ -1,8 +1,8 @@
 package com.nymbus.frontoffice.login;
 
-import com.nymbus.base.BaseTest;
+import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.pages.Pages;
-import com.nymbus.util.Constants;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -15,7 +15,6 @@ public class C22513_LogIn extends BaseTest {
     @Test(description = "C22513, Log in")
     @Severity(SeverityLevel.CRITICAL)
     public void firstTest() {
-        navigateToUrl(Constants.URL);
 
         Pages.loginPage().waitForLoginForm();
         Pages.loginPage().typeUserName("");

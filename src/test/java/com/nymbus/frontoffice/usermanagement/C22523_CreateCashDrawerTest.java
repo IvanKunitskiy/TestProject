@@ -1,13 +1,14 @@
 package com.nymbus.frontoffice.usermanagement;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
-import com.nymbus.base.BaseTest;
-import com.nymbus.models.CashDrawer;
-import com.nymbus.models.User;
+import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.data.entity.CashDrawer;
+import com.nymbus.data.entity.User;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
-import com.nymbus.util.Constants;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -22,7 +23,7 @@ public class C22523_CreateCashDrawerTest extends BaseTest {
     private CashDrawer cashDrawer;
 
     @BeforeMethod
-    public void prepareUserData(){
+    public void prepareUserData() {
         user = new User().setDefaultUserData();
         cashDrawer = new CashDrawer().setDefaultTellerValues();
     }
@@ -30,7 +31,6 @@ public class C22523_CreateCashDrawerTest extends BaseTest {
     @Test(description = "C22523, Create Cash Drawer from Cash Drawers dashboard + assign to existing user")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyUserCreation() {
-        navigateToUrl(Constants.URL);
 
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
@@ -44,7 +44,7 @@ public class C22523_CreateCashDrawerTest extends BaseTest {
         Assert.assertEquals(Actions.cashDrawerAction().getCashDrawerFromCashDrawerViewPage(), cashDrawer,
                 "Cash Drawer's data isn't the same");
 
-        Actions.cashDrawerAction().searCashDrawerOnCashDrawerSearchPage(cashDrawer);
+        Actions.cashDrawerAction().searchCashDrawerOnCashDrawerSearchPage(cashDrawer);
 
         Assert.assertEquals(Actions.cashDrawerAction().getCashDrawerFromCashDrawerViewPage(), cashDrawer,
                 "Cash Drawer's data isn't the same");
@@ -68,7 +68,7 @@ public class C22523_CreateCashDrawerTest extends BaseTest {
                 "Cash Drawer name isn't correct");
     }
 
-    private void prepareUser(){
+    private void prepareUser() {
         Actions.usersActions().createUser(user);
         SettingsPage.viewUserPage().waitViewUserDataVisible();
 
@@ -76,12 +76,12 @@ public class C22523_CreateCashDrawerTest extends BaseTest {
                 "User's data isn't the same");
         Actions.loginActions().doLogOut();
 
-        navigateToUrl(Constants.WEB_ADMIN_URL);
+        Selenide.open(Constants.WEB_ADMIN_URL);
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         WebAdminActions.webAdminUsersActions().setUserPassword(user);
 
-        navigateToUrl(Constants.URL);
+        Selenide.open(Constants.URL);
 
         Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
 

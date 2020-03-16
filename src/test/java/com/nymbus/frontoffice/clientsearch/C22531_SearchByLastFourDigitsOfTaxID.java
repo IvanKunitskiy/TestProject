@@ -1,11 +1,12 @@
 package com.nymbus.frontoffice.clientsearch;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.client.ClientsActions;
-import com.nymbus.base.BaseTest;
+import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.models.client.Client;
 import com.nymbus.pages.Pages;
-import com.nymbus.util.Constants;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -26,8 +27,8 @@ public class C22531_SearchByLastFourDigitsOfTaxID extends BaseTest {
     @Test(description = "C22531, Search by last four digits of TaxID")
     @Severity(SeverityLevel.CRITICAL)
     public void searchByTaxID() {
-        LOG.info("Step 1: Log in to the system as the User from the precondition");
-        navigateToUrl(Constants.URL);
+//        LOG.info("Step 1: Log in to the system as the User from the precondition");
+        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         ClientsActions.createClient().createClient(client);
@@ -35,7 +36,7 @@ public class C22531_SearchByLastFourDigitsOfTaxID extends BaseTest {
         final String clientTaxID = client.getTaxID();
         Pages.aSideMenuPage().clickClientMenuItem();
 
-        LOG.info("Step 2: Click within search field and try to search for an existing client (by 4 last digits of tax id number)");
+//        LOG.info("Step 2: Click within search field and try to search for an existing client (by 4 last digits of tax id number)");
         final String taxIDQuery = clientTaxID.substring(5);
         Pages.clientsPage().typeToClientsSearchInputField(taxIDQuery);
 
@@ -45,7 +46,7 @@ public class C22531_SearchByLastFourDigitsOfTaxID extends BaseTest {
         }
         Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), taxIDQuery), "Search results are not relevant");
 
-        LOG.info("Step 3: Click the 'Search' button");
+//        LOG.info("Step 3: Click the 'Search' button");
         Pages.clientsPage().clickOnSearchButton();
         Assert.assertTrue(Pages.clientsSearchResultsPage().getClientIDsFromSearchResults().contains(clientID), "Client not found in search results by 'Client ID' criteria");
     }

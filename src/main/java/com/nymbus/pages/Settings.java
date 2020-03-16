@@ -1,16 +1,15 @@
 package com.nymbus.pages;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.locator.Locator;
-import com.nymbus.locator.XPath;
+import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
-public class Settings extends BasePage {
+public class Settings extends PageTools {
 
-    private Locator settingsPageHeader = new XPath("//h1[text()='Settings']");
+    private By settingsPageHeader = By.xpath("//h1[text()='Settings']");
 
     @Step("Wait for Report Generator page loaded")
-    public void waitForSettingsPageLoaded(){
+    public void waitForSettingsPageLoaded() {
         waitForElementVisibility(settingsPageHeader);
     }
 

@@ -1,4 +1,4 @@
-package com.nymbus.util;
+package com.nymbus.core.utils;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Locale;
 
 public class DateTime {
+
+    public static String getLocalDateTimeByPattern(String pattern) {
+        return DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH).format(LocalDateTime.now());
+    }
 
     public static String getCurrentDayOfWeek() {
         return LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
@@ -60,7 +64,7 @@ public class DateTime {
     }
 
     public static String parseTime(String time) {
-        return LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")).format(DateTimeFormatter.ofPattern("h:mm"));
+        return LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")).format(DateTimeFormatter.ofPattern("h:mma"));
     }
 
     public static String getLocalDate() {
@@ -91,6 +95,7 @@ public class DateTime {
                 daysList.add(i);
             }
         }
+
         return daysList;
     }
 }
