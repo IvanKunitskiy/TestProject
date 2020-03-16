@@ -61,9 +61,25 @@ public class AccountDetailsPage extends BasePage {
     private Locator primaryAccountForCombinedStatement= new XPath("//tr[@data-config-name='ddaaccountidforcombinedstatement']//span[contains(@class, 'dnTextFixedWidthText')]");
     private Locator correspondingAccount= new XPath("//tr[@data-config-name='correspondingaccountid']//span[contains(@class, 'dnTextFixedWidthText')]");
 
+    private Locator printStatementNextUpdate= new XPath("//tr[@data-config-name='printstatementnextupdate']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private Locator interestPaidYTD= new XPath("//tr[@data-config-name='interestpaidytd']//span[contains(@class, 'dnTextFixedWidthText')]");
+
     /**
      * Details tab
      */
+
+    @Step("Get 'Print Statement Next Update' value")
+    public String getPrintStatementNextUpdate() {
+        waitForElementVisibility(printStatementNextUpdate);
+        return getElementText(printStatementNextUpdate);
+    }
+
+    @Step("Get 'Interest Paid YTD' value")
+    public String getInterestPaidYTD() {
+        waitForElementVisibility(interestPaidYTD);
+        String interestPaidYTDValue = getElementText(interestPaidYTD);
+        return interestPaidYTDValue.replaceAll("[^0-9]", "");
+    }
 
     @Step("Get 'Corresponding Account' value")
     public String getCorrespondingAccount() {

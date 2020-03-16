@@ -31,6 +31,8 @@ public class EditAccountPage extends BasePage {
     private Locator automaticOverdraftStatus = new XPath("//div[@id='automaticoverdraftstatus']//span[contains(@class, 'ng-scope')]");
     private Locator reasonAutoOdChgWaived = new XPath("//div[@id='reasonautoodchargeswaived']//span[contains(@class, 'ng-scope')]");
     private Locator whenSurchargesRefunded = new XPath("//div[@id='whensurchargesrefunded']//span[contains(@class, 'ng-scope')]");
+    private Locator printStatementNextUpdate = new XPath("//input[@id='printstatementnextupdate']");
+    private Locator interestPaidYTD = new XPath("//input[@id='interestpaidytd']");
 
     private Locator federalWHPercentInput = new XPath("//input[@id='federalwithholdingpercent']");
     private Locator numberOfATMCardsIssuedInput = new XPath("//input[@id='numberofatmcardissued']");
@@ -52,6 +54,8 @@ public class EditAccountPage extends BasePage {
     private Locator interestFrequency = new XPath("//div[@id='interestfrequency']//span[contains(@class, 'ng-scope')]");
     private Locator primaryAccountForCombinedStatement = new XPath("//div[@id='ddaaccountidforcombinedstatement']//span[contains(@class, 'ng-scope')]");
     private Locator correspondingAccount = new XPath("//div[@id='correspondingaccountid']//span[contains(@class, 'ng-scope')]");
+    private Locator newAccountSwitch = new XPath("//dn-switch[@id='newaccount']");
+    private Locator transactionalAccountSwitch = new XPath("//dn-switch[@id='newaccount']");
 
     private Locator federalWHReasonSelectorButton = new XPath("//div[@id='federalwithholdingreason']");
     private Locator federalWHReasonList = new XPath("//li[contains(@role, 'option')]/div/span");
@@ -114,7 +118,6 @@ public class EditAccountPage extends BasePage {
     private Locator dateLastStatement = new XPath("//input[@id='datelaststatement']");
     private Locator numberOfWithdrawalsThisStatementCycle = new XPath("//input[@id='numberofwithdrawalsthisstatementcycle']");
     private Locator numberOfDepositsThisStatementCycle = new XPath("//input[@id='numberofdepositsthisstatementcycle']");
-
     private Locator accruedInterestThisStatementCycle = new XPath("//input[@id='accruedinterestthisstatementcycle']");
     private Locator amountInterestLastPaid = new XPath("//input[@id='amountinterestlastpaid']");
     private Locator lastWithdrawalAmount = new XPath("//input[@id='lastwithdrawalamount']");
@@ -145,6 +148,24 @@ public class EditAccountPage extends BasePage {
     private Locator onlineBankingLogin = new XPath("//input[@id='datelastlogintoonlinebanking']");
     private Locator totalEarningsForLifeOfAccount = new XPath("//input[@id='totalEarnings']");
     private Locator totalContributions = new XPath("//input[@id='totalContributions']");
+
+    /**
+     * Click switch elements
+     */
+
+    @Step("Click 'Transactional Account' switch")
+    public String clickTransactionalAccountSwitch() {
+        waitForElementVisibility(newAccountSwitch);
+        waitForElementClickable(newAccountSwitch);
+        return getElementText(newAccountSwitch);
+    }
+
+    @Step("Click 'New Account' switch")
+    public String clickNewAccountSwitch() {
+        waitForElementVisibility(newAccountSwitch);
+        waitForElementClickable(newAccountSwitch);
+        return getElementText(newAccountSwitch);
+    }
 
     /**
      * Get values in edit mode
@@ -230,7 +251,8 @@ public class EditAccountPage extends BasePage {
     @Step("Get 'Number Of ATM Cards Issued' value in edit mode")
     public String getNumberOfATMCardsIssued() {
         waitForElementVisibility(numberOfATMCardsIssuedInput);
-        return getElementAttributeValue("value", numberOfATMCardsIssuedInput);
+        String numberOfATMCardsIssuedInputValue = getElementAttributeValue("value", numberOfATMCardsIssuedInput);
+        return numberOfATMCardsIssuedInputValue.replaceAll("[^0-9]", "");
     }
 
     @Step("Get 'Earning Credit Rate' value in edit mode")
@@ -378,6 +400,19 @@ public class EditAccountPage extends BasePage {
     public String getAccountTitleValueInEditMode() {
         waitForElementVisibility(accountTitle);
         return getElementAttributeValue("value", accountTitle);
+    }
+
+    @Step("Get 'Interest Paid YTD' value in edit mode")
+    public String getInterestPaidYTD() {
+        waitForElementVisibility(interestPaidYTD);
+        String interestPaidYTDValue = getElementAttributeValue("value", interestPaidYTD);
+        return interestPaidYTDValue.replaceAll("[^0-9]", "");
+    }
+
+    @Step("Get 'Print Statement Next Updated' value in edit mode")
+    public String getPrintStatementNextUpdate() {
+        waitForElementVisibility(printStatementNextUpdate);
+        return getElementAttributeValue("value", printStatementNextUpdate);
     }
 
     /**
@@ -706,6 +741,20 @@ public class EditAccountPage extends BasePage {
     public boolean isProductTypeFieldDisabledInEditMode() {
         waitForElementVisibility(productTypeField);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", productTypeField));
+    }
+
+    @Step("Set 'Print Statement Next Update' option")
+    public void setPrintStatementNextUpdate(String printStatementNextUpdateValue) {
+        waitForElementVisibility(printStatementNextUpdate);
+        waitForElementClickable(printStatementNextUpdate);
+        type(printStatementNextUpdateValue, printStatementNextUpdate);
+    }
+
+    @Step("Set 'Interest Paid Year to date' option")
+    public void setInterestPaidYTD(String interestPaidYTDValue) {
+        waitForElementVisibility(interestPaidYTD);
+        waitForElementClickable(interestPaidYTD);
+        type(interestPaidYTDValue, interestPaidYTD);
     }
 
     @Step("Set 'Interest rate' option")

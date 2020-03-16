@@ -51,6 +51,8 @@ public class Account {
     private String discountReason;
     private String automaticOverdraftLimit;
     private String interestFrequency;
+    private String printStatementNextUpdate;
+    private String interestPaidYTD;
 
     public Account setDefaultAccountData() {
         Account account = new Account();
@@ -70,6 +72,16 @@ public class Account {
         account.setAccountNumber(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setAccountTitle(Random.genString(5));
         account.setDateOpened("02/27/2020");
+        account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setNumberOfDebitCardsIssued(String.valueOf(Random.genInt(0, 100)));
+        account.setNumberOfATMCardsIssued(String.valueOf(Random.genInt(0, 100)));
+        account.setFederalWHPercent(String.valueOf(Random.genInt(0, 100)));
+        account.setUserDefinedField_1(Random.genString(5));
+        account.setUserDefinedField_2(Random.genString(5));
+        account.setUserDefinedField_3(Random.genString(5));
+        account.setUserDefinedField_4(Random.genString(5));
+        account.setPrintStatementNextUpdate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setInterestPaidYTD(String.valueOf(Random.genLong(100000000000L, 922337203685L)));
 
         return account;
     }
@@ -476,5 +488,21 @@ public class Account {
 
     public void setInterestFrequency(String interestFrequency) {
         this.interestFrequency = interestFrequency;
+    }
+
+    public String getPrintStatementNextUpdate() {
+        return printStatementNextUpdate;
+    }
+
+    public void setPrintStatementNextUpdate(String printStatementNextUpdate) {
+        this.printStatementNextUpdate = printStatementNextUpdate;
+    }
+
+    public String getInterestPaidYTD() {
+        return interestPaidYTD;
+    }
+
+    public void setInterestPaidYTD(String printInterestPaidYTD) {
+        this.interestPaidYTD = printInterestPaidYTD;
     }
 }
