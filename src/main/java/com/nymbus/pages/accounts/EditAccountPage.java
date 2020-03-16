@@ -115,6 +115,37 @@ public class EditAccountPage extends BasePage {
     private Locator numberOfWithdrawalsThisStatementCycle = new XPath("//input[@id='numberofwithdrawalsthisstatementcycle']");
     private Locator numberOfDepositsThisStatementCycle = new XPath("//input[@id='numberofdepositsthisstatementcycle']");
 
+    private Locator accruedInterestThisStatementCycle = new XPath("//input[@id='accruedinterestthisstatementcycle']");
+    private Locator amountInterestLastPaid = new XPath("//input[@id='amountinterestlastpaid']");
+    private Locator lastWithdrawalAmount = new XPath("//input[@id='lastwithdrawalamount']");
+    private Locator lastDepositAmount = new XPath("//input[@id='lastdepositamount']");
+    private Locator previousStatementBalance = new XPath("//input[@id='previousstatementbalance']");
+    private Locator previousStatementDate = new XPath("//input[@id='previousstatementdate']");
+    private Locator serviceChargesYTD = new XPath("//input[@id='servicechargesytd']");
+    private Locator aggregateBalanceYTD = new XPath("//input[@id='aggregatebalanceytd']");
+    private Locator specialMailingInstructions = new XPath("//input[@id='specialmailinginstructions']");
+    private Locator taxesWithheldYTD = new XPath("//input[@id='taxeswithheldytd']");
+    private Locator chargesWaivedYTD = new XPath("//input[@id='chargeswaivedytd']");
+    private Locator numberRegDItems = new XPath("//input[@id='numberofregd6limititemsthisstatementcycle']");
+    private Locator monthlyLowBalance = new XPath("//input[@id='monthlylowbalance']");
+    private Locator monthlyNumberOfWithdrawals = new XPath("//input[@id='monthlynumberofwithdrawals']");
+    private Locator interestPaidLastYear = new XPath("//input[@id='interestpaidlastyear']");
+    private Locator oneDayFloat = new XPath("//input[@id='onedayfloat']");
+    private Locator twoDayFloat = new XPath("//input[@id='twodayfloat']");
+    private Locator threeDayFloat = new XPath("//input[@id='threedayfloat']");
+    private Locator fourDayFloat = new XPath("//input[@id='fourdayfloat']");
+    private Locator fiveDayFloat = new XPath("//input[@id='fivedayfloat']");
+    private Locator aggregateColBal = new XPath("//input[@id='aggregatecollectedbalancethisstatementcycle']");
+    private Locator aggrColLstStmt = new XPath("//input[@id='aggregateoverdraftbalancelaststatementcycle']");
+    private Locator ytdAggrColBal = new XPath("//input[@id='aggregatecollectedbalanceytd']");
+    private Locator aggrOdBalance = new XPath("//input[@id='aggregateoverdraftbalancethisstatementcycle']");
+    private Locator aggrOdLstStmt = new XPath("//input[@id='aggregateoverdraftbalancelaststatementcycle']");
+    private Locator aggrColOdBal = new XPath("//input[@id='aggregatecollectedodbalancethisstatementcycle']");
+    private Locator aggrColOdLstStmt = new XPath("//input[@id='aggregatecollectedodbalancelaststatementcycle']");
+    private Locator onlineBankingLogin = new XPath("//input[@id='datelastlogintoonlinebanking']");
+    private Locator totalEarningsForLifeOfAccount = new XPath("//input[@id='totalEarnings']");
+    private Locator totalContributions = new XPath("//input[@id='totalContributions']");
+
     /**
      * Get values in edit mode
      */
@@ -352,6 +383,186 @@ public class EditAccountPage extends BasePage {
     /**
     * Check if field is disabled in edit mode
      */
+
+    @Step("Check if 'Interest Paid Last Year' field is disabled edit mode")
+    public boolean isInterestPaidLastYearDisabledInEditMode() {
+        waitForElementVisibility(interestPaidLastYear);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", interestPaidLastYear));
+    }
+
+    @Step("Check if 'One Day Float' field is disabled edit mode")
+    public boolean isOneDayFloatDisabledInEditMode() {
+        waitForElementVisibility(oneDayFloat);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", oneDayFloat));
+    }
+
+    @Step("Check if 'Two Day Float' field is disabled edit mode")
+    public boolean isTwoDayFloatDisabledInEditMode() {
+        waitForElementVisibility(twoDayFloat);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", twoDayFloat));
+    }
+
+    @Step("Check if 'Three Day Float' field is disabled edit mode")
+    public boolean isThreeDayFloatDisabledInEditMode() {
+        waitForElementVisibility(threeDayFloat);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", threeDayFloat));
+    }
+
+    @Step("Check if 'Four Day Float' field is disabled edit mode")
+    public boolean isFourDayFloatDisabledInEditMode() {
+        waitForElementVisibility(fourDayFloat);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", fourDayFloat));
+    }
+
+    @Step("Check if 'Five Day Float' field is disabled edit mode")
+    public boolean isFiveDayFloatDisabledInEditMode() {
+        waitForElementVisibility(fiveDayFloat);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", fiveDayFloat));
+    }
+
+    @Step("Check if 'Aggregate col bal' field is disabled edit mode")
+    public boolean isAggregateColBalDisabledInEditMode() {
+        waitForElementVisibility(aggregateColBal);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", aggregateColBal));
+    }
+
+    @Step("Check if 'Aggr col lst stmt' field is disabled edit mode")
+    public boolean isAggrColLstStmtDisabledInEditMode() {
+        waitForElementVisibility(aggrColLstStmt);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", aggrColLstStmt));
+    }
+
+    @Step("Check if 'YTD aggr col bal' field is disabled edit mode")
+    public boolean isYtdAggrColBalDisabledInEditMode() {
+        waitForElementVisibility(ytdAggrColBal);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", ytdAggrColBal));
+    }
+
+    @Step("Check if 'Aggr OD balance' field is disabled edit mode")
+    public boolean isAggrOdBalanceDisabledInEditMode() {
+        waitForElementVisibility(aggrOdBalance);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", aggrOdBalance));
+    }
+
+    @Step("Check if 'Aggr OD lst stmt' field is disabled edit mode")
+    public boolean isAggrOdLstStmtDisabledInEditMode() {
+        waitForElementVisibility(aggrOdLstStmt);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", aggrOdLstStmt));
+    }
+
+    @Step("Check if 'Aggr col OD bal' field is disabled edit mode")
+    public boolean isAggrColOdBalDisabledInEditMode() {
+        waitForElementVisibility(aggrColOdBal);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", aggrColOdBal));
+    }
+
+    @Step("Check if 'Aggr col OD lst stmt' field is disabled edit mode")
+    public boolean isAggrColOdLstStmtDisabledInEditMode() {
+        waitForElementVisibility(aggrColOdLstStmt);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", aggrColOdLstStmt));
+    }
+
+    @Step("Check if 'Online Banking login' field is disabled edit mode")
+    public boolean isOnlineBankingLoginDisabledInEditMode() {
+        waitForElementVisibility(onlineBankingLogin);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", onlineBankingLogin));
+    }
+
+    @Step("Check if 'Total Earnings for Life of Account' field is disabled edit mode")
+    public boolean isTotalEarningsForLifeOfAccountDisabledInEditMode() {
+        waitForElementVisibility(totalEarningsForLifeOfAccount);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", totalEarningsForLifeOfAccount));
+    }
+
+    @Step("Check if 'Total Contributions for Life of Account' field is disabled edit mode")
+    public boolean isTotalContributionsDisabledInEditMode() {
+        waitForElementVisibility(totalContributions);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", totalContributions));
+    }
+
+    @Step("Check if 'Aggregate Balance Year to date' field is disabled edit mode")
+    public boolean isAggregateBalanceYTDDisabledInEditMode() {
+        waitForElementVisibility(aggregateBalanceYTD);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", aggregateBalanceYTD));
+    }
+
+    @Step("Check if 'Special Mailing Instructions' field is disabled edit mode")
+    public boolean isSpecialMailingInstructionsDisabledInEditMode() {
+        waitForElementVisibility(specialMailingInstructions);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", specialMailingInstructions));
+    }
+
+    @Step("Check if 'Taxes Withheld YTD' field is disabled edit mode")
+    public boolean isTaxesWithheldYTDDisabledInEditMode() {
+        waitForElementVisibility(taxesWithheldYTD);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", taxesWithheldYTD));
+    }
+
+    @Step("Check if 'YTD charges waived' field is disabled edit mode")
+    public boolean isChargesWaivedYTDDisabledInEditMode() {
+        waitForElementVisibility(chargesWaivedYTD);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", chargesWaivedYTD));
+    }
+
+    @Step("Check if 'Number Reg D items (6)' field is disabled edit mode")
+    public boolean isNumberRegDItemsDisabledInEditMode() {
+        waitForElementVisibility(numberRegDItems);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", numberRegDItems));
+    }
+
+    @Step("Check if 'Monthly low balance' field is disabled edit mode")
+    public boolean isMonthlyLowBalanceDisabledInEditMode() {
+        waitForElementVisibility(monthlyLowBalance);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", monthlyLowBalance));
+    }
+
+    @Step("Check if 'Monthly number of withdrawals' field is disabled edit mode")
+    public boolean isMonthlyNumberOfWithdrawalsDisabledInEditMode() {
+        waitForElementVisibility(monthlyNumberOfWithdrawals);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", monthlyNumberOfWithdrawals));
+    }
+
+    @Step("Check if 'Accrued Interest this statement cycle' field is disabled edit mode")
+    public boolean isAccruedInterestThisStatementCycleDisabledInEditMode() {
+        waitForElementVisibility(accruedInterestThisStatementCycle);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", accruedInterestThisStatementCycle));
+    }
+
+    @Step("Check if 'Interest Last paid' field is disabled edit mode")
+    public boolean isAmountInterestLastPaidDisabledInEditMode() {
+        waitForElementVisibility(amountInterestLastPaid);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", amountInterestLastPaid));
+    }
+
+    @Step("Check if 'Last withdrawal amount' field is disabled edit mode")
+    public boolean isLastWithdrawalAmountDisabledInEditMode() {
+        waitForElementVisibility(lastWithdrawalAmount);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", lastWithdrawalAmount));
+    }
+
+    @Step("Check if 'Last Deposit Amount' field is disabled edit mode")
+    public boolean isLastDepositAmountDisabledInEditMode() {
+        waitForElementVisibility(lastDepositAmount);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", lastDepositAmount));
+    }
+
+    @Step("Check if 'Previous Statement Balance' field is disabled edit mode")
+    public boolean isPreviousStatementBalanceDisabledInEditMode() {
+        waitForElementVisibility(previousStatementBalance);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", previousStatementBalance));
+    }
+
+    @Step("Check if 'Previous Statement Date' field is disabled edit mode")
+    public boolean isPreviousStatementDateDisabledInEditMode() {
+        waitForElementVisibility(previousStatementDate);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", previousStatementDate));
+    }
+
+    @Step("Check if 'Service charges YTD' field is disabled edit mode")
+    public boolean isServiceChargesYTDDisabledInEditMode() {
+        waitForElementVisibility(serviceChargesYTD);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", serviceChargesYTD));
+    }
 
     @Step("Check if 'Current Balance' field is disabled edit mode")
     public boolean isCurrentBalanceDisabledInEditMode() {

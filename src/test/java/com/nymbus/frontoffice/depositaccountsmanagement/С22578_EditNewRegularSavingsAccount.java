@@ -82,36 +82,36 @@ public class С22578_EditNewRegularSavingsAccount extends BaseTest {
         Assert.assertTrue(Pages.editAccountPage().isDateLastStatementDisabledInEditMode(), "'Date Last Statement' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isNumberOfWithdrawalsThisStatementCycleDisabledInEditMode(), "'# Of Withdrawals This Statement Cycle' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isNumberOfDepositsThisStatementCycleDisabledInEditMode(), "'Number Of Deposits This Statement Cycle' field is not disabled");
-//        - Accrued Interest this statement cycle
-//        - Interest Last paid
-//        - Last withdrawal amount
-//        - Last Deposit Amount
-//        - Previous Statement Balance
-//        - Previous Statement Date
-//        - Service charges YTD
-//        - Aggregate Balance Year to date
-//        - Special Mailing Instructions
-//        - Taxes Withheld YTD
-//        - YTD charges waived
-//        - Number Reg D items (6)
-//        - Monthly low balance
-//        - Monthly number of withdrawals
-//        - Interest Paid Last Year
-//        - 1 day float
-//        - 2 day float
-//        - 3 day float
-//        - 4 day float
-//        - 5 day float
-//        - Aggregate col bal
-//        - Aggr col lst stmt
-//        - YTD aggr col bal
-//        - Aggr OD balance
-//        - Aggr OD lst stmt
-//        - Aggr col OD bal
-//        - Aggr col OD lst stmt
-//        - Online Banking login
-//        - Total Earnings for Life of Account
-//        - Total Contributions for Life of Account
+        Assert.assertTrue(Pages.editAccountPage().isAccruedInterestThisStatementCycleDisabledInEditMode(), "'Accrued Interest this statement cycle' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isAmountInterestLastPaidDisabledInEditMode(), "'Interest Last paid' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isLastWithdrawalAmountDisabledInEditMode(), "'Last withdrawal amount' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isLastDepositAmountDisabledInEditMode(), "'Last Deposit Amount' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isPreviousStatementBalanceDisabledInEditMode(), "'Previous Statement Balance' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isPreviousStatementDateDisabledInEditMode(), "'Previous Statement Date' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isServiceChargesYTDDisabledInEditMode(), "'Service charges YTD' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isAggregateBalanceYTDDisabledInEditMode(), "'Aggregate Balance Year to date' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isSpecialMailingInstructionsDisabledInEditMode(), "'Special Mailing Instructions' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isTaxesWithheldYTDDisabledInEditMode(), "'Taxes Withheld YTD' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isChargesWaivedYTDDisabledInEditMode(), "'YTD charges waived' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isNumberRegDItemsDisabledInEditMode(), "'Number Reg D items (6)' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isMonthlyLowBalanceDisabledInEditMode(), "'Monthly low balance' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isMonthlyNumberOfWithdrawalsDisabledInEditMode(), "'Monthly number of withdrawals' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isInterestPaidLastYearDisabledInEditMode(), "'Interest Paid Last Year' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isOneDayFloatDisabledInEditMode(), "'1 day float' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isTwoDayFloatDisabledInEditMode(), "'2 day float' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isThreeDayFloatDisabledInEditMode(), "'3 day float' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isFourDayFloatDisabledInEditMode(), "'4 day float' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isFiveDayFloatDisabledInEditMode(), "'5 day float' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isAggregateColBalDisabledInEditMode(), "'Aggregate col bal' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isAggrColLstStmtDisabledInEditMode(), "'Aggr col lst stmt' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isYtdAggrColBalDisabledInEditMode(), "'YTD aggr col bal' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isAggrOdBalanceDisabledInEditMode(), "'Aggr OD balance' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isAggrOdLstStmtDisabledInEditMode(), "'Aggr OD lst stmt' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isAggrColOdBalDisabledInEditMode(), "'Aggr col OD bal' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isAggrColOdLstStmtDisabledInEditMode(), "'Aggr col OD lst stmt' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isOnlineBankingLoginDisabledInEditMode(), "'Online Banking login' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isTotalEarningsForLifeOfAccountDisabledInEditMode(), "'Total Earnings for Life of Account' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isTotalContributionsDisabledInEditMode(), "'Total Contributions for Life of Account' field is not disabled");
 
     }
 }
