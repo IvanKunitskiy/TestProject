@@ -4,10 +4,6 @@ import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
-import java.text.DecimalFormat;
-import java.util.List;
-import java.util.Random;
-
 public class AccountDetailsPage extends PageTools {
 
     /**
@@ -24,52 +20,52 @@ public class AccountDetailsPage extends PageTools {
      * Details tab
      */
 
-    private Locator moreButton = new XPath("//button[@data-test-id='action-showMoreFields']");
-    private Locator lessButton = new XPath("//button[@data-test-id='action-hideLessFields']");
-    private Locator fullProfileButton = new XPath("//button[@data-test-id='go-fullProfile']");
-    private Locator productType = new XPath("//tr[@data-config-name='accounttype']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator boxSize = new XPath("//tr[@data-config-name='boxsize']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator accountNumber = new XPath("//tr[@data-config-name='accountnumber']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator accountTitle = new XPath("//tr[@data-config-name='accounttitlemailinginstructions']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator bankBranch = new XPath("//tr[@data-config-name='bankbranch']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator product = new XPath("//tr[@data-config-name='accountclasstype']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator dateOpened = new XPath("//tr[@data-config-name='dateopened']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator currentOfficer = new XPath("//tr[@data-config-name='officer']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator statementCycle = new XPath("//tr[@data-config-name='statementcycle']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator callClass = new XPath("//tr[@data-config-name='callclasscode']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator chargeOrAnalyze = new XPath("//tr[@data-config-name='chargeoranalyze']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator accountAnalysis = new XPath("//tr[@data-config-name='accountanalysis']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator statementFlag = new XPath("//tr[@data-config-name='statementflag']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator interestRate = new XPath("//tr[@data-config-name='interestrate']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator earningCreditRate = new XPath("//tr[@data-config-name='earningscreditrate']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator federalWHReason = new XPath("//tr[@data-config-name='federalwithholdingreason']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator reasonDebitCardChargeWaived = new XPath("//tr[@data-config-name='reasondebitcardchargeswaived']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator reasonAutoNSFChgWaived = new XPath("//tr[@data-config-name='reasonautonsfchargeswaived']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator odProtectionAcct = new XPath("//tr[@data-config-name='overdraftprotectionaccountnumber']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator reasonATMChargeWaived = new XPath("//tr[@data-config-name='reasonatmchargeswaived']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator automaticOverdraftStatus = new XPath("//tr[@data-config-name='automaticoverdraftstatus']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator reasonAutoOdChgWaived = new XPath("//tr[@data-config-name='reasonautoodchargeswaived']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator whenSurchargesRefunded = new XPath("//tr[@data-config-name='whensurchargesrefunded']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator federalWHPercent = new XPath("//tr[@data-config-name='federalwithholdingpercent']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator numberOfATMCardsIssued = new XPath("//tr[@data-config-name='numberofatmcardissued']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator userDefinedField_1 = new XPath("//tr[@data-config-name='userdefinedfield1']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator userDefinedField_2 = new XPath("//tr[@data-config-name='userdefinedfield2']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator userDefinedField_3 = new XPath("//tr[@data-config-name='userdefinedfield3']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator userDefinedField_4 = new XPath("//tr[@data-config-name='userdefinedfield4']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By moreButton = By.xpath("//button[@data-test-id='action-showMoreFields']");
+    private By lessButton = By.xpath("//button[@data-test-id='action-hideLessFields']");
+    private By fullProfileButton = By.xpath("//button[@data-test-id='go-fullProfile']");
+    private By productType = By.xpath("//tr[@data-config-name='accounttype']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By boxSize = By.xpath("//tr[@data-config-name='boxsize']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By accountNumber = By.xpath("//tr[@data-config-name='accountnumber']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By accountTitle = By.xpath("//tr[@data-config-name='accounttitlemailinginstructions']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By bankBranch = By.xpath("//tr[@data-config-name='bankbranch']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By product = By.xpath("//tr[@data-config-name='accountclasstype']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By dateOpened = By.xpath("//tr[@data-config-name='dateopened']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By currentOfficer = By.xpath("//tr[@data-config-name='officer']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By statementCycle = By.xpath("//tr[@data-config-name='statementcycle']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By callClass = By.xpath("//tr[@data-config-name='callclasscode']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By chargeOrAnalyze = By.xpath("//tr[@data-config-name='chargeoranalyze']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By accountAnalysis = By.xpath("//tr[@data-config-name='accountanalysis']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By statementFlag = By.xpath("//tr[@data-config-name='statementflag']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By interestRate = By.xpath("//tr[@data-config-name='interestrate']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By earningCreditRate = By.xpath("//tr[@data-config-name='earningscreditrate']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By federalWHReason = By.xpath("//tr[@data-config-name='federalwithholdingreason']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By reasonDebitCardChargeWaived = By.xpath("//tr[@data-config-name='reasondebitcardchargeswaived']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By reasonAutoNSFChgWaived = By.xpath("//tr[@data-config-name='reasonautonsfchargeswaived']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By odProtectionAcct = By.xpath("//tr[@data-config-name='overdraftprotectionaccountnumber']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By reasonATMChargeWaived = By.xpath("//tr[@data-config-name='reasonatmchargeswaived']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By automaticOverdraftStatus = By.xpath("//tr[@data-config-name='automaticoverdraftstatus']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By reasonAutoOdChgWaived = By.xpath("//tr[@data-config-name='reasonautoodchargeswaived']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By whenSurchargesRefunded = By.xpath("//tr[@data-config-name='whensurchargesrefunded']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By federalWHPercent = By.xpath("//tr[@data-config-name='federalwithholdingpercent']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By numberOfATMCardsIssued = By.xpath("//tr[@data-config-name='numberofatmcardissued']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By userDefinedField_1 = By.xpath("//tr[@data-config-name='userdefinedfield1']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By userDefinedField_2 = By.xpath("//tr[@data-config-name='userdefinedfield2']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By userDefinedField_3 = By.xpath("//tr[@data-config-name='userdefinedfield3']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By userDefinedField_4 = By.xpath("//tr[@data-config-name='userdefinedfield4']//span[contains(@class, 'dnTextFixedWidthText')]");
 
-    private Locator imageStatementCode= new XPath("//tr[@data-config-name='imagestatementcode']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator numberOfDebitCardsIssued= new XPath("//tr[@data-config-name='numberofdebitcardsissued']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator automaticOverdraftLimit= new XPath("//tr[@data-config-name='automaticoverdraftlimit']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator cashCollDaysBeforeChg= new XPath("//tr[@data-config-name='cashcollectionnumberofdaysbeforeinterestcharge']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator cashCollInterestChg= new XPath("//tr[@data-config-name='cashcollectioninterestchargesperstatementcycle']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator cashCollFloat= new XPath("//tr[@data-config-name='cashcollectionfloat']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator positivePay= new XPath("//tr[@data-config-name='positivepaycustomer']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator interestFrequency= new XPath("//tr[@data-config-name='interestfrequency']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator primaryAccountForCombinedStatement= new XPath("//tr[@data-config-name='ddaaccountidforcombinedstatement']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator correspondingAccount= new XPath("//tr[@data-config-name='correspondingaccountid']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By imageStatementCode= By.xpath("//tr[@data-config-name='imagestatementcode']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By numberOfDebitCardsIssued= By.xpath("//tr[@data-config-name='numberofdebitcardsissued']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By automaticOverdraftLimit= By.xpath("//tr[@data-config-name='automaticoverdraftlimit']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By cashCollDaysBeforeChg= By.xpath("//tr[@data-config-name='cashcollectionnumberofdaysbeforeinterestcharge']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By cashCollInterestChg= By.xpath("//tr[@data-config-name='cashcollectioninterestchargesperstatementcycle']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By cashCollFloat= By.xpath("//tr[@data-config-name='cashcollectionfloat']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By positivePay= By.xpath("//tr[@data-config-name='positivepaycustomer']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By interestFrequency= By.xpath("//tr[@data-config-name='interestfrequency']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By primaryAccountForCombinedStatement= By.xpath("//tr[@data-config-name='ddaaccountidforcombinedstatement']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By correspondingAccount= By.xpath("//tr[@data-config-name='correspondingaccountid']//span[contains(@class, 'dnTextFixedWidthText')]");
 
-    private Locator printStatementNextUpdate= new XPath("//tr[@data-config-name='printstatementnextupdate']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private Locator interestPaidYTD= new XPath("//tr[@data-config-name='interestpaidytd']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By printStatementNextUpdate= By.xpath("//tr[@data-config-name='printstatementnextupdate']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By interestPaidYTD= By.xpath("//tr[@data-config-name='interestpaidytd']//span[contains(@class, 'dnTextFixedWidthText')]");
 
     /**
      * Details tab

@@ -32,7 +32,7 @@ public class AddAccountPage extends PageTools {
     private By productSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By statementCycleSelectorButton = By.xpath("//*[@id='statementcycle']");
     private By statementCycleList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By bankBranch = By.xpath("//div[@data-test-id='field-bankbranch']/a/span[contains(@class, 'ng-binding')]");
+    private By bankBranch = By.xpath("//div[@data-test-id='field-bankbranch']/a/span/span[contains(@class, 'ng-binding')]");
     private By statementFlagInput = By.xpath("//input[@data-test-id='field-statementflag']");
     private By interestRateInput = By.xpath("//input[@data-test-id='field-interestrate']");
     private By earningCreditRateInput = By.xpath("//input[@data-test-id='field-earningscreditrate']");
@@ -56,37 +56,37 @@ public class AddAccountPage extends PageTools {
      * Originating officer
      */
 
-    private Locator originatingOfficer = new XPath("//div[@data-test-id='field-originatingOfficer']/a/span/span");
-    private Locator currentOfficer = new XPath("//div[@data-test-id='field-officer']/a/span/span");
-    private Locator optInOutStatus = new XPath("//div[@data-test-id='field-dbcodpstatus']/a/span/span");
+    private By originatingOfficer = By.xpath("//div[@data-test-id='field-originatingOfficer']/a/span/span");
+    private By currentOfficer = By.xpath("//div[@data-test-id='field-officer']/a/span/span");
+    private By optInOutStatus = By.xpath("//div[@data-test-id='field-dbcodpstatus']/a/span/span");
 
-    private Locator currentOfficerSelectorButton = new XPath("//div[@data-test-id='field-officer']");
-    private Locator currentOfficerList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator currentOfficerSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By currentOfficerSelectorButton = By.xpath("//div[@data-test-id='field-officer']");
+    private By currentOfficerList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By currentOfficerSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private Locator callClassCodeSelectorButton = new XPath("//div[@data-test-id='field-callclasscode']");
-    private Locator callClassCodeList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator callClassCodeSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By callClassCodeSelectorButton = By.xpath("//div[@data-test-id='field-callclasscode']");
+    private By callClassCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By callClassCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private Locator accountAnalysisSelectorButton = new XPath("//div[@id='accountanalysis']");
-    private Locator accountAnalysisList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator accountAnalysisSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By accountAnalysisSelectorButton = By.xpath("//div[@id='accountanalysis']");
+    private By accountAnalysisList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By accountAnalysisSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private Locator chargeOrAnalyzeSelectorButton = new XPath("//div[@id='chargeoranalyze']");
-    private Locator chargeOrAnalyzeList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator chargeOrAnalyzeSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By chargeOrAnalyzeSelectorButton = By.xpath("//div[@id='chargeoranalyze']");
+    private By chargeOrAnalyzeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By chargeOrAnalyzeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private Locator interestFrequencySelectorButton = new XPath("//div[@id='interestfrequency']");
-    private Locator interestFrequencyList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator interestFrequencySelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By interestFrequencySelectorButton = By.xpath("//div[@id='interestfrequency']");
+    private By interestFrequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By interestFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private Locator primaryAccountForCombinedStatementSelectorButton = new XPath("//div[@id='ddaaccountidforcombinedstatement']");
-    private Locator primaryAccountForCombinedStatementList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator primaryAccountForCombinedStatementSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By primaryAccountForCombinedStatementSelectorButton = By.xpath("//div[@id='ddaaccountidforcombinedstatement']");
+    private By primaryAccountForCombinedStatementList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By primaryAccountForCombinedStatementSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private Locator correspondingAccountSelectorButton = new XPath("//div[@id='correspondingaccountid']");
-    private Locator correspondingAccountList = new XPath("//li[contains(@role, 'option')]/div/span");
-    private Locator correspondingAccountSelectorOption = new XPath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By correspondingAccountSelectorButton = By.xpath("//div[@id='correspondingaccountid']");
+    private By correspondingAccountList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By correspondingAccountSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
     @Step("Click the 'Corresponding Account' option")
     public void clickCorrespondingAccountSelectorOption(String correspondingAccountOption) {

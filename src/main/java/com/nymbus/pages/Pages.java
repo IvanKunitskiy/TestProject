@@ -1,16 +1,10 @@
 package com.nymbus.pages;
 
 import com.nymbus.core.allure.AllureLogger;
-import com.nymbus.pages.accounts.AccountDetailsPage;
-import com.nymbus.pages.accounts.AddAccountPage;
+import com.nymbus.pages.accounts.*;
 import com.nymbus.pages.client.ClientsSearchPage;
 import com.nymbus.pages.clients.AddClientPage;
 import com.nymbus.pages.clients.ClientDetailsPage;
-import com.nymbus.pages.clients.ClientsSearchResultsPage;
-import com.nymbus.pages.accounts.*;
-import com.nymbus.pages.clients.AddClientPage;
-import com.nymbus.pages.clients.ClientDetailsPage;
-import com.nymbus.pages.clients.ClientsSearchPage;
 import com.nymbus.pages.clients.ClientsSearchResultsPage;
 import com.nymbus.pages.loans.LoansPage;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;

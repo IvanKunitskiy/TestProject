@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 @Epic("Frontoffice")
 @Feature("Deposit Accounts Management")
 @Owner("Dmytro")
-public class C23637_CreateCheckingAccount extends BaseTest {
+public class C23637_CreateCheckingAccountTest extends BaseTest {
 
     private Client client;
     private Account checkingAccount;
@@ -34,8 +34,8 @@ public class C23637_CreateCheckingAccount extends BaseTest {
         checkingAccount = new Account().setCHKAccountData();
         checkingAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
 
-        // Login to the system and create a client
-        navigateToUrl(Constants.URL);
+//        Login to the system and create a client
+//        navigateToUrl(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client);
         client.setClientID(Pages.clientDetailsPage().getClientID());

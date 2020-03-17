@@ -3,11 +3,11 @@ package com.nymbus.frontoffice.depositaccountsmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
-import com.nymbus.base.BaseTest;
+import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.models.account.Account;
 import com.nymbus.models.client.Client;
 import com.nymbus.pages.Pages;
-import com.nymbus.util.Constants;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -34,7 +34,7 @@ public class С22578_EditNewRegularSavingsAccount extends BaseTest {
         regularSavingsAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
 
         // Login to the system and create a client
-        navigateToUrl(Constants.URL);
+//        navigateToUrl(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client);
         client.setClientID(Pages.clientDetailsPage().getClientID());
@@ -46,11 +46,11 @@ public class С22578_EditNewRegularSavingsAccount extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void editNewRegularSavingsAccount() {
 
-        LOG.info("Step 1: Log in to the system as the user from the precondition");
-        navigateToUrl(Constants.URL);
+//        LOG.info("Step 1: Log in to the system as the user from the precondition");
+//        navigateToUrl(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-        LOG.info("Step 2: Search for the client from the preconditions and open his profile on Accounts tab");
+//        LOG.info("Step 2: Search for the client from the preconditions and open his profile on Accounts tab");
         Pages.clientsPage().typeToClientsSearchInputField(regularSavingsAccount.getAccountNumber());
         Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() == 1, "There is more than one client found");
         Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), regularSavingsAccount.getAccountNumber()), "Search results are not relevant");
@@ -60,10 +60,10 @@ public class С22578_EditNewRegularSavingsAccount extends BaseTest {
         Pages.clientDetailsPage().clickAccountsTab();
         Pages.clientDetailsPage().openAccountByNumber(regularSavingsAccount.getAccountNumber());
 
-        LOG.info("Step 3: Click [Edit] button");
+//        LOG.info("Step 3: Click [Edit] button");
         Pages.accountDetailsPage().clickEditButton();
 
-        LOG.info("Step 4: Look at the fields and verify that such fields are disabled for editing");
+//        LOG.info("Step 4: Look at the fields and verify that such fields are disabled for editing");
         Assert.assertTrue(Pages.editAccountPage().isProductTypeFieldDisabledInEditMode(), "'Product Type' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isProductFieldDisabledInEditMode(), "'Product' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAccountNumberFieldDisabledInEditMode(), "'Account Number' field is not disabled");
@@ -113,12 +113,12 @@ public class С22578_EditNewRegularSavingsAccount extends BaseTest {
         Assert.assertTrue(Pages.editAccountPage().isTotalEarningsForLifeOfAccountDisabledInEditMode(), "'Total Earnings for Life of Account' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isTotalContributionsDisabledInEditMode(), "'Total Contributions for Life of Account' field is not disabled");
 
-        LOG.info("Step 5: Select data in such drop-down fields that were not available in Add New mode:");
+//        LOG.info("Step 5: Select data in such drop-down fields that were not available in Add New mode:");
         AccountActions.editAccount().setFederalWHReason(regularSavingsAccount);
         AccountActions.editAccount().setReasonATMChargeWaived(regularSavingsAccount);
         AccountActions.editAccount().setReasonDebitCardChargeWaived(regularSavingsAccount);
 
-        LOG.info("Step 6: Fill in such text fields that were not displayed in Add new mode:");
+//        LOG.info("Step 6: Fill in such text fields that were not displayed in Add new mode:");
         Pages.editAccountPage().setPrintStatementNextUpdate(regularSavingsAccount.getPrintStatementNextUpdate());
         Pages.editAccountPage().setInterestPaidYTD(regularSavingsAccount.getInterestPaidYTD());
         Pages.editAccountPage().setFederalWHPercent(regularSavingsAccount.getFederalWHPercent());
@@ -129,22 +129,22 @@ public class С22578_EditNewRegularSavingsAccount extends BaseTest {
         Pages.editAccountPage().setUserDefinedField_4(regularSavingsAccount.getUserDefinedField_4());
         Pages.editAccountPage().setNumberOfDebitCardsIssued(regularSavingsAccount.getNumberOfDebitCardsIssued());
 
-        LOG.info("Step 7: Select any other value in such fields");
+//        LOG.info("Step 7: Select any other value in such fields");
         AccountActions.createAccount().setCurrentOfficer(regularSavingsAccount);
         Pages.editAccountPage().setInterestRate(regularSavingsAccount.getInterestRate());
         AccountActions.createAccount().setBankBranch(regularSavingsAccount);
         AccountActions.createAccount().setCallClassCode(regularSavingsAccount);
         AccountActions.createAccount().setStatementCycle(regularSavingsAccount);
 
-        LOG.info("Step 8: Set such switchers");
+//        LOG.info("Step 8: Set such switchers");
         Pages.editAccountPage().clickNewAccountSwitch();
         Pages.editAccountPage().clickTransactionalAccountSwitch();
 
-        LOG.info("Step 9: Submit the account editing by clicking [Save] button");
+//        LOG.info("Step 9: Submit the account editing by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
 
-        LOG.info("Step 10: Pay attention to Savings account fields");
+//        LOG.info("Step 10: Pay attention to Savings account fields");
         Pages.accountDetailsPage().clickMoreButton();
         Assert.assertEquals(Pages.accountDetailsPage().getFederalWHReason(), regularSavingsAccount.getFederalWHReason(), "'Federal WH Reason' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getReasonATMChargeWaived(), regularSavingsAccount.getReasonATMChargeWaived(), "'Reason ATM Charge Waived' value does not match");
@@ -164,7 +164,7 @@ public class С22578_EditNewRegularSavingsAccount extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), regularSavingsAccount.getCallClassCode(), "'Call Class' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getStatementCycle(), regularSavingsAccount.getStatementCycle(), "'Statement Cycle' value does not match");
 
-        LOG.info("Step 11: Click [Edit] button and pay attention to the fields");
+//        LOG.info("Step 11: Click [Edit] button and pay attention to the fields");
         Pages.accountDetailsPage().clickEditButton();
         Assert.assertEquals(Pages.editAccountPage().getFederalWHReasonInEditMode(), regularSavingsAccount.getFederalWHReason(), "'Federal WH Reason' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getReasonATMChargeWaived(), regularSavingsAccount.getReasonATMChargeWaived(), "'Reason ATM Charge Waived' value does not match");
@@ -184,11 +184,11 @@ public class С22578_EditNewRegularSavingsAccount extends BaseTest {
         Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), regularSavingsAccount.getCallClassCode(), "'Call Class' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getStatementCycleValueInEditMode(), regularSavingsAccount.getStatementCycle(), "'Statement Cycle' value does not match");
 
-        LOG.info("Step 12: Do not make any changes and go to Account Maintenance -> Maintenance History page");
+//        LOG.info("Step 12: Do not make any changes and go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
-        LOG.info("Step 13: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
+//        LOG.info("Step 13: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         // TODO: Implement verification at Maintenance History page
     }
 }

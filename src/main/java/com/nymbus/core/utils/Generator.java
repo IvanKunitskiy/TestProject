@@ -45,4 +45,11 @@ public class Generator {
     public static String genAddress() {
         return "Test " + Generator.genString(4) + " Avenue, " + Generator.genInt(1, 1000);
     }
+
+    public static long genLong(long from, long to) {
+        long tmp = 0;
+        if (to >= from)
+            tmp = from + Math.round((Math.random() * (to - from)));
+        return tmp;
+    }
 }

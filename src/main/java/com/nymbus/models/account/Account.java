@@ -66,22 +66,22 @@ public class Account {
 
         account.setAddNewOption("Account");
         account.setProductType("Savings Account");
-        account.setAccountTitle(Random.genString(5));
-        account.setAccountNumber(String.valueOf(Random.genLong(10000000000L, 922337203685L)));
+        account.setAccountTitle(Generator.genString(5));
+        account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setProduct("Regular Savings Account");
         account.setAccountNumber(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
-        account.setAccountTitle(Random.genString(5));
+        account.setAccountTitle(Generator.genString(5));
         account.setDateOpened("02/27/2020");
         account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
-        account.setNumberOfDebitCardsIssued(String.valueOf(Random.genInt(0, 100)));
-        account.setNumberOfATMCardsIssued(String.valueOf(Random.genInt(0, 100)));
-        account.setFederalWHPercent(String.valueOf(Random.genInt(0, 100)));
-        account.setUserDefinedField_1(Random.genString(5));
-        account.setUserDefinedField_2(Random.genString(5));
-        account.setUserDefinedField_3(Random.genString(5));
-        account.setUserDefinedField_4(Random.genString(5));
+        account.setNumberOfDebitCardsIssued(String.valueOf(Generator.genInt(0, 100)));
+        account.setNumberOfATMCardsIssued(String.valueOf(Generator.genInt(0, 100)));
+        account.setFederalWHPercent(String.valueOf(Generator.genInt(0, 100)));
+        account.setUserDefinedField_1(Generator.genString(5));
+        account.setUserDefinedField_2(Generator.genString(5));
+        account.setUserDefinedField_3(Generator.genString(5));
+        account.setUserDefinedField_4(Generator.genString(5));
         account.setPrintStatementNextUpdate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
-        account.setInterestPaidYTD(String.valueOf(Random.genLong(100000000000L, 922337203685L)));
+        account.setInterestPaidYTD(String.valueOf(Generator.genLong(100000000000L, 922337203685L)));
 
         return account;
     }
@@ -97,20 +97,20 @@ public class Account {
         account.setOptInOutDate("01/01/2020");
         account.setDateOpened("02/27/2020");
         account.setAutomaticOverdraftStatus("Active");
-        account.setAutomaticOverdraftLimit(String.valueOf(Random.genLong(100000000000L, 922337203688L)));
-        account.setNumberOfATMCardsIssued(String.valueOf(Random.genInt(0, 100)));
-        account.setNumberOfDebitCardsIssued(String.valueOf(Random.genInt(0, 100)));
-        account.setFederalWHPercent(String.valueOf(Random.genInt(0, 100)));
-        account.setEarningCreditRate(String.valueOf(Random.genInt(0, 100)));
+        account.setAutomaticOverdraftLimit(String.valueOf(Generator.genLong(100000000000L, 922337203688L)));
+        account.setNumberOfATMCardsIssued(String.valueOf(Generator.genInt(0, 100)));
+        account.setNumberOfDebitCardsIssued(String.valueOf(Generator.genInt(0, 100)));
+        account.setFederalWHPercent(String.valueOf(Generator.genInt(0, 100)));
+        account.setEarningCreditRate(String.valueOf(Generator.genInt(0, 100)));
         account.setCashCollDaysBeforeChg(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setCashCollInterestChg(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setCashCollFloat(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
-        account.setUserDefinedField_1(Random.genString(5));
-        account.setUserDefinedField_2(Random.genString(5));
-        account.setUserDefinedField_3(Random.genString(5));
-        account.setUserDefinedField_4(Random.genString(5));
-        account.setPositivePay(Random.genString(5));
+        account.setUserDefinedField_1(Generator.genString(5));
+        account.setUserDefinedField_2(Generator.genString(5));
+        account.setUserDefinedField_3(Generator.genString(5));
+        account.setUserDefinedField_4(Generator.genString(5));
+        account.setPositivePay(Generator.genString(5));
 
         return account;
     }

@@ -30,7 +30,7 @@ public class C22573_EditCheckingAccount extends BaseTest {
         checkingAccount = new Account().setCHKAccountData();
 
         // Login to the system and create a client with checking account
-        navigateToUrl(Constants.URL);
+//        navigateToUrl(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client);
         AccountActions.createAccount().createCHKAccount(checkingAccount);
@@ -171,7 +171,7 @@ public class C22573_EditCheckingAccount extends BaseTest {
         Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), checkingAccount.getCallClassCode(), "'Call Class' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getChargeOrAnalyzeInEditMode(), checkingAccount.getChargeOrAnalyze(), "'Charge or Analyze' value does not match");
 
-        LOG.info("Step 11: Do not make any changes and go to Account Maintenance -> Maintenance History page");
+//        LOG.info("Step 11: Do not make any changes and go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
