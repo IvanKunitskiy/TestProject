@@ -92,9 +92,9 @@ public class C15040_CreateSafeBoxAccount extends BaseTest {
         Assert.assertEquals(safeDepositBoxAccount.getBankBranch(), Pages.accountDetailsPage().getBankBranchValue(), "Bank branch is not relevant");
 
 //        LOG.info("Step 9: Go to Maintenance tab and verify maintenance history");
-        Pages.accountDetailsPage().clickMaintenanceTab();
-        Pages.accountDetailsPage().clickViewAllMaintenanceHistoryLink();
-        Pages.accountDetailsPage().clickViewMoreButton();
+        Pages.accountNavigationPage().clickMaintenanceTab();
+        Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
+        Pages.accountMaintenancePage().clickViewMoreButton();
 
         // TODO: Step 9 requires assertion in account maintenance history
         // Expected result: Account creation info is displayed in maintenance history

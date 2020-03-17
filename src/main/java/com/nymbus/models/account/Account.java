@@ -27,7 +27,6 @@ public class Account {
     private String cashCollInterestChg;
     private String cashCollFloat;
     private String positivePay;
-    private String imageStatementCode;
     private String federalWHReason;
     private String federalWHPercent;
     private String reasonATMChargeWaived;
@@ -41,10 +40,8 @@ public class Account {
     private String mailCode;
     private String dateOpened;
     private String bankBranch;
-    private String statementFlag;
     private String statementCycle;
     private String correspondingAccount;
-    private String primaryAccountForCombinedStatement;
     private String userDefinedField_1;
     private String userDefinedField_2;
     private String userDefinedField_3;
@@ -52,10 +49,39 @@ public class Account {
     private String discount;
     private String discountPeriods;
     private String discountReason;
+    private String automaticOverdraftLimit;
+    private String interestFrequency;
+    private String printStatementNextUpdate;
+    private String interestPaidYTD;
 
     public Account setDefaultAccountData() {
         Account account = new Account();
         // default account data
+
+        return account;
+    }
+
+    public Account setSavingsAccountData() {
+        Account account = new Account();
+
+        account.setAddNewOption("Account");
+        account.setProductType("Savings Account");
+        account.setAccountTitle(Random.genString(5));
+        account.setAccountNumber(String.valueOf(Random.genLong(10000000000L, 922337203685L)));
+        account.setProduct("Regular Savings Account");
+        account.setAccountNumber(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setAccountTitle(Random.genString(5));
+        account.setDateOpened("02/27/2020");
+        account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setNumberOfDebitCardsIssued(String.valueOf(Random.genInt(0, 100)));
+        account.setNumberOfATMCardsIssued(String.valueOf(Random.genInt(0, 100)));
+        account.setFederalWHPercent(String.valueOf(Random.genInt(0, 100)));
+        account.setUserDefinedField_1(Random.genString(5));
+        account.setUserDefinedField_2(Random.genString(5));
+        account.setUserDefinedField_3(Random.genString(5));
+        account.setUserDefinedField_4(Random.genString(5));
+        account.setPrintStatementNextUpdate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setInterestPaidYTD(String.valueOf(Random.genLong(100000000000L, 922337203685L)));
 
         return account;
     }
@@ -66,25 +92,25 @@ public class Account {
         account.setAddNewOption("Account");
         account.setProductType("CHK Account");
         account.setAccountTitle(Generator.genString(5));
-        account.setAccountNumber(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setProduct("Basic Business Checking");
         account.setOptInOutDate("01/01/2020");
         account.setDateOpened("02/27/2020");
-        account.setNumberOfATMCardsIssued(String.valueOf(Generator.genInt(0, 100)));
-        account.setNumberOfDebitCardsIssued(String.valueOf(Generator.genInt(0, 100)));
-//        account.setFederalWHPercent();
-        account.setFederalWHPercent(String.valueOf(Generator.genFloat(0.0001, 99.9999, 100)));
-        account.setEarningCreditRate(String.valueOf(Generator.genFloat(0.0001, 99.9999, 100)));
+        account.setAutomaticOverdraftStatus("Active");
+        account.setAutomaticOverdraftLimit(String.valueOf(Random.genLong(100000000000L, 922337203688L)));
+        account.setNumberOfATMCardsIssued(String.valueOf(Random.genInt(0, 100)));
+        account.setNumberOfDebitCardsIssued(String.valueOf(Random.genInt(0, 100)));
+        account.setFederalWHPercent(String.valueOf(Random.genInt(0, 100)));
+        account.setEarningCreditRate(String.valueOf(Random.genInt(0, 100)));
         account.setCashCollDaysBeforeChg(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setCashCollInterestChg(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setCashCollFloat(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
-        account.setUserDefinedField_1(Generator.genString(5));
-        account.setUserDefinedField_2(Generator.genString(5));
-        account.setUserDefinedField_3(Generator.genString(5));
-        account.setUserDefinedField_4(Generator.genString(5));
-        account.setImageStatementCode(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
-        account.setPositivePay(Generator.genString(5));
+        account.setUserDefinedField_1(Random.genString(5));
+        account.setUserDefinedField_2(Random.genString(5));
+        account.setUserDefinedField_3(Random.genString(5));
+        account.setUserDefinedField_4(Random.genString(5));
+        account.setPositivePay(Random.genString(5));
 
         return account;
     }
@@ -176,28 +202,12 @@ public class Account {
         this.bankBranch = bankBranch;
     }
 
-    public String getStatementFlag() {
-        return statementFlag;
-    }
-
-    public void setStatementFlag(String statementFlag) {
-        this.statementFlag = statementFlag;
-    }
-
     public String getCorrespondingAccount() {
         return correspondingAccount;
     }
 
     public void setCorrespondingAccount(String correspondingAccount) {
         this.correspondingAccount = correspondingAccount;
-    }
-
-    public String getPrimaryAccountForCombinedStatement() {
-        return primaryAccountForCombinedStatement;
-    }
-
-    public void setPrimaryAccountForCombinedStatement(String primaryAccountForCombinedStatement) {
-        this.primaryAccountForCombinedStatement = primaryAccountForCombinedStatement;
     }
 
     public String getUserDefinedField_1() {
@@ -408,14 +418,6 @@ public class Account {
         this.numberOfATMCardsIssued = numberOfATMCardsIssued;
     }
 
-    public String getImageStatementCode() {
-        return imageStatementCode;
-    }
-
-    public void setImageStatementCode(String imageStatementCode) {
-        this.imageStatementCode = imageStatementCode;
-    }
-
     public String getFederalWHPercent() {
         return federalWHPercent;
     }
@@ -470,5 +472,37 @@ public class Account {
 
     public void setCashCollFloat(String cashCollFloat) {
         this.cashCollFloat = cashCollFloat;
+    }
+
+    public String getAutomaticOverdraftLimit() {
+        return automaticOverdraftLimit;
+    }
+
+    public void setAutomaticOverdraftLimit(String automaticOverdraftLimit) {
+        this.automaticOverdraftLimit = automaticOverdraftLimit;
+    }
+
+    public String getInterestFrequency() {
+        return interestFrequency;
+    }
+
+    public void setInterestFrequency(String interestFrequency) {
+        this.interestFrequency = interestFrequency;
+    }
+
+    public String getPrintStatementNextUpdate() {
+        return printStatementNextUpdate;
+    }
+
+    public void setPrintStatementNextUpdate(String printStatementNextUpdate) {
+        this.printStatementNextUpdate = printStatementNextUpdate;
+    }
+
+    public String getInterestPaidYTD() {
+        return interestPaidYTD;
+    }
+
+    public void setInterestPaidYTD(String printInterestPaidYTD) {
+        this.interestPaidYTD = printInterestPaidYTD;
     }
 }

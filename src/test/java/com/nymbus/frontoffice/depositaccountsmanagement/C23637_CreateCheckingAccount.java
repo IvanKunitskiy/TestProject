@@ -26,10 +26,20 @@ public class C23637_CreateCheckingAccount extends BaseTest {
 
     @BeforeMethod
     public void preCondition() {
+        // Set up Client
         client = new Client().setDefaultClientData();
         client.setClientStatus("Member");
         client.setClientType("Individual");
+        client.setSelectOfficer("autotest autotest"); // Controlling officer to validate 'Bank Branch' value
         checkingAccount = new Account().setCHKAccountData();
+        checkingAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
+
+        // Login to the system and create a client
+        navigateToUrl(Constants.URL);
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        ClientsActions.createClient().createClient(client);
+        client.setClientID(Pages.clientDetailsPage().getClientID());
+        Actions.loginActions().doLogOut();
     }
 
     @Test(description = "C23637, Create checking account")
@@ -39,15 +49,11 @@ public class C23637_CreateCheckingAccount extends BaseTest {
 //        LOG.info("Step 1: Log in to the system as the User from the precondition");
 //        navigateToUrl(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
-        final String clientID = Pages.clientDetailsPage().getClientID();
-        client.setClientID(clientID);
-        Pages.aSideMenuPage().clickClientMenuItem();
 
 //        LOG.info("Step 2: Search for any client and open his profile on Accounts tab");
-        Pages.clientsPage().typeToClientsSearchInputField(clientID);
+        Pages.clientsPage().typeToClientsSearchInputField(client.getClientID());
         Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), clientID), "Search results are not relevant");
+        Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), client.getClientID()), "Search results are not relevant");
         Pages.clientsPage().clickOnSearchButton();
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
         Pages.clientDetailsPage().waitForPageLoaded();
@@ -72,7 +78,7 @@ public class C23637_CreateCheckingAccount extends BaseTest {
         Assert.assertEquals(Pages.addAccountPage().getDateOpened(), dtf.format(localDate), "'Date' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getOriginatingOfficer(), client.getSelectOfficer(), "'Originating officer' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getCurrentOfficer(), client.getSelectOfficer(), "'Current officer' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getBankBranch(), "Select", "'Bank branch' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getBankBranch(), checkingAccount.getBankBranch(), "'Bank branch' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getOptInOutStatus(), "Client Has Not Responded", "'DBC ODP Opt In/Out Status' is prefilled with wrong value");
 
 //        LOG.info("Step 6: Select any values in drop-down fields");
@@ -87,8 +93,6 @@ public class C23637_CreateCheckingAccount extends BaseTest {
 
 //        LOG.info("Step 7: Fill in text fields with valid data. NOTE: do not fill in Account Number field");
         Pages.addAccountPage().setAccountTitleValue(checkingAccount.getAccountTitle());
-        checkingAccount.setStatementFlag(Pages.addAccountPage().generateStatementFlagValue());
-        Pages.addAccountPage().setStatementFlag(checkingAccount.getStatementFlag());
         checkingAccount.setInterestRate(Pages.addAccountPage().generateInterestRateValue());
         Pages.addAccountPage().setInterestRate(checkingAccount.getInterestRate());
         checkingAccount.setEarningCreditRate(Pages.addAccountPage().generateEarningCreditRateValue());
@@ -112,28 +116,26 @@ public class C23637_CreateCheckingAccount extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getChargeOrAnalyze(), checkingAccount.getChargeOrAnalyze(), "'Charge or Analyze' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getAccountAnalysisValue(), checkingAccount.getAccountAnalysis(), "'Account Analysis' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), checkingAccount.getAccountTitle(), "'Title' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getStatementFlagValue(), checkingAccount.getStatementFlag(), "'Statement Flag' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), checkingAccount.getInterestRate(), "'Interest Rate' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getEarningCreditRate(), checkingAccount.getEarningCreditRate(), "'Earning Rate' value does not match");
 
 //        LOG.info("Step 11: Click [Edit] button and pay attention to the fields that were filled in during account creation");
         Pages.accountDetailsPage().clickEditButton();
-        Assert.assertEquals(Pages.accountDetailsPage().getProductValueInEditMode(), checkingAccount.getProduct(), "'Product' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValueInEditMode(), checkingAccount.getDateOpened(), "'Date Opened' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValueInEditMode(), checkingAccount.getCurrentOfficer(), "'Current Officer' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValueInEditMode(), checkingAccount.getBankBranch(), "'Bank Branch' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getStatementCycleValueInEditMode(), checkingAccount.getStatementCycle(), "'Statement Cycle' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getCallClassCodeValueInEditMode(), checkingAccount.getCallClassCode(), "'Call Class' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getChargeOrAnalyzeInEditMode(), checkingAccount.getChargeOrAnalyze(), "'Charge or Analyze' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getAccountAnalysisValueInEditMode(), checkingAccount.getAccountAnalysis(), "'Account Analysis' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValueInEditMode(), checkingAccount.getAccountTitle(), "'Title' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getStatementFlagValueInEditMode(), checkingAccount.getStatementFlag(), "'Statement Flag' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValueInEditMode(), checkingAccount.getInterestRate(), "'Interest Rate' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getEarningCreditRateInEditMode(), checkingAccount.getEarningCreditRate(), "'Earning Rate' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getProductValueInEditMode(), checkingAccount.getProduct(), "'Product' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getDateOpenedValueInEditMode(), checkingAccount.getDateOpened(), "'Date Opened' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), checkingAccount.getCurrentOfficer(), "'Current Officer' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), checkingAccount.getBankBranch(), "'Bank Branch' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getStatementCycleValueInEditMode(), checkingAccount.getStatementCycle(), "'Statement Cycle' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), checkingAccount.getCallClassCode(), "'Call Class' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getChargeOrAnalyzeInEditMode(), checkingAccount.getChargeOrAnalyze(), "'Charge or Analyze' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getAccountAnalysisValueInEditMode(), checkingAccount.getAccountAnalysis(), "'Account Analysis' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getAccountTitleValueInEditMode(), checkingAccount.getAccountTitle(), "'Title' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), checkingAccount.getInterestRate(), "'Interest Rate' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getEarningCreditRateInEditMode(), checkingAccount.getEarningCreditRate(), "'Earning Rate' value does not match");
 
 //        LOG.info("Step 12: Do not make any changes and go to Account Maintenance -> Maintenance History page");
-        Pages.accountDetailsPage().clickMaintenanceTab();
-        Pages.accountDetailsPage().clickViewAllMaintenanceHistoryLink();
+        Pages.accountNavigationPage().clickMaintenanceTab();
+        Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
 //        LOG.info("Step 13: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         // TODO: Implement verification at Maintenance History page
