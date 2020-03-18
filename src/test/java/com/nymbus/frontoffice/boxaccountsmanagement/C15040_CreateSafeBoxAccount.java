@@ -34,14 +34,14 @@ public class C15040_CreateSafeBoxAccount extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void createSafeBoxAccount() {
 
-//        LOG.info("Step 1: Log in to the system as the User from the precondition");
+        logInfo("Step 1: Log in to the system as the User from the precondition");
         Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         ClientsActions.createClient().createClient(client);
         final String clientID = Pages.clientDetailsPage().getClientID();
 
-//        LOG.info("Step 2: Go to Clients screen and search for client from preconditions");
+        logInfo("Step 2: Go to Clients screen and search for client from preconditions");
         Pages.aSideMenuPage().clickClientMenuItem();
         Pages.clientsPage().typeToClientsSearchInputField(clientID);
         Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() == 1, "There is more than one client found");
@@ -49,22 +49,22 @@ public class C15040_CreateSafeBoxAccount extends BaseTest {
 
         Pages.clientsPage().clickOnSearchButton();
 
-//        LOG.info("Step 3: Open it on Accounts tab");
+        logInfo("Step 3: Open it on Accounts tab");
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
         Pages.clientDetailsPage().waitForPageLoaded();
         Pages.clientDetailsPage().clickAccountsTab();
 
-//        LOG.info("Step 4: Click [Add New] --> select 'Account' in the drop down");
+        logInfo("Step 4: Click [Add New] --> select 'Account' in the drop down");
         Pages.clientDetailsPage().clickAddNewButton();
         Pages.clientDetailsPage().clickAccountOption();
 
-//        LOG.info("Step 5: Select Safe Deposit Box option");
+        logInfo("Step 5: Select Safe Deposit Box option");
         // Product type field
         Pages.addAccountPage().clickProductTypeSelectorButton();
         Pages.addAccountPage().clickProductTypeOption(safeDepositBoxAccount.getProductType());
         //        AccountActions.createAccount().setProductType(safeDepositBoxAccount);
 
-//        LOG.info("Step 6: Fill in all the displayed fields with correct values");
+        logInfo("Step 6: Fill in all the displayed fields with correct values");
         // Box size field
         Pages.addAccountPage().clickBoxSizeSelectorButton();
         Pages.addAccountPage().clickBoxSizeSelectorOption(safeDepositBoxAccount.getBoxSize());
@@ -80,18 +80,18 @@ public class C15040_CreateSafeBoxAccount extends BaseTest {
         Pages.addAccountPage().clickBankBranchSelectorButton();
         Pages.addAccountPage().clickBankBranchOption(safeDepositBoxAccount.getBankBranch());
 
-//        LOG.info("Step 7: Click [Save] button");
+        logInfo("Step 7: Click [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
 
-//        LOG.info("Step 8: Verify values for the fields filled in during account creation");
+        logInfo("Step 8: Verify values for the fields filled in during account creation");
         Assert.assertEquals(safeDepositBoxAccount.getProductType(), Pages.accountDetailsPage().getProductTypeValue(), "Product type is not relevant");
         Assert.assertEquals(safeDepositBoxAccount.getBoxSize(), Pages.accountDetailsPage().getBoxSizeValue(), "Box size is not relevant");
         Assert.assertEquals(safeDepositBoxAccount.getAccountNumber(), Pages.accountDetailsPage().getAccountNumberValue(), "Account number is not relevant");
         Assert.assertEquals(safeDepositBoxAccount.getAccountTitle(), Pages.accountDetailsPage().getAccountTitleValue(), "Account title is not relevant");
         Assert.assertEquals(safeDepositBoxAccount.getBankBranch(), Pages.accountDetailsPage().getBankBranchValue(), "Bank branch is not relevant");
 
-//        LOG.info("Step 9: Go to Maintenance tab and verify maintenance history");
+        logInfo("Step 9: Go to Maintenance tab and verify maintenance history");
         Pages.accountDetailsPage().clickMaintenanceTab();
         Pages.accountDetailsPage().clickViewAllMaintenanceHistoryLink();
         Pages.accountDetailsPage().clickViewMoreButton();

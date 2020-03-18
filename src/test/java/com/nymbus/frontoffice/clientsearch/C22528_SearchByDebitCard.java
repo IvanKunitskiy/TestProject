@@ -31,7 +31,7 @@ public class C22528_SearchByDebitCard extends BaseTest {
 
         Selenide.open(Constants.URL);
 
-//        LOG.info("Step 1: Log in to the system as the User from the precondition");
+        logInfo("Step 1: Log in to the system as the User from the precondition");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Pages.navigationPage().waitForUserMenuVisible();
     }
@@ -42,7 +42,7 @@ public class C22528_SearchByDebitCard extends BaseTest {
         String lastFourNumbers = cardNumber.substring(cardNumber.length() - 4);
         String hiddenNumber = "XXXX-XXXX-XXXX-" + lastFourNumbers;
 
-//        LOG.info("Step 2: Click within search field and try to search for an existing Debit Card");
+        logInfo("Step 2: Click within search field and try to search for an existing Debit Card");
         Pages.clientsPage().typeToClientsSearchInputField(lastFourNumbers);
 
         int lookupResultsCount = Pages.clientsPage().getLookupResultsCount();
@@ -50,13 +50,13 @@ public class C22528_SearchByDebitCard extends BaseTest {
         if (lookupResultsCount == 8)
             assertTrue(Pages.clientsPage().isLoadMoreResultsButtonVisible());
 
-//        LOG.info("Step 3: Pay attention to the display of the Debit Card in the quick search field");
+        logInfo("Step 3: Pay attention to the display of the Debit Card in the quick search field");
         List<String> clients = Pages.clientsPage().getAllLookupResults();
         clients.stream()
                 .filter(s -> s.contains("XXXX-XXXX-XXXX-"))
                 .forEach(s -> Assert.assertEquals(s, hiddenNumber));
 
-//        LOG.info("Step 4: Clear the data from the field and try to search for an existing client");
+        logInfo("Step 4: Clear the data from the field and try to search for an existing client");
         Pages.clientsPage().clickOnSearchInputFieldClearButton();
         Pages.clientsPage().typeToClientsSearchInputField(cardNumber);
 

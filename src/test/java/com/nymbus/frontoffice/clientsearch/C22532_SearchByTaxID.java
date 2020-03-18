@@ -28,7 +28,7 @@ public class C22532_SearchByTaxID extends BaseTest {
     @Test
     public void searchByTaxID() {
 
-//        LOG.info("Step 1: Log in to the system as the User from the precondition");
+        logInfo("Step 1: Log in to the system as the User from the precondition");
         Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
@@ -37,7 +37,7 @@ public class C22532_SearchByTaxID extends BaseTest {
         final String clientTaxID = client.getTaxID();
         Pages.aSideMenuPage().clickClientMenuItem();
 
-//        LOG.info("Step 2: Click within search field and try to search for an existing client (by 4 last digits of tax id number)");
+        logInfo("Step 2: Click within search field and try to search for an existing client (by 4 last digits of tax id number)");
         String taxIDQuery = clientTaxID.substring(5);
         Pages.clientsPage().typeToClientsSearchInputField(taxIDQuery);
 
@@ -47,12 +47,12 @@ public class C22532_SearchByTaxID extends BaseTest {
         }
         Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), taxIDQuery), "Search results are not relevant");
 
-//        LOG.info("Step 3: Clear the data from the field and try to search for an existing client (by full tax id number)");
+        logInfo("Step 3: Clear the data from the field and try to search for an existing client (by full tax id number)");
         Pages.clientsPage().clickOnSearchInputFieldClearButton();
         Pages.clientsPage().typeToClientsSearchInputField(clientTaxID);
         Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), clientTaxID), "Search results are not relevant");
 
-//        LOG.info("Step 4: Click the 'Search' button");
+        logInfo("Step 4: Click the 'Search' button");
         Pages.clientsPage().clickOnSearchButton();
 
         Assert.assertEquals(Pages.clientsSearchResultsPage().getClientFirstNameFromResultByIndex(1), client.getFirstName(), "First name is not relevant to the client");

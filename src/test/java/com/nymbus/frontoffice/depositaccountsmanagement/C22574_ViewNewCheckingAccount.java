@@ -32,14 +32,12 @@ public class C22574_ViewNewCheckingAccount extends BaseTest {
     @Test(description = "C22574, View new checking account")
     @Severity(SeverityLevel.CRITICAL)
     public void viewNewCheckingAccount() {
-
-//        LOG.info("Step 1: Log in to the system");
-//        navigateToUrl(Constants.URL);
+        logInfo("Step 1: Log in to the system");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client);
         AccountActions.createAccount().createCHKAccount(checkingAccount);
 
-//        LOG.info("Step 2: Search for the CHK account from the precondition and open it on Details");
+        logInfo("Step 2: Search for the CHK account from the precondition and open it on Details");
         Pages.aSideMenuPage().clickClientMenuItem();
         Pages.clientsPage().typeToClientsSearchInputField(checkingAccount.getAccountNumber());
         Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() == 1, "There is more than one client found");
@@ -50,10 +48,10 @@ public class C22574_ViewNewCheckingAccount extends BaseTest {
         Pages.clientDetailsPage().clickAccountsTab();
         Pages.clientDetailsPage().openAccountByNumber(checkingAccount.getAccountNumber());
 
-//        LOG.info("Step 3: Click [Load More] button");
+        logInfo("Step 3: Click [Load More] button");
         Pages.accountDetailsPage().clickMoreButton();
 
-//        LOG.info("Step 4: Pay attention to the fields on the page");
+        logInfo("Step 4: Pay attention to the fields on the page");
         Assert.assertEquals(Pages.accountDetailsPage().getProductValue(), checkingAccount.getProduct(), "'Product' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), checkingAccount.getDateOpened(), "'Date Opened' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), checkingAccount.getCurrentOfficer(), "'Current Officer' value does not match");
@@ -67,7 +65,7 @@ public class C22574_ViewNewCheckingAccount extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), checkingAccount.getInterestRate(), "'Interest Rate' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getEarningCreditRate(), checkingAccount.getEarningCreditRate(), "'Earning Rate' value does not match");
 
-//        LOG.info("Step 5: Click [Less] button");
+        logInfo("Step 5: Click [Less] button");
         Pages.accountDetailsPage().clickLessButton();
         Assert.assertTrue(Pages.accountDetailsPage().isMoreButtonVisible(), "More button is not visible");
     }

@@ -28,11 +28,11 @@ public class C22530_SearchByLastFourOfAccountNumber extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void searchByLastFourOfAccountNumber() {
 
-//        LOG.info("Step 1: Log in to the system as the User from the precondition");
+        logInfo("Step 1: Log in to the system as the User from the precondition");
         Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-//        LOG.info("Step 2: Click within search field and try to search for an existing account (by 4 last digits of account number)");
+        logInfo("Step 2: Click within search field and try to search for an existing account (by 4 last digits of account number)");
         final String accountNumberQuery = client.getAccountNumber().substring(client.getAccountNumber().length() - 4);
         Pages.clientsPage().typeToClientsSearchInputField(accountNumberQuery);
 
@@ -42,7 +42,7 @@ public class C22530_SearchByLastFourOfAccountNumber extends BaseTest {
         }
         Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), accountNumberQuery), "Search results are not relevant");
 
-//        LOG.info("Step 3: Click the 'Search' button");
+        logInfo("Step 3: Click the 'Search' button");
         Pages.clientsPage().clickOnSearchButton();
         Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsSearchResultsPage().getAccountNumbersFromSearchResults(), accountNumberQuery));
     }

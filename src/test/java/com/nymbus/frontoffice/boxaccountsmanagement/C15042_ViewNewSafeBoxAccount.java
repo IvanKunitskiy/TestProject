@@ -35,7 +35,7 @@ public class C15042_ViewNewSafeBoxAccount extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void viewNewSafeBoxAccount() {
 
-//        LOG.info("Step 1: Log in to Nymbus");
+        logInfo("Step 1: Log in to Nymbus");
         Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
@@ -43,7 +43,7 @@ public class C15042_ViewNewSafeBoxAccount extends BaseTest {
         final String clientID = Pages.clientDetailsPage().getClientID();
         AccountActions.createAccount().createSafeDepositBoxAccount(safeDepositBoxAccount);
 
-//        LOG.info("Step 2: Go to Clients screen and search for client from preconditions");
+        logInfo("Step 2: Go to Clients screen and search for client from preconditions");
         Pages.aSideMenuPage().clickClientMenuItem();
         Pages.clientsPage().typeToClientsSearchInputField(clientID);
 
@@ -52,13 +52,13 @@ public class C15042_ViewNewSafeBoxAccount extends BaseTest {
 
         Pages.clientsPage().clickOnSearchButton();
 
-//        LOG.info("Step 3: Open the account");
+        logInfo("Step 3: Open the account");
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
         Pages.clientDetailsPage().waitForPageLoaded();
         Pages.clientDetailsPage().clickAccountsTab();
         Pages.clientDetailsPage().openAccountByNumber(safeDepositBoxAccount.getAccountNumber());
 
-//        LOG.info("Step 4: Verify the displayed fields in view mode");
+        logInfo("Step 4: Verify the displayed fields in view mode");
         Assert.assertEquals(safeDepositBoxAccount.getProductType(), Pages.accountDetailsPage().getProductTypeValue(), "Product type is not relevant");
         Assert.assertEquals(safeDepositBoxAccount.getBoxSize(), Pages.accountDetailsPage().getBoxSizeValue(), "Box size is not relevant");
         Assert.assertEquals(safeDepositBoxAccount.getAccountNumber(), Pages.accountDetailsPage().getAccountNumberValue(), "Account number is not relevant");

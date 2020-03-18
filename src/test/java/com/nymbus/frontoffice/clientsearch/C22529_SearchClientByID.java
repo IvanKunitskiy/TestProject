@@ -30,7 +30,7 @@ public class C22529_SearchClientByID extends BaseTest {
     @Test(description = "C22529, Search client by ID")
     public void searchClientByID() {
 
-//        LOG.info("Step 1: Log in to the system as the User from the precondition");
+        logInfo("Step 1: Log in to the system as the User from the precondition");
         Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client);
@@ -38,12 +38,12 @@ public class C22529_SearchClientByID extends BaseTest {
         final String clientID = Pages.clientDetailsPage().getClientID();
         Pages.aSideMenuPage().clickClientMenuItem();
 
-//        LOG.info("Step 2: Click within search field and try to search for an existing client (by client id)");
+        logInfo("Step 2: Click within search field and try to search for an existing client (by client id)");
         Pages.clientsPage().typeToClientsSearchInputField(clientID);
         List<String> lookupResults = Pages.clientsPage().getAllLookupResults();
         Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(lookupResults, clientID));
 
-//        LOG.info("Step 3: Click the 'Search' button");
+        logInfo("Step 3: Click the 'Search' button");
         Pages.clientsPage().clickOnSearchButton();
         Pages.clientsSearchResultsPage().waitForSearchResults();
 

@@ -32,14 +32,14 @@ public class C22526_SearchByName extends BaseTest {
 
         Selenide.open(Constants.URL);
 
-//        LOG.info("Step 1: Log in to the system as the User from the precondition");
+        logInfo("Step 1: Log in to the system as the User from the precondition");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Pages.navigationPage().waitForUserMenuVisible();
     }
 
     @Test(description = "C22526, Search client by name")
     public void searchByName() {
-//        LOG.info("Step 2: Click within search field and try to search for an existing client (by first name)");
+        logInfo("Step 2: Click within search field and try to search for an existing client (by first name)");
         final String firstNameLetters = client.getFirstName().substring(0, 3);
         Pages.clientsPage().typeToClientsSearchInputField(firstNameLetters);
 
@@ -50,7 +50,7 @@ public class C22526_SearchByName extends BaseTest {
         List<TempClient> clients = Actions.clientPageActions().getAllClientsFromLookupResults(lookupResultsCount);
         clients.stream().forEach(c -> assertTrue(c.getFirstName().contains(firstNameLetters)));
 
-//        LOG.info("Step 3: Click [Search] button");
+        logInfo("Step 3: Click [Search] button");
         Pages.clientsPage().clickOnSearchButton();
         int searchResults = Pages.clientsSearchResultsPage().getSearchResultsCount();
         Assert.assertEquals(searchResults, 10);
@@ -59,7 +59,7 @@ public class C22526_SearchByName extends BaseTest {
         clients = Actions.clientsSearchResultsPageActions().getAllClientsFromResult(searchResults);
         clients.stream().forEach(c -> assertTrue(c.getFirstName().contains(firstNameLetters)));
 
-//        LOG.info("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
+        logInfo("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
         Pages.clientsPage().clickOnSearchInputFieldClearButton();
 
         final String lastNameLetters = client.getLastName().substring(0, 3);
