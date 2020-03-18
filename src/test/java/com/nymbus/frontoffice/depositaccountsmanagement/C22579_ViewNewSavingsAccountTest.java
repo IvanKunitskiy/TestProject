@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Deposit Accounts Management")
 @Owner("Dmytro")
-public class C22579_ViewNewSavingsAccount extends BaseTest {
+public class C22579_ViewNewSavingsAccountTest extends BaseTest {
 
     private Client client;
     private Account savingsAccount;
@@ -35,7 +35,6 @@ public class C22579_ViewNewSavingsAccount extends BaseTest {
         savingsAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
 
         // Login to the system and create a client with savings account
-//        navigateToUrl(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client);
         AccountActions.createAccount().createSavingsAccount(savingsAccount);
@@ -46,11 +45,10 @@ public class C22579_ViewNewSavingsAccount extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void viewNewSavingsAccount() {
 
-//        LOG.info("Step 1: Log in to the system as the user from the precondition");
-//        navigateToUrl(Constants.URL);
+        logInfo("Step 1: Log in to the system as the user from the precondition");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-//        LOG.info("Step 2: Search for the Savings account from the precondition and open it on Details");
+        logInfo("Step 2: Search for the Savings account from the precondition and open it on Details");
         Pages.clientsPage().typeToClientsSearchInputField(savingsAccount.getAccountNumber());
         Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() == 1, "There is more than one client found");
         Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), savingsAccount.getAccountNumber()));
@@ -60,10 +58,10 @@ public class C22579_ViewNewSavingsAccount extends BaseTest {
         Pages.clientDetailsPage().clickAccountsTab();
         Pages.clientDetailsPage().openAccountByNumber(savingsAccount.getAccountNumber());
 
-//        LOG.info("Step 3: Click [Load More] button");
+        logInfo("Step 3: Click [Load More] button");
         Pages.accountDetailsPage().clickMoreButton();
 
-//        LOG.info("Step 4: Pay attention to the fields on the page");
+        logInfo("Step 4: Pay attention to the fields on the page");
         Assert.assertEquals(Pages.accountDetailsPage().getProductValue(), savingsAccount.getProduct(), "'Product' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getAccountNumberValue(), savingsAccount.getAccountNumber(), "'Account Number' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), savingsAccount.getAccountTitle(), "'Title' value does not match");
@@ -74,7 +72,7 @@ public class C22579_ViewNewSavingsAccount extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), savingsAccount.getCallClassCode(), "'Call Class' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), savingsAccount.getInterestRate(), "'Interest Rate' value does not match");
 
-//        LOG.info("Step 5: Click [Less] button");
+        logInfo("Step 5: Click [Less] button");
         Pages.accountDetailsPage().clickLessButton();
         Assert.assertTrue(Pages.accountDetailsPage().isMoreButtonVisible(), "More button is not visible");
     }

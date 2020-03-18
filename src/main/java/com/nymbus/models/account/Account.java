@@ -72,6 +72,7 @@ public class Account {
         account.setAccountNumber(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setAccountTitle(Generator.genString(5));
         account.setDateOpened("02/27/2020");
+        account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
         account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setNumberOfDebitCardsIssued(String.valueOf(Generator.genInt(0, 100)));
         account.setNumberOfATMCardsIssued(String.valueOf(Generator.genInt(0, 100)));
@@ -96,6 +97,8 @@ public class Account {
         account.setProduct("Basic Business Checking");
         account.setOptInOutDate("01/01/2020");
         account.setDateOpened("02/27/2020");
+        account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
+        account.setEarningCreditRate(Generator.getRandomStringNumber(3));
         account.setAutomaticOverdraftStatus("Active");
         account.setAutomaticOverdraftLimit(String.valueOf(Generator.genLong(100000000000L, 922337203688L)));
         account.setNumberOfATMCardsIssued(String.valueOf(Generator.genInt(0, 100)));

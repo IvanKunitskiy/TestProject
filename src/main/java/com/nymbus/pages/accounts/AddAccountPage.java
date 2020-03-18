@@ -1,12 +1,11 @@
 package com.nymbus.pages.accounts;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
-import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Random;
 
 public class AddAccountPage extends PageTools {
 
@@ -80,10 +79,6 @@ public class AddAccountPage extends PageTools {
     private By interestFrequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By interestFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By primaryAccountForCombinedStatementSelectorButton = By.xpath("//div[@id='ddaaccountidforcombinedstatement']");
-    private By primaryAccountForCombinedStatementList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By primaryAccountForCombinedStatementSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-
     private By correspondingAccountSelectorButton = By.xpath("//div[@id='correspondingaccountid']");
     private By correspondingAccountList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By correspondingAccountSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
@@ -137,7 +132,7 @@ public class AddAccountPage extends PageTools {
         waitForElementVisibility(dateOpenedField);
         waitForElementClickable(dateOpenedField);
         typeWithoutWipe("", dateOpenedField);
-//        wait(1);
+        SelenideTools.sleep(1);
         typeWithoutWipe(dateOpenedValue, dateOpenedField);
     }
 
@@ -146,7 +141,7 @@ public class AddAccountPage extends PageTools {
         waitForElementVisibility(optInOutDateInputField);
         waitForElementClickable(optInOutDateInputField);
         typeWithoutWipe("", optInOutDateInputField);
-//        wait(1);
+        SelenideTools.sleep(1);
         typeWithoutWipe(optInOutDateValue, optInOutDateInputField);
     }
 
@@ -178,24 +173,17 @@ public class AddAccountPage extends PageTools {
         click(chargeOrAnalyzeSelectorButton);
     }
 
-    @Step("Generate 'Earning Credit Rate' value")
-    public String generateEarningCreditRateValue() {
-        Random ran = new Random();
-        return String.valueOf(ran.nextInt(100));
-    }
+//    @Step("Generate 'Earning Credit Rate' value")
+//    public String generateEarningCreditRateValue() {
+//        Random ran = new Random();
+//        return String.valueOf(ran.nextInt(100));
+//    }
 
     @Step("Set 'Earning Credit Rate' option")
     public void setEarningCreditRate(String earningCreditRateValue) {
         waitForElementVisibility(earningCreditRateInput);
         waitForElementClickable(earningCreditRateInput);
         type(earningCreditRateValue, earningCreditRateInput);
-    }
-
-    @Step("Geterate 'Interest Rate' value")
-    public String generateInterestRateValue() {
-        Random ran = new Random();
-        DecimalFormat df = new DecimalFormat("###.####");
-        return String.valueOf(df.format(ran.nextFloat() * 100));
     }
 
     @Step("Set 'Interest Rate' option")
@@ -310,6 +298,7 @@ public class AddAccountPage extends PageTools {
     public void clickProductSelectorButton() {
         waitForElementVisibility(productSelectorButton);
         waitForElementClickable(productSelectorButton);
+        SelenideTools.sleep(2);
         click(productSelectorButton);
     }
 
@@ -352,7 +341,7 @@ public class AddAccountPage extends PageTools {
     public String getDateOpened() {
         waitForElementVisibility(dateOpened);
         waitForElementClickable(dateOpened);
-//        wait(2);
+        SelenideTools.sleep(2);
         return getElementAttributeValue("value", dateOpened);
     }
 
@@ -492,10 +481,4 @@ public class AddAccountPage extends PageTools {
         waitForElementClickable(saveAccountButton);
         click(saveAccountButton);
     }
-
-    /**
-     * Account holders and signers
-     */
-
-
 }

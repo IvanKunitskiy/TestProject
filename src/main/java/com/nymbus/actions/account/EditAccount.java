@@ -97,4 +97,50 @@ public class EditAccount {
         Pages.editAccountPage().clickReasonATMChargeWaivedSelectorOption(account.getReasonATMChargeWaived());
     }
 
+    public void selectValuesInDropdownFieldsThatWereNotAvailableDuringCheckingAccountCreation(Account account) {
+        setFederalWHReason(account);
+        setReasonATMChargeWaived(account);
+        setOdProtectionAcct(account);
+        setReasonAutoNSFChgWaived(account);
+        setReasonDebitCardChargeWaived(account);
+        setAutomaticOverdraftStatus(account);
+        setReasonAutoOdChgWaived(account);
+        setWhenSurchargesRefunded(account);
+    }
+
+    public void fillInInputFieldsThatWereNotAvailableDuringCheckingAccountCreation(Account account) {
+        Pages.editAccountPage().setFederalWHPercent(account.getFederalWHPercent());
+        Pages.editAccountPage().setNumberOfATMCardsIssued(account.getNumberOfATMCardsIssued());
+        Pages.editAccountPage().setEarningCreditRate(account.getEarningCreditRate());
+        Pages.editAccountPage().setUserDefinedField_1(account.getUserDefinedField_1());
+        Pages.editAccountPage().setUserDefinedField_2(account.getUserDefinedField_2());
+        Pages.editAccountPage().setUserDefinedField_3(account.getUserDefinedField_3());
+        Pages.editAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
+        Pages.editAccountPage().setNumberOfDebitCardsIssued(account.getNumberOfDebitCardsIssued());
+        Pages.editAccountPage().setAutomaticOverdraftLimit(account.getAutomaticOverdraftLimit());
+        Pages.editAccountPage().setCashCollDaysBeforeChg(account.getCashCollDaysBeforeChg());
+        Pages.editAccountPage().setCashCollInterestRate(account.getCashCollInterestRate());
+        Pages.editAccountPage().setCashCollInterestChg(account.getCashCollInterestChg());
+        Pages.editAccountPage().setCashCollFloat(account.getCashCollFloat());
+        Pages.editAccountPage().setPositivePay(account.getPositivePay());
+    }
+
+    public void selectValuesInDropdownFieldsThatWereNotAvailableDuringSavingsAccountCreation(Account account) {
+        setFederalWHReason(account);
+        setReasonATMChargeWaived(account);
+        setReasonDebitCardChargeWaived(account);
+    }
+
+    public void fillInInputFieldsThatWereNotAvailableDuringSavingsAccountCreation(Account account) {
+        Pages.editAccountPage().setPrintStatementNextUpdate(account.getPrintStatementNextUpdate());
+        Pages.editAccountPage().setInterestPaidYTD(account.getInterestPaidYTD());
+        Pages.editAccountPage().setFederalWHPercent(account.getFederalWHPercent());
+        Pages.editAccountPage().setNumberOfATMCardsIssued(account.getNumberOfATMCardsIssued());
+        Pages.editAccountPage().setUserDefinedField_1(account.getUserDefinedField_1());
+        Pages.editAccountPage().setUserDefinedField_2(account.getUserDefinedField_2());
+        Pages.editAccountPage().setUserDefinedField_3(account.getUserDefinedField_3());
+        Pages.editAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
+        Pages.editAccountPage().setNumberOfDebitCardsIssued(account.getNumberOfDebitCardsIssued());
+    }
+
 }

@@ -2,6 +2,7 @@ package com.nymbus.core.utils;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.text.DecimalFormat;
 import java.util.Random;
 
 public class Generator {
@@ -51,5 +52,11 @@ public class Generator {
         if (to >= from)
             tmp = from + Math.round((Math.random() * (to - from)));
         return tmp;
+    }
+
+    public static String getRandomFormattedDecimalStringValue(String pattern) {
+        Random ran = new Random();
+        DecimalFormat df = new DecimalFormat(pattern);
+        return String.valueOf(df.format(ran.nextFloat() * 100));
     }
 }

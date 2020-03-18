@@ -24,7 +24,7 @@ public class CreateAccount {
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         setCurrentOfficer(account);
         setBankBranch(account);
-        account.setInterestRate(Pages.addAccountPage().generateInterestRateValue());
+//        account.setInterestRate(Pages.addAccountPage().generateInterestRateValue());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
         setCallClassCode(account);
@@ -42,13 +42,13 @@ public class CreateAccount {
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         setCurrentOfficer(account);
         setBankBranch(account);
-        account.setInterestRate(Pages.addAccountPage().generateInterestRateValue());
+//        account.setInterestRate(account.getInterestRate());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
         setCallClassCode(account);
         setChargeOrAnalyze(account);
         setAccountAnalysis(account);
-        account.setEarningCreditRate(Pages.addAccountPage().generateEarningCreditRateValue());
+//        account.setEarningCreditRate(Pages.addAccountPage().generateEarningCreditRateValue());
         Pages.addAccountPage().setEarningCreditRate(account.getEarningCreditRate());
         Pages.addAccountPage().setOptInOutDateValue(account.getOptInOutDate());
         Pages.addAccountPage().clickSaveAccountButton();
@@ -65,6 +65,32 @@ public class CreateAccount {
         setBankBranch(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
+    }
+
+    public void selectValuesInDropdownFieldsRequiredForSavingsAccount(Account account) {
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        setInterestFrequency(account);
+        setStatementCycle(account);
+        setCorrespondingAccount(account);
+        setCallClassCode(account);
+    }
+
+    public void selectValuesInDropdownFieldsRequiredForCheckingAccount(Account account) {
+        setProduct(account);
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        setStatementCycle(account);
+        setCallClassCode(account);
+        setChargeOrAnalyze(account);
+        setAccountAnalysis(account);
+    }
+
+    public void fillInInputFieldsRequiredForCheckingAccount(Account account) {
+        Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
+        Pages.addAccountPage().setInterestRate(account.getInterestRate());
+        Pages.addAccountPage().setEarningCreditRate(account.getEarningCreditRate());
     }
 
     public void setCorrespondingAccount(Account account) {
