@@ -1,6 +1,5 @@
 package com.nymbus.frontoffice.clientsearch;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
@@ -21,25 +20,26 @@ import static org.testng.Assert.assertTrue;
 @Epic("Frontoffice")
 @Feature("Clients search")
 @Owner("Dmytro")
-public class C22526_SearchByName extends BaseTest {
+public class C22526_SearchByNameTest extends BaseTest {
     private Client client;
 
     @BeforeMethod
     public void preCondition() {
+
+        // Set up Client
         client = new Client();
         client.setFirstName("Anna");
         client.setLastName("Adams");
-
-        Selenide.open(Constants.URL);
-
-//        LOG.info("Step 1: Log in to the system as the User from the precondition");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        Pages.navigationPage().waitForUserMenuVisible();
     }
 
     @Test(description = "C22526, Search client by name")
     public void searchByName() {
-//        LOG.info("Step 2: Click within search field and try to search for an existing client (by first name)");
+
+        logInfo("Step 1: Log in to the system as the User from the precondition");
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Pages.navigationPage().waitForUserMenuVisible();
+
+        logInfo("Step 2: Click within search field and try to search for an existing client (by first name)");
         final String firstNameLetters = client.getFirstName().substring(0, 3);
         Pages.clientsPage().typeToClientsSearchInputField(firstNameLetters);
 
@@ -48,18 +48,19 @@ public class C22526_SearchByName extends BaseTest {
         assertTrue(Pages.clientsPage().isLoadMoreResultsButtonVisible());
 
         List<TempClient> clients = Actions.clientPageActions().getAllClientsFromLookupResults(lookupResultsCount);
-        clients.stream().forEach(c -> assertTrue(c.getFirstName().contains(firstNameLetters)));
+        clients.stream().forEach(c -> System.out.println(c.getFirstName()));
+        clients.stream().forEach(c -> assertTrue(c.getFirstName().contains(firstNameLetters) || c.getLastName().contains(firstNameLetters)));
 
-//        LOG.info("Step 3: Click [Search] button");
+        logInfo("Step 3: Click [Search] button");
         Pages.clientsPage().clickOnSearchButton();
         int searchResults = Pages.clientsSearchResultsPage().getSearchResultsCount();
         Assert.assertEquals(searchResults, 10);
         assertTrue(Pages.clientsSearchResultsPage().isLoadMoreResultsButtonVisible());
 
         clients = Actions.clientsSearchResultsPageActions().getAllClientsFromResult(searchResults);
-        clients.stream().forEach(c -> assertTrue(c.getFirstName().contains(firstNameLetters)));
+        clients.stream().forEach(c -> assertTrue(c.getFirstName().contains(firstNameLetters) || c.getLastName().contains(firstNameLetters)));
 
-//        LOG.info("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
+        logInfo("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
         Pages.clientsPage().clickOnSearchInputFieldClearButton();
 
         final String lastNameLetters = client.getLastName().substring(0, 3);
@@ -70,6 +71,6 @@ public class C22526_SearchByName extends BaseTest {
         assertTrue(Pages.clientsPage().isLoadMoreResultsButtonVisible());
 
         clients = Actions.clientPageActions().getAllClientsFromLookupResults(lookupResultsCount);
-        clients.stream().forEach(c -> assertTrue(c.getLastName().contains(lastNameLetters)));
+        clients.stream().forEach(c -> assertTrue(c.getLastName().contains(lastNameLetters) || c.getLastName().contains(lastNameLetters)));
     }
 }

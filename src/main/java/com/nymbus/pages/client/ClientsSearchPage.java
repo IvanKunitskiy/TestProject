@@ -63,6 +63,7 @@ public class ClientsSearchPage extends PageTools {
 
     @Step("Verify is 'Load Mode Results' button visible")
     public boolean isLoadMoreResultsButtonVisible() {
+        waitForElementVisibility(loadMoreResultsButton);
         return isElementVisible(loadMoreResultsButton);
     }
 
