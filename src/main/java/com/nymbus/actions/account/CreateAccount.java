@@ -24,7 +24,6 @@ public class CreateAccount {
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         setCurrentOfficer(account);
         setBankBranch(account);
-//        account.setInterestRate(Pages.addAccountPage().generateInterestRateValue());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
         setCallClassCode(account);
@@ -42,13 +41,11 @@ public class CreateAccount {
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         setCurrentOfficer(account);
         setBankBranch(account);
-//        account.setInterestRate(account.getInterestRate());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
         setCallClassCode(account);
         setChargeOrAnalyze(account);
         setAccountAnalysis(account);
-//        account.setEarningCreditRate(Pages.addAccountPage().generateEarningCreditRateValue());
         Pages.addAccountPage().setEarningCreditRate(account.getEarningCreditRate());
         Pages.addAccountPage().setOptInOutDateValue(account.getOptInOutDate());
         Pages.addAccountPage().clickSaveAccountButton();
