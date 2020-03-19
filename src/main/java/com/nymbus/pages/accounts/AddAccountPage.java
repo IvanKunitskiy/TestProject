@@ -38,7 +38,10 @@ public class AddAccountPage extends PageTools {
     private By optInOutDateCalendarIcon = By.xpath("//div[input[@id='dbcodpstatusdate']]/div[span[@class='nyb-icon-calendar']]");
     private By optInOutDateInputField = By.xpath("//input[@id='dbcodpstatusdate']");
     private By dateOpenedField = By.xpath("//input[@id='dateopened']");
-
+    private By dateOfBirth = By.xpath("//input[@id='dateofbirth']");
+    private By iraDistributionCode = By.xpath("//div[@id='iradistributioncode']//a//span/span");
+    private By iraDistributionFrequency = By.xpath("//div[@id='iradistributionfrequency']//a//span/span");
+    private By iraDistributionAmountField = By.xpath("//input[@id='iradistributionamount']");
 
     /**
      * Account holders and signers
@@ -82,6 +85,58 @@ public class AddAccountPage extends PageTools {
     private By correspondingAccountSelectorButton = By.xpath("//div[@id='correspondingaccountid']");
     private By correspondingAccountList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By correspondingAccountSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By iraDistributionFrequencySelectorButton = By.xpath("//div[@id='iradistributionfrequency']");
+    private By iraDistributionFrequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By iraDistributionFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By iraDistributionCodeSelectorButton = By.xpath("//div[@id='iradistributioncode']");
+    private By iraDistributionCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By iraDistributionCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    @Step("Click the 'IRA Distribution Frequency' option")
+    public void clickIRADistributionCodeSelectorOption(String iraDistributionCodeOption) {
+        waitForElementVisibility(iraDistributionCodeSelectorOption, iraDistributionCodeOption);
+        waitForElementClickable(iraDistributionCodeSelectorOption, iraDistributionCodeOption);
+        click(iraDistributionCodeSelectorOption, iraDistributionCodeOption);
+    }
+
+    @Step("Returning list of 'IRA Distribution Frequency' options")
+    public List<String> getIRADistributionCodeList() {
+        waitForElementVisibility(iraDistributionCodeList);
+        waitForElementClickable(iraDistributionCodeList);
+        return getElementsText(iraDistributionCodeList);
+    }
+
+    @Step("Click the 'IRA Distribution Frequency' selector button")
+    public void clickIRADistributionCodeSelectorButton() {
+        waitForElementVisibility(iraDistributionCodeSelectorButton);
+        scrollToElement(iraDistributionCodeSelectorButton);
+        waitForElementClickable(iraDistributionCodeSelectorButton);
+        click(iraDistributionCodeSelectorButton);
+    }
+
+    @Step("Click the 'IRA Distribution Frequency' option")
+    public void clickIRADistributionFrequencySelectorOption(String iraDistributionFrequencyOption) {
+        waitForElementVisibility(iraDistributionFrequencySelectorOption, iraDistributionFrequencyOption);
+        waitForElementClickable(iraDistributionFrequencySelectorOption, iraDistributionFrequencyOption);
+        click(iraDistributionFrequencySelectorOption, iraDistributionFrequencyOption);
+    }
+
+    @Step("Returning list of 'IRA Distribution Frequency' options")
+    public List<String> getIRADistributionFrequencyList() {
+        waitForElementVisibility(iraDistributionFrequencyList);
+        waitForElementClickable(iraDistributionFrequencyList);
+        return getElementsText(iraDistributionFrequencyList);
+    }
+
+    @Step("Click the 'IRA Distribution Frequency' selector button")
+    public void clickIRADistributionFrequencySelectorButton() {
+        waitForElementVisibility(iraDistributionFrequencySelectorButton);
+        scrollToElement(iraDistributionFrequencySelectorButton);
+        waitForElementClickable(iraDistributionFrequencySelectorButton);
+        click(iraDistributionFrequencySelectorButton);
+    }
 
     @Step("Click the 'Corresponding Account' option")
     public void clickCorrespondingAccountSelectorOption(String correspondingAccountOption) {
@@ -127,7 +182,16 @@ public class AddAccountPage extends PageTools {
         click(interestFrequencySelectorButton);
     }
 
-    @Step("Set 'DBC ODP Opt In/Out Status Date' value")
+    @Step("Set 'Date Opened' value")
+    public void setDateNextIRADistributionValue(String dateNextIRADistributionValue) {
+        waitForElementVisibility(dateOpenedField);
+        waitForElementClickable(dateOpenedField);
+        typeWithoutWipe("", dateOpenedField);
+        SelenideTools.sleep(1);
+        typeWithoutWipe(dateNextIRADistributionValue, dateOpenedField);
+    }
+
+    @Step("Set 'Date Opened' value")
     public void setDateOpenedValue(String dateOpenedValue) {
         waitForElementVisibility(dateOpenedField);
         waitForElementClickable(dateOpenedField);
@@ -172,12 +236,6 @@ public class AddAccountPage extends PageTools {
         waitForElementClickable(chargeOrAnalyzeSelectorButton);
         click(chargeOrAnalyzeSelectorButton);
     }
-
-//    @Step("Generate 'Earning Credit Rate' value")
-//    public String generateEarningCreditRateValue() {
-//        Random ran = new Random();
-//        return String.valueOf(ran.nextInt(100));
-//    }
 
     @Step("Set 'Earning Credit Rate' option")
     public void setEarningCreditRate(String earningCreditRateValue) {
@@ -266,11 +324,33 @@ public class AddAccountPage extends PageTools {
         return getElementText(accountHolderAddress);
     }
 
+    @Step("Returning the 'Date Of Birth' value")
+    public String getDateOfBirth() {
+        waitForElementVisibility(dateOfBirth);
+        waitForElementClickable(dateOfBirth);
+        SelenideTools.sleep(2);
+        return getElementAttributeValue("value", dateOfBirth);
+    }
+
     @Step("Returning the 'Bank Branch' value")
     public String getBankBranch() {
         waitForElementVisibility(bankBranch);
         waitForElementClickable(bankBranch);
         return getElementText(bankBranch);
+    }
+
+    @Step("Returning the 'IRA Distribution Code' value")
+    public String getIRADistributionCode() {
+        waitForElementVisibility(iraDistributionCode);
+        waitForElementClickable(iraDistributionCode);
+        return getElementText(iraDistributionCode);
+    }
+
+    @Step("Returning the 'IRA Distribution Frequency' value")
+    public String getIRADistributionFrequency() {
+        waitForElementVisibility(iraDistributionFrequency);
+        waitForElementClickable(iraDistributionFrequency);
+        return getElementText(iraDistributionFrequency);
     }
 
     @Step("Click the 'Statement Cycle' option")
@@ -457,6 +537,13 @@ public class AddAccountPage extends PageTools {
         waitForElementVisibility(accountTitleField);
         waitForElementClickable(accountTitleField);
         type(accountTitleValue, accountTitleField);
+    }
+
+    @Step("Set 'IRA distribution amount' value")
+    public void setIRADistributionAmountValue(String iraDistributionAmountValue) {
+        waitForElementVisibility(iraDistributionAmountField);
+        waitForElementClickable(iraDistributionAmountField);
+        type(iraDistributionAmountValue, iraDistributionAmountField);
     }
 
     @Step("Click the 'Bank branch' selector button")

@@ -53,10 +53,30 @@ public class Account {
     private String interestFrequency;
     private String printStatementNextUpdate;
     private String interestPaidYTD;
+    private String iraDistributionFrequency;
+    private String iraDistributionCode;
+    private String iraDistributionAmount;
+    private String dateNextIRADistribution;
 
     public Account setDefaultAccountData() {
         Account account = new Account();
         // default account data
+
+        return account;
+    }
+
+    public Account setIRAAccountData() {
+        Account account = new Account();
+
+        account.setAddNewOption("Account");
+        account.setProductType("Savings Account");
+        account.setProduct("Traditional IRA Accumulation Acct");
+        account.setAccountTitle(Generator.genString(5));
+        account.setDateOpened("02/27/2020");
+        account.setIraDistributionCode("No Dist");
+        account.setIraDistributionFrequency("No Dist");
+        account.setIraDistributionAmount(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
+        account.setDateNextIRADistribution("02/27/2021");
 
         return account;
     }
@@ -507,5 +527,37 @@ public class Account {
 
     public void setInterestPaidYTD(String printInterestPaidYTD) {
         this.interestPaidYTD = printInterestPaidYTD;
+    }
+
+    public String getIraDistributionFrequency() {
+        return iraDistributionFrequency;
+    }
+
+    public void setIraDistributionFrequency(String iraDistributionFrequency) {
+        this.iraDistributionFrequency = iraDistributionFrequency;
+    }
+
+    public String getIraDistributionCode() {
+        return iraDistributionCode;
+    }
+
+    public void setIraDistributionCode(String iraDistributionCode) {
+        this.iraDistributionCode = iraDistributionCode;
+    }
+
+    public String getIraDistributionAmount() {
+        return iraDistributionAmount;
+    }
+
+    public void setIraDistributionAmount(String iraDistributionAmount) {
+        this.iraDistributionAmount = iraDistributionAmount;
+    }
+
+    public String getDateNextIRADistribution() {
+        return dateNextIRADistribution;
+    }
+
+    public void setDateNextIRADistribution(String dateNextIRADistribution) {
+        this.dateNextIRADistribution = dateNextIRADistribution;
     }
 }
