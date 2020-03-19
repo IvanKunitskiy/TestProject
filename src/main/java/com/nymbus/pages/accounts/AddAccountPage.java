@@ -13,7 +13,7 @@ public class AddAccountPage extends PageTools {
     private By productTypeSelectorButton = By.id("accounttype");
     private By productTypeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By productTypeList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By productSelectorButton = By.xpath("//*[@id='accountclasstype']");
+    private By productSelectorButton = By.id("accountclasstype");
     private By productList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By boxSizeSelectorButton = By.id("boxsize");
     private By boxSizeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
@@ -23,22 +23,22 @@ public class AddAccountPage extends PageTools {
     private By productTypeInputField = By.xpath("//div[@data-test-id='field-accounttype']//input[contains(@class, 'nb-select-search')]");
     private By accountNumberField = By.xpath("//input[@data-test-id='field-accountnumber']");
     private By accountTitleField = By.xpath("//input[@data-test-id='field-accounttitlemailinginstructions']");
-    private By bankBranchSelectorButton = By.xpath("//*[@id='bankbranch']");
+    private By bankBranchSelectorButton = By.id("bankbranch");
     private By bankBranchSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By saveAccountButton = By.xpath("//button[@data-test-id='action-save']");
     private By bankBranchList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By accountType = By.xpath("//div[@data-test-id='field-customertype']/a/span/span");
     private By dateOpened = By.xpath("//input[@data-test-id='field-dateopened']");
     private By productSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private By statementCycleSelectorButton = By.xpath("//*[@id='statementcycle']");
+    private By statementCycleSelectorButton = By.id("statementcycle");
     private By statementCycleList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By bankBranch = By.xpath("//div[@data-test-id='field-bankbranch']/a/span[contains(@class, 'ng-binding')]");
     private By statementFlagInput = By.xpath("//input[@data-test-id='field-statementflag']");
     private By interestRateInput = By.xpath("//input[@data-test-id='field-interestrate']");
     private By earningCreditRateInput = By.xpath("//input[@data-test-id='field-earningscreditrate']");
     private By optInOutDateCalendarIcon = By.xpath("//div[input[@id='dbcodpstatusdate']]/div[span[@class='nyb-icon-calendar']]");
-    private By optInOutDateInputField = By.xpath("//input[@id='dbcodpstatusdate']");
-    private By dateOpenedField = By.xpath("//input[@id='dateopened']");
+    private By optInOutDateInputField = By.xpath("dbcodpstatusdate");
+    private By dateOpenedField = By.id("dateopened");
 
 
     /**
@@ -77,7 +77,6 @@ public class AddAccountPage extends PageTools {
         waitForElementVisibility(dateOpenedField);
         waitForElementClickable(dateOpenedField);
         typeWithoutWipe("", dateOpenedField);
-//        wait(1);
         typeWithoutWipe(dateOpenedValue, dateOpenedField);
     }
 
@@ -86,7 +85,6 @@ public class AddAccountPage extends PageTools {
         waitForElementVisibility(optInOutDateInputField);
         waitForElementClickable(optInOutDateInputField);
         typeWithoutWipe("", optInOutDateInputField);
-//        wait(1);
         typeWithoutWipe(optInOutDateValue, optInOutDateInputField);
     }
 
@@ -175,7 +173,6 @@ public class AddAccountPage extends PageTools {
 
     @Step("Click the 'Account Analysis' selector button")
     public void clickAccountAnalysisSelectorButton() {
-//        wait(2);
         waitForElementVisibility(accountAnalysisSelectorButton);
         waitForElementClickable(accountAnalysisSelectorButton);
         click(accountAnalysisSelectorButton);
@@ -234,9 +231,7 @@ public class AddAccountPage extends PageTools {
 
     @Step("Returning the 'Bank Branch' value")
     public String getBankBranch() {
-        waitForElementVisibility(bankBranch);
-        waitForElementClickable(bankBranch);
-        return getElementText(bankBranch);
+        return getElementText(bankBranch).trim();
     }
 
     @Step("Click the 'Statement Cycle' option")
@@ -255,8 +250,7 @@ public class AddAccountPage extends PageTools {
 
     @Step("Click the 'Statement Cycle' selector button")
     public void clickStatementCycleSelectorButton() {
-        waitForElementVisibility(statementCycleSelectorButton);
-        waitForElementClickable(statementCycleSelectorButton);
+//        scrollToElement(statementCycleSelectorButton);
         click(statementCycleSelectorButton);
     }
 

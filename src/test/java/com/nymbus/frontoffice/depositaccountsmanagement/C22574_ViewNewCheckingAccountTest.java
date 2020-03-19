@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Deposit Accounts Management")
 @Owner("Dmytro")
-public class C22574_ViewNewCheckingAccount extends BaseTest {
+public class C22574_ViewNewCheckingAccountTest extends BaseTest {
 
     private Client client;
     private Account checkingAccount;

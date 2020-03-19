@@ -19,7 +19,7 @@ import java.util.Random;
 @Epic("Frontoffice")
 @Feature("Create clients")
 @Owner("Petro")
-public class C22542_CreateClientIndividualOfacFail extends BaseTest {
+public class C22542_CreateClientIndividualOfacFailTest extends BaseTest {
 
     private Client client;
 

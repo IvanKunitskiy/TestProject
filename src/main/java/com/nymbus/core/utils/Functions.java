@@ -9,6 +9,6 @@ public class Functions {
     }
 
     public static String getFilePathByName(String fileName) {
-        return new File("src/main/resources/files/" + fileName).getAbsolutePath();
+        return new File("src" + File.separator + "main" + File.separator + "resources" + File.separator + "client" + File.separator + fileName).getAbsolutePath();
     }
 }

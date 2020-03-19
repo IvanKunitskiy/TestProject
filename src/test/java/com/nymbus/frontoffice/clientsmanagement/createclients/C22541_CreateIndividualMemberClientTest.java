@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Create clients")
 @Owner("Petro")
-public class C22543_CreateIndividualNonMemberClient extends BaseTest {
+public class C22541_CreateIndividualMemberClientTest extends BaseTest {
 
     private Client client;
 
@@ -21,10 +21,10 @@ public class C22543_CreateIndividualNonMemberClient extends BaseTest {
     public void prepareClientData(){
         client = new Client().setDefaultClientData();
         client.setClientType("Individual");
-        client.setClientStatus("Non-member");
+        client.setClientStatus("Member");
     }
 
-    @Test(description = "C22543, Create Client - Individual - Non Member")
+    @Test(description = "C22541, Create Client - Individual - Member")
     @Severity(SeverityLevel.CRITICAL)
     public void firstTest() {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -33,5 +33,6 @@ public class C22543_CreateIndividualNonMemberClient extends BaseTest {
 
         Assert.assertEquals(ClientsActions.verifyClientDataActions().getIndividualClientData(), client,
                 "Client's data is not equals");
+
     }
 }

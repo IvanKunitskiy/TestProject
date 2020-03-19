@@ -4,7 +4,6 @@ import com.codeborne.selenide.*;
 import com.nymbus.core.allure.AllureLogger;
 import com.nymbus.core.utils.LocatorParser;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -166,7 +165,7 @@ public class PageTools extends AllureLogger {
     protected void scrollToElement(By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", elements --> " + byLocator(by, args));
         waitForElementVisibility(by);
-        Selenide.executeJavaScript("arguments[0].scrollIntoView();", byLocator(by, args));
+        getSelenideElement(by, args).scrollTo();
     }
 
     protected WebElement getWebElement(By by){

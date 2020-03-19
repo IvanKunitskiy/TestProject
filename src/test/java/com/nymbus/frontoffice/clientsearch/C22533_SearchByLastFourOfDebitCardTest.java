@@ -16,7 +16,7 @@ import java.util.List;
 @Epic("Frontoffice")
 @Feature("Clients search")
 @Owner("Dmytro")
-public class C22533_SearchByLastFourOfDebitCard extends BaseTest {
+public class C22533_SearchByLastFourOfDebitCardTest extends BaseTest {
 
     private Client client;
 

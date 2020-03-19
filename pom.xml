@@ -93,6 +93,7 @@
                         <systemProperties>
                             <client.resource.dir>${client.resource.dir}</client.resource.dir>
                         </systemProperties>
+                        <trimStackTrace>false</trimStackTrace>
                     </configuration>
                 </plugin>
 

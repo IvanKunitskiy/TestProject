@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Clients search")
 @Owner("Dmytro")
-public class C22530_SearchByLastFourOfAccountNumber extends BaseTest {
+public class C22530_SearchByLastFourOfAccountNumberTest extends BaseTest {
 
     private Client client;
 

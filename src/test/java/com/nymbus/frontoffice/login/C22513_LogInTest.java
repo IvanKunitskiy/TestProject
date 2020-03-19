@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Log In")
 @Owner("Petro")
-public class C22513_LogIn extends BaseTest {
+public class C22513_LogInTest extends BaseTest {
 
     @Test(description = "C22513, Log in")
     @Severity(SeverityLevel.CRITICAL)

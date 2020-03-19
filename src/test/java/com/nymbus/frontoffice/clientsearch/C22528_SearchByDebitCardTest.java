@@ -21,7 +21,7 @@ import static org.testng.Assert.assertTrue;
 @Epic("Frontoffice")
 @Feature("Clients search")
 @Owner("Dmytro")
-public class C22528_SearchByDebitCard extends BaseTest {
+public class C22528_SearchByDebitCardTest extends BaseTest {
     private Client client;
 
     @BeforeMethod

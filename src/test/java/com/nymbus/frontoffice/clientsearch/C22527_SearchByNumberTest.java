@@ -20,7 +20,7 @@ import static org.testng.Assert.assertTrue;
 @Epic("Frontoffice")
 @Feature("Clients search")
 @Owner("Dmytro")
-public class C22527_SearchByNumber extends BaseTest {
+public class C22527_SearchByNumberTest extends BaseTest {
     private Client client;
 
     @BeforeMethod

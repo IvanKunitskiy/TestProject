@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Create clients")
 @Owner("Petro")
-public class C22551_CreateIndividualConsumerClient extends BaseTest {
+public class C22551_CreateIndividualConsumerClientTest extends BaseTest {
 
     private Client client;
 

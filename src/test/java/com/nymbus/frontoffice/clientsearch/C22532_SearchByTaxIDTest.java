@@ -14,8 +14,9 @@ import org.testng.annotations.Test;
 
 @Epic("Frontoffice")
 @Feature("Clients search")
+@Severity(SeverityLevel.CRITICAL)
 @Owner("Dmytro")
-public class C22531_SearchByLastFourDigitsOfTaxID extends BaseTest {
+public class C22532_SearchByTaxIDTest extends BaseTest {
 
     private Client client;
 
@@ -24,9 +25,9 @@ public class C22531_SearchByLastFourDigitsOfTaxID extends BaseTest {
         client = new Client().setDefaultClientData();
     }
 
-    @Test(description = "C22531, Search by last four digits of TaxID")
-    @Severity(SeverityLevel.CRITICAL)
+    @Test
     public void searchByTaxID() {
+
         logInfo("Step 1: Log in to the system as the User from the precondition");
         Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -37,7 +38,7 @@ public class C22531_SearchByLastFourDigitsOfTaxID extends BaseTest {
         Pages.aSideMenuPage().clickClientMenuItem();
 
         logInfo("Step 2: Click within search field and try to search for an existing client (by 4 last digits of tax id number)");
-        final String taxIDQuery = clientTaxID.substring(5);
+        String taxIDQuery = clientTaxID.substring(5);
         Pages.clientsPage().typeToClientsSearchInputField(taxIDQuery);
 
         Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() > 0, "There are no relevant lookup results");
@@ -46,8 +47,20 @@ public class C22531_SearchByLastFourDigitsOfTaxID extends BaseTest {
         }
         Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), taxIDQuery), "Search results are not relevant");
 
-        logInfo("Step 3: Click the 'Search' button");
+        logInfo("Step 3: Clear the data from the field and try to search for an existing client (by full tax id number)");
+        Pages.clientsPage().clickOnSearchInputFieldClearButton();
+        Pages.clientsPage().typeToClientsSearchInputField(clientTaxID);
+        Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), clientTaxID), "Search results are not relevant");
+
+        logInfo("Step 4: Click the 'Search' button");
         Pages.clientsPage().clickOnSearchButton();
-        Assert.assertTrue(Pages.clientsSearchResultsPage().getClientIDsFromSearchResults().contains(clientID), "Client not found in search results by 'Client ID' criteria");
+
+        Assert.assertEquals(Pages.clientsSearchResultsPage().getClientFirstNameFromResultByIndex(1), client.getFirstName(), "First name is not relevant to the client");
+        Assert.assertEquals(Pages.clientsSearchResultsPage().getClientLastNameFromResultByIndex(1), client.getLastName(), "Last name is not relevant to the client");
+        Assert.assertEquals(Pages.clientsSearchResultsPage().getClientIDFromResultByIndex(1), clientID, "Client id is not relevant to the client");
+        Assert.assertEquals(Pages.clientsSearchResultsPage().getClientTypeFromResultByIndex(1), client.getClientType(), "Client type is not relevant to the client");
+        Assert.assertEquals(Pages.clientsSearchResultsPage().getClientAddressFromResultByIndex(1), client.getAddress().getAddress(), "Client address is not relevant to the client");
+        Assert.assertEquals(Pages.clientsSearchResultsPage().getClientAKAFromResultByIndex(1), client.getAKA_1(), "Client AKA is not relevant to the client");
     }
+
 }

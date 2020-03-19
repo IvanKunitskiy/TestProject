@@ -1,10 +1,10 @@
 package com.nymbus.actions.client;
 
+import com.nymbus.core.utils.Functions;
 import com.nymbus.models.client.Client;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 
-import java.io.File;
 import java.util.List;
 import java.util.Random;
 
@@ -31,8 +31,7 @@ public class CreateClient {
         setClientDetailsData(client);
         setDocumentation(client);
         Pages.addClientPage().clickSaveAndContinueButton();
-        Pages.addClientPage().uploadClientSignature(System.getProperty("client.resource.dir")
-                + File.separator + "clientSignature.png");
+        Pages.addClientPage().uploadClientSignature(Functions.getFilePathByName("clientSignature.png"));
         Pages.addClientPage().clickSaveAndContinueButton();
         Pages.addClientPage().clickViewMemberProfileButton();
     }
@@ -63,8 +62,7 @@ public class CreateClient {
         Pages.addClientPage().setSuffixField(client.getSuffix());
         Pages.addClientPage().setMaidenFamilyNameField(client.getMaidenFamilyName());
         Pages.addClientPage().setAkaField(client.getAKA_1());
-        Pages.addClientPage().uploadProfilePhoto(System.getProperty("client.resource.dir")
-                + File.separator + "profilePhoto.png");
+        Pages.addClientPage().uploadProfilePhoto(Functions.getFilePathByName("profilePhoto.png"));
         setGender(client);
         setEducation(client);
         setIncome(client);
@@ -317,8 +315,7 @@ public class CreateClient {
     }
 
     private void setDocumentation(Client client) {
-        Pages.addClientPage().uploadClientDocumentation(System.getProperty("client.resource.dir")
-                + File.separator + "clientDocument.png");
+        Pages.addClientPage().uploadClientDocumentation(Functions.getFilePathByName("clientDocument.png"));
         setDocumentationIDType(client);
         Pages.addClientPage().setDocumentIDNumberValue(client.getIdentityDocument().get(1).getNumber());
         setDocumentationIssuedBY(client);
@@ -341,7 +338,6 @@ public class CreateClient {
     }
 
     private void setDocumentationIssuedBY(Client client) {
-
         Pages.addClientPage().clickDocumentIssuedBySelectorButton();
         List<String> listOfIssuedBy = Pages.addClientPage().getDocumentIssuedByList();
 
@@ -354,7 +350,6 @@ public class CreateClient {
     }
 
     private void setDocumentationCountry(Client client) {
-
         Pages.addClientPage().clickDocumentCountrySelectorButton();
         List<String> listOfCountry = Pages.addClientPage().getDocumentCountryList();
 

@@ -18,7 +18,7 @@ import java.util.List;
 @Feature("Clients search")
 @Severity(SeverityLevel.CRITICAL)
 @Owner("Dmytro")
-public class C22529_SearchClientByID extends BaseTest {
+public class C22529_SearchClientByIDTest extends BaseTest {
 
     private Client client;
 

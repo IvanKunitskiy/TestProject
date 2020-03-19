@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 @Epic("Frontoffice")
 @Feature("Deposit Accounts Management")
 @Owner("Dmytro")
-public class C23637_CreateCheckingAccount extends BaseTest {
+public class C23637_CreateCheckingAccountTest extends BaseTest {
 
     private Client client;
     private Account checkingAccount;
@@ -35,7 +35,6 @@ public class C23637_CreateCheckingAccount extends BaseTest {
     @Test(description = "C23637, Create checking account")
     @Severity(SeverityLevel.CRITICAL)
     public void createCheckingAccount() {
-
         logInfo("Step 1: Log in to the system as the User from the precondition");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client);
