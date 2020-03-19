@@ -14,12 +14,13 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Clients search")
 @Owner("Dmytro")
-public class C22531_SearchByLastFourDigitsOfTaxID extends BaseTest {
+public class C22531_SearchByLastFourDigitsOfTaxIDTest extends BaseTest {
 
     private Client client;
 
     @BeforeMethod
     public void preConditions() {
+
         // Set up Client
         client = new Client().setDefaultClientData();
         client.setClientStatus("Member");
@@ -35,19 +36,13 @@ public class C22531_SearchByLastFourDigitsOfTaxID extends BaseTest {
     @Test(description = "C22531, Search by last four digits of TaxID")
     @Severity(SeverityLevel.CRITICAL)
     public void searchByTaxID() {
+
         logInfo("Step 1: Log in to the system as the User from the precondition");
-//        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-//
-//        ClientsActions.createClient().createClient(client);
-//        final String clientID = Pages.clientDetailsPage().getClientID();
-//        final String clientTaxID = client.getTaxID();
-//        Pages.aSideMenuPage().clickClientMenuItem();
 
         logInfo("Step 2: Click within search field and try to search for an existing client (by 4 last digits of tax id number)");
         final String taxIDQuery = client.getTaxID().substring(5);
         Pages.clientsPage().typeToClientsSearchInputField(taxIDQuery);
-
         Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() > 0, "There are no relevant lookup results");
         if (Pages.clientsPage().getAllLookupResults().size() == 8) {
             Assert.assertTrue(Pages.clientsPage().isLoadMoreResultsButtonVisible(), "'Load more results' button is not visible in search lookup list");
@@ -56,6 +51,6 @@ public class C22531_SearchByLastFourDigitsOfTaxID extends BaseTest {
 
         logInfo("Step 3: Click the 'Search' button");
         Pages.clientsPage().clickOnSearchButton();
-        Assert.assertTrue(Pages.clientsSearchResultsPage().getClientIDsFromSearchResults().contains(client.getTaxID()), "Client not found in search results by 'Client ID' criteria");
+        Assert.assertTrue(Pages.clientsSearchResultsPage().getClientIDsFromSearchResults().contains(client.getClientID()), "Client not found in search results by 'Client ID' criteria");
     }
 }
