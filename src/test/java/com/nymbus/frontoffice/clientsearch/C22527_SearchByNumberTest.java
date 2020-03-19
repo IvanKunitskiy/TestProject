@@ -1,6 +1,5 @@
 package com.nymbus.frontoffice.clientsearch;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
@@ -20,24 +19,23 @@ import static org.testng.Assert.assertTrue;
 @Epic("Frontoffice")
 @Feature("Clients search")
 @Owner("Dmytro")
-public class C22527_SearchByNumber extends BaseTest {
+public class C22527_SearchByNumberTest extends BaseTest {
     private Client client;
 
     @BeforeMethod
     public void preCondition() {
         client = new Client();
         client.setAccountNumber("28461564083");
-
-        Selenide.open(Constants.URL);
-
-//        LOG.info("Step 1: Log in to the system as the User from the precondition");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        Pages.navigationPage().waitForUserMenuVisible();
     }
 
     @Test(description = "C22527, Search client by number")
     public void searchByNumber() {
-//        LOG.info("Step 2: Click within search field and try to search for an existing client (by first name)");
+
+        logInfo("Step 1: Log in to the system as the User from the precondition");
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Pages.navigationPage().waitForUserMenuVisible();
+
+        logInfo("Step 2: Click within search field and try to search for an existing client (by first name)");
         String accountNumber = client.getAccountNumber();
         String lastFourNumbers = accountNumber.substring(accountNumber.length() - 4);
         Pages.clientsPage().typeToClientsSearchInputField(lastFourNumbers);
@@ -48,7 +46,7 @@ public class C22527_SearchByNumber extends BaseTest {
         List<String> clients = Pages.clientsPage().getAllLookupResults();
         clients.stream().forEach(s -> Assert.assertEquals(s.substring(s.length() - 4), lastFourNumbers));
 
-//        LOG.info("Step 3: Click [Search] button");
+        logInfo("Step 3: Click [Search] button");
         Pages.clientsPage().clickOnSearchButton();
         int searchResults = Pages.clientsSearchResultsPage().getAccountNumbersFromSearchResults().size();
         assertTrue(searchResults <= 10);
@@ -58,7 +56,7 @@ public class C22527_SearchByNumber extends BaseTest {
         clients = Pages.clientsSearchResultsPage().getAccountNumbersFromSearchResults();
         clients.stream().forEach(s -> assertTrue(s.substring(s.length() - 4).contains(lastFourNumbers)));
 
-//        LOG.info("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
+        logInfo("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
         Pages.clientsPage().clickOnSearchInputFieldClearButton();
 
         Pages.clientsPage().typeToClientsSearchInputField(client.getAccountNumber());
@@ -69,7 +67,7 @@ public class C22527_SearchByNumber extends BaseTest {
         clients = Pages.clientsPage().getAllLookupResults();
         Assert.assertEquals(clients.get(0), client.getAccountNumber());
 
-//        LOG.info("Step 5: Click [Search] button and pay attention to the search results list");
+        logInfo("Step 5: Click [Search] button and pay attention to the search results list");
         // TODO: Need to implement assertion for exist Client object
     }
 }
