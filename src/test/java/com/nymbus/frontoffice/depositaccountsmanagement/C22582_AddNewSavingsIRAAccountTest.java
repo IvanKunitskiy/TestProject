@@ -85,8 +85,8 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
         Assert.assertEquals(Pages.addAccountPage().getCurrentOfficer(), client.getSelectOfficer(), "'Current officer' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getBankBranch(), savingsIRAAccount.getBankBranch(), "'Bank branch' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getDateOfBirth(), client.getBirthDate(), "'Date of Birth' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getIRADistributionFrequency(), savingsIRAAccount.getIraDistributionFrequency(), "'Date of Birth' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getIRADistributionCode(), savingsIRAAccount.getIraDistributionCode(), "'Date of Birth' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getIRADistributionFrequency(), savingsIRAAccount.getIraDistributionFrequency(), "'IRA Distribution Frequency' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getIRADistributionCode(), savingsIRAAccount.getIraDistributionCode(), "'IRA Distribution Code' is prefilled with wrong value");
 
         logInfo("Step 7: Select any values in drop-down fields");
         AccountActions.createAccount().selectValuesInDropdownFieldsRequiredForSavingsIRAAccount(savingsIRAAccount);
@@ -105,19 +105,18 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
 
         logInfo("Step 11: Pay attention to the fields that were filled in during account creation");
         Pages.accountDetailsPage().clickMoreButton();
-
-        Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), savingsIRAAccount.getCurrentOfficer(), "'Current Officer' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), savingsIRAAccount.getBankBranch(), "'Bank Branch' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getInterestFrequency(), savingsIRAAccount.getInterestFrequency(), "'Interest Frequency' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getStatementCycleValueInEditMode(), savingsIRAAccount.getStatementCycle(), "'Statement Cycle' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getCorrespondingAccount(), savingsIRAAccount.getCorrespondingAccount(), "'Corresponding Account' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), savingsIRAAccount.getCallClassCode(), "'Call Class' value does not match");
-//        - IRA Distribution Frequency
-//        - IRA Distribution Code
+        Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), savingsIRAAccount.getCurrentOfficer(), "'Current Officer' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), savingsIRAAccount.getBankBranch(), "'Bank Branch' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getInterestFrequency(), savingsIRAAccount.getInterestFrequency(), "'Interest Frequency' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getStatementCycle(), savingsIRAAccount.getStatementCycle(), "'Statement Cycle' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getCorrespondingAccount(), savingsIRAAccount.getCorrespondingAccount(), "'Corresponding Account' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), savingsIRAAccount.getCallClassCode(), "'Call Class' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getIraDistributionFrequency(), savingsIRAAccount.getIraDistributionFrequency(), "' IRA Distribution Frequency' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getIraDistributionCode(), savingsIRAAccount.getIraDistributionCode(), "' IRA Distribution Code' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), savingsIRAAccount.getAccountTitle(), "'Title' value does not match");
-//        - IRA distribution amount - numeric field (12 char max)
-        Assert.assertEquals(Pages.editAccountPage().getDateOpenedValueInEditMode(), savingsIRAAccount.getDateOpened(), "'Date Opened' value does not match");
-//        - Select Date next IRA distribution as any date > Current Date
+        Assert.assertEquals(Pages.accountDetailsPage().getIraDistributionAmount(), savingsIRAAccount.getIraDistributionAmount(), "'IRA distribution amount' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), savingsIRAAccount.getDateOpened(), "'Date Opened' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getDateNextIRADistribution(), savingsIRAAccount.getDateNextIRADistribution(), "'Date next IRA distribution' value does not match");
 
         logInfo("Step 12: Click [Edit] button and pay attention to the fields that were filled in during account creation");
         Pages.accountDetailsPage().clickEditButton();
@@ -127,12 +126,12 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
         Assert.assertEquals(Pages.editAccountPage().getStatementCycleValueInEditMode(), savingsIRAAccount.getStatementCycle(), "'Statement Cycle' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getCorrespondingAccount(), savingsIRAAccount.getCorrespondingAccount(), "'Corresponding Account' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), savingsIRAAccount.getCallClassCode(), "'Call Class' value does not match");
-//        - IRA Distribution Frequency
-//        - IRA Distribution Code
+        Assert.assertEquals(Pages.editAccountPage().getIraDistributionFrequencyInEditMode(), savingsIRAAccount.getIraDistributionFrequency(), "' IRA Distribution Frequency' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getIraDistributionCodeInEditMode(), savingsIRAAccount.getIraDistributionCode(), "' IRA Distribution Code' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getAccountTitleValueInEditMode(), savingsIRAAccount.getAccountTitle(), "'Title' value does not match");
-//        - IRA distribution amount - numeric field (12 char max)
-//        - Select Date Opened as any date < Current Date
-//        - Select Date next IRA distribution as any date > Current Date
+        Assert.assertEquals(Pages.editAccountPage().getIraDistributionAmountInEditMode(), savingsIRAAccount.getIraDistributionAmount(), "'IRA distribution amount' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getDateOpenedValueInEditMode(), savingsIRAAccount.getDateOpened(), "'Date Opened' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getDateNextIRADistributionInEditMode(), savingsIRAAccount.getDateNextIRADistribution(), "'Date next IRA distribution' value does not match");
 
         logInfo("Step 13: Do not make any changes and go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();

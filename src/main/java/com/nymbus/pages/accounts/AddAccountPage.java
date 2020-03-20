@@ -40,6 +40,7 @@ public class AddAccountPage extends PageTools {
     private By iraDistributionCode = By.xpath("//div[@id='iradistributioncode']//a//span/span");
     private By iraDistributionFrequency = By.xpath("//div[@id='iradistributionfrequency']//a//span/span");
     private By iraDistributionAmountField = By.xpath("//input[@id='iradistributionamount']");
+    private By dateNextIRADistribution = By.xpath("//input[@id='datenextiradistribution']");
 
     /**
      * Account holders and signers
@@ -180,13 +181,13 @@ public class AddAccountPage extends PageTools {
         click(interestFrequencySelectorButton);
     }
 
-    @Step("Set 'Date Opened' value")
+    @Step("Set 'Date Next IRA Distribution' value")
     public void setDateNextIRADistributionValue(String dateNextIRADistributionValue) {
-        waitForElementVisibility(dateOpenedField);
-        waitForElementClickable(dateOpenedField);
-        typeWithoutWipe("", dateOpenedField);
+        waitForElementVisibility(dateNextIRADistribution);
+        waitForElementClickable(dateNextIRADistribution);
+        typeWithoutWipe("", dateNextIRADistribution);
         SelenideTools.sleep(1);
-        typeWithoutWipe(dateNextIRADistributionValue, dateOpenedField);
+        typeWithoutWipe(dateNextIRADistributionValue, dateNextIRADistribution);
     }
 
     @Step("Set 'Date Opened' value")
@@ -341,7 +342,7 @@ public class AddAccountPage extends PageTools {
     public String getIRADistributionCode() {
         waitForElementVisibility(iraDistributionCode);
         waitForElementClickable(iraDistributionCode);
-        return getElementText(iraDistributionCode);
+        return getElementText(iraDistributionCode).trim();
     }
 
     @Step("Returning the 'IRA Distribution Frequency' value")
