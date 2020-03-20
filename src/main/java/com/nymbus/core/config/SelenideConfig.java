@@ -33,7 +33,7 @@ public class SelenideConfig {
         Configuration.remote = PropertyLoader.get("remote_url");
         Configuration.browserCapabilities = getBrowserCapabilities();*/
 
-        Configuration.holdBrowserOpen = true;
+//        Configuration.holdBrowserOpen = true;
 
         Configuration.startMaximized = true;
         Configuration.browserCapabilities = getBrowserCapabilities();

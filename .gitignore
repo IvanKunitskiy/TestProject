@@ -5,6 +5,7 @@
 
 *.html
 
+build
 target
 test-output
 allure-results
