@@ -12,27 +12,25 @@ public class AddAccountPage extends PageTools {
     private By productTypeSelectorButton = By.id("accounttype");
     private By productTypeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By productTypeList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By productSelectorButton = By.xpath("//*[@id='accountclasstype']");
+    private By productSelectorButton = By.xpath("//div[@id='accountclasstype']");
     private By productList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By boxSizeSelectorButton = By.id("boxsize");
     private By boxSizeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By boxSizeList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By boxSizeField = By.xpath("//*[@id='boxsize']//input[contains(@class, 'nb-select-search')]");
-    private By selectProductTypeField = By.xpath("//*[@id='accounttype']/a/span[contains(text(), 'Select')]");
+    private By boxSizeField = By.xpath("//input[@id='boxsize']//input[contains(@class, 'nb-select-search')]");
     private By productTypeInputField = By.xpath("//div[@data-test-id='field-accounttype']//input[contains(@class, 'nb-select-search')]");
     private By accountNumberField = By.xpath("//input[@data-test-id='field-accountnumber']");
     private By accountTitleField = By.xpath("//input[@data-test-id='field-accounttitlemailinginstructions']");
-    private By bankBranchSelectorButton = By.xpath("//*[@id='bankbranch']");
+    private By bankBranchSelectorButton = By.xpath("//div[@id='bankbranch']");
     private By bankBranchSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By saveAccountButton = By.xpath("//button[@data-test-id='action-save']");
     private By bankBranchList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By accountType = By.xpath("//div[@data-test-id='field-customertype']/a/span/span");
     private By dateOpened = By.xpath("//input[@data-test-id='field-dateopened']");
     private By productSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private By statementCycleSelectorButton = By.xpath("//*[@id='statementcycle']");
+    private By statementCycleSelectorButton = By.xpath("//div[@id='statementcycle']");
     private By statementCycleList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By bankBranch = By.xpath("//div[@data-test-id='field-bankbranch']/a/span/span[contains(@class, 'ng-binding')]");
-    private By statementFlagInput = By.xpath("//input[@data-test-id='field-statementflag']");
     private By interestRateInput = By.xpath("//input[@data-test-id='field-interestrate']");
     private By earningCreditRateInput = By.xpath("//input[@data-test-id='field-earningscreditrate']");
     private By optInOutDateCalendarIcon = By.xpath("//div[input[@id='dbcodpstatusdate']]/div[span[@class='nyb-icon-calendar']]");
@@ -209,8 +207,8 @@ public class AddAccountPage extends PageTools {
 
     @Step("Click the 'Account Analysis' selector button")
     public void clickAccountAnalysisSelectorButton() {
-//        wait(2);
         waitForElementVisibility(accountAnalysisSelectorButton);
+        scrollToElement(accountAnalysisSelectorButton);
         waitForElementClickable(accountAnalysisSelectorButton);
         click(accountAnalysisSelectorButton);
     }
@@ -290,6 +288,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Statement Cycle' selector button")
     public void clickStatementCycleSelectorButton() {
         waitForElementVisibility(statementCycleSelectorButton);
+        scrollToElement(statementCycleSelectorButton);
         waitForElementClickable(statementCycleSelectorButton);
         click(statementCycleSelectorButton);
     }
@@ -403,6 +402,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Box size' selector button")
     public void clickBoxSizeSelectorButton() {
         waitForElementVisibility(boxSizeSelectorButton);
+        scrollToElement(boxSizeSelectorButton);
         waitForElementClickable(boxSizeSelectorButton);
         click(boxSizeSelectorButton);
     }
@@ -448,6 +448,7 @@ public class AddAccountPage extends PageTools {
     @Step("Set 'Account Number' value")
     public void setAccountNumberValue(String accountNumberValue) {
         waitForElementVisibility(accountNumberField);
+        scrollToElement(accountNumberField);
         waitForElementClickable(accountNumberField);
         type(accountNumberValue, accountNumberField);
     }
@@ -455,6 +456,7 @@ public class AddAccountPage extends PageTools {
     @Step("Set 'Account Title' value")
     public void setAccountTitleValue(String accountTitleValue) {
         waitForElementVisibility(accountTitleField);
+        scrollToElement(accountTitleField);
         waitForElementClickable(accountTitleField);
         type(accountTitleValue, accountTitleField);
     }
