@@ -58,13 +58,13 @@ public class ClientsSearchResultsPage extends PageTools {
         return getElementText(clientIDFromResultByIndex, index);
     }
 
-    @Step("Getting clients type from results by index '{index}'")
+    @Step("Getting clients basicinformation from results by index '{index}'")
     public String getClientTypeFromResultByIndex(int index) {
         waitForElementVisibility(clientTypeFromResultByIndex, index);
         return getElementText(clientTypeFromResultByIndex, index);
     }
 
-    @Step("Getting clients type from results by index '{index}'")
+    @Step("Getting clients basicinformation from results by index '{index}'")
     public String getClientAddressFromResultByIndex(int index) {
         waitForElementVisibility(clientAddressFromResultByIndex, index);
         return getElementText(clientAddressFromResultByIndex, index);
@@ -85,7 +85,7 @@ public class ClientsSearchResultsPage extends PageTools {
                 .collect(Collectors.toList());
     }
 
-    @Step("Getting client ids from search results")
+    @Step("Getting individualClient ids from search results")
     public List<String> getClientIDsFromSearchResults() {
         waitForElementVisibility(searchResults);
         return getElementsText(searchResults).stream()

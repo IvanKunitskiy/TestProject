@@ -7,6 +7,7 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.models.account.Account;
 import com.nymbus.models.client.Client;
+import com.nymbus.newmodels.account.Account;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;

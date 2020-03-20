@@ -775,6 +775,7 @@ public class AccountDetailsPage extends PageTools {
      */
     @Step("Click the 'Maintenance' tab")
     public void clickMaintenanceTab() {
+        wait(5);
         waitForElementVisibility(maintenanceTab);
         waitForElementClickable(maintenanceTab);
         click(maintenanceTab);

@@ -1,11 +1,10 @@
 package com.nymbus.core.utils;
 
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class DateTime {
 
@@ -79,6 +78,11 @@ public class DateTime {
         return DateTimeFormatter.ofPattern(String.format("%s d, yyyy", monthFormat), Locale.ENGLISH).format(LocalDate.parse(date));
     }
 
+    public static String parseDate(Date date, String pattern) {
+        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.ENGLISH);
+        return format.format(date);
+    }
+
     public static int getDaysInMonth(int monthNumber) {
         YearMonth yearMonthObject = YearMonth.of(Year.now().getValue(), monthNumber);
         return yearMonthObject.lengthOfMonth();
@@ -97,5 +101,24 @@ public class DateTime {
         }
 
         return daysList;
+    }
+
+    public static String plusMonthsToCurrentDateWithLastDayOfMonth(int months) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, months);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
+        String futureDate = simpleDateFormat.format(calendar.getTime());
+
+        return futureDate;
+    }
+
+    public static String plusMonthsToCurrentDateWithLastDayOfMonth(int months, String pattern) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, months);
+        calendar.add(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH) - calendar.get(Calendar.DAY_OF_MONTH));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.ENGLISH);
+        String futureDate = simpleDateFormat.format(calendar.getTime());
+
+        return futureDate;
     }
 }

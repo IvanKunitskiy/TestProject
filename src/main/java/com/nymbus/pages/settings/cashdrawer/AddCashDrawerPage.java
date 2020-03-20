@@ -1,65 +1,66 @@
 package com.nymbus.pages.settings.cashdrawer;
 
-import com.nymbus.core.base.PageTools;
+import com.nymbus.base.BasePage;
+import com.nymbus.locator.Locator;
+import com.nymbus.locator.XPath;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 
 import java.util.List;
 
-public class AddCashDrawerPage extends PageTools {
+public class AddCashDrawerPage extends BasePage {
 
     /**
      * Controls
      */
-    private By saveChangesButton = By.xpath("//button[contains(@class, 'saveAndContinue')]");
-    private By cancelButton = By.xpath("//button[contains(@ng-click, 'cancelForm')]");
+    private Locator saveChangesButton = new XPath("//button[contains(@class, 'saveAndContinue')]");
+    private Locator cancelButton = new XPath("//button[contains(@ng-click, 'cancelForm')]");
 
     /**
      * Cash drawer data
      */
-    private By nameField = By.xpath("//div[@id='bank.data.cashdrawer-(databean)name']" +
+    private Locator nameField = new XPath("//div[@id='bank.data.cashdrawer-(databean)name']" +
             "//input[@name='field[(databean)name]']");
-    private By cashDrawerTypeField = By.xpath("//div[@id='bank.data.cashdrawer-cashdrawertype']" +
-            "//input[@type='text']");
-    private By cashDrawerTypeList = By.xpath("//div[@id='bank.data.cashdrawer-cashdrawertype']" +
+    private Locator cashDrawerTypeField = new XPath("//div[@id='bank.data.cashdrawer-cashdrawertype']" +
+            "//input[@basicinformation='text']");
+    private Locator cashDrawerTypeList = new XPath("//div[@id='bank.data.cashdrawer-cashdrawertype']" +
             "//li[contains(@class, 'xwidget_item')]/a");
-    private By cashDrawerTypeSelectorButton = By.xpath("//div[@id='bank.data.cashdrawer-cashdrawertype']" +
+    private Locator cashDrawerTypeSelectorButton = new XPath("//div[@id='bank.data.cashdrawer-cashdrawertype']" +
             "//div[contains(@class, 'action_icon')]");
-    private By cashDrawerTypeSelectorOption = By.xpath("//div[@id='bank.data.cashdrawer-cashdrawertype']" +
+    private Locator cashDrawerTypeSelectorOption = new XPath("//div[@id='bank.data.cashdrawer-cashdrawertype']" +
             "//ul/li/a[contains(text(),'%s')]");
-    private By defaultUserField = By.xpath("//div[@id='bank.data.cashdrawer-defaultuserid']" +
-            "//input[@type='text']");
-    private By defaultUserList = By.xpath("//div[@id='bank.data.cashdrawer-defaultuserid']" +
+    private Locator defaultUserField = new XPath("//div[@id='bank.data.cashdrawer-defaultuserid']" +
+            "//input[@basicinformation='text']");
+    private Locator defaultUserList = new XPath("//div[@id='bank.data.cashdrawer-defaultuserid']" +
             "//li[contains(@class, 'xwidget_item')]/a");
-    private By defaultUserSearchButton = By.xpath("//div[@id='bank.data.cashdrawer-defaultuserid']" +
+    private Locator defaultUserSearchButton = new XPath("//div[@id='bank.data.cashdrawer-defaultuserid']" +
             "//div[contains(@class, 'action_icon')]");
-    private By defaultUserOption = By.xpath("//div[@id='bank.data.cashdrawer-defaultuserid']" +
+    private Locator defaultUserOption = new XPath("//div[@id='bank.data.cashdrawer-defaultuserid']" +
             "//ul/li/a[contains(text(),'%s')]");
-    private By brandField = By.xpath("//div[@id='bank.data.cashdrawer-bankbranchid']" +
-            "//input[@type='text']");
-    private By brandSelectorButton = By.xpath("//div[@id='bank.data.cashdrawer-bankbranchid']" +
+    private Locator brandField = new XPath("//div[@id='bank.data.cashdrawer-bankbranchid']" +
+            "//input[@basicinformation='text']");
+    private Locator brandSelectorButton = new XPath("//div[@id='bank.data.cashdrawer-bankbranchid']" +
             "//div[contains(@class, 'action_icon')]");
-    private By brandList = By.xpath("//div[@id='bank.data.cashdrawer-bankbranchid']" +
+    private Locator brandList = new XPath("//div[@id='bank.data.cashdrawer-bankbranchid']" +
             "//li[contains(@class, 'xwidget_item')]/a");
-    private By brandSelectorOption = By.xpath("//div[@id='bank.data.cashdrawer-bankbranchid']" +
+    private Locator brandSelectorOption = new XPath("//div[@id='bank.data.cashdrawer-bankbranchid']" +
             "//ul/li/a[contains(text(),'%s')]");
-    private By locationField = By.xpath("//div[@id='bank.data.cashdrawer-locationid']" +
-            "//input[@type='text']");
-    private By locationList = By.xpath("//div[@id='bank.data.cashdrawer-locationid']" +
+    private Locator locationField = new XPath("//div[@id='bank.data.cashdrawer-locationid']" +
+            "//input[@basicinformation='text']");
+    private Locator locationList = new XPath("//div[@id='bank.data.cashdrawer-locationid']" +
             "//li[contains(@class, 'xwidget_item')]/a");
-    private By locationSelectorButton = By.xpath("//div[@id='bank.data.cashdrawer-locationid']" +
+    private Locator locationSelectorButton = new XPath("//div[@id='bank.data.cashdrawer-locationid']" +
             "//div[contains(@class, 'action_icon')]");
-    private By locationSelectorOption = By.xpath("//div[@id='bank.data.cashdrawer-locationid']" +
+    private Locator locationSelectorOption = new XPath("//div[@id='bank.data.cashdrawer-locationid']" +
             "//ul/li/a[contains(text(),'%s')]");
-    private By glAccountNumberField = By.xpath("//div[@id='bank.data.cashdrawer-glaccountid']" +
-            "//input[@type='text']");
-    private By glAccountNumberList = By.xpath("//div[@id='bank.data.cashdrawer-glaccountid']" +
+    private Locator glAccountNumberField = new XPath("//div[@id='bank.data.cashdrawer-glaccountid']" +
+            "//input[@basicinformation='text']");
+    private Locator glAccountNumberList = new XPath("//div[@id='bank.data.cashdrawer-glaccountid']" +
             "//li[contains(@class, 'xwidget_item')]/a");
-    private By glAccountNumberSearchButton = By.xpath("//div[@id='bank.data.cashdrawer-glaccountid']" +
+    private Locator glAccountNumberSearchButton = new XPath("//div[@id='bank.data.cashdrawer-glaccountid']" +
             "//div[contains(@class, 'action_icon')]");
-    private By glAccountNumberOption = By.xpath("//div[@id='bank.data.cashdrawer-glaccountid']" +
+    private Locator glAccountNumberOption = new XPath("//div[@id='bank.data.cashdrawer-glaccountid']" +
             "//ul/li/a[contains(text(),'%s')]");
-    private By floatingToggle = By.xpath("//div[@id='bank.data.cashdrawer-floating']//div[input[@type='checkbox']]");
+    private Locator floatingToggle = new XPath("//div[@id='bank.data.cashdrawer-floating']//div[input[@basicinformation='checkbox']]");
 
     /**
      * Actions with controls
@@ -99,8 +100,8 @@ public class AddCashDrawerPage extends PageTools {
         click(defaultUserSearchButton);
     }
 
-    @Step("Returning list of cash drawer's type")
-    public List<String> getCashDrawerTypeList() {
+    @Step("Returning list of cash drawer's basicinformation")
+    public List<String> getCashDrawerTypeList(){
         waitForElementVisibility(cashDrawerTypeList);
         waitForElementClickable(cashDrawerTypeList);
         return getElementsText(cashDrawerTypeList);
@@ -127,7 +128,7 @@ public class AddCashDrawerPage extends PageTools {
     }
 
     @Step("Returning list of default users")
-    public List<String> getDefaultUserList() {
+    public List<String> getDefaultUserList(){
         waitForElementVisibility(defaultUserList);
         waitForElementClickable(defaultUserList);
         return getElementsText(defaultUserList);
@@ -154,7 +155,7 @@ public class AddCashDrawerPage extends PageTools {
     }
 
     @Step("Returning list of branchs")
-    public List<String> getBranchList() {
+    public List<String> getBranchList(){
         waitForElementVisibility(brandList);
         waitForElementClickable(brandList);
         return getElementsText(brandList);
@@ -181,7 +182,7 @@ public class AddCashDrawerPage extends PageTools {
     }
 
     @Step("Returning list of locations")
-    public List<String> getLocationList() {
+    public List<String> getLocationList(){
         waitForElementVisibility(locationList);
         waitForElementClickable(locationList);
         return getElementsText(locationList);
@@ -208,7 +209,7 @@ public class AddCashDrawerPage extends PageTools {
     }
 
     @Step("Returning list of GL Account Number")
-    public List<String> getGLAccountNumberList() {
+    public List<String> getGLAccountNumberList(){
         waitForElementVisibility(glAccountNumberList);
         waitForElementClickable(glAccountNumberList);
         return getElementsText(glAccountNumberList);
@@ -230,7 +231,7 @@ public class AddCashDrawerPage extends PageTools {
     @Step("Checking is 'Floating' option activated")
     public boolean isFloatingOptionActivated() {
         return getElementAttributeValue("value",
-                By.xpath("//div[@id='bank.data.cashdrawer-floating']//div[contains(@class, 'field_container')]/input"))
+                new XPath("//div[@id='bank.data.cashdrawer-floating']//div[contains(@class, 'field_container')]/input"))
                 .contains("1");
     }
 

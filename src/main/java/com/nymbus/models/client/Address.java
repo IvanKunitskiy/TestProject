@@ -29,7 +29,7 @@ public class Address {
     @Override
     public String toString() {
         return "Address{" +
-                "type='" + type + '\'' +
+                "basicinformation='" + type + '\'' +
                 ", country='" + country + '\'' +
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +

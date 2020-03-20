@@ -24,7 +24,7 @@ public class CashDrawer {
     public String toString() {
         return "CashDrawer{" +
                 "name='" + name + '\'' +
-                ", type='" + type + '\'' +
+                ", basicinformation='" + type + '\'' +
                 ", defaultUser='" + defaultUser + '\'' +
                 ", branch='" + branch + '\'' +
                 ", location='" + location + '\'' +

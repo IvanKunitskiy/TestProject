@@ -37,7 +37,7 @@ public class IdentityDocument {
     @Override
     public String toString() {
         return "IdentityDocument{" +
-                "type='" + type + '\'' +
+                "basicinformation='" + type + '\'' +
                 ", number='" + number + '\'' +
                 ", issuedBy='" + issuedBy + '\'' +
                 ", country='" + country + '\'' +

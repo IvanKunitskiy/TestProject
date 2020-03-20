@@ -1,4 +1,4 @@
-package com.nymbus.models.account;
+package com.nymbus.newmodels.account;
 
 import com.nymbus.core.utils.Generator;
 

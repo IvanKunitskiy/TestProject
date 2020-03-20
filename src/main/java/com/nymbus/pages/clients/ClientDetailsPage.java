@@ -16,6 +16,7 @@ public class ClientDetailsPage extends PageTools {
     private By profileTab = By.id("app-customer-profile");
     private By documentsTab = By.id("app-customer-documents");
     private By accountsTab = By.id("app-customer-accounts");
+    private By maintenanceTab = By.id("app-customer-maintenance");
 
     /**
      * Profile Tab
@@ -82,6 +83,19 @@ public class ClientDetailsPage extends PageTools {
     private By addNewSelectorOption = By.xpath("//div[@id='newAccountOrCreditPlan']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
 
+    /**
+     * Maintenance Tab
+     */
+    private Locator newDebitCardButton = new XPath("//button[span[text()='New Debit Card']]");
+    private Locator viewAllCardsButton = new XPath("//button[span[text()='View All Cards']]");
+    private Locator cardList = new XPath("//tbody/tr");
+    // Card list
+    private Locator debitCardNumber = new XPath("//tbody/tr/td[1]//span");
+    private Locator nameOfCardColumn = new XPath("//tbody/tr[1]/td[2]");
+    private Locator secondLineEmbossingColumn = new XPath("//tbody/tr[1]/td[3]");
+    private Locator expirationDateColumn = new XPath("//tbody/tr[1]/td[4]");
+    private Locator cardStatusColumn = new XPath("//tbody/tr[1]/td[5]");
+
     @Step("Wait for Client Details page loaded")
     public void waitForPageLoaded() {
         waitForElementVisibility(profileForm);
@@ -112,6 +126,13 @@ public class ClientDetailsPage extends PageTools {
         click(accountsTab);
     }
 
+
+    @Step("Click 'Maintenance' tab")
+    public void clickOnMaintenanceTab() {
+        waitForElementVisibility(maintenanceTab);
+        waitForElementClickable(maintenanceTab);
+        click(maintenanceTab);
+    }
 
     /**
      * Profile Tab
@@ -393,7 +414,6 @@ public class ClientDetailsPage extends PageTools {
     /**
      * Accounts Tab
      */
-
     @Step("Click the 'Add New' button")
     public void clickAddNewButton() {
         waitForElementVisibility(addNewButton);
@@ -428,5 +448,54 @@ public class ClientDetailsPage extends PageTools {
         waitForElementVisibility(addNewSelectorOption, addNewValue);
         waitForElementClickable(addNewSelectorOption, addNewValue);
         click(addNewSelectorOption, addNewValue);
+    }
+
+    @Step("Click on 'New Debit Card' button")
+    public void clickOnNewDebitCardButton() {
+        waitForElementVisibility(newDebitCardButton);
+        click(newDebitCardButton);
+    }
+
+    @Step("Click on 'View All Cards' button")
+    public void clickOnViewAllCardsButton() {
+        waitForElementVisibility(viewAllCardsButton);
+        click(viewAllCardsButton);
+    }
+
+    @Step("Checking is card list displayed")
+    public boolean isCardListDisplayed() {
+        wait(5);
+        return !getElements(cardList).isEmpty();
+    }
+
+    // Card list
+    @Step("Getting debit card number")
+    public String getDebitCardNumber() {
+        waitForElementVisibility(debitCardNumber);
+        return getElementText(debitCardNumber);
+    }
+
+    @Step("Getting debit card 'Name of Card'")
+    public String getNameOfCard() {
+        waitForElementVisibility(nameOfCardColumn);
+        return getElementText(nameOfCardColumn);
+    }
+
+    @Step("Getting debit card 'Second Line Embossing'")
+    public String getSecondLineEmbossing() {
+        waitForElementVisibility(secondLineEmbossingColumn);
+        return getElementText(secondLineEmbossingColumn);
+    }
+
+    @Step("Getting debit card 'Second Line Embossing'")
+    public String getExpirationDate() {
+        waitForElementVisibility(expirationDateColumn);
+        return getElementText(expirationDateColumn);
+    }
+
+    @Step("Getting debit card 'Card Status'")
+    public String getCardStatus() {
+        waitForElementVisibility(cardStatusColumn);
+        return getElementText(cardStatusColumn);
     }
 }

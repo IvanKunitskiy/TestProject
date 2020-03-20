@@ -36,21 +36,21 @@ public class C22542_CreateClientIndividualOfacFailTest extends BaseTest {
                 "dqlQuery=count%3A+100%0D%0A" +
                 "from%3A+security.ofac.entry%0D%0A" +
                 "where%3A+%0D%0A" +
-                "-+.sdntype->name%3A+Individual&source=");
+                "-+.sdntype->name%3A+IndividualType&source=");
 
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
 
         int index = (new Random().nextInt(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult())) + 1;
 
-        client.setClientType("Individual");
+        client.setClientType("IndividualType");
         client.setClientStatus("Member");
         client.setFirstName(WebAdminPages.rulesUIQueryAnalyzerPage().getFirstNameByIndex(index));
         client.setMiddleName("");
         client.setLastName(WebAdminPages.rulesUIQueryAnalyzerPage().getLastNameByIndex(index));
     }
 
-    @Test(description = "C22542, Create Client - Individual - Ofac check fail")
+    @Test(description = "C22542, Create Client - IndividualType - Ofac check fail")
     @Severity(SeverityLevel.CRITICAL)
     public void firstTest() {
         Selenide.open(Constants.URL);
