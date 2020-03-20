@@ -1,9 +1,9 @@
 package com.nymbus.actions.modalwindow;
 
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.client.other.account.type.CHKAccount;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
 import com.nymbus.pages.Pages;
-import com.nymbus.util.DateTime;
 import org.testng.Assert;
 
 public class DebitCardModalWindowActions {

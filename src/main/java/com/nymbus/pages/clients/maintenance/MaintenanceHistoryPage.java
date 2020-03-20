@@ -1,13 +1,12 @@
 package com.nymbus.pages.clients.maintenance;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.locator.Locator;
-import com.nymbus.locator.XPath;
+import com.nymbus.core.base.PageTools;
 import com.nymbus.newmodels.other.MaintenanceHistoryField;
+import org.openqa.selenium.By;
 
-public class MaintenanceHistoryPage extends BasePage {
-    private Locator oldValueByFieldName = new XPath("//span[text()='%s']/parent::td/parent::tr/td[5]/span");
-    private Locator viewMoreButton = new XPath("//button[text()='View More']");
+public class MaintenanceHistoryPage extends PageTools {
+    private By oldValueByFieldName = By.xpath("//span[text()='%s']/parent::td/parent::tr/td[5]/span");
+    private By viewMoreButton = By.xpath("//button[text()='View More']");
 
     public String getNewValueByFieldName(MaintenanceHistoryField field) {
         return getElementText(oldValueByFieldName, field.getFieldName());

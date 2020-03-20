@@ -1,51 +1,50 @@
 package com.nymbus.pages.modalwindow;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.locator.ID;
-import com.nymbus.locator.Locator;
-import com.nymbus.locator.XPath;
+import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.client.other.debitcard.CardStatus;
 import com.nymbus.newmodels.client.other.debitcard.TranslationTypeAllowed;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
-public class DebitCardModalWindow extends BasePage {
+public class DebitCardModalWindow extends PageTools {
     /**
-     * Select 'Bin Control' Modal Window locators
+     * Select 'Bin Control' Modal Window Bys
      * */
-    private Locator binNumberArrowIcon = new XPath("//div[@id='binnumber']//b");
-    private Locator binNumberDropdownValue = new XPath("//div/span[text()='%s']");
-    private Locator descriptionInputField = new ID("description");
-    private Locator nextButton = new XPath("//button[span[text()='Next']]");
+    private By binNumberArrowIcon = By.xpath("//div[@id='binnumber']//b");
+    private By binNumberDropdownValue = By.xpath("//div/span[text()='%s']");
+    private By descriptionInputField = By.id("description");
+    private By nextButton = By.xpath("//button[span[text()='Next']]");
 
     /**
-     * Add New Debit Card locators
+     * Add New Debit Card Bys
      * */
-    private Locator addNewDebitCardModalWindow = new XPath("//form/div[@class='modal-header']");
-    private Locator cardNumberInputField = new ID("cardnumber");
-    private Locator clientNumberInputField = new ID("pifnumberassignedtocard");
-    private Locator nameOnCardInputField = new ID("name");
-    private Locator secondLineEmbossingInputField = new ID("secondlineofembossing");
-    private Locator accountInputField = new ID("accountid_%s");
-    private Locator addAccountButton = new XPath("//button[contains(text(),'Add Account')]");
-    private Locator dropdownOption = new XPath("//div[span[contains(text(),'%s')]]");
-    private Locator cardDesignSelect = new ID("cardesign");
-    private Locator cardStatusSelect = new ID("status");
-    private Locator confirmationYesButton = new XPath("//button[span[text()='Yes']]");
-    private Locator pinOffsetInputField = new ID("pinoffset");
-    private Locator dateEffectiveInputField = new ID("dateeffective");
-    private Locator expirationDateMonth = new XPath("//a[@placeholder='Month']/span/span");
-    private Locator expirationDateYear = new XPath("//a[@placeholder='Year']/span/span");
-    private Locator atmDailyLimitNumberAmtInputField = new ID("atmdailylimitdollaramt");
-    private Locator atmDailyLimitNumberNbrInputField = new ID("atmdailylimitnumberoftrans");
-    private Locator debitPurchaseDailyLimitNumberAmtInputField = new ID("purchasedailylimitdollaramt");
-    private Locator debitPurchaseDailyLimitNumberNbrInputField = new ID("purchasedailylimitnumberoftrans");
-    private Locator transactionTypeAllowedSelect = new ID("allowtransactiontypes");
-    private Locator chargeForCardReplacementInput = new ID("chargeaccountforcardreplacement");
-    private Locator chargeForCardReplacementToggle = new XPath("//div[input[@id='chargeaccountforcardreplacement']]");
-    private Locator allowForeignTransactionsInput = new ID("allowforeigntransactions");
-    private Locator allowForeignTransactionsToggle = new XPath("//div[input[@id='allowforeigntransactions']]");
-    private Locator cancelButton = new XPath("//button[text()='Cancel']");
-    private Locator saveAndFinishButton = new XPath("//button[span[text()='Save and Finish']]");
+    private By addNewDebitCardModalWindow = By.xpath("//form/div[@class='modal-header']");
+    private By cardNumberInputField = By.id("cardnumber");
+    private By clientNumberInputField = By.id("pifnumberassignedtocard");
+    private By nameOnCardInputField = By.id("name");
+    private By secondLineEmbossingInputField = By.id("secondlineofembossing");
+    private By accountInputField = By.id("accountid_%s");
+    private By addAccountButton = By.xpath("//button[contains(text(),'Add Account')]");
+    private By dropdownOption = By.xpath("//div[span[contains(text(),'%s')]]");
+    private By cardDesignSelect = By.id("cardesign");
+    private By cardStatusSelect = By.id("status");
+    private By confirmationYesButton = By.xpath("//button[span[text()='Yes']]");
+    private By pinOffsetInputField = By.id("pinoffset");
+    private By dateEffectiveInputField = By.id("dateeffective");
+    private By expirationDateMonth = By.xpath("//a[@placeholder='Month']/span/span");
+    private By expirationDateYear = By.xpath("//a[@placeholder='Year']/span/span");
+    private By atmDailyLimitNumberAmtInputField = By.id("atmdailylimitdollaramt");
+    private By atmDailyLimitNumberNbrInputField = By.id("atmdailylimitnumberoftrans");
+    private By debitPurchaseDailyLimitNumberAmtInputField = By.id("purchasedailylimitdollaramt");
+    private By debitPurchaseDailyLimitNumberNbrInputField = By.id("purchasedailylimitnumberoftrans");
+    private By transactionTypeAllowedSelect = By.id("allowtransactiontypes");
+    private By chargeForCardReplacementInput = By.id("chargeaccountforcardreplacement");
+    private By chargeForCardReplacementToggle = By.xpath("//div[input[@id='chargeaccountforcardreplacement']]");
+    private By allowForeignTransactionsInput = By.id("allowforeigntransactions");
+    private By allowForeignTransactionsToggle = By.xpath("//div[input[@id='allowforeigntransactions']]");
+    private By cancelButton = By.xpath("//button[text()='Cancel']");
+    private By saveAndFinishButton = By.xpath("//button[span[text()='Save and Finish']]");
 
     /**
      * Select 'Bin Control' Modal Window methods
@@ -182,7 +181,7 @@ public class DebitCardModalWindow extends BasePage {
         waitForElementVisibility(dateEffectiveInputField);
         waitForElementClickable(dateEffectiveInputField);
         typeWithoutWipe("", dateEffectiveInputField);
-        wait(1);
+        SelenideTools.sleep(1);
         typeWithoutWipe(dateEffective, dateEffectiveInputField);
     }
 

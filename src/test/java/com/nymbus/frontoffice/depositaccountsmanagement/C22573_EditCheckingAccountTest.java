@@ -5,7 +5,6 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.account.Account;
 import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.pages.Pages;
@@ -18,9 +17,8 @@ import org.testng.annotations.Test;
 @Feature("Deposit Accounts Management")
 @Owner("Dmytro")
 public class C22573_EditCheckingAccountTest extends BaseTest {
-
-    Client client;
-    Account checkingAccount;
+    private Client client;
+    private Account checkingAccount;
 
     @BeforeMethod
     public void preCondition() {
@@ -31,8 +29,6 @@ public class C22573_EditCheckingAccountTest extends BaseTest {
         checkingAccount = new Account().setCHKAccountData();
         checkingAccount.setAutomaticOverdraftStatus("Active");
 
-        // login to the system and create a client with checking account
-//        navigateToUrl(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client);
         AccountActions.createAccount().createCHKAccount(checkingAccount);
@@ -181,5 +177,4 @@ public class C22573_EditCheckingAccountTest extends BaseTest {
         logInfo("Step 12: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         // TODO: Implement verification at Maintenance History page
     }
-
 }

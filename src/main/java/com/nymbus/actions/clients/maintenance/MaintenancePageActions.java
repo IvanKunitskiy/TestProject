@@ -1,8 +1,8 @@
 package com.nymbus.actions.clients.maintenance;
 
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
 import com.nymbus.pages.Pages;
-import com.nymbus.util.DateTime;
 import org.testng.Assert;
 
 public class MaintenancePageActions {

@@ -1,21 +1,19 @@
 package com.nymbus.pages;
 
-import com.nymbus.base.BasePage;
-import com.nymbus.locator.ID;
-import com.nymbus.locator.Locator;
-import com.nymbus.locator.XPath;
+import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
-public class ASideMenuPage extends BasePage {
+public class ASideMenuPage extends PageTools {
 
-    private Locator menu = new ID("menu");
-    private Locator clientMenuItem = new XPath("//li[a[@id='menu-customers']]");
-    private Locator tellerMenuItem = new XPath("//li[a[@id='menu-teller']]");
-    private Locator loansMenuItem = new XPath("//li[a[@id='menu-loans']]");
-    private Locator tellerToTellerMenuItem = new XPath("//li[a[@id='menu-tellerToTeller']]");
-    private Locator reportGeneratorMenuItem = new XPath("//li[a[@id='menu-adhocReport']]");
-    private Locator backOfficeMenuItem = new XPath("//li[a[@id='menu-backoffice']]");
-    private Locator settingsMenuItem = new XPath("//li[a[@id='menu-settings']]");
+    private By menu = By.id("menu");
+    private By clientMenuItem = By.xpath("//li[a[@id='menu-customers']]");
+    private By tellerMenuItem = By.xpath("//li[a[@id='menu-teller']]");
+    private By loansMenuItem = By.xpath("//li[a[@id='menu-loans']]");
+    private By tellerToTellerMenuItem = By.xpath("//li[a[@id='menu-tellerToTeller']]");
+    private By reportGeneratorMenuItem = By.xpath("//li[a[@id='menu-adhocReport']]");
+    private By backOfficeMenuItem = By.xpath("//li[a[@id='menu-backoffice']]");
+    private By settingsMenuItem = By.xpath("//li[a[@id='menu-settings']]");
 
     @Step("Wait for a side menu")
     public void waitForASideMenu(){

@@ -1,6 +1,7 @@
 package com.nymbus.pages.accounts;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -775,7 +776,7 @@ public class AccountDetailsPage extends PageTools {
      */
     @Step("Click the 'Maintenance' tab")
     public void clickMaintenanceTab() {
-        wait(5);
+        SelenideTools.sleep(5);
         waitForElementVisibility(maintenanceTab);
         waitForElementClickable(maintenanceTab);
         click(maintenanceTab);

@@ -1,6 +1,7 @@
 package com.nymbus.pages.clients;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -86,15 +87,15 @@ public class ClientDetailsPage extends PageTools {
     /**
      * Maintenance Tab
      */
-    private Locator newDebitCardButton = new XPath("//button[span[text()='New Debit Card']]");
-    private Locator viewAllCardsButton = new XPath("//button[span[text()='View All Cards']]");
-    private Locator cardList = new XPath("//tbody/tr");
+    private By newDebitCardButton = By.xpath("//button[span[text()='New Debit Card']]");
+    private By viewAllCardsButton = By.xpath("//button[span[text()='View All Cards']]");
+    private By cardList = By.xpath("//tbody/tr");
     // Card list
-    private Locator debitCardNumber = new XPath("//tbody/tr/td[1]//span");
-    private Locator nameOfCardColumn = new XPath("//tbody/tr[1]/td[2]");
-    private Locator secondLineEmbossingColumn = new XPath("//tbody/tr[1]/td[3]");
-    private Locator expirationDateColumn = new XPath("//tbody/tr[1]/td[4]");
-    private Locator cardStatusColumn = new XPath("//tbody/tr[1]/td[5]");
+    private By debitCardNumber = By.xpath("//tbody/tr/td[1]//span");
+    private By nameOfCardColumn = By.xpath("//tbody/tr[1]/td[2]");
+    private By secondLineEmbossingColumn = By.xpath("//tbody/tr[1]/td[3]");
+    private By expirationDateColumn = By.xpath("//tbody/tr[1]/td[4]");
+    private By cardStatusColumn = By.xpath("//tbody/tr[1]/td[5]");
 
     @Step("Wait for Client Details page loaded")
     public void waitForPageLoaded() {
@@ -425,7 +426,6 @@ public class ClientDetailsPage extends PageTools {
     public void clickAccountOption() {
         waitForElementVisibility(accountOption);
         waitForElementClickable(accountOption);
-//        wait(1);
         click(accountOption);
     }
 
@@ -464,7 +464,7 @@ public class ClientDetailsPage extends PageTools {
 
     @Step("Checking is card list displayed")
     public boolean isCardListDisplayed() {
-        wait(5);
+        SelenideTools.sleep(5);
         return !getElements(cardList).isEmpty();
     }
 

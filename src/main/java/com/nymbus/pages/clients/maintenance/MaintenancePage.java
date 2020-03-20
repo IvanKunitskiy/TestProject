@@ -1,6 +1,6 @@
 package com.nymbus.pages.clients.maintenance;
 
-import com.nymbus.base.BasePage;
+import com.nymbus.core.base.PageTools;
 
-public class MaintenancePage extends BasePage {
+public class MaintenancePage extends PageTools {
 }

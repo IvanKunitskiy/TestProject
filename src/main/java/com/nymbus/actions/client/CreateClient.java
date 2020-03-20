@@ -84,7 +84,6 @@ public class CreateClient {
     }
 
     private void setClientType(Client client) {
-
         Pages.addClientPage().clickClientTypeSelectorButton();
         List<String> listOfClientType = Pages.addClientPage().getClientTypeList();
 

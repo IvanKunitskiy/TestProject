@@ -66,6 +66,13 @@ public class PageTools extends AllureLogger {
         Selenide.executeJavaScript("arguments[0].click();", shouldBe(Condition.exist, by, args));
     }
 
+    protected void actionClick(By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
+        Actions builder = getActions();
+        builder.moveToElement(getWebElement(byLocator(by, args))).click();
+        builder.perform();
+    }
+
     protected void type(String text, By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + " '" + text + "', element --> " + byLocator(by, args));
         wipeText(by, args);

@@ -82,6 +82,4 @@ public class SelenideTools {
         ArrayList<String> tabs = getTabsList();
         SelenideTools.switchTo().window(tabs.get(tabs.size() - 1));
     }
-
-
 }
