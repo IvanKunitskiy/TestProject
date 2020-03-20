@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.depositaccountsmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.models.account.Account;
@@ -13,12 +14,10 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static sun.java2d.marlin.MarlinUtils.logInfo;
-
 @Epic("Frontoffice")
 @Feature("Deposit Accounts Management")
 @Owner("Dmytro")
-public class C22582_AddNewSavingsIRAAccountTest {
+public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
 
     Client client;
     Account savingsIRAAccount;
