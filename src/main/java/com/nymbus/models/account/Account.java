@@ -1,5 +1,6 @@
 package com.nymbus.models.account;
 
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
 
 import java.sql.Timestamp;
@@ -72,11 +73,11 @@ public class Account {
         account.setProductType("Savings Account");
         account.setProduct("Traditional IRA Accumulation Acct");
         account.setAccountTitle(Generator.genString(5));
-        account.setDateOpened("02/27/2020");
+        account.setDateOpened(DateTime.getYesterdayDate("MM/dd/yyyy"));
         account.setIraDistributionCode("No dist");
         account.setIraDistributionFrequency("No Dist");
         account.setIraDistributionAmount(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
-        account.setDateNextIRADistribution("02/27/2021");
+        account.setDateNextIRADistribution(DateTime.getTomorrowDate("MM/dd/yyyy"));
 
         return account;
     }
