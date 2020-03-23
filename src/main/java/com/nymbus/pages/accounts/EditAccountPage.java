@@ -4,9 +4,7 @@ import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
-import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Random;
 
 public class EditAccountPage extends PageTools {
 
@@ -19,7 +17,6 @@ public class EditAccountPage extends PageTools {
     private By callClassCode = By.xpath("//div[@id='callclasscode']//span[contains(@class, 'ng-scope')]");
     private By chargeOrAnalyze = By.xpath("//div[@id='chargeoranalyze']//span[contains(@class, 'ng-scope')]");
     private By accountAnalysis = By.xpath("//div[@id='accountanalysis']//span[contains(@class, 'ng-scope')]");
-    private By statementFlag = By.xpath("//input[@id='statementflag']");
     private By interestRate = By.xpath("//input[@id='interestrate']");
     private By earningCreditRate = By.xpath("//input[@id='earningscreditrate']");
     private By federalWHReason = By.xpath("//div[@id='federalwithholdingreason']//span[contains(@class, 'ng-scope')]");
@@ -50,10 +47,12 @@ public class EditAccountPage extends PageTools {
     private By cashCollFloatInput = By.xpath("//input[@id='cashcollectionfloat']");
     private By automaticOverdraftLimitInput = By.xpath("//input[@id='automaticoverdraftlimit']");
     private By interestFrequency = By.xpath("//div[@id='interestfrequency']//span[contains(@class, 'ng-scope')]");
-    private By primaryAccountForCombinedStatement = By.xpath("//div[@id='ddaaccountidforcombinedstatement']//span[contains(@class, 'ng-scope')]");
     private By correspondingAccount = By.xpath("//div[@id='correspondingaccountid']//span[contains(@class, 'ng-scope')]");
     private By newAccountSwitch = By.xpath("//dn-switch[@id='newaccount']");
-    private By transactionalAccountSwitch = By.xpath("//dn-switch[@id='newaccount']");
+    private By iraDistributionFrequency = By.xpath("//div[@id='iradistributionfrequency']//span[contains(@class, 'ng-scope')]");
+    private By iraDistributionCode = By.xpath("//div[@id='iradistributioncode']//span[contains(@class, 'ng-scope')]");
+    private By iraDistributionAmount = By.xpath("//input[@id='iradistributionamount']");
+    private By iraDateNextIRADistribution = By.xpath("//input[@id='datenextiradistribution']");
 
     private By federalWHReasonSelectorButton = By.xpath("//div[@id='federalwithholdingreason']");
     private By federalWHReasonList = By.xpath("//li[contains(@role, 'option')]/div/span");
@@ -166,17 +165,34 @@ public class EditAccountPage extends PageTools {
     /**
      * Get values in edit mode
      */
+    @Step("Get 'IRA Distribution Frequency' value in edit mode")
+    public String getIraDistributionFrequencyInEditMode() {
+        waitForElementVisibility(iraDistributionFrequency);
+        return getElementText(iraDistributionFrequency);
+    }
+
+    @Step("Get 'IRA Distribution Code' value in edit mode")
+    public String getIraDistributionCodeInEditMode() {
+        waitForElementVisibility(iraDistributionCode);
+        return getElementText(iraDistributionCode);
+    }
+
+    @Step("Get 'IRA distribution amount' value in edit mode")
+    public String getIraDistributionAmountInEditMode() {
+        waitForElementVisibility(iraDistributionAmount);
+        return getElementAttributeValue("value", iraDistributionAmount).replaceAll("[^0-9]", "");
+    }
+
+    @Step("Get 'Date next IRA distribution' value in edit mode")
+    public String getDateNextIRADistributionInEditMode() {
+        waitForElementVisibility(iraDateNextIRADistribution);
+        return getElementAttributeValue("value", iraDateNextIRADistribution);
+    }
 
     @Step("Get 'Corresponding Account' value in edit mode")
     public String getCorrespondingAccount() {
         waitForElementVisibility(correspondingAccount);
         return getElementText(correspondingAccount);
-    }
-
-    @Step("Get 'Primary Account For Combined Statement' value in edit mode")
-    public String getPrimaryAccountForCombinedStatement() {
-        waitForElementVisibility(primaryAccountForCombinedStatement);
-        return getElementText(primaryAccountForCombinedStatement);
     }
 
     @Step("Get 'Interest Frequency' value in edit mode")
@@ -223,12 +239,6 @@ public class EditAccountPage extends PageTools {
     public String getNumberOfDebitCardsIssued() {
         waitForElementVisibility(numberOfDebitCardsIssuedInput);
         return getElementAttributeValue("value", numberOfDebitCardsIssuedInput);
-    }
-
-    @Step("Get 'Image Statement Code' value in edit mode")
-    public String getImageStatementCode() {
-        waitForElementVisibility(imageStatementCodeInput);
-        return getElementAttributeValue("value", imageStatementCodeInput);
     }
 
     @Step("Get 'When Surcharges Refunded' value in edit mode")
@@ -348,12 +358,6 @@ public class EditAccountPage extends PageTools {
         waitForElementVisibility(interestRate);
         String rate = getElementAttributeValue("value", interestRate);
         return rate.substring(0, rate.length() - 1);
-    }
-
-    @Step("Get 'Statement Flag' value in edit mode")
-    public String getStatementFlagValueInEditMode() {
-        waitForElementVisibility(statementFlag);
-        return getElementAttributeValue("value", statementFlag);
     }
 
     @Step("Get 'Call Class Code' value in edit mode")
@@ -801,13 +805,6 @@ public class EditAccountPage extends PageTools {
         type(numberOfDebitCardsIssuedValue, numberOfDebitCardsIssuedInput);
     }
 
-    @Step("Set 'Image Statement Code' value")
-    public void setImageStatementCode(String imageStatementCodeValue) {
-        waitForElementVisibility(imageStatementCodeInput);
-        waitForElementClickable(imageStatementCodeInput);
-        type(imageStatementCodeValue, imageStatementCodeInput);
-    }
-
     @Step("Set 'User Defined Field 4' value")
     public void setUserDefinedField_4(String value) {
         waitForElementVisibility(userDefinedFieldInput_4);
@@ -836,13 +833,6 @@ public class EditAccountPage extends PageTools {
         type(value, userDefinedFieldInput_1);
     }
 
-    @Step("Generate 'Earning Credit Rate' value")
-    public String generateEarningCreditRateValue() {
-        Random ran = new Random();
-        DecimalFormat df = new DecimalFormat("##.####");
-        return String.valueOf(df.format(ran.nextFloat() * 100));
-    }
-
     @Step("Set 'Earning Credit Rate' value")
     public void setEarningCreditRate(String earningCreditRateValue) {
         waitForElementVisibility(earningCreditRateInput);
@@ -855,13 +845,6 @@ public class EditAccountPage extends PageTools {
         waitForElementVisibility(numberOfATMCardsIssuedInput);
         waitForElementClickable(numberOfATMCardsIssuedInput);
         type(numberOfATMCardsIssuedValue, numberOfATMCardsIssuedInput);
-    }
-
-    @Step("Generate 'Federal W/H percent' value")
-    public String generateFederalWHPercentValue() {
-        Random ran = new Random();
-        DecimalFormat df = new DecimalFormat("##.####");
-        return String.valueOf(df.format(ran.nextFloat() * 100));
     }
 
     @Step("Set 'Federal W/H percent' value")

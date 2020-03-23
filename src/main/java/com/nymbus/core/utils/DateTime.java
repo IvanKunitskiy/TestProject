@@ -98,4 +98,14 @@ public class DateTime {
 
         return daysList;
     }
+
+    public static String getTomorrowDate(String pattern) {
+        LocalDate localDate = LocalDate.now();
+        return DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH).format(localDate.plusDays(1));
+    }
+
+    public static String getYesterdayDate(String pattern) {
+        LocalDate localDate = LocalDate.now();
+        return DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH).format(localDate.minusDays(1));
+    }
 }

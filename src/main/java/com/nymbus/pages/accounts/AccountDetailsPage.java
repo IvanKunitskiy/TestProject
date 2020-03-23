@@ -52,8 +52,11 @@ public class AccountDetailsPage extends PageTools {
     private By userDefinedField_2 = By.xpath("//tr[@data-config-name='userdefinedfield2']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By userDefinedField_3 = By.xpath("//tr[@data-config-name='userdefinedfield3']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By userDefinedField_4 = By.xpath("//tr[@data-config-name='userdefinedfield4']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By iraDistributionFrequency = By.xpath("//tr[@data-config-name='iradistributionfrequency']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By iraDistributionCode = By.xpath("//tr[@data-config-name='iradistributioncode']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By iraDistributionAmount = By.xpath("//tr[@data-config-name='iradistributionamount']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By dateNextIRADistribution = By.xpath("//tr[@data-config-name='datenextiradistribution']//span[contains(@class, 'dnTextFixedWidthText')]");
 
-    private By imageStatementCode= By.xpath("//tr[@data-config-name='imagestatementcode']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By numberOfDebitCardsIssued= By.xpath("//tr[@data-config-name='numberofdebitcardsissued']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By automaticOverdraftLimit= By.xpath("//tr[@data-config-name='automaticoverdraftlimit']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By cashCollDaysBeforeChg= By.xpath("//tr[@data-config-name='cashcollectionnumberofdaysbeforeinterestcharge']//span[contains(@class, 'dnTextFixedWidthText')]");
@@ -61,7 +64,6 @@ public class AccountDetailsPage extends PageTools {
     private By cashCollFloat= By.xpath("//tr[@data-config-name='cashcollectionfloat']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By positivePay= By.xpath("//tr[@data-config-name='positivepaycustomer']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By interestFrequency= By.xpath("//tr[@data-config-name='interestfrequency']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private By primaryAccountForCombinedStatement= By.xpath("//tr[@data-config-name='ddaaccountidforcombinedstatement']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By correspondingAccount= By.xpath("//tr[@data-config-name='correspondingaccountid']//span[contains(@class, 'dnTextFixedWidthText')]");
 
     private By printStatementNextUpdate= By.xpath("//tr[@data-config-name='printstatementnextupdate']//span[contains(@class, 'dnTextFixedWidthText')]");
@@ -70,6 +72,30 @@ public class AccountDetailsPage extends PageTools {
     /**
      * Details tab
      */
+
+    @Step("Get 'IRA Distribution Frequency' value")
+    public String getIraDistributionFrequency() {
+        waitForElementVisibility(iraDistributionFrequency);
+        return getElementText(iraDistributionFrequency);
+    }
+
+    @Step("Get 'IRA Distribution Code' value")
+    public String getIraDistributionCode() {
+        waitForElementVisibility(iraDistributionCode);
+        return getElementText(iraDistributionCode);
+    }
+
+    @Step("Get 'Ira Distribution Amount' value")
+    public String getIraDistributionAmount() {
+        waitForElementVisibility(iraDistributionAmount);
+        return getElementText(iraDistributionAmount).replaceAll("[^0-9]", "");
+    }
+
+    @Step("Get 'Date Next IRA Distribution' value")
+    public String getDateNextIRADistribution() {
+        waitForElementVisibility(dateNextIRADistribution);
+        return getElementText(dateNextIRADistribution);
+    }
 
     @Step("Get 'Print Statement Next Update' value")
     public String getPrintStatementNextUpdate() {
@@ -88,12 +114,6 @@ public class AccountDetailsPage extends PageTools {
     public String getCorrespondingAccount() {
         waitForElementVisibility(correspondingAccount);
         return getElementText(correspondingAccount);
-    }
-
-    @Step("Get 'PrimaryAccountForCombinedStatement' value")
-    public String getPrimaryAccountForCombinedStatement() {
-        waitForElementVisibility(primaryAccountForCombinedStatement);
-        return getElementText(primaryAccountForCombinedStatement);
     }
 
     @Step("Get 'Interest Frequency' value")
@@ -139,12 +159,6 @@ public class AccountDetailsPage extends PageTools {
     public String getNumberOfDebitCardsIssued() {
         waitForElementVisibility(numberOfDebitCardsIssued);
         return getElementText(numberOfDebitCardsIssued);
-    }
-
-    @Step("Get 'Image Statement Code' value")
-    public String getImageStatementCode() {
-        waitForElementVisibility(imageStatementCode);
-        return getElementText(imageStatementCode);
     }
 
     @Step("Get 'User Defined Field 1' value")
@@ -251,12 +265,6 @@ public class AccountDetailsPage extends PageTools {
         waitForElementVisibility(interestRate);
         String rate = getElementText(interestRate);
         return rate.substring(0, rate.length() - 1);
-    }
-
-    @Step("Get account 'Statement Flag' value")
-    public String getStatementFlagValue() {
-        waitForElementVisibility(statementFlag);
-        return getElementText(statementFlag);
     }
 
     @Step("Get account 'Account Analysis' value")

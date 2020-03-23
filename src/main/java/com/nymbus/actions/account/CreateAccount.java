@@ -14,6 +14,23 @@ public class CreateAccount {
         Pages.clientDetailsPage().clickAccountsTab();
     }
 
+    public void createIRAAccount(Account account) {
+        clickAccountsTab();
+        setAddNewOption(account);
+        setProductType(account);
+        setProduct(account);
+        Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        Pages.addAccountPage().setInterestRate(account.getInterestRate());
+        setStatementCycle(account);
+        setCallClassCode(account);
+        Pages.addAccountPage().clickSaveAccountButton();
+        Pages.accountDetailsPage().waitForFullProfileButton();
+    }
+
     public void createSavingsAccount(Account account) {
         clickAccountsTab();
         setAddNewOption(account);
@@ -73,6 +90,17 @@ public class CreateAccount {
         setCallClassCode(account);
     }
 
+    public void selectValuesInDropdownFieldsRequiredForSavingsIRAAccount(Account account) {
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        setInterestFrequency(account);
+        setStatementCycle(account);
+        setCorrespondingAccount(account);
+        setCallClassCode(account);
+        setIRADistributionFrequency(account);
+        setIRADistributionCode(account);
+    }
+
     public void selectValuesInDropdownFieldsRequiredForCheckingAccount(Account account) {
         setProduct(account);
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
@@ -88,6 +116,28 @@ public class CreateAccount {
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         Pages.addAccountPage().setEarningCreditRate(account.getEarningCreditRate());
+    }
+
+    public void setIRADistributionFrequency(Account account) {
+        Pages.addAccountPage().clickIRADistributionFrequencySelectorButton();
+        List<String> listOfIRADistributionFrequency = Pages.addAccountPage().getIRADistributionFrequencyList();
+
+        Assert.assertTrue(listOfIRADistributionFrequency.size() > 0, "There are no product types available");
+        if (account.getIraDistributionFrequency() == null) {
+            account.setIraDistributionFrequency(listOfIRADistributionFrequency.get(new Random().nextInt(listOfIRADistributionFrequency.size())).trim());
+        }
+        Pages.addAccountPage().clickIRADistributionFrequencySelectorOption(account.getIraDistributionFrequency());
+    }
+
+    public void setIRADistributionCode(Account account) {
+        Pages.addAccountPage().clickIRADistributionCodeSelectorButton();
+        List<String> listOfIRADistributionCode = Pages.addAccountPage().getIRADistributionCodeList();
+
+        Assert.assertTrue(listOfIRADistributionCode.size() > 0, "There are no product types available");
+        if (account.getIraDistributionCode() == null) {
+            account.setIraDistributionCode(listOfIRADistributionCode.get(new Random().nextInt(listOfIRADistributionCode.size())).trim());
+        }
+        Pages.addAccountPage().clickIRADistributionCodeSelectorOption(account.getIraDistributionCode());
     }
 
     public void setCorrespondingAccount(Account account) {
