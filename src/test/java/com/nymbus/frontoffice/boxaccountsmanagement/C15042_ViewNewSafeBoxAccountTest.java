@@ -29,10 +29,9 @@ public class C15042_ViewNewSafeBoxAccountTest extends BaseTest {
         safeDepositBoxAccount = new Account().setSafeDepositBoxData();
     }
 
-    @Test(description = "C15042, View new safe box account", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "C15042, View new safe box account", enabled = false)
     public void viewNewSafeBoxAccount() {
-
         logInfo("Step 1: Log in to Nymbus");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
@@ -42,12 +41,12 @@ public class C15042_ViewNewSafeBoxAccountTest extends BaseTest {
 
         logInfo("Step 2: Go to Clients screen and search for client from preconditions");
         Pages.aSideMenuPage().clickClientMenuItem();
-        Pages.clientsPage().typeToClientsSearchInputField(clientID);
+        Pages.clientsSearchPage().typeToClientsSearchInputField(clientID);
 
-        Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), clientID));
+        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), clientID));
 
-        Pages.clientsPage().clickOnSearchButton();
+        Pages.clientsSearchPage().clickOnSearchButton();
 
         logInfo("Step 3: Open the account");
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();

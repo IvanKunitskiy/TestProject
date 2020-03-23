@@ -2,7 +2,6 @@ package com.nymbus.pages;
 
 import com.nymbus.core.allure.AllureLogger;
 import com.nymbus.pages.accounts.*;
-import com.nymbus.pages.client.ClientsSearchPage;
 import com.nymbus.pages.clients.AddClientPage;
 import com.nymbus.pages.clients.ClientDetailsPage;
 import com.nymbus.pages.clients.ClientsSearchPage;
@@ -23,13 +22,13 @@ public class Pages extends AllureLogger {
     private static NavigationPage navigationPage;
     private static ASideMenuPage aSideMenuPage;
     private static AddClientPage addClientPage;
-    private static ClientsSearchPage clientsSearchPage;
     private static ClientDetailsPage clientDetailsPage;
     private static TellerPage tellerPage;
     private static LoansPage loansPage;
     private static ReportGeneratorPage reportGeneratorPage;
     private static TellerToTellerPage tellerToTellerPage;
     private static Settings settings;
+    private static ClientsSearchPage clientsSearchPage;
     private static ClientsSearchResultsPage clientsSearchResultsPage;
     private static AddAccountPage addAccountPage;
     private static AccountDetailsPage accountDetailsPage;
@@ -87,7 +86,7 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `ClientsSearchPage`
      */
-    public static ClientsSearchPage clientsPage() {
+    public static ClientsSearchPage clientsSearchPage() {
         if (clientsSearchPage == null) {
             clientsSearchPage = new ClientsSearchPage();
         }

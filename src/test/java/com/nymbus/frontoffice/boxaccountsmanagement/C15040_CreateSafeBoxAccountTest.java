@@ -18,7 +18,6 @@ import org.testng.annotations.Test;
 @Feature("Box Accounts Management")
 @Owner("Dmytro")
 public class C15040_CreateSafeBoxAccountTest extends BaseTest {
-
     private Client client;
     private Account safeDepositBoxAccount;
 
@@ -29,8 +28,8 @@ public class C15040_CreateSafeBoxAccountTest extends BaseTest {
         safeDepositBoxAccount.setBoxSize("10");
     }
 
-    @Test(description = "C15040, Create safe box account")
     @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "C15040, Create safe box account")
     public void createSafeBoxAccount() {
         logInfo("Step 1: Log in to the system as the User from the precondition");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -40,11 +39,11 @@ public class C15040_CreateSafeBoxAccountTest extends BaseTest {
 
         logInfo("Step 2: Go to Clients screen and search for client from preconditions");
         Pages.aSideMenuPage().clickClientMenuItem();
-        Pages.clientsPage().typeToClientsSearchInputField(clientID);
-        Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), clientID));
+        Pages.clientsSearchPage().typeToClientsSearchInputField(clientID);
+        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), clientID));
 
-        Pages.clientsPage().clickOnSearchButton();
+        Pages.clientsSearchPage().clickOnSearchButton();
 
         logInfo("Step 3: Open it on Accounts tab");
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();

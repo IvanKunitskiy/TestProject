@@ -33,7 +33,7 @@ public class C22513_LogInTest extends BaseTest {
         Assert.assertFalse(Pages.loginPage().isErrorsVisibleOnLoginForm(),
                 "Error messages is visible");
 
-        Pages.clientsPage().waitForAddNewClientButton();
+        Pages.clientsSearchPage().waitForAddNewClientButton();
 
         Pages.aSideMenuPage().waitForASideMenu();
         Assert.assertTrue(Pages.aSideMenuPage().isClientPageOpened(),

@@ -5,8 +5,8 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.account.Account;
 import com.nymbus.models.client.Client;
+import com.nymbus.newmodels.account.Account;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -46,10 +46,10 @@ public class C22574_ViewNewCheckingAccountTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the CHK account from the precondition and open it on Details");
-        Pages.clientsPage().typeToClientsSearchInputField(checkingAccount.getAccountNumber());
-        Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), checkingAccount.getAccountNumber()));
-        Pages.clientsPage().clickOnSearchButton();
+        Pages.clientsSearchPage().typeToClientsSearchInputField(checkingAccount.getAccountNumber());
+        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), checkingAccount.getAccountNumber()));
+        Pages.clientsSearchPage().clickOnSearchButton();
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
         Pages.clientDetailsPage().waitForPageLoaded();
         Pages.clientDetailsPage().clickAccountsTab();

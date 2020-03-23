@@ -16,14 +16,14 @@ public class CreateClient {
 
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickClientMenuItem();
-        Pages.clientsPage().waitForAddNewClientButton();
+        Pages.clientsSearchPage().waitForAddNewClientButton();
         Assert.assertTrue(Pages.aSideMenuPage().isClientPageOpened(),
                 "Client page is not opened");
     }
 
     public void createClient(Client client) {
         openClientPage();
-        Pages.clientsPage().clickAddNewClient();
+        Pages.clientsSearchPage().clickAddNewClient();
         setBasicInformation(client);
         Assert.assertTrue(Pages.addClientPage().isVerificationSuccess(),
                 "Client data verification is not success");

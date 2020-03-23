@@ -58,12 +58,12 @@ public class C22552_CreateNewDebitCard extends BaseTest {
         Pages.navigationPage().waitForUserMenuVisible();
 
         logInfo("Step 2: Search for any individualClient and open his profile on the Maintenance tab");
-        Pages.clientsPage().typeToClientsSearchInputField("AAA");
+        Pages.clientsSearchPage().typeToClientsSearchInputField("AAA");
 
-        Assert.assertEquals(Pages.clientsPage().getLookupResultsCount(), 1);
-        Assert.assertFalse(Pages.clientsPage().isLoadMoreResultsButtonVisible());
+        Assert.assertEquals(Pages.clientsSearchPage().getLookupResultsCount(), 1);
+        Assert.assertFalse(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible());
 
-        Pages.clientsPage().clickOnViewAccountButtonByValue("AAA");
+        Pages.clientsSearchPage().clickOnViewAccountButtonByValue("AAA");
 
         logInfo("Step 3: Open client profile on the Maintenance tab");
         Pages.clientDetailsPage().clickOnMaintenanceTab();
@@ -91,7 +91,7 @@ public class C22552_CreateNewDebitCard extends BaseTest {
         Pages.clientDetailsPage().clickAccountsTab();
         Pages.clientDetailsPage().openAccountByNumber(chkAccount.getAccountNumber());
         Pages.accountDetailsPage().clickMaintenanceTab();
-        Pages.accountDetailsPage().clickViewAllMaintenanceHistoryLink();
+        Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 12: Look through Account's Maintenance History and verify that there are records about the newly created Debit Card");
         Actions.maintenanceHistoryPageActions().verifyMaintenanceHistoryFields(debitCard, chkAccount);

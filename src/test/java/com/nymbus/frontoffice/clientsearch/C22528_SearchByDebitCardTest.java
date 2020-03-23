@@ -46,24 +46,24 @@ public class C22528_SearchByDebitCardTest extends BaseTest {
         String hiddenNumber = "XXXX-XXXX-XXXX-" + lastFourNumbers;
 
         logInfo("Step 2: Click within search field and try to search for an existing Debit Card");
-        Pages.clientsPage().typeToClientsSearchInputField(lastFourNumbers);
+        Pages.clientsSearchPage().typeToClientsSearchInputField(lastFourNumbers);
 
-        int lookupResultsCount = Pages.clientsPage().getLookupResultsCount();
+        int lookupResultsCount = Pages.clientsSearchPage().getLookupResultsCount();
         Assert.assertTrue(lookupResultsCount <= 8);
         if (lookupResultsCount == 8)
-            assertTrue(Pages.clientsPage().isLoadMoreResultsButtonVisible());
+            assertTrue(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible());
 
         logInfo("Step 3: Pay attention to the display of the Debit Card in the quick search field");
-        List<String> clients = Pages.clientsPage().getAllLookupResults();
+        List<String> clients = Pages.clientsSearchPage().getAllLookupResults();
         clients.stream()
                 .filter(s -> s.contains("XXXX-XXXX-XXXX-"))
                 .forEach(s -> Assert.assertEquals(s, hiddenNumber));
 
         logInfo("Step 4: Clear the data from the field and try to search for an existing client");
-        Pages.clientsPage().clickOnSearchInputFieldClearButton();
-        Pages.clientsPage().typeToClientsSearchInputField(cardNumber);
+        Pages.clientsSearchPage().clickOnSearchInputFieldClearButton();
+        Pages.clientsSearchPage().typeToClientsSearchInputField(cardNumber);
 
-        clients = Pages.clientsPage().getAllLookupResults();
+        clients = Pages.clientsSearchPage().getAllLookupResults();
         assertEquals(clients.get(0), hiddenNumber);
     }
 }

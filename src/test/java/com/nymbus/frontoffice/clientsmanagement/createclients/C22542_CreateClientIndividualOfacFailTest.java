@@ -58,7 +58,7 @@ public class C22542_CreateClientIndividualOfacFailTest extends BaseTest {
 
         ClientsActions.createClient().openClientPage();
 
-        Pages.clientsPage().clickAddNewClient();
+        Pages.clientsSearchPage().clickAddNewClient();
 
         ClientsActions.createClient().setBasicInformation(client);
 

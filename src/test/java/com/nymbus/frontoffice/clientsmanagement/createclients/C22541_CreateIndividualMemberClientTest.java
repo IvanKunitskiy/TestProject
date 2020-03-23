@@ -33,6 +33,5 @@ public class C22541_CreateIndividualMemberClientTest extends BaseTest {
 
         Assert.assertEquals(ClientsActions.verifyClientDataActions().getIndividualClientData(), client,
                 "Client's data is not equals");
-
     }
 }

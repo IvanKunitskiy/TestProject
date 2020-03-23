@@ -44,17 +44,17 @@ public class C22526_SearchByNameTest extends BaseTest {
     public void searchByName() {
         logInfo("Step 2: Click within search field and try to search for an existing client (by first name)");
         final String firstNameLetters = client.getFirstName().substring(0, 3);
-        Pages.clientsPage().typeToClientsSearchInputField(firstNameLetters);
+        Pages.clientsSearchPage().typeToClientsSearchInputField(firstNameLetters);
 
-        int lookupResultsCount = Pages.clientsPage().getLookupResultsCount();
+        int lookupResultsCount = Pages.clientsSearchPage().getLookupResultsCount();
         Assert.assertEquals(lookupResultsCount, 8);
-        assertTrue(Pages.clientsPage().isLoadMoreResultsButtonVisible());
+        assertTrue(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible());
 
         List<TempClient> clients = Actions.clientPageActions().getAllClientsFromLookupResults(lookupResultsCount);
         clients.stream().forEach(c -> assertTrue(c.getFirstName().contains(firstNameLetters)));
 
         logInfo("Step 3: Click [Search] button");
-        Pages.clientsPage().clickOnSearchButton();
+        Pages.clientsSearchPage().clickOnSearchButton();
         int searchResults = Pages.clientsSearchResultsPage().getSearchResultsCount();
         Assert.assertEquals(searchResults, 10);
         assertTrue(Pages.clientsSearchResultsPage().isLoadMoreResultsButtonVisible());
@@ -63,14 +63,14 @@ public class C22526_SearchByNameTest extends BaseTest {
         clients.stream().forEach(c -> assertTrue(c.getFirstName().contains(firstNameLetters) || c.getLastName().contains(firstNameLetters)));
 
         logInfo("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
-        Pages.clientsPage().clickOnSearchInputFieldClearButton();
+        Pages.clientsSearchPage().clickOnSearchInputFieldClearButton();
 
         final String lastNameLetters = client.getLastName().substring(0, 3);
-        Pages.clientsPage().typeToClientsSearchInputField(lastNameLetters);
+        Pages.clientsSearchPage().typeToClientsSearchInputField(lastNameLetters);
 
-        lookupResultsCount = Pages.clientsPage().getLookupResultsCount();
+        lookupResultsCount = Pages.clientsSearchPage().getLookupResultsCount();
         Assert.assertEquals(lookupResultsCount, 8);
-        assertTrue(Pages.clientsPage().isLoadMoreResultsButtonVisible());
+        assertTrue(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible());
 
         clients = Actions.clientPageActions().getAllClientsFromLookupResults(lookupResultsCount);
         clients.stream().forEach(c -> assertTrue(c.getLastName().contains(lastNameLetters) || c.getLastName().contains(lastNameLetters)));

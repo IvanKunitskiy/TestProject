@@ -43,16 +43,16 @@ public class C22527_SearchByNumberTest extends BaseTest {
         logInfo("Step 2: Click within search field and try to search for an existing client (by first name)");
         String accountNumber = client.getAccountNumber();
         String lastFourNumbers = accountNumber.substring(accountNumber.length() - 4);
-        Pages.clientsPage().typeToClientsSearchInputField(lastFourNumbers);
-        int lookupResultsCount = Pages.clientsPage().getLookupResultsCount();
+        Pages.clientsSearchPage().typeToClientsSearchInputField(lastFourNumbers);
+        int lookupResultsCount = Pages.clientsSearchPage().getLookupResultsCount();
         Assert.assertEquals(lookupResultsCount, 8);
-        assertTrue(Pages.clientsPage().isLoadMoreResultsButtonVisible());
+        assertTrue(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible());
 
-        List<String> clients = Pages.clientsPage().getAllLookupResults();
+        List<String> clients = Pages.clientsSearchPage().getAllLookupResults();
         clients.stream().forEach(s -> Assert.assertEquals(s.substring(s.length() - 4), lastFourNumbers));
 
         logInfo("Step 3: Click [Search] button");
-        Pages.clientsPage().clickOnSearchButton();
+        Pages.clientsSearchPage().clickOnSearchButton();
         int searchResults = Pages.clientsSearchResultsPage().getAccountNumbersFromSearchResults().size();
         assertTrue(searchResults <= 10);
         if (searchResults == 10)
@@ -62,14 +62,14 @@ public class C22527_SearchByNumberTest extends BaseTest {
         clients.stream().forEach(s -> assertTrue(s.substring(s.length() - 4).contains(lastFourNumbers)));
 
         logInfo("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
-        Pages.clientsPage().clickOnSearchInputFieldClearButton();
+        Pages.clientsSearchPage().clickOnSearchInputFieldClearButton();
 
-        Pages.clientsPage().typeToClientsSearchInputField(client.getAccountNumber());
-        lookupResultsCount = Pages.clientsPage().getLookupResultsCount();
+        Pages.clientsSearchPage().typeToClientsSearchInputField(client.getAccountNumber());
+        lookupResultsCount = Pages.clientsSearchPage().getLookupResultsCount();
         Assert.assertEquals(lookupResultsCount, 1);
-        Assert.assertFalse(Pages.clientsPage().isLoadMoreResultsButtonVisible());
+        Assert.assertFalse(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible());
 
-        clients = Pages.clientsPage().getAllLookupResults();
+        clients = Pages.clientsSearchPage().getAllLookupResults();
         Assert.assertEquals(clients.get(0), client.getAccountNumber());
 
         logInfo("Step 5: Click [Search] button and pay attention to the search results list");

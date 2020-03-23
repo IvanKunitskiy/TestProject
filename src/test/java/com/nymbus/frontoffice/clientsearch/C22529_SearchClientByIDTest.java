@@ -1,5 +1,6 @@
 package com.nymbus.frontoffice.clientsearch;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
@@ -15,14 +16,12 @@ import java.util.List;
 
 @Epic("Frontoffice")
 @Feature("Clients search")
-@Severity(SeverityLevel.CRITICAL)
 @Owner("Dmytro")
 public class C22529_SearchClientByIDTest extends BaseTest {
-
     private Client client;
 
     @BeforeMethod
-    public void preCondition() {
+    public void preConditions() {
         // Set up Client
         client = new Client().setDefaultClientData();
         client.setClientStatus("Member");
@@ -35,6 +34,7 @@ public class C22529_SearchClientByIDTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Test(description = "C22529, Search client by ID")
     public void searchClientByID() {
         logInfo("Step 1: Log in to the system as the User from the precondition");
@@ -43,12 +43,12 @@ public class C22529_SearchClientByIDTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Click within search field and try to search for an existing client (by client id)");
-        Pages.clientsPage().typeToClientsSearchInputField(client.getClientID());
-        List<String> lookupResults = Pages.clientsPage().getAllLookupResults();
-        Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(lookupResults, client.getClientID()));
+        Pages.clientsSearchPage().typeToClientsSearchInputField(client.getClientID());
+        List<String> lookupResults = Pages.clientsSearchPage().getAllLookupResults();
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(lookupResults, client.getClientID()));
 
         logInfo("Step 3: Click the 'Search' button");
-        Pages.clientsPage().clickOnSearchButton();
+        Pages.clientsSearchPage().clickOnSearchButton();
         Pages.clientsSearchResultsPage().waitForSearchResults();
 
         Assert.assertEquals(Pages.clientsSearchResultsPage().getClientFirstNameFromResultByIndex(1), client.getFirstName(), "First name is not relevant to the client");

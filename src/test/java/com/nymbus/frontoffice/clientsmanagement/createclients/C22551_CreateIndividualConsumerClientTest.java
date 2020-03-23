@@ -30,7 +30,7 @@ public class C22551_CreateIndividualConsumerClientTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         ClientsActions.createClient().openClientPage();
-        Pages.clientsPage().clickAddNewClient();
+        Pages.clientsSearchPage().clickAddNewClient();
         ClientsActions.createClient().setBasicInformation(client);
         Assert.assertTrue(Pages.addClientPage().isVerificationSuccess(),
                 "Client data verification is not success");

@@ -203,67 +203,6 @@ public class AccountDetailsPage extends PageTools {
         return getElementText(automaticOverdraftStatus);
     }
 
-    @Step("Get 'Charge or Analyze' value in edit mode")
-    public String getChargeOrAnalyzeInEditMode() {
-        waitForElementVisibility(editChargeOrAnalyze);
-        return getElementText(editChargeOrAnalyze);
-    }
-
-    @Step("Get 'Interest Rate' value in edit mode")
-    public String getInterestRateValueInEditMode() {
-        waitForElementVisibility(editInterestRate);
-        String rate = getElementAttributeValue("value", editInterestRate);
-        return rate.substring(0, rate.length() - 1);
-    }
-
-    @Step("Get 'Statement Flag' value in edit mode")
-    public String getStatementFlagValueInEditMode() {
-        waitForElementVisibility(editStatementFlag);
-        return getElementAttributeValue("value", editStatementFlag);
-    }
-
-    @Step("Get 'Call Class Code' value in edit mode")
-    public String getCallClassCodeValueInEditMode() {
-        waitForElementVisibility(editCallClassCode);
-        return getElementText(editCallClassCode);
-    }
-
-    @Step("Get 'Statement Cycle' value in edit mode")
-    public String getStatementCycleValueInEditMode() {
-        waitForElementVisibility(editStatementCycle);
-        return getElementText(editStatementCycle);
-    }
-
-    @Step("Get 'Current Officer' value in edit mode")
-    public String getCurrentOfficerValueInEditMode() {
-        waitForElementVisibility(editCurrentOfficer);
-        return getElementText(editCurrentOfficer);
-    }
-
-    @Step("Get 'Date Opened' value in edit mode")
-    public String getDateOpenedValueInEditMode() {
-        waitForElementVisibility(editDateOpened);
-        return getElementAttributeValue("value", editDateOpened);
-    }
-
-    @Step("Get 'Product' value in edit mode")
-    public String getProductValueInEditMode() {
-        waitForElementVisibility(editProduct);
-        return getElementText(editProduct);
-    }
-
-    @Step("Get 'Bank Branch' value in edit mode")
-    public String getBankBranchValueInEditMode() {
-        waitForElementVisibility(editBankBranch);
-        return getElementText(editBankBranch);
-    }
-
-    @Step("Get 'Account Title' value in edit mode")
-    public String getAccountTitleValueInEditMode() {
-        waitForElementVisibility(editAccountTitle);
-        return getElementAttributeValue("value", editAccountTitle);
-    }
-
     /**
      * Details tab
      */
@@ -434,20 +373,4 @@ public class AccountDetailsPage extends PageTools {
         waitForElementClickable(maintenanceTab);
         click(maintenanceTab);
     }
-
-    /**
-     * Maintenance tab
-     */
-    public void clickViewAllMaintenanceHistoryLink() {
-        waitForElementVisibility(viewAllMaintenanceHistoryLink);
-        waitForElementClickable(viewAllMaintenanceHistoryLink);
-        click(viewAllMaintenanceHistoryLink);
-    }
-
-    public void clickViewMoreButton() {
-        waitForElementVisibility(viewMoreButton);
-        waitForElementClickable(viewMoreButton);
-        click(viewMoreButton);
-    }
-
 }
