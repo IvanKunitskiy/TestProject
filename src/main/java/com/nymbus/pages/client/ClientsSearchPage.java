@@ -1,6 +1,7 @@
 package com.nymbus.pages.client;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -26,6 +27,7 @@ public class ClientsSearchPage extends PageTools {
     @Step("Type '{client}' to clients input field")
     public void typeToClientsSearchInputField(String client) {
         waitForElementVisibility(clientsSearchInputField);
+        SelenideTools.sleep(2);
         type(client, clientsSearchInputField);
     }
 
@@ -61,6 +63,7 @@ public class ClientsSearchPage extends PageTools {
 
     @Step("Verify is 'Load Mode Results' button visible")
     public boolean isLoadMoreResultsButtonVisible() {
+        waitForElementVisibility(loadMoreResultsButton);
         return isElementVisible(loadMoreResultsButton);
     }
 

@@ -60,7 +60,7 @@ public class C22526_SearchByNameTest extends BaseTest {
         assertTrue(Pages.clientsSearchResultsPage().isLoadMoreResultsButtonVisible());
 
         clients = Actions.clientsSearchResultsPageActions().getAllClientsFromResult(searchResults);
-        clients.stream().forEach(c -> assertTrue(c.getFirstName().contains(firstNameLetters)));
+        clients.stream().forEach(c -> assertTrue(c.getFirstName().contains(firstNameLetters) || c.getLastName().contains(firstNameLetters)));
 
         logInfo("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
         Pages.clientsPage().clickOnSearchInputFieldClearButton();
@@ -73,6 +73,6 @@ public class C22526_SearchByNameTest extends BaseTest {
         assertTrue(Pages.clientsPage().isLoadMoreResultsButtonVisible());
 
         clients = Actions.clientPageActions().getAllClientsFromLookupResults(lookupResultsCount);
-        clients.stream().forEach(c -> assertTrue(c.getLastName().contains(lastNameLetters)));
+        clients.stream().forEach(c -> assertTrue(c.getLastName().contains(lastNameLetters) || c.getLastName().contains(lastNameLetters)));
     }
 }
