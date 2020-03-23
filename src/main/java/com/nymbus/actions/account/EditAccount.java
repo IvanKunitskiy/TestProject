@@ -148,14 +148,13 @@ public class EditAccount {
         AccountActions.editAccount().selectValuesInDropdownFieldsThatWereNotAvailableDuringSavingsAccountCreation(account);
         AccountActions.editAccount().fillInInputFieldsThatWereNotAvailableDuringSavingsAccountCreation(account);
         AccountActions.createAccount().setCurrentOfficer(account);
-        Pages.editAccountPage().setInterestRate(account.getInterestRate());
         AccountActions.createAccount().setBankBranch(account);
         AccountActions.createAccount().setCallClassCode(account);
         AccountActions.createAccount().setStatementCycle(account);
         Pages.editAccountPage().clickNewAccountSwitch();
         Pages.editAccountPage().clickTransactionalAccountSwitch();
         Pages.addAccountPage().clickSaveAccountButton();
-        Pages.accountDetailsPage().waitForFullProfileButton();
+        Pages.accountDetailsPage().waitForEditButton();
     }
 
 }

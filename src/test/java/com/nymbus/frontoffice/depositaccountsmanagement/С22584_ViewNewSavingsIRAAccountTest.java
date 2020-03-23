@@ -74,7 +74,6 @@ public class С22584_ViewNewSavingsIRAAccountTest extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getIraDistributionAmount(), savingsIRAAccount.getIraDistributionAmount(), "'IRA distribution amount' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), savingsIRAAccount.getDateOpened(), "'Date Opened' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getDateNextIRADistribution(), savingsIRAAccount.getDateNextIRADistribution(), "'Date next IRA distribution' value does not match");
-
         Assert.assertEquals(Pages.accountDetailsPage().getFederalWHReason(), savingsIRAAccount.getFederalWHReason(), "'Federal WH Reason' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getReasonATMChargeWaived(), savingsIRAAccount.getReasonATMChargeWaived(), "'Reason ATM Charge Waived' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getReasonDebitCardChargeWaived(), savingsIRAAccount.getReasonDebitCardChargeWaived(), "'Reason Debit Card Charge Waived' value does not match");
@@ -88,7 +87,6 @@ public class С22584_ViewNewSavingsIRAAccountTest extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_4(), savingsIRAAccount.getUserDefinedField_4(), "'User Defined Field 4' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getNumberOfDebitCardsIssued(), savingsIRAAccount.getNumberOfDebitCardsIssued(), "'Number Of Debit Cards Issued' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), savingsIRAAccount.getCurrentOfficer(), "'Current Officer' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), savingsIRAAccount.getInterestRate(), "'Interest Rate' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), savingsIRAAccount.getBankBranch(), "'Bank Branch' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), savingsIRAAccount.getCallClassCode(), "'Call Class' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getStatementCycle(), savingsIRAAccount.getStatementCycle(), "'Statement Cycle' value does not match");
