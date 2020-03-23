@@ -37,7 +37,7 @@ public class AddAccountPage extends PageTools {
     private By interestRateInput = By.xpath("//input[@data-test-id='field-interestrate']");
     private By earningCreditRateInput = By.xpath("//input[@data-test-id='field-earningscreditrate']");
     private By optInOutDateCalendarIcon = By.xpath("//div[input[@id='dbcodpstatusdate']]/div[span[@class='nyb-icon-calendar']]");
-    private By optInOutDateInputField = By.xpath("dbcodpstatusdate");
+    private By optInOutDateInputField = By.id("dbcodpstatusdate");
     private By dateOpenedField = By.id("dateopened");
 
 

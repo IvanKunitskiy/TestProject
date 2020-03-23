@@ -17,13 +17,11 @@ import org.testng.annotations.Test;
 @Feature("Deposit Accounts Management")
 @Owner("Dmytro")
 public class C22579_ViewNewSavingsAccountTest extends BaseTest {
-
     private Client client;
     private Account savingsAccount;
 
     @BeforeMethod
     public void preCondition() {
-
         // Set up Client
         client = new Client().setDefaultClientData();
         client.setClientStatus("Member");
@@ -44,7 +42,6 @@ public class C22579_ViewNewSavingsAccountTest extends BaseTest {
     @Test(description = "C22579, View New Savings Account")
     @Severity(SeverityLevel.CRITICAL)
     public void viewNewSavingsAccount() {
-
         logInfo("Step 1: Log in to the system as the user from the precondition");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 

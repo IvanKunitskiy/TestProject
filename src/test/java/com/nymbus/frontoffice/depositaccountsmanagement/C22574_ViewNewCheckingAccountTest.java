@@ -17,7 +17,6 @@ import org.testng.annotations.Test;
 @Feature("Deposit Accounts Management")
 @Owner("Dmytro")
 public class C22574_ViewNewCheckingAccountTest extends BaseTest {
-
     private Client client;
     private Account checkingAccount;
 
@@ -41,7 +40,6 @@ public class C22574_ViewNewCheckingAccountTest extends BaseTest {
     @Test(description = "C22574, View new checking account")
     @Severity(SeverityLevel.CRITICAL)
     public void viewNewCheckingAccount() {
-
         logInfo("Step 1: Log in to the system");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
