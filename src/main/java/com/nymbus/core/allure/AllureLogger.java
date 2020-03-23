@@ -24,7 +24,7 @@ public class AllureLogger {
 
     protected void logInfo(String message, Object... args) {
         logType = LogType.INFO;
-        log(message);
+        log(String.format(message, args));
     }
 
     protected void logWarn(String message, Object... args) {

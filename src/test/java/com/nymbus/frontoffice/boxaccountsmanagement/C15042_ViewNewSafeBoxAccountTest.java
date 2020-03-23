@@ -29,7 +29,7 @@ public class C15042_ViewNewSafeBoxAccountTest extends BaseTest {
         safeDepositBoxAccount = new Account().setSafeDepositBoxData();
     }
 
-    @Test(description = "C15042, View new safe box account")
+    @Test(description = "C15042, View new safe box account", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void viewNewSafeBoxAccount() {
 
