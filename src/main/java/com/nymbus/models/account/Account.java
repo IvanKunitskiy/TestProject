@@ -66,6 +66,32 @@ public class Account {
         return account;
     }
 
+    public Account setCDAccountData() {
+        Account account = new Account();
+
+        account.setAddNewOption("Account");
+        account.setProductType("Savings Account");
+        account.setProduct("3 Month Regular Certificate");
+        account.setAccountTitle(Generator.genString(5));
+        account.setDateOpened(DateTime.getYesterdayDate("MM/dd/yyyy"));
+        account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
+//        account.setIraDistributionCode("No dist");
+//        account.setIraDistributionFrequency("No Dist");
+//        account.setIraDistributionAmount(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
+//        account.setDateNextIRADistribution(DateTime.getTomorrowDate("MM/dd/yyyy"));
+//        account.setNumberOfDebitCardsIssued(String.valueOf(Generator.genInt(0, 100)));
+//        account.setNumberOfATMCardsIssued(String.valueOf(Generator.genInt(0, 100)));
+//        account.setFederalWHPercent(String.valueOf(Generator.genInt(0, 100)));
+//        account.setPrintStatementNextUpdate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+//        account.setInterestPaidYTD(String.valueOf(Generator.genLong(100000000000L, 922337203685L)));
+//        account.setUserDefinedField_1(Generator.genString(5));
+//        account.setUserDefinedField_2(Generator.genString(5));
+//        account.setUserDefinedField_3(Generator.genString(5));
+//        account.setUserDefinedField_4(Generator.genString(5));
+
+        return account;
+    }
+
     public Account setIRAAccountData() {
         Account account = new Account();
 
