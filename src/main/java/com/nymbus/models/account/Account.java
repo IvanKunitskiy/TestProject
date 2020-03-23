@@ -72,6 +72,7 @@ public class Account {
         account.setProductType("Savings Account");
         account.setProduct("Traditional IRA Accumulation Acct");
         account.setAccountTitle(Generator.genString(5));
+        account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setDateOpened("02/27/2020");
         account.setIraDistributionCode("No dist");
         account.setIraDistributionFrequency("No Dist");
@@ -209,7 +210,7 @@ public class Account {
         this.mailCode = mailCode;
     }
 
-    public String getDateOpened() {
+    public String  getDateOpened() {
         return dateOpened;
     }
 
