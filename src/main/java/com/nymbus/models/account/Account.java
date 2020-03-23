@@ -74,6 +74,7 @@ public class Account {
         account.setProduct("Traditional IRA Accumulation Acct");
         account.setAccountTitle(Generator.genString(5));
         account.setDateOpened(DateTime.getYesterdayDate("MM/dd/yyyy"));
+        account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setIraDistributionCode("No dist");
         account.setIraDistributionFrequency("No Dist");
         account.setIraDistributionAmount(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
