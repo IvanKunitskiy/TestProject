@@ -143,6 +143,14 @@ public class EditAccountPage extends PageTools {
     private By onlineBankingLogin = By.xpath("//input[@id='datelastlogintoonlinebanking']");
     private By totalEarningsForLifeOfAccount = By.xpath("//input[@id='totalEarnings']");
     private By totalContributions = By.xpath("//input[@id='totalContributions']");
+    private By dateLastActivityContact = By.xpath("//input[@id='datelastactivity']");
+
+    private By iraDistributionAccountNumber = By.xpath("//div[@id='iradistributionaccountid']");
+    private By bankRoutingNumberForIRADistr = By.xpath("//input[@id='bankroutingnumberforiradistr']");
+    private By bankAccountNumberForIRADistr = By.xpath("//input[@id='bankaccountnumberforiradistr']");
+    private By amountLastIRADistribution = By.xpath("//input[@id='amountlastiradistribution']");
+    private By dateLastIRADistribution = By.xpath("//input[@id='datelastiradistribution']");
+    private By iraDistributionsYTD = By.xpath("//input[@id='iradistributionsytd']");
 
     /**
      * Click switch elements
@@ -419,6 +427,42 @@ public class EditAccountPage extends PageTools {
     * Check if field is disabled in edit mode
      */
 
+    @Step("Check if 'IRA Distribution Account Number' field is disabled edit mode")
+    public boolean isIRADistributionAccountNumberDisabledInEditMode() {
+        waitForElementVisibility(iraDistributionAccountNumber);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", iraDistributionAccountNumber));
+    }
+
+    @Step("Check if 'Bank Routing Number for IRA Distr' field is disabled edit mode")
+    public boolean isBankRoutingNumberForIRADistrDisabledInEditMode() {
+        waitForElementVisibility(bankRoutingNumberForIRADistr);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", bankRoutingNumberForIRADistr));
+    }
+
+    @Step("Check if 'Bank Account Number For IRA Distr' field is disabled edit mode")
+    public boolean isBankAccountNumberForIRADistrDisabledInEditMode() {
+        waitForElementVisibility(bankAccountNumberForIRADistr);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", bankAccountNumberForIRADistr));
+    }
+
+    @Step("Check if 'Amount last IRA distribution' field is disabled edit mode")
+    public boolean isAmountLastIRADistributionDisabledInEditMode() {
+        waitForElementVisibility(amountLastIRADistribution);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", amountLastIRADistribution));
+    }
+
+    @Step("Check if 'Date last IRA distribution' field is disabled edit mode")
+    public boolean isDateLastIRADistributionDisabledInEditMode() {
+        waitForElementVisibility(dateLastIRADistribution);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", dateLastIRADistribution));
+    }
+
+    @Step("Check if 'IRA distributions YTD' field is disabled edit mode")
+    public boolean isIRADistributionsYTDDisabledInEditMode() {
+        waitForElementVisibility(iraDistributionsYTD);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", iraDistributionsYTD));
+    }
+
     @Step("Check if 'Interest Paid Last Year' field is disabled edit mode")
     public boolean isInterestPaidLastYearDisabledInEditMode() {
         waitForElementVisibility(interestPaidLastYear);
@@ -477,6 +521,12 @@ public class EditAccountPage extends PageTools {
     public boolean isAggrOdBalanceDisabledInEditMode() {
         waitForElementVisibility(aggrOdBalance);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", aggrOdBalance));
+    }
+
+    @Step("Check if 'Date Last Activity/Contact' field is disabled edit mode")
+    public boolean isDateLastActivityContactDisabledInEditMode() {
+        waitForElementVisibility(dateLastActivityContact);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", dateLastActivityContact));
     }
 
     @Step("Check if 'Aggr OD lst stmt' field is disabled edit mode")
