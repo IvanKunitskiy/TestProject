@@ -35,7 +35,6 @@ public class AccountDetailsPage extends PageTools {
     private By callClass = By.xpath("//tr[@data-config-name='callclasscode']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By chargeOrAnalyze = By.xpath("//tr[@data-config-name='chargeoranalyze']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By accountAnalysis = By.xpath("//tr[@data-config-name='accountanalysis']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private By statementFlag = By.xpath("//tr[@data-config-name='statementflag']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By interestRate = By.xpath("//tr[@data-config-name='interestrate']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By earningCreditRate = By.xpath("//tr[@data-config-name='earningscreditrate']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By federalWHReason = By.xpath("//tr[@data-config-name='federalwithholdingreason']//span[contains(@class, 'dnTextFixedWidthText')]");
@@ -56,7 +55,9 @@ public class AccountDetailsPage extends PageTools {
     private By iraDistributionCode = By.xpath("//tr[@data-config-name='iradistributioncode']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By iraDistributionAmount = By.xpath("//tr[@data-config-name='iradistributionamount']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By dateNextIRADistribution = By.xpath("//tr[@data-config-name='datenextiradistribution']//span[contains(@class, 'dnTextFixedWidthText')]");
-
+    private By applyInterestTo = By.xpath("//tr[@data-config-name='codetoapplyinterestto']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By interestType = By.xpath("//tr[@data-config-name='interesttype']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By maturityDate  = By.xpath("//tr[@data-config-name='maturitydate']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By numberOfDebitCardsIssued= By.xpath("//tr[@data-config-name='numberofdebitcardsissued']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By automaticOverdraftLimit= By.xpath("//tr[@data-config-name='automaticoverdraftlimit']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By cashCollDaysBeforeChg= By.xpath("//tr[@data-config-name='cashcollectionnumberofdaysbeforeinterestcharge']//span[contains(@class, 'dnTextFixedWidthText')]");
@@ -65,13 +66,37 @@ public class AccountDetailsPage extends PageTools {
     private By positivePay= By.xpath("//tr[@data-config-name='positivepaycustomer']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By interestFrequency= By.xpath("//tr[@data-config-name='interestfrequency']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By correspondingAccount= By.xpath("//tr[@data-config-name='correspondingaccountid']//span[contains(@class, 'dnTextFixedWidthText')]");
-
     private By printStatementNextUpdate= By.xpath("//tr[@data-config-name='printstatementnextupdate']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By interestPaidYTD= By.xpath("//tr[@data-config-name='interestpaidytd']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By dateNextInterest= By.xpath("//tr[@data-config-name='datenextinterestpayment']//span[contains(@class, 'dnTextFixedWidthText')]");
 
     /**
      * Details tab
      */
+
+    @Step("Get 'Date Next Interest' value")
+    public String getDateNextInterest() {
+        waitForElementVisibility(dateNextInterest);
+        return getElementText(dateNextInterest);
+    }
+
+    @Step("Get 'Maturity Date' value")
+    public String getMaturityDate() {
+        waitForElementVisibility(maturityDate);
+        return getElementText(maturityDate);
+    }
+
+    @Step("Get 'Apply Interest To' value")
+    public String getApplyInterestTo() {
+        waitForElementVisibility(applyInterestTo);
+        return getElementText(applyInterestTo);
+    }
+
+    @Step("Get 'Interest Type' value")
+    public String getInterestType() {
+        waitForElementVisibility(interestType);
+        return getElementText(interestType);
+    }
 
     @Step("Get 'IRA Distribution Frequency' value")
     public String getIraDistributionFrequency() {

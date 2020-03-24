@@ -41,6 +41,12 @@ public class AddAccountPage extends PageTools {
     private By iraDistributionFrequency = By.xpath("//div[@id='iradistributionfrequency']//a//span/span");
     private By iraDistributionAmountField = By.xpath("//input[@id='iradistributionamount']");
     private By dateNextIRADistribution = By.xpath("//input[@id='datenextiradistribution']");
+    private By termType = By.xpath("//input[@id='terminmonthsordays']");
+    private By autoRenewable = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span[contains(@class, 'ng-scope')]");
+    private By interestFrequency = By.xpath("//div[@id='interestfrequencycode']/a/span/span[contains(@class, 'ng-scope')]");
+    private By interestRate = By.xpath("//input[@id='interestrate']");
+    private By interestType = By.xpath("//div[@id='interesttype']/a/span/span[contains(@class, 'ng-scope')]");
+    private By transactionalAccountSwitch = By.xpath("//dn-switch[@id='transactionalaccount']");
 
     /**
      * Account holders and signers
@@ -52,10 +58,6 @@ public class AddAccountPage extends PageTools {
     private By accountHolderTaxID = By.xpath("//input[@data-test-id='field-taxIdNumber']");
     private By statementCycleSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By accountHolderAddress = By.xpath("//div[@data-test-id='field-addressid_0']/a/span/span");
-
-    /**
-     * Originating officer
-     */
 
     private By originatingOfficer = By.xpath("//div[@data-test-id='field-originatingOfficer']/a/span/span");
     private By currentOfficer = By.xpath("//div[@data-test-id='field-officer']/a/span/span");
@@ -77,7 +79,7 @@ public class AddAccountPage extends PageTools {
     private By chargeOrAnalyzeList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By chargeOrAnalyzeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By interestFrequencySelectorButton = By.xpath("//div[@id='interestfrequency']");
+    private By interestFrequencySelectorButton = By.xpath("//div[@id='interestfrequencycode']/a/span/span");
     private By interestFrequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By interestFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
@@ -92,6 +94,59 @@ public class AddAccountPage extends PageTools {
     private By iraDistributionCodeSelectorButton = By.xpath("//div[@id='iradistributioncode']");
     private By iraDistributionCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By iraDistributionCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By applyInterestToSelectorButton = By.xpath("//div[@id='codetoapplyinterestto']");
+    private By applyInterestToList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By applyInterestToSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By interestTypeSelectorButton = By.xpath("//div[@id='interesttype']");
+    private By interestTypeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By interestTypeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+
+    @Step("Click the 'Interest Type' option")
+    public void clickInterestTypeSelectorOption(String interestTypeOption) {
+        waitForElementVisibility(interestTypeSelectorOption, interestTypeOption);
+        waitForElementClickable(interestTypeSelectorOption, interestTypeOption);
+        click(interestTypeSelectorOption, interestTypeOption);
+    }
+
+    @Step("Returning list of 'Interest Type' options")
+    public List<String> getInterestTypeList() {
+        waitForElementVisibility(interestTypeList);
+        waitForElementClickable(interestTypeList);
+        return getElementsText(interestTypeList);
+    }
+
+    @Step("Click the 'Interest Type' selector button")
+    public void clickInterestTypeSelectorButton() {
+        waitForElementVisibility(interestTypeSelectorButton);
+        scrollToElement(interestTypeSelectorButton);
+        waitForElementClickable(interestTypeSelectorButton);
+        click(interestTypeSelectorButton);
+    }
+
+    @Step("Click the 'Apply Interest To' option")
+    public void clickApplyInterestToSelectorOption(String applyInterestToOption) {
+        waitForElementVisibility(applyInterestToSelectorOption, applyInterestToOption);
+        waitForElementClickable(applyInterestToSelectorOption, applyInterestToOption);
+        click(applyInterestToSelectorOption, applyInterestToOption);
+    }
+
+    @Step("Returning list of 'Apply Interest To' options")
+    public List<String> getApplyInterestToList() {
+        waitForElementVisibility(applyInterestToList);
+        waitForElementClickable(applyInterestToList);
+        return getElementsText(applyInterestToList);
+    }
+
+    @Step("Click the 'Apply Interest To' selector button")
+    public void clickApplyInterestToSelectorButton() {
+        waitForElementVisibility(applyInterestToSelectorButton);
+        scrollToElement(applyInterestToSelectorButton);
+        waitForElementClickable(applyInterestToSelectorButton);
+        click(applyInterestToSelectorButton);
+    }
 
     @Step("Click the 'IRA Distribution Frequency' option")
     public void clickIRADistributionCodeSelectorOption(String iraDistributionCodeOption) {
@@ -394,6 +449,7 @@ public class AddAccountPage extends PageTools {
         waitForElementVisibility(productSelectorOption, productOption);
         waitForElementClickable(productSelectorOption, productOption);
         click(productSelectorOption, productOption);
+        SelenideTools.sleep(2);
     }
 
     @Step("Returning the 'DBC ODP Opt In/Out Status' value")
@@ -420,8 +476,8 @@ public class AddAccountPage extends PageTools {
     @Step("Returning the 'Date Opened' value")
     public String getDateOpened() {
         waitForElementVisibility(dateOpened);
-        waitForElementClickable(dateOpened);
         SelenideTools.sleep(2);
+        waitForElementClickable(dateOpened);
         return getElementAttributeValue("value", dateOpened);
     }
 
@@ -443,6 +499,49 @@ public class AddAccountPage extends PageTools {
         waitForElementVisibility(accountHolderRelationship);
         waitForElementClickable(accountHolderRelationship);
         return getElementText(accountHolderRelationship);
+    }
+
+
+    @Step("Returning the 'Term Type' value")
+    public String getTermType() {
+        waitForElementVisibility(termType);
+        waitForElementClickable(termType);
+        return getElementAttributeValue("value", termType);
+    }
+
+    @Step("Returning the 'Auto Renewable' value")
+    public String getAutoRenewable() {
+        waitForElementVisibility(autoRenewable);
+        waitForElementClickable(autoRenewable);
+        return getElementText(autoRenewable);
+    }
+
+    @Step("Returning the 'Interest Frequency' value")
+    public String getInterestFrequency() {
+        waitForElementVisibility(interestFrequency);
+        waitForElementClickable(interestFrequency);
+        return getElementText(interestFrequency);
+    }
+
+    @Step("Returning the 'Interest Rate' value")
+    public String getInterestRate() {
+        waitForElementVisibility(interestRate);
+        waitForElementClickable(interestRate);
+        return getElementAttributeValue("value", interestRate);
+    }
+
+    @Step("Returning the 'Interest Type' value")
+    public String getInterestType() {
+        waitForElementVisibility(interestType);
+        waitForElementClickable(interestType);
+        return getElementText(interestType);
+    }
+
+    @Step("Click 'Transactional Account' switch")
+    public String clickTransactionalAccountSwitch() {
+        waitForElementVisibility(transactionalAccountSwitch);
+        waitForElementClickable(transactionalAccountSwitch);
+        return getElementText(transactionalAccountSwitch);
     }
 
     @Step("Returning the 'Account Holder Name' value")

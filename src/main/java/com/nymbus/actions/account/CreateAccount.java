@@ -132,10 +132,43 @@ public class CreateAccount {
         setAccountAnalysis(account);
     }
 
+    public void selectValuesInDropdownFieldsRequiredForCDAccount(Account account) {
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        setInterestFrequency(account);
+        setApplyInterestTo(account);
+        setInterestType(account);
+//        setStatementCycle(account);
+        setCorrespondingAccount(account);
+        setCallClassCode(account);
+    }
+
     public void fillInInputFieldsRequiredForCheckingAccount(Account account) {
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         Pages.addAccountPage().setEarningCreditRate(account.getEarningCreditRate());
+    }
+
+    public void setInterestType(Account account) {
+        Pages.addAccountPage().clickInterestTypeSelectorButton();
+        List<String> listOfInterestType = Pages.addAccountPage().getInterestTypeList();
+
+        Assert.assertTrue(listOfInterestType.size() > 0, "There are no product types available");
+        if (account.getInterestType() == null) {
+            account.setInterestType(listOfInterestType.get(new Random().nextInt(listOfInterestType.size())).trim());
+        }
+        Pages.addAccountPage().clickInterestTypeSelectorOption(account.getInterestType());
+    }
+
+    public void setApplyInterestTo(Account account) {
+        Pages.addAccountPage().clickApplyInterestToSelectorButton();
+        List<String> listOfApplyInterestTo = Pages.addAccountPage().getApplyInterestToList();
+
+        Assert.assertTrue(listOfApplyInterestTo.size() > 0, "There are no product types available");
+        if (account.getApplyInterestTo() == null) {
+            account.setApplyInterestTo(listOfApplyInterestTo.get(new Random().nextInt(listOfApplyInterestTo.size())).trim());
+        }
+        Pages.addAccountPage().clickApplyInterestToSelectorOption(account.getApplyInterestTo());
     }
 
     public void setIRADistributionFrequency(Account account) {

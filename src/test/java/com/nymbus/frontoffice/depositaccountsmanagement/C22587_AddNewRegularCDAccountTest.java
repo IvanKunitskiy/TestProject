@@ -21,6 +21,7 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
 
     Client client;
     Account cdAccount;
+    Account checkingAccount;
 
     @BeforeMethod
     public void preConditions() {
@@ -34,11 +35,18 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         // Set up IRA account
         cdAccount = new Account().setCDAccountData();
         cdAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
+        cdAccount.setApplyInterestTo("CHK Acct");
+        cdAccount.setMaturityDate(DateTime.getDateWithNMonthAdded(cdAccount.getDateOpened(), "MM/dd/yyyy", Integer.parseInt(cdAccount.getTermType())));
+        cdAccount.setDateNextInterest(DateTime.getDateWithNMonthAdded(cdAccount.getDateOpened(), "MM/dd/yyyy", 3)); // 3 month added as 'Interest Frequency' is set to 'Quarterly'
+
+        // Set up CHK account (required to point the 'Corresponding Account')
+        checkingAccount = new Account().setCHKAccountData();
 
         // Login to the system and create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client);
         client.setClientID(Pages.clientDetailsPage().getClientID());
+        AccountActions.createAccount().createCHKAccount(checkingAccount);
         Actions.loginActions().doLogOut();
     }
 
@@ -72,40 +80,27 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         Assert.assertEquals(Pages.addAccountPage().getAccountType(), client.getClientType(), "'Account type' is prefilled with wrong value");
         final String accountHolderName = client.getFirstName() + " " + client.getLastName() + " (" + client.getClientID() + ")";
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderName(), accountHolderName, "'Name' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getAccountHolderRelationship(), "Owner", "'Relationship' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getAccountHolderRelationship(), cdAccount.getAccountHolder(), "'Relationship' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderClientType(), client.getClientType(), "'Client type' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderTaxID(), client.getTaxID(), "'Tax ID' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getDateOpened(), DateTime.getLocalDateTimeByPattern("MM/dd/yyyy"), "'Date' is prefilled with wrong value");
+//        Assert.assertEquals(Pages.addAccountPage().getDateOpened(), DateTime.getLocalDateTimeByPattern("MM/dd/yyyy"), "'Date' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getOriginatingOfficer(), client.getSelectOfficer(), "'Originating officer' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getCurrentOfficer(), client.getSelectOfficer(), "'Current officer' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getBankBranch(), cdAccount.getBankBranch(), "'Bank branch' is prefilled with wrong value");
-//        - Term Type (Min Term for selected Product)
-//        - Auto Renewable (default to YES)
-//        - Interest Frequency (from selected Product)
-//        - Interest Rate
-//        - Interest Type
+        Assert.assertEquals(Pages.addAccountPage().getTermType(), cdAccount.getTermType(), "'Term Type' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getAutoRenewable(), cdAccount.getAutoRenewable(), "'Auto Renewable' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getInterestFrequency(), cdAccount.getInterestFrequency(), "'Interest Frequency' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getInterestType(), cdAccount.getInterestType(), "'Interest Type' is prefilled with wrong value");
 
         logInfo("Step 7: Select values in such drop-down fields:");
-//        - Account Type
-//        - Current Officer (any value that differs from the default Officer)
-//        - Bank Branch
-//        - Interest Frequency
-//        - Apply Interest To (Check or Remain in account)
-//        - Interest Type
-//        - Statement Cycle
-//        - Corresponding Account (if another active CHK/Savings account exists for selected Client)
-//        - Call Class Code - (if the drop-down is not blank)
-//        NOTE: if Apply Interest To= CHK or Savings account -> Corresponding Account field becomes required
+        AccountActions.createAccount().selectValuesInDropdownFieldsRequiredForCDAccount(cdAccount);
 
         logInfo("Step 8: Fill in such text fields with valid data (except Account Number field):");
         Pages.addAccountPage().setAccountTitleValue(cdAccount.getAccountTitle());
-//        - Statement Flag (R or S)
-//        - Interest Rate - min - 4 digits pass the decimal, max - 100%
+        Pages.addAccountPage().setInterestRate(cdAccount.getInterestRate());
 
         logInfo("Step 9: Set 'Transactional Account' switcher to YES):");
-        // ...
-        // Set 'Transactional Account' switcher to YES
-        // ...
+        Pages.addAccountPage().clickTransactionalAccountSwitch();
 
         logInfo("Step 10: Select Date Opened as any date < Current Date");
         Pages.addAccountPage().setDateOpenedValue(cdAccount.getDateOpened());
@@ -114,10 +109,47 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
 
-        logInfo("Step 12: Pay attention to the fields that were filled in during account creation");
+        logInfo("Step 12: Check the fields that were filled in during account creation");
         Pages.accountDetailsPage().clickMoreButton();
+        Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), cdAccount.getCurrentOfficer(), "'Current Officer' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), cdAccount.getBankBranch(), "'Bank Branch' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getInterestFrequency(), cdAccount.getInterestFrequency(), "'Interest Frequency' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getApplyInterestTo(), cdAccount.getApplyInterestTo(), "'Apply Interest To' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getInterestType(), cdAccount.getInterestType(), "'Interest Type' value does not match");
+//        Assert.assertEquals(Pages.accountDetailsPage().getStatementCycle(), cdAccount.getStatementCycle(), "'Statement Cycle' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getCorrespondingAccount(), cdAccount.getCorrespondingAccount(), "'Corresponding Account' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), cdAccount.getCallClassCode(), "'Call Class' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), cdAccount.getAccountTitle(), "'Title' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), cdAccount.getInterestRate(), "'Interest Rate' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), cdAccount.getDateOpened(), "'Date Opened' value does not match");
 
+        logInfo("Step 13: Check the Maturity Date field value (verify that it's calculated based on Date Opened + Term of Account)");
+        Assert.assertEquals(Pages.accountDetailsPage().getMaturityDate(), cdAccount.getMaturityDate(), "'Maturity Date' value does not match");
 
+        logInfo("Step 14: Check the Date next interest field value (verify that it's calculated based on Date Opened + Interest Frequency)");
+        Assert.assertEquals(Pages.accountDetailsPage().getDateNextInterest(), cdAccount.getDateNextInterest(), "'Maturity Date' value does not match");
 
+        logInfo("Step 15: Click [Edit] button and pay attention to the fields that were filled in during account creation");
+        Pages.accountDetailsPage().clickEditButton();
+        Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), cdAccount.getCurrentOfficer(), "'Current Officer' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), cdAccount.getBankBranch(), "'Bank Branch' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getInterestFrequency(), cdAccount.getInterestFrequency(), "'Interest Frequency' value does not match");
+//        setApplyInterestTo(account);
+//        setInterestType(account);
+        Assert.assertEquals(Pages.editAccountPage().getStatementCycleValueInEditMode(), cdAccount.getStatementCycle(), "'Statement Cycle' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getCorrespondingAccount(), cdAccount.getCorrespondingAccount(), "'Corresponding Account' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), cdAccount.getCallClassCode(), "'Call Class' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), cdAccount.getAccountTitle(), "'Title' value does not match");
+//        Pages.addAccountPage().setInterestRate(cdAccount.getInterestRate());
+        Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), cdAccount.getDateOpened(), "'Date Opened' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getAccountTitleValueInEditMode(), cdAccount.getAccountTitle(), "'Title' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getDateOpenedValueInEditMode(), cdAccount.getDateOpened(), "'Date Opened' value does not match");
+
+        logInfo("Step 16: Do not make any changes and go to Account Maintenance -> Maintenance History page");
+        Pages.accountNavigationPage().clickMaintenanceTab();
+        Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
+
+        logInfo("Step 17: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
+        // TODO: Implement verification at Maintenance History page
     }
 }

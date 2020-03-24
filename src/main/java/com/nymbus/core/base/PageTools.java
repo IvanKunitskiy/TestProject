@@ -165,7 +165,7 @@ public class PageTools extends AllureLogger {
     protected void scrollToElement(By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", elements --> " + byLocator(by, args));
         waitForElementVisibility(by);
-        getSelenideElement(by, args).scrollTo();
+        Selenide.executeJavaScript("arguments[0].scrollIntoView();", getWebElement(byLocator(by, args)));
     }
 
     protected WebElement getWebElement(By by){

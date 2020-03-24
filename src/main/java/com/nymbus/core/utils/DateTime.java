@@ -108,4 +108,9 @@ public class DateTime {
         LocalDate localDate = LocalDate.now();
         return DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH).format(localDate.minusDays(1));
     }
+
+    public static String getDateWithNMonthAdded(String date, String pattern, int monthToAdd) {
+        LocalDate d = LocalDate.parse(date, DateTimeFormatter.ofPattern(pattern));
+        return DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH).format(d.plusMonths(monthToAdd));
+    }
 }
