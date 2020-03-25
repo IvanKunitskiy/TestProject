@@ -35,7 +35,6 @@ public class EditAccountPage extends PageTools {
     private By userDefinedFieldInput_2 = By.xpath("//input[@id='userdefinedfield2']");
     private By userDefinedFieldInput_3 = By.xpath("//input[@id='userdefinedfield3']");
     private By userDefinedFieldInput_4 = By.xpath("//input[@id='userdefinedfield4']");
-    private By imageStatementCodeInput = By.xpath("//input[@id='imagestatementcode']");
     private By numberOfDebitCardsIssuedInput = By.xpath("//input[@id='numberofdebitcardsissued']");
     private By cashCollDaysBeforeChgInput = By.xpath("//input[@id='cashcollectionnumberofdaysbeforeinterestcharge']");
     private By cashCollInterestRateInput = By.xpath("//input[@id='cashcollectioninterestrate']");
@@ -43,16 +42,17 @@ public class EditAccountPage extends PageTools {
     private By positivePayInput = By.xpath("//input[@id='positivepaycustomer']");
     private By cashColFloatInput = By.xpath("//input[@id='cashcollectionfloat']");
     private By earningCreditRateInput = By.xpath("//input[@id='earningscreditrate']");
-    private By interestRateInput = By.xpath("//input[@id='interestrate']");
     private By cashCollFloatInput = By.xpath("//input[@id='cashcollectionfloat']");
     private By automaticOverdraftLimitInput = By.xpath("//input[@id='automaticoverdraftlimit']");
-    private By interestFrequency = By.xpath("//div[@id='interestfrequency']//span[contains(@class, 'ng-scope')]");
+    private By interestFrequency = By.xpath("//div[@id='interestfrequencycode']//span[contains(@class, 'ng-scope')]");
     private By correspondingAccount = By.xpath("//div[@id='correspondingaccountid']//span[contains(@class, 'ng-scope')]");
     private By newAccountSwitch = By.xpath("//dn-switch[@id='newaccount']");
     private By iraDistributionFrequency = By.xpath("//div[@id='iradistributionfrequency']//span[contains(@class, 'ng-scope')]");
     private By iraDistributionCode = By.xpath("//div[@id='iradistributioncode']//span[contains(@class, 'ng-scope')]");
     private By iraDistributionAmount = By.xpath("//input[@id='iradistributionamount']");
     private By iraDateNextIRADistribution = By.xpath("//input[@id='datenextiradistribution']");
+    private By applyInterestTo = By.xpath("//div[@id='codetoapplyinterestto']//span[contains(@class, 'ng-scope')]");
+    private By interestType = By.xpath("//div[@id='interesttype']//span[contains(@class, 'ng-scope')]");
 
     private By federalWHReasonSelectorButton = By.xpath("//div[@id='federalwithholdingreason']");
     private By federalWHReasonList = By.xpath("//li[contains(@role, 'option')]/div/span");
@@ -173,6 +173,17 @@ public class EditAccountPage extends PageTools {
     /**
      * Get values in edit mode
      */
+    @Step("Get 'Apply Interest To' value in edit mode")
+    public String getApplyInterestTo() {
+        waitForElementVisibility(applyInterestTo);
+        return getElementText(applyInterestTo);
+    }
+    @Step("Get 'Interest Type' value in edit mode")
+    public String getInterestType() {
+        waitForElementVisibility(interestType);
+        return getElementText(interestType);
+    }
+
     @Step("Get 'IRA Distribution Frequency' value in edit mode")
     public String getIraDistributionFrequencyInEditMode() {
         waitForElementVisibility(iraDistributionFrequency);
@@ -809,9 +820,9 @@ public class EditAccountPage extends PageTools {
 
     @Step("Set 'Interest rate' option")
     public void setInterestRate(String interestRateValue) {
-        waitForElementVisibility(interestRateInput);
-        waitForElementClickable(interestRateInput);
-        type(interestRateValue, interestRateInput);
+        waitForElementVisibility(interestRate);
+        waitForElementClickable(interestRate);
+        type(interestRateValue, interestRate);
     }
 
     @Step("Set 'Cash coll float' value")

@@ -79,7 +79,6 @@ public class Account {
         account.setAddNewOption("Account");
         account.setProductType("CD Account");
         account.setProduct("3 Month Regular Certificate");
-        account.setTermType("3");
         account.setAutoRenewable("YES");
         account.setInterestFrequency("Quarterly");
         account.setInterestType("Simple");
