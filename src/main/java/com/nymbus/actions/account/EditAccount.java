@@ -97,6 +97,39 @@ public class EditAccount {
         Pages.editAccountPage().clickReasonATMChargeWaivedSelectorOption(account.getReasonATMChargeWaived());
     }
 
+    public void setCurrentOfficer(Account account) {
+        Pages.editAccountPage().clickCurrentOfficerSelectorButton();
+        List<String> listOfCurrentOfficers = Pages.editAccountPage().getCurrentOfficerList();
+
+        Assert.assertTrue(listOfCurrentOfficers.size() > 0, "There are no options available");
+        if (account.getCurrentOfficer() == null) {
+            account.setCurrentOfficer(listOfCurrentOfficers.get(new Random().nextInt(listOfCurrentOfficers.size())).trim());
+        }
+        Pages.editAccountPage().clickCurrentOfficerSelectorOption(account.getCurrentOfficer());
+    }
+
+    public void setBankBranch(Account account) {
+        Pages.editAccountPage().clickBankBranchSelectorButton();
+        List<String> listOfBankBranchOptions = Pages.editAccountPage().getBankBranchList();
+
+        Assert.assertTrue(listOfBankBranchOptions.size() > 0, "There are no options available");
+        if (account.getBankBranch() == null) {
+            account.setBankBranch(listOfBankBranchOptions.get(new Random().nextInt(listOfBankBranchOptions.size())).trim());
+        }
+        Pages.editAccountPage().clickBankBranchOption(account.getBankBranch());
+    }
+
+    public void setCallClassCode(Account account) {
+        Pages.editAccountPage().clickCallClassCodeSelectorButton();
+        List<String> listOfCallClassCode = Pages.editAccountPage().getCallClassCodeList();
+
+        Assert.assertTrue(listOfCallClassCode.size() > 0, "There are no options available");
+        if (account.getCallClassCode() == null) {
+            account.setCallClassCode(listOfCallClassCode.get(new Random().nextInt(listOfCallClassCode.size())).trim());
+        }
+        Pages.editAccountPage().clickCallClassCodeSelectorOption(account.getCallClassCode());
+    }
+
     public void selectValuesInDropdownFieldsThatWereNotAvailableDuringCheckingAccountCreation(Account account) {
         setFederalWHReason(account);
         setReasonATMChargeWaived(account);
@@ -141,6 +174,14 @@ public class EditAccount {
         Pages.editAccountPage().setUserDefinedField_3(account.getUserDefinedField_3());
         Pages.editAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
         Pages.editAccountPage().setNumberOfDebitCardsIssued(account.getNumberOfDebitCardsIssued());
+    }
+
+    public void fillInInputFieldsThatWereNotAvailableDuringCDAccountCreation(Account account) {
+        Pages.editAccountPage().setFederalWHPercent(account.getFederalWHPercent());
+        Pages.editAccountPage().setUserDefinedField_1(account.getUserDefinedField_1());
+        Pages.editAccountPage().setUserDefinedField_2(account.getUserDefinedField_2());
+        Pages.editAccountPage().setUserDefinedField_3(account.getUserDefinedField_3());
+        Pages.editAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
     }
 
 }

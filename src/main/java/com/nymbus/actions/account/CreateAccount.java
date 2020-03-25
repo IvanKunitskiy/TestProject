@@ -14,6 +14,25 @@ public class CreateAccount {
         Pages.clientDetailsPage().clickAccountsTab();
     }
 
+    public void createCDAccount(Account account) {
+        clickAccountsTab();
+        setAddNewOption(account);
+        setProductType(account);
+        setProduct(account);
+        Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        setInterestFrequency(account);
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
+        setApplyInterestTo(account);
+        setInterestType(account);
+        Pages.addAccountPage().setInterestRate(account.getInterestRate());
+        setCallClassCode(account);
+        Pages.addAccountPage().clickSaveAccountButton();
+        Pages.accountDetailsPage().waitForFullProfileButton();
+    }
+
     public void createIRAAccount(Account account) {
         clickAccountsTab();
         setAddNewOption(account);

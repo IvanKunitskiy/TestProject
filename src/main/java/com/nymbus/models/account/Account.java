@@ -88,6 +88,11 @@ public class Account {
         account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setFederalWHPercent(String.valueOf(Generator.genInt(0, 100)));
+        account.setUserDefinedField_1(Generator.genString(5));
+        account.setUserDefinedField_2(Generator.genString(5));
+        account.setUserDefinedField_3(Generator.genString(5));
+        account.setUserDefinedField_4(Generator.genString(5));
 
         return account;
     }

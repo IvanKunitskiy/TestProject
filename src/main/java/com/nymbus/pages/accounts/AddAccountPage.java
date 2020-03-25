@@ -558,7 +558,7 @@ public class AddAccountPage extends PageTools {
         return getElementText(accountType);
     }
 
-    @Step("Returning list of 'Product Type'")
+    @Step("Returning list of 'Bank Branch'")
     public List<String> getBankBranchList() {
         waitForElementVisibility(bankBranchList);
         waitForElementClickable(bankBranchList);

@@ -47,6 +47,7 @@ public class EditAccountPage extends PageTools {
     private By interestFrequency = By.xpath("//div[@id='interestfrequencycode']//span[contains(@class, 'ng-scope')]");
     private By correspondingAccount = By.xpath("//div[@id='correspondingaccountid']//span[contains(@class, 'ng-scope')]");
     private By newAccountSwitch = By.xpath("//dn-switch[@id='newaccount']");
+    private By transactionalAccountSwitch = By.xpath("//dn-switch[@id='transactionalaccount']");
     private By iraDistributionFrequency = By.xpath("//div[@id='iradistributionfrequency']//span[contains(@class, 'ng-scope')]");
     private By iraDistributionCode = By.xpath("//div[@id='iradistributioncode']//span[contains(@class, 'ng-scope')]");
     private By iraDistributionAmount = By.xpath("//input[@id='iradistributionamount']");
@@ -85,6 +86,18 @@ public class EditAccountPage extends PageTools {
     private By whenSurchargesRefundedSelectorButton = By.xpath("//div[@id='whensurchargesrefunded']");
     private By whenSurchargesRefundedList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By whenSurchargesRefundedSelectorOption = By.xpath("//div[@id='whensurchargesrefunded']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By currentOfficerSelectorButton = By.xpath("//div[@data-test-id='field-officer']");
+    private By currentOfficerList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By currentOfficerSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By callClassCodeSelectorButton = By.xpath("//div[@data-test-id='field-callclasscode']");
+    private By callClassCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By callClassCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By bankBranchSelectorButton = By.xpath("//div[@id='bankbranch']");
+    private By bankBranchSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By bankBranchList = By.xpath("//li[contains(@role, 'option')]/div/span");
 
     /**
      * Disabled fields in edit mode
@@ -144,13 +157,31 @@ public class EditAccountPage extends PageTools {
     private By totalEarningsForLifeOfAccount = By.xpath("//input[@id='totalEarnings']");
     private By totalContributions = By.xpath("//input[@id='totalContributions']");
     private By dateLastActivityContact = By.xpath("//input[@id='datelastactivity']");
-
     private By iraDistributionAccountNumber = By.xpath("//div[@id='iradistributionaccountid']");
     private By bankRoutingNumberForIRADistr = By.xpath("//input[@id='bankroutingnumberforiradistr']");
     private By bankAccountNumberForIRADistr = By.xpath("//input[@id='bankaccountnumberforiradistr']");
     private By amountLastIRADistribution = By.xpath("//input[@id='amountlastiradistribution']");
     private By dateLastIRADistribution = By.xpath("//input[@id='datelastiradistribution']");
     private By iraDistributionsYTD = By.xpath("//input[@id='iradistributionsytd']");
+    private By originalBalance = By.xpath("//input[@id='originalbalance']");
+    private By amountLastInterestPaid = By.xpath("//input[@id='amountlastinterestpaid']");
+    private By dateLastInterestPaid = By.xpath("//input[@id='datelastinterestpaid']");
+    private By termTypeMonths = By.xpath("//div[@id='termtype']");
+    private By dateNextInterest = By.xpath("//input[@id='datenextinterestpayment']");
+    private By nextInterestPaymentAmount = By.xpath("//input[@id='nextinterestpaymentamount']");
+    private By maturityDate = By.xpath("//input[@id='maturitydate']");;
+    private By accruedInterest = By.xpath("//input[@id='accruedinterest']");
+    private By penaltyAmountYTD = By.xpath("//input[@id='penaltyamountytd']");
+    private By dailyInterestAccrual = By.xpath("//input[@id='dailyinterestaccrual']");
+    private By balanceAtRenewal = By.xpath("//input[@id='balanceatrenewal']");
+    private By dateOfRenewal = By.xpath("//input[@id='dateofrenewal']");
+    private By interestRateAtRenewal = By.xpath("//input[@id='interestrateatrenewal']");
+    private By renewalAmount = By.xpath("//input[@id='renewalamount']");
+    private By balanceAtEndOfYear = By.xpath("//input[@id='balanceatendofyear']");
+    private By accruedInterestAtEndOfYear = By.xpath("//input[@id='accruedinterestatendofyear']");
+    private By iraPlanNumber = By.xpath("//input[@id='iraplannumber']");
+    private By printInterestNoticeOverride = By.xpath("//input[@id='printinterestnoticeoverride']");
+    private By totalEarnings = By.xpath("//input[@id='totalEarnings']");
 
     /**
      * Click switch elements
@@ -158,9 +189,9 @@ public class EditAccountPage extends PageTools {
 
     @Step("Click 'Transactional Account' switch")
     public String clickTransactionalAccountSwitch() {
-        waitForElementVisibility(newAccountSwitch);
-        waitForElementClickable(newAccountSwitch);
-        return getElementText(newAccountSwitch);
+        waitForElementVisibility(transactionalAccountSwitch);
+        waitForElementClickable(transactionalAccountSwitch);
+        return getElementText(transactionalAccountSwitch);
     }
 
     @Step("Click 'New Account' switch")
@@ -173,11 +204,19 @@ public class EditAccountPage extends PageTools {
     /**
      * Get values in edit mode
      */
+
+    @Step("Get 'Transactional Account' value in edit mode")
+    public String getTransactionalAccountInEditMode() {
+        waitForElementVisibility(transactionalAccountSwitch);
+        return getElementAttributeValue("innerText", transactionalAccountSwitch).trim();
+    }
+
     @Step("Get 'Apply Interest To' value in edit mode")
     public String getApplyInterestTo() {
         waitForElementVisibility(applyInterestTo);
         return getElementText(applyInterestTo);
     }
+
     @Step("Get 'Interest Type' value in edit mode")
     public String getInterestType() {
         waitForElementVisibility(interestType);
@@ -437,6 +476,120 @@ public class EditAccountPage extends PageTools {
     /**
     * Check if field is disabled in edit mode
      */
+
+    @Step("Check if 'Balance At End Of Year' field is disabled edit mode")
+    public boolean isBalanceAtEndOfYearDisabledInEditMode() {
+        waitForElementVisibility(balanceAtEndOfYear);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", balanceAtEndOfYear));
+    }
+
+    @Step("Check if 'Accrued Interest At End Of Year' field is disabled edit mode")
+    public boolean isAccruedInterestAtEndOfYearDisabledInEditMode() {
+        waitForElementVisibility(accruedInterestAtEndOfYear);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", accruedInterestAtEndOfYear));
+    }
+
+    @Step("Check if 'IRA Plan Number' field is disabled edit mode")
+    public boolean isIraPlanNumberDisabledInEditMode() {
+        waitForElementVisibility(iraPlanNumber);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", iraPlanNumber));
+    }
+
+    @Step("Check if 'Print Interest Notice Override' field is disabled edit mode")
+    public boolean isPrintInterestNoticeOverrideDisabledInEditMode() {
+        waitForElementVisibility(printInterestNoticeOverride);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", printInterestNoticeOverride));
+    }
+
+    @Step("Check if 'Total Earnings' field is disabled edit mode")
+    public boolean isTotalEarningsDisabledInEditMode() {
+        waitForElementVisibility(totalEarnings);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", totalEarnings));
+    }
+
+    @Step("Check if 'Interest Rate At Renewal' field is disabled edit mode")
+    public boolean isInterestRateAtRenewalDisabledInEditMode() {
+        waitForElementVisibility(interestRateAtRenewal);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", interestRateAtRenewal));
+    }
+
+    @Step("Check if 'Renewal Amount' field is disabled edit mode")
+    public boolean isRenewalAmountDisabledInEditMode() {
+        waitForElementVisibility(renewalAmount);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", renewalAmount));
+    }
+
+    @Step("Check if 'Penalty Amount YTD' field is disabled edit mode")
+    public boolean isPenaltyAmountYTDDisabledInEditMode() {
+        waitForElementVisibility(penaltyAmountYTD);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", dateNextInterest));
+    }
+
+    @Step("Check if 'Daily Interest Accrual' field is disabled edit mode")
+    public boolean isDailyInterestAccrualDisabledInEditMode() {
+        waitForElementVisibility(dailyInterestAccrual);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", dailyInterestAccrual));
+    }
+
+    @Step("Check if 'Balance At Renewal' field is disabled edit mode")
+    public boolean isBalanceAtRenewalDisabledInEditMode() {
+        waitForElementVisibility(balanceAtRenewal);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", balanceAtRenewal));
+    }
+
+    @Step("Check if 'Date Of Renewal' field is disabled edit mode")
+    public boolean isDateOfRenewalDisabledInEditMode() {
+        waitForElementVisibility(dateOfRenewal);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", dateOfRenewal));
+    }
+
+    @Step("Check if 'Date Next Interest' field is disabled edit mode")
+    public boolean isDateNextInterestDisabledInEditMode() {
+        waitForElementVisibility(dateNextInterest);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", dateNextInterest));
+    }
+
+    @Step("Check if 'Next Interest Payment Amount' field is disabled edit mode")
+    public boolean isNextInterestPaymentAmountDisabledInEditMode() {
+        waitForElementVisibility(nextInterestPaymentAmount);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", nextInterestPaymentAmount));
+    }
+
+    @Step("Check if 'Maturity Date' field is disabled edit mode")
+    public boolean isMaturityDateDisabledInEditMode() {
+        waitForElementVisibility(maturityDate);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", maturityDate));
+    }
+
+    @Step("Check if 'Accrued Interest' field is disabled edit mode")
+    public boolean isAccruedInterestDisabledInEditMode() {
+        waitForElementVisibility(accruedInterest);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", accruedInterest));
+    }
+
+    @Step("Check if 'Original Balance' field is disabled edit mode")
+    public boolean isOriginalBalanceDisabledInEditMode() {
+        waitForElementVisibility(originalBalance);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", originalBalance));
+    }
+
+    @Step("Check if 'Amount Last Interest Paid' field is disabled edit mode")
+    public boolean isAmountLastInterestPaidDisabledInEditMode() {
+        waitForElementVisibility(amountLastInterestPaid);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", amountLastInterestPaid));
+    }
+
+    @Step("Check if 'Date Last Interest Paid' field is disabled edit mode")
+    public boolean isDateLastInterestPaidDisabledInEditMode() {
+        waitForElementVisibility(dateLastInterestPaid);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", dateLastInterestPaid));
+    }
+
+    @Step("Check if 'Term Type Months' field is disabled edit mode")
+    public boolean isTermTypeMonthsDisabledInEditMode() {
+        waitForElementVisibility(termTypeMonths);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", termTypeMonths));
+    }
 
     @Step("Check if 'IRA Distribution Account Number' field is disabled edit mode")
     public boolean isIRADistributionAccountNumberDisabledInEditMode() {
@@ -1096,5 +1249,71 @@ public class EditAccountPage extends PageTools {
         scrollToElement(federalWHReasonSelectorButton);
         waitForElementClickable(federalWHReasonSelectorButton);
         click(federalWHReasonSelectorButton);
+    }
+
+    @Step("Click the 'Call Class Code' option")
+    public void clickCallClassCodeSelectorOption(String callClassCodeOption) {
+        waitForElementVisibility(callClassCodeSelectorOption, callClassCodeOption);
+        waitForElementClickable(callClassCodeSelectorOption, callClassCodeOption);
+        click(callClassCodeSelectorOption, callClassCodeOption);
+    }
+
+    @Step("Returning list of 'Call Class Code' options")
+    public List<String> getCallClassCodeList() {
+        waitForElementVisibility(callClassCodeList);
+        waitForElementClickable(callClassCodeList);
+        return getElementsText(callClassCodeList);
+    }
+
+    @Step("Click the 'Call Class Code' selector button")
+    public void clickCallClassCodeSelectorButton() {
+        waitForElementVisibility(callClassCodeSelectorButton);
+        scrollToElement(callClassCodeSelectorButton);
+        waitForElementClickable(callClassCodeSelectorButton);
+        click(callClassCodeSelectorButton);
+    }
+
+    @Step("Returning list of 'Bank Branch'")
+    public List<String> getBankBranchList() {
+        waitForElementVisibility(bankBranchList);
+        waitForElementClickable(bankBranchList);
+        return getElementsText(bankBranchList);
+    }
+
+    @Step("Click the 'Bank branch' selector button")
+    public void clickBankBranchSelectorButton() {
+        waitForElementVisibility(bankBranchSelectorButton);
+        scrollToElement(bankBranchSelectorButton);
+        waitForElementClickable(bankBranchSelectorButton);
+        click(bankBranchSelectorButton);
+    }
+
+    @Step("Click the 'Bank branch' option")
+    public void clickBankBranchOption(String bankBranchOption) {
+        waitForElementVisibility(bankBranchSelectorOption, bankBranchOption);
+        waitForElementClickable(bankBranchSelectorOption, bankBranchOption);
+        click(bankBranchSelectorOption, bankBranchOption);
+    }
+
+    @Step("Click the 'Current Officer' option")
+    public void clickCurrentOfficerSelectorOption(String currentOfficerOption) {
+        waitForElementVisibility(currentOfficerSelectorOption, currentOfficerOption);
+        waitForElementClickable(currentOfficerSelectorOption, currentOfficerOption);
+        click(currentOfficerSelectorOption, currentOfficerOption);
+    }
+
+    @Step("Returning list of 'Current Officer' options")
+    public List<String> getCurrentOfficerList() {
+        waitForElementVisibility(currentOfficerList);
+        waitForElementClickable(currentOfficerList);
+        return getElementsText(currentOfficerList);
+    }
+
+    @Step("Click the 'Current Officer' selector button")
+    public void clickCurrentOfficerSelectorButton() {
+        waitForElementVisibility(currentOfficerSelectorButton);
+        scrollToElement(currentOfficerSelectorButton);
+        waitForElementClickable(currentOfficerSelectorButton);
+        click(currentOfficerSelectorButton);
     }
 }
