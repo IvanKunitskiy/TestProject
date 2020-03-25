@@ -1,4 +1,4 @@
-package com.nymbus.util;
+package com.nymbus.core.utils;
 
 public abstract class Mapper {
 

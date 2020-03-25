@@ -1,11 +1,11 @@
 package com.nymbus.actions.clients.maintenance;
 
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Mapper;
 import com.nymbus.newmodels.client.other.account.type.Account;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
 import com.nymbus.newmodels.other.MaintenanceHistoryField;
 import com.nymbus.pages.Pages;
-import com.nymbus.util.Mapper;
 import org.testng.Assert;
 
 import java.util.Date;
