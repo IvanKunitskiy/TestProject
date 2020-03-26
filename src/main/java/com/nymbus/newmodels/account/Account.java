@@ -1,5 +1,6 @@
 package com.nymbus.newmodels.account;
 
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
 
 import java.sql.Timestamp;
@@ -53,10 +54,71 @@ public class Account {
     private String interestFrequency;
     private String printStatementNextUpdate;
     private String interestPaidYTD;
+    private String iraDistributionFrequency;
+    private String iraDistributionCode;
+    private String iraDistributionAmount;
+    private String dateNextIRADistribution;
+    private String applyInterestTo;
+    private String interestType;
+    private String termType;
+    private String autoRenewable;
+    private String accountHolder;
+    private String maturityDate;
+    private String dateNextInterest;
 
     public Account setDefaultAccountData() {
         Account account = new Account();
         // default account data
+
+        return account;
+    }
+
+    public Account setCDAccountData() {
+        Account account = new Account();
+
+        account.setAddNewOption("Account");
+        account.setProductType("CD Account");
+        account.setProduct("3 Month Regular Certificate");
+        account.setAutoRenewable("YES");
+        account.setInterestFrequency("Quarterly");
+        account.setInterestType("Simple");
+        account.setAccountHolder("Owner");
+        account.setAccountTitle(Generator.genString(5));
+        account.setDateOpened(DateTime.getYesterdayDate("MM/dd/yyyy"));
+        account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
+        account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
+        account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setFederalWHPercent(String.valueOf(Generator.genInt(0, 100)));
+        account.setUserDefinedField_1(Generator.genString(5));
+        account.setUserDefinedField_2(Generator.genString(5));
+        account.setUserDefinedField_3(Generator.genString(5));
+        account.setUserDefinedField_4(Generator.genString(5));
+
+        return account;
+    }
+
+    public Account setIRAAccountData() {
+        Account account = new Account();
+
+        account.setAddNewOption("Account");
+        account.setProductType("Savings Account");
+        account.setProduct("Traditional IRA Accumulation Acct");
+        account.setAccountTitle(Generator.genString(5));
+        account.setDateOpened(DateTime.getYesterdayDate("MM/dd/yyyy"));
+        account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
+        account.setIraDistributionCode("No dist");
+        account.setIraDistributionFrequency("No Dist");
+        account.setIraDistributionAmount(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
+        account.setDateNextIRADistribution(DateTime.getTomorrowDate("MM/dd/yyyy"));
+        account.setNumberOfDebitCardsIssued(String.valueOf(Generator.genInt(0, 100)));
+        account.setNumberOfATMCardsIssued(String.valueOf(Generator.genInt(0, 100)));
+        account.setFederalWHPercent(String.valueOf(Generator.genInt(0, 100)));
+        account.setPrintStatementNextUpdate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setInterestPaidYTD(String.valueOf(Generator.genLong(100000000000L, 922337203685L)));
+        account.setUserDefinedField_1(Generator.genString(5));
+        account.setUserDefinedField_2(Generator.genString(5));
+        account.setUserDefinedField_3(Generator.genString(5));
+        account.setUserDefinedField_4(Generator.genString(5));
 
         return account;
     }
@@ -507,5 +569,93 @@ public class Account {
 
     public void setInterestPaidYTD(String printInterestPaidYTD) {
         this.interestPaidYTD = printInterestPaidYTD;
+    }
+
+    public String getIraDistributionFrequency() {
+        return iraDistributionFrequency;
+    }
+
+    public void setIraDistributionFrequency(String iraDistributionFrequency) {
+        this.iraDistributionFrequency = iraDistributionFrequency;
+    }
+
+    public String getIraDistributionCode() {
+        return iraDistributionCode;
+    }
+
+    public void setIraDistributionCode(String iraDistributionCode) {
+        this.iraDistributionCode = iraDistributionCode;
+    }
+
+    public String getIraDistributionAmount() {
+        return iraDistributionAmount;
+    }
+
+    public void setIraDistributionAmount(String iraDistributionAmount) {
+        this.iraDistributionAmount = iraDistributionAmount;
+    }
+
+    public String getDateNextIRADistribution() {
+        return dateNextIRADistribution;
+    }
+
+    public void setDateNextIRADistribution(String dateNextIRADistribution) {
+        this.dateNextIRADistribution = dateNextIRADistribution;
+    }
+
+    public String getApplyInterestTo() {
+        return applyInterestTo;
+    }
+
+    public void setApplyInterestTo(String applyInterestTo) {
+        this.applyInterestTo = applyInterestTo;
+    }
+
+    public String getInterestType() {
+        return interestType;
+    }
+
+    public void setInterestType(String interestType) {
+        this.interestType = interestType;
+    }
+
+    public String getTermType() {
+        return termType;
+    }
+
+    public void setTermType(String termType) {
+        this.termType = termType;
+    }
+
+    public String getAutoRenewable() {
+        return autoRenewable;
+    }
+
+    public void setAutoRenewable(String autoRenewable) {
+        this.autoRenewable = autoRenewable;
+    }
+
+    public String getAccountHolder() {
+        return accountHolder;
+    }
+
+    public void setAccountHolder(String accountHolder) {
+        this.accountHolder = accountHolder;
+    }
+
+    public String getMaturityDate() {
+        return maturityDate;
+    }
+
+    public void setMaturityDate(String maturityDate) {
+        this.maturityDate = maturityDate;
+    }
+
+    public String getDateNextInterest() {
+        return dateNextInterest;
+    }
+
+    public void setDateNextInterest(String dateNextInterest) {
+        this.dateNextInterest = dateNextInterest;
     }
 }

@@ -14,6 +14,44 @@ public class CreateAccount {
         Pages.clientDetailsPage().clickAccountsTab();
     }
 
+    public void createCDAccount(Account account) {
+        clickAccountsTab();
+        setAddNewOption(account);
+        setProductType(account);
+        setProduct(account);
+        Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        setInterestFrequency(account);
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
+        setApplyInterestTo(account);
+        setInterestType(account);
+        Pages.addAccountPage().setInterestRate(account.getInterestRate());
+        setCallClassCode(account);
+        Pages.addAccountPage().clickSaveAccountButton();
+        Pages.accountDetailsPage().waitForFullProfileButton();
+    }
+
+    public void createIRAAccount(Account account) {
+        clickAccountsTab();
+        setAddNewOption(account);
+        setProductType(account);
+        setProduct(account);
+        Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
+        setInterestFrequency(account);
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        setStatementCycle(account);
+        Pages.addAccountPage().setIRADistributionAmountValue(account.getIraDistributionAmount());
+        Pages.addAccountPage().setDateNextIRADistributionValue(account.getDateNextIRADistribution());
+        setCallClassCode(account);
+        Pages.addAccountPage().clickSaveAccountButton();
+        Pages.accountDetailsPage().waitForFullProfileButton();
+    }
+
     public void createSavingsAccount(Account account) {
         clickAccountsTab();
         setAddNewOption(account);
@@ -73,6 +111,17 @@ public class CreateAccount {
         setCallClassCode(account);
     }
 
+    public void selectValuesInDropdownFieldsRequiredForSavingsIRAAccount(Account account) {
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        setInterestFrequency(account);
+        setStatementCycle(account);
+        setCorrespondingAccount(account);
+        setCallClassCode(account);
+        setIRADistributionFrequency(account);
+        setIRADistributionCode(account);
+    }
+
     public void selectValuesInDropdownFieldsRequiredForCheckingAccount(Account account) {
         setProduct(account);
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
@@ -84,10 +133,64 @@ public class CreateAccount {
         setAccountAnalysis(account);
     }
 
+    public void selectValuesInDropdownFieldsRequiredForCDAccount(Account account) {
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        setInterestFrequency(account);
+        setApplyInterestTo(account);
+        setInterestType(account);
+        setCorrespondingAccount(account);
+        setCallClassCode(account);
+    }
+
     public void fillInInputFieldsRequiredForCheckingAccount(Account account) {
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         Pages.addAccountPage().setEarningCreditRate(account.getEarningCreditRate());
+    }
+
+    public void setInterestType(Account account) {
+        Pages.addAccountPage().clickInterestTypeSelectorButton();
+        List<String> listOfInterestType = Pages.addAccountPage().getInterestTypeList();
+
+        Assert.assertTrue(listOfInterestType.size() > 0, "There are no product types available");
+        if (account.getInterestType() == null) {
+            account.setInterestType(listOfInterestType.get(new Random().nextInt(listOfInterestType.size())).trim());
+        }
+        Pages.addAccountPage().clickInterestTypeSelectorOption(account.getInterestType());
+    }
+
+    public void setApplyInterestTo(Account account) {
+        Pages.addAccountPage().clickApplyInterestToSelectorButton();
+        List<String> listOfApplyInterestTo = Pages.addAccountPage().getApplyInterestToList();
+
+        Assert.assertTrue(listOfApplyInterestTo.size() > 0, "There are no product types available");
+        if (account.getApplyInterestTo() == null) {
+            account.setApplyInterestTo(listOfApplyInterestTo.get(new Random().nextInt(listOfApplyInterestTo.size())).trim());
+        }
+        Pages.addAccountPage().clickApplyInterestToSelectorOption(account.getApplyInterestTo());
+    }
+
+    public void setIRADistributionFrequency(Account account) {
+        Pages.addAccountPage().clickIRADistributionFrequencySelectorButton();
+        List<String> listOfIRADistributionFrequency = Pages.addAccountPage().getIRADistributionFrequencyList();
+
+        Assert.assertTrue(listOfIRADistributionFrequency.size() > 0, "There are no product types available");
+        if (account.getIraDistributionFrequency() == null) {
+            account.setIraDistributionFrequency(listOfIRADistributionFrequency.get(new Random().nextInt(listOfIRADistributionFrequency.size())).trim());
+        }
+        Pages.addAccountPage().clickIRADistributionFrequencySelectorOption(account.getIraDistributionFrequency());
+    }
+
+    public void setIRADistributionCode(Account account) {
+        Pages.addAccountPage().clickIRADistributionCodeSelectorButton();
+        List<String> listOfIRADistributionCode = Pages.addAccountPage().getIRADistributionCodeList();
+
+        Assert.assertTrue(listOfIRADistributionCode.size() > 0, "There are no product types available");
+        if (account.getIraDistributionCode() == null) {
+            account.setIraDistributionCode(listOfIRADistributionCode.get(new Random().nextInt(listOfIRADistributionCode.size())).trim());
+        }
+        Pages.addAccountPage().clickIRADistributionCodeSelectorOption(account.getIraDistributionCode());
     }
 
     public void setCorrespondingAccount(Account account) {

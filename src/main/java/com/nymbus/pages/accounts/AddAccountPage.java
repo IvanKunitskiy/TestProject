@@ -6,40 +6,47 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
 import java.util.List;
-import java.util.Random;
 
 public class AddAccountPage extends PageTools {
 
     private By productTypeSelectorButton = By.id("accounttype");
     private By productTypeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By productTypeList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By productSelectorButton = By.id("accountclasstype");
+    private By productSelectorButton = By.xpath("//div[@id='accountclasstype']");
     private By productList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By boxSizeSelectorButton = By.id("boxsize");
     private By boxSizeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By boxSizeList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By boxSizeField = By.xpath("//*[@id='boxsize']//input[contains(@class, 'nb-select-search')]");
-    private By selectProductTypeField = By.xpath("//*[@id='accounttype']/a/span[contains(text(), 'Select')]");
+    private By boxSizeField = By.xpath("//input[@id='boxsize']//input[contains(@class, 'nb-select-search')]");
     private By productTypeInputField = By.xpath("//div[@data-test-id='field-accounttype']//input[contains(@class, 'nb-select-search')]");
     private By accountNumberField = By.xpath("//input[@data-test-id='field-accountnumber']");
     private By accountTitleField = By.xpath("//input[@data-test-id='field-accounttitlemailinginstructions']");
-    private By bankBranchSelectorButton = By.id("bankbranch");
+    private By bankBranchSelectorButton = By.xpath("//div[@id='bankbranch']");
     private By bankBranchSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By saveAccountButton = By.xpath("//button[@data-test-id='action-save']");
     private By bankBranchList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By accountType = By.xpath("//div[@data-test-id='field-customertype']/a/span/span");
     private By dateOpened = By.xpath("//input[@data-test-id='field-dateopened']");
     private By productSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private By statementCycleSelectorButton = By.id("statementcycle");
+    private By statementCycleSelectorButton = By.xpath("//div[@id='statementcycle']");
     private By statementCycleList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By bankBranch = By.xpath("//div[@data-test-id='field-bankbranch']/a/span/span[contains(@class, 'ng-binding')]");
-    private By statementFlagInput = By.xpath("//input[@data-test-id='field-statementflag']");
     private By interestRateInput = By.xpath("//input[@data-test-id='field-interestrate']");
     private By earningCreditRateInput = By.xpath("//input[@data-test-id='field-earningscreditrate']");
     private By optInOutDateCalendarIcon = By.xpath("//div[input[@id='dbcodpstatusdate']]/div[span[@class='nyb-icon-calendar']]");
-    private By optInOutDateInputField = By.id("dbcodpstatusdate");
-    private By dateOpenedField = By.id("dateopened");
-
+    private By optInOutDateInputField = By.xpath("//input[@id='dbcodpstatusdate']");
+    private By dateOpenedField = By.xpath("//input[@id='dateopened']");
+    private By dateOfBirth = By.xpath("//input[@id='dateofbirth']");
+    private By iraDistributionCode = By.xpath("//div[@id='iradistributioncode']//a//span/span");
+    private By iraDistributionFrequency = By.xpath("//div[@id='iradistributionfrequency']//a//span/span");
+    private By iraDistributionAmountField = By.xpath("//input[@id='iradistributionamount']");
+    private By dateNextIRADistribution = By.xpath("//input[@id='datenextiradistribution']");
+    private By termType = By.xpath("//input[@id='terminmonthsordays']");
+    private By autoRenewable = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span[contains(@class, 'ng-scope')]");
+    private By interestFrequency = By.xpath("//div[@id='interestfrequencycode']/a/span/span[contains(@class, 'ng-scope')]");
+    private By interestRate = By.xpath("//input[@id='interestrate']");
+    private By interestType = By.xpath("//div[@id='interesttype']/a/span/span[contains(@class, 'ng-scope')]");
+    private By transactionalAccountSwitch = By.xpath("//dn-switch[@id='transactionalaccount']");
 
     /**
      * Account holders and signers
@@ -51,10 +58,6 @@ public class AddAccountPage extends PageTools {
     private By accountHolderTaxID = By.xpath("//input[@data-test-id='field-taxIdNumber']");
     private By statementCycleSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By accountHolderAddress = By.xpath("//div[@data-test-id='field-addressid_0']/a/span/span");
-
-    /**
-     * Originating officer
-     */
 
     private By originatingOfficer = By.xpath("//div[@data-test-id='field-originatingOfficer']/a/span/span");
     private By currentOfficer = By.xpath("//div[@data-test-id='field-officer']/a/span/span");
@@ -76,13 +79,118 @@ public class AddAccountPage extends PageTools {
     private By chargeOrAnalyzeList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By chargeOrAnalyzeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By interestFrequencySelectorButton = By.xpath("//div[@id='interestfrequency']");
+    private By interestFrequencySelectorButton = By.xpath("//div[@id='interestfrequencycode']/a/span/span");
     private By interestFrequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By interestFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
     private By correspondingAccountSelectorButton = By.xpath("//div[@id='correspondingaccountid']");
     private By correspondingAccountList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By correspondingAccountSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By iraDistributionFrequencySelectorButton = By.xpath("//div[@id='iradistributionfrequency']");
+    private By iraDistributionFrequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By iraDistributionFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By iraDistributionCodeSelectorButton = By.xpath("//div[@id='iradistributioncode']");
+    private By iraDistributionCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By iraDistributionCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By applyInterestToSelectorButton = By.xpath("//div[@id='codetoapplyinterestto']");
+    private By applyInterestToList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By applyInterestToSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By interestTypeSelectorButton = By.xpath("//div[@id='interesttype']");
+    private By interestTypeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By interestTypeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+
+    @Step("Click the 'Interest Type' option")
+    public void clickInterestTypeSelectorOption(String interestTypeOption) {
+        waitForElementVisibility(interestTypeSelectorOption, interestTypeOption);
+        waitForElementClickable(interestTypeSelectorOption, interestTypeOption);
+        click(interestTypeSelectorOption, interestTypeOption);
+    }
+
+    @Step("Returning list of 'Interest Type' options")
+    public List<String> getInterestTypeList() {
+        waitForElementVisibility(interestTypeList);
+        waitForElementClickable(interestTypeList);
+        return getElementsText(interestTypeList);
+    }
+
+    @Step("Click the 'Interest Type' selector button")
+    public void clickInterestTypeSelectorButton() {
+        waitForElementVisibility(interestTypeSelectorButton);
+        scrollToElement(interestTypeSelectorButton);
+        waitForElementClickable(interestTypeSelectorButton);
+        click(interestTypeSelectorButton);
+    }
+
+    @Step("Click the 'Apply Interest To' option")
+    public void clickApplyInterestToSelectorOption(String applyInterestToOption) {
+        waitForElementVisibility(applyInterestToSelectorOption, applyInterestToOption);
+        waitForElementClickable(applyInterestToSelectorOption, applyInterestToOption);
+        click(applyInterestToSelectorOption, applyInterestToOption);
+    }
+
+    @Step("Returning list of 'Apply Interest To' options")
+    public List<String> getApplyInterestToList() {
+        waitForElementVisibility(applyInterestToList);
+        waitForElementClickable(applyInterestToList);
+        return getElementsText(applyInterestToList);
+    }
+
+    @Step("Click the 'Apply Interest To' selector button")
+    public void clickApplyInterestToSelectorButton() {
+        waitForElementVisibility(applyInterestToSelectorButton);
+        scrollToElement(applyInterestToSelectorButton);
+        waitForElementClickable(applyInterestToSelectorButton);
+        click(applyInterestToSelectorButton);
+    }
+
+    @Step("Click the 'IRA Distribution Frequency' option")
+    public void clickIRADistributionCodeSelectorOption(String iraDistributionCodeOption) {
+        waitForElementVisibility(iraDistributionCodeSelectorOption, iraDistributionCodeOption);
+        waitForElementClickable(iraDistributionCodeSelectorOption, iraDistributionCodeOption);
+        click(iraDistributionCodeSelectorOption, iraDistributionCodeOption);
+    }
+
+    @Step("Returning list of 'IRA Distribution Frequency' options")
+    public List<String> getIRADistributionCodeList() {
+        waitForElementVisibility(iraDistributionCodeList);
+        waitForElementClickable(iraDistributionCodeList);
+        return getElementsText(iraDistributionCodeList);
+    }
+
+    @Step("Click the 'IRA Distribution Frequency' selector button")
+    public void clickIRADistributionCodeSelectorButton() {
+        waitForElementVisibility(iraDistributionCodeSelectorButton);
+        scrollToElement(iraDistributionCodeSelectorButton);
+        waitForElementClickable(iraDistributionCodeSelectorButton);
+        click(iraDistributionCodeSelectorButton);
+    }
+
+    @Step("Click the 'IRA Distribution Frequency' option")
+    public void clickIRADistributionFrequencySelectorOption(String iraDistributionFrequencyOption) {
+        waitForElementVisibility(iraDistributionFrequencySelectorOption, iraDistributionFrequencyOption);
+        waitForElementClickable(iraDistributionFrequencySelectorOption, iraDistributionFrequencyOption);
+        click(iraDistributionFrequencySelectorOption, iraDistributionFrequencyOption);
+    }
+
+    @Step("Returning list of 'IRA Distribution Frequency' options")
+    public List<String> getIRADistributionFrequencyList() {
+        waitForElementVisibility(iraDistributionFrequencyList);
+        waitForElementClickable(iraDistributionFrequencyList);
+        return getElementsText(iraDistributionFrequencyList);
+    }
+
+    @Step("Click the 'IRA Distribution Frequency' selector button")
+    public void clickIRADistributionFrequencySelectorButton() {
+        waitForElementVisibility(iraDistributionFrequencySelectorButton);
+        scrollToElement(iraDistributionFrequencySelectorButton);
+        waitForElementClickable(iraDistributionFrequencySelectorButton);
+        click(iraDistributionFrequencySelectorButton);
+    }
 
     @Step("Click the 'Corresponding Account' option")
     public void clickCorrespondingAccountSelectorOption(String correspondingAccountOption) {
@@ -128,7 +236,16 @@ public class AddAccountPage extends PageTools {
         click(interestFrequencySelectorButton);
     }
 
-    @Step("Set 'DBC ODP Opt In/Out Status Date' value")
+    @Step("Set 'Date Next IRA Distribution' value")
+    public void setDateNextIRADistributionValue(String dateNextIRADistributionValue) {
+        waitForElementVisibility(dateNextIRADistribution);
+        waitForElementClickable(dateNextIRADistribution);
+        typeWithoutWipe("", dateNextIRADistribution);
+        SelenideTools.sleep(1);
+        typeWithoutWipe(dateNextIRADistributionValue, dateNextIRADistribution);
+    }
+
+    @Step("Set 'Date Opened' value")
     public void setDateOpenedValue(String dateOpenedValue) {
         waitForElementVisibility(dateOpenedField);
         waitForElementClickable(dateOpenedField);
@@ -172,12 +289,6 @@ public class AddAccountPage extends PageTools {
         click(chargeOrAnalyzeSelectorButton);
     }
 
-    @Step("Generate 'Earning Credit Rate' value")
-    public String generateEarningCreditRateValue() {
-        Random ran = new Random();
-        return String.valueOf(ran.nextInt(100));
-    }
-
     @Step("Set 'Earning Credit Rate' option")
     public void setEarningCreditRate(String earningCreditRateValue) {
         waitForElementVisibility(earningCreditRateInput);
@@ -209,6 +320,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Account Analysis' selector button")
     public void clickAccountAnalysisSelectorButton() {
         waitForElementVisibility(accountAnalysisSelectorButton);
+        scrollToElement(accountAnalysisSelectorButton);
         waitForElementClickable(accountAnalysisSelectorButton);
         click(accountAnalysisSelectorButton);
     }
@@ -264,9 +376,31 @@ public class AddAccountPage extends PageTools {
         return getElementText(accountHolderAddress);
     }
 
+    @Step("Returning the 'Date Of Birth' value")
+    public String getDateOfBirth() {
+        waitForElementVisibility(dateOfBirth);
+        waitForElementClickable(dateOfBirth);
+        SelenideTools.sleep(2);
+        return getElementAttributeValue("value", dateOfBirth);
+    }
+
     @Step("Returning the 'Bank Branch' value")
     public String getBankBranch() {
         return getElementText(bankBranch).trim();
+    }
+
+    @Step("Returning the 'IRA Distribution Code' value")
+    public String getIRADistributionCode() {
+        waitForElementVisibility(iraDistributionCode);
+        waitForElementClickable(iraDistributionCode);
+        return getElementText(iraDistributionCode).trim();
+    }
+
+    @Step("Returning the 'IRA Distribution Frequency' value")
+    public String getIRADistributionFrequency() {
+        waitForElementVisibility(iraDistributionFrequency);
+        waitForElementClickable(iraDistributionFrequency);
+        return getElementText(iraDistributionFrequency);
     }
 
     @Step("Click the 'Statement Cycle' option")
@@ -309,6 +443,7 @@ public class AddAccountPage extends PageTools {
         waitForElementVisibility(productSelectorOption, productOption);
         waitForElementClickable(productSelectorOption, productOption);
         click(productSelectorOption, productOption);
+        SelenideTools.sleep(2);
     }
 
     @Step("Returning the 'DBC ODP Opt In/Out Status' value")
@@ -335,8 +470,8 @@ public class AddAccountPage extends PageTools {
     @Step("Returning the 'Date Opened' value")
     public String getDateOpened() {
         waitForElementVisibility(dateOpened);
-        waitForElementClickable(dateOpened);
         SelenideTools.sleep(2);
+        waitForElementClickable(dateOpened);
         return getElementAttributeValue("value", dateOpened);
     }
 
@@ -360,6 +495,49 @@ public class AddAccountPage extends PageTools {
         return getElementText(accountHolderRelationship);
     }
 
+
+    @Step("Returning the 'Term Type' value")
+    public String getTermType() {
+        waitForElementVisibility(termType);
+        waitForElementClickable(termType);
+        return getElementAttributeValue("value", termType);
+    }
+
+    @Step("Returning the 'Auto Renewable' value")
+    public String getAutoRenewable() {
+        waitForElementVisibility(autoRenewable);
+        waitForElementClickable(autoRenewable);
+        return getElementText(autoRenewable);
+    }
+
+    @Step("Returning the 'Interest Frequency' value")
+    public String getInterestFrequency() {
+        waitForElementVisibility(interestFrequency);
+        waitForElementClickable(interestFrequency);
+        return getElementText(interestFrequency);
+    }
+
+    @Step("Returning the 'Interest Rate' value")
+    public String getInterestRate() {
+        waitForElementVisibility(interestRate);
+        waitForElementClickable(interestRate);
+        return getElementAttributeValue("value", interestRate);
+    }
+
+    @Step("Returning the 'Interest Type' value")
+    public String getInterestType() {
+        waitForElementVisibility(interestType);
+        waitForElementClickable(interestType);
+        return getElementText(interestType);
+    }
+
+    @Step("Click 'Transactional Account' switch")
+    public String clickTransactionalAccountSwitch() {
+        waitForElementVisibility(transactionalAccountSwitch);
+        waitForElementClickable(transactionalAccountSwitch);
+        return getElementText(transactionalAccountSwitch);
+    }
+
     @Step("Returning the 'Account Holder Name' value")
     public String getAccountHolderName() {
         waitForElementVisibility(accountHolderName);
@@ -374,7 +552,7 @@ public class AddAccountPage extends PageTools {
         return getElementText(accountType);
     }
 
-    @Step("Returning list of 'Product Type'")
+    @Step("Returning list of 'Bank Branch'")
     public List<String> getBankBranchList() {
         waitForElementVisibility(bankBranchList);
         waitForElementClickable(bankBranchList);
@@ -398,6 +576,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Box size' selector button")
     public void clickBoxSizeSelectorButton() {
         waitForElementVisibility(boxSizeSelectorButton);
+        scrollToElement(boxSizeSelectorButton);
         waitForElementClickable(boxSizeSelectorButton);
         click(boxSizeSelectorButton);
     }
@@ -443,6 +622,7 @@ public class AddAccountPage extends PageTools {
     @Step("Set 'Account Number' value")
     public void setAccountNumberValue(String accountNumberValue) {
         waitForElementVisibility(accountNumberField);
+        scrollToElement(accountNumberField);
         waitForElementClickable(accountNumberField);
         type(accountNumberValue, accountNumberField);
     }
@@ -450,8 +630,16 @@ public class AddAccountPage extends PageTools {
     @Step("Set 'Account Title' value")
     public void setAccountTitleValue(String accountTitleValue) {
         waitForElementVisibility(accountTitleField);
+        scrollToElement(accountTitleField);
         waitForElementClickable(accountTitleField);
         type(accountTitleValue, accountTitleField);
+    }
+
+    @Step("Set 'IRA distribution amount' value")
+    public void setIRADistributionAmountValue(String iraDistributionAmountValue) {
+        waitForElementVisibility(iraDistributionAmountField);
+        waitForElementClickable(iraDistributionAmountField);
+        type(iraDistributionAmountValue, iraDistributionAmountField);
     }
 
     @Step("Click the 'Bank branch' selector button")
