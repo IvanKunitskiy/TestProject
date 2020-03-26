@@ -7,6 +7,7 @@ public class ClientsActions {
      */
     private static CreateClient createClient;
     private static VerifyClientDataActions verifyClientDataActions;
+    private static CreateOrganisationClientActions createOrganisationClientActions;
 
     /**
      * This function return an instance of `CreateClient`
@@ -26,5 +27,15 @@ public class ClientsActions {
             verifyClientDataActions = new VerifyClientDataActions();
         }
         return verifyClientDataActions;
+    }
+
+    /**
+     * This function return an instance of 'CreateOrganisationClientActions'
+     */
+    public static CreateOrganisationClientActions createOrganisationClientActions() {
+        if (createOrganisationClientActions == null) {
+            createOrganisationClientActions = new CreateOrganisationClientActions();
+        }
+        return createOrganisationClientActions;
     }
 }

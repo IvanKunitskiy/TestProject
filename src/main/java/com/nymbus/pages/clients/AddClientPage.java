@@ -81,6 +81,8 @@ public class AddClientPage extends PageTools {
             "//input[contains(@class, 'nb-select-search')]");
     private By addressTypeSelectorButton = By.xpath("//div[@name='addressuse_0']" +
             "//span[contains(@class, 'select2-arrow')]");
+    private By addressTypeSelectorButton1 = By.xpath("//div[@name='addressuse_"+"%s"+"']" +
+            "//span[contains(@class, 'select2-arrow')]");
     private By addressTypeList = By.xpath("//div[@name='addressuse_0']" +
             "//li[contains(@role, 'option')]/div/span");
     private By addressTypeSelectorOption = By.xpath("//div[@name='addressuse_0']" +
@@ -501,6 +503,12 @@ public class AddClientPage extends PageTools {
     @Step("Click on 'Address Type' selector")
     public void clickAddressTypeSelectorButton() {
         waitForElementClickable(addressTypeSelectorButton);
+        click(addressTypeSelectorButton);
+    }
+
+    @Step("Click on 'Address Type' selector")
+    public void clickAddressTypeSelectorButton1(int i) {
+        waitForElementClickable(addressTypeSelectorButton1, i);
         click(addressTypeSelectorButton);
     }
 
