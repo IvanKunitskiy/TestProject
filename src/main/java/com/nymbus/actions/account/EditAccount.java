@@ -184,4 +184,18 @@ public class EditAccount {
         Pages.editAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
     }
 
+    public void editSavingsAccount(Account account) {
+        Pages.accountDetailsPage().clickEditButton();
+        AccountActions.editAccount().selectValuesInDropdownFieldsThatWereNotAvailableDuringSavingsAccountCreation(account);
+        AccountActions.editAccount().fillInInputFieldsThatWereNotAvailableDuringSavingsAccountCreation(account);
+        AccountActions.createAccount().setCurrentOfficer(account);
+        AccountActions.createAccount().setBankBranch(account);
+        AccountActions.createAccount().setCallClassCode(account);
+        AccountActions.createAccount().setStatementCycle(account);
+        Pages.editAccountPage().clickNewAccountSwitch();
+        Pages.editAccountPage().clickTransactionalAccountSwitch();
+        Pages.addAccountPage().clickSaveAccountButton();
+        Pages.accountDetailsPage().waitForEditButton();
+    }
+
 }
