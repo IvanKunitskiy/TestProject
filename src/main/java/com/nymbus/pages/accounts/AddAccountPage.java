@@ -237,9 +237,7 @@ public class AddAccountPage extends PageTools {
 
     @Step("Click the 'Interest Frequency' selector button")
     public void clickInterestFrequencySelectorButton() {
-        waitForElementVisibility(interestFrequencySelectorButton);
         scrollToElement(interestFrequencySelectorButton);
-        waitForElementClickable(interestFrequencySelectorButton);
         click(interestFrequencySelectorButton);
     }
 
