@@ -1,13 +1,13 @@
 package com.nymbus.pages.settings.users;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
 import java.util.List;
 
 public class AddUsersPage extends PageTools {
-
     /**
      * Controls
      */
@@ -110,6 +110,7 @@ public class AddUsersPage extends PageTools {
     private By addCashDrawerButton = By.xpath("//div[span[text()='Add Cash Drawer']]/..//button[span[text()='Add']]");
 
 
+
     /**
      * Actions with controls
      */
@@ -178,7 +179,7 @@ public class AddUsersPage extends PageTools {
     }
 
     @Step("Returning list of branchs")
-    public List<String> getBranchList() {
+    public List<String> getBranchList(){
         waitForElementVisibility(brandList);
         waitForElementClickable(brandList);
         return getElementsText(brandList);
@@ -206,7 +207,7 @@ public class AddUsersPage extends PageTools {
     }
 
     @Step("Returning list of locations")
-    public List<String> getLocationList() {
+    public List<String> getLocationList(){
         waitForElementVisibility(locationList);
         waitForElementClickable(locationList);
         return getElementsText(locationList);
@@ -249,25 +250,22 @@ public class AddUsersPage extends PageTools {
     public void setPhoneValue(String phoneValue) {
         waitForElementVisibility(phoneField);
         waitForElementClickable(phoneField);
-        type("", phoneField);
-//        click(phoneField);
-//        for (char ch : phoneValue.toCharArray()) {
-//            wait(1);
-//            typeWithoutWipe(String.valueOf(ch), phoneField);
-//        }
-        type(phoneValue, phoneField);
+        click(phoneField);
+        for (char ch:phoneValue.toCharArray()) {
+            SelenideTools.sleep(1);
+            typeWithoutWipe(String.valueOf(ch), phoneField);
+        }
     }
 
     @Step("Set 'Mobile' value")
     public void setMobileValue(String mobileValue) {
         waitForElementVisibility(mobileField);
         waitForElementClickable(mobileField);
-//        click(mobileField);
-//        for (char ch : mobileValue.toCharArray()) {
-//            wait(1);
-//            typeWithoutWipe(String.valueOf(ch), mobileField);
-//        }
-        type(mobileValue, mobileField);
+        click(mobileField);
+        for (char ch: mobileValue.toCharArray()) {
+            SelenideTools.sleep(1);
+            typeWithoutWipe(String.valueOf(ch), mobileField);
+        }
     }
 
     @Step("Set 'Email' value")
@@ -324,7 +322,7 @@ public class AddUsersPage extends PageTools {
     }
 
     @Step("Get numbers of roles")
-    public int getNumberOfRoles() {
+    public int getNumberOfRoles(){
         return getElements(deleteRolesIcons).size();
     }
 
@@ -416,7 +414,7 @@ public class AddUsersPage extends PageTools {
     }
 
     @Step("Returning list of cash drawer")
-    public List<String> getCashDrawerList() {
+    public List<String> getCashDrawerList(){
         waitForElementVisibility(cashDrawerList);
         waitForElementClickable(cashDrawerList);
         return getElementsText(cashDrawerList);
@@ -435,10 +433,11 @@ public class AddUsersPage extends PageTools {
         click(addNewCashDrawerLink);
     }
 
-    // Add Cash Drawer modal
-
-    @Step("Wait Add Cash Drawer modal window")
-    public void waitAddNewCashDrawerWindow() {
+    /**
+     * Add Cash Drawer modal
+     */
+	@Step("Wait Add Cash Drawer modal window")
+    public void waitAddNewCashDrawerWindow(){
         waitForElementVisibility(addNewCashDrawerModal);
         waitForElementClickable(addNewCashDrawerModal);
     }
@@ -457,7 +456,7 @@ public class AddUsersPage extends PageTools {
     }
 
     @Step("Returning list of GL Account Number")
-    public List<String> getGLAccountNumberList() {
+    public List<String> getGLAccountNumberList(){
         waitForElementVisibility(glAccountNumberList);
         waitForElementClickable(glAccountNumberList);
         return getElementsText(glAccountNumberList);
@@ -490,8 +489,8 @@ public class AddUsersPage extends PageTools {
         click(cashDrawerTypeSelectorButton);
     }
 
-    @Step("Returning list of cash drawer's type")
-    public List<String> getCashDrawerTypeList() {
+    @Step("Returning list of cash drawer's types")
+    public List<String> getCashDrawerTypeList(){
         waitForElementVisibility(cashDrawerTypeList);
         waitForElementClickable(cashDrawerTypeList);
         return getElementsText(cashDrawerTypeList);

@@ -40,15 +40,15 @@ public class C22533_SearchByLastFourOfDebitCardTest extends BaseTest {
         String hiddenNumber = "XXXX-XXXX-XXXX-" + lastFourNumbers;
 
         logInfo("Step 2: Click within search field and try to search for an existing Debit Card (by last 4 digits)");
-        Pages.clientsPage().typeToClientsSearchInputField(lastFourNumbers);
-        Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() > 0, "There are no relevant lookup results");
+        Pages.clientsSearchPage().typeToClientsSearchInputField(lastFourNumbers);
+        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() > 0, "There are no relevant lookup results");
 
-        if (Pages.clientsPage().getAllLookupResults().size() == 8) {
-            Assert.assertTrue(Pages.clientsPage().isLoadMoreResultsButtonVisible(), "'Load more results' button is not visible in search lookup list");
+        if (Pages.clientsSearchPage().getAllLookupResults().size() == 8) {
+            Assert.assertTrue(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible(), "'Load more results' button is not visible in search lookup list");
         }
 
         logInfo("Step 3: Pay attention to the display of the Debit Card in the quick search field");
-        List<String> clients = Pages.clientsPage().getAllLookupResults();
+        List<String> clients = Pages.clientsSearchPage().getAllLookupResults();
         clients.stream()
                 .filter(s -> s.contains("XXXX-XXXX-XXXX-"))
                 .forEach(s -> Assert.assertEquals(s, hiddenNumber));

@@ -12,8 +12,8 @@ public class ClientPageActions {
         List<TempClient> clients = new ArrayList<>();
         for (int i = 1; i <= lookupResultsCount; i++) {
             TempClient client = new TempClient();
-            client.setFirstName(Pages.clientsPage().getClientFirstNameFromLookupResultByIndex(i));
-            client.setLastName(Pages.clientsPage().getClientLastNameFromLookupResultByIndex(i));
+            client.setFirstName(Pages.clientsSearchPage().getClientFirstNameFromLookupResultByIndex(i));
+            client.setLastName(Pages.clientsSearchPage().getClientLastNameFromLookupResultByIndex(i));
             clients.add(client);
         }
 

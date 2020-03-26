@@ -1,6 +1,8 @@
 package com.nymbus.models.client;
 
 import com.nymbus.core.utils.Generator;
+import com.nymbus.newmodels.settings.bincontrol.BinControl;
+import com.nymbus.util.Random;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ public class Client {
     private String phoneType;
     private String email;
     private String emailType;
+    private BinControl binControl;
 
     public Client setDefaultClientData() {
         Client client = new Client();
@@ -151,7 +154,8 @@ public class Client {
                 ", userDefined_4='" + userDefined_4 + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
-                '}';
+                ", binControl=" + binControl +
+                "}";
     }
 
     @Override
@@ -189,12 +193,13 @@ public class Client {
                 Objects.equals(userDefined_3, client.userDefined_3) &&
                 Objects.equals(userDefined_4, client.userDefined_4) &&
                 phone.equals(client.phone) &&
-                Objects.equals(email, client.email);
+                Objects.equals(email, client.email) &&
+                Objects.equals(binControl, client.binControl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(clientType, clientStatus, firstName, middleName, lastName, taxPayerIDType, taxID, birthDate, accountNumber, cardNumber, identityDocument, address, suffix, maidenFamilyName, AKA_1, gender, education, income, maritalStatus, occupation, consumerInfoIndicator, jobTitle, ownOrRent, mailCode, selectOfficer, userDefined_1, userDefined_2, userDefined_3, userDefined_4, phone, email);
+        return Objects.hash(clientType, clientStatus, firstName, middleName, lastName, taxPayerIDType, taxID, birthDate, accountNumber, cardNumber, identityDocument, address, suffix, maidenFamilyName, AKA_1, gender, education, income, maritalStatus, occupation, consumerInfoIndicator, jobTitle, ownOrRent, mailCode, selectOfficer, userDefined_1, userDefined_2, userDefined_3, userDefined_4, phone, email, binControl);
     }
 
     public String getClientID() {
@@ -467,5 +472,13 @@ public class Client {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public BinControl getBinControl() {
+        return binControl;
+    }
+
+    public void setBinControl(BinControl binControl) {
+        this.binControl = binControl;
     }
 }

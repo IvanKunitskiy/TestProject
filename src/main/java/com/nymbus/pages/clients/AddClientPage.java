@@ -2,14 +2,13 @@ package com.nymbus.pages.clients;
 
 import com.codeborne.selenide.Selenide;
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
 import java.util.List;
 
 public class AddClientPage extends PageTools {
-
-
     private By addNewClientRegion = By.xpath("//main[contains(@class, 'customerNew')]");
     private By saveAndContinueButton = By.xpath("//button[contains(@class,'saveAndContinue')]");
     private By cancelButton = By.xpath("//button[contains(@class,'btnCancel')]");
@@ -393,12 +392,8 @@ public class AddClientPage extends PageTools {
         waitForElementVisibility(birthDateField);
         waitForElementClickable(birthDateField);
         typeWithoutWipe("", birthDateField);
-//        wait(1);
+        SelenideTools.sleep(1);
         typeWithoutWipe(birthDateValue, birthDateField);
-//        for (char ch : birthDateValue.toCharArray()) {
-//            wait(1);
-//            typeWithoutWipe(String.valueOf(ch), birthDateField);
-//        }
     }
 
     @Step("Set 'ID Type' value")
@@ -625,14 +620,11 @@ public class AddClientPage extends PageTools {
 
     @Step("Set Profile photo")
     public void uploadProfilePhoto(String profilePhotoPath) {
-        Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='visible';"
-                , getWebElement(profilePhotoField));
-
-        uploadFile(profilePhotoPath, profilePhotoField);
-
-        Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='hidden';"
-                , getWebElement(profilePhotoField));
-
+        Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='visible';",
+                getWebElement(profilePhotoField));
+        type(profilePhotoPath, profilePhotoField);
+        Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='hidden';",
+                getWebElement(profilePhotoField));
     }
 
     @Step("Set 'Gender' value")
@@ -938,11 +930,11 @@ public class AddClientPage extends PageTools {
     public void uploadClientDocumentation(String clientDocument) {
         waitForElementVisibility(saveAndContinueButton);
         waitForElementClickable(saveAndContinueButton);
-        Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='visible';"
-                , getWebElement(documentationField));
+        Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='visible';",
+                getWebElement(documentationField));
         type(clientDocument, documentationField);
-        Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='hidden';"
-                , getWebElement(documentationField));
+        Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='hidden';",
+                getWebElement(documentationField));
     }
 
     @Step("Set 'Document ID Type' value")
@@ -1038,7 +1030,7 @@ public class AddClientPage extends PageTools {
         waitForElementVisibility(documentationExpirationDateField);
         waitForElementClickable(documentationExpirationDateField);
         typeWithoutWipe("", documentationExpirationDateField);
-//        wait(1);
+        SelenideTools.sleep(1);
         typeWithoutWipe(expirationDateValue, documentationExpirationDateField);
     }
 
@@ -1053,13 +1045,11 @@ public class AddClientPage extends PageTools {
     public void uploadClientSignature(String clientDocument) {
         waitForElementVisibility(saveAndContinueButton);
         waitForElementClickable(saveAndContinueButton);
-
-        Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='visible';"
-                , getWebElement(clientSignatureField));
+        Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='visible';",
+                getWebElement(clientSignatureField));
         type(clientDocument, clientSignatureField);
-
-        Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='hidden';"
-                , getWebElement(clientSignatureField));
+        Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='hidden';",
+                getWebElement(clientSignatureField));
     }
 
     @Step("Click 'View Member Profile'")

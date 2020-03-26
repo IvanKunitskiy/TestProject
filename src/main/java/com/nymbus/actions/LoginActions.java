@@ -1,6 +1,5 @@
 package com.nymbus.actions;
 
-import com.nymbus.core.utils.Constants;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 
@@ -13,7 +12,7 @@ public class LoginActions {
         Pages.loginPage().clickEnterButton();
         Assert.assertFalse(Pages.loginPage().isErrorsVisibleOnLoginForm(),
                 "Error messages is visible");
-        Pages.clientsPage().waitForAddNewClientButton();
+        Pages.clientsSearchPage().waitForAddNewClientButton();
         Pages.aSideMenuPage().waitForASideMenu();
         Assert.assertTrue(Pages.aSideMenuPage().isClientPageOpened(),
                 "Client page is not opened");

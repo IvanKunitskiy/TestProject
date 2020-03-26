@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ClientsSearchPage extends PageTools {
-
     private By addNewClientButton = By.xpath("//a[@*='action-addNewCustomer']");
     private By clientsSearchInputField = By.xpath("//input[@type='search']");
     private By searchButton = By.xpath("//button[text()='Search']");
@@ -17,6 +16,7 @@ public class ClientsSearchPage extends PageTools {
     private By lookupResultByIndex = By.xpath("(//div[contains(text(),'View')]/preceding-sibling::*[1])[%s]");
     private By loadMoreResultsButton = By.xpath("//div[text()='Load More Results']");
     private By clearSearchInputFieldButton = By.xpath("//button[@class='btn btn-link btnIcon']");
+    private By viewAccountButtonByValue = By.xpath("//div[contains(text(),'%s')]/parent::div");
 
     @Step("Wait for 'Add new client' button")
     public void waitForAddNewClientButton() {
@@ -68,7 +68,6 @@ public class ClientsSearchPage extends PageTools {
     public void clickOnSearchInputFieldClearButton() {
         waitForElementVisibility(clearSearchInputFieldButton);
         click(clearSearchInputFieldButton);
-//        wait(1);
     }
 
     @Step("Click 'Add new client' button")
@@ -76,6 +75,13 @@ public class ClientsSearchPage extends PageTools {
         waitForElementVisibility(addNewClientButton);
         waitForElementClickable(addNewClientButton);
         click(addNewClientButton);
+    }
+
+    @Step("Click on 'View Account' button by value {value}")
+    public void clickOnViewAccountButtonByValue(String value) {
+        waitForElementVisibility(viewAccountButtonByValue, value);
+        waitForElementClickable(viewAccountButtonByValue, value);
+        click(viewAccountButtonByValue, value);
     }
 
     @Step("Check that all results in search list are relevant")

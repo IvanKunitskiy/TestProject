@@ -1,6 +1,7 @@
 package com.nymbus.pages.clients;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -16,6 +17,7 @@ public class ClientDetailsPage extends PageTools {
     private By profileTab = By.id("app-customer-profile");
     private By documentsTab = By.id("app-customer-documents");
     private By accountsTab = By.id("app-customer-accounts");
+    private By maintenanceTab = By.id("app-customer-maintenance");
 
     /**
      * Profile Tab
@@ -82,6 +84,19 @@ public class ClientDetailsPage extends PageTools {
     private By addNewSelectorOption = By.xpath("//div[@id='newAccountOrCreditPlan']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
 
+    /**
+     * Maintenance Tab
+     */
+    private By newDebitCardButton = By.xpath("//button[span[text()='New Debit Card']]");
+    private By viewAllCardsButton = By.xpath("//button[span[text()='View All Cards']]");
+    private By cardList = By.xpath("//tbody/tr");
+    // Card list
+    private By debitCardNumber = By.xpath("//tbody/tr/td[1]//span");
+    private By nameOfCardColumn = By.xpath("//tbody/tr[1]/td[2]");
+    private By secondLineEmbossingColumn = By.xpath("//tbody/tr[1]/td[3]");
+    private By expirationDateColumn = By.xpath("//tbody/tr[1]/td[4]");
+    private By cardStatusColumn = By.xpath("//tbody/tr[1]/td[5]");
+
     @Step("Wait for Client Details page loaded")
     public void waitForPageLoaded() {
         waitForElementVisibility(profileForm);
@@ -112,6 +127,13 @@ public class ClientDetailsPage extends PageTools {
         click(accountsTab);
     }
 
+
+    @Step("Click 'Maintenance' tab")
+    public void clickOnMaintenanceTab() {
+        waitForElementVisibility(maintenanceTab);
+        waitForElementClickable(maintenanceTab);
+        click(maintenanceTab);
+    }
 
     /**
      * Profile Tab
@@ -393,7 +415,6 @@ public class ClientDetailsPage extends PageTools {
     /**
      * Accounts Tab
      */
-
     @Step("Click the 'Add New' button")
     public void clickAddNewButton() {
         waitForElementVisibility(addNewButton);
@@ -405,7 +426,6 @@ public class ClientDetailsPage extends PageTools {
     public void clickAccountOption() {
         waitForElementVisibility(accountOption);
         waitForElementClickable(accountOption);
-//        wait(1);
         click(accountOption);
     }
 
@@ -428,5 +448,54 @@ public class ClientDetailsPage extends PageTools {
         waitForElementVisibility(addNewSelectorOption, addNewValue);
         waitForElementClickable(addNewSelectorOption, addNewValue);
         click(addNewSelectorOption, addNewValue);
+    }
+
+    @Step("Click on 'New Debit Card' button")
+    public void clickOnNewDebitCardButton() {
+        waitForElementVisibility(newDebitCardButton);
+        click(newDebitCardButton);
+    }
+
+    @Step("Click on 'View All Cards' button")
+    public void clickOnViewAllCardsButton() {
+        waitForElementVisibility(viewAllCardsButton);
+        click(viewAllCardsButton);
+    }
+
+    @Step("Checking is card list displayed")
+    public boolean isCardListDisplayed() {
+        SelenideTools.sleep(5);
+        return !getElements(cardList).isEmpty();
+    }
+
+    // Card list
+    @Step("Getting debit card number")
+    public String getDebitCardNumber() {
+        waitForElementVisibility(debitCardNumber);
+        return getElementText(debitCardNumber);
+    }
+
+    @Step("Getting debit card 'Name of Card'")
+    public String getNameOfCard() {
+        waitForElementVisibility(nameOfCardColumn);
+        return getElementText(nameOfCardColumn);
+    }
+
+    @Step("Getting debit card 'Second Line Embossing'")
+    public String getSecondLineEmbossing() {
+        waitForElementVisibility(secondLineEmbossingColumn);
+        return getElementText(secondLineEmbossingColumn);
+    }
+
+    @Step("Getting debit card 'Second Line Embossing'")
+    public String getExpirationDate() {
+        waitForElementVisibility(expirationDateColumn);
+        return getElementText(expirationDateColumn);
+    }
+
+    @Step("Getting debit card 'Card Status'")
+    public String getCardStatus() {
+        waitForElementVisibility(cardStatusColumn);
+        return getElementText(cardStatusColumn);
     }
 }

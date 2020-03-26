@@ -7,7 +7,6 @@ import org.openqa.selenium.By;
 import java.util.List;
 
 public class AddCashDrawerPage extends PageTools {
-
     /**
      * Controls
      */
@@ -99,8 +98,8 @@ public class AddCashDrawerPage extends PageTools {
         click(defaultUserSearchButton);
     }
 
-    @Step("Returning list of cash drawer's type")
-    public List<String> getCashDrawerTypeList() {
+    @Step("Returning list of cash drawer's types")
+    public List<String> getCashDrawerTypeList(){
         waitForElementVisibility(cashDrawerTypeList);
         waitForElementClickable(cashDrawerTypeList);
         return getElementsText(cashDrawerTypeList);
@@ -127,7 +126,7 @@ public class AddCashDrawerPage extends PageTools {
     }
 
     @Step("Returning list of default users")
-    public List<String> getDefaultUserList() {
+    public List<String> getDefaultUserList(){
         waitForElementVisibility(defaultUserList);
         waitForElementClickable(defaultUserList);
         return getElementsText(defaultUserList);
@@ -154,7 +153,7 @@ public class AddCashDrawerPage extends PageTools {
     }
 
     @Step("Returning list of branchs")
-    public List<String> getBranchList() {
+    public List<String> getBranchList(){
         waitForElementVisibility(brandList);
         waitForElementClickable(brandList);
         return getElementsText(brandList);
@@ -181,7 +180,7 @@ public class AddCashDrawerPage extends PageTools {
     }
 
     @Step("Returning list of locations")
-    public List<String> getLocationList() {
+    public List<String> getLocationList(){
         waitForElementVisibility(locationList);
         waitForElementClickable(locationList);
         return getElementsText(locationList);
@@ -208,7 +207,7 @@ public class AddCashDrawerPage extends PageTools {
     }
 
     @Step("Returning list of GL Account Number")
-    public List<String> getGLAccountNumberList() {
+    public List<String> getGLAccountNumberList(){
         waitForElementVisibility(glAccountNumberList);
         waitForElementClickable(glAccountNumberList);
         return getElementsText(glAccountNumberList);

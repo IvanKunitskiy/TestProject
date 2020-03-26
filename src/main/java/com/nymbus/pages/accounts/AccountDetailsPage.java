@@ -1,6 +1,7 @@
 package com.nymbus.pages.accounts;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -241,6 +242,10 @@ public class AccountDetailsPage extends PageTools {
         return getElementText(automaticOverdraftStatus);
     }
 
+    /**
+     * Details tab
+     */
+
     @Step("Get account 'Reason Debit Card Charge Waived' value")
     public String getReasonDebitCardChargeWaived() {
         waitForElementVisibility(reasonDebitCardChargeWaived);
@@ -395,5 +400,16 @@ public class AccountDetailsPage extends PageTools {
         waitForElementVisibility(lessButton);
         waitForElementClickable(lessButton);
         click(lessButton);
+    }
+
+    /**
+     * Tabs button
+     */
+    @Step("Click the 'Maintenance' tab")
+    public void clickMaintenanceTab() {
+        SelenideTools.sleep(5);
+        waitForElementVisibility(maintenanceTab);
+        waitForElementClickable(maintenanceTab);
+        click(maintenanceTab);
     }
 }

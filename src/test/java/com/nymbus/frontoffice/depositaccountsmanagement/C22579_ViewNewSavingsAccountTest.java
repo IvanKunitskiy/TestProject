@@ -5,8 +5,8 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.account.Account;
 import com.nymbus.models.client.Client;
+import com.nymbus.newmodels.account.Account;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -17,13 +17,11 @@ import org.testng.annotations.Test;
 @Feature("Deposit Accounts Management")
 @Owner("Dmytro")
 public class C22579_ViewNewSavingsAccountTest extends BaseTest {
-
     private Client client;
     private Account savingsAccount;
 
     @BeforeMethod
     public void preCondition() {
-
         // Set up Client
         client = new Client().setDefaultClientData();
         client.setClientStatus("Member");
@@ -44,15 +42,14 @@ public class C22579_ViewNewSavingsAccountTest extends BaseTest {
     @Test(description = "C22579, View New Savings Account")
     @Severity(SeverityLevel.CRITICAL)
     public void viewNewSavingsAccount() {
-
         logInfo("Step 1: Log in to the system as the user from the precondition");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the Savings account from the precondition and open it on Details");
-        Pages.clientsPage().typeToClientsSearchInputField(savingsAccount.getAccountNumber());
-        Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), savingsAccount.getAccountNumber()));
-        Pages.clientsPage().clickOnSearchButton();
+        Pages.clientsSearchPage().typeToClientsSearchInputField(savingsAccount.getAccountNumber());
+        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), savingsAccount.getAccountNumber()));
+        Pages.clientsSearchPage().clickOnSearchButton();
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
         Pages.clientDetailsPage().waitForPageLoaded();
         Pages.clientDetailsPage().clickAccountsTab();

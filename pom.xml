@@ -75,6 +75,13 @@
             <artifactId>slf4j-api</artifactId>
             <version>${org.slf4j}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -93,6 +100,7 @@
                         <systemProperties>
                             <client.resource.dir>${client.resource.dir}</client.resource.dir>
                         </systemProperties>
+                        <trimStackTrace>false</trimStackTrace>
                     </configuration>
                 </plugin>
 

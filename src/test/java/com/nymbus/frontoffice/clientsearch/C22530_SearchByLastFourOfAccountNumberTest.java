@@ -42,15 +42,15 @@ public class C22530_SearchByLastFourOfAccountNumberTest extends BaseTest {
 
         logInfo("Step 2: Click within search field and try to search for an existing account (by 4 last digits of account number)");
         final String accountNumberQuery = client.getAccountNumber().substring(client.getAccountNumber().length() - 4);
-        Pages.clientsPage().typeToClientsSearchInputField(accountNumberQuery);
-        Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() > 0, "There are no relevant lookup results");
-        if (Pages.clientsPage().getAllLookupResults().size() == 8) {
-            Assert.assertTrue(Pages.clientsPage().isLoadMoreResultsButtonVisible(), "'Load more results' button is not visible in search lookup list");
+        Pages.clientsSearchPage().typeToClientsSearchInputField(accountNumberQuery);
+        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() > 0, "There are no relevant lookup results");
+        if (Pages.clientsSearchPage().getAllLookupResults().size() == 8) {
+            Assert.assertTrue(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible(), "'Load more results' button is not visible in search lookup list");
         }
-        Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), accountNumberQuery), "Search results are not relevant");
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), accountNumberQuery), "Search results are not relevant");
 
         logInfo("Step 3: Click the 'Search' button");
-        Pages.clientsPage().clickOnSearchButton();
-        Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsSearchResultsPage().getAccountNumbersFromSearchResults(), accountNumberQuery));
+        Pages.clientsSearchPage().clickOnSearchButton();
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchResultsPage().getAccountNumbersFromSearchResults(), accountNumberQuery));
     }
 }

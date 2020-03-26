@@ -2,11 +2,14 @@ package com.nymbus.pages;
 
 import com.nymbus.core.allure.AllureLogger;
 import com.nymbus.pages.accounts.*;
-import com.nymbus.pages.client.ClientsSearchPage;
 import com.nymbus.pages.clients.AddClientPage;
 import com.nymbus.pages.clients.ClientDetailsPage;
+import com.nymbus.pages.clients.ClientsSearchPage;
 import com.nymbus.pages.clients.ClientsSearchResultsPage;
+import com.nymbus.pages.clients.maintenance.MaintenanceHistoryPage;
+import com.nymbus.pages.clients.maintenance.MaintenancePage;
 import com.nymbus.pages.loans.LoansPage;
+import com.nymbus.pages.modalwindow.DebitCardModalWindow;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
 import com.nymbus.pages.teller.TellerPage;
 import com.nymbus.pages.tellertotellertransfer.TellerToTellerPage;
@@ -19,19 +22,26 @@ public class Pages extends AllureLogger {
     private static NavigationPage navigationPage;
     private static ASideMenuPage aSideMenuPage;
     private static AddClientPage addClientPage;
-    private static ClientsSearchPage clientsSearchPage;
     private static ClientDetailsPage clientDetailsPage;
     private static TellerPage tellerPage;
     private static LoansPage loansPage;
     private static ReportGeneratorPage reportGeneratorPage;
     private static TellerToTellerPage tellerToTellerPage;
     private static Settings settings;
+    private static ClientsSearchPage clientsSearchPage;
     private static ClientsSearchResultsPage clientsSearchResultsPage;
     private static AddAccountPage addAccountPage;
     private static AccountDetailsPage accountDetailsPage;
     private static EditAccountPage editAccountPage;
     private static AccountNavigationPage accountNavigationPage;
     private static AccountMaintenancePage accountMaintenancePage;
+    private static MaintenancePage maintenancePage;
+    private static MaintenanceHistoryPage maintenanceHistoryPage;
+
+    /**
+     * Modal Windows
+     * */
+    private static DebitCardModalWindow debitCardModalWindow;
 
     /**
      * This function return an instance of `LoginPage`
@@ -64,7 +74,7 @@ public class Pages extends AllureLogger {
     }
 
     /**
-     * This function return an instance of `ClientsSearchPage`
+     * This function return an instance of `AddClientPage`
      */
     public static AddClientPage addClientPage() {
         if (addClientPage == null) {
@@ -76,7 +86,7 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `ClientsSearchPage`
      */
-    public static ClientsSearchPage clientsPage() {
+    public static ClientsSearchPage clientsSearchPage() {
         if (clientsSearchPage == null) {
             clientsSearchPage = new ClientsSearchPage();
         }
@@ -201,5 +211,35 @@ public class Pages extends AllureLogger {
             accountNavigationPage = new AccountNavigationPage();
         }
         return accountNavigationPage;
+    }
+
+    /**
+     * This function return an instance of `DebitCardModalWindow`
+     */
+    public static DebitCardModalWindow debitCardModalWindow() {
+        if (debitCardModalWindow == null) {
+            debitCardModalWindow = new DebitCardModalWindow();
+        }
+        return debitCardModalWindow;
+    }
+
+    /**
+     * This function return an instance of `MaintenancePage`
+     */
+    public static MaintenancePage maintenancePage() {
+        if (maintenancePage == null) {
+            maintenancePage = new MaintenancePage();
+        }
+        return maintenancePage;
+    }
+
+    /**
+     * This function return an instance of `MaintenanceHistoryPage`
+     */
+    public static MaintenanceHistoryPage maintenanceHistoryPage() {
+        if (maintenanceHistoryPage == null) {
+            maintenanceHistoryPage = new MaintenanceHistoryPage();
+        }
+        return maintenanceHistoryPage;
     }
 }

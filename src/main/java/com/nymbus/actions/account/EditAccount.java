@@ -1,6 +1,6 @@
 package com.nymbus.actions.account;
 
-import com.nymbus.models.account.Account;
+import com.nymbus.newmodels.account.Account;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 
