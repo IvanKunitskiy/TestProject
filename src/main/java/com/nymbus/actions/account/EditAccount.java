@@ -198,4 +198,16 @@ public class EditAccount {
         Pages.accountDetailsPage().waitForEditButton();
     }
 
+    public void editCDAccount(Account account) {
+        Pages.accountDetailsPage().clickEditButton();
+        AccountActions.editAccount().setFederalWHReason(account);
+        AccountActions.editAccount().fillInInputFieldsThatWereNotAvailableDuringCDAccountCreation(account);
+        AccountActions.createAccount().setCurrentOfficer(account);
+        Pages.editAccountPage().setInterestRate(account.getInterestRate());
+        AccountActions.createAccount().setBankBranch(account);
+        AccountActions.createAccount().setCallClassCode(account);
+        Pages.addAccountPage().clickSaveAccountButton();
+        Pages.accountDetailsPage().waitForEditButton();
+    }
+
 }
