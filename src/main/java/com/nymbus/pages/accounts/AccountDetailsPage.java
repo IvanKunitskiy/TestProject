@@ -340,6 +340,12 @@ public class AccountDetailsPage extends PageTools {
         waitForElementClickable(fullProfileButton);
     }
 
+    @Step("Wait for 'Edit' button is visible")
+    public void waitForEditButton() {
+        waitForElementVisibility(editButton);
+        waitForElementClickable(editButton);
+    }
+
     @Step("Get account 'Product Type' value")
     public String getProductTypeValue() {
         waitForElementVisibility(productType);
