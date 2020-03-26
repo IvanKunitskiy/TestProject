@@ -5,8 +5,8 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.account.Account;
 import com.nymbus.models.client.Client;
+import com.nymbus.newmodels.account.Account;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -51,10 +51,10 @@ public class С22584_ViewNewSavingsIRAAccountTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the Savings account from the precondition and open it on Details");
-        Pages.clientsPage().typeToClientsSearchInputField(savingsIRAAccount.getAccountNumber());
-        Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), savingsIRAAccount.getAccountNumber()));
-        Pages.clientsPage().clickOnSearchButton();
+        Pages.clientsSearchPage().typeToClientsSearchInputField(savingsIRAAccount.getAccountNumber());
+        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), savingsIRAAccount.getAccountNumber()));
+        Pages.clientsSearchPage().clickOnSearchButton();
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
         Pages.clientDetailsPage().waitForPageLoaded();
         Pages.clientDetailsPage().clickAccountsTab();

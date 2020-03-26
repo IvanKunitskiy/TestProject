@@ -6,8 +6,8 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
-import com.nymbus.models.account.Account;
 import com.nymbus.models.client.Client;
+import com.nymbus.newmodels.account.Account;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -59,10 +59,10 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the client from the preconditions and open his profile on Accounts tab");
-        Pages.clientsPage().typeToClientsSearchInputField(client.getClientID());
-        Assert.assertTrue(Pages.clientsPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsPage().isSearchResultsRelative(Pages.clientsPage().getAllLookupResults(), client.getClientID()), "Search results are not relevant");
-        Pages.clientsPage().clickOnSearchButton();
+        Pages.clientsSearchPage().typeToClientsSearchInputField(client.getClientID());
+        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), client.getClientID()), "Search results are not relevant");
+        Pages.clientsSearchPage().clickOnSearchButton();
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
         Pages.clientDetailsPage().waitForPageLoaded();
         Pages.clientDetailsPage().clickAccountsTab();
