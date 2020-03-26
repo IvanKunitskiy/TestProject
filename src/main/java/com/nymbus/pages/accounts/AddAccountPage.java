@@ -230,9 +230,7 @@ public class AddAccountPage extends PageTools {
 
     @Step("Click the 'Interest Frequency' selector button")
     public void clickInterestFrequencySelectorButton() {
-        waitForElementVisibility(interestFrequencySelectorButton);
         scrollToElement(interestFrequencySelectorButton);
-        waitForElementClickable(interestFrequencySelectorButton);
         click(interestFrequencySelectorButton);
     }
 
@@ -250,6 +248,7 @@ public class AddAccountPage extends PageTools {
         waitForElementVisibility(dateOpenedField);
         waitForElementClickable(dateOpenedField);
         typeWithoutWipe("", dateOpenedField);
+        SelenideTools.sleep(1);
         typeWithoutWipe(dateOpenedValue, dateOpenedField);
     }
 
@@ -258,6 +257,7 @@ public class AddAccountPage extends PageTools {
         waitForElementVisibility(optInOutDateInputField);
         waitForElementClickable(optInOutDateInputField);
         typeWithoutWipe("", optInOutDateInputField);
+        SelenideTools.sleep(1);
         typeWithoutWipe(optInOutDateValue, optInOutDateInputField);
     }
 
