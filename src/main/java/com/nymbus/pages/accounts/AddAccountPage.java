@@ -47,6 +47,8 @@ public class AddAccountPage extends PageTools {
     private By interestRate = By.xpath("//input[@id='interestrate']");
     private By interestType = By.xpath("//div[@id='interesttype']/a/span/span[contains(@class, 'ng-scope')]");
     private By transactionalAccountSwitch = By.xpath("//dn-switch[@id='transactionalaccount']");
+    private By transactionalAccount = By.xpath("//dn-switch[@id='transactionalaccount']/div/div/span[contains(@class, 'ng-scope')]");
+    private By applyInterestTo = By.xpath("//div[@id='codetoapplyinterestto']/a/span/span[contains(@class, 'ng-scope')]");
 
     /**
      * Account holders and signers
@@ -557,6 +559,20 @@ public class AddAccountPage extends PageTools {
         waitForElementVisibility(bankBranchList);
         waitForElementClickable(bankBranchList);
         return getElementsText(bankBranchList);
+    }
+
+    @Step("Returning 'Apply Interest To' value")
+    public String getApplyInterestTo() {
+        waitForElementVisibility(applyInterestTo);
+        waitForElementClickable(applyInterestTo);
+        return getElementText(applyInterestTo);
+    }
+
+    @Step("Returning 'Transactional Account' value")
+    public String getTransactionalAccount() {
+        waitForElementVisibility(transactionalAccount);
+        waitForElementClickable(transactionalAccount);
+        return getElementText(transactionalAccount);
     }
 
     @Step("Click the 'Product Type' selector button")

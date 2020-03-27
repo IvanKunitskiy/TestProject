@@ -122,6 +122,18 @@ public class CreateAccount {
         setIRADistributionCode(account);
     }
 
+    public void selectValuesInDropdownFieldsRequiredForCDIRAAccount(Account account) {
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        setCorrespondingAccount(account);
+        setInterestFrequency(account);
+        setApplyInterestTo(account);
+        setInterestType(account);
+        setCallClassCode(account);
+        setIRADistributionFrequency(account);
+        setIRADistributionCode(account);
+    }
+
     public void selectValuesInDropdownFieldsRequiredForCheckingAccount(Account account) {
         setProduct(account);
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
