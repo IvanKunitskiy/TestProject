@@ -21,6 +21,7 @@ public class OrganisationClientBuilder {
         organisationTypeBuilder.createOrganisationClient();
         organisationTypeBuilder.buildOrganisationType();
         organisationTypeBuilder.buildOrganisationClientDetails();
+        organisationTypeBuilder.buildOrganisationClientDocuments();
 
         OrganisationClient organisationClient = organisationTypeBuilder.getOrganisationClient();
 
@@ -40,8 +41,8 @@ public class OrganisationClientBuilder {
         )));
         organisationClient.getOrganisationClientDetails().setEmails(new HashSet<>(Arrays.asList(
                 emailFactory.getEmail(),
-                emailFactory.getEmail(),
-                emailFactory.getEmail()
+                emailFactory.getAlternateEmail(),
+                emailFactory.getAlternateEmail()
         )));
 
         return organisationClient;

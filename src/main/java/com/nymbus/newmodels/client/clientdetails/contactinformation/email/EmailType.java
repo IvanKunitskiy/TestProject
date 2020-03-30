@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum EmailType {
-    ALTERNATE("Alternative"),
+    ALTERNATE("Alternate"),
     PRIMARY("Primary");
 
     private final String emailType;

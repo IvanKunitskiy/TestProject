@@ -62,26 +62,24 @@ public class AddClientPage extends PageTools {
     private By idNumberField = By.id("doc_id");
     private By issuedByField = By.xpath("//div[@id='doc_state']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private By issuedBySelectorButton = By.xpath("//div[@id='doc_state']" +
+    private By issuedBySelectorButton = By.xpath("//div[@id='state']" +
             "//span[contains(@class, 'select2-arrow')]");
     private By issuedByList = By.xpath("//div[@id='doc_state']" +
             "//li[contains(@role, 'option')]/div/span");
-    private By issuedBySelectorOption = By.xpath("//div[@id='doc_state']" +
+    private By issuedBySelectorOption = By.xpath("//div[@id='state']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By countryField = By.xpath("//div[@id='doc_country']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private By countrySelectorButton = By.xpath("//div[@id='doc_country']" +
+    private By countrySelectorButton = By.xpath("//div[@id='country']" +
             "//span[contains(@class, 'select2-arrow')]");
     private By countryList = By.xpath("//div[@id='doc_country']" +
             "//li[contains(@role, 'option')]/div/span");
-    private By countrySelectorOption = By.xpath("//div[@id='doc_country']" +
+    private By countrySelectorOption = By.xpath("//div[@id='country']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By expirationDateField = By.id("doc_expiration");
     private By addressTypeField = By.xpath("//div[@name='addressuse_0']" +
             "//input[contains(@class, 'nb-select-search')]");
     private By addressTypeSelectorButton = By.xpath("//div[@name='addressuse_0']" +
-            "//span[contains(@class, 'select2-arrow')]");
-    private By addressTypeSelectorButton1 = By.xpath("//div[@name='addressuse_"+"%s"+"']" +
             "//span[contains(@class, 'select2-arrow')]");
     private By addressTypeList = By.xpath("//div[@name='addressuse_0']" +
             "//li[contains(@role, 'option')]/div/span");
@@ -106,6 +104,196 @@ public class AddClientPage extends PageTools {
     private By addressStateSelectorOption = By.xpath("//div[@name='states_0']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By addressZipCodeField = By.xpath("//input[@name='zipcode_0']");
+
+    /**
+     * Address information
+     */
+    private By addressHeadersList = By.xpath("//tr[@class='header noHover ng-scope']");
+    private By addressTypeSelectorButton1 = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.addressuse.isShow'][%s]" +
+            "//span[contains(@class, 'select2-arrow')]");
+    private By countrySelectorButton1 = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.country.isShow'][%s]" +
+            "//span[contains(@class, 'select2-arrow')]");
+    private By addressField1 = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.addressline1.isShow'][%s]" +
+            "//input");
+    private By addressField2 = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.addressline2.isShow'][%s]" +
+            "//input");
+    private By addressCityField1 = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.cityname.isShow'][%s]" +
+            "//input");
+    private By addressStateSelectorButton1 = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.states.isShow'][%s]" +
+            "//span[contains(@class, 'select2-arrow')]");
+    private By getAddressZipCodeField1 = By.xpath("(//tr[@class='ng-scope' and @ng-if='address.pageConfig.zipcode.isShow'][%s]" +
+            "//input)[1]");
+    private By getAddressZipCodeField2 = By.xpath("(//tr[@class='ng-scope' and @ng-if='address.pageConfig.zipcode.isShow'][%s]" +
+            "//input)[2]");
+    private By addressYearsAtAddress = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.yearsinthisaddress.isShow'][%s]" +
+            "//input");
+    private By itemInDropDown = By.xpath("//div[contains(@class, 'select2-drop-active') and not(contains(@class, 'select2-display-none'))]" +
+            "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By addAddress = By.xpath("//tr[@class='addRow']//button");
+
+    /**
+     * Phones and Emails information
+     */
+    private By phoneTypeSelectorButton = By.xpath("(//tr[@class='ng-scope' and @ng-if='isNotHidden(phoneSubformConfig)'][%s]" +
+            "//span[contains(@class, 'select2-arrow')])[1]");
+    private By phoneCountrySelectorButton =By.xpath("(//tr[@class='ng-scope' and @ng-if='isNotHidden(phoneSubformConfig)'][%s]" +
+            "//span[contains(@class, 'select2-arrow')])[2]");
+    private By phoneField1 = By.xpath("//tr[@class='ng-scope' and @ng-if='isNotHidden(phoneSubformConfig)'][%s]" +
+            "//div[@ng-if='phone.pageConfig.fullphonenumber.isShow']/input");
+    private By emailTypeSelectorButton1 = By.xpath("//tr[@class='ng-scope' and @ng-if='isNotHidden(emailSubformConfig)'][%s]" +
+            "//span[contains(@class, 'select2-arrow')]");
+    private By emailField1 = By.xpath("//tr[@class='ng-scope' and @ng-if='isNotHidden(emailSubformConfig)'][%s]" +
+            "//div[@ng-if='email.pageConfig.email.isShow']//input");
+    private By addPhoneNumberButton = By.xpath("//button[contains(text(), 'Additional Phone Number')]");
+    private By addEmailButton = By.xpath("//button[contains(text(), 'Additional Email Address')]");
+
+    /**
+     * Client Details Organisation info
+     */
+    private By industryField = By.xpath("//*[@id='naicsindustry']//input[contains(@class, 'ui-select-search')]");
+    private By mailCodeSelectorButton1 = By.xpath("//*[@id='mailingcode']//span[contains(@class, 'select2-arrow')]");
+    private By selectOfficerSelectorButton1 = By.xpath("//*[@id='officerid']//span[contains(@class, 'select2-arrow')]");
+    private By akaField1 = By.xpath("//tr[@class='ng-scope' and  @ng-repeat='alias in basicInformation.aliases'][%s]" +
+            "//*[@id='nickname']");
+    private By addAKAButton = By.xpath("//button[contains(text(), 'Add AKA')]");
+
+    /**
+     * Filling Client Details Organisation info
+     */
+    public void setIndustryField(String industry) {
+        waitForElementClickable(industryField);
+        type(industry, industryField);
+    }
+
+    public void clickMailCodeSelectorButton1() {
+        waitForElementClickable(mailCodeSelectorButton1);
+        click(mailCodeSelectorButton1);
+    }
+
+    public void clickSelectOfficerSelectorButton1() {
+        waitForElementClickable(selectOfficerSelectorButton1);
+        click(selectOfficerSelectorButton1);
+    }
+
+    public void setAKAField(int i, String text) {
+        waitForElementClickable(akaField1, i);
+        type(text, akaField1, i);
+    }
+
+    public void clickAddAKAButton() {
+        waitForElementClickable(addAKAButton);
+        click(addAKAButton);
+    }
+
+    /**
+     * Filling phones and emails fields
+     */
+    public void clickPhoneTypeSelectorButton(int i) {
+        waitForElementClickable(phoneTypeSelectorButton, i);
+        click(phoneTypeSelectorButton, i);
+    }
+
+    public void clickPhoneCountrySelectorButton(int i) {
+        waitForElementClickable(phoneCountrySelectorButton, i);
+        click(phoneCountrySelectorButton, i);
+    }
+
+    public void setPhoneField(int i, String text) {
+        waitForElementClickable(phoneField1, i);
+        type(text, phoneField1, i);
+    }
+
+    public void clickEmailTypeSelectorButton1(int i) {
+        waitForElementClickable(emailTypeSelectorButton1, i);
+        click(emailTypeSelectorButton1, i);
+    }
+
+    public void setEmailField(int i, String text) {
+        waitForElementClickable(emailField1, i);
+        type(text, emailField1, i);
+    }
+
+    public void clickAddPhoneNumberButton() {
+        waitForElementClickable(addPhoneNumberButton);
+        click(addPhoneNumberButton);
+    }
+
+    public void clickAddEmailButton() {
+        waitForElementClickable(addEmailButton);
+        click(addEmailButton);
+    }
+
+    /**
+     * Filling dynamic address fields
+     */
+    public void clickAddAddress() {
+        waitForElementVisibility(addAddress);
+        click(addAddress);
+    }
+
+    public void clickItemInDropDown(String item) {
+        waitForElementVisibility(itemInDropDown, item);
+        click(itemInDropDown, item);
+    }
+
+    public int getAddressFieldCount() {
+        waitForElementVisibility(addressHeadersList);
+        return getElements(addressHeadersList).size();
+    }
+
+    @Step("Click on 'Address Type' selectorButton")
+    public void clickAddressTypeSelectorButton1(int i) {
+        waitForElementClickable(addressTypeSelectorButton1, i);
+        click(addressTypeSelectorButton, i);
+    }
+
+    @Step("Click on 'Country' selectorButton")
+    public void clickCountrySelectorButton1(int i) {
+        waitForElementClickable(countrySelectorButton1, i);
+        click(countrySelectorButton1, i);
+    }
+
+    @Step("Set 'Address Line1' value")
+    public void setAddressField1Value(int i, String text) {
+        waitForElementClickable(addressField1, i);
+        type(text, addressField1, i);
+    }
+
+    @Step("Set 'Address Line2' value")
+    public void setAddressField2Value(int i, String text) {
+        waitForElementClickable(addressField2, i);
+        type(text, addressField2, i);
+    }
+
+    @Step("Set 'Address City' value")
+    public void setAddressCityValue(int i, String text) {
+        waitForElementClickable(addressCityField1, i);
+        type(text, addressCityField1, i);
+    }
+
+    @Step("Click on 'Address State' selectorButton")
+    public void clickAddressStateSelectorButton(int i) {
+        waitForElementClickable(addressStateSelectorButton1, i);
+        click(addressStateSelectorButton1, i);
+    }
+
+    @Step("Set 'Address ZipCode1' value")
+    public void setAddressZipCode1Value(int i, String text) {
+        waitForElementClickable(getAddressZipCodeField1, i);
+        type(text, getAddressZipCodeField1, i);
+    }
+
+    @Step("Set 'Address ZipCode2' value")
+    public void setAddressZipCode2Value(int i, String text) {
+        waitForElementClickable(getAddressZipCodeField2, i);
+        type(text, getAddressZipCodeField2, i);
+    }
+
+    @Step("Set 'Address YearsAt' value")
+    public void setAddressYearsAtAddress(int i, String text) {
+        waitForElementClickable(addressYearsAtAddress, i);
+        type(text, addressYearsAtAddress, i);
+    }
 
     /**
      * Client detailed information
@@ -503,12 +691,6 @@ public class AddClientPage extends PageTools {
     @Step("Click on 'Address Type' selector")
     public void clickAddressTypeSelectorButton() {
         waitForElementClickable(addressTypeSelectorButton);
-        click(addressTypeSelectorButton);
-    }
-
-    @Step("Click on 'Address Type' selector")
-    public void clickAddressTypeSelectorButton1(int i) {
-        waitForElementClickable(addressTypeSelectorButton1, i);
         click(addressTypeSelectorButton);
     }
 

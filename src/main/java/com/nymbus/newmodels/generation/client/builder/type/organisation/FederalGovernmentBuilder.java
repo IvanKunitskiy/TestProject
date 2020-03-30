@@ -19,4 +19,9 @@ public class FederalGovernmentBuilder extends OrganisationTypeBuilder {
         organisationClientDetailsFactory = new OrganisationClientDetailsFactory();
         organisationClient.setOrganisationClientDetails(organisationClientDetailsFactory.getOrganisationClientDetails());
     }
+
+    @Override
+    public void buildOrganisationClientDocuments() {
+
+    }
 }

@@ -34,11 +34,16 @@ public class C23576_CreateCorporationClientTest extends BaseTest {
         ClientsActions.createClient().openClientPage();
         Pages.clientsSearchPage().clickAddNewClient();
         ClientsActions.createOrganisationClientActions().setBasicInformation(client);
-       /* Assert.assertTrue(Pages.addClientPage().isVerificationSuccess(),
+
+        Assert.assertTrue(Pages.addClientPage().isVerificationSuccess(),
                 "Client data verification is not success");
         Pages.addClientPage().clickOkModalButton();
 
-        Pages.addClientPage().clickViewMemberProfileButton();
+        ClientsActions.createOrganisationClientActions().setClientDetails(client);
+
+        ClientsActions.createOrganisationClientActions().setDocumentation(client);
+
+        /* Pages.addClientPage().clickViewMemberProfileButton();
 
         Assert.assertEquals(ClientsActions.verifyClientDataActions().getIndividualConsumerClientData(), client,
                 "Client's data is not equals");*/

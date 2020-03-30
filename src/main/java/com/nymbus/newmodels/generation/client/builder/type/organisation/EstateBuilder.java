@@ -19,4 +19,9 @@ public class EstateBuilder extends OrganisationTypeBuilder {
         organisationClientDetailsFactory = new OrganisationClientDetailsFactory();
         organisationClient.setOrganisationClientDetails(organisationClientDetailsFactory.getOrganisationClientDetails());
     }
+
+    @Override
+    public void buildOrganisationClientDocuments() {
+        
+    }
 }

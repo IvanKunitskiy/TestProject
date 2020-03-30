@@ -13,6 +13,14 @@ public class EmailFactory {
         return email;
     }
 
+    public Email getAlternateEmail() {
+        Email email = new Email();
+        email.setEmailType(EmailType.ALTERNATE);
+        email.setEmail(Random.genEmail("testemail@email.com"));
+
+        return email;
+    }
+
     public Email getEmailWithType(EmailType emailType) {
         Email email = getEmail();
         email.setEmailType(emailType);

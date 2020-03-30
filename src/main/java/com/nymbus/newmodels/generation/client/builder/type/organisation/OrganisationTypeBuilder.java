@@ -13,6 +13,8 @@ public abstract class OrganisationTypeBuilder {
 
     public abstract void buildOrganisationClientDetails();
 
+    public abstract void buildOrganisationClientDocuments();
+
     public OrganisationClient getOrganisationClient() {
         return organisationClient;
     }
