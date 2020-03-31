@@ -7,8 +7,9 @@ import com.nymbus.newmodels.client.basicinformation.address.Address;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.email.Email;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.phone.Phone;
 import com.nymbus.newmodels.client.clientdetails.type.organisation.OrganisationClientDetails;
-import com.nymbus.newmodels.client.other.document.CompanyID;
 import com.nymbus.newmodels.client.other.document.Document;
+import com.nymbus.newmodels.client.other.document.DocumentDetails;
+import com.nymbus.newmodels.client.other.document.IDType;
 import com.nymbus.pages.Pages;
 
 import java.util.List;
@@ -36,20 +37,38 @@ public class CreateOrganisationClientActions {
     public void setDocumentation(OrganisationClient client) {
         int documentsCount = client.getDocuments().size();
         for (int i = 0; i < documentsCount; i++) {
-            setDocument(client.getDocuments().get(i));
+            Document currentDocument = client.getDocuments().get(i);
+            setDocumentFileAndType(currentDocument);
+            if (isDocumentComplex(currentDocument)) {
+                setDocumentDetails(currentDocument.getDocumentDetails());
+            }
+            Pages.addClientPage().clickDocumentSaveChangesButton();
         }
         Pages.addClientPage().clickSaveAndContinueButton();
     }
 
-    private void setDocument(Document document) {
-        CompanyID companyID = (CompanyID)document;
-        Pages.addClientPage().uploadClientDocumentation(Functions.getFilePathByName(companyID.getFile().getFileName()));
-        setDocumentationIDType(companyID.getIdType().getIdType());
-        Pages.addClientPage().setDocumentIDNumberValue(companyID.getIdNumber());
-        setDocumentationIssuedBY(companyID.getIssuedBy().getState());
-        setDocumentationCountry(companyID.getCountry().getCountry());
-        Pages.addClientPage().setDocumentExpirationDateValue(companyID.getExpirationDate());
-        Pages.addClientPage().clickDocumentSaveChangesButton();
+    public void setSignature(OrganisationClient client) {
+        Pages.addClientPage().uploadClientSignature(client.getClientSignature());
+        Pages.addClientPage().clickSaveAndContinueButton();
+    }
+
+    private boolean isDocumentComplex(Document document) {
+        boolean complexCondition = document.getIdType() != IDType.LOGO
+                                    && document.getIdType() != IDType.PHOTO
+                                    && document.getIdType() != IDType.SIGNATURE;
+        return complexCondition;
+    }
+
+    private void setDocumentFileAndType(Document document) {
+        Pages.addClientPage().uploadClientDocumentation(Functions.getFilePathByName(document.getFile().getFileName()));
+        setDocumentationIDType(document.getIdType().getIdType());
+    }
+
+    private void setDocumentDetails(DocumentDetails documentDetails) {
+        Pages.addClientPage().setDocumentIDNumberValue(documentDetails.getIdNumber());
+        setDocumentationIssuedBY(documentDetails.getIssuedBy().getState());
+        setDocumentationCountry(documentDetails.getCountry().getCountry());
+        Pages.addClientPage().setDocumentExpirationDateValue(documentDetails.getExpirationDate());
     }
 
     private void setDocumentationCountry(String country) {

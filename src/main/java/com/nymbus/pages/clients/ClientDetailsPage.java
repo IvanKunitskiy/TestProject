@@ -60,6 +60,58 @@ public class ClientDetailsPage extends PageTools {
     private By addressZipCode = By.name("zipcode_0");
 
     /**
+     * Profile tab address information
+     */
+    private By addressType1 = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.addressuse.isShow'][%s]" +
+            "//span[contains(@class, 'ng-binding') and not(contains(@class, 'ng-hide'))]");
+    private By addressCountry1 = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.country.isShow'][%s]" +
+            "//span[contains(@class, 'ng-binding') and not(contains(@class, 'ng-hide'))]");
+    private By address1 = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.addressline1.isShow'][%s]//input");
+    private By addressCity1 = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.cityname.isShow'][%s]//input");
+    private By addressState1 = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.states.isShow'][%s]" +
+             "//span[contains(@class, 'ng-binding') and not(contains(@class, 'ng-hide'))]");
+    private By addressZipCode1 =By.xpath("(//tr[@class='ng-scope' and @ng-if='address.pageConfig.zipcode.isShow'][%s]" +
+            "//input)[1]");
+
+    /**
+     * Profile address methods
+     */
+    @Step("Get 'Address Type' {i} value")
+    public String getAddressType1(int i) {
+        waitForElementVisibility(addressType1, i);
+        return getElementText(addressType1, i).trim();
+    }
+
+    @Step("Get 'Address Country' {i} value")
+    public String getAddressCountry1(int i) {
+        waitForElementVisibility(addressCountry1, i);
+        return getElementText(addressCountry1, i).trim();
+    }
+
+    @Step("Get 'Address Line 1' {i} value")
+    public String getAddress1(int i) {
+        waitForElementVisibility(address1, i);
+        return getElementAttributeValue("value", address1, i).trim();
+    }
+
+    @Step("Get 'Address City' {i} value")
+    public String getAddressCity1(int i) {
+        waitForElementVisibility(addressCity1, i);
+        return getElementAttributeValue("value", addressCity1, i).trim();
+    }
+
+    @Step("Get 'Address State' {i} value")
+    public String getAddressState1(int i) {
+        waitForElementVisibility(addressState1, i);
+        return getElementText(addressState1, i).trim();
+    }
+
+    @Step("Get 'Address ZipCode' {i} value")
+    public String getAddressZipCode1(int i) {
+        waitForElementVisibility(addressZipCode1, i);
+        return getElementAttributeValue("value", addressZipCode1, i).trim();
+    }
+    /**
      * Documents Tab
      */
     private By listOfDocumentsRegion = By.xpath("//table[contains(@ng-if, 'documents')]");

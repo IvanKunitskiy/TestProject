@@ -15,7 +15,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-public abstract class OrganisationType extends Client {
+public abstract class OrganisationType {
     @NonNull private ClientType clientType;
     private ClientStatus clientStatus;
     @NonNull String name;

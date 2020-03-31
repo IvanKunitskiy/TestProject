@@ -8,7 +8,8 @@ import lombok.Getter;
 public enum Country {
     UNITED_STATES("United States"),
     UKRAINE("Ukraine"),
-    RUSSIA("Russia");
+    RUSSIA("Russia"),
+    NONE("");
 
     private final String country;
 }

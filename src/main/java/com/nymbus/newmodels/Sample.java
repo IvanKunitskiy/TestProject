@@ -14,7 +14,7 @@ import com.nymbus.newmodels.client.clientdetails.contactinformation.email.EmailT
 import com.nymbus.newmodels.client.clientdetails.contactinformation.phone.Phone;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.phone.PhoneType;
 import com.nymbus.newmodels.client.clientdetails.type.organisation.OrganisationClientDetails;
-import com.nymbus.newmodels.client.other.document.CompanyID;
+import com.nymbus.newmodels.client.other.document.BaseDocument;
 import com.nymbus.newmodels.client.other.document.Document;
 import com.nymbus.newmodels.client.other.document.IDType;
 
@@ -62,11 +62,9 @@ public class Sample {
         clientDetails.setPhones(new HashSet<>(Arrays.asList(phone11, phone12)));
         clientDetails.setEmails(new HashSet<>(Arrays.asList(email11, email12)));
 
-        Document document = new CompanyID();
-        ((CompanyID) document).setIdType(IDType.COMPANY_ID);
-        ((CompanyID) document).setCountry(Country.UNITED_STATES);
-        ((CompanyID) document).setIssuedBy(State.ALABAMA);
-        ((CompanyID) document).setIdNumber("qwe");
+        Document document = new BaseDocument();
+        ((BaseDocument) document).setIdType(IDType.COMPANY_ID);
+
 
         Client client = new OrganisationClient();
         ((OrganisationClient) client).setOrganisationType(organisationType);
@@ -135,12 +133,10 @@ public class Sample {
         System.out.println(organisationClientBuilder.buildClient());*/
     }
 
-    private static CompanyID qwe() {
-        CompanyID companyID = new CompanyID();
+    private static BaseDocument qwe() {
+        BaseDocument companyID = new BaseDocument();
         companyID.setIdType(IDType.COMPANY_ID);
-        companyID.setCountry(Country.UNITED_STATES);
-        companyID.setIssuedBy(State.ALABAMA);
-        companyID.setIdNumber("qwe");
+
 
         return companyID;
     }

@@ -9,12 +9,8 @@ import lombok.RequiredArgsConstructor;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class AlienRegCard implements Document {
+public class BaseDocument implements Document {
     @NonNull private IDType idType;
     @NonNull private File file;
-    @NonNull private String idNumber;
-    private String issuedBy;
-    @NonNull private String country;
-    private String issueDate;
-    @NonNull private String expirationDate;
+    private DocumentDetails documentDetails;
 }

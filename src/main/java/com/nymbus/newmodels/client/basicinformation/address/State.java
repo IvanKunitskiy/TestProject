@@ -8,7 +8,8 @@ import lombok.Getter;
 public enum State {
     ALABAMA("Alabama"),
     ALASKA("Alaska"),
-    ARIZONA("Arizona");
+    ARIZONA("Arizona"),
+    NONE("");
 
     private final String state;
 }
