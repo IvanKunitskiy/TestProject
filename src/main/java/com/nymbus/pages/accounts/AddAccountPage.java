@@ -14,6 +14,10 @@ public class AddAccountPage extends PageTools {
     private By productTypeList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By productSelectorButton = By.xpath("//div[@id='accountclasstype']");
     private By productList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By boxSizeSelectorButton = By.id("boxsize");
+    private By boxSizeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By boxSizeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By boxSizeField = By.xpath("//input[@id='boxsize']//input[contains(@class, 'nb-select-search')]");
     private By productTypeInputField = By.xpath("//div[@data-test-id='field-accounttype']//input[contains(@class, 'nb-select-search')]");
     private By accountNumberField = By.xpath("//input[@data-test-id='field-accountnumber']");
     private By accountTitleField = By.xpath("//input[@data-test-id='field-accounttitlemailinginstructions']");
@@ -111,11 +115,6 @@ public class AddAccountPage extends PageTools {
     private By discountReasonSelectorButton = By.xpath("//div[@id='discountreason']");
     private By discountReasonList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By discountReasonSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-
-    private By boxSizeSelectorButton = By.xpath("//div[@id='boxsize']");
-    private By boxSizeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private By boxSizeList = By.xpath("//li[contains(@role, 'option')]/div/span");
-
     private By mailCodeSelectorButton = By.xpath("//div[@id='mailingcode']");
     private By mailCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By mailCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
