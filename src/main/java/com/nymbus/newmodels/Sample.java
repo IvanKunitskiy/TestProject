@@ -1,9 +1,7 @@
 package com.nymbus.newmodels;
 
-import com.nymbus.newmodels.client.Client;
-import com.nymbus.newmodels.client.OrganisationClient;
-import com.nymbus.newmodels.client.basicinformation.address.Address;
-import com.nymbus.newmodels.client.basicinformation.address.AddressType;
+import com.nymbus.newmodels.accountinstructions.BaseInstruction;
+import com.nymbus.newmodels.accountinstructions.HoldInstruction;
 import com.nymbus.newmodels.client.basicinformation.address.Country;
 import com.nymbus.newmodels.client.basicinformation.address.State;
 import com.nymbus.newmodels.client.basicinformation.type.TaxPayerIDType;
@@ -16,16 +14,14 @@ import com.nymbus.newmodels.client.clientdetails.contactinformation.phone.PhoneT
 import com.nymbus.newmodels.client.clientdetails.type.organisation.OrganisationClientDetails;
 import com.nymbus.newmodels.client.other.document.BaseDocument;
 import com.nymbus.newmodels.client.other.document.Document;
+import com.nymbus.newmodels.client.other.document.CompanyID;
 import com.nymbus.newmodels.client.other.document.IDType;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
+import com.nymbus.newmodels.generation.accountinstructions.InstructionConstructor;
+import com.nymbus.newmodels.generation.accountinstructions.builder.HoldInstructionBuilder;
 
 public class Sample {
     public static void main(String[] args) {
-        Address address = new Address();
+        /*Address address = new Address();
         address.setType(AddressType.ALTERNATE);
         address.setCountry(Country.UNITED_STATES);
         address.setCity("qwe");
@@ -126,11 +122,17 @@ public class Sample {
         System.out.println(client1);
         System.out.println("\n\n");
 
-        System.out.println(client.equals(client1));
+        System.out.println(client.equals(client1));*/
 
         /*OrganisationClientBuilder organisationClientBuilder = new OrganisationClientBuilder();
         organisationClientBuilder.setOrganisationTypeBuilder(new TrustAccountBuilder());
         System.out.println(organisationClientBuilder.buildClient());*/
+
+        /*Transaction1 tr1 = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        System.out.println(tr1.toString());*/
+
+        /*HoldInstruction instr = new InstructionConstructor(new HoldInstructionBuilder()).constructInstruction(HoldInstruction.class);
+        System.out.println(instr.toString());*/
     }
 
     private static BaseDocument qwe() {

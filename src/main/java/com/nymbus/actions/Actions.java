@@ -7,6 +7,7 @@ import com.nymbus.actions.clients.maintenance.MaintenancePageActions;
 import com.nymbus.actions.modalwindow.DebitCardModalWindowActions;
 import com.nymbus.actions.settings.CashDrawerAction;
 import com.nymbus.actions.settings.UsersActions;
+import com.nymbus.actions.transaction.TransactionActions;
 
 public class Actions {
     /**
@@ -19,6 +20,8 @@ public class Actions {
     private static ClientsSearchResultsPageActions clientsSearchResultsPageActions;
     private static MaintenancePageActions maintenancePageActions;
     private static MaintenanceHistoryPageActions maintenanceHistoryPageActions;
+    private static TransactionActions transactionActions;
+    private static MainActions mainActions;
 
     /**
      * Modal Window Actions
@@ -103,5 +106,25 @@ public class Actions {
             maintenanceHistoryPageActions = new MaintenanceHistoryPageActions();
         }
         return maintenanceHistoryPageActions;
+    }
+
+    /**
+     * This function returns an instance of `TransactionActions`
+     */
+    public static TransactionActions transactionActions() {
+        if (transactionActions == null) {
+            transactionActions = new TransactionActions();
+        }
+        return transactionActions;
+    }
+
+    /**
+     * This function returns an instance of `MainActions`
+     */
+    public static MainActions mainActions() {
+        if (mainActions == null) {
+            mainActions = new MainActions();
+        }
+        return mainActions;
     }
 }

@@ -7,6 +7,8 @@ public class AccountActions {
      */
     private static CreateAccount createAccount;
     private static EditAccount editAccount;
+    private static RetrievingAccountData retrievingAccountData;
+    private static CreateInstruction createInstruction;
 
     /**
      * This function return an instance of `CreateAccount`
@@ -26,5 +28,25 @@ public class AccountActions {
             editAccount = new EditAccount();
         }
         return editAccount;
+    }
+
+    /**
+     * This function return an instance of `RetrievingAccountData`
+     */
+    public static RetrievingAccountData retrievingAccountData() {
+        if (retrievingAccountData == null) {
+            retrievingAccountData = new RetrievingAccountData();
+        }
+        return retrievingAccountData;
+    }
+
+    /**
+     * This function return an instance of `CreateInstruction`
+     */
+    public static CreateInstruction createInstruction() {
+        if (createInstruction == null) {
+            createInstruction = new CreateInstruction();
+        }
+        return createInstruction;
     }
 }

@@ -15,4 +15,10 @@ public class LoginActions {
 
         WebAdminPages.navigationPage().waitForPageLoaded();
     }
+
+    public void doLogout() {
+        WebAdminPages.navigationPage().clickLogoutMenu();
+        WebAdminPages.navigationPage().clickSignOut();
+        WebAdminPages.loginPage().waitForLoginForm();
+    }
 }

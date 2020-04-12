@@ -103,21 +103,6 @@ public class DateTime {
         return daysList;
     }
 
-    public static String getTomorrowDate(String pattern) {
-        LocalDate localDate = LocalDate.now();
-        return DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH).format(localDate.plusDays(1));
-    }
-
-    public static String getYesterdayDate(String pattern) {
-        LocalDate localDate = LocalDate.now();
-        return DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH).format(localDate.minusDays(1));
-    }
-
-    public static String getDateWithNMonthAdded(String date, String pattern, int monthToAdd) {
-        LocalDate d = LocalDate.parse(date, DateTimeFormatter.ofPattern(pattern));
-        return DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH).format(d.plusMonths(monthToAdd));
-    }
-
     public static String plusMonthsToCurrentDateWithLastDayOfMonth(int months) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, months);
@@ -135,5 +120,27 @@ public class DateTime {
         String futureDate = simpleDateFormat.format(calendar.getTime());
 
         return futureDate;
+    }
+
+    public static String getTomorrowDate(String pattern) {
+        LocalDate localDate = LocalDate.now();
+        return DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH).format(localDate.plusDays(1));
+    }
+
+    public static String getYesterdayDate(String pattern) {
+        LocalDate localDate = LocalDate.now();
+        return DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH).format(localDate.minusDays(1));
+    }
+
+    public static String getDateWithNMonthAdded(String date, String pattern, int monthToAdd) {
+        LocalDate d = LocalDate.parse(date, DateTimeFormatter.ofPattern(pattern));
+        return DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH).format(d.plusMonths(monthToAdd));
+    }
+
+    public static String getDateTodayPlusDaysWithFormat(int days, String pattern) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.ENGLISH);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, days);
+        return simpleDateFormat.format(calendar.getTime());
     }
 }

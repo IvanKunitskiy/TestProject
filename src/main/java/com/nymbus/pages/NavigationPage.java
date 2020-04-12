@@ -1,6 +1,7 @@
 package com.nymbus.pages;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -11,6 +12,33 @@ public class NavigationPage extends PageTools {
     private By userFullName = By.xpath("//span[@text='header.fullName']/span");
     private By viewMyProfileLink = By.id("site-header-view-profile");
     private By signOutButton = By.xpath("//li[a/*[@class='nyb-icon-logout']]");
+    private By alertNotificationsButton = By.xpath("//button[@data-panel='alert-notifications']");
+    private By notificationCircle = By.xpath("//span[contains(@class, 'notificationCircle')]");
+    private By notificationsCount = By.xpath("//button[@data-panel='alert-notifications']/i/span/span");
+
+    @Step("Get notifications count")
+    public int getNotificationsCount() {
+        String count = getElementAttributeValue("innerText", notificationCircle).replaceAll("[0-9]]", "");
+        return Integer.parseInt(count);
+    }
+
+    @Step("Wait for user menu")
+    public void waitNotificationCircleVisible() {
+        SelenideTools.sleep(10);
+        waitForElementVisibility(notificationCircle);
+    }
+
+    @Step("Is notification circle visible")
+    public boolean isNotificationCircleVisible() {
+        return isElementVisible(notificationCircle);
+    }
+
+    @Step("Click on account button")
+    public void clickAlertNotificationsButton() {
+        waitForElementVisibility(alertNotificationsButton);
+        waitForElementClickable(alertNotificationsButton);
+        click(alertNotificationsButton);
+    }
 
     @Step("Wait for user menu")
     public void waitForUserMenuVisible() {

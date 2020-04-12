@@ -6,11 +6,15 @@ import com.nymbus.pages.clients.AddClientPage;
 import com.nymbus.pages.clients.ClientDetailsPage;
 import com.nymbus.pages.clients.ClientsSearchPage;
 import com.nymbus.pages.clients.ClientsSearchResultsPage;
+import com.nymbus.pages.clients.documents.AddNewDocumentPage;
+import com.nymbus.pages.clients.documents.DocumentsPage;
 import com.nymbus.pages.clients.maintenance.MaintenanceHistoryPage;
 import com.nymbus.pages.clients.maintenance.MaintenancePage;
+import com.nymbus.pages.clients.notes.NotesPage;
 import com.nymbus.pages.loans.LoansPage;
 import com.nymbus.pages.modalwindow.DebitCardModalWindow;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
+import com.nymbus.pages.teller.TellerModalPage;
 import com.nymbus.pages.teller.TellerPage;
 import com.nymbus.pages.tellertotellertransfer.TellerToTellerPage;
 
@@ -37,6 +41,16 @@ public class Pages extends AllureLogger {
     private static AccountMaintenancePage accountMaintenancePage;
     private static MaintenancePage maintenancePage;
     private static MaintenanceHistoryPage maintenanceHistoryPage;
+    private static TellerModalPage tellerModalPage;
+    private static AccountTransactionPage accountTransactionPage;
+    private static AccountInstructionsPage accountInstructionsPage;
+    private static AccountDetailsModalPage accountDetailsModalPage;
+    private static NotesPage notesPage;
+    private static Alerts alerts;
+    private static DocumentsPage documentsPage;
+    private static AddNewDocumentPage addNewDocumentPage;
+    public static AccountStatementPage accountStatementPage;
+
 
     /**
      * Modal Windows
@@ -241,5 +255,95 @@ public class Pages extends AllureLogger {
             maintenanceHistoryPage = new MaintenanceHistoryPage();
         }
         return maintenanceHistoryPage;
+    }
+
+    /**
+     * This function return an instance of `TellerModalPage`
+     */
+    public static TellerModalPage tellerModalPage() {
+        if (tellerModalPage == null) {
+            tellerModalPage = new TellerModalPage();
+        }
+        return tellerModalPage;
+    }
+
+    /**
+     * This function return an instance of `AccountTransactionPage`
+     */
+    public static AccountTransactionPage accountTransactionPage() {
+        if (accountTransactionPage == null) {
+            accountTransactionPage = new AccountTransactionPage();
+        }
+        return accountTransactionPage;
+    }
+
+    /**
+     * This function return an instance of `AccountInstructionsPage`
+     */
+    public static AccountInstructionsPage accountInstructionsPage() {
+        if (accountInstructionsPage == null) {
+            accountInstructionsPage = new AccountInstructionsPage();
+        }
+        return accountInstructionsPage;
+    }
+
+    /**
+     * This function return an instance of `AccountDetailsModalPage`
+     */
+    public static AccountDetailsModalPage accountDetailsModalPage() {
+        if (accountDetailsModalPage == null) {
+            accountDetailsModalPage = new AccountDetailsModalPage();
+        }
+        return accountDetailsModalPage;
+    }
+
+    /**
+     * This function return an instance of `AccountStatementPage`
+     */
+    public static AccountStatementPage accountStatementPage() {
+        if (accountStatementPage == null) {
+            accountStatementPage = new AccountStatementPage();
+        }
+        return accountStatementPage;
+    }
+
+    /**
+     * This function return an instance of `NotesPage`
+     */
+    public static NotesPage notesPage() {
+        if (notesPage == null) {
+            notesPage = new NotesPage();
+        }
+        return notesPage;
+    }
+
+    /**
+     * This function return an instance of `Alerts`
+     */
+    public static Alerts alerts() {
+        if (alerts == null) {
+            alerts = new Alerts();
+        }
+        return alerts;
+    }
+
+    /**
+     * This function return an instance of `DocumentsPage`
+     */
+    public static DocumentsPage documentsPage() {
+        if (documentsPage == null) {
+            documentsPage = new DocumentsPage();
+        }
+        return documentsPage;
+    }
+
+    /**
+     * This function return an instance of `AddNewDocumentPage`
+     */
+    public static AddNewDocumentPage addNewDocumentPage() {
+        if (addNewDocumentPage == null) {
+            addNewDocumentPage = new AddNewDocumentPage();
+        }
+        return addNewDocumentPage;
     }
 }

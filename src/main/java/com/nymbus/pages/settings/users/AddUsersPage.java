@@ -83,7 +83,7 @@ public class AddUsersPage extends PageTools {
             "//div[contains(@class, 'action_icon')]");
     private By cashDrawerSelectorOption = By.xpath("//div[@id='usrusers-cashdrawerid']" +
             "//ul/li/a[contains(text(),'%s')]");
-    private By addNewCashDrawerLink = By.xpath("//div[@id='usrusers-cashDrawer_addNew']//a");
+    private By addNewCashDrawerLink = By.xpath("//div[@id='usrusers-cashDrawer_addNe//input[data-submit=\"data-submit\"]w']//a");
 
     // Add Cash Drawer modal
     private By addNewCashDrawerModal = By.xpath("//div[span[text()='Add Cash Drawer']]");
@@ -290,7 +290,7 @@ public class AddUsersPage extends PageTools {
 
     @Step("Checking is 'Login Disabled' option activated")
     public boolean isLoginDisabledOptionActivated() {
-        return getElementAttributeValue("value",
+        return getHiddenElementAttributeValue("value",
                 By.xpath("//div[@id='usrusers-logindisabledflag']//div[contains(@class, 'field_container')]/input"))
                 .contains("1");
     }
@@ -340,7 +340,7 @@ public class AddUsersPage extends PageTools {
 
     @Step("Checking is 'Is Active' option activated")
     public boolean isIsActiveOptionActivated() {
-        return getElementAttributeValue("value",
+        return getHiddenElementAttributeValue("value",
                 By.xpath("//div[@id='usrusers-inactive']//div[contains(@class, 'field_container')]/input"))
                 .contains("0");
     }
@@ -394,7 +394,7 @@ public class AddUsersPage extends PageTools {
 
     @Step("Checking is 'Teller' option activated")
     public boolean isTellerOptionActivated() {
-        return getElementAttributeValue("value",
+        return getHiddenElementAttributeValue("value",
                 By.xpath("//div[@id='usrusers-telleryn']//div[contains(@class, 'field_container')]/input"))
                 .contains("1");
     }

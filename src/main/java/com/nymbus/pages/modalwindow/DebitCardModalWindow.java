@@ -45,6 +45,8 @@ public class DebitCardModalWindow extends PageTools {
     private By allowForeignTransactionsToggle = By.xpath("//div[input[@id='allowforeigntransactions']]");
     private By cancelButton = By.xpath("//button[text()='Cancel']");
     private By saveAndFinishButton = By.xpath("//button[span[text()='Save and Finish']]");
+    private By saveButton = By.xpath("//button[span[text()='Save']]");
+    private By closeDebitCardModalButton = By.xpath("//button[contains(@aria-label, 'Close')]");
 
     /**
      * Select 'Bin Control' Modal Window methods
@@ -96,6 +98,11 @@ public class DebitCardModalWindow extends PageTools {
     @Step("Waiting for 'Add new Debit Card' modal window invisibility")
     public void waitForAddNewDebitCardModalWindowInvisibility() {
         waitForElementInvisibility(addNewDebitCardModalWindow);
+    }
+
+    @Step("Waiting for 'Add new Debit Card' modal window visibility")
+    public void waitForAddNewDebitCardModalWindowVisibility() {
+        waitForElementVisibility(addNewDebitCardModalWindow);
     }
 
     @Step("Typing '{cardNumber}' to 'Card Number' input field")
@@ -262,6 +269,12 @@ public class DebitCardModalWindow extends PageTools {
         click(saveAndFinishButton);
     }
 
+    @Step("Click on 'Save' button")
+    public void clickOnSaveButton() {
+        waitForElementVisibility(saveButton);
+        click(saveButton);
+    }
+
     @Step("Getting value from 'Expiration Date Month' drop down")
     public String getExpirationDateMonth() {
         waitForElementVisibility(expirationDateMonth);
@@ -284,6 +297,12 @@ public class DebitCardModalWindow extends PageTools {
         return getElementAttributeValue("value", atmDailyLimitNumberNbrInputField);
     }
 
+    @Step("Getting value from 'Pin Offset' input field")
+    public int getPinOffset() {
+        waitForElementVisibility(pinOffsetInputField);
+        return Integer.parseInt(getElementAttributeValue("value", pinOffsetInputField));
+    }
+
     @Step("Getting value from 'Debit Purchase Daily Limit Number Amt' input field")
     public String getDebitPurchaseDailyLimitNumberAmt() {
         return getElementAttributeValue("value", debitPurchaseDailyLimitNumberAmtInputField).replace("$ ", "");
@@ -292,5 +311,12 @@ public class DebitCardModalWindow extends PageTools {
     @Step("Getting value from 'Debit Purchase Daily Limit Number Nbr' input field")
     public String getDebitPurchaseDailyLimitNumberNbr() {
         return getElementAttributeValue("value", debitPurchaseDailyLimitNumberNbrInputField);
+    }
+
+    @Step("Click on 'Close' modal button")
+    public void clickTheCloseModalIcon() {
+        waitForElementVisibility(closeDebitCardModalButton);
+        waitForElementClickable(closeDebitCardModalButton);
+        click(closeDebitCardModalButton);
     }
 }

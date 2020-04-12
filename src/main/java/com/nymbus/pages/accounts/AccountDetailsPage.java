@@ -11,11 +11,15 @@ public class AccountDetailsPage extends PageTools {
      * Tabs button
      */
     private By maintenanceTab = By.xpath("//a[contains(text(), 'Maintenance')]");
+    private By transactionsTab = By.xpath("//a[contains(text(), 'Transactions')]");
+    private By instructionsTab = By.xpath("//a[contains(text(), 'Instructions')]");
+    private By detailsTab = By.xpath("//a[contains(text(), 'Details')]");
 
     /**
      * Account actions
      */
     private By editButton = By.xpath("//button[@data-test-id='action-editAccount']");
+    private By balanceInquiry = By.xpath("//button[@data-test-id='action-print-receipt']");
 
     /**
      * Details tab
@@ -70,10 +74,86 @@ public class AccountDetailsPage extends PageTools {
     private By printStatementNextUpdate= By.xpath("//tr[@data-config-name='printstatementnextupdate']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By interestPaidYTD= By.xpath("//tr[@data-config-name='interestpaidytd']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By dateNextInterest= By.xpath("//tr[@data-config-name='datenextinterestpayment']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By rentalAmount = By.xpath("//tr[@data-config-name='rentalamount']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By discountReason = By.xpath("//tr[@data-config-name='discountreason']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By discountPeriods = By.xpath("//tr[@data-config-name='discountperiods']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By dateNextBilling = By.xpath("//tr[@data-config-name='datenextbiling']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By accountsLink = By.xpath("//a[@data-test-id='go-accounts']");
+    private By mailCode = By.xpath("//tr[@data-config-name='mailingcode']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By bankAccountNumberInterestOnCD = By.xpath("//tr[@data-config-name='bankaccountnumberinterestoncd']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By bankRoutingNumberInterestOnCD = By.xpath("//tr[@data-config-name='bankroutingnumberinterestoncd']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By transactionalAccount = By.xpath("//tr[@data-config-name='transactionalaccount']//span[contains(@class, 'dnTextFixedWidthText')]");
+
+    @Step("Click the 'Accounts' link")
+    public void clickAccountsLink() {
+        waitForElementVisibility(accountsLink);
+        waitForElementClickable(accountsLink);
+        click(accountsLink);
+    }
+
+    private By currentBalance = By.xpath("//*[@ng-if='commonFieldsConfig.currentbalance.isShow']//td[@class='ng-binding']");
+    private By availableBalance = By.xpath("//*[@data-config-name='memopostingbalance']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
+    private By aggregateBalanceYearToDate = By.xpath("//*[@data-config-name='aggregatebalanceytd']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
+    private By totalContributionsForLifeOfAccount = By.xpath("//*[@data-config-name='totalContributions']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
+    private By dateLastDeposit = By.xpath("//*[@data-config-name='datelastdeposit']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
+    private By dateLastActivity = By.xpath("//*[@data-config-name='datelastactivity']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
+    private By numberOfDepositsThisStatementCycle = By.xpath("//*[@data-config-name='numberofdepositsthisstatementcycle']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
+    private By lastDepositAmount = By.xpath("//*[@data-config-name='lastdepositamount']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
 
     /**
      * Details tab
      */
+    @Step("Get 'Last Deposit Amount' value")
+    public String getLastDepositAmountValue() {
+        waitForElementVisibility(lastDepositAmount);
+        return getElementText(lastDepositAmount).trim();
+    }
+
+    @Step("Get 'Number Of Deposits This Statement Cycle' value")
+    public String getNumberOfDepositsThisStatementCycleValue() {
+        waitForElementVisibility(numberOfDepositsThisStatementCycle);
+        return getElementText(numberOfDepositsThisStatementCycle).trim();
+    }
+
+    @Step("Get 'Date Last Activity' value")
+    public String getDateLastActivityValue() {
+        waitForElementVisibility(dateLastActivity);
+        return getElementText(dateLastActivity).trim();
+    }
+
+    @Step("Get 'Date Last Deposit' value")
+    public String getDateLastDepositValue() {
+        waitForElementVisibility(dateLastDeposit);
+        return getElementText(dateLastDeposit).trim();
+    }
+
+    @Step("Get 'CurrentBalance' value")
+    public String getCurrentBalance() {
+        waitForElementVisibility(currentBalance);
+        String currentBalanceValue = getElementText(currentBalance).trim();
+        return currentBalanceValue.replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'AvailableBalance' value")
+    public String getAvailableBalance() {
+        waitForElementVisibility(availableBalance);
+        String availableBalanceValue = getElementText(availableBalance).trim();
+        return availableBalanceValue.replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'AggregateBalanceYearToDate' value")
+    public String getAggregateBalanceYearToDate() {
+        waitForElementVisibility(aggregateBalanceYearToDate);
+        String aggregateBalanceYearToDateValue = getElementText(aggregateBalanceYearToDate).trim();
+        return aggregateBalanceYearToDateValue.replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'TotalContributionsForLifeOfAccount' value")
+    public String getTotalContributionsForLifeOfAccount() {
+        waitForElementVisibility(totalContributionsForLifeOfAccount);
+        String totalContributionsForLifeOfAccountValue = getElementText(totalContributionsForLifeOfAccount).trim();
+        return totalContributionsForLifeOfAccountValue.replaceAll("[^0-9.]", "");
+    }
 
     @Step("Get 'Date Next Interest' value")
     public String getDateNextInterest() {
@@ -187,6 +267,12 @@ public class AccountDetailsPage extends PageTools {
         return getElementText(numberOfDebitCardsIssued);
     }
 
+    @Step("Get 'Mail Code' value")
+    public String getMailCodeValue() {
+        waitForElementVisibility(mailCode);
+        return getElementText(mailCode);
+    }
+
     @Step("Get 'User Defined Field 1' value")
     public String getUserDefinedField_4() {
         waitForElementVisibility(userDefinedField_4);
@@ -242,10 +328,6 @@ public class AccountDetailsPage extends PageTools {
         return getElementText(automaticOverdraftStatus);
     }
 
-    /**
-     * Details tab
-     */
-
     @Step("Get account 'Reason Debit Card Charge Waived' value")
     public String getReasonDebitCardChargeWaived() {
         waitForElementVisibility(reasonDebitCardChargeWaived);
@@ -283,6 +365,12 @@ public class AccountDetailsPage extends PageTools {
         click(editButton);
     }
 
+    @Step("Click the 'Balance inquiry' button")
+    public void clickBalanceInquiry() {
+        waitForElementClickable(balanceInquiry);
+        click(balanceInquiry);
+    }
+
     @Step("Get account 'Earning Credit Rate' value")
     public String getEarningCreditRate() {
         waitForElementVisibility(earningCreditRate);
@@ -297,6 +385,25 @@ public class AccountDetailsPage extends PageTools {
         return rate.substring(0, rate.length() - 1);
     }
 
+    @Step("Get 'Bank Account Number Interest On CD' value")
+    public String getBankAccountNumberInterestOnCD() {
+        waitForElementVisibility(bankAccountNumberInterestOnCD);
+        return getElementText(bankAccountNumberInterestOnCD);
+    }
+
+    @Step("Get 'Bank Routing Number Interest On CD' value")
+    public String getBankRoutingNumberInterestOnCD() {
+        waitForElementVisibility(bankRoutingNumberInterestOnCD);
+        return getElementText(bankRoutingNumberInterestOnCD);
+    }
+
+    @Step("Get 'Transactional Account' value")
+    public String getTransactionalAccount() {
+        waitForElementVisibility(transactionalAccount);
+        return getElementText(transactionalAccount).trim().toUpperCase();
+    }
+
+
     @Step("Get account 'Account Analysis' value")
     public String getAccountAnalysisValue() {
         waitForElementVisibility(accountAnalysis);
@@ -307,6 +414,12 @@ public class AccountDetailsPage extends PageTools {
     public String getChargeOrAnalyze() {
         waitForElementVisibility(chargeOrAnalyze);
         return getElementText(chargeOrAnalyze);
+    }
+
+    @Step("Get account 'Date next Billing' value")
+    public String getBillingNextDate() {
+        waitForElementVisibility(dateNextBilling);
+        return getElementText(dateNextBilling);
     }
 
     @Step("Get account 'Call Class Code' value")
@@ -363,6 +476,24 @@ public class AccountDetailsPage extends PageTools {
         return getElementText(boxSize);
     }
 
+    @Step("Get account 'Rental Amount' value")
+    public String getRentalAmount() {
+        waitForElementVisibility(rentalAmount);
+        return getElementText(rentalAmount).replaceAll("[^0-9.,]", "");
+    }
+
+    @Step("Get account 'Discount Reason' value")
+    public String getDiscountReason() {
+        waitForElementVisibility(discountReason);
+        return getElementText(discountReason);
+    }
+
+    @Step("Get account 'Discount Periods' value")
+    public String getDiscountPeriods() {
+        waitForElementVisibility(discountPeriods);
+        return getElementText(discountPeriods);
+    }
+
     @Step("Get account 'Account Number' value")
     public String getAccountNumberValue() {
         waitForElementVisibility(accountNumber);
@@ -411,5 +542,23 @@ public class AccountDetailsPage extends PageTools {
         waitForElementVisibility(maintenanceTab);
         waitForElementClickable(maintenanceTab);
         click(maintenanceTab);
+    }
+
+    @Step("Click the 'Transactions' tab")
+    public void clickTransactionsTab() {
+        waitForElementClickable(transactionsTab);
+        click(transactionsTab);
+    }
+
+    @Step("Click the 'Instructions' tab")
+    public void clickInstructionsTab() {
+        waitForElementClickable(instructionsTab);
+        click(instructionsTab);
+    }
+
+    @Step("Click the 'Details' tab")
+    public void clickDetailsTab() {
+        waitForElementClickable(detailsTab);
+        click(detailsTab);
     }
 }

@@ -156,7 +156,12 @@ public class PageTools extends AllureLogger {
 
     protected String getElementAttributeValue(String attr, By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
-        return shouldBe(Condition.visible, by, args).attr(attr);
+        return shouldBe(Condition.enabled, by, args).attr(attr);
+    }
+
+    protected String getHiddenElementAttributeValue(String attr, By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
+        return shouldBe(Condition.hidden, by, args).attr(attr);
     }
 
     protected List<SelenideElement> getElements(By by, Object... args) {
@@ -172,8 +177,7 @@ public class PageTools extends AllureLogger {
     protected void scrollToElement(By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", elements --> " + byLocator(by, args));
         waitForElementVisibility(by);
-//        getSelenideElement(by, args).scrollTo();
-        Selenide.executeJavaScript("arguments[0].scrollIntoView();", getWebElement(by, args));
+        Selenide.executeJavaScript("arguments[0].scrollIntoView();", getWebElement(byLocator(by, args)));
     }
 
     protected WebElement getWebElement(By by, Object... args){

@@ -1,6 +1,7 @@
 package com.nymbus.pages.accounts;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -12,6 +13,7 @@ public class EditAccountPage extends PageTools {
     private By bankBranch = By.xpath("//div[@id='bankbranch']//span[contains(@class, 'ng-scope')]");
     private By product = By.xpath("//div[@id='accountclasstype']//span[contains(@class, 'ng-scope')]");
     private By dateOpened = By.xpath("//input[@id='dateopened']");
+    private By dateLastAccess = By.xpath("//input[@id='datelastaccess']");
     private By currentOfficer = By.xpath("//div[@id='officer']//span[contains(@class, 'ng-scope')]");
     private By statementCycle = By.xpath("//div[@id='statementcycle']//span[contains(@class, 'ng-scope')]");
     private By callClassCode = By.xpath("//div[@id='callclasscode']//span[contains(@class, 'ng-scope')]");
@@ -54,6 +56,16 @@ public class EditAccountPage extends PageTools {
     private By iraDateNextIRADistribution = By.xpath("//input[@id='datenextiradistribution']");
     private By applyInterestTo = By.xpath("//div[@id='codetoapplyinterestto']//span[contains(@class, 'ng-scope')]");
     private By interestType = By.xpath("//div[@id='interesttype']//span[contains(@class, 'ng-scope')]");
+    private By boxSize = By.xpath("//div[@id='boxsize']//span[contains(@class, 'ng-scope')]");
+    private By rentalAmount = By.xpath("//input[@id='rentalamount']");
+    private By discountReason = By.xpath("//div[@id='discountreason']//span[contains(@class, 'ng-scope')]");
+    private By discountPeriods = By.xpath("//input[@id='discountperiods']");
+    private By dateNextBilling = By.xpath("//input[@id='datenextbiling']");
+    private By dateLastPaid = By.xpath("//input[@id='datelastpaid']");
+    private By amountLastPaid = By.xpath("//input[@id='amountlastpaid']");
+    private By mailCode = By.xpath("//div[@id='mailingcode']//span[contains(@class, 'ng-scope')]");
+    private By bankAccountNumberInterestOnCD = By.xpath("//input[@id='bankaccountnumberinterestoncd']");
+    private By bankRoutingNumberInterestOnCD = By.xpath("//input[@id='bankroutingnumberinterestoncd']");
 
     private By federalWHReasonSelectorButton = By.xpath("//div[@id='federalwithholdingreason']");
     private By federalWHReasonList = By.xpath("//li[contains(@role, 'option')]/div/span");
@@ -98,6 +110,22 @@ public class EditAccountPage extends PageTools {
     private By bankBranchSelectorButton = By.xpath("//div[@id='bankbranch']");
     private By bankBranchSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By bankBranchList = By.xpath("//li[contains(@role, 'option')]/div/span");
+
+    private By correspondingAccountSelectorButton = By.xpath("//div[@id='correspondingaccountid']");
+    private By correspondingAccountList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By correspondingAccountSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By discountReasonSelectorButton = By.xpath("//div[@id='discountreason']");
+    private By discountReasonList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By discountReasonSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By mailCodeSelectorButton = By.xpath("//div[@id='mailingcode']");
+    private By mailCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By mailCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By applyInterestToSelectorButton = By.xpath("//div[@id='codetoapplyinterestto']");
+    private By applyInterestToList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By applyInterestToSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
     /**
      * Disabled fields in edit mode
@@ -182,6 +210,8 @@ public class EditAccountPage extends PageTools {
     private By iraPlanNumber = By.xpath("//input[@id='iraplannumber']");
     private By printInterestNoticeOverride = By.xpath("//input[@id='printinterestnoticeoverride']");
     private By totalEarnings = By.xpath("//input[@id='totalEarnings']");
+    private By interstPaidYTD = By.xpath("//input[@id='interestpaidlastyear']");
+    private By iraDistributionAccountID = By.xpath("//div[@id='iradistributionaccountid']");
 
     /**
      * Click switch elements
@@ -205,10 +235,34 @@ public class EditAccountPage extends PageTools {
      * Get values in edit mode
      */
 
+    @Step("Get 'Box Size' value in edit mode")
+    public String getBoxSize() {
+        waitForElementVisibility(boxSize);
+        return getElementText(boxSize);
+    }
+
+    @Step("Get 'Rental Amount' value in edit mode")
+    public String getRentalAmount() {
+        waitForElementVisibility(rentalAmount);
+        return getElementAttributeValue("value", rentalAmount).replaceAll("[^0-9.,]", "");
+    }
+
+    @Step("Get 'Discount Reason' value in edit mode")
+    public String getDiscountReason() {
+        waitForElementVisibility(discountReason);
+        return getElementText(discountReason);
+    }
+
+    @Step("Get 'Discount Periods' value in edit mode")
+    public String getDiscountPeriods() {
+        waitForElementVisibility(discountPeriods);
+        return getElementAttributeValue("value", discountPeriods).replaceAll("[^0-9]", "");
+    }
+
     @Step("Get 'Transactional Account' value in edit mode")
     public String getTransactionalAccountInEditMode() {
         waitForElementVisibility(transactionalAccountSwitch);
-        return getElementAttributeValue("innerText", transactionalAccountSwitch).trim();
+        return getElementAttributeValue("textContent", transactionalAccountSwitch).replaceAll("[^a-zA-Z]", "").toUpperCase();
     }
 
     @Step("Get 'Apply Interest To' value in edit mode")
@@ -310,6 +364,12 @@ public class EditAccountPage extends PageTools {
         waitForElementVisibility(federalWHPercentInput);
         String percentValue = getElementAttributeValue("value", federalWHPercentInput);
         return percentValue.substring(0, percentValue.length() - 1);
+    }
+
+    @Step("Get 'Mail Code' value in edit mode")
+    public String getMailCode() {
+        waitForElementVisibility(mailCode);
+        return getElementText(mailCode);
     }
 
     @Step("Get 'Number Of ATM Cards Issued' value in edit mode")
@@ -476,6 +536,36 @@ public class EditAccountPage extends PageTools {
     /**
     * Check if field is disabled in edit mode
      */
+
+    @Step("Check if 'IRA Distribution Account Number' field is disabled edit mode")
+    public boolean isIraDistributionAccountNumberDisabledInEditMode() {
+        waitForElementVisibility(iraDistributionAccountNumber);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", iraDistributionAccountNumber));
+    }
+
+    @Step("Check if 'Interest Paid YTD' field is disabled edit mode")
+    public boolean isInterestPaidYTDDisabledInEditMode() {
+        waitForElementVisibility(interestPaidYTD);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", interestPaidYTD));
+    }
+
+    @Step("Check if 'Date Next Billing' field is disabled edit mode")
+    public boolean isDateNextBillingDisabledInEditMode() {
+        waitForElementVisibility(dateNextBilling);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", interestPaidYTD));
+    }
+
+    @Step("Check if 'Date Last Paid' field is disabled edit mode")
+    public boolean isDateLastPaidDisabledInEditMode() {
+        waitForElementVisibility(dateLastPaid);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", dateLastPaid));
+    }
+
+    @Step("Check if 'Amount Last Paid' field is disabled edit mode")
+    public boolean isAmountLastPaidDisabledInEditMode() {
+        waitForElementVisibility(amountLastPaid);
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", amountLastPaid));
+    }
 
     @Step("Check if 'Balance At End Of Year' field is disabled edit mode")
     public boolean isBalanceAtEndOfYearDisabledInEditMode() {
@@ -1047,6 +1137,20 @@ public class EditAccountPage extends PageTools {
         type(value, userDefinedFieldInput_1);
     }
 
+    @Step("Set 'Account Routing Interest On CD' value")
+    public void setBankRoutingNumberInterestOnCDValue(String bankRoutingNumberInterestOnCDValue) {
+        waitForElementVisibility(bankRoutingNumberInterestOnCD);
+        waitForElementClickable(bankRoutingNumberInterestOnCD);
+        type(bankRoutingNumberInterestOnCDValue, bankRoutingNumberInterestOnCD);
+    }
+
+    @Step("Set 'Account Number Interest On CD' value")
+    public void setBankAccountNumberInterestOnCDValue(String bankAccountNumberInterestOnCDValue) {
+        waitForElementVisibility(bankAccountNumberInterestOnCD);
+        waitForElementClickable(bankAccountNumberInterestOnCD);
+        type(bankAccountNumberInterestOnCDValue, bankAccountNumberInterestOnCD);
+    }
+
     @Step("Set 'Earning Credit Rate' value")
     public void setEarningCreditRate(String earningCreditRateValue) {
         waitForElementVisibility(earningCreditRateInput);
@@ -1139,6 +1243,80 @@ public class EditAccountPage extends PageTools {
         scrollToElement(automaticOverdraftStatusSelectorButton);
         waitForElementClickable(automaticOverdraftStatusSelectorButton);
         click(automaticOverdraftStatusSelectorButton);
+    }
+
+    @Step("Click the 'Corresponding Account' option")
+    public void clickCorrespondingAccountSelectorOption(String correspondingAccountOption) {
+        waitForElementVisibility(correspondingAccountSelectorOption, correspondingAccountOption);
+        waitForElementClickable(correspondingAccountSelectorOption, correspondingAccountOption);
+        click(correspondingAccountSelectorOption, correspondingAccountOption);
+    }
+
+    @Step("Returning list of 'Corresponding Account' options")
+    public List<String> getCorrespondingAccountList() {
+        waitForElementVisibility(correspondingAccountList);
+        waitForElementClickable(correspondingAccountList);
+        return getElementsText(correspondingAccountList);
+    }
+
+    @Step("Click the 'Corresponding Account' selector button")
+    public void clickCorrespondingAccountSelectorButton() {
+        waitForElementVisibility(correspondingAccountSelectorButton);
+        scrollToElement(correspondingAccountSelectorButton);
+        waitForElementClickable(correspondingAccountSelectorButton);
+        click(correspondingAccountSelectorButton);
+    }
+
+    public void clickDiscountReasonSelectorOption(String discountReasonOption) {
+        waitForElementVisibility(discountReasonSelectorOption,  discountReasonOption);
+        waitForElementClickable(discountReasonSelectorOption,  discountReasonOption);
+        click(discountReasonSelectorOption,  discountReasonOption);
+    }
+
+    @Step("Returning list of 'Discount reason' options")
+    public List<String> getDiscountReasonList() {
+        waitForElementVisibility(discountReasonList);
+        waitForElementClickable(discountReasonList);
+        return getElementsText(discountReasonList);
+    }
+
+    @Step("Click the 'Discount Reason' selector button")
+    public void clickDiscountReasonSelectorButton() {
+        waitForElementVisibility(discountReasonSelectorButton);
+        scrollToElement(discountReasonSelectorButton);
+        waitForElementClickable(discountReasonSelectorButton);
+        click(discountReasonSelectorButton);
+    }
+
+    @Step("Click the 'Mail Code' selector button")
+    public void clickMailCodeSelectorOption(String mailCodeOption) {
+        waitForElementVisibility(mailCodeSelectorOption,  mailCodeOption);
+        waitForElementClickable(mailCodeSelectorOption,  mailCodeOption);
+        click(mailCodeSelectorOption,  mailCodeOption);
+    }
+
+    @Step("Returning list of 'Mail Code' options")
+    public List<String> getMailCodeList() {
+        waitForElementVisibility(mailCodeList);
+        waitForElementClickable(mailCodeList);
+        return getElementsText(mailCodeList);
+    }
+
+    @Step("Click the 'Mail Code' selector button")
+    public void clickMailCodeSelectorButton() {
+        waitForElementVisibility(mailCodeSelectorButton);
+        scrollToElement(mailCodeSelectorButton);
+        waitForElementClickable(mailCodeSelectorButton);
+        click(mailCodeSelectorButton);
+    }
+
+    @Step("Set 'Date Opened' value")
+    public void setDateLastAccess(String dateLastAccessValue) {
+        waitForElementVisibility(dateLastAccess);
+        waitForElementClickable(dateLastAccess);
+        typeWithoutWipe("", dateLastAccess);
+        SelenideTools.sleep(1);
+        typeWithoutWipe(dateLastAccessValue, dateLastAccess);
     }
 
     @Step("Click on 'Reason Debit Card Charge Waived' option")
@@ -1315,5 +1493,39 @@ public class EditAccountPage extends PageTools {
         scrollToElement(currentOfficerSelectorButton);
         waitForElementClickable(currentOfficerSelectorButton);
         click(currentOfficerSelectorButton);
+    }
+
+    @Step("Click the 'Apply Interest To' option")
+    public void clickApplyInterestToSelectorOption(String applyInterestToOption) {
+        waitForElementVisibility(applyInterestToSelectorOption, applyInterestToOption);
+        waitForElementClickable(applyInterestToSelectorOption, applyInterestToOption);
+        click(applyInterestToSelectorOption, applyInterestToOption);
+    }
+
+    @Step("Returning list of 'Apply Interest To' options")
+    public List<String> getApplyInterestToList() {
+        waitForElementVisibility(applyInterestToList);
+        waitForElementClickable(applyInterestToList);
+        return getElementsText(applyInterestToList);
+    }
+
+    @Step("Click the 'Apply Interest To' selector button")
+    public void clickApplyInterestToSelectorButton() {
+        waitForElementVisibility(applyInterestToSelectorButton);
+        scrollToElement(applyInterestToSelectorButton);
+        waitForElementClickable(applyInterestToSelectorButton);
+        click(applyInterestToSelectorButton);
+    }
+
+    @Step("Get 'Bank Account Number Interest On CD' value in edit mode")
+    public String getBankAccountNumberInterestOnCD() {
+        waitForElementVisibility(bankAccountNumberInterestOnCD);
+        return getElementAttributeValue("value", bankAccountNumberInterestOnCD);
+    }
+
+    @Step("Get 'Bank Routing Number Interest On CD' value in edit mode")
+    public String getBankRoutingNumberInterestOnCD() {
+        waitForElementVisibility(bankRoutingNumberInterestOnCD);
+        return getElementAttributeValue("value", bankRoutingNumberInterestOnCD);
     }
 }

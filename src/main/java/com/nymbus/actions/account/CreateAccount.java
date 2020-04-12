@@ -97,7 +97,9 @@ public class CreateAccount {
         setBoxSize(account);
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
-        setBankBranch(account);
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
+        selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccount(account);
+        Pages.addAccountPage().setDiscountPeriods(account.getDiscountPeriods());
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
@@ -120,6 +122,25 @@ public class CreateAccount {
         setCallClassCode(account);
         setIRADistributionFrequency(account);
         setIRADistributionCode(account);
+    }
+
+    public void selectValuesInDropdownFieldsRequiredForCDIRAAccount(Account account) {
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        setCorrespondingAccount(account);
+        setInterestFrequency(account);
+        setApplyInterestTo(account);
+        setInterestType(account);
+        setCallClassCode(account);
+        setIRADistributionFrequency(account);
+        setIRADistributionCode(account);
+    }
+
+    public void selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccount(Account account) {
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        setCorrespondingAccount(account);
+        setDiscountReason(account);
     }
 
     public void selectValuesInDropdownFieldsRequiredForCheckingAccount(Account account) {
@@ -147,6 +168,26 @@ public class CreateAccount {
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         Pages.addAccountPage().setEarningCreditRate(account.getEarningCreditRate());
+    }
+
+    public void fillInInputFieldsRequiredForSafeDepositBoxAccount(Account account) {
+        Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
+        Pages.addAccountPage().setUserDefinedField_1(account.getUserDefinedField_1());
+        Pages.addAccountPage().setUserDefinedField_2(account.getUserDefinedField_2());
+        Pages.addAccountPage().setUserDefinedField_3(account.getUserDefinedField_3());
+        Pages.addAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
+        Pages.addAccountPage().setDiscountPeriods(account.getDiscountPeriods());
+    }
+
+    public void setDiscountReason(Account account) {
+        Pages.addAccountPage().clickDiscountReasonSelectorButton();
+        List<String> listOfDiscountReason = Pages.addAccountPage().getDiscountReasonList();
+
+        Assert.assertTrue(listOfDiscountReason.size() > 0, "There are no options available");
+        if (account.getDiscountReason() == null) {
+            account.setDiscountReason(listOfDiscountReason.get(new Random().nextInt(listOfDiscountReason.size())).trim());
+        }
+        Pages.addAccountPage().clickDiscountReasonSelectorOption(account.getDiscountReason());
     }
 
     public void setInterestType(Account account) {
@@ -322,12 +363,18 @@ public class CreateAccount {
         if (account.getBoxSize() == null) {
             account.setBoxSize(listOfBoxSize.get(new Random().nextInt(listOfBoxSize.size())).trim());
         }
-        Pages.addAccountPage().setBoxSizeOption(account.getBoxSize());
         Pages.addAccountPage().clickBoxSizeSelectorOption(account.getBoxSize());
     }
 
     public void setMailCode(Account account) {
-        // set mail code here
+        Pages.addAccountPage().clickMailCodeSelectorButton();
+        List<String> listOfMailCode = Pages.addAccountPage().getMailCodeList();
+
+        Assert.assertTrue(listOfMailCode.size() > 0, "There are no options available");
+        if (account.getMailCode() == null) {
+            account.setMailCode(listOfMailCode.get(new Random().nextInt(listOfMailCode.size())).trim());
+        }
+        Pages.addAccountPage().clickMailCodeSelectorOption(account.getMailCode());
     }
 
 }

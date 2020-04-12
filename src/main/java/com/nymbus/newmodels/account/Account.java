@@ -65,13 +65,10 @@ public class Account {
     private String accountHolder;
     private String maturityDate;
     private String dateNextInterest;
-
-    public Account setDefaultAccountData() {
-        Account account = new Account();
-        // default account data
-
-        return account;
-    }
+    private String transactionalAccount;
+    private String dateLastAccess;
+    private String bankRoutingNumberInterestOnCD;
+    private String bankAccountNumberInterestOnCD;
 
     public Account setCDAccountData() {
         Account account = new Account();
@@ -85,10 +82,44 @@ public class Account {
         account.setAccountHolder("Owner");
         account.setAccountTitle(Generator.genString(5));
         account.setDateOpened(DateTime.getYesterdayDate("MM/dd/yyyy"));
-        account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setFederalWHPercent(String.valueOf(Generator.genInt(0, 100)));
+        account.setUserDefinedField_1(Generator.genString(5));
+        account.setUserDefinedField_2(Generator.genString(5));
+        account.setUserDefinedField_3(Generator.genString(5));
+        account.setUserDefinedField_4(Generator.genString(5));
+
+        return account;
+    }
+
+    public Account setCDIRAAccountData() {
+        Account account = new Account();
+
+        account.setAddNewOption("Account");
+        account.setProductType("CD");
+        account.setProduct("6 Month Roth IRA Certificate");
+        account.setAccountTitle(Generator.genString(5));
+        account.setDateOpened(DateTime.getYesterdayDate("MM/dd/yyyy"));
+        account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
+        account.setIraDistributionCode("No dist");
+        account.setIraDistributionFrequency("No Dist");
+        account.setTransactionalAccount("NO");
+        account.setAutoRenewable("YES");
+        account.setAccountHolder("Owner");
+        account.setTermType("6");
+        account.setInterestRate(String.valueOf(Generator.genFloat(0.001, 99.999, 1)));
+        account.setInterestFrequency("Quarterly");
+        account.setBankRoutingNumberInterestOnCD("102101645");
+        account.setBankAccountNumberInterestOnCD("102101645");
+        account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
+        account.setIraDistributionAmount(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
+        account.setDateNextIRADistribution(DateTime.getTomorrowDate("MM/dd/yyyy"));
+        account.setNumberOfDebitCardsIssued(String.valueOf(Generator.genInt(0, 100)));
+        account.setNumberOfATMCardsIssued(String.valueOf(Generator.genInt(0, 100)));
+        account.setFederalWHPercent(String.valueOf(Generator.genInt(0, 100)));
+        account.setPrintStatementNextUpdate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setInterestPaidYTD(String.valueOf(Generator.genLong(100000000000L, 922337203685L)));
         account.setUserDefinedField_1(Generator.genString(5));
         account.setUserDefinedField_2(Generator.genString(5));
         account.setUserDefinedField_3(Generator.genString(5));
@@ -185,8 +216,12 @@ public class Account {
 
         account.setAddNewOption("Account");
         account.setProductType("Safe Deposit Box");
+        account.setAccountHolder("Owner");
         account.setAccountNumber(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setAccountTitle(Generator.genString(5));
+        account.setDateOpened(DateTime.getYesterdayDate("MM/dd/yyyy"));
+        account.setDiscountPeriods(String.valueOf(Generator.genInt(1000000000, 2147483646)));
+        account.setDateLastAccess(DateTime.getLocalDate());
         account.setUserDefinedField_1(Generator.genString(5));
         account.setUserDefinedField_2(Generator.genString(5));
         account.setUserDefinedField_3(Generator.genString(5));
@@ -657,5 +692,37 @@ public class Account {
 
     public void setDateNextInterest(String dateNextInterest) {
         this.dateNextInterest = dateNextInterest;
+    }
+
+    public String getTransactionalAccount() {
+        return transactionalAccount;
+    }
+
+    public void setTransactionalAccount(String transactionalAccount) {
+        this.transactionalAccount = transactionalAccount;
+    }
+
+    public String getDateLastAccess() {
+        return dateLastAccess;
+    }
+
+    public void setDateLastAccess(String dateLastAccess) {
+        this.dateLastAccess = dateLastAccess;
+    }
+
+    public String getBankAccountNumberInterestOnCD() {
+        return bankAccountNumberInterestOnCD;
+    }
+
+    public void setBankAccountNumberInterestOnCD(String bankAccountNumberInterestOnCD) {
+        this.bankAccountNumberInterestOnCD = bankAccountNumberInterestOnCD;
+    }
+
+    public String getBankRoutingNumberInterestOnCD() {
+        return bankRoutingNumberInterestOnCD;
+    }
+
+    public void setBankRoutingNumberInterestOnCD(String bankRoutingNumberInterestOnCD) {
+        this.bankRoutingNumberInterestOnCD = bankRoutingNumberInterestOnCD;
     }
 }

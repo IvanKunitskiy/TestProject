@@ -130,6 +130,50 @@ public class EditAccount {
         Pages.editAccountPage().clickCallClassCodeSelectorOption(account.getCallClassCode());
     }
 
+    public void setCorrespondingAccount(Account account) {
+        Pages.editAccountPage().clickCorrespondingAccountSelectorButton();
+        List<String> listOfCorrespondingAccount = Pages.editAccountPage().getCorrespondingAccountList();
+
+        Assert.assertTrue(listOfCorrespondingAccount.size() > 0, "There are no product types available");
+        if (account.getCorrespondingAccount() == null) {
+            account.setCorrespondingAccount(listOfCorrespondingAccount.get(new Random().nextInt(listOfCorrespondingAccount.size())).trim());
+        }
+        Pages.editAccountPage().clickCorrespondingAccountSelectorOption(account.getCorrespondingAccount().replaceAll("[^0-9]", ""));
+    }
+
+    public void setDiscountReason(Account account) {
+        Pages.editAccountPage().clickDiscountReasonSelectorButton();
+        List<String> listOfDiscountReason = Pages.editAccountPage().getDiscountReasonList();
+
+        Assert.assertTrue(listOfDiscountReason.size() > 0, "There are no options available");
+        if (account.getDiscountReason() == null) {
+            account.setDiscountReason(listOfDiscountReason.get(new Random().nextInt(listOfDiscountReason.size())).trim());
+        }
+        Pages.editAccountPage().clickDiscountReasonSelectorOption(account.getDiscountReason());
+    }
+
+    public void setMailCode(Account account) {
+        Pages.editAccountPage().clickMailCodeSelectorButton();
+        List<String> listOfMailCode = Pages.editAccountPage().getMailCodeList();
+
+        Assert.assertTrue(listOfMailCode.size() > 0, "There are no options available");
+        if (account.getMailCode() == null) {
+            account.setMailCode(listOfMailCode.get(new Random().nextInt(listOfMailCode.size())).trim());
+        }
+        Pages.editAccountPage().clickMailCodeSelectorOption(account.getMailCode());
+    }
+
+    public void setApplyInterestTo(Account account) {
+        Pages.editAccountPage().clickApplyInterestToSelectorButton();
+        List<String> listOfApplyInterestTo = Pages.editAccountPage().getApplyInterestToList();
+
+        Assert.assertTrue(listOfApplyInterestTo.size() > 0, "There are no product types available");
+        if (account.getApplyInterestTo() == null) {
+            account.setApplyInterestTo(listOfApplyInterestTo.get(new Random().nextInt(listOfApplyInterestTo.size())).trim());
+        }
+        Pages.editAccountPage().clickApplyInterestToSelectorOption(account.getApplyInterestTo());
+    }
+
     public void selectValuesInDropdownFieldsThatWereNotAvailableDuringCheckingAccountCreation(Account account) {
         setFederalWHReason(account);
         setReasonATMChargeWaived(account);
@@ -164,6 +208,14 @@ public class EditAccount {
         setReasonDebitCardChargeWaived(account);
     }
 
+    public void selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccount(Account account) {
+        AccountActions.editAccount().setMailCode(account);
+        AccountActions.editAccount().setCurrentOfficer(account);
+        AccountActions.editAccount().setBankBranch(account);
+        AccountActions.editAccount().setCorrespondingAccount(account);
+        AccountActions.editAccount().setDiscountReason(account);
+    }
+
     public void fillInInputFieldsThatWereNotAvailableDuringSavingsAccountCreation(Account account) {
         Pages.editAccountPage().setPrintStatementNextUpdate(account.getPrintStatementNextUpdate());
         Pages.editAccountPage().setInterestPaidYTD(account.getInterestPaidYTD());
@@ -184,6 +236,24 @@ public class EditAccount {
         Pages.editAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
     }
 
+    public void fillInInputFieldsThatWereNotAvailableDuringCDIRAAccountCreation(Account account) {
+        Pages.editAccountPage().setBankAccountNumberInterestOnCDValue(account.getBankAccountNumberInterestOnCD());
+        Pages.editAccountPage().setBankRoutingNumberInterestOnCDValue(account.getBankRoutingNumberInterestOnCD());
+        Pages.editAccountPage().setUserDefinedField_1(account.getUserDefinedField_1());
+        Pages.editAccountPage().setUserDefinedField_2(account.getUserDefinedField_2());
+        Pages.editAccountPage().setUserDefinedField_3(account.getUserDefinedField_3());
+        Pages.editAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
+    }
+
+    public void selectValuesInDropdownFieldsRequiredForCDIRAAccount(Account account) {
+        AccountActions.editAccount().setCurrentOfficer(account);
+        Pages.editAccountPage().setInterestRate(account.getInterestRate());
+        AccountActions.editAccount().setBankBranch(account);
+        AccountActions.editAccount().setCallClassCode(account);
+        AccountActions.editAccount().setApplyInterestTo(account);
+        AccountActions.editAccount().setCorrespondingAccount(account);
+    }
+
     public void editSavingsAccount(Account account) {
         Pages.accountDetailsPage().clickEditButton();
         AccountActions.editAccount().selectValuesInDropdownFieldsThatWereNotAvailableDuringSavingsAccountCreation(account);
@@ -198,4 +268,57 @@ public class EditAccount {
         Pages.accountDetailsPage().waitForEditButton();
     }
 
+    public void editCDAccount(Account account) {
+        Pages.accountDetailsPage().clickEditButton();
+        AccountActions.editAccount().setFederalWHReason(account);
+        AccountActions.editAccount().fillInInputFieldsThatWereNotAvailableDuringCDAccountCreation(account);
+        AccountActions.createAccount().setCurrentOfficer(account);
+        Pages.editAccountPage().setInterestRate(account.getInterestRate());
+        AccountActions.createAccount().setBankBranch(account);
+        AccountActions.createAccount().setCallClassCode(account);
+        Pages.addAccountPage().clickSaveAccountButton();
+        Pages.accountDetailsPage().waitForEditButton();
+    }
+
+    public void editSafeDepositBoxAccount(Account account) {
+        Pages.accountDetailsPage().clickEditButton();
+        selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccount(account);
+        Pages.editAccountPage().setUserDefinedField_1(account.getUserDefinedField_1());
+        Pages.editAccountPage().setUserDefinedField_2(account.getUserDefinedField_2());
+        Pages.editAccountPage().setUserDefinedField_3(account.getUserDefinedField_3());
+        Pages.editAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
+        Pages.editAccountPage().setDateLastAccess(account.getDateLastAccess());
+        Pages.addAccountPage().clickSaveAccountButton();
+        Pages.accountDetailsPage().waitForEditButton();
+    }
+
+    public void navigateToAccountDetails(String accountNumber, boolean isMoreButtonClick) {
+        Pages.aSideMenuPage().clickClientMenuItem();
+
+        Pages.clientsSearchPage().typeToClientsSearchInputField(accountNumber);
+
+        Pages.clientsSearchPage().clickOnViewAccountButtonByValue(accountNumber);
+
+        if (isMoreButtonClick) {
+            Pages.accountDetailsPage().clickMoreButton();
+        }
+    }
+
+    public void goToInstructionsTab() {
+        Pages.accountDetailsPage().clickInstructionsTab();
+    }
+
+    public void goToDetailsTab() {
+        Pages.accountDetailsPage().clickDetailsTab();
+    }
+
+    public void goToMaintenanceTab() {
+        Pages.accountDetailsPage().clickMaintenanceTab();
+    }
+
+    public void goToMaintenanceHistory() {
+        Pages.accountDetailsPage().clickMaintenanceTab();
+
+        Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
+    }
 }
