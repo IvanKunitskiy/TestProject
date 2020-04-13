@@ -2,10 +2,20 @@ package com.nymbus.actions.account;
 
 import com.nymbus.newmodels.accountinstructions.verifyingModels.InstructionBalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
+import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 
 public class RetrievingAccountData {
+    public BalanceDataForCHKAcc getBalanceDataForCHKAcc() {
+        BalanceDataForCHKAcc balanceDataForCHKAcc = new BalanceDataForCHKAcc();
+        balanceDataForCHKAcc.setCurrentBalance(getCurrentBalance());
+        balanceDataForCHKAcc.setAvailableBalance(getAvailableBalance());
+
+        return balanceDataForCHKAcc;
+    }
+
+
     public BalanceData getBalanceData() {
         BalanceData balanceData = new BalanceData();
 
@@ -57,10 +67,17 @@ public class RetrievingAccountData {
         transactionData.setPostingDate(Pages.accountTransactionPage().getPostingDateValue(tempIndex));
         transactionData.setEffectiveDate(Pages.accountTransactionPage().getEffectiveDateValue(tempIndex));
         transactionData.setAmount(getAmount(tempIndex));
-        transactionData.setBalance(getBalance(tempIndex));
+        transactionData.setBalance(getBalanceValue(tempIndex));
 
         return transactionData;
     }
+
+    private double getBalanceValue(int index) {
+        double balanceIntegerPart = getBalance(index);
+        double balanceFractionalPart = getBalanceFractional(index);
+        return  balanceIntegerPart + balanceFractionalPart;
+    }
+
 
     private double getBalance(int tempIndex) {
         String value = Pages.accountTransactionPage().getBalanceValue(tempIndex);
@@ -70,5 +87,10 @@ public class RetrievingAccountData {
     private double getAmount(int tempIndex) {
         String value = Pages.accountTransactionPage().getAmountValue(tempIndex);
         return Double.parseDouble(value);
+    }
+
+    private double getBalanceFractional (int tempIndex) {
+        String value = Pages.accountTransactionPage().getBalanceFractionalValue(tempIndex);
+        return Double.parseDouble(value) / 100;
     }
 }

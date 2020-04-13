@@ -18,6 +18,7 @@ public class AccountTransactionPage extends PageTools {
     private By effectiveDate = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[3]//span");
     private By amount = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[2]");
     private By balance = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[2]");
+    private By balanceFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[3]");
 
     @Step("Get 'Posting date' value")
     public String getPostingDateValue(int index) {
@@ -41,6 +42,12 @@ public class AccountTransactionPage extends PageTools {
     public String getBalanceValue(int index) {
         waitForElementVisibility(balance, index);
         return getElementText(balance, index).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Balance' value")
+    public String getBalanceFractionalValue(int index) {
+        waitForElementVisibility(balanceFractional, index);
+        return getElementText(balanceFractional, index).trim().replaceAll("[^0-9.]", "");
     }
 
     @Step(" Click 'Call Statement' button")
