@@ -8,12 +8,14 @@ import com.nymbus.core.utils.Constants;
 import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Box Accounts Management")
+@Owner("Dmytro")
 public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
 
     private Client client;

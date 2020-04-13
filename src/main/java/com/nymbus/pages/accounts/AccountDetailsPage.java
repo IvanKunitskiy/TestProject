@@ -83,14 +83,6 @@ public class AccountDetailsPage extends PageTools {
     private By bankAccountNumberInterestOnCD = By.xpath("//tr[@data-config-name='bankaccountnumberinterestoncd']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By bankRoutingNumberInterestOnCD = By.xpath("//tr[@data-config-name='bankroutingnumberinterestoncd']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By transactionalAccount = By.xpath("//tr[@data-config-name='transactionalaccount']//span[contains(@class, 'dnTextFixedWidthText')]");
-
-    @Step("Click the 'Accounts' link")
-    public void clickAccountsLink() {
-        waitForElementVisibility(accountsLink);
-        waitForElementClickable(accountsLink);
-        click(accountsLink);
-    }
-
     private By currentBalance = By.xpath("//*[@ng-if='commonFieldsConfig.currentbalance.isShow']//td[@class='ng-binding']");
     private By availableBalance = By.xpath("//*[@data-config-name='memopostingbalance']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By aggregateBalanceYearToDate = By.xpath("//*[@data-config-name='aggregatebalanceytd']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
@@ -99,10 +91,21 @@ public class AccountDetailsPage extends PageTools {
     private By dateLastActivity = By.xpath("//*[@data-config-name='datelastactivity']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By numberOfDepositsThisStatementCycle = By.xpath("//*[@data-config-name='numberofdepositsthisstatementcycle']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By lastDepositAmount = By.xpath("//*[@data-config-name='lastdepositamount']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
+    private By closeAccountButton = By.xpath("//div[@class='topRight']//dn-close-button/button");
+    private By reopenButton = By.xpath("//button[@data-test-id='action-activate-non-accrual']");
+    private By accountClosedNotification = By.xpath("//span[contains(text(), 'The account is closed')]");
+
+    @Step("Click the 'Accounts' link")
+    public void clickAccountsLink() {
+        waitForElementVisibility(accountsLink);
+        waitForElementClickable(accountsLink);
+        click(accountsLink);
+    }
 
     /**
      * Details tab
      */
+
     @Step("Get 'Last Deposit Amount' value")
     public String getLastDepositAmountValue() {
         waitForElementVisibility(lastDepositAmount);
@@ -153,6 +156,30 @@ public class AccountDetailsPage extends PageTools {
         waitForElementVisibility(totalContributionsForLifeOfAccount);
         String totalContributionsForLifeOfAccountValue = getElementText(totalContributionsForLifeOfAccount).trim();
         return totalContributionsForLifeOfAccountValue.replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Check if 'Account Closed' notification visible")
+    public boolean isAccountClosedNotificationVisible() {
+        waitForElementVisibility(accountClosedNotification);
+        return isElementVisible(accountClosedNotification);
+    }
+
+    @Step("Check if 'Re-Open' button visible")
+    public boolean isReOpenButtonVisible() {
+        waitForElementClickable(reopenButton);
+        return isElementVisible(reopenButton);
+    }
+
+    @Step("Check if 'Close Account' button visible")
+    public boolean isCloseAccountButtonVisible() {
+        waitForElementClickable(closeAccountButton);
+        return isElementVisible(closeAccountButton);
+    }
+
+    @Step("Click 'Close Account' button")
+    public void clickCloseAccountButton() {
+        waitForElementClickable(closeAccountButton);
+        click(closeAccountButton);
     }
 
     @Step("Get 'Date Next Interest' value")

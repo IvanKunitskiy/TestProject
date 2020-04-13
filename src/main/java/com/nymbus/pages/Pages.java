@@ -2,11 +2,13 @@ package com.nymbus.pages;
 
 import com.nymbus.core.allure.AllureLogger;
 import com.nymbus.pages.accounts.*;
+import com.nymbus.pages.accounts.transactions.TransactionsPage;
 import com.nymbus.pages.clients.AddClientPage;
 import com.nymbus.pages.clients.ClientDetailsPage;
 import com.nymbus.pages.clients.ClientsSearchPage;
 import com.nymbus.pages.clients.ClientsSearchResultsPage;
 import com.nymbus.pages.clients.documents.AddNewDocumentPage;
+import com.nymbus.pages.clients.documents.DocumentOverviewPage;
 import com.nymbus.pages.clients.documents.DocumentsPage;
 import com.nymbus.pages.clients.maintenance.MaintenanceHistoryPage;
 import com.nymbus.pages.clients.maintenance.MaintenancePage;
@@ -49,8 +51,9 @@ public class Pages extends AllureLogger {
     private static Alerts alerts;
     private static DocumentsPage documentsPage;
     private static AddNewDocumentPage addNewDocumentPage;
+    private static DocumentOverviewPage documentOverviewPage;
     public static AccountStatementPage accountStatementPage;
-
+    private static TransactionsPage transactionsPage;
 
     /**
      * Modal Windows
@@ -345,5 +348,25 @@ public class Pages extends AllureLogger {
             addNewDocumentPage = new AddNewDocumentPage();
         }
         return addNewDocumentPage;
+    }
+
+    /**
+     * This function return an instance of `DocumentOverviewPage`
+     */
+    public static DocumentOverviewPage documentOverviewPage() {
+        if (documentOverviewPage == null) {
+            documentOverviewPage = new DocumentOverviewPage();
+        }
+        return documentOverviewPage;
+    }
+
+    /**
+     * This function return an instance of `Transactions Page`
+     */
+    public static TransactionsPage transactionsPage() {
+        if (transactionsPage == null) {
+            transactionsPage = new TransactionsPage();
+        }
+        return transactionsPage;
     }
 }

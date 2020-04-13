@@ -142,6 +142,7 @@ public class CreateAccount {
         setCorrespondingAccount(account);
         setDiscountReason(account);
     }
+
     public void selectValuesInDropdownFieldsRequiredForCheckingAccount(Account account) {
         setProduct(account);
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());

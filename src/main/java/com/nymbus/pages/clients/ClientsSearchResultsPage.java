@@ -22,6 +22,7 @@ public class ClientsSearchResultsPage extends PageTools {
     private By clientAKAFromResultByIndex
             = By.xpath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][5])[%s]");
     private By exactMatchInSearchResults = By.xpath("//div[contains(@class, 'selected')]");
+    private By exactAccountMatchInSearchResults = By.xpath("//div[div[div[span[contains(text(), '%s')]]]]");
 
     @Step("Wait for search results")
     public void waitForSearchResults() {
@@ -94,10 +95,16 @@ public class ClientsSearchResultsPage extends PageTools {
                 .collect(Collectors.toList());
     }
 
-    @Step("Click the client fromsearch results by order number")
+    @Step("Click the client from search results by order number")
     public void clickTheExactlyMatchedClientInSearchResults() {
         waitForElementVisibility(exactMatchInSearchResults);
         click(exactMatchInSearchResults);
+    }
+
+    @Step("Click the account from search results by account number")
+    public void clickTheExactlyMatchedAccountInSearchResults(String accountNumber) {
+        waitForElementVisibility(exactAccountMatchInSearchResults, accountNumber);
+        click(exactAccountMatchInSearchResults, accountNumber);
     }
 
 }

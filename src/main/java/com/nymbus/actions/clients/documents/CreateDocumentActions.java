@@ -3,6 +3,7 @@ package com.nymbus.actions.clients.documents;
 import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.client.basicinformation.address.Country;
 import com.nymbus.newmodels.client.basicinformation.address.State;
+import com.nymbus.newmodels.client.other.document.AccountLevelDocument;
 import com.nymbus.newmodels.client.other.document.CompanyID;
 import com.nymbus.newmodels.client.other.document.IDType;
 import com.nymbus.pages.Pages;
@@ -14,6 +15,7 @@ import java.util.Random;
 public class CreateDocumentActions {
 
     public void createNewCompanyIDDocument(CompanyID document) {
+        Pages.accountNavigationPage().clickDocumentsTab();
         Pages.documentsPage().clickAddNewDocumentButton();
         Pages.addNewDocumentPage().uploadNewDocument(Functions.getFilePathByName("clientDocument.png"));
         DocumentActions.createDocumentActions().setIDType(document);
@@ -23,7 +25,16 @@ public class CreateDocumentActions {
         Pages.addNewDocumentPage().setIssueDateValue(document.getIssueDate());
         Pages.addNewDocumentPage().setExpirationDateValue(document.getExpirationDate());
         Pages.addNewDocumentPage().clickSaveChangesButton();
+    }
 
+    public void createAccountLevelDocument(AccountLevelDocument document) {
+        Pages.accountNavigationPage().clickDocumentsTab();
+        Pages.documentsPage().clickAddNewDocumentButton();
+        Pages.addNewDocumentPage().uploadNewAccountDocument(Functions.getFilePathByName(document.getFile().getFileName()));
+        DocumentActions.createDocumentActions().setCategory(document);
+        DocumentActions.createDocumentActions().setDocType(document);
+        Pages.addNewDocumentPage().typeValueToNotesField(document.getNote());
+        Pages.addNewDocumentPage().clickSaveChangesButton();
     }
 
     public void setIDType(CompanyID document) {
@@ -57,5 +68,27 @@ public class CreateDocumentActions {
             document.setCountry(Country.valueOf(listOfCountry.get(new Random().nextInt(listOfCountry.size())).trim()));
         }
         Pages.addNewDocumentPage().clickDocumentCountryOption(document.getCountry().getCountry());
+    }
+
+    public void setCategory(AccountLevelDocument document) {
+        Pages.addNewDocumentPage().clickCategorySelectorButton();
+        List<String> listOfCategory = Pages.addNewDocumentPage().getCategoryList();
+
+        Assert.assertTrue(listOfCategory.size() > 0, "There are no options available");
+        if (document.getCategory() == null) {
+            document.setCategory(listOfCategory.get(new Random().nextInt(listOfCategory.size())).trim());
+        }
+        Pages.addNewDocumentPage().clickCategoryOption(document.getCategory());
+    }
+
+    public void setDocType(AccountLevelDocument document) {
+        Pages.addNewDocumentPage().clickDocTypeSelectorButton();
+        List<String> listOfDocType = Pages.addNewDocumentPage().getDocTypeList();
+
+        Assert.assertTrue(listOfDocType.size() > 0, "There are no options available");
+        if (document.getDocType() == null) {
+            document.setDocType(listOfDocType.get(new Random().nextInt(listOfDocType.size())).trim());
+        }
+        Pages.addNewDocumentPage().clickDocTypeOption(document.getDocType());
     }
 }

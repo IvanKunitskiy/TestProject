@@ -2,6 +2,7 @@ package com.nymbus.actions.clients;
 
 import com.nymbus.models.TempClient;
 import com.nymbus.models.client.Client;
+import com.nymbus.newmodels.account.Account;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 
@@ -29,5 +30,22 @@ public class ClientPageActions {
         Pages.clientsSearchPage().clickOnSearchButton();
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
         Pages.clientDetailsPage().waitForPageLoaded();
+    }
+
+    public void searchAndOpenClientByAccountNumber(Account account) {
+        Pages.clientsSearchPage().typeToClientsSearchInputField(account.getAccountNumber());
+        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), account.getAccountNumber()));
+        Pages.clientsSearchPage().clickOnSearchButton();
+        Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
+        Pages.clientDetailsPage().waitForPageLoaded();
+    }
+
+    public void searchAndOpenAccountByAccountNumber(Account account) {
+        Pages.clientsSearchPage().typeToClientsSearchInputField(account.getAccountNumber());
+        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), account.getAccountNumber()));
+        Pages.clientsSearchPage().clickOnSearchButton();
+        Pages.clientsSearchResultsPage().clickTheExactlyMatchedAccountInSearchResults(account.getAccountNumber());
     }
 }

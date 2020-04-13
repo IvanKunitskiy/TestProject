@@ -70,12 +70,6 @@ public class Account {
     private String bankRoutingNumberInterestOnCD;
     private String bankAccountNumberInterestOnCD;
 
-    public Account setDefaultAccountData() {
-        Account account = new Account();
-        // default account data
-
-        return account;
-    }
     public Account setCDAccountData() {
         Account account = new Account();
 
@@ -116,9 +110,9 @@ public class Account {
         account.setTermType("6");
         account.setInterestRate(String.valueOf(Generator.genFloat(0.001, 99.999, 1)));
         account.setInterestFrequency("Quarterly");
+        account.setApplyInterestTo("Remain in Account");
         account.setBankRoutingNumberInterestOnCD("102101645");
         account.setBankAccountNumberInterestOnCD("102101645");
-        account.setInterestFrequency("Quarterly");
         account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
         account.setIraDistributionAmount(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setDateNextIRADistribution(DateTime.getTomorrowDate("MM/dd/yyyy"));
