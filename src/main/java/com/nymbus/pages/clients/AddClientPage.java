@@ -62,19 +62,19 @@ public class AddClientPage extends PageTools {
     private By idNumberField = By.id("doc_id");
     private By issuedByField = By.xpath("//div[@id='doc_state']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private By issuedBySelectorButton = By.xpath("//div[@id='state']" +
+    private By issuedBySelectorButton = By.xpath("//div[@id='doc_state']" +
             "//span[contains(@class, 'select2-arrow')]");
     private By issuedByList = By.xpath("//div[@id='doc_state']" +
             "//li[contains(@role, 'option')]/div/span");
-    private By issuedBySelectorOption = By.xpath("//div[@id='state']" +
+    private By issuedBySelectorOption = By.xpath("//div[@id='doc_state']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By countryField = By.xpath("//div[@id='doc_country']" +
             "//input[contains(@class, 'nb-select-search')]");
-    private By countrySelectorButton = By.xpath("//div[@id='country']" +
+    private By countrySelectorButton = By.xpath("//div[@id='doc_country']" +
             "//span[contains(@class, 'select2-arrow')]");
     private By countryList = By.xpath("//div[@id='doc_country']" +
             "//li[contains(@role, 'option')]/div/span");
-    private By countrySelectorOption = By.xpath("//div[@id='country']" +
+    private By countrySelectorOption = By.xpath("//div[@id='doc_country']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By expirationDateField = By.id("doc_expiration");
     private By addressTypeField = By.xpath("//div[@name='addressuse_0']" +

@@ -13,6 +13,9 @@ import com.nymbus.pages.clients.documents.DocumentsPage;
 import com.nymbus.pages.clients.maintenance.MaintenanceHistoryPage;
 import com.nymbus.pages.clients.maintenance.MaintenancePage;
 import com.nymbus.pages.clients.notes.NotesPage;
+import com.nymbus.pages.clients.transfers.NewTransferPage;
+import com.nymbus.pages.clients.transfers.TransfersPage;
+import com.nymbus.pages.clients.transfers.ViewTransferPage;
 import com.nymbus.pages.loans.LoansPage;
 import com.nymbus.pages.modalwindow.DebitCardModalWindow;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
@@ -52,8 +55,11 @@ public class Pages extends AllureLogger {
     private static DocumentsPage documentsPage;
     private static AddNewDocumentPage addNewDocumentPage;
     private static DocumentOverviewPage documentOverviewPage;
-    public static AccountStatementPage accountStatementPage;
+    private static AccountStatementPage accountStatementPage;
     private static TransactionsPage transactionsPage;
+    private static TransfersPage transfersPage;
+    private static NewTransferPage newTransferPage;
+    private static ViewTransferPage viewTransferPage;
 
     /**
      * Modal Windows
@@ -368,5 +374,36 @@ public class Pages extends AllureLogger {
             transactionsPage = new TransactionsPage();
         }
         return transactionsPage;
+    }
+
+
+    /**
+     * This function return an instance of `Transfers Page`
+     */
+    public static TransfersPage transfersPage() {
+        if (transfersPage == null) {
+            transfersPage = new TransfersPage();
+        }
+        return transfersPage;
+    }
+
+    /**
+     * This function return an instance of `New Transfer Page`
+     */
+    public static NewTransferPage newTransferPage() {
+        if (newTransferPage == null) {
+            newTransferPage = new NewTransferPage();
+        }
+        return newTransferPage;
+    }
+
+    /**
+     * This function return an instance of `View Transfer Page`
+     */
+    public static ViewTransferPage viewTransferPage() {
+        if (viewTransferPage == null) {
+            viewTransferPage = new ViewTransferPage();
+        }
+        return viewTransferPage;
     }
 }

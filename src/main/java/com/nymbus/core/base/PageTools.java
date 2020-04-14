@@ -164,6 +164,11 @@ public class PageTools extends AllureLogger {
         return shouldBe(Condition.hidden, by, args).attr(attr);
     }
 
+    protected String getDisabledElementAttributeValue(String attr, By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
+        return shouldBe(Condition.disabled, by, args).attr(attr);
+    }
+
     protected List<SelenideElement> getElements(By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", elements --> " + byLocator(by, args));
         return shouldBe(sizeGreaterThan(0), by, args);
