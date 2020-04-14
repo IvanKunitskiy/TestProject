@@ -12,6 +12,7 @@ import java.util.Objects;
 public class TransactionData {
     String postingDate;
     String effectiveDate;
+    String amountSymbol;
     double balance = 0;
     double amount = 0;
 
@@ -22,12 +23,13 @@ public class TransactionData {
         TransactionData that = (TransactionData) o;
         return postingDate.equals(that.postingDate)
                 && effectiveDate.equals(that.effectiveDate)
+                && amountSymbol.equals(that.amountSymbol)
                 && amount == that.amount
                 && balance == that.balance;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(balance, amount, effectiveDate, postingDate);
+        return Objects.hash(balance, amount, effectiveDate, postingDate, amountSymbol);
     }
 }

@@ -14,10 +14,17 @@ public class ASideMenuPage extends PageTools {
     private By reportGeneratorMenuItem = By.xpath("//li[a[@id='menu-adhocReport']]");
     private By backOfficeMenuItem = By.xpath("//li[a[@id='menu-backoffice']]");
     private By settingsMenuItem = By.xpath("//li[a[@id='menu-settings']]");
+    private By journalMenuItem = By.xpath("//li[a[@id='menu-tellerJournal']]");
 
     @Step("Wait for a side menu")
     public void waitForASideMenu(){
         waitForElementVisibility(menu);
+    }
+
+    @Step("Click 'Journal' menu item")
+    public void clickJournalMenuItem() {
+        waitForElementVisibility(journalMenuItem);
+        click(journalMenuItem);
     }
 
     @Step("Click 'Client' menu item")

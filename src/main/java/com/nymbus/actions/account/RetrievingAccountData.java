@@ -2,10 +2,28 @@ package com.nymbus.actions.account;
 
 import com.nymbus.newmodels.accountinstructions.verifyingModels.InstructionBalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
+import com.nymbus.newmodels.transaction.verifyingModels.DatesData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 
 public class RetrievingAccountData {
+    public DatesData getDatesData() {
+        DatesData datesData = new DatesData();
+        datesData.setLastDepositDate(getLastDepositDate());
+        datesData.setLastActivityDate(getLastActivityDate());
+
+        return datesData;
+    }
+
+    private String getLastActivityDate() {
+        return Pages.accountDetailsPage().getDateLastActivityValue();
+    }
+
+    private String getLastDepositDate() {
+        return Pages.accountDetailsPage().getDateLastDepositValue();
+    }
+
+
     public BalanceData getBalanceData() {
         BalanceData balanceData = new BalanceData();
 
@@ -57,9 +75,22 @@ public class RetrievingAccountData {
         transactionData.setPostingDate(Pages.accountTransactionPage().getPostingDateValue(tempIndex));
         transactionData.setEffectiveDate(Pages.accountTransactionPage().getEffectiveDateValue(tempIndex));
         transactionData.setAmount(getAmount(tempIndex));
-        transactionData.setBalance(getBalance(tempIndex));
+        transactionData.setBalance(getBalanceValue(tempIndex));
+        transactionData.setAmountSymbol(Pages.accountTransactionPage().getAmountSymbol(tempIndex));
 
         return transactionData;
+    }
+
+    private double getAmountValue(int index) {
+        double amountIntegerPart = getAmount(index);
+        double amountFractionalPart = getAmountFractionalPart(index);
+        return amountIntegerPart + amountFractionalPart;
+    }
+
+    private double getBalanceValue(int index) {
+        double balanceIntegerPart = getBalance(index);
+        double balanceFractionalPart = getBalanceFractional(index);
+        return  balanceIntegerPart + balanceFractionalPart;
     }
 
     private double getBalance(int tempIndex) {
@@ -70,5 +101,15 @@ public class RetrievingAccountData {
     private double getAmount(int tempIndex) {
         String value = Pages.accountTransactionPage().getAmountValue(tempIndex);
         return Double.parseDouble(value);
+    }
+
+    private double getBalanceFractional(int tempIndex) {
+        String value = Pages.accountTransactionPage().getBalanceFractionalValue(tempIndex);
+        return Double.parseDouble(value) / 100;
+    }
+
+    private double getAmountFractionalPart(int tempIndex) {
+        String value = Pages.accountTransactionPage().getAmountFractionalValue(tempIndex);
+        return Double.parseDouble(value) / 100;
     }
 }

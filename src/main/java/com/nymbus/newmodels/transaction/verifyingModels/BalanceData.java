@@ -16,7 +16,14 @@ public class BalanceData {
         this.availableBalance += amount;
         this.currentBalance += amount;
         this.aggregateBalanceYearToDate += amount;
-        this.totalContributionsForLifeOfAccount +=amount;
+        this.totalContributionsForLifeOfAccount += amount;
+    }
+
+    public void subtractAmount(double amount) {
+        this.availableBalance -= amount;
+        this.currentBalance -= amount;
+        this.aggregateBalanceYearToDate -= amount;
+        this.totalContributionsForLifeOfAccount -= amount;
     }
 
     @Override

@@ -48,7 +48,7 @@ public class C22634_GLDebit_MiscCredit_SavingsAcc_Test extends BaseTest {
         AccountActions.editAccount().navigateToAccountDetails(transaction.getTransactionDestination().getAccountNumber(), false);
         balanceData = AccountActions.retrievingAccountData().getBalanceData();
 
-        transactionData = new TransactionData(transaction.getTransactionDate(), transaction.getTransactionDate(), balanceData.getCurrentBalance(),
+        transactionData = new TransactionData(transaction.getTransactionDate(), transaction.getTransactionDate(), "+", balanceData.getCurrentBalance(),
                  transaction.getTransactionDestination().getAmount());
     }
 

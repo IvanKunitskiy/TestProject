@@ -13,6 +13,8 @@ import com.nymbus.pages.clients.documents.DocumentsPage;
 import com.nymbus.pages.clients.maintenance.MaintenanceHistoryPage;
 import com.nymbus.pages.clients.maintenance.MaintenancePage;
 import com.nymbus.pages.clients.notes.NotesPage;
+import com.nymbus.pages.journal.JournalDetailsPage;
+import com.nymbus.pages.journal.JournalPage;
 import com.nymbus.pages.loans.LoansPage;
 import com.nymbus.pages.modalwindow.DebitCardModalWindow;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
@@ -52,8 +54,10 @@ public class Pages extends AllureLogger {
     private static DocumentsPage documentsPage;
     private static AddNewDocumentPage addNewDocumentPage;
     private static DocumentOverviewPage documentOverviewPage;
-    public static AccountStatementPage accountStatementPage;
+    private static AccountStatementPage accountStatementPage;
     private static TransactionsPage transactionsPage;
+    private static JournalPage journalPage;
+    private static JournalDetailsPage journalDetailsPage;
 
     /**
      * Modal Windows
@@ -368,5 +372,25 @@ public class Pages extends AllureLogger {
             transactionsPage = new TransactionsPage();
         }
         return transactionsPage;
+    }
+
+    /**
+     * This function return an instance of `JournalPage Page`
+     */
+    public static JournalPage journalPage() {
+        if (journalPage == null) {
+            journalPage = new JournalPage();
+        }
+        return journalPage;
+    }
+
+    /**
+     * This function return an instance of `JournalDetails Page`
+     */
+    public static JournalDetailsPage journalDetailsPage() {
+        if (journalDetailsPage ==null) {
+            journalDetailsPage = new JournalDetailsPage();
+        }
+        return journalDetailsPage;
     }
 }

@@ -4,6 +4,7 @@ import com.nymbus.actions.clients.ClientPageActions;
 import com.nymbus.actions.clients.ClientsSearchResultsPageActions;
 import com.nymbus.actions.clients.maintenance.MaintenanceHistoryPageActions;
 import com.nymbus.actions.clients.maintenance.MaintenancePageActions;
+import com.nymbus.actions.journal.JournalActions;
 import com.nymbus.actions.modalwindow.DebitCardModalWindowActions;
 import com.nymbus.actions.settings.CashDrawerAction;
 import com.nymbus.actions.settings.UsersActions;
@@ -22,6 +23,7 @@ public class Actions {
     private static MaintenanceHistoryPageActions maintenanceHistoryPageActions;
     private static TransactionActions transactionActions;
     private static MainActions mainActions;
+    private static JournalActions journalActions;
 
     /**
      * Modal Window Actions
@@ -126,5 +128,15 @@ public class Actions {
             mainActions = new MainActions();
         }
         return mainActions;
+    }
+
+    /**
+     * This function returns an instance of `JournalActions`
+     */
+    public static JournalActions journalActions() {
+        if (journalActions == null) {
+            journalActions = new JournalActions();
+        }
+        return journalActions;
     }
 }
