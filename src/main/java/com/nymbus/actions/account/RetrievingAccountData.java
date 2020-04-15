@@ -7,6 +7,15 @@ import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 
 public class RetrievingAccountData {
+    public BalanceDataForCHKAcc getBalanceDataForCHKAcc() {
+        BalanceDataForCHKAcc balanceDataForCHKAcc = new BalanceDataForCHKAcc();
+        balanceDataForCHKAcc.setCurrentBalance(getCurrentBalance());
+        balanceDataForCHKAcc.setAvailableBalance(getAvailableBalance());
+
+        return balanceDataForCHKAcc;
+    }
+
+
 
     public AccountDates getAccountDates() {
         AccountDates accountDates = new AccountDates();
