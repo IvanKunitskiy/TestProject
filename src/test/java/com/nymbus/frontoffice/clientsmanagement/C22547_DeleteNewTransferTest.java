@@ -10,6 +10,7 @@ import com.nymbus.core.utils.Constants;
 import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.other.transfer.HighBalanceTransfer;
+import com.nymbus.newmodels.client.other.transfer.Transfer;
 import com.nymbus.newmodels.generation.transfers.TransferBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
@@ -21,40 +22,56 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22547_DeleteNewTransferTest extends BaseTest {
 
-    private Client client;
+    private Client client1;
+    private Client client2;
     private Account chkAccount;
     private Account savingsAccount;
     private HighBalanceTransfer highBalanceTransfer;
+    private Transfer transfer;
 
     @BeforeMethod
     public void preCondition() {
 
-        // Set up client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
-
         // Set up clients
+        client1 = new Client().setDefaultClientData();
+        client1.setClientStatus("Member");
+        client1.setClientType("Individual");
+
+        client2 = new Client().setDefaultClientData();
+        client2.setClientStatus("Member");
+        client2.setClientType("Individual");
+
+        // Set up accounts
         chkAccount = new Account().setCHKAccountData();
         savingsAccount = new Account().setSavingsAccountData();
 
-        // Set up transfer
+        // Set up transfers
         TransferBuilder transferBuilder = new TransferBuilder();
         highBalanceTransfer = transferBuilder.getHighBalanceTransfer();
+        transfer = transferBuilder.getTransfer();
         highBalanceTransfer.setFromAccount(chkAccount);
         highBalanceTransfer.setToAccount(savingsAccount);
 
-        // Create a client with an active CHK and Savings account
+        // Create a client with an active CHK / Savings account and a High Balance transfer
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
-        client.setClientID(Pages.clientDetailsPage().getClientID());
+        ClientsActions.createClient().createClient(client1);
+        client1.setClientID(Pages.clientDetailsPage().getClientID());
         AccountActions.createAccount().createCHKAccount(chkAccount);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createSavingsAccount(savingsAccount);
         Pages.accountNavigationPage().clickCustomerProfileInBreadCrumb();
+        TransfersActions.addNewTransferActions().addNewHighBalanceTransfer(highBalanceTransfer);
+        Actions.loginActions().doLogOut();
 
-        // Create a new transfer
-        TransfersActions.addNewTransferActions().addNewTransfer(highBalanceTransfer);
+        // Create a client with an active CHK / Savings account and One time only periodic transfer
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        ClientsActions.createClient().createClient(client2);
+        client2.setClientID(Pages.clientDetailsPage().getClientID());
+        AccountActions.createAccount().createCHKAccount(chkAccount);
+        Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
+        AccountActions.createAccount().createSavingsAccount(savingsAccount);
+        Pages.accountNavigationPage().clickCustomerProfileInBreadCrumb();
+        TransfersActions.addNewTransferActions().addNewTransfer(transfer);
         Actions.loginActions().doLogOut();
     }
 
@@ -67,7 +84,7 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Go to Clients and search for the client from the precondition");
-        Actions.clientPageActions().searchAndOpenClientByID(client);
+        Actions.clientPageActions().searchAndOpenClientByID(client1);
 
         logInfo("Step 3: Open Clients Profile on the Transfers tab");
         Pages.accountNavigationPage().clickTransfersTab();
@@ -88,9 +105,13 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         // TODO: Implement verification at Maintenance History page
 
         logInfo("Step 8: Go to Clients page and search for the client from the precondition");
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenClientByID(client2);
 
         logInfo("Step 9: Open Clients Profile on the Transfers tab");
+        Pages.accountNavigationPage().clickTransfersTab();
 
         logInfo("Step 10: Search for the modified transfer in the left part of the screen and click it. Try to click [Delete] button");
+        Pages.transfersPage().clickTransferInTheListByType(highBalanceTransfer.getTransferType().getTransferType());
     }
 }

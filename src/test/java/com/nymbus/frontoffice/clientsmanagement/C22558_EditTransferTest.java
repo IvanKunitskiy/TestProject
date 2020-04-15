@@ -55,7 +55,7 @@ public class C22558_EditTransferTest extends BaseTest {
         Pages.accountNavigationPage().clickCustomerProfileInBreadCrumb();
 
         // Create a new transfer
-        TransfersActions.addNewTransferActions().addNewTransfer(highBalanceTransfer);
+        TransfersActions.addNewTransferActions().addNewHighBalanceTransfer(highBalanceTransfer);
         Actions.loginActions().doLogOut();
     }
 

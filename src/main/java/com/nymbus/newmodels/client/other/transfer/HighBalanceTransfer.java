@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class HighBalanceTransfer implements Transfer {
+public class HighBalanceTransfer {
     @NonNull private TransferType transferType;
     private String effectiveDate;
     private String expirationDate;
