@@ -2,17 +2,30 @@ package com.nymbus.actions.account;
 
 import com.nymbus.newmodels.accountinstructions.verifyingModels.InstructionBalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
-import com.nymbus.newmodels.transaction.verifyingModels.DatesData;
+import com.nymbus.newmodels.transaction.verifyingModels.AccountDates;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 
 public class RetrievingAccountData {
-    public DatesData getDatesData() {
-        DatesData datesData = new DatesData();
-        datesData.setLastDepositDate(getLastDepositDate());
-        datesData.setLastActivityDate(getLastActivityDate());
 
-        return datesData;
+    public AccountDates getAccountDates() {
+        AccountDates accountDates = new AccountDates();
+        accountDates.setLastDepositDate(getLastDepositDate());
+        accountDates.setLastActivityDate(getLastActivityDate());
+        accountDates.setNumberOfDeposits(getNumberOfDeposits());
+        accountDates.setLastDepositAmount(getDepositsAmount());
+
+        return accountDates;
+    }
+
+    private double getDepositsAmount() {
+        String depositsAmount = Pages.accountDetailsPage().getLastDepositAmountValue();
+        return depositsAmount.equals("") ? 0 : Double.parseDouble(depositsAmount);
+    }
+
+    private int getNumberOfDeposits() {
+        String depositsCount = Pages.accountDetailsPage().getNumberOfDepositsThisStatementCycleValue();
+        return depositsCount.equals("") ? 0 : Integer.parseInt(depositsCount);
     }
 
     private String getLastActivityDate() {
