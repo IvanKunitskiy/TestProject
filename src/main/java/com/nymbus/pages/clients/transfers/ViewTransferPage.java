@@ -11,6 +11,15 @@ public class ViewTransferPage extends PageTools {
     private By maxAmountToTransfer = By.xpath("//input[@id='transferamount']");
     private By transferCharge = By.xpath("//input[@id='transfercharge']");
     private By editButton = By.xpath("//button//span[contains(text(), 'Edit')]");
+    private By deleteButton = By.xpath("//button//span[contains(text(), 'Delete')]");
+
+
+    @Step("Click 'Delete' button")
+    public void clickDeleteButton() {
+        waitForElementClickable(deleteButton);
+        waitForElementVisibility(deleteButton);
+        click(deleteButton);
+    }
 
     @Step("Click 'Edit' button")
     public void clickEditButton() {
