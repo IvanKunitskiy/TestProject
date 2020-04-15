@@ -1,6 +1,8 @@
 package com.nymbus.pages.clients.transfers;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -43,10 +45,17 @@ public class NewTransferPage extends PageTools {
         type(value, highBalance);
     }
 
+    @Step("Wait for 'Save' button invisibility")
+    public void waitForSaveButtonInvisibility() {
+        waitForElementInvisibility(saveButton);
+    }
+
     @Step("Click the 'Save' button")
     public void clickSaveButton() {
+        waitForElementVisibility(saveButton);
         waitForElementClickable(saveButton);
         click(saveButton);
+        waitForSaveButtonInvisibility();
     }
 
     @Step("Click the 'Transfer Type' option")

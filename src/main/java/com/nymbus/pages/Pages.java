@@ -13,6 +13,7 @@ import com.nymbus.pages.clients.documents.DocumentsPage;
 import com.nymbus.pages.clients.maintenance.MaintenanceHistoryPage;
 import com.nymbus.pages.clients.maintenance.MaintenancePage;
 import com.nymbus.pages.clients.notes.NotesPage;
+import com.nymbus.pages.clients.transfers.EditTransferPage;
 import com.nymbus.pages.clients.transfers.NewTransferPage;
 import com.nymbus.pages.clients.transfers.TransfersPage;
 import com.nymbus.pages.clients.transfers.ViewTransferPage;
@@ -60,6 +61,7 @@ public class Pages extends AllureLogger {
     private static TransfersPage transfersPage;
     private static NewTransferPage newTransferPage;
     private static ViewTransferPage viewTransferPage;
+    private static EditTransferPage editTransferPage;
 
     /**
      * Modal Windows
@@ -405,5 +407,15 @@ public class Pages extends AllureLogger {
             viewTransferPage = new ViewTransferPage();
         }
         return viewTransferPage;
+    }
+
+    /**
+     * This function return an instance of `Edit Transfer Page`
+     */
+    public static EditTransferPage editTransferPage() {
+        if (editTransferPage == null) {
+            editTransferPage = new EditTransferPage();
+        }
+        return editTransferPage;
     }
 }

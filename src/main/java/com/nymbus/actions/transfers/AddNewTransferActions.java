@@ -9,6 +9,19 @@ import java.util.List;
 import java.util.Random;
 
 public class AddNewTransferActions {
+
+    public void addNewTransfer(HighBalanceTransfer transfer) {
+        Pages.accountNavigationPage().clickTransfersTab();
+        Pages.transfersPage().clickNewTransferButton();
+        TransfersActions.addNewTransferActions().setHighBalanceTransferType(transfer);
+        TransfersActions.addNewTransferActions().setHighBalanceFromAccount(transfer);
+        TransfersActions.addNewTransferActions().setHighBalanceToAccount(transfer);
+        Pages.newTransferPage().setHighBalance(transfer.getHighBalance());
+        Pages.newTransferPage().setMaxAmount(transfer.getMaxAmountToTransfer());
+        Pages.newTransferPage().setTransferCharge(transfer.getTransferCharge());
+        Pages.newTransferPage().clickSaveButton();
+    }
+
     public void setHighBalanceTransferType(HighBalanceTransfer highBalanceTransfer) {
         Pages.newTransferPage().clickTransferTypeSelectorButton();
         List<String> listOfTransferType = Pages.newTransferPage().getTransferTypeList();
