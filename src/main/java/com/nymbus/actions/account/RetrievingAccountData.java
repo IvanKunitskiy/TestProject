@@ -3,6 +3,7 @@ package com.nymbus.actions.account;
 import com.nymbus.newmodels.accountinstructions.verifyingModels.InstructionBalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.AccountDates;
+import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 

@@ -46,7 +46,7 @@ public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
         AccountActions.editAccount().navigateToAccountDetails(transaction.getTransactionDestination().getAccountNumber(), false);
         balanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
 
-        transactionData = new TransactionData(transaction.getTransactionDate(), transaction.getTransactionDate(), balanceData.getCurrentBalance(),
+        transactionData = new TransactionData(transaction.getTransactionDate(), transaction.getTransactionDate(), "+", balanceData.getCurrentBalance(),
                 transaction.getTransactionDestination().getAmount());
     }
 
