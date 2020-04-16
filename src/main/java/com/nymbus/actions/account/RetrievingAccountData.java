@@ -1,13 +1,35 @@
 package com.nymbus.actions.account;
 
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.accountinstructions.verifyingModels.InstructionBalanceData;
-import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
-import com.nymbus.newmodels.transaction.verifyingModels.AccountDates;
-import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
-import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
+import com.nymbus.newmodels.transaction.verifyingModels.*;
 import com.nymbus.pages.Pages;
 
 public class RetrievingAccountData {
+    public String getDateLastInterestPaid() {
+        String result = Pages.accountDetailsPage().getDateLastInterestPaid();
+        return result.equals("") ? DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy") : result;
+    }
+
+    public BalanceDataForCDAcc getBalanceDataForCDAcc() {
+        BalanceDataForCDAcc balanceDataForCDAcc = new BalanceDataForCDAcc();
+        balanceDataForCDAcc.setCurrentBalance(getCurrentBalance());
+        balanceDataForCDAcc.setOriginalBalance(getOriginalBalance());
+        balanceDataForCDAcc.setTotalContributionForLifeOfAcc(getTotalContribution());
+
+        return  balanceDataForCDAcc;
+    }
+
+    private double getTotalContribution() {
+        String totalContribution = Pages.accountDetailsPage().getTotalContributionsForLifeOfAccount();
+        return Double.parseDouble(totalContribution);
+    }
+
+    private double getOriginalBalance() {
+        String originalResult = Pages.accountDetailsPage().getOriginalBalanceValue();
+        return originalResult.equals("") ? 0.00 : Double.parseDouble(originalResult);
+    }
+
     public BalanceDataForCHKAcc getBalanceDataForCHKAcc() {
         BalanceDataForCHKAcc balanceDataForCHKAcc = new BalanceDataForCHKAcc();
         balanceDataForCHKAcc.setCurrentBalance(getCurrentBalance());
@@ -15,8 +37,6 @@ public class RetrievingAccountData {
 
         return balanceDataForCHKAcc;
     }
-
-
 
     public AccountDates getAccountDates() {
         AccountDates accountDates = new AccountDates();
@@ -45,7 +65,6 @@ public class RetrievingAccountData {
     private String getLastDepositDate() {
         return Pages.accountDetailsPage().getDateLastDepositValue();
     }
-
 
     public BalanceData getBalanceData() {
         BalanceData balanceData = new BalanceData();

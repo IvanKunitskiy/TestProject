@@ -94,6 +94,11 @@ public class AccountDetailsPage extends PageTools {
     private By closeAccountButton = By.xpath("//div[@class='topRight']//dn-close-button/button");
     private By reopenButton = By.xpath("//button[@data-test-id='action-activate-non-accrual']");
     private By accountClosedNotification = By.xpath("//span[contains(text(), 'The account is closed')]");
+    private By originalBalance = By.xpath("//*[@data-config-name='originalbalance']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By dateLastInterestPay = By.xpath("//*[@data-config-name='datelastinterestpaid']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By dateNextInterestPay = By.xpath("//*[@data-config-name='datenextinterestpayment']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By nextInterestPaymentAmount = By.xpath("//*[@data-config-name='nextinterestpaymentamount']//span[contains(@class, 'dnTextFixedWidthText')]");
+
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -105,6 +110,29 @@ public class AccountDetailsPage extends PageTools {
     /**
      * Details tab
      */
+    @Step("Get 'Next Interest Payment amount' value")
+    public String getNextInterestPaymentAmount() {
+        waitForElementVisibility(nextInterestPaymentAmount);
+        return getElementText(nextInterestPaymentAmount).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Date Next Interest Paid'")
+    public String getDateNextInterestPaid() {
+        waitForElementVisibility(dateNextInterestPay);
+        return getElementText(dateNextInterestPay).trim();
+    }
+
+    @Step("Get 'Date Last Interest Paid'")
+    public String getDateLastInterestPaid() {
+        waitForElementVisibility(dateLastInterestPay);
+        return getElementText(dateLastInterestPay).trim();
+    }
+
+    @Step("Get 'Original balance' value")
+    public String getOriginalBalanceValue() {
+        waitForElementVisibility(originalBalance);
+        return getElementText(originalBalance).trim().replaceAll("[^0-9.]", "");
+    }
 
     @Step("Get 'Last Deposit Amount' value")
     public String getLastDepositAmountValue() {

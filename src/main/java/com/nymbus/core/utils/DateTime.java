@@ -1,9 +1,11 @@
 package com.nymbus.core.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class DateTime {
@@ -107,9 +109,8 @@ public class DateTime {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, months);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
-        String futureDate = simpleDateFormat.format(calendar.getTime());
 
-        return futureDate;
+        return simpleDateFormat.format(calendar.getTime());
     }
 
     public static String plusMonthsToCurrentDateWithLastDayOfMonth(int months, String pattern) {
@@ -117,9 +118,8 @@ public class DateTime {
         calendar.add(Calendar.MONTH, months);
         calendar.add(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH) - calendar.get(Calendar.DAY_OF_MONTH));
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.ENGLISH);
-        String futureDate = simpleDateFormat.format(calendar.getTime());
 
-        return futureDate;
+        return simpleDateFormat.format(calendar.getTime());
     }
 
     public static String getTomorrowDate(String pattern) {
@@ -142,5 +142,18 @@ public class DateTime {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, days);
         return simpleDateFormat.format(calendar.getTime());
+    }
+
+    public static int getDaysBetweenTwoDates(String from, String to) {
+        int days = 0;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        try {
+            Date date1 = simpleDateFormat.parse(from);
+            Date date2 = simpleDateFormat.parse(to);
+            days = Math.toIntExact(ChronoUnit.DAYS.between(date1.toInstant(), date2.toInstant()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return days;
     }
 }

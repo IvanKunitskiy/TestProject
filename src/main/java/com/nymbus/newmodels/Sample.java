@@ -1,5 +1,6 @@
 package com.nymbus.newmodels;
 
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.accountinstructions.BaseInstruction;
 import com.nymbus.newmodels.accountinstructions.HoldInstruction;
 import com.nymbus.newmodels.client.basicinformation.address.Country;
@@ -18,6 +19,8 @@ import com.nymbus.newmodels.client.other.document.CompanyID;
 import com.nymbus.newmodels.client.other.document.IDType;
 import com.nymbus.newmodels.generation.accountinstructions.InstructionConstructor;
 import com.nymbus.newmodels.generation.accountinstructions.builder.HoldInstructionBuilder;
+
+import static com.nymbus.core.utils.Functions.getCalculatedInterestAmount;
 
 public class Sample {
     public static void main(String[] args) {
@@ -133,6 +136,10 @@ public class Sample {
 
         /*HoldInstruction instr = new InstructionConstructor(new HoldInstructionBuilder()).constructInstruction(HoldInstruction.class);
         System.out.println(instr.toString());*/
+
+        // System.out.println(DateTime.getDaysBetweenTwoDates("04/10/2020", "07/04/2020"));
+
+        // System.out.println(getCalculatedInterestAmount(100.00, 0.45, "04/16/2020", "07/16/2020"));
     }
 
     private static BaseDocument qwe() {

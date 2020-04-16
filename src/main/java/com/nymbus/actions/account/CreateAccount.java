@@ -69,6 +69,21 @@ public class CreateAccount {
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
 
+    public void createCDAccountForTransactionPurpose(Account account) {
+        clickAccountsTab();
+        Pages.clientDetailsPage().clickAddNewButton();
+        Pages.clientDetailsPage().clickAddNewValueOption(account.getAddNewOption());
+        Pages.addAccountPage().clickProductTypeSelectorButton();
+        Pages.addAccountPage().clickProductTypeOption(account.getProductType());
+        Pages.addAccountPage().clickProductSelectorButton();
+        Pages.addAccountPage().clickProductOption(account.getProduct());
+        Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        Pages.addAccountPage().setInterestRate(account.getInterestRate());
+        setApplyInterestTo(account);
+        Pages.addAccountPage().clickSaveAccountButton();
+        Pages.accountDetailsPage().waitForFullProfileButton();
+    }
+
     public void createCHKAccountForTransactionPurpose(Account account) {
         clickAccountsTab();
         Pages.clientDetailsPage().clickAddNewButton();
