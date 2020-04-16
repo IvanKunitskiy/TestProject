@@ -13,6 +13,11 @@ public class ViewTransferPage extends PageTools {
     private By editButton = By.xpath("//button//span[contains(text(), 'Edit')]");
     private By deleteButton = By.xpath("//button//span[contains(text(), 'Delete')]");
 
+    @Step("Check if 'Edit' button disabled")
+    public boolean isEditButtonDisabled() {
+        String value = getElementAttributeValue("disabled", editButton);
+        return Boolean.parseBoolean(value);
+    }
 
     @Step("Click 'Delete' button")
     public void clickDeleteButton() {

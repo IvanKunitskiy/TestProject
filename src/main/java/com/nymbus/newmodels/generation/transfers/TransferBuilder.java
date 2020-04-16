@@ -28,7 +28,7 @@ public class TransferBuilder {
 
         transfer.setTransferType(TransferType.TRANSFER);
         transfer.setFrequency(Frequency.ONE_TIME_ONLY);
-        transfer.setAmount(String.valueOf(Generator.genInt(100, 900)));
+        transfer.setAmount("2000");
         transfer.setEftChargeCode("Account Analysis");
         transfer.setTransferCharge(String.valueOf(Generator.genInt(100, 900)));
 

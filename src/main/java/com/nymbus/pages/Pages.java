@@ -20,8 +20,7 @@ import com.nymbus.pages.clients.transfers.ViewTransferPage;
 import com.nymbus.pages.loans.LoansPage;
 import com.nymbus.pages.modalwindow.DebitCardModalWindow;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
-import com.nymbus.pages.teller.TellerModalPage;
-import com.nymbus.pages.teller.TellerPage;
+import com.nymbus.pages.teller.*;
 import com.nymbus.pages.tellertotellertransfer.TellerToTellerPage;
 
 public class Pages extends AllureLogger {
@@ -62,6 +61,9 @@ public class Pages extends AllureLogger {
     private static NewTransferPage newTransferPage;
     private static ViewTransferPage viewTransferPage;
     private static EditTransferPage editTransferPage;
+    private static CashInModalPage cashInModalPage;
+    private static VerifyConductorPage verifyConductorPage;
+    private static TransactionCompletedPage transactionCompleted;
 
     /**
      * Modal Windows
@@ -417,5 +419,35 @@ public class Pages extends AllureLogger {
             editTransferPage = new EditTransferPage();
         }
         return editTransferPage;
+    }
+
+    /**
+     * This function return an instance of `Cash In Modal Page`
+     */
+    public static CashInModalPage cashInModalPage() {
+        if (cashInModalPage == null) {
+            cashInModalPage = new CashInModalPage();
+        }
+        return cashInModalPage;
+    }
+
+    /**
+     * This function return an instance of `Cash Verify Conductor Page`
+     */
+    public static VerifyConductorPage verifyConductor() {
+        if (verifyConductorPage == null) {
+            verifyConductorPage = new VerifyConductorPage();
+        }
+        return verifyConductorPage;
+    }
+
+    /**
+     * This function return an instance of `Transaction Completed Page`
+     */
+    public static TransactionCompletedPage transactionCompleted() {
+        if (transactionCompleted == null) {
+            transactionCompleted = new TransactionCompletedPage();
+        }
+        return transactionCompleted;
     }
 }

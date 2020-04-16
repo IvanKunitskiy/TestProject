@@ -14,8 +14,10 @@ import com.nymbus.newmodels.client.other.transfer.Transfer;
 import com.nymbus.newmodels.generation.transfers.TransferBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import sun.jvm.hotspot.debugger.Page;
 
 @Epic("Frontoffice")
 @Feature("Clients Management")
@@ -24,8 +26,10 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
 
     private Client client1;
     private Client client2;
-    private Account chkAccount;
-    private Account savingsAccount;
+    private Account chkAccount1;
+    private Account savingsAccount1;
+    private Account chkAccount2;
+    private Account savingsAccount2;
     private HighBalanceTransfer highBalanceTransfer;
     private Transfer transfer;
 
@@ -42,35 +46,63 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         client2.setClientType("Individual");
 
         // Set up accounts
-        chkAccount = new Account().setCHKAccountData();
-        savingsAccount = new Account().setSavingsAccountData();
+        chkAccount1 = new Account().setCHKAccountData();
+        savingsAccount1 = new Account().setSavingsAccountData();
+        chkAccount2 = new Account().setCHKAccountData();
+        savingsAccount2 = new Account().setSavingsAccountData();
 
         // Set up transfers
         TransferBuilder transferBuilder = new TransferBuilder();
+
         highBalanceTransfer = transferBuilder.getHighBalanceTransfer();
+        highBalanceTransfer.setFromAccount(chkAccount1);
+        highBalanceTransfer.setToAccount(savingsAccount1);
+
         transfer = transferBuilder.getTransfer();
-        highBalanceTransfer.setFromAccount(chkAccount);
-        highBalanceTransfer.setToAccount(savingsAccount);
+        transfer.setFromAccount(chkAccount2);
+        transfer.setToAccount(savingsAccount2);
 
         // Create a client with an active CHK / Savings account and a High Balance transfer
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client1);
         client1.setClientID(Pages.clientDetailsPage().getClientID());
-        AccountActions.createAccount().createCHKAccount(chkAccount);
+        AccountActions.createAccount().createCHKAccount(chkAccount1);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
-        AccountActions.createAccount().createSavingsAccount(savingsAccount);
+        AccountActions.createAccount().createSavingsAccount(savingsAccount1);
         Pages.accountNavigationPage().clickCustomerProfileInBreadCrumb();
         TransfersActions.addNewTransferActions().addNewHighBalanceTransfer(highBalanceTransfer);
         Actions.loginActions().doLogOut();
 
-        // Create a client with an active CHK / Savings account and One time only periodic transfer
+        // Create a client with an active CHK / Savings account
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client2);
         client2.setClientID(Pages.clientDetailsPage().getClientID());
-        AccountActions.createAccount().createCHKAccount(chkAccount);
+        AccountActions.createAccount().createCHKAccount(chkAccount2);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
-        AccountActions.createAccount().createSavingsAccount(savingsAccount);
-        Pages.accountNavigationPage().clickCustomerProfileInBreadCrumb();
+        AccountActions.createAccount().createSavingsAccount(savingsAccount2);
+
+        // Assign Amount to CHK account
+        Pages.aSideMenuPage().clickTellerMenuItem();
+        Pages.tellerModalPage().clickEnterButton();
+        Pages.tellerPage().clickCashInButton();
+        Pages.cashInModalPage().waitCashInModalWindow();
+        Pages.cashInModalPage().typeToHundredsItemCountInputField("2");
+        Pages.cashInModalPage().clickOkButton();
+        Pages.tellerPage().clickMiscCreditButton();
+        Pages.tellerPage().typeDestinationAccountNumber(1, chkAccount2.getAccountNumber());
+        Pages.tellerPage().clickDestinationAccountSuggestionOption(chkAccount2.getAccountNumber());
+        Pages.tellerPage().waitForCreditTransferCodeVisible();
+        Pages.tellerPage().typeDestinationAmountValue(1, "20000");
+        Pages.tellerPage().clickCommitButton();
+        Pages.verifyConductor().waitModalWindow();
+        Pages.verifyConductor().clickVerifyButton();
+        Pages.transactionCompleted().waitModalWindow();
+        Pages.transactionCompleted().clickCloseButton();
+        Actions.loginActions().doLogOut();
+
+        // Create One time only periodic transfer
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.clientPageActions().searchAndOpenClientByID(client2);
         TransfersActions.addNewTransferActions().addNewTransfer(transfer);
         Actions.loginActions().doLogOut();
     }
@@ -97,7 +129,7 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
 
         logInfo("Step 6: Open Client Profile on Accounts tab and search for the Account that was used as Account From or Account To in the transfer. Open account on the Maintenenace-> Maintenance History page");
         Pages.accountNavigationPage().clickAccountsTab();
-        Pages.clientDetailsPage().openAccountByNumber(chkAccount.getAccountNumber());
+        Pages.clientDetailsPage().openAccountByNumber(chkAccount1.getAccountNumber());
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
@@ -112,6 +144,7 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         Pages.accountNavigationPage().clickTransfersTab();
 
         logInfo("Step 10: Search for the modified transfer in the left part of the screen and click it. Try to click [Delete] button");
-        Pages.transfersPage().clickTransferInTheListByType(highBalanceTransfer.getTransferType().getTransferType());
+        Pages.transfersPage().clickTransferInTheListByType(transfer.getTransferType().getTransferType());
+        Assert.assertTrue(Pages.viewTransferPage().isEditButtonDisabled(), "Expired transfer can be edited");
     }
 }

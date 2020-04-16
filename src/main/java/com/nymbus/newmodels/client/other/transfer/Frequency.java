@@ -11,7 +11,7 @@ public enum Frequency {
     BI_WEEKLY("Bi-weekly"),
     DAILY("Daily"),
     MONTHLY("Monthly"),
-    ONE_TIME_ONLY("One Time Only"),
+    ONE_TIME_ONLY("One time only"),
     QUARTERLY("Quarterly"),
     SEMI_ANNUAL("Semi-annual"),
     SEMI_MONTHLY("Semi-monthly"),

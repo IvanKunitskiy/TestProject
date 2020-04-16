@@ -14,7 +14,7 @@ public class NewTransferPage extends PageTools {
 
     private By transferTypeSelectorButton = By.xpath("//div[@data-test-id='field-transfertype']");
     private By transferTypeList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By transferTypeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By transferTypeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
 
     private By fromAccountSelectorButton = By.xpath("//div[@data-test-id='field-accountid']");
     private By fromAccountList = By.xpath("//li[contains(@role, 'option')]/div/span");
@@ -25,7 +25,7 @@ public class NewTransferPage extends PageTools {
     private By toAccountSelectorOption = By.xpath("//div[contains(@class, 'ui-select-choices-row ng-scope')]/div/div[contains(text(), '%s')]");
     private By highBalance = By.xpath("//input[@id='transferthreshold']");
     private By maxAmountToTransfer = By.xpath("//input[@id='transferamount']");
-    private By amount = By.xpath("//input[@id='field-transferamount']");
+    private By amount = By.xpath("//input[@id='transferamount']");
     private By transferCharge = By.xpath("//input[@id='transfercharge']");
 
     private By frequencySelectorButton = By.xpath("//div[@data-test-id='field-frequencytransfer']");

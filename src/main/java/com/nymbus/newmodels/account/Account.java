@@ -163,7 +163,6 @@ public class Account {
         account.setAccountTitle(Generator.genString(5));
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setProduct("Regular Savings Account");
-        account.setAccountNumber(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setAccountTitle(Generator.genString(5));
         account.setDateOpened("02/27/2020");
         account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
