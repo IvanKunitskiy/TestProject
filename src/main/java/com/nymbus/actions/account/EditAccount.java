@@ -321,4 +321,10 @@ public class EditAccount {
 
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
     }
+
+    public void closeAccount() {
+        Pages.accountDetailsPage().clickCloseAccountButton();
+
+        Pages.accountDetailsPage().waitForReopenButton();
+    }
 }

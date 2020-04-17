@@ -21,6 +21,12 @@ public class AccountDetailsPage extends PageTools {
     private By editButton = By.xpath("//button[@data-test-id='action-editAccount']");
     private By balanceInquiry = By.xpath("//button[@data-test-id='action-print-receipt']");
 
+
+    /**
+     * Notifications section
+     */
+    private By notificationWithText = By.xpath("//section[@ui-view = 'notesNotification']//*[contains(@class, 'notifications-item-text')]//span[contains(text(), '%s')]");
+
     /**
      * Details tab
      */
@@ -619,5 +625,15 @@ public class AccountDetailsPage extends PageTools {
     public void clickDetailsTab() {
         waitForElementClickable(detailsTab);
         click(detailsTab);
+    }
+
+    @Step("Is notification with text {0} visible")
+    public boolean isNotificationWithTextVisible(String text) {
+        return isElementVisible(notificationWithText, text);
+    }
+
+    @Step("Wait for 'Re-Open button")
+    public void waitForReopenButton() {
+        waitForElementVisibility(reopenButton);
     }
 }

@@ -54,6 +54,31 @@ public class TellerPage extends PageTools {
     }
 
     /**
+     * Loading spinner
+     */
+    private By loadingSpinner = By.xpath("//dn-loading-spinner");
+
+    @Step("Wait for loading spinner visibility")
+    public void waitForLoadingSpinnerVisibility() {
+        waitForElementVisibility(loadingSpinner);
+    }
+
+    @Step("Wait for loading spinner invisibility")
+    public void waitForLoadingSpinnerInvisibility() {
+        waitForElementInvisibility(loadingSpinner);
+    }
+
+    /**
+     * Notifications region
+     */
+    private By notificationWithText = By.xpath("//div[@class='toast-message' and contains(text(), '%s')]");
+
+    @Step("Is message with text {0} present")
+    public boolean isMessageWithTextPresent(String text) {
+        return isElementVisible(notificationWithText, text);
+    }
+
+    /**
      * Sources region
      */
     private By sourcePanel = By.id("tellerPanelHeaderSource");

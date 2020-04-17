@@ -78,4 +78,10 @@ public class TransactionActions {
 
         Pages.tellerPage().clickOnAutocompleteDropDownItem(accountNumber);
     }
+
+    public void waitForLoadSpinnerInvisibility() {
+        Pages.tellerPage().waitForLoadingSpinnerVisibility();
+
+        Pages.tellerPage().waitForLoadingSpinnerInvisibility();
+    }
 }
