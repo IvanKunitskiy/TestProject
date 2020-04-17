@@ -56,43 +56,41 @@ public class C23915_GLDebitMiscCreditCDAccTest extends BaseTest {
     @Test(description = "23915, Commit transaction GL Debit -> Misc Credit(on CD Account)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyTransactionGLDebitMiscCredit() {
+        logInfo("Step 2: Go to Teller page and log in to the proof date");
         Actions.transactionActions().goToTellerPage();
-
         Actions.transactionActions().doLoginTeller();
 
+        logInfo("Step 3: Select the following fund types: Source: GL Debit, Destination: Misc Credit");
+        logInfo("Step 4: Fill in fields for source line item: select GL account, specify some amount, expand line item and specify Note");
+        logInfo("Step 5: Fill in fields for destination line item: select regular account from preconditions, specify trancode, specify the same amount");
         Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
 
+        logInfo("Step 6: Do not change the Effective Date and click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
-
         Assert.assertEquals(Pages.tellerPage().getModalText(),
                 "Transaction was successfully completed.",
                 "Transaction doesn't commit");
-
         Pages.tellerPage().closeModal();
-
         balanceData.addAmount(transaction.getTransactionDestination().getAmount());
 
+        logInfo("Step 7: Close Transaction Receipt popup and" +
+                "Go to the account used in Misc Credit item. Verify such fields: current balance, Original Balance, Total Contributions for Life of Account");
         AccountActions.editAccount().navigateToAccountDetails(transaction.getTransactionDestination().getAccountNumber(), false);
-
         BalanceDataForCDAcc actualBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCDAcc();
-
         Assert.assertEquals(actualBalanceData, balanceData, "Balance data doesn't match!");
 
+        logInfo("Step 8: Verify Next Interest Payment Amount field value");
         String expectedPaymentAmount = getCalculatedInterestAmount(balanceData.getCurrentBalance(),
                                                                     Double.parseDouble(cdAccountData.getInterestRate()),
                                                                     AccountActions.retrievingAccountData().getDateLastInterestPaid(),
                                                                     Pages.accountDetailsPage().getDateNextInterest());
-
         String actualPaymentAmount = Pages.accountDetailsPage().getNextInterestPaymentAmount();
-
         Assert.assertEquals(actualPaymentAmount, expectedPaymentAmount, "Payment amount doesn't match!");
 
+        logInfo("Step 9: Open account on Transactions tab and verify that transaction is written on transactions history page");
         transactionData.setBalance(balanceData.getCurrentBalance());
-
         AccountActions.retrievingAccountData().goToTransactionsTab();
-
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionData();
-
         Assert.assertEquals(actualTransactionData, transactionData, "Transaction data doesn't match!");
 
         // TODO add verification for webadmin
