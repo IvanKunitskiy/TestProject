@@ -1,5 +1,6 @@
 package com.nymbus.pages;
 
+import com.nymbus.actions.account.CreateInstruction;
 import com.nymbus.core.allure.AllureLogger;
 import com.nymbus.pages.accounts.*;
 import com.nymbus.pages.accounts.transactions.TransactionsPage;
@@ -68,6 +69,8 @@ public class Pages extends AllureLogger {
     private static TransactionCompletedPage transactionCompleted;
     private static JournalPage journalPage;
     private static JournalDetailsPage journalDetailsPage;
+    private static AccountsPage accountsPage;
+    private static CallStatementModalPage callStatementModalPage;
 
     /**
      * Modal Windows
@@ -473,5 +476,26 @@ public class Pages extends AllureLogger {
             journalDetailsPage = new JournalDetailsPage();
         }
         return journalDetailsPage;
+    }
+
+    /**
+     * This function return an instance of `AccountsPage Page`
+     */
+    public static AccountsPage accountsPage() {
+        if (accountsPage ==null) {
+            accountsPage = new AccountsPage();
+        }
+        return accountsPage;
+    }
+
+
+    /**
+     * This function return an instance of `CallStatementModalPage`
+     */
+    public static CallStatementModalPage callStatementModalPage() {
+        if (callStatementModalPage == null) {
+            callStatementModalPage = new CallStatementModalPage();
+        }
+        return callStatementModalPage;
     }
 }

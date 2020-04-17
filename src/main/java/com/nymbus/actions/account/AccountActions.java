@@ -9,6 +9,7 @@ public class AccountActions {
     private static EditAccount editAccount;
     private static RetrievingAccountData retrievingAccountData;
     private static CreateInstruction createInstruction;
+    private static CallStatement callStatement;
 
     /**
      * This function return an instance of `CreateAccount`
@@ -48,5 +49,15 @@ public class AccountActions {
             createInstruction = new CreateInstruction();
         }
         return createInstruction;
+    }
+
+    /**
+     * This function return an instance of `CreateInstruction`
+     */
+    public static CallStatement callStatement() {
+        if (callStatement == null) {
+            callStatement = new CallStatement();
+        }
+        return callStatement;
     }
 }
