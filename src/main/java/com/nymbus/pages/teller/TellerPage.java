@@ -108,6 +108,18 @@ public class TellerPage extends PageTools {
 
     private By transactionSourceNotesInput = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//input[@ng-model='transaction.notes']");
 
+    @Step("Click 'Misc-Debit' button")
+    public void clickMiscDebitButton() {
+        waitForElementClickable(miscDebit);
+        click(miscDebit);
+    }
+
+    @Step("Click 'Cash-In' button")
+    public void clickCashInButton() {
+        waitForElementClickable(cashInButton);
+        click(cashInButton);
+    }
+
     @Step("Click 'GL Debit' button")
     public void clickGLDebitButton() {
         waitForElementClickable(glDebitButton);
@@ -175,6 +187,17 @@ public class TellerPage extends PageTools {
     private By itemInDropDown = By.xpath("//div[contains(@class, 'select2-drop-active') and not(contains(@class, 'select2-display-none'))]" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
+    @Step("Click 'Deposit' button")
+    public void clickDepositButton() {
+        waitForElementClickable(depositButton);
+        click(depositButton);
+    }
+
+    @Step("Click 'Cash-Out' button")
+    public void clickCashOutButton() {
+        waitForElementClickable(cashOutButton);
+        click(cashOutButton);
+    }
 
     @Step("Click 'Misc Credit' button")
     public void clickMiscCreditButton() {

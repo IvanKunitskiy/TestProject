@@ -16,7 +16,9 @@ import com.nymbus.pages.clients.notes.NotesPage;
 import com.nymbus.pages.journal.JournalDetailsPage;
 import com.nymbus.pages.journal.JournalPage;
 import com.nymbus.pages.loans.LoansPage;
+import com.nymbus.pages.modalwindow.CashInModalWindowPage;
 import com.nymbus.pages.modalwindow.DebitCardModalWindow;
+import com.nymbus.pages.modalwindow.VerifyConductorModalPage;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
 import com.nymbus.pages.teller.TellerModalPage;
 import com.nymbus.pages.teller.TellerPage;
@@ -58,6 +60,8 @@ public class Pages extends AllureLogger {
     private static TransactionsPage transactionsPage;
     private static JournalPage journalPage;
     private static JournalDetailsPage journalDetailsPage;
+    private static CashInModalWindowPage cashInModalWindowPage;
+    private static VerifyConductorModalPage verifyConductorModalPage;
 
     /**
      * Modal Windows
@@ -392,5 +396,25 @@ public class Pages extends AllureLogger {
             journalDetailsPage = new JournalDetailsPage();
         }
         return journalDetailsPage;
+    }
+
+    /**
+     * This function return an instance of `CashIn Modal Window Page`
+     */
+    public static CashInModalWindowPage cashInModalWindowPage() {
+        if (cashInModalWindowPage == null) {
+            cashInModalWindowPage = new CashInModalWindowPage();
+        }
+        return cashInModalWindowPage;
+    }
+
+    /**
+     * This function return an instance of `Verify Conductor Modal Page`
+     */
+    public static VerifyConductorModalPage verifyConductorModalPage() {
+        if (verifyConductorModalPage == null) {
+            verifyConductorModalPage = new VerifyConductorModalPage();
+        }
+        return verifyConductorModalPage;
     }
 }
