@@ -1,5 +1,6 @@
 package com.nymbus.pages;
 
+import com.nymbus.actions.account.CreateInstruction;
 import com.nymbus.core.allure.AllureLogger;
 import com.nymbus.pages.accounts.*;
 import com.nymbus.pages.accounts.transactions.TransactionsPage;
@@ -13,13 +14,16 @@ import com.nymbus.pages.clients.documents.DocumentsPage;
 import com.nymbus.pages.clients.maintenance.MaintenanceHistoryPage;
 import com.nymbus.pages.clients.maintenance.MaintenancePage;
 import com.nymbus.pages.clients.notes.NotesPage;
+import com.nymbus.pages.clients.transfers.EditTransferPage;
+import com.nymbus.pages.clients.transfers.NewTransferPage;
+import com.nymbus.pages.clients.transfers.TransfersPage;
+import com.nymbus.pages.clients.transfers.ViewTransferPage;
 import com.nymbus.pages.journal.JournalDetailsPage;
 import com.nymbus.pages.journal.JournalPage;
 import com.nymbus.pages.loans.LoansPage;
 import com.nymbus.pages.modalwindow.DebitCardModalWindow;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
-import com.nymbus.pages.teller.TellerModalPage;
-import com.nymbus.pages.teller.TellerPage;
+import com.nymbus.pages.teller.*;
 import com.nymbus.pages.tellertotellertransfer.TellerToTellerPage;
 
 public class Pages extends AllureLogger {
@@ -56,8 +60,18 @@ public class Pages extends AllureLogger {
     private static DocumentOverviewPage documentOverviewPage;
     private static AccountStatementPage accountStatementPage;
     private static TransactionsPage transactionsPage;
+    private static TransfersPage transfersPage;
+    private static NewTransferPage newTransferPage;
+    private static ViewTransferPage viewTransferPage;
+    private static EditTransferPage editTransferPage;
+    private static CashInModalPage cashInModalPage;
+    private static VerifyConductorPage verifyConductorPage;
+    private static TransactionCompletedPage transactionCompleted;
     private static JournalPage journalPage;
     private static JournalDetailsPage journalDetailsPage;
+    private static AccountsPage accountsPage;
+    private static CallStatementModalPage callStatementModalPage;
+    private static BalanceInquiryModalPage balanceInquiryModalPage;
 
     /**
      * Modal Windows
@@ -374,6 +388,77 @@ public class Pages extends AllureLogger {
         return transactionsPage;
     }
 
+
+    /**
+     * This function return an instance of `Transfers Page`
+     */
+    public static TransfersPage transfersPage() {
+        if (transfersPage == null) {
+            transfersPage = new TransfersPage();
+        }
+        return transfersPage;
+    }
+
+    /**
+     * This function return an instance of `New Transfer Page`
+     */
+    public static NewTransferPage newTransferPage() {
+        if (newTransferPage == null) {
+            newTransferPage = new NewTransferPage();
+        }
+        return newTransferPage;
+    }
+
+    /**
+     * This function return an instance of `View Transfer Page`
+     */
+    public static ViewTransferPage viewTransferPage() {
+        if (viewTransferPage == null) {
+            viewTransferPage = new ViewTransferPage();
+        }
+        return viewTransferPage;
+    }
+
+    /**
+     * This function return an instance of `Edit Transfer Page`
+     */
+    public static EditTransferPage editTransferPage() {
+        if (editTransferPage == null) {
+            editTransferPage = new EditTransferPage();
+        }
+        return editTransferPage;
+    }
+
+    /**
+     * This function return an instance of `Cash In Modal Page`
+     */
+    public static CashInModalPage cashInModalPage() {
+        if (cashInModalPage == null) {
+            cashInModalPage = new CashInModalPage();
+        }
+        return cashInModalPage;
+    }
+
+    /**
+     * This function return an instance of `Cash Verify Conductor Page`
+     */
+    public static VerifyConductorPage verifyConductor() {
+        if (verifyConductorPage == null) {
+            verifyConductorPage = new VerifyConductorPage();
+        }
+        return verifyConductorPage;
+    }
+
+    /**
+     * This function return an instance of `Transaction Completed Page`
+     */
+    public static TransactionCompletedPage transactionCompleted() {
+        if (transactionCompleted == null) {
+            transactionCompleted = new TransactionCompletedPage();
+        }
+        return transactionCompleted;
+    }
+
     /**
      * This function return an instance of `JournalPage Page`
      */
@@ -392,5 +477,36 @@ public class Pages extends AllureLogger {
             journalDetailsPage = new JournalDetailsPage();
         }
         return journalDetailsPage;
+    }
+
+    /**
+     * This function return an instance of `AccountsPage Page`
+     */
+    public static AccountsPage accountsPage() {
+        if (accountsPage ==null) {
+            accountsPage = new AccountsPage();
+        }
+        return accountsPage;
+    }
+
+
+    /**
+     * This function return an instance of `CallStatementModalPage`
+     */
+    public static CallStatementModalPage callStatementModalPage() {
+        if (callStatementModalPage == null) {
+            callStatementModalPage = new CallStatementModalPage();
+        }
+        return callStatementModalPage;
+    }
+
+    /**
+     * This function return an instance of `BalanceInquiryModalPage`
+     */
+    public static BalanceInquiryModalPage balanceInquiryModalPage() {
+        if (balanceInquiryModalPage == null) {
+            balanceInquiryModalPage = new BalanceInquiryModalPage();
+        }
+        return balanceInquiryModalPage;
     }
 }

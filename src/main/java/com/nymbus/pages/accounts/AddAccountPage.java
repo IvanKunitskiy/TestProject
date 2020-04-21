@@ -689,7 +689,7 @@ public class AddAccountPage extends PageTools {
     @Step("Set 'Account Number' value")
     public void setAccountNumberValue(String accountNumberValue) {
         waitForElementVisibility(accountNumberField);
-        scrollToElement(accountNumberField);
+//        scrollToElement(accountNumberField);
         waitForElementClickable(accountNumberField);
         type(accountNumberValue, accountNumberField);
     }
@@ -732,7 +732,7 @@ public class AddAccountPage extends PageTools {
     @Step("Set 'Account Title' value")
     public void setAccountTitleValue(String accountTitleValue) {
         waitForElementVisibility(accountTitleField);
-        scrollToElement(accountTitleField);
+//        scrollToElement(accountTitleField);
         waitForElementClickable(accountTitleField);
         type(accountTitleValue, accountTitleField);
     }

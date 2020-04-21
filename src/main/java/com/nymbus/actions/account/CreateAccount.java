@@ -59,9 +59,9 @@ public class CreateAccount {
         setProduct(account);
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
-        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         setCurrentOfficer(account);
         setBankBranch(account);
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
         setCallClassCode(account);
@@ -106,16 +106,15 @@ public class CreateAccount {
         setProduct(account);
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
-        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         setCurrentOfficer(account);
         setBankBranch(account);
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
-        setCallClassCode(account);
         setChargeOrAnalyze(account);
         setAccountAnalysis(account);
-        Pages.addAccountPage().setEarningCreditRate(account.getEarningCreditRate());
         Pages.addAccountPage().setOptInOutDateValue(account.getOptInOutDate());
+        setCallClassCode(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
@@ -197,7 +196,6 @@ public class CreateAccount {
     public void fillInInputFieldsRequiredForCheckingAccount(Account account) {
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
-        Pages.addAccountPage().setEarningCreditRate(account.getEarningCreditRate());
     }
 
     public void fillInInputFieldsRequiredForSafeDepositBoxAccount(Account account) {
