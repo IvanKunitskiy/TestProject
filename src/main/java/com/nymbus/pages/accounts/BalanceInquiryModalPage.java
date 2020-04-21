@@ -5,8 +5,8 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
 public class BalanceInquiryModalPage extends PageTools {
-    private By printButton = By.xpath("//button/span[contains(text(), 'Print')]");
-    private By closeButton = By.xpath("//button/span[contains(text(), 'Close')]");
+    private By printButton = By.xpath("//button[span[contains(text(), 'Print')]]");
+    private By closeButton = By.xpath("//div[contains(@class, 'pull-left')]//button[span[contains(text(), 'Print')]]");
     private By closeModalButton = By.xpath("//button[@type='button']/span[contains(text(), '×')]");
 
     @Step("Click the 'Print' button")
