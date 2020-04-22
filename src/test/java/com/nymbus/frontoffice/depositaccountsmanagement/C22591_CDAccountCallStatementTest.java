@@ -8,6 +8,9 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
+import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
+import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -20,6 +23,7 @@ public class C22591_CDAccountCallStatementTest extends BaseTest {
 
     private Client client;
     private Account cdAccount;
+    private Transaction transaction;
 
     @BeforeMethod
     public void preCondition() {
@@ -30,17 +34,28 @@ public class C22591_CDAccountCallStatementTest extends BaseTest {
         client.setClientType("Individual");
 
         // Set up account
-        cdAccount = new Account().setCHKAccountData();
+        cdAccount = new Account().setCDAccountData();
+
+        // Set up transaction
+        transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
 
         // Create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client);
 
-        // Create CD account
+        // Create account
         AccountActions.createAccount().createCDAccount(cdAccount);
 
-        // Assign transaction
-        Actions.tellerActions().assignAmountToAccount(cdAccount, "2", "20000");
+        // Set up transaction with account number
+        transaction.getTransactionDestination().setAccountNumber(cdAccount.getAccountNumber());
+        transaction.getTransactionDestination().setTransactionCode("311 - New CD");
+
+        // Commit transaction to account
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
+        Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
+        Actions.transactionActions().clickCommitButton();
+        Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOut();
     }
 
