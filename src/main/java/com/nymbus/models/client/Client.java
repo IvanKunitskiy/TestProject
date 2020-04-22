@@ -2,7 +2,6 @@ package com.nymbus.models.client;
 
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
-import com.nymbus.util.Random;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -480,5 +479,9 @@ public class Client {
 
     public void setBinControl(BinControl binControl) {
         this.binControl = binControl;
+    }
+
+    public String getInitials() {
+        return String.format("%s, %s %s", lastName, firstName, middleName);
     }
 }

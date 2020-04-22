@@ -120,6 +120,11 @@ public class AddAccountPage extends PageTools {
     private By mailCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By mailCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
+    @Step("Wait for account holder name")
+    public void waitForAccountHolderName() {
+        waitForElementVisibility(accountHolderName);
+    }
+
     @Step("Click the 'Discount reason' option")
     public void clickDiscountReasonSelectorOption(String discountReasonOption) {
         waitForElementVisibility(discountReasonSelectorOption,  discountReasonOption);

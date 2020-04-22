@@ -1,8 +1,9 @@
 package com.nymbus.actions.transaction;
 
-import com.nymbus.actions.Actions;
-import com.nymbus.core.utils.DateTime;
-import com.nymbus.newmodels.transaction.*;
+import com.nymbus.newmodels.transaction.MultipleTransaction;
+import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.newmodels.transaction.TransactionDestination;
+import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.DestinationType;
 import com.nymbus.newmodels.transaction.enums.SourceType;
 import com.nymbus.pages.Pages;
@@ -114,12 +115,7 @@ public class TransactionActions {
 
     private void setCashOutDestination(TransactionDestination transactionDestination) {
         Pages.tellerPage().clickCashOutButton();
-        if (transactionDestination.getAmount()%100 == 0) {
-            Pages.cashInModalWindowPage().typeHundredsAmountValue(String.format("%.0f", transactionDestination.getAmount()));
-        }
-        if (transactionDestination.getAmount()%50 == 0) {
-            Pages.cashInModalWindowPage().typeFiftiesAmountValue(String.format("%.0f", transactionDestination.getAmount()));
-        }
+        Pages.cashInModalWindowPage().typeHundredsAmountValue(String.format("%.0f", transactionDestination.getAmount()));
         Pages.cashInModalWindowPage().clickOKButton();
     }
 

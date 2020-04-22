@@ -31,4 +31,9 @@ public class TellerModalPage extends PageTools {
     public void waitForModalInvisibility() {
         waitForElementInvisibility(modalWindow);
     }
+
+    @Step("Is modal window visible")
+    public boolean isModalWindowVisible() {
+        return isElementVisible(modalWindow);
+    }
 }

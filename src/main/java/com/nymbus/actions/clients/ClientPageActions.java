@@ -23,9 +23,15 @@ public class ClientPageActions {
         return clients;
     }
 
+    public void searchAndOpenClientByName(String name) {
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Pages.clientsSearchPage().typeToClientsSearchInputField(name);
+        Pages.clientsSearchResultsPage().clickSearchResultsWithText(name);
+    }
+
     public void searchAndOpenClientByID(Client client) {
         Pages.clientsSearchPage().typeToClientsSearchInputField(client.getClientID());
-        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
+        Assert.assertEquals(Pages.clientsSearchPage().getAllLookupResults().size(), 1, "There is more than one client found");
         Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), client.getClientID()));
         Pages.clientsSearchPage().clickOnSearchButton();
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
@@ -34,7 +40,7 @@ public class ClientPageActions {
 
     public void searchAndOpenClientByAccountNumber(Account account) {
         Pages.clientsSearchPage().typeToClientsSearchInputField(account.getAccountNumber());
-        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
+        Assert.assertEquals(Pages.clientsSearchPage().getAllLookupResults().size(), 1, "There is more than one client found");
         Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), account.getAccountNumber()));
         Pages.clientsSearchPage().clickOnSearchButton();
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
@@ -43,7 +49,7 @@ public class ClientPageActions {
 
     public void searchAndOpenAccountByAccountNumber(Account account) {
         Pages.clientsSearchPage().typeToClientsSearchInputField(account.getAccountNumber());
-        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
+        Assert.assertEquals(Pages.clientsSearchPage().getAllLookupResults().size(), 1, "There is more than one client found");
         Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), account.getAccountNumber()));
         Pages.clientsSearchPage().clickOnSearchButton();
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedAccountInSearchResults(account.getAccountNumber());

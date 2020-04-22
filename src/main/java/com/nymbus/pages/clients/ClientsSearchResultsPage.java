@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 public class ClientsSearchResultsPage extends PageTools {
     private By searchResults = By.xpath("//div[contains(@ng-repeat,'item')]");
+    private By searchResultsContainsText = By.xpath("//div[contains(@ng-repeat,'item')]//div[contains(text(),'%s')]");
     private By accountNumberSearchResults = By.xpath("//div/span[@class='spaceRight ng-binding']");
     private By loadMoreResultsButton = By.xpath("//button[text()='Load More Results']");
     private By clientNameFromResultByIndex
@@ -23,6 +24,12 @@ public class ClientsSearchResultsPage extends PageTools {
             = By.xpath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][5])[%s]");
     private By exactMatchInSearchResults = By.xpath("//div[contains(@class, 'selected')]");
     private By exactAccountMatchInSearchResults = By.xpath("//div[div[div[span[contains(text(), '%s')]]]]");
+
+    @Step("Click SearchResults with {0} text")
+    public void clickSearchResultsWithText(String text) {
+        waitForElementClickable(searchResultsContainsText, text);
+        click(searchResultsContainsText, text);
+    }
 
     @Step("Wait for search results")
     public void waitForSearchResults() {
