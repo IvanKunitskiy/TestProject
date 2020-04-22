@@ -11,6 +11,9 @@ import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.accountinstructions.HoldInstruction;
 import com.nymbus.newmodels.generation.accountinstructions.InstructionConstructor;
 import com.nymbus.newmodels.generation.accountinstructions.builder.HoldInstructionBuilder;
+import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
+import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
+import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -24,6 +27,7 @@ public class C22585_BalanceInquiryOnSavingsIRAAccountTest extends BaseTest {
     private Client client;
     private Account iraAccount;
     private HoldInstruction instruction;
+    private Transaction transaction;
 
     @BeforeMethod
     public void preCondition() {
@@ -36,16 +40,28 @@ public class C22585_BalanceInquiryOnSavingsIRAAccountTest extends BaseTest {
         // Set up account
         iraAccount = new Account().setIRAAccountData();
 
-        // Set up instruction
-        instruction =  new InstructionConstructor(new HoldInstructionBuilder()).constructInstruction(HoldInstruction.class);
+        // Set up instruction and transaction
+        instruction = new InstructionConstructor(new HoldInstructionBuilder()).constructInstruction(HoldInstruction.class);
         instruction.setAmount(10);
+        transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
 
         // Create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client);
 
+        // Create IRA account
+        AccountActions.createAccount().createIRAAccount(iraAccount);
+
+        // Set up transaction with account number
+        transaction.getTransactionDestination().setAccountNumber(iraAccount.getAccountNumber());
+        transaction.getTransactionDestination().setTransactionCode("2330 - Cur Yr Contrib");
+
         // Commit transaction to account
-        Actions.tellerActions().assignAmountToAccount(iraAccount, "2", "20000");
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
+        Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
+        Actions.transactionActions().clickCommitButton();
+        Pages.tellerPage().closeModal();
 
         // Create instruction
         Pages.aSideMenuPage().clickClientMenuItem();
