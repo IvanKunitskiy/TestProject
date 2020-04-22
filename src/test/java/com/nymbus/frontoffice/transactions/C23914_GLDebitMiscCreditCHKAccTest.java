@@ -38,7 +38,7 @@ public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
         ClientsActions.createClient().createClient(client);
 
         // Create account
-        AccountActions.createAccount().createCHKAccount(checkAccount);
+        AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkAccount);
 
         // Set up transaction with account number
         transaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());

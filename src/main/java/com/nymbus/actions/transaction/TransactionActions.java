@@ -31,6 +31,14 @@ public class TransactionActions {
         Pages.tellerPage().closeModal();
     }
 
+    public void performGLDebitMiscCreditTransaction(Transaction transaction) {
+        goToTellerPage();
+        doLoginTeller();
+        createGlDebitMiscCreditTransaction(transaction);
+        clickCommitButton();
+        Pages.tellerPage().closeModal();
+    }
+
     public void performMultipleTransaction(MultipleTransaction transaction) {
         goToTellerPage();
         doLoginTeller();
