@@ -11,11 +11,13 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Deposit Accounts Management")
+@Owner("Petro")
 public class C22581_SavingsAccountCallStatementTest extends BaseTest {
     private String savingsAccountNumber = "";
 
