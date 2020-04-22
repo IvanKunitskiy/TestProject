@@ -8,6 +8,9 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
+import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
+import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -20,6 +23,7 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
 
     private Client client;
     private Account iraAccount;
+    private Transaction transaction;
 
     @BeforeMethod
     public void preCondition() {
@@ -32,15 +36,26 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
         // Set up account
         iraAccount = new Account().setIRAAccountData();
 
+        // Set up transaction
+        transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+
         // Create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client);
 
         // Create account
-        AccountActions.createAccount().createCHKAccount(iraAccount);
+        AccountActions.createAccount().createIRAAccount(iraAccount);
 
-        // Create transaction
-        Actions.tellerActions().assignAmountToAccount(iraAccount, "2", "20000");
+        // Set up transaction with account number
+        transaction.getTransactionDestination().setAccountNumber(iraAccount.getAccountNumber());
+        transaction.getTransactionDestination().setTransactionCode("2330 - Cur Yr Contrib");
+
+        // Commit transaction to account
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
+        Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
+        Actions.transactionActions().clickCommitButton();
+        Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOut();
     }
 
