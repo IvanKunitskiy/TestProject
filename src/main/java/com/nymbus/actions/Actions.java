@@ -8,6 +8,7 @@ import com.nymbus.actions.journal.JournalActions;
 import com.nymbus.actions.modalwindow.DebitCardModalWindowActions;
 import com.nymbus.actions.settings.CashDrawerAction;
 import com.nymbus.actions.settings.UsersActions;
+import com.nymbus.actions.teller.TellerActions;
 import com.nymbus.actions.transaction.TransactionActions;
 
 public class Actions {
@@ -24,6 +25,7 @@ public class Actions {
     private static TransactionActions transactionActions;
     private static MainActions mainActions;
     private static JournalActions journalActions;
+    private static TellerActions tellerActions;
 
     /**
      * Modal Window Actions
@@ -138,5 +140,15 @@ public class Actions {
             journalActions = new JournalActions();
         }
         return journalActions;
+    }
+
+    /**
+     * This function returns an instance of `TellerActions`
+     */
+    public static TellerActions tellerActions() {
+        if (tellerActions == null) {
+            tellerActions = new TellerActions();
+        }
+        return tellerActions;
     }
 }
