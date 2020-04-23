@@ -39,6 +39,14 @@ public class TransactionActions {
         Pages.tellerPage().closeModal();
     }
 
+    public void performMiscDebitGLCreditTransaction(Transaction transaction) {
+        goToTellerPage();
+        doLoginTeller();
+        createMiscDebitGLCreditTransaction(transaction);
+        clickCommitButton();
+        Pages.tellerPage().closeModal();
+    }
+
     public void performMultipleTransaction(MultipleTransaction transaction) {
         goToTellerPage();
         doLoginTeller();
@@ -115,7 +123,7 @@ public class TransactionActions {
     }
 
     private void setMiscDebitSource(TransactionSource source, int index) {
-        int tempIndex= 1 + index;
+        int tempIndex = 1 + index;
         Pages.tellerPage().clickMiscDebitButton();
         fillSourceAccountNumber(source.getAccountNumber(), tempIndex);
         fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
@@ -143,6 +151,20 @@ public class TransactionActions {
         fillDestinationAmount(String.format("%.2f", transactionDestination.getAmount()), tempIndex);
     }
 
+    private void setGLCreditDestination(TransactionDestination transactionDestination, int index) {
+        int tempIndex = index + 1;
+        Pages.tellerPage().clickGLCreditButton();
+        fillDestinationAccountNumber(transactionDestination.getAccountNumber(), tempIndex);
+        fillDestinationAmount(String.format("%.2f", transactionDestination.getAmount()), tempIndex);
+        fillDestinationDetails(transactionDestination.getNotes(), tempIndex);
+    }
+
+    private void fillDestinationDetails(String notes, int tempIndex) {
+        Pages.tellerPage().clickDestinationDetailsArrow(tempIndex);
+
+        Pages.tellerPage().typeDestinationNotesValue(tempIndex, notes);
+    }
+
     public void createCashInMiscCreditTransaction(Transaction transaction) {
         Pages.tellerPage().clickCashInButton();
         Pages.cashInModalWindowPage().typeHundredsAmountValue(String.format("%.0f", transaction.getTransactionSource().getAmount()));
@@ -156,6 +178,12 @@ public class TransactionActions {
         fillSourceInformation(transaction.getTransactionSource());
         Pages.tellerPage().clickMiscCreditButton();
         fillDestinationInformation(transaction.getTransactionDestination());
+    }
+
+    public void createMiscDebitGLCreditTransaction(Transaction transaction) {
+        int currentIndex = 0;
+        setMiscDebitSource(transaction.getTransactionSource(), currentIndex);
+        setGLCreditDestination(transaction.getTransactionDestination(), currentIndex);
     }
 
     public void clickCommitButton() {

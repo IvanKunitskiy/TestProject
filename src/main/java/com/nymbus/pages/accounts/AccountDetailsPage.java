@@ -104,6 +104,8 @@ public class AccountDetailsPage extends PageTools {
     private By dateLastInterestPay = By.xpath("//*[@data-config-name='datelastinterestpaid']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By dateNextInterestPay = By.xpath("//*[@data-config-name='datenextinterestpayment']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By nextInterestPaymentAmount = By.xpath("//*[@data-config-name='nextinterestpaymentamount']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By averageBalance = By.xpath("//*[@data-config-name='averagebalance']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By collectedBalance = By.xpath("//*[@data-config-name='collectedbalance']//span[contains(@class, 'dnTextFixedWidthText')]");
 
 
     @Step("Click the 'Accounts' link")
@@ -116,6 +118,18 @@ public class AccountDetailsPage extends PageTools {
     /**
      * Details tab
      */
+    @Step("Get 'Average Balance' value")
+    public String getAverageBalanceValue() {
+        waitForElementVisibility(averageBalance);
+        return getElementText(averageBalance).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Collected Balance' value")
+    public String getCollectedBalanceValue() {
+        waitForElementVisibility(collectedBalance);
+        return getElementText(collectedBalance).trim().replaceAll("[^0-9.]", "");
+    }
+
     @Step("Get 'Next Interest Payment amount' value")
     public String getNextInterestPaymentAmount() {
         waitForElementVisibility(nextInterestPaymentAmount);

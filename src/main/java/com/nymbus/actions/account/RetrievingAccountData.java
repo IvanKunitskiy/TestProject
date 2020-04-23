@@ -38,6 +38,25 @@ public class RetrievingAccountData {
         return balanceDataForCHKAcc;
     }
 
+    public ExtendedBalanceDataForCHKAcc getExtendedBalanceDataForCHKAcc() {
+        ExtendedBalanceDataForCHKAcc balanceDataForCHKAcc = new ExtendedBalanceDataForCHKAcc();
+        balanceDataForCHKAcc.setCurrentBalance(getCurrentBalance());
+        balanceDataForCHKAcc.setAvailableBalance(getAvailableBalance());
+        balanceDataForCHKAcc.setCollectedBalance(getCollectedBalance());
+        balanceDataForCHKAcc.setAverageBalance(getAverageBalance());
+        return balanceDataForCHKAcc;
+    }
+
+    private double getAverageBalance() {
+        String value = Pages.accountDetailsPage().getAverageBalanceValue();
+        return Double.parseDouble(value);
+    }
+
+    private double getCollectedBalance() {
+        String value = Pages.accountDetailsPage().getCollectedBalanceValue();
+        return Double.parseDouble(value);
+    }
+
     public AccountDates getAccountDates() {
         AccountDates accountDates = new AccountDates();
         accountDates.setLastDepositDate(getLastDepositDate());
