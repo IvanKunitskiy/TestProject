@@ -13,8 +13,7 @@ import org.testng.annotations.Test;
 public class C22513_LogInTest extends BaseTest {
 
     @Test(description = "C22513, Log in")
-    @Severity(SeverityLevel.CRITICAL)
-    public void firstTest() {
+    public void verifyLogin() {
 
         Pages.loginPage().waitForLoginForm();
         Pages.loginPage().typeUserName("");
@@ -24,7 +23,6 @@ public class C22513_LogInTest extends BaseTest {
                 "Error messages for user name field is not visible");
         Assert.assertTrue(Pages.loginPage().isPasswordFieldHasError(),
                 "Error messages for password field is not visible");
-
 
         Pages.loginPage().waitForLoginForm();
         Pages.loginPage().typeUserName(Constants.USERNAME);
@@ -47,6 +45,5 @@ public class C22513_LogInTest extends BaseTest {
 
         Assert.assertTrue(Pages.navigationPage().getUserFullName().contains(Constants.LAST_NAME),
                 "User's last name is not visible. Found: " + Pages.navigationPage().getUserFullName());
-
     }
 }
