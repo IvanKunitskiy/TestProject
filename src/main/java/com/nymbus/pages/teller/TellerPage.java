@@ -187,10 +187,33 @@ public class TellerPage extends PageTools {
     private By itemInDropDown = By.xpath("//div[contains(@class, 'select2-drop-active') and not(contains(@class, 'select2-display-none'))]" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
+    private By transactionDestinationDetailsArrow = By.xpath("(//*[@id='accordion-operation-destinations-content']//*[@transaction='item'])[%s]" +
+            "//a[contains(@class, 'detail-icon')]");
+
+    private By transactionDestinationNotesInput = By.xpath("(//*[@id='accordion-operation-destinations-content']//*[@transaction='item'])[%s]//input[@ng-model='transaction.notes']");
+
+    @Step("Click transition {0} 'Details' arrow")
+    public void clickDestinationDetailsArrow(int i) {
+        waitForElementClickable(transactionDestinationDetailsArrow, i);
+        click(transactionDestinationDetailsArrow, i);
+    }
+
+    @Step("Set Destination 'Notes' {0} value {1}")
+    public void typeDestinationNotesValue(int i, String note) {
+        waitForElementClickable(transactionDestinationNotesInput, i);
+        type(note, transactionDestinationNotesInput, i);
+    }
+
     @Step("Click 'Deposit' button")
     public void clickDepositButton() {
         waitForElementClickable(depositButton);
         click(depositButton);
+    }
+
+    @Step("Click 'GL Credit' button")
+    public void clickGLCreditButton() {
+        waitForElementClickable(glCreditButton);
+        click(glCreditButton);
     }
 
     @Step("Click 'Cash-Out' button")

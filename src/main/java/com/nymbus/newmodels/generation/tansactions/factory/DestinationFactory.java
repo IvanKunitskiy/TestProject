@@ -2,6 +2,7 @@ package com.nymbus.newmodels.generation.tansactions.factory;
 
 import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.enums.DestinationType;
+import com.nymbus.util.Random;
 
 public class DestinationFactory {
 
@@ -27,6 +28,15 @@ public class DestinationFactory {
         destination.setAccountNumber("12400590522");
         destination.setTransactionCode("303 - Credit Memo");
         destination.setAmount(50);
+        return destination;
+    }
+
+    public static TransactionDestination getGLCreditDestination() {
+        TransactionDestination destination = new TransactionDestination();
+        destination.setSourceType(DestinationType.GL_CREDIT);
+        destination.setAccountNumber("0-0-Dummy");
+        destination.setAmount(100.00);
+        destination.setNotes(Random.genString(20));
         return destination;
     }
 }

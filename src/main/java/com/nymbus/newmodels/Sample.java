@@ -1,26 +1,7 @@
 package com.nymbus.newmodels;
 
-import com.nymbus.core.utils.DateTime;
-import com.nymbus.newmodels.accountinstructions.BaseInstruction;
-import com.nymbus.newmodels.accountinstructions.HoldInstruction;
-import com.nymbus.newmodels.client.basicinformation.address.Country;
-import com.nymbus.newmodels.client.basicinformation.address.State;
-import com.nymbus.newmodels.client.basicinformation.type.TaxPayerIDType;
-import com.nymbus.newmodels.client.basicinformation.type.organisation.Estate;
-import com.nymbus.newmodels.client.basicinformation.type.organisation.OrganisationType;
-import com.nymbus.newmodels.client.clientdetails.contactinformation.email.Email;
-import com.nymbus.newmodels.client.clientdetails.contactinformation.email.EmailType;
-import com.nymbus.newmodels.client.clientdetails.contactinformation.phone.Phone;
-import com.nymbus.newmodels.client.clientdetails.contactinformation.phone.PhoneType;
-import com.nymbus.newmodels.client.clientdetails.type.organisation.OrganisationClientDetails;
 import com.nymbus.newmodels.client.other.document.BaseDocument;
-import com.nymbus.newmodels.client.other.document.Document;
-import com.nymbus.newmodels.client.other.document.CompanyID;
 import com.nymbus.newmodels.client.other.document.IDType;
-import com.nymbus.newmodels.generation.accountinstructions.InstructionConstructor;
-import com.nymbus.newmodels.generation.accountinstructions.builder.HoldInstructionBuilder;
-
-import static com.nymbus.core.utils.Functions.getCalculatedInterestAmount;
 
 public class Sample {
     public static void main(String[] args) {
@@ -140,6 +121,15 @@ public class Sample {
         // System.out.println(DateTime.getDaysBetweenTwoDates("04/10/2020", "07/04/2020"));
 
         // System.out.println(getCalculatedInterestAmount(100.00, 0.45, "04/16/2020", "07/16/2020"));
+
+        /*ExtendedBalanceDataForCHKAcc balanceDataForCHKAcc = new ExtendedBalanceDataForCHKAcc();
+        balanceDataForCHKAcc.setCurrentBalance(100);
+        balanceDataForCHKAcc.setAverageBalance(100);
+        balanceDataForCHKAcc.setCollectedBalance(100);
+        balanceDataForCHKAcc.setAvailableBalance(100);
+        System.out.println(balanceDataForCHKAcc.toString());
+        balanceDataForCHKAcc.reduceAmount(50);
+        System.out.println(balanceDataForCHKAcc.toString());*/
     }
 
     private static BaseDocument qwe() {
