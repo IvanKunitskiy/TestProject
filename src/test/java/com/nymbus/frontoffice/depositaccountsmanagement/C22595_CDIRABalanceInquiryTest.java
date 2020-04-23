@@ -31,7 +31,6 @@ public class C22595_CDIRABalanceInquiryTest extends BaseTest {
 
     @BeforeMethod
     public void preCondition() {
-
         // Set up client
         client = new Client().setDefaultClientData();
         client.setClientStatus("Member");
