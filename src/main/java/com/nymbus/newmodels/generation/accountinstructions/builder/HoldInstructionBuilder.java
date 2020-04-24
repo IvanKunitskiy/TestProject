@@ -21,7 +21,7 @@ public class HoldInstructionBuilder implements InstructionBuilder {
     public void setDetails() {
         this.instruction.setExpirationDate(DateTime.getDateTodayPlusDaysWithFormat(60, "MM/dd/yyyy"));
         this.instruction.setNotes(Random.genString(20));
-        this.instruction.setAmount(10.00);
+        this.instruction.setAmount(50.00);
     }
 
     @Override

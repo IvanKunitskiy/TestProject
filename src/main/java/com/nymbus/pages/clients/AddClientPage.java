@@ -678,7 +678,9 @@ public class AddClientPage extends PageTools {
     public void setExpirationDateValue(String expirationDateValue) {
         waitForElementVisibility(expirationDateField);
         waitForElementClickable(expirationDateField);
-        type(expirationDateValue, expirationDateField);
+        typeWithoutWipe("", expirationDateField);
+        SelenideTools.sleep(1);
+        typeWithoutWipe(expirationDateValue, expirationDateField);
     }
 
     @Step("Set 'Address Type' value")
