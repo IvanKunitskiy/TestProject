@@ -482,8 +482,11 @@ public class Pages extends AllureLogger {
     }
 
     /**
+<<<<<<< HEAD
      * <<<<<<< HEAD
      * =======
+=======
+>>>>>>> remotes/origin/feature/C22596
      * This function return an instance of `CashIn Modal Window Page`
      */
     public static CashInModalWindowPage cashInModalWindowPage() {
@@ -504,7 +507,10 @@ public class Pages extends AllureLogger {
     }
 
     /**
+<<<<<<< HEAD
      * >>>>>>> remotes/origin/feature/C22595
+=======
+>>>>>>> remotes/origin/feature/C22596
      * This function return an instance of `AccountsPage Page`
      */
     public static AccountsPage accountsPage() {
