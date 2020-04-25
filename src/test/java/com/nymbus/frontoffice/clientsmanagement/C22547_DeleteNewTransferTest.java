@@ -17,7 +17,7 @@ import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import sun.jvm.hotspot.debugger.Page;
+//import sun.jvm.hotspot.debugger.Page;
 
 @Epic("Frontoffice")
 @Feature("Clients Management")

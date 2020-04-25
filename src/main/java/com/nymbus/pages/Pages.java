@@ -1,5 +1,6 @@
 package com.nymbus.pages;
 
+import com.nymbus.actions.account.CreateInstruction;
 import com.nymbus.core.allure.AllureLogger;
 import com.nymbus.pages.accounts.*;
 import com.nymbus.pages.accounts.transactions.TransactionsPage;
@@ -72,6 +73,8 @@ public class Pages extends AllureLogger {
     private static CashInModalPage cashInModalPage;
     private static VerifyConductorPage verifyConductorPage;
     private static TransactionCompletedPage transactionCompleted;
+    private static AccountsPage accountsPage;
+    private static CallStatementModalPage callStatementModalPage;
 
     /**
      * Modal Windows
@@ -389,26 +392,6 @@ public class Pages extends AllureLogger {
     }
 
     /**
-     * This function return an instance of `JournalPage Page`
-     */
-    public static JournalPage journalPage() {
-        if (journalPage == null) {
-            journalPage = new JournalPage();
-        }
-        return journalPage;
-    }
-
-    /**
-     * This function return an instance of `JournalDetails Page`
-     */
-    public static JournalDetailsPage journalDetailsPage() {
-        if (journalDetailsPage == null) {
-            journalDetailsPage = new JournalDetailsPage();
-        }
-        return journalDetailsPage;
-    }
-
-    /**
      * This function return an instance of `CashIn Modal Window Page`
      */
     public static CashInModalWindowPage cashInModalWindowPage() {
@@ -496,5 +479,46 @@ public class Pages extends AllureLogger {
             transactionCompleted = new TransactionCompletedPage();
         }
         return transactionCompleted;
+    }
+
+    /**
+     * This function return an instance of `JournalPage Page`
+     */
+    public static JournalPage journalPage() {
+        if (journalPage == null) {
+            journalPage = new JournalPage();
+        }
+        return journalPage;
+    }
+
+    /**
+     * This function return an instance of `JournalDetails Page`
+     */
+    public static JournalDetailsPage journalDetailsPage() {
+        if (journalDetailsPage ==null) {
+            journalDetailsPage = new JournalDetailsPage();
+        }
+        return journalDetailsPage;
+    }
+
+    /**
+     * This function return an instance of `AccountsPage Page`
+     */
+    public static AccountsPage accountsPage() {
+        if (accountsPage ==null) {
+            accountsPage = new AccountsPage();
+        }
+        return accountsPage;
+    }
+
+
+    /**
+     * This function return an instance of `CallStatementModalPage`
+     */
+    public static CallStatementModalPage callStatementModalPage() {
+        if (callStatementModalPage == null) {
+            callStatementModalPage = new CallStatementModalPage();
+        }
+        return callStatementModalPage;
     }
 }
