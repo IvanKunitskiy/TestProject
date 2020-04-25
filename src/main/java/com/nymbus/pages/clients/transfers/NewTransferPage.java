@@ -1,6 +1,8 @@
 package com.nymbus.pages.clients.transfers;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -12,7 +14,7 @@ public class NewTransferPage extends PageTools {
 
     private By transferTypeSelectorButton = By.xpath("//div[@data-test-id='field-transfertype']");
     private By transferTypeList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By transferTypeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By transferTypeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
 
     private By fromAccountSelectorButton = By.xpath("//div[@data-test-id='field-accountid']");
     private By fromAccountList = By.xpath("//li[contains(@role, 'option')]/div/span");
@@ -23,12 +25,23 @@ public class NewTransferPage extends PageTools {
     private By toAccountSelectorOption = By.xpath("//div[contains(@class, 'ui-select-choices-row ng-scope')]/div/div[contains(text(), '%s')]");
     private By highBalance = By.xpath("//input[@id='transferthreshold']");
     private By maxAmountToTransfer = By.xpath("//input[@id='transferamount']");
+    private By amount = By.xpath("//input[@id='transferamount']");
     private By transferCharge = By.xpath("//input[@id='transfercharge']");
+
+    private By frequencySelectorButton = By.xpath("//div[@data-test-id='field-frequencytransfer']");
+    private By frequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By frequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
     @Step("Type value to the 'Max Amount To Transfer' field")
     public void setMaxAmount(String value) {
         waitForElementClickable(maxAmountToTransfer, value);
         type(value, maxAmountToTransfer);
+    }
+
+    @Step("Type value to the 'Amount' field")
+    public void setAmount(String value) {
+        waitForElementClickable(amount, value);
+        type(value, amount);
     }
 
     @Step("Type value to the 'Transfer Charge' field")
@@ -43,10 +56,17 @@ public class NewTransferPage extends PageTools {
         type(value, highBalance);
     }
 
+    @Step("Wait for 'Save' button invisibility")
+    public void waitForSaveButtonInvisibility() {
+        waitForElementInvisibility(saveButton);
+    }
+
     @Step("Click the 'Save' button")
     public void clickSaveButton() {
+        waitForElementVisibility(saveButton);
         waitForElementClickable(saveButton);
         click(saveButton);
+        waitForSaveButtonInvisibility();
     }
 
     @Step("Click the 'Transfer Type' option")
@@ -107,5 +127,25 @@ public class NewTransferPage extends PageTools {
     public void clickToAccountSelectorButton() {
         waitForElementClickable(toAccountSelectorButton);
         click(toAccountSelectorButton);
+    }
+
+    @Step("Click the 'Frequency' option")
+    public void clickFrequencySelectorOption(String frequencyOption) {
+        waitForElementVisibility(frequencySelectorOption, frequencyOption);
+        waitForElementClickable(frequencySelectorOption, frequencyOption);
+        click(frequencySelectorOption, frequencyOption);
+    }
+
+    @Step("Returning list of 'Frequency' options")
+    public List<String> getFrequencyList() {
+        waitForElementVisibility(frequencyList);
+        waitForElementClickable(frequencyList);
+        return getElementsText(frequencyList);
+    }
+
+    @Step("Click the 'Frequency' selector button")
+    public void clickFrequencySelectorButton() {
+        waitForElementClickable(frequencySelectorButton);
+        click(frequencySelectorButton);
     }
 }

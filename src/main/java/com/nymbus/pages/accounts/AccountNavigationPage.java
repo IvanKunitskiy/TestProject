@@ -18,10 +18,17 @@ public class AccountNavigationPage extends PageTools {
     private By transfersTab = By.xpath("//a[contains(text(), 'Transfers')]");
     private By isNotesTabActive = By.xpath("//li[@ng-if='customerAccess.notes_tab' and contains(@class, 'active')]");
     private By accountsBreadCrumb = By.xpath("//a[@data-test-id='go-accounts']");
+    private By customerProfileBreadCrumb = By.xpath("//a[@data-test-id='go-customerProfile']");
 
     /**
      * Bread crumbs
      */
+
+    @Step("Click the 'Accounts' link in bread crumbs")
+    public void clickCustomerProfileInBreadCrumb() {
+        waitForElementClickable(customerProfileBreadCrumb);
+        click(customerProfileBreadCrumb);
+    }
 
     @Step("Click the 'Accounts' link in bread crumbs")
     public void clickAccountsInBreadCrumbs() {

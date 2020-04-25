@@ -10,6 +10,28 @@ public class ViewTransferPage extends PageTools {
     private By highBalance = By.xpath("//input[@id='transferthreshold']");
     private By maxAmountToTransfer = By.xpath("//input[@id='transferamount']");
     private By transferCharge = By.xpath("//input[@id='transfercharge']");
+    private By editButton = By.xpath("//button//span[contains(text(), 'Edit')]");
+    private By deleteButton = By.xpath("//button//span[contains(text(), 'Delete')]");
+
+    @Step("Check if 'Edit' button disabled")
+    public boolean isEditButtonDisabled() {
+        String value = getElementAttributeValue("disabled", editButton);
+        return Boolean.parseBoolean(value);
+    }
+
+    @Step("Click 'Delete' button")
+    public void clickDeleteButton() {
+        waitForElementClickable(deleteButton);
+        waitForElementVisibility(deleteButton);
+        click(deleteButton);
+    }
+
+    @Step("Click 'Edit' button")
+    public void clickEditButton() {
+        waitForElementClickable(editButton);
+        waitForElementVisibility(editButton);
+        click(editButton);
+    }
 
     @Step("Get 'From Account' value in transfer view mode")
     public String getFromAccount() {

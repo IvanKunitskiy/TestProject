@@ -108,22 +108,31 @@ public class TellerPage extends PageTools {
 
     private By transactionSourceNotesInput = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//input[@ng-model='transaction.notes']");
 
+
     @Step("Click 'Misc-Debit' button")
     public void clickMiscDebitButton() {
         waitForElementClickable(miscDebit);
         click(miscDebit);
     }
 
-    @Step("Click 'Cash-In' button")
-    public void clickCashInButton() {
-        waitForElementClickable(cashInButton);
-        click(cashInButton);
+    private By creditTransferCodeSelector = By.xpath("//span[contains(text(), '101 - Credit Transfr')]");
+
+    @Step("Wait for 'Credit transfer' code visible")
+    public void waitForCreditTransferCodeVisible() {
+        waitForElementVisibility(creditTransferCodeSelector);
+        waitForElementClickable(creditTransferCodeSelector);
     }
 
     @Step("Click 'GL Debit' button")
     public void clickGLDebitButton() {
         waitForElementClickable(glDebitButton);
         click(glDebitButton);
+    }
+
+    @Step("Click 'Cash-In' button")
+    public void clickCashInButton() {
+        waitForElementClickable(cashInButton);
+        click(cashInButton);
     }
 
     @Step("Click {0} 'Account number' division")
@@ -186,6 +195,7 @@ public class TellerPage extends PageTools {
             "//*[@data-name='amount']//input");
     private By itemInDropDown = By.xpath("//div[contains(@class, 'select2-drop-active') and not(contains(@class, 'select2-display-none'))]" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By accountNumberOptionSelector = By.xpath("//div[contains(@class, 'ui-select-dropdown')]//div//span[contains(text(), '%s')]");
 
     private By transactionDestinationDetailsArrow = By.xpath("(//*[@id='accordion-operation-destinations-content']//*[@transaction='item'])[%s]" +
             "//a[contains(@class, 'detail-icon')]");
@@ -232,6 +242,12 @@ public class TellerPage extends PageTools {
     public void typeDestinationAccountNumber(int i, String number) {
         waitForElementClickable(accountNumberDestinationInput, i);
         type(number, accountNumberDestinationInput, i);
+    }
+
+    @Step("Click destination 'Account number' suggestion option")
+    public void clickDestinationAccountSuggestionOption(String accountNumber) {
+        waitForElementClickable(accountNumberOptionSelector, accountNumber);
+        click(accountNumberOptionSelector, accountNumber);
     }
 
     @Step("Click Destination 'Amount' {0} division")
