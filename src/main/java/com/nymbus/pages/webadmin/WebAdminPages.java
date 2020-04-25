@@ -1,5 +1,6 @@
 package com.nymbus.pages.webadmin;
 
+import com.nymbus.pages.webadmin.accountstransactions.AccountsPage;
 import com.nymbus.pages.webadmin.coresetup.RulesUIQueryAnalyzerPage;
 import com.nymbus.pages.webadmin.userandsecurity.UsersPage;
 
@@ -12,6 +13,7 @@ public class WebAdminPages {
     private static NavigationPage navigationPage;
     private static UsersPage usersPage;
     private static RulesUIQueryAnalyzerPage rulesUIQueryAnalyzerPage;
+    private static AccountsPage accountsPage;
 
     /**
      * This function return an instance of `LoginPage`
@@ -53,4 +55,13 @@ public class WebAdminPages {
         return rulesUIQueryAnalyzerPage;
     }
 
+    /**
+     * This function return an instance of `AccountsPage`
+     */
+    public static AccountsPage accountsPage() {
+        if (accountsPage == null) {
+            accountsPage = new AccountsPage();
+        }
+        return accountsPage;
+    }
 }
