@@ -13,6 +13,9 @@ import com.nymbus.pages.clients.documents.DocumentsPage;
 import com.nymbus.pages.clients.maintenance.MaintenanceHistoryPage;
 import com.nymbus.pages.clients.maintenance.MaintenancePage;
 import com.nymbus.pages.clients.notes.NotesPage;
+import com.nymbus.pages.clients.transfers.NewTransferPage;
+import com.nymbus.pages.clients.transfers.TransfersPage;
+import com.nymbus.pages.clients.transfers.ViewTransferPage;
 import com.nymbus.pages.journal.JournalDetailsPage;
 import com.nymbus.pages.journal.JournalPage;
 import com.nymbus.pages.loans.LoansPage;
@@ -62,10 +65,13 @@ public class Pages extends AllureLogger {
     private static JournalDetailsPage journalDetailsPage;
     private static CashInModalWindowPage cashInModalWindowPage;
     private static VerifyConductorModalPage verifyConductorModalPage;
+    private static TransfersPage transfersPage;
+    private static NewTransferPage newTransferPage;
+    private static ViewTransferPage viewTransferPage;
 
     /**
      * Modal Windows
-     * */
+     */
     private static DebitCardModalWindow debitCardModalWindow;
 
     /**
@@ -392,7 +398,7 @@ public class Pages extends AllureLogger {
      * This function return an instance of `JournalDetails Page`
      */
     public static JournalDetailsPage journalDetailsPage() {
-        if (journalDetailsPage ==null) {
+        if (journalDetailsPage == null) {
             journalDetailsPage = new JournalDetailsPage();
         }
         return journalDetailsPage;
@@ -416,5 +422,35 @@ public class Pages extends AllureLogger {
             verifyConductorModalPage = new VerifyConductorModalPage();
         }
         return verifyConductorModalPage;
+    }
+
+    /**
+     * This function return an instance of `Transfers Page`
+     */
+    public static TransfersPage transfersPage() {
+        if (transfersPage == null) {
+            transfersPage = new TransfersPage();
+        }
+        return transfersPage;
+    }
+
+    /**
+     * This function return an instance of `New Transfer Page`
+     */
+    public static NewTransferPage newTransferPage() {
+        if (newTransferPage == null) {
+            newTransferPage = new NewTransferPage();
+        }
+        return newTransferPage;
+    }
+
+    /**
+     * This function return an instance of `View Transfer Page`
+     */
+    public static ViewTransferPage viewTransferPage() {
+        if (viewTransferPage == null) {
+            viewTransferPage = new ViewTransferPage();
+        }
+        return viewTransferPage;
     }
 }
