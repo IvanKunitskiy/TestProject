@@ -34,6 +34,7 @@ public class TellerPage extends PageTools {
         waitForElementClickable(effectiveDate);
         type(date, effectiveDate);
     }
+
     /**
      * Success transaction Modal dialog region
      */
@@ -108,6 +109,7 @@ public class TellerPage extends PageTools {
 
     private By transactionSourceNotesInput = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//input[@ng-model='transaction.notes']");
 
+    private By creditTransferCodeSelector = By.xpath("//span[contains(text(), '101 - Credit Transfr')]");
 
     @Step("Click 'Misc-Debit' button")
     public void clickMiscDebitButton() {
@@ -115,24 +117,22 @@ public class TellerPage extends PageTools {
         click(miscDebit);
     }
 
-    private By creditTransferCodeSelector = By.xpath("//span[contains(text(), '101 - Credit Transfr')]");
-
     @Step("Wait for 'Credit transfer' code visible")
     public void waitForCreditTransferCodeVisible() {
         waitForElementVisibility(creditTransferCodeSelector);
         waitForElementClickable(creditTransferCodeSelector);
     }
 
-    @Step("Click 'GL Debit' button")
-    public void clickGLDebitButton() {
-        waitForElementClickable(glDebitButton);
-        click(glDebitButton);
-    }
-
     @Step("Click 'Cash-In' button")
     public void clickCashInButton() {
         waitForElementClickable(cashInButton);
         click(cashInButton);
+    }
+
+    @Step("Click 'GL Debit' button")
+    public void clickGLDebitButton() {
+        waitForElementClickable(glDebitButton);
+        click(glDebitButton);
     }
 
     @Step("Click {0} 'Account number' division")
@@ -262,7 +262,7 @@ public class TellerPage extends PageTools {
         type(amount, transactionDestinationAmountField, i);
     }
 
-    @Step ("Click on destination code {0}")
+    @Step("Click on destination code {0}")
     public void clickOnDestinationCodeField(int i) {
         waitForElementClickable(transactionDestinationCodeField, i);
         click(transactionDestinationCodeField, i);

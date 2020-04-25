@@ -1,6 +1,5 @@
 package com.nymbus.pages;
 
-import com.nymbus.actions.account.CreateInstruction;
 import com.nymbus.core.allure.AllureLogger;
 import com.nymbus.pages.accounts.*;
 import com.nymbus.pages.accounts.transactions.TransactionsPage;
@@ -393,26 +392,6 @@ public class Pages extends AllureLogger {
     }
 
     /**
-     * This function return an instance of `CashIn Modal Window Page`
-     */
-    public static CashInModalWindowPage cashInModalWindowPage() {
-        if (cashInModalWindowPage == null) {
-            cashInModalWindowPage = new CashInModalWindowPage();
-        }
-        return cashInModalWindowPage;
-    }
-
-    /**
-     * This function return an instance of `Verify Conductor Modal Page`
-     */
-    public static VerifyConductorModalPage verifyConductorModalPage() {
-        if (verifyConductorModalPage == null) {
-            verifyConductorModalPage = new VerifyConductorModalPage();
-        }
-        return verifyConductorModalPage;
-    }
-
-    /**
      * This function return an instance of `Transfers Page`
      */
     public static TransfersPage transfersPage() {
@@ -496,17 +475,40 @@ public class Pages extends AllureLogger {
      * This function return an instance of `JournalDetails Page`
      */
     public static JournalDetailsPage journalDetailsPage() {
-        if (journalDetailsPage ==null) {
+        if (journalDetailsPage == null) {
             journalDetailsPage = new JournalDetailsPage();
         }
         return journalDetailsPage;
     }
 
     /**
+     * <<<<<<< HEAD
+     * =======
+     * This function return an instance of `CashIn Modal Window Page`
+     */
+    public static CashInModalWindowPage cashInModalWindowPage() {
+        if (cashInModalWindowPage == null) {
+            cashInModalWindowPage = new CashInModalWindowPage();
+        }
+        return cashInModalWindowPage;
+    }
+
+    /**
+     * This function return an instance of `Verify Conductor Modal Page`
+     */
+    public static VerifyConductorModalPage verifyConductorModalPage() {
+        if (verifyConductorModalPage == null) {
+            verifyConductorModalPage = new VerifyConductorModalPage();
+        }
+        return verifyConductorModalPage;
+    }
+
+    /**
+     * >>>>>>> remotes/origin/feature/C22595
      * This function return an instance of `AccountsPage Page`
      */
     public static AccountsPage accountsPage() {
-        if (accountsPage ==null) {
+        if (accountsPage == null) {
             accountsPage = new AccountsPage();
         }
         return accountsPage;
