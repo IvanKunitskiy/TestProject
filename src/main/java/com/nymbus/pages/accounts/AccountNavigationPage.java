@@ -18,6 +18,7 @@ public class AccountNavigationPage extends PageTools {
     private By transfersTab = By.xpath("//a[contains(text(), 'Transfers')]");
     private By isNotesTabActive = By.xpath("//li[@ng-if='customerAccess.notes_tab' and contains(@class, 'active')]");
     private By accountsBreadCrumb = By.xpath("//a[@data-test-id='go-accounts']");
+    private By instructionsTab = By.xpath("//a[contains(text(), 'Instructions')]");
     private By customerProfileBreadCrumb = By.xpath("//a[@data-test-id='go-customerProfile']");
 
     /**
@@ -82,6 +83,12 @@ public class AccountNavigationPage extends PageTools {
     public void clickTransfersTab() {
         waitForElementClickable(transfersTab);
         click(transfersTab);
+    }
+
+    @Step("Click the 'Instructions' tab")
+    public void clickInstructionsTab() {
+        waitForElementClickable(instructionsTab);
+        click(instructionsTab);
     }
 
 }
