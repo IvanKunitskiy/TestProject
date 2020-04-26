@@ -6,6 +6,7 @@ import com.nymbus.newmodels.client.basicinformation.address.Address;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.documents.Document;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.email.Email;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.phone.Phone;
+import com.nymbus.newmodels.client.clientdetails.type.ClientStatus;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
@@ -76,7 +77,24 @@ public class IndividualClientActions {
         Pages.addClientPage().setIDNumberValue(document.getIdNumber());
         setIssuedBY(document.getIssuedBy().getState());
         setCountry(document.getCountry().getCountry());
+        Pages.addClientPage().clickExpirationDateCalendarIcon();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Pages.addClientPage().clickExpirationDateCalendarIcon();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Pages.addClientPage().setExpirationDateValue(document.getExpirationDate());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setIDType(String idType) {
@@ -270,36 +288,42 @@ public class IndividualClientActions {
                 individualClient.getIndividualType().getMiddleName(), "Client 'Middle Name' isn't as expected.");
         asert.assertEquals(Pages.clientDetailsPage().getLastName(),
                 individualClient.getIndividualType().getLastName(), "Client 'Last Name' isn't as expected.");
-        asert.assertEquals(Pages.clientDetailsPage().getSuffix(),
-                individualClient.getIndividualClientDetails().getSuffix(), "Client 'Suffix' isn't as expected.");
-        asert.assertEquals(Pages.clientDetailsPage().getMaidenFamilyName(),
-                individualClient.getIndividualClientDetails().getMaidenFamilyName(), "Client 'Maiden/Family Name' isn't as expected.");
-        asert.assertEquals(Pages.clientDetailsPage().getAka_1(),
-                individualClient.getIndividualClientDetails().getAKAs().get(0), "Client 'AKA #1' isn't as expected.");
+
+        if (!ClientStatus.CONSUMER.getClientStatus().equals(individualClient.getIndividualType().getClientStatus().getClientStatus())) {
+            asert.assertEquals(Pages.clientDetailsPage().getSuffix(),
+                    individualClient.getIndividualClientDetails().getSuffix(), "Client 'Suffix' isn't as expected.");
+            asert.assertEquals(Pages.clientDetailsPage().getMaidenFamilyName(),
+                    individualClient.getIndividualClientDetails().getMaidenFamilyName(), "Client 'Maiden/Family Name' isn't as expected.");
+            asert.assertEquals(Pages.clientDetailsPage().getAka_1(),
+                    individualClient.getIndividualClientDetails().getAKAs().get(0), "Client 'AKA #1' isn't as expected.");
+            asert.assertEquals(Pages.clientDetailsPage().getBirthDate(),
+                    individualClient.getIndividualType().getBirthDate(), "Client 'Birth Date' isn't as expected.");
+            asert.assertEquals(Pages.clientDetailsPage().getGender(),
+                    individualClient.getIndividualClientDetails().getGender().getGender(), "Client 'Gender' isn't as expected.");
+            asert.assertEquals(Pages.clientDetailsPage().getEducation(),
+                    individualClient.getIndividualClientDetails().getEducation().getEducation(), "Client 'Education' isn't as expected.");
+            asert.assertEquals(Pages.clientDetailsPage().getIncome(),
+                    individualClient.getIndividualClientDetails().getIncome().getIncome(), "Client 'Income' isn't as expected.");
+            asert.assertEquals(Pages.clientDetailsPage().getMaritalStatus(),
+                    individualClient.getIndividualClientDetails().getMaritalStatus().getMaritalStatus(), "Client 'Marital Status' isn't as expected.");
+            asert.assertEquals(Pages.clientDetailsPage().getOccupation(),
+                    individualClient.getIndividualClientDetails().getOccupation(), "Client 'Occupation' isn't as expected.");
+            asert.assertEquals(Pages.clientDetailsPage().getConsumerInformationIndicator(),
+                    individualClient.getIndividualClientDetails().getConsumerInformationIndicator().getIndicator(), "Client 'Consumer Information Indicator' isn't as expected.");
+            asert.assertEquals(Pages.clientDetailsPage().getJobTitle(),
+                    individualClient.getIndividualClientDetails().getJobTitle(), "Client 'Job Title' isn't as expected.");
+            asert.assertEquals(Pages.clientDetailsPage().getOwnOrRent(),
+                    individualClient.getIndividualClientDetails().getOwnOrRent().getOwnOrRent(), "Client 'Own or Rent' isn't as expected.");
+            asert.assertEquals(Pages.clientDetailsPage().getMailCode(),
+                    individualClient.getIndividualClientDetails().getMailCode().getMailCode(), "Client 'Mail Code' isn't as expected.");
+        }
+
         asert.assertEquals(Pages.clientDetailsPage().getTaxPairIdType(),
                 individualClient.getIndividualType().getTaxPayerIDType().getTaxPayerIDType(), "Client 'Tax payer id type' isn't as expected.");
         asert.assertEquals(Pages.clientDetailsPage().getTaxID(),
                 individualClient.getIndividualType().getTaxID(), "Client 'Tax ID' isn't as expected.");
         asert.assertEquals(Pages.clientDetailsPage().getBirthDate(),
                 individualClient.getIndividualType().getBirthDate(), "Client 'Birth Date' isn't as expected.");
-        asert.assertEquals(Pages.clientDetailsPage().getGender(),
-                individualClient.getIndividualClientDetails().getGender().getGender(), "Client 'Gender' isn't as expected.");
-        asert.assertEquals(Pages.clientDetailsPage().getEducation(),
-                individualClient.getIndividualClientDetails().getEducation().getEducation(), "Client 'Education' isn't as expected.");
-        asert.assertEquals(Pages.clientDetailsPage().getIncome(),
-                individualClient.getIndividualClientDetails().getIncome().getIncome(), "Client 'Income' isn't as expected.");
-        asert.assertEquals(Pages.clientDetailsPage().getMaritalStatus(),
-                individualClient.getIndividualClientDetails().getMaritalStatus().getMaritalStatus(), "Client 'Marital Status' isn't as expected.");
-        asert.assertEquals(Pages.clientDetailsPage().getOccupation(),
-                individualClient.getIndividualClientDetails().getOccupation(), "Client 'Occupation' isn't as expected.");
-        asert.assertEquals(Pages.clientDetailsPage().getConsumerInformationIndicator(),
-                individualClient.getIndividualClientDetails().getConsumerInformationIndicator().getIndicator(), "Client 'Consumer Information Indicator' isn't as expected.");
-        asert.assertEquals(Pages.clientDetailsPage().getJobTitle(),
-                individualClient.getIndividualClientDetails().getJobTitle(), "Client 'Job Title' isn't as expected.");
-        asert.assertEquals(Pages.clientDetailsPage().getOwnOrRent(),
-                individualClient.getIndividualClientDetails().getOwnOrRent().getOwnOrRent(), "Client 'Own or Rent' isn't as expected.");
-        asert.assertEquals(Pages.clientDetailsPage().getMailCode(),
-                individualClient.getIndividualClientDetails().getMailCode().getMailCode(), "Client 'Mail Code' isn't as expected.");
         //TODO analyze select officer asserting issue
 //        asert.assertEquals(Pages.clientDetailsPage().getSelectOfficer(),
 //                individualClient.getIndividualClientDetails().getSelectOfficer(), "Client 'Select Officer' isn't as expected.");
@@ -334,12 +358,19 @@ public class IndividualClientActions {
         Pages.clientDetailsPage().clickDocumentsTab();
         Pages.clientDetailsPage().waitForDocumentsTable();
 
-//        for (int i = 0; i < individualClient.getIndividualClientDetails().getDocuments().size(); i++) {
-//            asert.assertEquals(Pages.clientDetailsPage().getDocumentIDByIndex(i+1),
-//                    individualClient.getIndividualClientDetails().getDocuments().get(i).getIdNumber(), "Client 'Document Type' isn't as expected.");
-//            asert.assertEquals(Pages.clientDetailsPage().getDocumentTypeByIndex(i+1),
-//                    individualClient.getIndividualClientDetails().getDocuments().get(i).getIdType().getIdType(), "Client 'Document ID' isn't as expected.");
-//        }
+        if (ClientStatus.CONSUMER.getClientStatus().equals(individualClient.getIndividualType().getClientStatus().getClientStatus())) {
+            asert.assertEquals(Pages.clientDetailsPage().getDocumentIDByIndex(1),
+                    individualClient.getIndividualClientDetails().getDocuments().get(0).getIdNumber(), "Client 'Document Type' isn't as expected.");
+            asert.assertEquals(Pages.clientDetailsPage().getDocumentTypeByIndex(1),
+                    individualClient.getIndividualClientDetails().getDocuments().get(0).getIdType().getIdType(), "Client 'Document ID' isn't as expected.");
+        } else {
+            for (int i = 0; i < individualClient.getIndividualClientDetails().getDocuments().size(); i++) {
+                asert.assertEquals(Pages.clientDetailsPage().getDocumentIDByIndex(i + 1),
+                        individualClient.getIndividualClientDetails().getDocuments().get(i).getIdNumber(), "Client 'Document Type' isn't as expected.");
+                asert.assertEquals(Pages.clientDetailsPage().getDocumentTypeByIndex(i + 1),
+                        individualClient.getIndividualClientDetails().getDocuments().get(i).getIdType().getIdType(), "Client 'Document ID' isn't as expected.");
+            }
+        }
 
         asert.assertAll();
     }

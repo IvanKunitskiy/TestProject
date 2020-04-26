@@ -77,6 +77,7 @@ public class AddClientPage extends PageTools {
     private By countrySelectorOption = By.xpath("//div[@id='doc_country']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By expirationDateField = By.id("doc_expiration");
+    private By expirationDateCalendarIcon = By.xpath("//div[input[@id='doc_expiration']]/div[span[@class='nyb-icon-calendar']]");
     private By addressTypeField = By.xpath("//div[@name='addressuse_0']" +
             "//input[contains(@class, 'nb-select-search')]");
     private By addressTypeSelectorButton = By.xpath("//div[@name='addressuse_0']" +
@@ -674,10 +675,14 @@ public class AddClientPage extends PageTools {
         click(countrySelectorOption, countryOption);
     }
 
+    @Step("Click on 'Expiration Date' calendar icon")
+    public void clickExpirationDateCalendarIcon() {
+        waitForElementClickable(expirationDateCalendarIcon);
+        click(expirationDateCalendarIcon);
+    }
+
     @Step("Set 'Expiration Date' value")
     public void setExpirationDateValue(String expirationDateValue) {
-        waitForElementVisibility(expirationDateField);
-        waitForElementClickable(expirationDateField);
         type(expirationDateValue, expirationDateField);
     }
 
