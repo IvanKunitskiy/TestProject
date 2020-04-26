@@ -29,8 +29,8 @@ public class IndividualClientDetailsFactory {
         individualClientDetails.setUserDefinedFields(Collections.singletonList(Random.genString(10)));
         individualClientDetails.setUsingOnlineBank(false);
 
-        individualClientDetails.setPhones(Collections.EMPTY_SET);
-        individualClientDetails.setEmails(Collections.EMPTY_SET);
+        individualClientDetails.setPhones(Collections.EMPTY_LIST);
+        individualClientDetails.setEmails(Collections.EMPTY_LIST);
 
         return individualClientDetails;
     }

@@ -4,9 +4,10 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import io.qameta.allure.*;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -15,23 +16,26 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22541_CreateIndividualMemberClientTest extends BaseTest {
 
-    private Client client;
+    private IndividualClient individualClient;
 
     @BeforeMethod
-    public void prepareClientData(){
-        client = new Client().setDefaultClientData();
-        client.setClientType("IndividualType");
-        client.setClientStatus("Member");
+    public void prepareClientData() {
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+
+        individualClient = individualClientBuilder.buildClient();
     }
 
     @Test(description = "C22541, Create Client - IndividualType - Member")
     @Severity(SeverityLevel.CRITICAL)
-    public void firstTest() {
+    public void verifyIndividualClientCreation() {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-        ClientsActions.createClient().createClient(client);
+        ClientsActions.individualClientActions().createClient(individualClient);
+        ClientsActions.individualClientActions().setClientDetailsData(individualClient);
+        ClientsActions.individualClientActions().setDocumentation(individualClient);
 
-        Assert.assertEquals(ClientsActions.verifyClientDataActions().getIndividualClientData(), client,
-                "Client's data is not equals");
+        ClientsActions.individualClientActions().verifyClientData(individualClient);
+
     }
 }

@@ -22,11 +22,11 @@ public class OfficerFactory implements IndividualTypeFactory {
         officer.setTaxPayerIDType(TaxPayerIDType.INDIVIDUAL_SSN);
         officer.setTaxID(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         officer.setBirthDate("01/01/1990");
-        officer.setIdType(IDType.PASSPORT);
-        officer.setIdNumber(String.valueOf(Random.genInt(1_100_000, 9_999_999)));
-        officer.setIssuedBy(State.ALABAMA);
-        officer.setCountry(Country.UNITED_STATES);
-        officer.setExpirationDate("01/01/2050");
+//        officer.setIdType(IDType.PASSPORT);
+//        officer.setIdNumber(String.valueOf(Random.genInt(1_100_000, 9_999_999)));
+//        officer.setIssuedBy(State.ALABAMA);
+//        officer.setCountry(Country.UNITED_STATES);
+//        officer.setExpirationDate("01/01/2050");
 
         return officer;
     }

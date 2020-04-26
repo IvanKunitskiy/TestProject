@@ -22,11 +22,11 @@ public class IndividualFactory implements IndividualTypeFactory {
         individual.setTaxPayerIDType(TaxPayerIDType.INDIVIDUAL_SSN);
         individual.setTaxID(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         individual.setBirthDate("01/01/1990");
-        individual.setIdType(IDType.PASSPORT);
-        individual.setIdNumber(String.valueOf(Random.genInt(1_100_000, 9_999_999)));
-        individual.setIssuedBy(State.ALABAMA);
-        individual.setCountry(Country.UNITED_STATES);
-        individual.setExpirationDate("01/01/2050");
+//        individual.setIdType(IDType.PASSPORT);
+//        individual.setIdNumber(String.valueOf(Random.genInt(1_100_000, 9_999_999)));
+//        individual.setIssuedBy(State.ALABAMA);
+//        individual.setCountry(Country.UNITED_STATES);
+//        individual.setExpirationDate("01/01/2050");
 
         return individual;
     }

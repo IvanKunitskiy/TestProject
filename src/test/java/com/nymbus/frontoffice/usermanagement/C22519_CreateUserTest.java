@@ -26,7 +26,6 @@ public class C22519_CreateUserTest extends BaseTest {
     }
 
     @Test(description = "C22519, Create User + Forgot Password + Log In")
-    @Severity(SeverityLevel.CRITICAL)
     public void verifyUserCreation() {
 
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);

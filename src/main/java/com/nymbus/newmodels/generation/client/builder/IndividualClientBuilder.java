@@ -3,9 +3,11 @@ package com.nymbus.newmodels.generation.client.builder;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualTypeBuilder;
 import com.nymbus.newmodels.generation.client.factory.basicinformation.AddressFactory;
+import com.nymbus.newmodels.generation.client.factory.clientdetails.contactinformation.DocumentsFactory;
 import com.nymbus.newmodels.generation.client.factory.clientdetails.contactinformation.EmailFactory;
 import com.nymbus.newmodels.generation.client.factory.clientdetails.contactinformation.PhoneFactory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -31,15 +33,21 @@ public class IndividualClientBuilder {
         AddressFactory addressFactory = new AddressFactory();
         PhoneFactory phoneFactory = new PhoneFactory();
         EmailFactory emailFactory = new EmailFactory();
+        DocumentsFactory documentsFactory = new DocumentsFactory();
 
-        individualClient.getIndividualType().setAddresses(Collections.singleton(addressFactory.getAddress()));
-        individualClient.getIndividualClientDetails().setPhones(new HashSet<>(Arrays.asList(
+        individualClient.getIndividualType().setAddresses(Collections.singletonList(addressFactory.getAddress()));
+        individualClient.getIndividualClientDetails().setPhones(new ArrayList<>(Arrays.asList(
                 phoneFactory.getPhone(),
                 phoneFactory.getPhone()
         )));
-        individualClient.getIndividualClientDetails().setEmails(new HashSet<>(Arrays.asList(
+        individualClient.getIndividualClientDetails().setEmails(new ArrayList<>(Arrays.asList(
                 emailFactory.getEmail(),
                 emailFactory.getEmail()
+        )));
+
+        individualClient.getIndividualClientDetails().setDocuments(new ArrayList<>(Arrays.asList(
+                documentsFactory.getPassport(),
+                documentsFactory.getStateDriverLicense()
         )));
 
         return individualClient;

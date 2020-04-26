@@ -197,7 +197,7 @@ public class AddCashDrawerPage extends PageTools {
     public void setGLAccountNumberValue(String glAccountNumberValue) {
         waitForElementVisibility(glAccountNumberField);
         waitForElementClickable(glAccountNumberField);
-        type(glAccountNumberValue, glAccountNumberField);
+        typeWithoutLogs(glAccountNumberValue, glAccountNumberField);
     }
 
     @Step("Click on 'GL Account Number' selector")

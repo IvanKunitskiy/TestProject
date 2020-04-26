@@ -83,7 +83,7 @@ public class AddUsersPage extends PageTools {
             "//div[contains(@class, 'action_icon')]");
     private By cashDrawerSelectorOption = By.xpath("//div[@id='usrusers-cashdrawerid']" +
             "//ul/li/a[contains(text(),'%s')]");
-    private By addNewCashDrawerLink = By.xpath("//div[@id='usrusers-cashDrawer_addNe//input[data-submit=\"data-submit\"]w']//a");
+    private By addNewCashDrawerLink = By.xpath("//div[@id='usrusers-cashDrawer_addNew']//a");
 
     // Add Cash Drawer modal
     private By addNewCashDrawerModal = By.xpath("//div[span[text()='Add Cash Drawer']]");
@@ -117,13 +117,11 @@ public class AddUsersPage extends PageTools {
 
     @Step("Click 'Save changes' button")
     public void clickSaveChangesButton() {
-        waitForElementClickable(saveChangesButton);
         click(saveChangesButton);
     }
 
     @Step("Click 'Cancel' button")
     public void clickCancelButton() {
-        waitForElementClickable(cancelButton);
         click(cancelButton);
     }
 
@@ -133,123 +131,93 @@ public class AddUsersPage extends PageTools {
 
     @Step("Set 'First Name' value")
     public void setFirstNameValue(String firstNameValue) {
-        waitForElementVisibility(firstNameField);
-        waitForElementClickable(firstNameField);
         type(firstNameValue, firstNameField);
     }
 
     @Step("Set 'Middle Name' value")
     public void setMiddleNameValue(String middleNameValue) {
-        waitForElementVisibility(middleNameField);
-        waitForElementClickable(middleNameField);
         type(middleNameValue, middleNameField);
     }
 
     @Step("Set 'Last Name' value")
     public void setLastNameValue(String lastNameValue) {
-        waitForElementVisibility(lastNameField);
-        waitForElementClickable(lastNameField);
         type(lastNameValue, lastNameField);
     }
 
     @Step("Set 'Initials' value")
     public void setInitialsValue(String initialsValue) {
-        waitForElementClickable(initialsField);
         type(initialsValue, initialsField);
     }
 
     @Step("Set 'Profile Photo'")
     public void setProfilePhoto(String photoPath) {
-        waitForElementClickable(profilePhotoField);
         type(photoPath, profilePhotoField);
     }
 
     @Step("Set 'Branch' value")
     public void setBranchValue(String branchValue) {
-        waitForElementVisibility(brandField);
-        waitForElementClickable(brandField);
         wipeText(brandField);
         type(branchValue, brandField);
     }
 
     @Step("Click on 'Branch' selector")
     public void clickBranchSelectorButton() {
-        waitForElementClickable(brandSelectorButton);
         click(brandSelectorButton);
     }
 
     @Step("Returning list of branchs")
     public List<String> getBranchList(){
-        waitForElementVisibility(brandList);
-        waitForElementClickable(brandList);
         return getElementsText(brandList);
     }
 
     @Step("Click on 'Branch' option")
     public void clickBranchOption(String branchOption) {
-        waitForElementVisibility(brandSelectorOption, branchOption);
-        waitForElementClickable(brandSelectorOption, branchOption);
         click(brandSelectorOption, branchOption);
     }
 
     @Step("Set 'Location' value")
     public void setLocationValue(String locationValue) {
-        waitForElementVisibility(locationField);
-        waitForElementClickable(locationField);
         wipeText(locationField);
         type(locationValue, locationField);
     }
 
     @Step("Click on 'Location' selector")
     public void clickLocationSelectorButton() {
-        waitForElementClickable(locationSelectorButton);
         click(locationSelectorButton);
     }
 
     @Step("Returning list of locations")
     public List<String> getLocationList(){
-        waitForElementVisibility(locationList);
-        waitForElementClickable(locationList);
         return getElementsText(locationList);
     }
 
     @Step("Click on 'Location' option")
     public void clickLocationOption(String locationOption) {
-        waitForElementVisibility(locationSelectorOption, locationOption);
-        waitForElementClickable(locationSelectorOption, locationOption);
         click(locationSelectorOption, locationOption);
     }
 
     @Step("Set 'Title' value")
     public void setTitleValue(String titleValue) {
-        waitForElementVisibility(titleField);
-        waitForElementClickable(titleField);
         type(titleValue, titleField);
     }
 
     @Step("Click 'Add New Tax ID' button")
     public void clickAddNewTaxIDLink() {
-        waitForElementClickable(addNexTaxIDLink);
         click(addNexTaxIDLink);
     }
 
     @Step("Set 'New Tax ID' value")
     public void setTaxIDValueByIndex(String taxIDValue, int index) {
-        waitForElementVisibility(taxIDFieldByIndex, index);
-        waitForElementClickable(taxIDFieldByIndex, index);
         type(taxIDValue, taxIDFieldByIndex, index);
     }
 
     @Step("Click 'Delete' Tax ID button")
     public void clickDeleteTaxIDLink(int index) {
-        waitForElementClickable(deleteTaxIDFieldByIndex, index);
         click(deleteTaxIDFieldByIndex, index);
     }
 
     @Step("Set 'Phone' value")
     public void setPhoneValue(String phoneValue) {
-        waitForElementVisibility(phoneField);
-        waitForElementClickable(phoneField);
         click(phoneField);
         for (char ch:phoneValue.toCharArray()) {
             SelenideTools.sleep(1);
@@ -259,8 +227,6 @@ public class AddUsersPage extends PageTools {
 
     @Step("Set 'Mobile' value")
     public void setMobileValue(String mobileValue) {
-        waitForElementVisibility(mobileField);
-        waitForElementClickable(mobileField);
         click(mobileField);
         for (char ch: mobileValue.toCharArray()) {
             SelenideTools.sleep(1);
@@ -270,21 +236,16 @@ public class AddUsersPage extends PageTools {
 
     @Step("Set 'Email' value")
     public void setEmailValue(String emailValue) {
-        waitForElementVisibility(emailField);
-        waitForElementClickable(emailField);
         type(emailValue, emailField);
     }
 
     @Step("Set 'Login ID' value")
     public void setLoginIDValue(String loginIDValue) {
-        waitForElementVisibility(loginIDField);
-        waitForElementClickable(loginIDField);
         type(loginIDValue, loginIDField);
     }
 
     @Step("Click 'Login Disabled' toggle")
     public void clickLoginDisabledToggle() {
-        waitForElementClickable(loginDisabledToggle);
         click(loginDisabledToggle);
     }
 
@@ -297,27 +258,21 @@ public class AddUsersPage extends PageTools {
 
     @Step("Click 'Add Roles' link")
     public void clickAddRolesLink() {
-        waitForElementClickable(addRolesLink);
         click(addRolesLink);
     }
 
     @Step("Set 'Roles' value")
     public void setRolesValue(String rolesValue, int index) {
-        waitForElementVisibility(rolesFieldByIndex, index);
-        waitForElementClickable(rolesFieldByIndex, index);
         type(rolesValue, rolesFieldByIndex, index);
     }
 
     @Step("Click on 'Roles' selector")
     public void clickRolesSelectorButton(int index) {
-        waitForElementClickable(rolesSelectorButtonByIndex, index);
         click(rolesSelectorButtonByIndex, index);
     }
 
     @Step("Click on 'Roles' option")
     public void clickRolesOption(String rolesOption, int index) {
-        waitForElementVisibility(rolesSelectorOptionByIndex, index, rolesOption);
-        waitForElementClickable(rolesSelectorOptionByIndex, index, rolesOption);
         click(rolesSelectorOptionByIndex, index, rolesOption);
     }
 
@@ -328,13 +283,11 @@ public class AddUsersPage extends PageTools {
 
     @Step("Click 'Delete' Role button")
     public void clickDeleteRoleByIndex(int index) {
-        waitForElementClickable(deleteRolesFieldByIndex, index);
         click(deleteRolesFieldByIndex, index);
     }
 
     @Step("Click 'Is Active' toggle")
     public void clickIsActiveToggle() {
-        waitForElementClickable(isActiveToggle);
         click(isActiveToggle);
     }
 
@@ -347,48 +300,36 @@ public class AddUsersPage extends PageTools {
 
     @Step("Set 'Check Deposit Limit' value")
     public void setCheckDepositLimitValue(String checkDepositLimitValue) {
-        waitForElementVisibility(checkDepositLimitField);
-        waitForElementClickable(checkDepositLimitField);
         type(checkDepositLimitValue, checkDepositLimitField);
     }
 
     @Step("Set 'Network Printer' value")
     public void setNetworkPrinterValue(String networkPrinterValue) {
-        waitForElementVisibility(networkPrinterField);
-        waitForElementClickable(networkPrinterField);
         type(networkPrinterValue, networkPrinterField);
     }
 
     @Step("Click on 'Network Printer' selector")
     public void clickNetworkPrinterSelectorButton() {
-        waitForElementClickable(networkPrinterSelectorButton);
         click(networkPrinterSelectorButton);
     }
 
     @Step("Click on 'Network Printer' option")
     public void clickNetworkPrinterOption(String networkPrinterOption) {
-        waitForElementVisibility(networkPrinterSelectorOption, networkPrinterOption);
-        waitForElementClickable(networkPrinterSelectorOption, networkPrinterOption);
         click(networkPrinterSelectorOption, networkPrinterOption);
     }
 
     @Step("Set 'Official Check Limit' value")
     public void setOfficialCheckLimitValue(String officialCheckLimitValue) {
-        waitForElementVisibility(officialCheckLimitField);
-        waitForElementClickable(officialCheckLimitField);
         type(officialCheckLimitValue, officialCheckLimitField);
     }
 
     @Step("Set 'Cash Out Limit' value")
     public void setCashOutLimitValue(String cashOutLimitValue) {
-        waitForElementVisibility(cashOutLimitField);
-        waitForElementClickable(cashOutLimitField);
         type(cashOutLimitValue, cashOutLimitField);
     }
 
     @Step("Click 'Teller' toggle")
     public void clickTellerToggle() {
-        waitForElementClickable(tellerToggle);
         click(tellerToggle);
     }
 
@@ -401,35 +342,27 @@ public class AddUsersPage extends PageTools {
 
     @Step("Set 'Cash Drawer' value")
     public void setCashDrawerValue(String cashDrawerValue) {
-        waitForElementVisibility(cashDrawerField);
-        waitForElementClickable(cashDrawerField);
         wipeText(cashDrawerField);
         type(cashDrawerValue, cashDrawerField);
     }
 
     @Step("Click on 'Cash Drawer' selector")
     public void clickCashDrawerSelectorButton() {
-        waitForElementClickable(cashDrawerSelectorButton);
         click(cashDrawerSelectorButton);
     }
 
     @Step("Returning list of cash drawer")
     public List<String> getCashDrawerList(){
-        waitForElementVisibility(cashDrawerList);
-        waitForElementClickable(cashDrawerList);
         return getElementsText(cashDrawerList);
     }
 
     @Step("Click on 'Cash Drawer' option")
     public void clickCashDrawerOption(String cashDrawerOption) {
-        waitForElementVisibility(cashDrawerSelectorOption, cashDrawerOption);
-        waitForElementClickable(cashDrawerSelectorOption, cashDrawerOption);
         click(cashDrawerSelectorOption, cashDrawerOption);
     }
 
     @Step("Click 'Add New' cash drawer link")
     public void clickAddNewCashDrawerLink() {
-        waitForElementClickable(addNewCashDrawerLink);
         click(addNewCashDrawerLink);
     }
 
@@ -444,76 +377,57 @@ public class AddUsersPage extends PageTools {
 
     @Step("Set 'GL Account Number' value")
     public void setGLAccountNumberValue(String glAccountNumberValue) {
-        waitForElementVisibility(glAccountNumberField);
-        waitForElementClickable(glAccountNumberField);
-        type(glAccountNumberValue, glAccountNumberField);
+        typeWithoutLogs(glAccountNumberValue, glAccountNumberField);
     }
 
     @Step("Click on 'GL Account Number' selector")
     public void clickGLAccountNumberSearchButton() {
-        waitForElementClickable(glAccountNumberSearchButton);
         click(glAccountNumberSearchButton);
     }
 
     @Step("Returning list of GL Account Number")
     public List<String> getGLAccountNumberList(){
-        waitForElementVisibility(glAccountNumberList);
-        waitForElementClickable(glAccountNumberList);
         return getElementsText(glAccountNumberList);
     }
 
     @Step("Click on 'GL Account Number' option")
     public void clickGLAccountNumberOption(String glAccountNumber) {
-        waitForElementVisibility(glAccountNumberOption, glAccountNumber);
-        waitForElementClickable(glAccountNumberOption, glAccountNumber);
         click(glAccountNumberOption, glAccountNumber);
     }
 
     @Step("Set 'Cash Drawer Name' value")
     public void setCashDrawerNameValue(String nameValue) {
-        waitForElementVisibility(cashDrawerNameModal);
-        waitForElementClickable(cashDrawerNameModal);
         type(nameValue, cashDrawerNameModal);
     }
 
     @Step("Set 'Cash Drawer Type' value")
     public void setCashDrawerTypeValue(String cashDrawerTypeValue) {
-        waitForElementVisibility(cashDrawerTypeField);
-        waitForElementClickable(cashDrawerTypeField);
+        wipeText(cashDrawerTypeField);
         type(cashDrawerTypeValue, cashDrawerTypeField);
     }
 
     @Step("Click on 'Cash Drawer Type' selector")
     public void clickCashDrawerTypeSelectorButton() {
-        waitForElementClickable(cashDrawerTypeSelectorButton);
         click(cashDrawerTypeSelectorButton);
     }
 
     @Step("Returning list of cash drawer's types")
     public List<String> getCashDrawerTypeList(){
-        waitForElementVisibility(cashDrawerTypeList);
-        waitForElementClickable(cashDrawerTypeList);
         return getElementsText(cashDrawerTypeList);
     }
 
     @Step("Click on 'Cash Drawer Type' option")
     public void clickCashDrawerTypeOption(String cashDrawerTypeOption) {
-        waitForElementVisibility(cashDrawerTypeSelectorOption, cashDrawerTypeOption);
-        waitForElementClickable(cashDrawerTypeSelectorOption, cashDrawerTypeOption);
         click(cashDrawerTypeSelectorOption, cashDrawerTypeOption);
     }
 
     @Step("Click 'Cancel' create cash drawer button")
     public void clickCancelAddCashDrawer() {
-        waitForElementVisibility(cancelButton);
-        waitForElementClickable(cancelButton);
         click(cancelButton);
     }
 
     @Step("Click 'Add' create cash drawer button")
     public void clickAddNewCashDrawerButton() {
-        waitForElementVisibility(addCashDrawerButton);
-        waitForElementClickable(addCashDrawerButton);
         click(addCashDrawerButton);
     }
 }

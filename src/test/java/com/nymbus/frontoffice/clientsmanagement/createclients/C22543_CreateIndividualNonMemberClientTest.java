@@ -5,6 +5,10 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.models.client.Client;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.client.clientdetails.type.ClientStatus;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -15,23 +19,26 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22543_CreateIndividualNonMemberClientTest extends BaseTest {
 
-    private Client client;
+    private IndividualClient individualClient;
 
     @BeforeMethod
     public void prepareClientData(){
-        client = new Client().setDefaultClientData();
-        client.setClientType("IndividualType");
-        client.setClientStatus("Non-member");
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+
+        individualClient = individualClientBuilder.buildClient();
+        individualClient.getIndividualType().setClientStatus(ClientStatus.NON_MEMBER);
     }
 
     @Test(description = "C22543, Create Client - IndividualType - Non Member")
     @Severity(SeverityLevel.CRITICAL)
-    public void firstTest() {
+    public void verifyNonMemberClientCreation() {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-        ClientsActions.createClient().createClient(client);
+        ClientsActions.individualClientActions().createClient(individualClient);
+        ClientsActions.individualClientActions().setClientDetailsData(individualClient);
+        ClientsActions.individualClientActions().setDocumentation(individualClient);
 
-        Assert.assertEquals(ClientsActions.verifyClientDataActions().getIndividualClientData(), client,
-                "Client's data is not equals");
+        ClientsActions.individualClientActions().verifyClientData(individualClient);
     }
 }

@@ -19,7 +19,7 @@ public class ViewUserPage extends PageTools {
     /**
      * User data
      */
-
+    private By userDataRegion = By.xpath("//div[@id='usrusers']");
     private By firstName = By.xpath("//div[@id='usrusers-userfname']//span[@class='xwidget_readonly_value']");
     private By middleName = By.xpath("//div[@id='usrusers-usermname']//span[@class='xwidget_readonly_value']");
     private By lastName = By.xpath("//div[@id='usrusers-userlname']//span[@class='xwidget_readonly_value']");
@@ -42,6 +42,11 @@ public class ViewUserPage extends PageTools {
     private By cashOutLimit = By.xpath("//div[@id='usrusers-cashoutlimit']//span");
     private By teller = By.xpath("//div[@id='usrusers-telleryn']//input[contains(@name, 'teller')]");
     private By cashDrawer = By.xpath("//div[@id='usrusers-cashdrawerid']//span[contains(@class, 'xwidget_readonly_value')]");
+
+    public void waitForUserDataRegion(){
+        waitForElementVisibility(userDataRegion);
+        waitForElementVisibility(firstName);
+    }
 
     /**
      * Actions with controls

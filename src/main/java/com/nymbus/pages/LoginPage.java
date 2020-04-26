@@ -14,10 +14,15 @@ public class LoginPage extends PageTools {
     private By enterButton = By.xpath("//button[@data-test-id='action-login']");
 
     private By wrongCredentialsMessage = By.xpath("//div[contains(@class, 'toast-error')]");
+    private By progressBar = By.xpath("//div[contains(@class, 'progress-bar')]");
 
     public void waitForLoginForm() {
         waitForElementVisibility(loginForm);
         waitForElementClickable(loginForm);
+    }
+
+    public void waitForLoginFormNotVisible() {
+        waitForElementInvisibility(loginForm);
     }
 
     public void typeUserName(String email) {
@@ -65,5 +70,10 @@ public class LoginPage extends PageTools {
 
     public boolean isPasswordFieldVisible(){
         return isElementVisible(passwordField);
+    }
+
+    public void waitForProgressBarDisappear(){
+        waitForElementVisibility(progressBar);
+        waitForElementInvisibility(progressBar);
     }
 }
