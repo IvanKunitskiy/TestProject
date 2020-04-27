@@ -75,6 +75,7 @@ public class Pages extends AllureLogger {
     private static AccountsPage accountsPage;
     private static CallStatementModalPage callStatementModalPage;
     private static BalanceInquiryModalPage balanceInquiryModalPage;
+    private static AttentionModalPage attentionModalPage;
 
     /**
      * Modal Windows
@@ -539,5 +540,15 @@ public class Pages extends AllureLogger {
             balanceInquiryModalPage = new BalanceInquiryModalPage();
         }
         return balanceInquiryModalPage;
+    }
+
+    /**
+     * This function return an instance of `AttentionModalPage`
+     */
+    public static AttentionModalPage attentionModalPage() {
+        if (attentionModalPage == null) {
+            attentionModalPage = new AttentionModalPage();
+        }
+        return attentionModalPage;
     }
 }

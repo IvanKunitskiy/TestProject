@@ -13,6 +13,7 @@ import com.nymbus.newmodels.note.Note;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -20,7 +21,8 @@ public class C22605_AddAccountLevelNotesTest extends BaseTest {
 
     private Client client;
     private Account chkAccount;
-    private Note note;
+    private Note note1;
+    private Note note2;
 
     @BeforeMethod
     public void preCondition() {
@@ -28,8 +30,8 @@ public class C22605_AddAccountLevelNotesTest extends BaseTest {
         client.setClientStatus("Member");
         client.setClientType("Individual");
 
-        note = new Note().setDefaultNoteData();
-        note.setResponsibleOfficer(Constants.USERNAME + " " + Constants.PASSWORD);
+        note1 = new Note().setDefaultNoteData();
+        note2 = new Note().setDefaultNoteData();
 
         // Set up account
         chkAccount = new Account().setCHKAccountData();
@@ -62,9 +64,9 @@ public class C22605_AddAccountLevelNotesTest extends BaseTest {
                 "- Due Date - any ≥ current date\n" +
                 "- Expiration Date - any > Due Date\n" +
                 "and click [Save] button");
-        Pages.notesPage().typeToNewNoteTextArea(note.getNewNote());
-        Pages.notesPage().setDueDateValue(note.getDueDate());
-        Pages.notesPage().setExpirationDateValue(note.getExpirationDate());
+        Pages.notesPage().typeToNewNoteTextArea(note1.getNewNote());
+        Pages.notesPage().setDueDateValue(note1.getDueDate());
+        Pages.notesPage().setExpirationDateValue(note1.getExpirationDate());
         Pages.notesPage().clickSaveButton();
 
         logInfo("Step 5: Click [Add New Note] button again\n" +
@@ -72,10 +74,10 @@ public class C22605_AddAccountLevelNotesTest extends BaseTest {
                 "fill in all other fields including 'Severity' field with any value from the drop-down\n" +
                 "and click [Save] button");
         Pages.notesPage().clickAddNewNoteButton();
-        NotesActions.editActions().setSeverity(note);
-        Pages.notesPage().setDueDateValue(note.getDueDate());
-        Pages.notesPage().setExpirationDateValue(note.getExpirationDate());
-        NotesActions.editActions().setTemplate(note);
+        NotesActions.editActions().setSeverity(note2);
+        Pages.notesPage().setDueDateValue(note2.getDueDate());
+        Pages.notesPage().setExpirationDateValue(note2.getExpirationDate());
+        NotesActions.editActions().setTemplate(note2);
         Pages.notesPage().clickSaveButton();
 
         logInfo("Step 6: Open Teller page in the new tab\n" +
@@ -87,9 +89,12 @@ public class C22605_AddAccountLevelNotesTest extends BaseTest {
         Pages.tellerPage().clickAccountNumberDiv(1);
         Pages.tellerPage().typeAccountNumber(1, chkAccount.getAccountNumber());
         Pages.tellerPage().clickOnAutocompleteDropDownItem(chkAccount.getAccountNumber());
-        // TODO: On clarification. Currently alerts for both created notes are displayed in different way.
+        Assert.assertTrue(Pages.tellerPage().isAlertWithTextVisible("Account | " + chkAccount.getAccountNumber() + " | erased"), "Alert for second note is not visible");
 
         logInfo("Step 7: Open Account from the precondition on Maintenance -> Maintenance History page");
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Pages.attentionModalPage().clickYesButton();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 

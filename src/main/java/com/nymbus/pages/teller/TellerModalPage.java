@@ -24,6 +24,7 @@ public class TellerModalPage extends PageTools {
     @Step("Click 'Enter' button")
     public void clickEnterButton() {
         waitForElementVisibility(enterButton);
+        waitForElementClickable(enterButton);
         click(enterButton);
     }
 

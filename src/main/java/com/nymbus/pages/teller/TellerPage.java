@@ -73,10 +73,17 @@ public class TellerPage extends PageTools {
      * Notifications region
      */
     private By notificationWithText = By.xpath("//div[@class='toast-message' and contains(text(), '%s')]");
+    private By noteAlert = By.xpath("//section[contains(@class, 'alerts-section')]/div/div/span[contains(text(), '%s')]");
 
     @Step("Is message with text {0} present")
     public boolean isMessageWithTextPresent(String text) {
         return isElementVisible(notificationWithText, text);
+    }
+
+    @Step("Is alert with text visible")
+    public boolean isAlertWithTextVisible(String text) {
+        waitForElementVisibility(noteAlert, text);
+        return isElementVisible(noteAlert, text);
     }
 
     /**
