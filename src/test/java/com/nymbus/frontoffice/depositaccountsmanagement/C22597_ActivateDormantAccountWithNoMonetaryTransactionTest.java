@@ -24,7 +24,6 @@ public class C22597_ActivateDormantAccountWithNoMonetaryTransactionTest extends 
 
     private Client client;
     private Account chkAccount;
-    private Account savingsAccount;
 
     @BeforeMethod
     public void preCondition() {
@@ -35,14 +34,13 @@ public class C22597_ActivateDormantAccountWithNoMonetaryTransactionTest extends 
 
         // Set up account
         chkAccount = new Account().setCHKAccountData();
-        savingsAccount = new Account().setSavingsAccountData();
 
         // Create a client
         Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client);
 
-        // Create CHK / Savings account
+        // Create CHK account
         AccountActions.createAccount().createCHKAccount(chkAccount);
         String[] url = WebDriverRunner.url().split("/");
         String rootID = url[url.length - 2];
