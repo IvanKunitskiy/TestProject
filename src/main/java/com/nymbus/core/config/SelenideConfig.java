@@ -34,7 +34,6 @@ public class SelenideConfig {
 
         Configuration.browser = browser;
 
-        System.out.println("REMOTEUTL: " + Constants.REMOTE_URL);
         if (Constants.REMOTE_URL != null) {
             Configuration.driverManagerEnabled = false;
             Configuration.remote = Constants.REMOTE_URL;

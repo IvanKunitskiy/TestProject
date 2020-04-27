@@ -8,9 +8,13 @@ import com.nymbus.newmodels.client.clientdetails.contactinformation.phone.Phone;
 import com.nymbus.newmodels.generation.client.OrganisationClientSettings;
 import com.nymbus.newmodels.generation.client.builder.type.organisation.OrganisationTypeBuilder;
 import com.nymbus.newmodels.generation.client.factory.basicinformation.AddressFactory;
+import com.nymbus.newmodels.generation.client.factory.clientdetails.contactinformation.DocumentsFactory;
 import com.nymbus.newmodels.generation.client.factory.clientdetails.contactinformation.EmailFactory;
 import com.nymbus.newmodels.generation.client.factory.clientdetails.contactinformation.PhoneFactory;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 
 public class OrganisationClientBuilder {
@@ -20,26 +24,37 @@ public class OrganisationClientBuilder {
         this.organisationTypeBuilder = organisationTypeBuilder;
     }
 
-    public OrganisationClient buildClient(OrganisationClientSettings clientSettings) {
+    public OrganisationClient buildClient() {
         organisationTypeBuilder.createOrganisationClient();
         organisationTypeBuilder.buildOrganisationType();
         organisationTypeBuilder.buildOrganisationClientDetails();
-        organisationTypeBuilder.buildOrganisationClientDocuments(clientSettings.getDocuments());
 
         OrganisationClient organisationClient = organisationTypeBuilder.getOrganisationClient();
         buildSignature(organisationClient);
 
-        return setPersonalData(organisationClient, clientSettings);
+        return setPersonalData(organisationClient);
     }
 
-    private OrganisationClient setPersonalData(OrganisationClient organisationClient, OrganisationClientSettings clientSettings) {
+    private OrganisationClient setPersonalData(OrganisationClient organisationClient) {
         AddressFactory addressFactory = new AddressFactory();
         PhoneFactory phoneFactory = new PhoneFactory();
         EmailFactory emailFactory = new EmailFactory();
+        DocumentsFactory documentsFactory = new DocumentsFactory();
 
-        organisationClient.getOrganisationType().setAddresses(getAddresses(clientSettings.getAddressCount(), addressFactory));
-        organisationClient.getOrganisationClientDetails().setPhones(getPhones(clientSettings.getPhonesCount(), phoneFactory));
-        organisationClient.getOrganisationClientDetails().setEmails(getEmails(clientSettings.getEmailCount(), emailFactory));
+        organisationClient.getOrganisationType().setAddresses(Collections.singletonList(addressFactory.getAddress()));
+        organisationClient.getOrganisationClientDetails().setPhones(new ArrayList<>(Arrays.asList(
+                phoneFactory.getPhone(),
+                phoneFactory.getPhone()
+        )));
+        organisationClient.getOrganisationClientDetails().setEmails(new ArrayList<>(Arrays.asList(
+                emailFactory.getEmail(),
+                emailFactory.getEmail()
+        )));
+
+        organisationClient.getOrganisationClientDetails().setDocuments(new ArrayList<>(Arrays.asList(
+                documentsFactory.getPassport(),
+                documentsFactory.getStateDriverLicense()
+        )));
 
         return organisationClient;
     }

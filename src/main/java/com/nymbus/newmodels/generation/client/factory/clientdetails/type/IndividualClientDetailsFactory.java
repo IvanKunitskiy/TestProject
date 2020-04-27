@@ -1,5 +1,6 @@
 package com.nymbus.newmodels.generation.client.factory.clientdetails.type;
 
+import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.client.clientdetails.type.individual.*;
 import com.nymbus.newmodels.client.clientdetails.type.organisation.MailCode;
 import com.nymbus.newmodels.client.other.File;
@@ -23,7 +24,7 @@ public class IndividualClientDetailsFactory {
         individualClientDetails.setJobTitle(Random.genString(10));
         individualClientDetails.setOwnOrRent(OwnOrRent.OWN);
         individualClientDetails.setMailCode(MailCode.MAIL);
-        individualClientDetails.setSelectOfficer(""); // TODO: Need to understand who is officer and when to set him up
+        individualClientDetails.setSelectOfficer(Constants.FIRST_NAME + " " + Constants.LAST_NAME);
         individualClientDetails.setServiceMember(false);
         individualClientDetails.setTruStageMembershipOptOut(false);
         individualClientDetails.setUserDefinedFields(Collections.singletonList(Random.genString(10)));

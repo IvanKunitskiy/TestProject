@@ -316,6 +316,8 @@ public class IndividualClientActions {
                     individualClient.getIndividualClientDetails().getOwnOrRent().getOwnOrRent(), "Client 'Own or Rent' isn't as expected.");
             asert.assertEquals(Pages.clientDetailsPage().getMailCode(),
                     individualClient.getIndividualClientDetails().getMailCode().getMailCode(), "Client 'Mail Code' isn't as expected.");
+            asert.assertEquals(Pages.clientDetailsPage().getSelectOfficer(),
+                    individualClient.getIndividualClientDetails().getSelectOfficer(), "Client 'Select Officer' isn't as expected.");
         }
 
         asert.assertEquals(Pages.clientDetailsPage().getTaxPairIdType(),
@@ -324,9 +326,6 @@ public class IndividualClientActions {
                 individualClient.getIndividualType().getTaxID(), "Client 'Tax ID' isn't as expected.");
         asert.assertEquals(Pages.clientDetailsPage().getBirthDate(),
                 individualClient.getIndividualType().getBirthDate(), "Client 'Birth Date' isn't as expected.");
-        //TODO analyze select officer asserting issue
-//        asert.assertEquals(Pages.clientDetailsPage().getSelectOfficer(),
-//                individualClient.getIndividualClientDetails().getSelectOfficer(), "Client 'Select Officer' isn't as expected.");
 
         /**
          * Contact Information

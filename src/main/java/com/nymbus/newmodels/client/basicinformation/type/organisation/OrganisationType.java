@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -22,7 +23,7 @@ public abstract class OrganisationType {
     @NonNull private TaxPayerIDType taxPayerIDType;
     @NonNull private String taxID;
 
-    @NonNull private Set<Address> addresses; // At least one
+    @NonNull private List<Address> addresses; // At least one
 
     protected OrganisationType(ClientType clientType) {
         this.clientType = clientType;

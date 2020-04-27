@@ -37,6 +37,7 @@ public class AddClientPage extends PageTools {
             "//li[contains(@role, 'option')]/div/span");
     private By clientStatusSelectorOption = By.xpath("//div[@name='statusid']" +
             "//li[contains(@role, 'option')]/div/span[contains(text(), '%s')]");
+    private By organizationNameField = By.id("name1");
     private By firstNameField = By.id("name2");
     private By middleNameField = By.id("middlename");
     private By lastNameField = By.id("name1");
@@ -151,7 +152,9 @@ public class AddClientPage extends PageTools {
     /**
      * Client Details Organisation info
      */
+    private By industrySearchIcon = By.xpath("//*[@id='naicsindustry']//i[contains(@class, 'nyb-icon-search')]");
     private By industryField = By.xpath("//*[@id='naicsindustry']//input[contains(@class, 'ui-select-search')]");
+    private By industryOption = By.xpath("//*[@id='naicsindustry']//div[contains(@class, 'ui-select-choices-row-inner')]/div[contains(text(), '%s')]");
     private By mailCodeSelectorButton1 = By.xpath("//*[@id='mailingcode']//span[contains(@class, 'select2-arrow')]");
     private By selectOfficerSelectorButton1 = By.xpath("//*[@id='officerid']//span[contains(@class, 'select2-arrow')]");
     private By akaField1 = By.xpath("//tr[@class='ng-scope' and  @ng-repeat='alias in basicInformation.aliases'][%s]" +
@@ -161,9 +164,20 @@ public class AddClientPage extends PageTools {
     /**
      * Filling Client Details Organisation info
      */
+
+    public void clickIndustrySearchIcon() {
+        waitForElementClickable(industrySearchIcon);
+        click(industrySearchIcon);
+    }
+
     public void setIndustryField(String industry) {
         waitForElementClickable(industryField);
         type(industry, industryField);
+    }
+
+    public void clickIndustryOption(String option) {
+        waitForElementClickable(industryOption, option);
+        click(industryOption, option);
     }
 
     public void clickMailCodeSelectorButton1() {
@@ -516,6 +530,14 @@ public class AddClientPage extends PageTools {
         waitForElementClickable(clientStatusSelectorOption, clientTypeOption);
         click(clientStatusSelectorOption, clientTypeOption);
     }
+
+    @Step("Set 'Organization Name' value")
+    public void setOrganizationName(String organizationName) {
+        waitForElementVisibility(organizationNameField);
+        waitForElementClickable(organizationNameField);
+        type(organizationName, organizationNameField);
+    }
+
 
     @Step("Set 'First name' value")
     public void setFirstNameValue(String firstNameValue) {

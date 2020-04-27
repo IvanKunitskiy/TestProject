@@ -23,8 +23,9 @@ public class ClientDetailsPage extends PageTools {
      * Profile Tab
      */
     private By clientID = By.xpath("//p[@data-test-id='display-customerNumber']");
-    private By type = By.xpath("//div[@id='typeid_person']//span[@class='select2-chosen']/span");
+    private By type = By.xpath("//p[@data-test-id='display-customerType']");
     private By status = By.xpath("//div[@id='statusid']//span[@class='select2-chosen']/span");
+    private By organizationName = By.id("name1");
     private By firstName = By.id("name2");
     private By middleName = By.id("middlename");
     private By lastName = By.id("name1");
@@ -33,6 +34,7 @@ public class ClientDetailsPage extends PageTools {
     private By aka_1 = By.id("customerAliasSubform1");
     private By taxPairIdType = By.xpath("//div[@name='taxpayeridtype' and contains(@field-config, 'fieldConfig')]//span[@class='select2-chosen']/span");
     private By taxID = By.id("taxidnumber");
+    private By industry = By.xpath("//div[@id='naicsindustry' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'ng-binding')]");
     private By birthDate = By.id("birthdate");
     private By gender = By.xpath("//div[@name='gender' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
     private By education = By.xpath("//div[@name='education' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
@@ -208,6 +210,12 @@ public class ClientDetailsPage extends PageTools {
         return getElementText(status).trim();
     }
 
+    @Step("Get 'Organization Name' value")
+    public String getOrganizationName() {
+        waitForElementVisibility(organizationName);
+        return getElementAttributeValue("value", organizationName).trim();
+    }
+
     @Step("Get 'First Name' value")
     public String getFirstName() {
         waitForElementVisibility(firstName);
@@ -254,6 +262,11 @@ public class ClientDetailsPage extends PageTools {
     public String getTaxID() {
         waitForElementVisibility(taxID);
         return getElementAttributeValue("value", taxID).trim().replaceAll("[\\W_&&[^°]]+", "");
+    }
+
+    @Step("Get 'Industry' value")
+    public String getIndustry() {
+        return getElementText(industry).trim();
     }
 
     @Step("Get 'BirthDate' value")

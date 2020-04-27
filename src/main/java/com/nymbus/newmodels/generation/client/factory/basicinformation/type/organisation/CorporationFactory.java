@@ -16,7 +16,6 @@ public class CorporationFactory implements OrganisationTypeFactory {
         corporation.setName(Random.genString(10));
         corporation.setTaxPayerIDType(TaxPayerIDType.BUSINESS_TIN);
         corporation.setTaxID(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
-
         return corporation;
     }
 }
