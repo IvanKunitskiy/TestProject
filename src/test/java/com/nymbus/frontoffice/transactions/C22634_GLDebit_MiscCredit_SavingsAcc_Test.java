@@ -5,8 +5,10 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
@@ -23,24 +25,25 @@ public class C22634_GLDebit_MiscCredit_SavingsAcc_Test extends BaseTest {
     private Transaction transaction;
     private BalanceData balanceData;
     private TransactionData transactionData;
-    Client client;
     Account savingsAccount;
 
     @BeforeMethod
     public void prepareTransactionData() {
         // Set up Client and Account
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        IndividualClient client = individualClientBuilder.buildClient();
         savingsAccount = new Account().setSavingsAccountData();
         transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Create client
-        ClientsActions.createClient().createClient(client);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create account
-        AccountActions.createAccount().createSavingsAccount(savingsAccount);
+        AccountActions.createAccount().createSavingAccountForTransactionPurpose(savingsAccount);
 
         // Set up transaction with account number
         transaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());

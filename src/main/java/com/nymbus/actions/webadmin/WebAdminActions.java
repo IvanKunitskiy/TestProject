@@ -4,6 +4,7 @@ public class WebAdminActions {
 
     private static LoginActions loginActions;
     private static WebAdminUsersActions webAdminUsersActions;
+    private static WebAdminTransactionActions webAdminTransactionActions;
 
     /**
      * This function returns an instance of `LoginActions`
@@ -23,5 +24,15 @@ public class WebAdminActions {
             webAdminUsersActions = new WebAdminUsersActions();
         }
         return webAdminUsersActions;
+    }
+
+    /**
+     * This function returns an instance of `WebAdminTransactionActions`
+     */
+    public static WebAdminTransactionActions webAdminTransactionActions() {
+        if (webAdminTransactionActions == null) {
+            webAdminTransactionActions = new WebAdminTransactionActions();
+        }
+        return webAdminTransactionActions;
     }
 }

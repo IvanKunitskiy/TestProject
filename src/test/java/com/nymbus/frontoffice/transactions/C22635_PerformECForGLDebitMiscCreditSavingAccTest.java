@@ -5,13 +5,15 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
-import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.AccountDates;
+import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
@@ -29,15 +31,17 @@ public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest 
     @BeforeMethod
     public void prepareTransactionData() {
         // Set up client, account and transaction
-        Client client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        IndividualClient client = individualClientBuilder.buildClient();
         Account savingsAccount = new Account().setSavingsAccountData();
         transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Create client
-        ClientsActions.createClient().createClient(client);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create account
         AccountActions.createAccount().createSavingsAccount(savingsAccount);
