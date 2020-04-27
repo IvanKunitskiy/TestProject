@@ -74,7 +74,13 @@ public class PageTools extends AllureLogger {
     }
 
     protected void type(String text, By by, Object... args) {
-        logInfo(getPreviousMethodNameAsText() + " '" + text + "', element --> " + byLocator(by, args));
+        logInfo(getPreviousMethodNameAsText() + " '" + text);
+        wipeText(by, args);
+        shouldBe(Condition.visible, by, args).append(text);
+    }
+
+    protected void typeWithoutLogs(String text, By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText());
         wipeText(by, args);
         shouldBe(Condition.visible, by, args).append(text);
     }
@@ -122,6 +128,10 @@ public class PageTools extends AllureLogger {
         shouldBe(Condition.visible, by, args);
     }
 
+    protected void waitForElementPresent(By by, Object... args) {
+        shouldBe(Condition.exist, by, args);
+    }
+
     protected void waitForElementInvisibility(By by, Object... args) {
         shouldBe(Condition.hidden, by, args);
     }
@@ -156,12 +166,17 @@ public class PageTools extends AllureLogger {
 
     protected String getElementAttributeValue(String attr, By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
-        return shouldBe(Condition.enabled, by, args).attr(attr);
+        return shouldBe(Condition.exist, by, args).attr(attr);
     }
 
     protected String getHiddenElementAttributeValue(String attr, By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
         return shouldBe(Condition.hidden, by, args).attr(attr);
+    }
+
+    protected String getDisabledElementAttributeValue(String attr, By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
+        return shouldBe(Condition.disabled, by, args).attr(attr);
     }
 
     protected List<SelenideElement> getElements(By by, Object... args) {

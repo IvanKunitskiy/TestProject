@@ -29,8 +29,7 @@ public class C22522_CreateAssignCashDrawerTest extends BaseTest {
     }
 
     @Test(description = "C22522, Create & assign Cash Drawer from User profile page")
-    @Severity(SeverityLevel.CRITICAL)
-    public void verifyUserCreation() {
+    public void verifyCashDrawerCreationAssignFromUserPage() {
 
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
@@ -67,8 +66,6 @@ public class C22522_CreateAssignCashDrawerTest extends BaseTest {
         Assert.assertEquals(SettingsPage.viewUserPage().getCashDrawerValue(),
                 user.getCashDrawer().getName() + " (Default User: " + user.getFirstName() + " " + user.getLastName() + ")",
                 "Cash Drawer data isn't the same");
-
-        System.out.println("USER***" + user.getCashDrawer().getName());
 
         Actions.cashDrawerAction().searchCashDrawerOnCashDrawerSearchPage(user.getCashDrawer());
 

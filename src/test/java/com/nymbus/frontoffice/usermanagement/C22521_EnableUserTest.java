@@ -26,7 +26,6 @@ public class C22521_EnableUserTest extends BaseTest {
     }
 
     @Test(description = "C22521, Enable User")
-    @Severity(SeverityLevel.CRITICAL)
     public void verifyUserEnabling() {
 
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -34,8 +33,6 @@ public class C22521_EnableUserTest extends BaseTest {
         Actions.usersActions().createUser(user);
         user.setIsLoginDisabledFlag(true);
         Actions.usersActions().editUser(user);
-
-        SettingsPage.viewUserPage().waitViewUserDataVisible();
 
         Assert.assertEquals(Actions.usersActions().getUserFromUserViewPage(), user,
                 "User's data isn't the same");

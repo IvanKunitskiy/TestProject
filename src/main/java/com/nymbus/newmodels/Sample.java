@@ -1,7 +1,14 @@
 package com.nymbus.newmodels;
 
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.client.OrganisationClient;
 import com.nymbus.newmodels.client.other.document.BaseDocument;
 import com.nymbus.newmodels.client.other.document.IDType;
+import com.nymbus.newmodels.generation.client.OrganisationClientSettings;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.OrganisationClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.organisation.CorporationBuilder;
 
 public class Sample {
     public static void main(String[] args) {
@@ -130,6 +137,19 @@ public class Sample {
         System.out.println(balanceDataForCHKAcc.toString());
         balanceDataForCHKAcc.reduceAmount(50);
         System.out.println(balanceDataForCHKAcc.toString());*/
+
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+
+        IndividualClient individualClient = individualClientBuilder.buildClient();
+
+        OrganisationClientBuilder organisationClientBuilder = new  OrganisationClientBuilder();
+        organisationClientBuilder.setOrganisationTypeBuilder(new CorporationBuilder());
+
+        OrganisationClient organisationClient = organisationClientBuilder.buildClient();
+
+        System.out.println("Corporation: " + organisationClient);
+
     }
 
     private static BaseDocument qwe() {

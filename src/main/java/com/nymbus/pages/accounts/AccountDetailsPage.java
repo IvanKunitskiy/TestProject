@@ -20,6 +20,7 @@ public class AccountDetailsPage extends PageTools {
      */
     private By editButton = By.xpath("//button[@data-test-id='action-editAccount']");
     private By balanceInquiry = By.xpath("//button[@data-test-id='action-print-receipt']");
+    private By activateButton = By.xpath("//button[@data-test-id='action-activateAccount']");
 
 
     /**
@@ -106,7 +107,7 @@ public class AccountDetailsPage extends PageTools {
     private By nextInterestPaymentAmount = By.xpath("//*[@data-config-name='nextinterestpaymentamount']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By averageBalance = By.xpath("//*[@data-config-name='averagebalance']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By collectedBalance = By.xpath("//*[@data-config-name='collectedbalance']//span[contains(@class, 'dnTextFixedWidthText')]");
-
+    private By accountStatus = By.xpath("//tr[@data-test-id='field-accountstatus']//span[contains(@class, 'ng-binding')]");
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -118,6 +119,13 @@ public class AccountDetailsPage extends PageTools {
     /**
      * Details tab
      */
+
+    @Step("Get 'Account Status'")
+    public String getAccountStatus() {
+        waitForElementVisibility(accountStatus);
+        return getElementText(accountStatus).trim();
+    }
+
     @Step("Get 'Average Balance' value")
     public String getAverageBalanceValue() {
         waitForElementVisibility(averageBalance);
@@ -450,6 +458,12 @@ public class AccountDetailsPage extends PageTools {
         click(balanceInquiry);
     }
 
+    @Step("Click the 'Activate' button")
+    public void clickActivateButton() {
+        waitForElementClickable(activateButton);
+        click(activateButton);
+    }
+
     @Step("Get account 'Earning Credit Rate' value")
     public String getEarningCreditRate() {
         waitForElementVisibility(earningCreditRate);
@@ -649,5 +663,15 @@ public class AccountDetailsPage extends PageTools {
     @Step("Wait for 'Re-Open button")
     public void waitForReopenButton() {
         waitForElementVisibility(reopenButton);
+    }
+
+    @Step("Check if 'Edit' button is visible")
+    public boolean isEditButtonVisible() {
+        return isElementVisible(editButton);
+    }
+
+    @Step("Check if 'Activate' button is visible")
+    public boolean isActivateButtonVisible() {
+        return isElementVisible(activateButton);
     }
 }

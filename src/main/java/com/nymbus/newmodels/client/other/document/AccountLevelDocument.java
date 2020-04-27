@@ -9,7 +9,8 @@ import lombok.RequiredArgsConstructor;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class AccountLevelDocument  {
+
+public class AccountLevelDocument {
     @NonNull private String category;
     @NonNull private String docType;
     @NonNull private File file;

@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ClientsSearchPage extends PageTools {
+
+    private By menu = By.id("menu");
     private By addNewClientButton = By.xpath("//a[@*='action-addNewCustomer']");
     private By clientsSearchInputField = By.xpath("//input[@type='search']");
     private By searchButton = By.xpath("//button[text()='Search']");
@@ -18,6 +20,11 @@ public class ClientsSearchPage extends PageTools {
     private By clearSearchInputFieldButton = By.xpath("//button[@class='btn btn-link btnIcon']");
     private By viewAccountButtonByValue = By.xpath("//div[contains(text(),'%s')]/parent::div");
 
+    @Step("Wait for a side menu")
+    public void waitForASideMenu(){
+        waitForElementVisibility(menu);
+    }
+
     @Step("Wait for 'Add new client' button")
     public void waitForAddNewClientButton() {
         waitForElementVisibility(addNewClientButton);
@@ -26,7 +33,7 @@ public class ClientsSearchPage extends PageTools {
     @Step("Type '{client}' to clients input field")
     public void typeToClientsSearchInputField(String client) {
         waitForElementVisibility(clientsSearchInputField);
-        type(client, clientsSearchInputField);
+        typeWithoutWipe(client, clientsSearchInputField);
     }
 
     @Step("Click on 'Search' button")

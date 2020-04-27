@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 public class UsersSearchPage extends PageTools {
 
     private By overlay = By.xpath("//div[contains(@class, 'blockOverlay')]");
+    private By loadingOverlay = By.xpath("//div[contains(@class, 'loading_overlay')]");
     private By searchRegion = By.xpath("//main[contains(@id, 'usruserssearch')]");
     private By cellNyUserData = By.xpath("//td[contains(text(), '%s')]");
     private By searchField = By.xpath("//div[contains(@id, 'usruserssearch-search')]//input[contains(@name, 'search')]");
@@ -15,7 +16,14 @@ public class UsersSearchPage extends PageTools {
 
     public void waitViewUsersListVisible() {
 //        waitForElementVisibility(overlay);
-        waitForElementInvisibility(overlay);
+//        waitForElementInvisibility(overlay);
+//        waitForElementVisibility(searchButton);
+//        waitForElementClickable(searchButton);
+    }
+
+    public void waitViewUsersListLoading() {
+        waitForElementVisibility(loadingOverlay);
+        waitForElementInvisibility(loadingOverlay);
     }
 
     @Step("Wait for 'User search page' loaded")
@@ -30,10 +38,17 @@ public class UsersSearchPage extends PageTools {
         click(cellNyUserData, userData);
     }
 
+    @Step("Wait for search field")
+    public void waitForSearching() {
+        waitForElementPresent(searchField);
+        waitForElementVisibility(searchField);
+    }
+
     @Step("Set user data to search field")
     public void setUserDataForSearching(String userData) {
-        waitForElementClickable(searchField);
         waitForElementVisibility(searchField);
+        waitForElementClickable(searchField);
+        wipeText(searchField);
         type(userData, searchField);
     }
 

@@ -8,6 +8,8 @@ public class NavigationPage extends PageTools {
 
     private By navigatorRegion = By.id("navigatorContainer");
     private By usersAndSecurityItem = By.xpath("//li[span[contains(@data-code, 'usersAndSecurity')]]/div");
+    private By accountsTransactionsItem = By.xpath("//li[span[contains(@data-code, 'Accounts/Transactions')]]/div");
+    private By accountsItem = By.xpath("//ul/li[@data-name='actmst (Accounts)']/a[@class='navigatorItem']");
     private By usersItem = By.xpath("//ul/li[@data-name='Users']/a[@class='navigatorItem']");
     private By logoutMenu = By.xpath("//div[@id='logoutMenu']/div/p");
     private By signOutOption = By.xpath("//div[@id='logoutMenu']/ul/li/a[contains(@class, 'logout')]");
@@ -41,6 +43,20 @@ public class NavigationPage extends PageTools {
         waitForElementVisibility(usersItem);
         waitForElementClickable(usersItem);
         click(usersItem);
+    }
+
+    @Step("Click 'Accounts/Transactions' item")
+    public void clickAccountsTransactionsItem() {
+        waitForElementVisibility(accountsTransactionsItem);
+        waitForElementClickable(accountsTransactionsItem);
+        click(accountsTransactionsItem);
+    }
+
+    @Step("Click 'Accounts/Transactions' item")
+    public void clickAccountsItem() {
+        waitForElementVisibility(accountsItem);
+        waitForElementClickable(accountsItem);
+        click(accountsItem);
     }
 
 }

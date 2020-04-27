@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Suite" parallel="tests" thread-count="2" >
+<suite name="Suite" parallel="tests" thread-count="1" >
     <listeners>
         <listener class-name="com.nymbus.core.retry.AnnotationTransformer"/>
     </listeners>
@@ -8,6 +8,48 @@
     <test name="Log In">
         <packages>
             <package name="com.nymbus.frontoffice.login.*"/>
+        </packages>
+    </test>
+
+    <test name="User management">
+        <packages>
+            <package name="com.nymbus.frontoffice.usermanagement.*"/>
+        </packages>
+    </test>
+
+    <test name="Create Clients">
+        <packages>
+            <package name="com.nymbus.frontoffice.clientsmanagement.createclients.*"/>
+        </packages>
+    </test>
+
+    <test name="Clients management">
+        <packages>
+            <package name="com.nymbus.frontoffice.clientsmanagement.*"/>
+        </packages>
+    </test>
+
+    <test name="Clients search">
+        <packages>
+            <package name="com.nymbus.frontoffice.clientsearch.*"/>
+        </packages>
+    </test>
+
+    <test name="Transactions">
+        <packages>
+            <package name="com.nymbus.frontoffice.transactions.*"/>
+        </packages>
+    </test>
+
+    <test name="Safe deposit box management">
+        <packages>
+            <package name="com.nymbus.frontoffice.safedepositboxmanagement.*"/>
+        </packages>
+    </test>
+
+    <test name="Deposit accounts management">
+        <packages>
+            <package name="com.nymbus.frontoffice.depositaccountsmanagement.*"/>
         </packages>
     </test>
 

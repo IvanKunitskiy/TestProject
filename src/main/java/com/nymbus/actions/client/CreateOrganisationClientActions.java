@@ -23,14 +23,14 @@ public class CreateOrganisationClientActions {
         Pages.addClientPage().setLastNameValue(client.getOrganisationType().getName());
         setTaxPayerIDType(client.getOrganisationType().getTaxPayerIDType().getTaxPayerIDType());
         Pages.addClientPage().setTaxIDValue(client.getOrganisationType().getTaxID());
-        setClientAddresses(client.getOrganisationType().getAddresses());
+//        setClientAddresses(client.getOrganisationType().getAddresses());
         Pages.addClientPage().clickSaveAndContinueButton();
     }
 
     public void setClientDetails(OrganisationClient client) {
         setOrganisationDetails(client.getOrganisationClientDetails());
-        setPhones(client.getOrganisationClientDetails().getPhones());
-        setEmails(client.getOrganisationClientDetails().getEmails());
+//        setPhones(client.getOrganisationClientDetails().getPhones());
+//        setEmails(client.getOrganisationClientDetails().getEmails());
         Pages.addClientPage().clickSaveAndContinueButton();
     }
 

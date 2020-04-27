@@ -34,6 +34,7 @@ public class TellerPage extends PageTools {
         waitForElementClickable(effectiveDate);
         type(date, effectiveDate);
     }
+
     /**
      * Success transaction Modal dialog region
      */
@@ -108,10 +109,18 @@ public class TellerPage extends PageTools {
 
     private By transactionSourceNotesInput = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//input[@ng-model='transaction.notes']");
 
+    private By creditTransferCodeSelector = By.xpath("//span[contains(text(), '101 - Credit Transfr')]");
+
     @Step("Click 'Misc-Debit' button")
     public void clickMiscDebitButton() {
         waitForElementClickable(miscDebit);
         click(miscDebit);
+    }
+
+    @Step("Wait for 'Credit transfer' code visible")
+    public void waitForCreditTransferCodeVisible() {
+        waitForElementVisibility(creditTransferCodeSelector);
+        waitForElementClickable(creditTransferCodeSelector);
     }
 
     @Step("Click 'Cash-In' button")
@@ -186,6 +195,7 @@ public class TellerPage extends PageTools {
             "//*[@data-name='amount']//input");
     private By itemInDropDown = By.xpath("//div[contains(@class, 'select2-drop-active') and not(contains(@class, 'select2-display-none'))]" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By accountNumberOptionSelector = By.xpath("//div[contains(@class, 'ui-select-dropdown')]//div//span[contains(text(), '%s')]");
 
     private By transactionDestinationDetailsArrow = By.xpath("(//*[@id='accordion-operation-destinations-content']//*[@transaction='item'])[%s]" +
             "//a[contains(@class, 'detail-icon')]");
@@ -234,6 +244,12 @@ public class TellerPage extends PageTools {
         type(number, accountNumberDestinationInput, i);
     }
 
+    @Step("Click destination 'Account number' suggestion option")
+    public void clickDestinationAccountSuggestionOption(String accountNumber) {
+        waitForElementClickable(accountNumberOptionSelector, accountNumber);
+        click(accountNumberOptionSelector, accountNumber);
+    }
+
     @Step("Click Destination 'Amount' {0} division")
     public void clickDestinationAmountDiv(int i) {
         waitForElementClickable(transactionDestinationAmountDiv, i);
@@ -246,7 +262,7 @@ public class TellerPage extends PageTools {
         type(amount, transactionDestinationAmountField, i);
     }
 
-    @Step ("Click on destination code {0}")
+    @Step("Click on destination code {0}")
     public void clickOnDestinationCodeField(int i) {
         waitForElementClickable(transactionDestinationCodeField, i);
         click(transactionDestinationCodeField, i);

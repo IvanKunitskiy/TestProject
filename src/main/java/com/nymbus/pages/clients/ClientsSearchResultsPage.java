@@ -3,6 +3,7 @@ package com.nymbus.pages.clients;
 import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +13,7 @@ public class ClientsSearchResultsPage extends PageTools {
     private By searchResultsContainsText = By.xpath("//div[contains(@ng-repeat,'item')]//div[contains(text(),'%s')]");
     private By accountNumberSearchResults = By.xpath("//div/span[@class='spaceRight ng-binding']");
     private By loadMoreResultsButton = By.xpath("//button[text()='Load More Results']");
+    private By listOfClientsName = By.xpath("//div[@class='search-result-container']//div[contains(@class,'table__td')][1]");
     private By clientNameFromResultByIndex
             = By.xpath("(//div[@class='search-result-container']//div[contains(@class,'table__td')][1])[%s]");
     private By clientIDFromResultByIndex
@@ -41,6 +43,12 @@ public class ClientsSearchResultsPage extends PageTools {
     public int getSearchResultsCount() {
         waitForElementVisibility(searchResults);
         return getElements(searchResults).size();
+    }
+
+    @Step("Getting list of clients name")
+    public List<String> getListOfClientsName() {
+        waitForElementVisibility(listOfClientsName);
+        return getElements(listOfClientsName).stream().map(WebElement::getText).collect(Collectors.toList());
     }
 
     @Step("Verify is 'Load Mode Results' button visible")

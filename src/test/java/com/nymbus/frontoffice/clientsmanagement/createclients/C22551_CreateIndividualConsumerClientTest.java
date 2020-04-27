@@ -5,6 +5,10 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.models.client.Client;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.client.clientdetails.type.ClientStatus;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -16,29 +20,31 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22551_CreateIndividualConsumerClientTest extends BaseTest {
 
-    private Client client;
+    private IndividualClient individualClient;
 
     @BeforeMethod
     public void prepareClientData(){
-        client = new Client().setConsumerClientData();
-        client.setClientType("Individual");
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+
+        individualClient = individualClientBuilder.buildClient();
+        individualClient.getIndividualType().setClientStatus(ClientStatus.CONSUMER);
     }
 
     @Test(description = "C22551, Create Client - Consumer")
     @Severity(SeverityLevel.CRITICAL)
-    public void firstTest() {
+    public void verifyIndividualConsumerClientCreation() {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         ClientsActions.createClient().openClientPage();
         Pages.clientsSearchPage().clickAddNewClient();
-        ClientsActions.createClient().setBasicInformation(client);
+        ClientsActions.individualClientActions().setBasicInformation(individualClient);
         Assert.assertTrue(Pages.addClientPage().isVerificationSuccess(),
                 "Client data verification is not success");
         Pages.addClientPage().clickOkModalButton();
 
         Pages.addClientPage().clickViewMemberProfileButton();
 
-        Assert.assertEquals(ClientsActions.verifyClientDataActions().getIndividualConsumerClientData(), client,
-                "Client's data is not equals");
+        ClientsActions.individualClientActions().verifyClientData(individualClient);
     }
 }

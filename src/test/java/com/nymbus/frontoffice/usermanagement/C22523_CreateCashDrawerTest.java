@@ -29,8 +29,7 @@ public class C22523_CreateCashDrawerTest extends BaseTest {
     }
 
     @Test(description = "C22523, Create Cash Drawer from Cash Drawers dashboard + assign to existing user")
-    @Severity(SeverityLevel.CRITICAL)
-    public void verifyUserCreation() {
+    public void verifyCashDrawerCreationAssignFromCashDrawerPage() {
 
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 

@@ -54,6 +54,11 @@ public class UsersActions {
 
     public void editUser(User user) {
         SettingsPage.viewUserPage().waitViewUserDataVisible();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         SettingsPage.viewUserPage().clickEditButton();
 
         setUserData(user);
@@ -181,6 +186,7 @@ public class UsersActions {
     public User getUserFromUserViewPage() {
         User user = new User();
 
+        SettingsPage.viewUserPage().waitForUserDataRegion();
         user.setFirstName(SettingsPage.viewUserPage().getFirstNameValue());
         user.setLastName(SettingsPage.viewUserPage().getLastNameValue());
         user.setInitials(SettingsPage.viewUserPage().getInitialsValue());

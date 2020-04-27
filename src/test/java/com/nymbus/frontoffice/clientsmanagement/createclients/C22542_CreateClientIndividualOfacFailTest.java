@@ -6,7 +6,9 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
 import io.qameta.allure.*;
@@ -21,11 +23,14 @@ import java.util.Random;
 @Owner("Petro")
 public class C22542_CreateClientIndividualOfacFailTest extends BaseTest {
 
-    private Client client;
+    private IndividualClient individualClient;
 
     @BeforeMethod
     public void prepareClientData(){
-        client = new Client().setDefaultClientData();
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+
+        individualClient = individualClientBuilder.buildClient();
 
         Selenide.open(Constants.WEB_ADMIN_URL);
 
@@ -43,16 +48,14 @@ public class C22542_CreateClientIndividualOfacFailTest extends BaseTest {
 
         int index = (new Random().nextInt(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult())) + 1;
 
-        client.setClientType("IndividualType");
-        client.setClientStatus("Member");
-        client.setFirstName(WebAdminPages.rulesUIQueryAnalyzerPage().getFirstNameByIndex(index));
-        client.setMiddleName("");
-        client.setLastName(WebAdminPages.rulesUIQueryAnalyzerPage().getLastNameByIndex(index));
+        individualClient.getIndividualType().setFirstName(WebAdminPages.rulesUIQueryAnalyzerPage().getFirstNameByIndex(index));
+        individualClient.getIndividualType().setMiddleName("");
+        individualClient.getIndividualType().setLastName(WebAdminPages.rulesUIQueryAnalyzerPage().getLastNameByIndex(index));
     }
 
     @Test(description = "C22542, Create Client - IndividualType - Ofac check fail")
     @Severity(SeverityLevel.CRITICAL)
-    public void firstTest() {
+    public void verifyOfacValidation() {
         Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
@@ -60,7 +63,7 @@ public class C22542_CreateClientIndividualOfacFailTest extends BaseTest {
 
         Pages.clientsSearchPage().clickAddNewClient();
 
-        ClientsActions.createClient().setBasicInformation(client);
+        ClientsActions.individualClientActions().setBasicInformation(individualClient);
 
         Assert.assertFalse(Pages.addClientPage().isVerificationSuccess(),
                 "Client data verification is success");

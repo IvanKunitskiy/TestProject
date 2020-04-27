@@ -23,6 +23,26 @@ public class ClientPageActions {
         return clients;
     }
 
+    public List<String> getAllClientFirstName(int lookupResultsCount){
+        List<String> listOfFirstName = new ArrayList<>();
+
+        for (int i = 1; i <= lookupResultsCount; i++) {
+            listOfFirstName.add(Pages.clientsSearchPage().getClientFirstNameFromLookupResultByIndex(i));
+        }
+
+        return listOfFirstName;
+    }
+
+    public List<String> getAllClientLastName(int lookupResultsCount){
+        List<String> listOfLastName = new ArrayList<>();
+
+        for (int i = 1; i <= lookupResultsCount; i++) {
+            listOfLastName.add(Pages.clientsSearchPage().getClientLastNameFromLookupResultByIndex(i));
+        }
+
+        return listOfLastName;
+    }
+
     public void searchAndOpenClientByName(String name) {
         Pages.aSideMenuPage().clickClientMenuItem();
         Pages.clientsSearchPage().typeToClientsSearchInputField(name);

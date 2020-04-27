@@ -26,14 +26,11 @@ public class C22520_DisableUserTest extends BaseTest {
     }
 
     @Test(description = "C22520, Disable User")
-    @Severity(SeverityLevel.CRITICAL)
     public void verifyUserDisabling() {
 
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         Actions.usersActions().createUser(user);
-
-        SettingsPage.viewUserPage().waitViewUserDataVisible();
 
         Assert.assertEquals(Actions.usersActions().getUserFromUserViewPage(), user,
                 "User's data isn't the same");

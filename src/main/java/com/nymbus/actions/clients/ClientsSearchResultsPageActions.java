@@ -19,4 +19,14 @@ public class ClientsSearchResultsPageActions {
 
         return clients;
     }
+
+    public List<String> getAllClientFirstName(int lookupResultsCount){
+        List<String> listOfFirstName = new ArrayList<>();
+
+        for (int i = 1; i <= lookupResultsCount; i++) {
+            listOfFirstName.add(Pages.clientsSearchResultsPage().getClientFirstNameFromResultByIndex(i));
+        }
+
+        return listOfFirstName;
+    }
 }

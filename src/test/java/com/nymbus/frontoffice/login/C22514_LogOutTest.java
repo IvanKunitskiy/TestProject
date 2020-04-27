@@ -15,8 +15,7 @@ import org.testng.annotations.Test;
 public class C22514_LogOutTest extends BaseTest {
 
     @Test(description = "C22514, Log Out")
-    @Severity(SeverityLevel.CRITICAL)
-    public void firstTest() {
+    public void verifyLogOut() {
 
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 

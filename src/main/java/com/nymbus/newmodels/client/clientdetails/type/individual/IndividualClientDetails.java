@@ -1,5 +1,6 @@
 package com.nymbus.newmodels.client.clientdetails.type.individual;
 
+import com.nymbus.newmodels.client.clientdetails.contactinformation.documents.Document;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.email.Email;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.phone.Phone;
 import com.nymbus.newmodels.client.clientdetails.type.organisation.MailCode;
@@ -35,8 +36,9 @@ public class IndividualClientDetails {
     private List<String> userDefinedFields;
     private boolean usingOnlineBank;
 
-    @NonNull private Set<Phone> phones; // At least one
-    private Set<Email> emails;
+    @NonNull private List<Phone> phones; // At least one
+    private List<Email> emails;
+    @NonNull private List<Document> documents; // At least one
 
 
 }

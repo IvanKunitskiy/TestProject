@@ -64,6 +64,12 @@ public class C22527_SearchByNumberTest extends BaseTest {
         logInfo("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
         Pages.clientsSearchPage().clickOnSearchInputFieldClearButton();
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         Pages.clientsSearchPage().typeToClientsSearchInputField(client.getAccountNumber());
         lookupResultsCount = Pages.clientsSearchPage().getLookupResultsCount();
         Assert.assertEquals(lookupResultsCount, 1);
