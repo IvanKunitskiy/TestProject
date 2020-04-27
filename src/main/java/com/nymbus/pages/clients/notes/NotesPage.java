@@ -27,8 +27,31 @@ public class NotesPage extends PageTools {
     private By severitySelectorButton = By.xpath("//div[@data-test-id='field-severity']");
     private By severityList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By severitySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By templateSelectorButton = By.xpath("//div[@data-test-id='field-selectedNoteTemplate']");
+    private By templateList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By templateSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By expirationDateField = By.xpath("//input[@id='expirationdate']");
 
-    @Step("Click the 'Responsible Officer' option")
+    @Step("Click the 'Severity' option")
+    public void clickTemplateSelectorOption(String templateOption) {
+        waitForElementVisibility(templateSelectorOption, templateOption);
+        waitForElementClickable(templateSelectorOption, templateOption);
+        click(templateSelectorOption, templateOption);
+    }
+
+    @Step("Returning list of 'Template' options")
+    public List<String> getTemplateList() {
+        waitForElementVisibility(templateList);
+        waitForElementClickable(templateList);
+        return getElementsText(templateList);
+    }
+
+    @Step("Click the 'Template' selector button")
+    public void clickTemplateSelectorButton() {
+        click(templateSelectorButton);
+    }
+
+    @Step("Click the 'Severity' option")
     public void clickSeveritySelectorOption(String severityOption) {
         waitForElementVisibility(severitySelectorOption, severityOption);
         waitForElementClickable(severitySelectorOption, severityOption);
@@ -91,13 +114,22 @@ public class NotesPage extends PageTools {
         click(responsibleOfficerSelectorButton);
     }
 
-    @Step("Set 'Date Opened' value")
+    @Step("Set 'Due Date' value")
     public void setDueDateValue(String date) {
         waitForElementVisibility(dueDateField);
         waitForElementClickable(dueDateField);
         typeWithoutWipe("", dueDateField);
         SelenideTools.sleep(1);
         typeWithoutWipe(date, dueDateField);
+    }
+
+    @Step("Set 'Expiration Date' value")
+    public void setExpirationDateValue(String date) {
+        waitForElementVisibility(expirationDateField);
+        waitForElementClickable(expirationDateField);
+        typeWithoutWipe("", expirationDateField);
+        SelenideTools.sleep(1);
+        typeWithoutWipe(date, expirationDateField);
     }
 
     @Step("Is 'Responsible Officer' selected")
@@ -128,8 +160,9 @@ public class NotesPage extends PageTools {
     public void clickSaveButton() {
         waitForElementVisibility(saveNoteButton);
         waitForElementClickable(saveNoteButton);
-        SelenideTools.sleep(1);
+        SelenideTools.sleep(3);
         click(saveNoteButton);
+        SelenideTools.sleep(3);
     }
 
     @Step("Wait for 'Add new note' button is visible")
