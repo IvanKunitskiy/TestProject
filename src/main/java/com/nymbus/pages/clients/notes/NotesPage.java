@@ -1,6 +1,7 @@
 package com.nymbus.pages.clients.notes;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -31,6 +32,12 @@ public class NotesPage extends PageTools {
     private By templateList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By templateSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By expirationDateField = By.xpath("//input[@id='expirationdate']");
+    private By noteAlertByContent = By.xpath("//div[contains(@class, 'notifications-item')]//div/span[contains(text(), '%s')]");
+
+    @Step("Check that alert for created note appeared")
+    public boolean isNoteAlertAppeared(String noteContent) { // format (Account | {account number} | note)
+        return isElementVisible(noteAlertByContent, noteContent);
+    }
 
     @Step("Click the 'Severity' option")
     public void clickTemplateSelectorOption(String templateOption) {
@@ -116,20 +123,20 @@ public class NotesPage extends PageTools {
 
     @Step("Set 'Due Date' value")
     public void setDueDateValue(String date) {
-        waitForElementVisibility(dueDateField);
+//        waitForElementVisibility(dueDateField);
         waitForElementClickable(dueDateField);
         typeWithoutWipe("", dueDateField);
-        SelenideTools.sleep(1);
-        typeWithoutWipe(date, dueDateField);
+        SelenideTools.sleep(2);
+        type(date, dueDateField);
     }
 
     @Step("Set 'Expiration Date' value")
     public void setExpirationDateValue(String date) {
-        waitForElementVisibility(expirationDateField);
+//        waitForElementVisibility(expirationDateField);
         waitForElementClickable(expirationDateField);
         typeWithoutWipe("", expirationDateField);
-        SelenideTools.sleep(1);
-        typeWithoutWipe(date, expirationDateField);
+        SelenideTools.sleep(2);
+        type(date, expirationDateField);
     }
 
     @Step("Is 'Responsible Officer' selected")
@@ -154,6 +161,13 @@ public class NotesPage extends PageTools {
         waitForElementVisibility(newNoteTextArea, text);
         waitForElementClickable(newNoteTextArea, text);
         type(text, newNoteTextArea);
+    }
+
+    @Step("Add text to 'New Note' text area")
+    public void addRandomTextToNewNoteTextArea(int length) {
+        String text = Generator.genString(length);
+        waitForElementClickable(newNoteTextArea, text);
+        typeWithoutWipe(text, newNoteTextArea);
     }
 
     @Step("Click the 'Save' button")

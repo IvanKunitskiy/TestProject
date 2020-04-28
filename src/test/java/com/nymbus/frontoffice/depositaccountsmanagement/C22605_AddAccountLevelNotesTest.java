@@ -11,12 +11,14 @@ import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.note.Note;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Deposit Accounts Management")
+@Owner("Petro")
 public class C22605_AddAccountLevelNotesTest extends BaseTest {
 
     private Client client;
