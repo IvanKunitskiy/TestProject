@@ -44,9 +44,9 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      * Transaction item region
      */
 
-    private By glDateTimePosted = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow'][%s]//div[@key-name='gldatetimeposted']");
-    private By glFunctionValue = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow'][%s]//div[@key-name='glfunction']");
-    private By transactionHeaderId = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow'][%s]//*[@key-name='transactionheaderid']");
+    private By glDateTimePosted = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//div[@key-name='gldatetimeposted']");
+    private By glFunctionValue = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//div[@key-name='glfunction']");
+    private By transactionHeaderId = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//*[@key-name='transactionheaderid']");
 
 
     @Step("Get date posted  {0}")
@@ -70,8 +70,8 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     /**
      * GL interface region
      */
-    private By amountField = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow'][%s]//*[@key-name='amount']");
-    private By glInterfaceTransactionHeaderId= By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow'][%s]//*[@key-name='parenttransaction']");
+    private By amountField = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//*[@key-name='amount']");
+    private By glInterfaceTransactionHeaderId= By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//*[@key-name='parenttransaction']");
 
     @Step("Get amount {0} value")
     public String getAmount(int index) {
