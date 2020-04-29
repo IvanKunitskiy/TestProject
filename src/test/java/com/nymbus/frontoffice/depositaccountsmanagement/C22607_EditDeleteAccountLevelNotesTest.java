@@ -32,6 +32,8 @@ public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
     private Account chkAccount;
     private Note note;
 
+    // TODO: Rerun TC after fixing date issue on test env
+
     @BeforeMethod
     public void preCondition() {
 
