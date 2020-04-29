@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
 
-    private Client client;
+    private IndividualClient client;
     private User user;
     private Account chkAccount;
     private Note note;
@@ -41,7 +41,7 @@ public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
         // Set up a client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        IndividualClient client = individualClientBuilder.buildClient();
+        client = individualClientBuilder.buildClient();
 
         // Set up a note
         note = new Note().setDefaultNoteData();
