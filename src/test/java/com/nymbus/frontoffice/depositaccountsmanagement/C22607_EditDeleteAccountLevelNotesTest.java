@@ -5,21 +5,20 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.notes.NotesActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.SelenideTools;
+import com.nymbus.data.entity.User;
 import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.note.Note;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
-import jdk.vm.ci.meta.Local;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.time.LocalDate;
 
 @Epic("Frontoffice")
 @Feature("Deposit Accounts Management")
@@ -27,20 +26,35 @@ import java.time.LocalDate;
 public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
 
     private Client client;
+    private User user;
     private Account chkAccount;
     private Note note;
 
     @BeforeMethod
     public void preCondition() {
+        // Set up a user data
+        user = new User().setDefaultUserData();
+
         // possibly replace with new solution
+        // Set up a client data
         client = new Client().setDefaultClientData();
         client.setClientStatus("Member");
         client.setClientType("Individual");
 
+        // Set up a note data
         note = new Note().setDefaultNoteData();
 
         // Set up account
         chkAccount = new Account().setCHKAccountData();
+
+        // Create user and set him a password
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.usersActions().createUser(user);
+        Actions.loginActions().doLogOut();
+        Selenide.open(Constants.WEB_ADMIN_URL);
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.webAdminUsersActions().setUserPassword(user);
+        WebAdminActions.loginActions().doLogout();
 
         // Create a client
         Selenide.open(Constants.URL);
@@ -66,7 +80,7 @@ public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
 
         logInfo("Step 1: Log in to the system as User from the preconditions");
         Selenide.open(Constants.URL);
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
 
         logInfo("Step 2: Search for account from the precondition and open it on Notes tab");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
@@ -106,7 +120,7 @@ public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
 
         logInfo("Step 6: Select any note that has an Expiration Date field value and try to click [Delete] button");
         Pages.notesPage().clickNoteByName(note.getNewNote());
-        // try to click [Delete] -> button is disabled if 'Expiration Date' field is filled in
+        Assert.assertTrue(Pages.notesPage().isDeleteButtonDisabled(), "'Delete' button is not disabled");
 
         logInfo("Step 7: Open the note in Edit mode and remove the value from the 'Expiration Date' field.\n" +
                 "Click [Save] button");

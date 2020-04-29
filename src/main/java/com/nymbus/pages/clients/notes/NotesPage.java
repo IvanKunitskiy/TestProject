@@ -4,6 +4,7 @@ import com.nymbus.core.base.PageTools;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
+import org.graalvm.compiler.phases.common.inlining.info.AbstractInlineInfo;
 import org.openqa.selenium.By;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class NotesPage extends PageTools {
 
     @Step("Check that alert for created note appeared")
     public boolean isNoteAlertAppeared(String noteContent) { // format (Account | {account number} | note)
+        waitForElementClickable(noteAlertByContent, noteContent);
         return isElementVisible(noteAlertByContent, noteContent);
     }
 
@@ -88,6 +90,11 @@ public class NotesPage extends PageTools {
         waitForElementVisibility(deleteButton);
         waitForElementClickable(deleteButton);
         click(deleteButton);
+    }
+
+    @Step("Check if 'Delete' button is disabled")
+    public boolean isDeleteButtonDisabled() {
+        return getElementAttributeValue("disabled", deleteButton).equals("true");
     }
 
     @Step("Get 'Responsible Officer' value in view mode")
@@ -203,5 +210,7 @@ public class NotesPage extends PageTools {
         waitForElementClickable(editButton);
         click(editButton);
     }
+
+
 
 }
