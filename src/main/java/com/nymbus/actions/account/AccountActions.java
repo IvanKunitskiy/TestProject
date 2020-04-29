@@ -10,6 +10,7 @@ public class AccountActions {
     private static RetrievingAccountData retrievingAccountData;
     private static CreateInstruction createInstruction;
     private static CallStatement callStatement;
+    private static AccountTransactionActions accountTransactionActions;
 
     /**
      * This function return an instance of `CreateAccount`
@@ -59,5 +60,15 @@ public class AccountActions {
             callStatement = new CallStatement();
         }
         return callStatement;
+    }
+
+    /**
+     * This function return an instance of `AccountTransactionActions`
+     */
+    public static AccountTransactionActions accountTransactionActions() {
+        if (accountTransactionActions == null) {
+            accountTransactionActions = new AccountTransactionActions();
+        }
+        return accountTransactionActions;
     }
 }

@@ -69,9 +69,18 @@ public class TransactionActions {
         return isCashOperationsInSources || isCashOperationsInDestinations;
     }
 
+    private boolean isCashInOrCashOutTransactionType(Transaction transaction) {
+        boolean isCashOperationsInSource = transaction.getTransactionSource().getSourceType().equals(SourceType.CASH_IN);
+        boolean isCashOperationsInDestination = transaction.getTransactionDestination().getSourceType().equals(DestinationType.CASH_OUT);
+
+        return isCashOperationsInSource || isCashOperationsInDestination;
+    }
 
     private void setTransactionSource(TransactionSource source, int index) {
         switch (source.getSourceType()) {
+            case GL_DEBIT:
+                setGLDebitSource(source, index);
+                break;
             case CASH_IN:
                 setCashInSource(source);
                 break;
@@ -81,6 +90,13 @@ public class TransactionActions {
             default:
                 break;
         }
+    }
+
+    private void setGLDebitSource(TransactionSource source, int index) {
+        int tempIndex = 1 + index;
+        fillSourceAccountNumber(source.getAccountNumber(), tempIndex);
+        fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
+        fillSourceDetails(source.getNotes(), tempIndex);
     }
 
     private void setTransactionDestination(TransactionDestination destination, int index) {
@@ -246,5 +262,21 @@ public class TransactionActions {
         Pages.tellerPage().waitForLoadingSpinnerVisibility();
 
         Pages.tellerPage().waitForLoadingSpinnerInvisibility();
+    }
+
+    public void performTransactionList(List<Transaction> transactions) {
+        goToTellerPage();
+        if (Pages.tellerModalPage().isModalWindowVisible()) {
+            doLoginTeller();
+        }
+        for (Transaction transaction : transactions) {
+            setTransactionSource(transaction.getTransactionSource(), 0);
+            setTransactionDestination(transaction.getTransactionDestination(), 0);
+            clickCommitButton();
+            if (isCashInOrCashOutTransactionType(transaction)) {
+                Pages.verifyConductorModalPage().clickVerifyButton();
+            }
+            Pages.tellerPage().closeModal();
+        }
     }
 }

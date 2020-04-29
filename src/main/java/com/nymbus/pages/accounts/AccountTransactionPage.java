@@ -21,6 +21,12 @@ public class AccountTransactionPage extends PageTools {
     private By balance = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[2]");
     private By balanceFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[3]");
     private By amountFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[3]");
+    private By transactionItems = By.xpath("//tr[contains(@class, 'transactionLine')]");
+
+    @Step("Get transaction item count")
+    public int getTransactionItemsCount() {
+        return getElements(transactionItems).size();
+    }
 
     @Step("Get amountSymbol")
     public String getAmountSymbol(int index) {

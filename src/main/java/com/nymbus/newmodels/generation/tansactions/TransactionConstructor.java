@@ -17,4 +17,8 @@ public class TransactionConstructor {
 
         return transactionBuilder.getResult();
     }
+
+    public void setBuilder(TransactionBuilder transactionBuilder) {
+        this.transactionBuilder = transactionBuilder;
+    }
 }
