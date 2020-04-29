@@ -156,4 +156,18 @@ public class DateTime {
         }
         return days;
     }
+
+    public static String getDateWithFormat(String date, String currentPattern, String newPattern) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(currentPattern, Locale.ENGLISH);
+        try {
+            Date parsedDate = simpleDateFormat.parse(date);
+            simpleDateFormat.applyPattern(newPattern);
+
+            return simpleDateFormat.format(parsedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+
+            return "";
+        }
+    }
 }

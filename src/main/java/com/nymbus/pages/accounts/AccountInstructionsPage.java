@@ -9,7 +9,10 @@ public class AccountInstructionsPage extends PageTools {
     /**
      * Instruction form region
      */
+
     private By newInstructionButton = By.xpath("//*[@id='tab-ca-instructions']//span[text()='New Instruction']");
+    private By editInstructionButton = By.xpath("//*[@class = 'actions']//button[1]");
+    private By deleteInstructionButton = By.xpath("//*[@class = 'actions']//button[2]");
     private By instructionDropdownSelectButton = By.xpath("//*[@id='recordcode']//span[contains(@class, 'select2-arrow')]");
     private By itemInDropDown = By.xpath("//div[contains(@class, 'select2-drop-active') and not(contains(@class, 'select2-display-none'))]" +
             "//li[contains(@role, 'option')]/div/span[text()='%s']");
@@ -70,6 +73,17 @@ public class AccountInstructionsPage extends PageTools {
         click(saveButton);
     }
 
+    @Step("Click 'Edit' button")
+    public void clickEditButton() {
+        waitForElementClickable(editInstructionButton);
+        click(editInstructionButton);
+    }
+
+    @Step("Click 'Delete' button")
+    public void clickDeleteButton() {
+        waitForElementClickable(deleteInstructionButton);
+        click(deleteInstructionButton);
+    }
     @Step("Get {0} instruction type value")
     public String getCreatedInstructionType(int i) {
         waitForElementVisibility(instructionInListHeaderDiv, i);
@@ -93,6 +107,12 @@ public class AccountInstructionsPage extends PageTools {
         waitForElementVisibility(createdInstructionListItem, i);
     }
 
+    @Step("Click instruction in list by index")
+    public void clickInstructionInListByIndex(int index) {
+        waitForElementVisibility(createdInstructionListItem, index);
+        click(createdInstructionListItem, index);
+    }
+
     @Step("Get created instructions count")
     public int getCreatedInstructionsCount() {
         waitForElementVisibility(createdInstructionList);
@@ -102,5 +122,15 @@ public class AccountInstructionsPage extends PageTools {
     @Step("Is instructions list visible")
     public boolean isInstructionsListVisible() {
         return isElementVisible(createdInstructionList);
+    }
+
+    @Step("Wait for save button invisibility")
+    public void waitForSaveButtonInvisibility() {
+        waitForElementInvisibility(saveButton);
+    }
+
+    @Step("Wait for delete button invisibility")
+    public void waitForDeleteButtonInvisibility() {
+        waitForElementInvisibility(deleteInstructionButton);
     }
 }

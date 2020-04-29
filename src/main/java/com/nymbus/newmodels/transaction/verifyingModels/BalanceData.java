@@ -9,21 +9,29 @@ public class BalanceData {
     private double currentBalance = 0;
     private double availableBalance = 0;
     private double aggregateBalanceYearToDate = 0;
-    private double totalContributionsForLifeOfAccount = 0;
+    // private double totalContributionsForLifeOfAccount = 0;
 
 
     public void addAmount(double amount) {
         this.availableBalance += amount;
         this.currentBalance += amount;
         this.aggregateBalanceYearToDate += amount;
-        this.totalContributionsForLifeOfAccount += amount;
+        // this.totalContributionsForLifeOfAccount += amount;
     }
 
     public void subtractAmount(double amount) {
         this.availableBalance -= amount;
         this.currentBalance -= amount;
         this.aggregateBalanceYearToDate -= amount;
-        this.totalContributionsForLifeOfAccount -= amount;
+        // this.totalContributionsForLifeOfAccount -= amount;
+    }
+
+    public void applyHoldInstruction(double instructionAmount) {
+        this.availableBalance = this.currentBalance - instructionAmount;
+    }
+
+    public void removeHoldInstruction(double instructionAmount) {
+        this.availableBalance = this.availableBalance + instructionAmount;
     }
 
     @Override
@@ -33,12 +41,11 @@ public class BalanceData {
         BalanceData that = (BalanceData) o;
         return currentBalance == that.currentBalance
                 && availableBalance == that.availableBalance
-                && aggregateBalanceYearToDate == that.aggregateBalanceYearToDate
-                && totalContributionsForLifeOfAccount == that.totalContributionsForLifeOfAccount;
+                && aggregateBalanceYearToDate == that.aggregateBalanceYearToDate;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(currentBalance, availableBalance, aggregateBalanceYearToDate, totalContributionsForLifeOfAccount);
+        return Objects.hash(currentBalance, availableBalance, aggregateBalanceYearToDate);
     }
 }

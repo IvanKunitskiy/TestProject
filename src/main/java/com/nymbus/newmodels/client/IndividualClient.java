@@ -36,4 +36,8 @@ public class IndividualClient extends Client {
                 ", individualClientDetails=" + individualClientDetails +
                 "} " + super.toString();
     }
+
+    public String getInitials() {
+        return String.format("%s, %s %s", individualType.getLastName(), individualType.getFirstName(), individualType.getMiddleName());
+    }
 }

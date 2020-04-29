@@ -78,6 +78,7 @@ public class CreateAccount {
         Pages.addAccountPage().clickProductSelectorButton();
         Pages.addAccountPage().clickProductOption(account.getProduct());
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        Pages.addAccountPage().setDateOpenedValue(DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy"));
         setStatementCycle(account);
         Pages.addAccountPage().waitForAccountHolderName();
         Pages.addAccountPage().setDateOpenedValue(DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy"));
@@ -94,6 +95,7 @@ public class CreateAccount {
         Pages.addAccountPage().clickProductSelectorButton();
         Pages.addAccountPage().clickProductOption(account.getProduct());
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        Pages.addAccountPage().setDateOpenedValue(DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy"));
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setApplyInterestTo(account);
         Pages.addAccountPage().waitForAccountHolderName();
@@ -110,6 +112,7 @@ public class CreateAccount {
         Pages.addAccountPage().clickProductSelectorButton();
         Pages.addAccountPage().clickProductOption(account.getProduct());
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        Pages.addAccountPage().setDateOpenedValue(DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy"));
         Pages.addAccountPage().clickStatementCycleSelectorButton();
         Pages.addAccountPage().clickStatementCycleOption("1");
         Pages.addAccountPage().waitForAccountHolderName();

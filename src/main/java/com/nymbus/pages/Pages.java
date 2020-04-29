@@ -22,6 +22,7 @@ import com.nymbus.pages.journal.JournalPage;
 import com.nymbus.pages.loans.LoansPage;
 import com.nymbus.pages.modalwindow.CashInModalWindowPage;
 import com.nymbus.pages.modalwindow.DebitCardModalWindow;
+import com.nymbus.pages.modalwindow.SupervisorModalPage;
 import com.nymbus.pages.modalwindow.VerifyConductorModalPage;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
 import com.nymbus.pages.teller.*;
@@ -75,6 +76,7 @@ public class Pages extends AllureLogger {
     private static AccountsPage accountsPage;
     private static CallStatementModalPage callStatementModalPage;
     private static BalanceInquiryModalPage balanceInquiryModalPage;
+    private static SupervisorModalPage supervisorModalPage;
     private static AttentionModalPage attentionModalPage;
 
     /**
@@ -483,11 +485,6 @@ public class Pages extends AllureLogger {
     }
 
     /**
-<<<<<<< HEAD
-     * <<<<<<< HEAD
-     * =======
-=======
->>>>>>> remotes/origin/feature/C22596
      * This function return an instance of `CashIn Modal Window Page`
      */
     public static CashInModalWindowPage cashInModalWindowPage() {
@@ -508,10 +505,6 @@ public class Pages extends AllureLogger {
     }
 
     /**
-<<<<<<< HEAD
-     * >>>>>>> remotes/origin/feature/C22595
-=======
->>>>>>> remotes/origin/feature/C22596
      * This function return an instance of `AccountsPage Page`
      */
     public static AccountsPage accountsPage() {
@@ -540,6 +533,16 @@ public class Pages extends AllureLogger {
             balanceInquiryModalPage = new BalanceInquiryModalPage();
         }
         return balanceInquiryModalPage;
+    }
+
+    /**
+     * This function return an instance of `Supervisor modal page`
+     */
+    public static SupervisorModalPage supervisorModalPage() {
+        if (supervisorModalPage == null) {
+            supervisorModalPage = new SupervisorModalPage();
+        }
+        return supervisorModalPage;
     }
 
     /**

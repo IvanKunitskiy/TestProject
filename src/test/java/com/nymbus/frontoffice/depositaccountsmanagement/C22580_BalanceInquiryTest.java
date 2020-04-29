@@ -5,11 +5,13 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.accountinstructions.HoldInstruction;
+import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.accountinstructions.InstructionConstructor;
 import com.nymbus.newmodels.generation.accountinstructions.builder.HoldInstructionBuilder;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
@@ -25,35 +27,38 @@ public class C22580_BalanceInquiryTest extends BaseTest {
     @BeforeMethod
     public void prepareTransactionData() {
         // Set up Client, Account, Transaction and Instruction
-        Client client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        IndividualClient client = individualClientBuilder.buildClient();
         Account savingsAccount = new Account().setSavingsAccountData();
         Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
         HoldInstruction instruction =  new InstructionConstructor(new HoldInstructionBuilder()).constructInstruction(HoldInstruction.class);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Create client
-        ClientsActions.createClient().createClient(client);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create account
-        AccountActions.createAccount().createSavingsAccount(savingsAccount);
+        AccountActions.createAccount().createSavingAccountForTransactionPurpose(savingsAccount);
         savingsAccountNumber = savingsAccount.getAccountNumber();
 
         // Set up transaction with account number
         transaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
 
         // Create transaction
-        Actions.transactionActions().goToTellerPage();
-        Actions.transactionActions().doLoginTeller();
-        Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
-        Actions.transactionActions().clickCommitButton();
-        Pages.tellerPage().closeModal();
+        Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
+
+        // Navigate to instructions tab
+        Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
+        AccountActions.editAccount().goToInstructionsTab();
+        int instructionsCount = AccountActions.createInstruction().getInstructionCount();
 
         // Create instruction
-        AccountActions.editAccount().navigateToAccountDetails(savingsAccount.getAccountNumber(), false);
-        AccountActions.editAccount().goToInstructionsTab();
         AccountActions.createInstruction().createHoldInstruction(instruction);
+
+        Pages.accountInstructionsPage().waitForCreatedInstruction(instructionsCount + 1);
     }
 
     @Test(description = "C22580, Client Accounts: Balance inquiry on Regular Savings account")
