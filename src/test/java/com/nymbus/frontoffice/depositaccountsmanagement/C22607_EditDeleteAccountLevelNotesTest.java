@@ -13,6 +13,9 @@ import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.data.entity.User;
 import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.note.Note;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
@@ -32,16 +35,15 @@ public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
 
     @BeforeMethod
     public void preCondition() {
-        // Set up a user data
+        // Set up a user
         user = new User().setDefaultUserData();
 
-        // possibly replace with new solution
-        // Set up a client data
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
+        // Set up a client
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        IndividualClient client = individualClientBuilder.buildClient();
 
-        // Set up a note data
+        // Set up a note
         note = new Note().setDefaultNoteData();
 
         // Set up account
@@ -59,7 +61,9 @@ public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
         // Create a client
         Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create CHK account
         AccountActions.createAccount().createCHKAccount(chkAccount);
