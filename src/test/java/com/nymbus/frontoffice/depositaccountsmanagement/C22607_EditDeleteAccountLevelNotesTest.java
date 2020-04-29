@@ -11,7 +11,6 @@ import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.data.entity.User;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -35,6 +34,7 @@ public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
 
     @BeforeMethod
     public void preCondition() {
+
         // Set up a user
         user = new User().setDefaultUserData();
 
@@ -60,7 +60,7 @@ public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
 
         // Create a client
         Selenide.open(Constants.URL);
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
