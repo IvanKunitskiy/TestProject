@@ -181,7 +181,7 @@ public class NotesPage extends PageTools {
     public void clickSaveButton() {
         waitForElementVisibility(saveNoteButton);
         waitForElementClickable(saveNoteButton);
-        SelenideTools.sleep(3);
+//        SelenideTools.sleep(3);
         click(saveNoteButton);
         SelenideTools.sleep(3);
     }
@@ -204,7 +204,13 @@ public class NotesPage extends PageTools {
         click(noteSelector, noteName);
     }
 
-    @Step("Click the note in list by its name")
+    @Step("Check is note displayed in the notes list by name")
+    public boolean isNotePresentInList(String noteName) {
+        waitForElementClickable(noteSelector, noteName);
+        return isElementVisible(noteSelector, noteName);
+    }
+
+    @Step("Click 'Edit' button")
     public void clickEditButton() {
         waitForElementVisibility(editButton);
         waitForElementClickable(editButton);
