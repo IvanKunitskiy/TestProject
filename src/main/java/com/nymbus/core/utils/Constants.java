@@ -3,6 +3,7 @@ package com.nymbus.core.utils;
 public class Constants {
     public static String URL = "https://dev6.nymbus.com/";
     public static String WEB_ADMIN_URL = "https://nymbus-u-was-07.nj1.nymbus.com:9445/webadmin/";
+    public static String API_URL = "https://nymbus-u-was-07.nj1.nymbus.com:9443/coreweb/controller/";
     public static String REMOTE_URL = System.getProperty("remoteurl");
 
     public static String USERNAME = "autotest";

@@ -142,6 +142,8 @@ public class Sample {
         OrganisationClient organisationClient = organisationClientBuilder.buildClient();*/
 
         // System.out.println(WebAdminActions.webAdminTransactionActions().getTransactionUrl("123456"));
+
+       /* System.out.println(CHKAccountData.getAtmDepositData("123456", "2404", "5000").toString());*/
     }
 
     private static BaseDocument qwe() {

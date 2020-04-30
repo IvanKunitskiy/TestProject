@@ -94,6 +94,7 @@ public class TransactionActions {
 
     private void setGLDebitSource(TransactionSource source, int index) {
         int tempIndex = 1 + index;
+        Pages.tellerPage().clickGLDebitButton();
         fillSourceAccountNumber(source.getAccountNumber(), tempIndex);
         fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
         fillSourceDetails(source.getNotes(), tempIndex);
@@ -101,6 +102,9 @@ public class TransactionActions {
 
     private void setTransactionDestination(TransactionDestination destination, int index) {
         switch (destination.getSourceType()) {
+            case GL_CREDIT:
+                setGLCreditDestination(destination, index);
+                break;
             case CASH_OUT:
                 setCashOutDestination(destination);
                 break;

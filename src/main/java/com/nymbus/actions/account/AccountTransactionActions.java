@@ -9,6 +9,9 @@ import java.util.List;
 public class AccountTransactionActions {
     private final String PLUS_SYMBOL = "+";
     private final String MINUS_SYMBOL = "-";
+    private final String GREEN = "rgb(128, 200, 92)";
+    private final String RED = "rgb(245, 97, 97)";
+    private final int TRANSACTION_ITEMS_SIZE = 10;
 
     public boolean isTransactionSymbolRight(String accountNumber, Transaction transaction, int index) {
         if (!isTransactionContainsNumber(transaction, accountNumber)) {
@@ -16,11 +19,22 @@ public class AccountTransactionActions {
         }
         String symbol = Pages.accountTransactionPage().getAmountSymbol(index);
         if (isDebitTransaction(transaction, accountNumber)) {
-            return symbol.equals(MINUS_SYMBOL);
+            return symbol.equals(MINUS_SYMBOL)
+                    && Pages.accountTransactionPage().isAmountSymbolColorRight(index, RED);
         }
         else {
-            return symbol.equals(PLUS_SYMBOL);
+            return symbol.equals(PLUS_SYMBOL)
+                    && Pages.accountTransactionPage().isAmountSymbolColorRight(index, GREEN);
         }
+    }
+
+    public boolean isAllImageVisible() {
+        for(int i = 1; i <= TRANSACTION_ITEMS_SIZE; i++) {
+            if(!Pages.accountTransactionPage().isImageVisible(i)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean isTransactionsSymbolRight(String accountNumber, List<Transaction> transactionList) {

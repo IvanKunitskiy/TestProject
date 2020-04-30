@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.Color;
 
 import java.io.File;
 import java.util.List;
@@ -64,6 +65,14 @@ public class PageTools extends AllureLogger {
     protected void jsClick(By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
         Selenide.executeJavaScript("arguments[0].click();", shouldBe(Condition.exist, by, args));
+    }
+
+    protected boolean isImageLoaded(By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
+        String script = "return arguments[0].complete && "
+                + "typeof arguments[0].naturalWidth != \"undefined\" && "
+                + "arguments[0].naturalWidth > 0";
+        return  Selenide.executeJavaScript(script, shouldBe(Condition.exist, by, args));
     }
 
     protected void actionClick(By by, Object... args) {
@@ -197,5 +206,15 @@ public class PageTools extends AllureLogger {
 
     protected WebElement getWebElement(By by, Object... args){
         return WebDriverRunner.getWebDriver().findElement(byLocator(by, args));
+    }
+
+    /**
+     * Work with colors
+     */
+    protected boolean isColorMatch(String actual, String expected) {
+        Color actualColor = Color.fromString(actual);
+        Color expectedColor = Color.fromString(expected);
+
+        return actualColor.equals(expectedColor);
     }
 }

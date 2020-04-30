@@ -1,11 +1,12 @@
 package com.nymbus.pages.teller;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
 public class TellerModalPage extends PageTools {
-    private By modalWindow = By.xpath("//div[@class='modal-content']");
+    private By modalWindow = By.xpath("//div[contains(@class, 'login-modal')]");
     private By cashDrawerName = By.xpath("//div[@name='cashDrawerTemplate']/a/span/span");
     private By enterButton = By.xpath("//div[@class='modal-content']//button[contains(@class, 'btn-primary')]");
 
@@ -34,6 +35,7 @@ public class TellerModalPage extends PageTools {
 
     @Step("Is modal window visible")
     public boolean isModalWindowVisible() {
+        SelenideTools.sleep(1);
         return isElementVisible(modalWindow);
     }
 }
