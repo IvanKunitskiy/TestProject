@@ -614,8 +614,6 @@ public class AccountDetailsPage extends PageTools {
 
     @Step("Check if 'More' button is visible")
     public boolean isMoreButtonVisible() {
-        waitForElementVisibility(moreButton);
-        waitForElementClickable(moreButton);
         return isElementVisible(moreButton);
     }
 
