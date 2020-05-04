@@ -6,11 +6,13 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.accountinstructions.HoldInstruction;
+import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.accountinstructions.InstructionConstructor;
 import com.nymbus.newmodels.generation.accountinstructions.builder.HoldInstructionBuilder;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
@@ -24,7 +26,7 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22590_BalanceInquiryOnRegularCDAccountTest extends BaseTest {
 
-    private Client client;
+    private IndividualClient client;
     private Account cdAccount;
     private HoldInstruction instruction;
     private Transaction transaction;
@@ -33,9 +35,9 @@ public class C22590_BalanceInquiryOnRegularCDAccountTest extends BaseTest {
     public void preCondition() {
 
         // Set up client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
         // Set up account
         cdAccount = new Account().setCDAccountData();
@@ -47,7 +49,9 @@ public class C22590_BalanceInquiryOnRegularCDAccountTest extends BaseTest {
 
         // Create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create CD account
         AccountActions.createAccount().createCDAccount(cdAccount);
