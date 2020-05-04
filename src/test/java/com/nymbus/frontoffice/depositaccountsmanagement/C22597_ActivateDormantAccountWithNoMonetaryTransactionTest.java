@@ -9,8 +9,10 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -22,16 +24,16 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22597_ActivateDormantAccountWithNoMonetaryTransactionTest extends BaseTest {
 
-    private Client client;
+    private IndividualClient client;
     private Account chkAccount;
     private Account savingsAccount;
 
     @BeforeMethod
     public void preCondition() {
         // Set up client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
         // Set up account
         chkAccount = new Account().setCHKAccountData();
@@ -40,7 +42,9 @@ public class C22597_ActivateDormantAccountWithNoMonetaryTransactionTest extends 
         // Create a client
         Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create CHK / Savings account
         AccountActions.createAccount().createCHKAccount(chkAccount);
