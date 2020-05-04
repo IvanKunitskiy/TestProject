@@ -6,8 +6,13 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
+import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
+import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
+import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -16,26 +21,39 @@ import org.testng.annotations.Test;
 
 public class C22576_CheckingAccountCallStatementTest extends BaseTest {
 
-    private Client client;
+    private IndividualClient client;
     private Account chkAccount;
+    private Transaction transaction;
 
     @BeforeMethod
     public void preCondition() {
 
         // Set up client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
         // Set up account
         chkAccount = new Account().setCHKAccountData();
 
-        // Create a client
+        // Set up transaction with account number
+        transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+
+        // Create client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
-        client.setClientID(Pages.clientDetailsPage().getClientID());
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+
+        // Create account
         AccountActions.createAccount().createCHKAccount(chkAccount);
-        Actions.tellerActions().assignAmountToAccount(chkAccount, "2", "20000");
+
+        // Create transaction
+        transaction.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
+        transaction.getTransactionDestination().setTransactionCode("109 - Deposit");
+
+        // Create transaction and logout
+        Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
         Actions.loginActions().doLogOut();
 
     }
