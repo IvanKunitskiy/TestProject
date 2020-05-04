@@ -1,5 +1,6 @@
 package com.nymbus.newmodels;
 
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.client.other.document.BaseDocument;
 import com.nymbus.newmodels.client.other.document.IDType;
 
@@ -144,6 +145,10 @@ public class Sample {
         // System.out.println(WebAdminActions.webAdminTransactionActions().getTransactionUrl("123456"));
 
        /* System.out.println(CHKAccountData.getAtmDepositData("123456", "2404", "5000").toString());*/
+
+        /*Actions.nonTellerTransactionActions().performDepositTransactions(5, "2706827068428111", "2404", "5000");*/
+
+        System.out.println(DateTime.getDateWithFormat("08/24/2024", "MM/dd/yyyy", "yyMM"));
     }
 
     private static BaseDocument qwe() {
