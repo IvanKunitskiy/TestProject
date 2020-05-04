@@ -5,8 +5,10 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -18,21 +20,25 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22573_EditCheckingAccountTest extends BaseTest {
 
-    Client client;
-    Account checkingAccount;
+    private IndividualClient client;
+    private Account checkingAccount;
 
     @BeforeMethod
     public void preCondition() {
 
         // Set up Client and Account
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
+
+        // Set up account
         checkingAccount = new Account().setCHKAccountData();
 
         // Login to the system and create a client with checking account
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
         AccountActions.createAccount().createCHKAccount(checkingAccount);
         Actions.loginActions().doLogOut();
     }
@@ -45,6 +51,7 @@ public class C22573_EditCheckingAccountTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the CHK account from the precondition and open it on Details");
+//        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(checkingAccount);
         Pages.clientsSearchPage().typeToClientsSearchInputField(checkingAccount.getAccountNumber());
         Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
         Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), checkingAccount.getAccountNumber()));
@@ -57,9 +64,10 @@ public class C22573_EditCheckingAccountTest extends BaseTest {
         logInfo("Step 3: Click [Edit] button");
         Pages.accountDetailsPage().clickEditButton();
 
+        // TODO: Accounts page is under reconstruction. Check elements presence for commented out lines and delete or uncomment respectively.
         logInfo("Step 4: Look at the fields and verify that such fields are disabled for editing");
         Assert.assertTrue(Pages.editAccountPage().isProductTypeFieldDisabledInEditMode(), "'Product Type' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isProductFieldDisabledInEditMode(), "'Product' field is not disabled");
+//        Assert.assertTrue(Pages.editAccountPage().isProductFieldDisabledInEditMode(), "'Product' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAccountNumberFieldDisabledInEditMode(), "'Account Number' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAccountTypeFieldDisabledInEditMode(), "'Account Type' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isOriginatingOfficerFieldDisabledInEditMode(), "'Originating Officer' field is not disabled");
@@ -91,8 +99,9 @@ public class C22573_EditCheckingAccountTest extends BaseTest {
         Pages.accountDetailsPage().waitForFullProfileButton();
 
         logInfo("Step 9: Pay attention to CHK account fields");
-        Pages.accountDetailsPage().clickMoreButton();
-
+        if (Pages.accountDetailsPage().isMoreButtonVisible()) {
+            Pages.accountDetailsPage().clickMoreButton();
+        }
         Assert.assertEquals(Pages.accountDetailsPage().getFederalWHReason(), checkingAccount.getFederalWHReason(), "'Federal WH Reason' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getReasonATMChargeWaived(), checkingAccount.getReasonATMChargeWaived(), "'Reason ATM Charge Waived' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getOdProtectionAcct(), checkingAccount.getOdProtectionAcct(), "'Od Protection Acct' value does not match");
@@ -122,7 +131,6 @@ public class C22573_EditCheckingAccountTest extends BaseTest {
 
         logInfo("Step 10: Click [Edit] button and pay attention to the fields");
         Pages.accountDetailsPage().clickEditButton();
-
         Assert.assertEquals(Pages.editAccountPage().getFederalWHReasonInEditMode(), checkingAccount.getFederalWHReason(), "'Federal WH Reason' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getReasonATMChargeWaived(), checkingAccount.getReasonATMChargeWaived(), "'Reason ATM Charge Waived' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getOdProtectionAcct(), checkingAccount.getOdProtectionAcct(), "'Od Protection Acct' value does not match");

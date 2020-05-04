@@ -197,7 +197,7 @@ public class EditAccountPage extends PageTools {
     private By termTypeMonths = By.xpath("//div[@id='termtype']");
     private By dateNextInterest = By.xpath("//input[@id='datenextinterestpayment']");
     private By nextInterestPaymentAmount = By.xpath("//input[@id='nextinterestpaymentamount']");
-    private By maturityDate = By.xpath("//input[@id='maturitydate']");;
+    private By maturityDate = By.xpath("//input[@id='maturitydate']");
     private By accruedInterest = By.xpath("//input[@id='accruedinterest']");
     private By penaltyAmountYTD = By.xpath("//input[@id='penaltyamountytd']");
     private By dailyInterestAccrual = By.xpath("//input[@id='dailyinterestaccrual']");
@@ -1424,7 +1424,7 @@ public class EditAccountPage extends PageTools {
     @Step("Click the 'Federal W/H Reason' selector button")
     public void clickFederalWHReasonSelectorButton() {
         waitForElementVisibility(federalWHReasonSelectorButton);
-        scrollToElement(federalWHReasonSelectorButton);
+//        scrollToElement(federalWHReasonSelectorButton);
         waitForElementClickable(federalWHReasonSelectorButton);
         click(federalWHReasonSelectorButton);
     }
