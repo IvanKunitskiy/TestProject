@@ -1,13 +1,16 @@
 package com.nymbus.frontoffice.depositaccountsmanagement;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -19,7 +22,7 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C23911_EditCDIRAAccountTest extends BaseTest {
 
-    private Client client;
+    private IndividualClient client;
     private Account cdIRAAccount;
     private Account checkingAccount;
 
@@ -27,10 +30,9 @@ public class C23911_EditCDIRAAccountTest extends BaseTest {
     public void preCondition() {
 
         // Set up Client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
-        client.setSelectOfficer("autotest autotest"); // Controlling officer to validate 'Bank Branch' value]
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
         // Set up CHK account (required to point the 'Corresponding Account')
         checkingAccount = new Account().setCHKAccountData();
@@ -42,9 +44,14 @@ public class C23911_EditCDIRAAccountTest extends BaseTest {
         cdIRAAccount.setMaturityDate(DateTime.getDateWithNMonthAdded(cdIRAAccount.getDateOpened(), "MM/dd/yyyy", Integer.parseInt(cdIRAAccount.getTermType())));
         cdIRAAccount.setDateNextInterest(DateTime.getDateWithNMonthAdded(cdIRAAccount.getDateOpened(), "MM/dd/yyyy", 3)); // 3 month added as 'Interest Frequency' is set to 'Quarterly'
 
-        // Login to the system and create a client with respective accounts
+        // Login to the system and create a client
+        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+
+        // Create CHK and CD IRA accounts and logout
         AccountActions.createAccount().createCHKAccount(checkingAccount);
         Pages.accountDetailsPage().clickAccountsLink();
         AccountActions.createAccount().createCDAccount(cdIRAAccount);
@@ -52,7 +59,7 @@ public class C23911_EditCDIRAAccountTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "Edit CD IRA Account")
+    @Test(description = "C23911, Edit CD IRA Account")
     @Severity(SeverityLevel.CRITICAL)
     public void editCDIRAAccount() {
 
@@ -60,21 +67,15 @@ public class C23911_EditCDIRAAccountTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the CD account from the precondition and open it in Edit mode");
-        Pages.clientsSearchPage().typeToClientsSearchInputField(cdIRAAccount.getAccountNumber());
-        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), cdIRAAccount.getAccountNumber()));
-        Pages.clientsSearchPage().clickOnSearchButton();
-        Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
-        Pages.clientDetailsPage().waitForPageLoaded();
-        Pages.clientDetailsPage().clickAccountsTab();
-        Pages.clientDetailsPage().openAccountByNumber(cdIRAAccount.getAccountNumber());
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(cdIRAAccount);
 
         logInfo("Step 2: Click [Edit] button");
         Pages.accountDetailsPage().clickEditButton();
 
+        // TODO: Accounts page is under reconstruction. Check elements presence for commented out lines and delete or uncomment respectively.
         logInfo("Step 4: Look at the fields and verify that such fields are disabled for editing");
         Assert.assertTrue(Pages.editAccountPage().isProductTypeFieldDisabledInEditMode(), "'Product Type' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isProductFieldDisabledInEditMode(), "'Product' field is not disabled");
+//        Assert.assertTrue(Pages.editAccountPage().isProductFieldDisabledInEditMode(), "'Product' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAccountNumberFieldDisabledInEditMode(), "'Account Number' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAccountTypeFieldDisabledInEditMode(), "'Account Type' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isOriginatingOfficerFieldDisabledInEditMode(), "'Originating Officer' field is not disabled");
@@ -133,7 +134,9 @@ public class C23911_EditCDIRAAccountTest extends BaseTest {
         Pages.accountDetailsPage().waitForFullProfileButton();
 
         logInfo("Step 10: Pay attention to CD IRA account fields");
-        Pages.accountDetailsPage().clickMoreButton();
+        if (Pages.accountDetailsPage().isMoreButtonVisible()) {
+            Pages.accountDetailsPage().clickMoreButton();
+        }
         Assert.assertEquals(Pages.accountDetailsPage().getFederalWHReason(), cdIRAAccount.getFederalWHReason(), "'Federal WH Reason' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getBankAccountNumberInterestOnCD(), cdIRAAccount.getBankAccountNumberInterestOnCD(), "'Bank Account Number Interest On CD' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getBankRoutingNumberInterestOnCD(), cdIRAAccount.getBankRoutingNumberInterestOnCD(), "'Bank Routing Number Interest On CD' value does not match");
