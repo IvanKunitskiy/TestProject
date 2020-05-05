@@ -6,8 +6,10 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -19,44 +21,43 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22598_CloseAccountWithNoMonetaryTransactionTest extends BaseTest {
 
-    private Client client;
+    private IndividualClient client;
     private Account checkingAccount;
 
     @BeforeMethod
     public void preCondition() {
 
-        // Set up Client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
+        // Set up client
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
+        // Set up account
         checkingAccount = new Account().setCHKAccountData();
         checkingAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
 
         // Login to the system and create a client
+        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+
+        // Create account and logout
         AccountActions.createAccount().createCHKAccount(checkingAccount);
         Actions.loginActions().doLogOut();
     }
 
     @Test(description = "C22598, Close Account with no monetary transaction")
     @Severity(SeverityLevel.CRITICAL)
-    public void closeAccountWithNoMonetaryTransactionTest() {
+    public void closeAccountWithNoMonetaryTransaction() {
 
         logInfo("Step 1: Log in to the system as the User from the precondition");
         Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the account from the precondition (e.g. CHK account) and open it on Details");
-        Pages.clientsSearchPage().typeToClientsSearchInputField(checkingAccount.getAccountNumber());
-        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), checkingAccount.getAccountNumber()));
-        Pages.clientsSearchPage().clickOnSearchButton();
-        Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
-        Pages.clientDetailsPage().waitForPageLoaded();
-        Pages.clientDetailsPage().clickAccountsTab();
-        Pages.clientDetailsPage().openAccountByNumber(checkingAccount.getAccountNumber());
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(checkingAccount);
 
         logInfo("Step 3: Pay attention to the [Close Account] button");
         Assert.assertTrue(Pages.accountDetailsPage().isCloseAccountButtonVisible(), "'Close Account' button is not visible");
