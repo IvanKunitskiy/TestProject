@@ -48,6 +48,7 @@ public class C22585_BalanceInquiryOnSavingsIRAAccountTest extends BaseTest {
         transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
 
         // Create a client
+        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
@@ -61,11 +62,7 @@ public class C22585_BalanceInquiryOnSavingsIRAAccountTest extends BaseTest {
         transaction.getTransactionDestination().setTransactionCode("2330 - Cur Yr Contrib");
 
         // Commit transaction to account
-        Actions.transactionActions().goToTellerPage();
-        Actions.transactionActions().doLoginTeller();
-        Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
-        Actions.transactionActions().clickCommitButton();
-        Pages.tellerPage().closeModal();
+        Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
 
         // Create instruction
         Pages.aSideMenuPage().clickClientMenuItem();
