@@ -6,8 +6,10 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
@@ -21,7 +23,7 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
 
-    private Client client;
+    private IndividualClient client;
     private Account iraAccount;
     private Transaction transaction;
 
@@ -29,9 +31,9 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
     public void preCondition() {
 
         // Set up client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
         // Set up account
         iraAccount = new Account().setIRAAccountData();
@@ -40,8 +42,11 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
         transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
 
         // Create a client
+        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create account
         AccountActions.createAccount().createIRAAccount(iraAccount);
@@ -51,11 +56,7 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
         transaction.getTransactionDestination().setTransactionCode("2330 - Cur Yr Contrib");
 
         // Commit transaction to account
-        Actions.transactionActions().goToTellerPage();
-        Actions.transactionActions().doLoginTeller();
-        Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
-        Actions.transactionActions().clickCommitButton();
-        Pages.tellerPage().closeModal();
+        Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
         Actions.loginActions().doLogOut();
     }
 
