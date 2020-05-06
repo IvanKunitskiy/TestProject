@@ -8,7 +8,9 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.data.entity.User;
-import com.nymbus.models.client.Client;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.note.Note;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
@@ -23,14 +25,20 @@ public class C22554_AddNewClientLevelNoteTest extends BaseTest {
 
     private User user;
     private Note note;
-    private Client client;
+    private IndividualClient client;
+    private String clientID;
 
     @BeforeMethod
     public void preCondition() {
+        // Set up a user
         user = new User().setDefaultUserData();
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
+
+        // Set up client
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
+
+        // Set up a note
         note = new Note().setDefaultNoteData();
         note.setResponsibleOfficer(user.getFirstName() + " " + user.getLastName());
 
@@ -43,24 +51,23 @@ public class C22554_AddNewClientLevelNoteTest extends BaseTest {
         WebAdminActions.webAdminUsersActions().setUserPassword(user);
         WebAdminActions.loginActions().doLogout();
 
-        // Create a client with a note. Set note's 'Due Date' to current date
-        Selenide.open(Constants.URL);
+        // Create a client
         Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
-        ClientsActions.createClient().createClient(client);
-        client.setClientID(Pages.clientDetailsPage().getClientID());
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+        clientID = Pages.clientDetailsPage().getClientID();
         Actions.loginActions().doLogOut();
     }
 
     @Test(description = "C22554, Add New Client Level Note Test")
     @Severity(SeverityLevel.CRITICAL)
     public void addNewClientLevelNoteTest() {
-
         logInfo("Step 1: Log in to the system as User1 from the preconditions");
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
 
         logInfo("Step 2: Go to Clients and search for the client from the precondition");
-        Actions.clientPageActions().searchAndOpenClientByID(client);
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID);
 
         logInfo("Step 3: Open Client's Profile on Notes tab");
         Pages.accountNavigationPage().clickNotesTab();
