@@ -4,14 +4,12 @@ import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
-import com.nymbus.actions.transfers.TransfersActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
-import org.aspectj.lang.annotation.Before;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -61,7 +59,7 @@ public class C22560_ViewClientLevelCallStatementTest extends BaseTest {
         Pages.accountsPage().clickCallStatementButton();
 
         logInfo("Step 5: Select address and AKA and click [OK] button");
-        AccountActions.callStatement().setAddress(client);
+//        AccountActions.callStatement().setAddress(client);
         Pages.callStatementModalPage().clickOkButton();
 
         logInfo("Step 6: Look at the generated report");
