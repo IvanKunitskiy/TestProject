@@ -8,7 +8,9 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.data.entity.User;
-import com.nymbus.models.client.Client;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.note.Note;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
@@ -23,17 +25,23 @@ public class C22555_AssignNoteToAUserTest extends BaseTest {
 
     private User user1;
     private User user2;
-    private Client client;
+    private IndividualClient client;
     private Note note;
+    private String clientID;
 
     @BeforeMethod
     public void preCondition() {
 
+        // Set up users
         user1 = new User().setDefaultUserData();
         user2 = new User().setDefaultUserData();
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
+
+        // Set up clients
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
+
+        // Set up note
         note = new Note().setDefaultNoteData();
         note.setResponsibleOfficer(user2.getFirstName() + " " + user2.getLastName());
 
@@ -47,10 +55,11 @@ public class C22555_AssignNoteToAUserTest extends BaseTest {
         WebAdminActions.loginActions().doLogout();
 
         // Create a client with a note. Set note's 'Due Date' to current date
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(user1.getLoginID(), user1.getPassword());
-        ClientsActions.createClient().createClient(client);
-        client.setClientID(Pages.clientDetailsPage().getClientID());
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+        clientID = Pages.clientDetailsPage().getClientID();
         Pages.accountNavigationPage().clickNotesTab();
         Pages.notesPage().clickAddNewNoteButton();
         Pages.notesPage().typeToNewNoteTextArea(note.getNewNote());
@@ -78,7 +87,7 @@ public class C22555_AssignNoteToAUserTest extends BaseTest {
         Actions.loginActions().doLogin(user1.getLoginID(), user1.getPassword());
 
         logInfo("Step 2: Go to Clients and search for the client from the precondition");
-        Actions.clientPageActions().searchAndOpenClientByID(client);
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID);
 
         logInfo("Step 3: Open Client's Profile on Notes tab");
         Pages.accountNavigationPage().clickNotesTab();
