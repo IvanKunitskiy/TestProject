@@ -1,12 +1,15 @@
 package com.nymbus.frontoffice.safedepositboxmanagement;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -18,22 +21,22 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
 
-    private Client client;
+    private IndividualClient client;
     private Account safeDepositBoxAccount;
     private Account checkingAccount;
+    private String clientID;
 
     @BeforeMethod
     public void preConditions() {
-
-        // Set up Client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
-        client.setSelectOfficer("autotest autotest"); // Controlling officer to validate 'Bank Branch' value
+        // Set up client
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
         // Set up Safe Deposit Box Account
         safeDepositBoxAccount = new Account().setSafeDepositBoxData();
         safeDepositBoxAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
+//        safeDepositBoxAccount.setBoxSize("1X1");
         safeDepositBoxAccount.setBoxSize("10");
         safeDepositBoxAccount.setRentalAmount("100.00");
 
@@ -41,9 +44,14 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
         checkingAccount = new Account().setCHKAccountData();
 
         // Login to the system and create a client
+        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
-        client.setClientID(Pages.clientDetailsPage().getClientID());
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+        clientID = Pages.clientDetailsPage().getClientID();
+
+        // Create accounts and logout
         AccountActions.createAccount().createSafeDepositBoxAccount(safeDepositBoxAccount);
         Pages.accountDetailsPage().clickAccountsLink();
         AccountActions.createAccount().createCHKAccount(checkingAccount);
@@ -58,12 +66,7 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the client from the preconditions and open his profile on Accounts tab");
-        Pages.clientsSearchPage().typeToClientsSearchInputField(safeDepositBoxAccount.getAccountNumber());
-        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), safeDepositBoxAccount.getAccountNumber()), "Search results are not relevant");
-        Pages.clientsSearchPage().clickOnSearchButton();
-        Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
-        Pages.clientDetailsPage().waitForPageLoaded();
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID);
         Pages.clientDetailsPage().clickAccountsTab();
         Pages.clientDetailsPage().openAccountByNumber(safeDepositBoxAccount.getAccountNumber());
 
