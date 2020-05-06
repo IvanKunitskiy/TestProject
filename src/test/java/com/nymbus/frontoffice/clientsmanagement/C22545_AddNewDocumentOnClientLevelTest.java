@@ -1,55 +1,59 @@
 package com.nymbus.frontoffice.clientsmanagement;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.clients.documents.DocumentActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
-import com.nymbus.models.client.Client;
+import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.document.CompanyID;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.client.other.DocumentFactory;
 import com.nymbus.pages.Pages;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Box Accounts Management")
 public class C22545_AddNewDocumentOnClientLevelTest extends BaseTest {
 
-    Client client;
-    CompanyID companyIDDocument;
+    private IndividualClient client;
+    private CompanyID companyIDDocument;
+    private String clientID;
 
     @BeforeMethod
     public void preCondition() {
         // Set up the client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
-        // Set uop the document
+        // Set up the document
         companyIDDocument = new DocumentFactory().getCompanyIDDocument();
 
         // Create the client
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
-        client.setClientID(Pages.clientDetailsPage().getClientID());
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+        clientID = Pages.clientDetailsPage().getClientID();
         Actions.loginActions().doLogOut();
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "C22545, Add New Document On Client Level")
     public void addNewDocumentOnClientLevel() {
-
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        Pages.navigationPage().waitForUserMenuVisible();
 
         logInfo("Step 2: Go to Clients and search for the client from the precondition");
-        Actions.clientPageActions().searchAndOpenClientByID(client);
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID);
 
         logInfo("Step 3: Open client profile on the Documents tab");
         Pages.accountNavigationPage().clickDocumentsTab();
