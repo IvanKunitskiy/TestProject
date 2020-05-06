@@ -8,7 +8,9 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.data.entity.User;
-import com.nymbus.models.client.Client;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.note.Note;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
@@ -23,14 +25,20 @@ public class C22556_EditDeleteNewNoteTest extends BaseTest {
 
     private User user;
     private Note note;
-    private Client client;
+    private IndividualClient client;
+    private String clientID;
 
     @BeforeMethod
     public void preCondition() {
+        // Set up a user
         user = new User().setDefaultUserData();
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
+
+        // Set up a client
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
+
+        // Set up a note
         note = new Note().setDefaultNoteData();
         note.setResponsibleOfficer(user.getFirstName() + " " + user.getLastName());
 
@@ -43,18 +51,19 @@ public class C22556_EditDeleteNewNoteTest extends BaseTest {
         WebAdminActions.webAdminUsersActions().setUserPassword(user);
         WebAdminActions.loginActions().doLogout();
 
-        // Create a client with a note. Set note's 'Due Date' to current date
+        // Create a client with a note and logout
         Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
-        ClientsActions.createClient().createClient(client);
-        client.setClientID(Pages.clientDetailsPage().getClientID());
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+        clientID = Pages.clientDetailsPage().getClientID();
         Pages.accountNavigationPage().clickNotesTab();
         Pages.notesPage().clickAddNewNoteButton();
         Pages.notesPage().typeToNewNoteTextArea(note.getNewNote());
         Pages.notesPage().clickSaveButton();
         Pages.notesPage().waitForAddNewNoteButton();
         Actions.loginActions().doLogOut();
-
     }
 
     @Test(description = "C22556, Edit/Delete New Note")
@@ -66,7 +75,7 @@ public class C22556_EditDeleteNewNoteTest extends BaseTest {
         Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
 
         logInfo("Step 2: Go to Clients and search for the client from the precondition");
-        Actions.clientPageActions().searchAndOpenClientByID(client);
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID);
 
         logInfo("Step 3: Open Client's Profile on Notes tab");
         Pages.accountNavigationPage().clickNotesTab();
@@ -101,6 +110,5 @@ public class C22556_EditDeleteNewNoteTest extends BaseTest {
 
         logInfo("Step 10: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         // TODO: Implement verification at Maintenance History page
-
     }
 }
