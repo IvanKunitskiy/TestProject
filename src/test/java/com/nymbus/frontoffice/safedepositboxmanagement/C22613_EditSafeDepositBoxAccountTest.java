@@ -1,6 +1,5 @@
 package com.nymbus.frontoffice.safedepositboxmanagement;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -36,7 +35,6 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
         // Set up Safe Deposit Box Account
         safeDepositBoxAccount = new Account().setSafeDepositBoxData();
         safeDepositBoxAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
-//        safeDepositBoxAccount.setBoxSize("1X1");
         safeDepositBoxAccount.setBoxSize("10");
         safeDepositBoxAccount.setRentalAmount("100.00");
 
@@ -44,7 +42,6 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
         checkingAccount = new Account().setCHKAccountData();
 
         // Login to the system and create a client
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
@@ -61,7 +58,6 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "C22612, Add New 'Safe Deposit Box' Account")
     public void createSafeBoxAccount() {
-
         logInfo("Step 1: Log in to the system as the user from the precondition");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
@@ -120,7 +116,5 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
 
         logInfo("Step 11: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         // TODO: Implement verification at Maintenance History page
-
     }
-
 }
