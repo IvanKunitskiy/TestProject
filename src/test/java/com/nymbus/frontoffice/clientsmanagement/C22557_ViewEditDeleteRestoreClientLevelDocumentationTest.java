@@ -54,7 +54,6 @@ public class C22557_ViewEditDeleteRestoreClientLevelDocumentationTest extends Ba
     @Test(description = "C22557, View / edit / delete/ restore Client level document")
     public void addNewDocumentOnClientLevel() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Pages.navigationPage().waitForUserMenuVisible();
 
