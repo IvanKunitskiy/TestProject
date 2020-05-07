@@ -49,9 +49,9 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
         clientID = Pages.clientDetailsPage().getClientID();
 
         // Create accounts and logout
-        AccountActions.createAccount().createSafeDepositBoxAccount(safeDepositBoxAccount);
-        Pages.accountDetailsPage().clickAccountsLink();
         AccountActions.createAccount().createCHKAccount(checkingAccount);
+        Pages.accountDetailsPage().clickAccountsLink();
+        AccountActions.createAccount().createSafeDepositBoxAccount(safeDepositBoxAccount);
         Actions.loginActions().doLogOut();
     }
 

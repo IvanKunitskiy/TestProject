@@ -648,7 +648,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Box size' selector button")
     public void clickBoxSizeSelectorButton() {
         waitForElementVisibility(boxSizeSelectorButton);
-        scrollToElement(boxSizeSelectorButton);
+//        scrollToElement(boxSizeSelectorButton);
         waitForElementClickable(boxSizeSelectorButton);
         click(boxSizeSelectorButton);
     }
