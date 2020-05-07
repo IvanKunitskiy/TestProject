@@ -44,6 +44,7 @@ public class LoginActions {
         SelenideTools.openUrl(getDateUrl());
         waitForSearchResults();
         String result = WebAdminPages.rulesUIQueryAnalyzerPage().getDateInSystem();
+        doLogout();
         SelenideTools.closeCurrentTab();
         SelenideTools.switchTo().window(0);
 
@@ -59,7 +60,7 @@ public class LoginActions {
     public String getSystemDate() {
         if (systemDate == null) {
             String systemDateFromWebAdmin = getSystemDateFromWebAdmin();
-            systemDate = DateTime.getDateWithFormat(systemDateFromWebAdmin, "yyyy-MM-dd", "MM/dd/yyyy");
+            systemDate = DateTime.getDateWithFormatPlusDays(systemDateFromWebAdmin, "yyyy-MM-dd", "MM/dd/yyyy", 1);
         }
         return systemDate;
     }

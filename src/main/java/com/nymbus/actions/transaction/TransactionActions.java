@@ -1,5 +1,6 @@
 package com.nymbus.actions.transaction;
 
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.transaction.MultipleTransaction;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.TransactionDestination;
@@ -290,7 +291,7 @@ public class TransactionActions {
 
         Pages.navigationPage().clickProofDateLogin();
 
-        Pages.tellerModalPage().waitForModalVisibility();
+        SelenideTools.sleep(1);
 
         Pages.tellerModalPage().clickEnterButton();
 

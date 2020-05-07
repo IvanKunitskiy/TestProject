@@ -171,6 +171,22 @@ public class DateTime {
         }
     }
 
+    public static String getDateWithFormatPlusDays(String date, String currentPattern, String newPattern, int days) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(currentPattern, Locale.ENGLISH);
+        try {
+            Date parsedDate = simpleDateFormat.parse(date);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(parsedDate);
+            cal.add(Calendar.DATE, days);
+            simpleDateFormat.applyPattern(newPattern);
+
+            return simpleDateFormat.format(cal.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+
+            return "";
+        }
+    }
     public static String getMonthNumberByMonthName(String month) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
         try {
