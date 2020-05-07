@@ -18,7 +18,7 @@ public class DebitCardModalWindowActions {
         Pages.debitCardModalWindow().clickOnNextButton();
 
         Pages.debitCardModalWindow().typeToCardNumberInputField(debitCard.getCardNumber());
-        Pages.debitCardModalWindow().typeToNameOnCardInputField(debitCard.getNameOnCard());
+//        Pages.debitCardModalWindow().typeToNameOnCardInputField(debitCard.getNameOnCard());
         Pages.debitCardModalWindow().typeToSecondLineEmbossingInputField(debitCard.getSecondLineEmbossing());
         Pages.debitCardModalWindow().selectAccount(((CHKAccount) debitCard.getAccounts().get(0)).getAccountNumber());
 //        Pages.debitCardModalWindow().selectCardDesign(debitCard.getCardDesign()); // TODO: Need for find where I can fill card designs

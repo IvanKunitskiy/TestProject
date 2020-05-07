@@ -1,10 +1,13 @@
 package com.nymbus.frontoffice.clientsmanagement;
 
 import com.nymbus.actions.Actions;
+import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.client.other.account.ProductType;
 import com.nymbus.newmodels.client.other.account.type.CHKAccount;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -12,6 +15,7 @@ import com.nymbus.newmodels.generation.client.builder.type.individual.Individual
 import com.nymbus.newmodels.generation.client.other.DebitCardFactory;
 import com.nymbus.newmodels.generation.settings.BinControlFactory;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
+import com.nymbus.newmodels.settings.product.Product;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -38,6 +42,7 @@ public class C22553_ViewEditNewDebitCardTest extends BaseTest {
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         client = individualClientBuilder.buildClient();
 
+        // Set up debit card and account
         DebitCardFactory debitCardFactory = new DebitCardFactory();
         BinControlFactory binControlFactory = new BinControlFactory();
 
@@ -53,15 +58,30 @@ public class C22553_ViewEditNewDebitCardTest extends BaseTest {
         debitCard.setDBCTransactionLimit(binControl.getDBCTransactionLimit());
 
         chkAccount = new CHKAccount();
-        chkAccount.setAccountNumber("12400585126");
+        chkAccount.setAddNewOption("Account");
+        chkAccount.setProductType(ProductType.CHK_ACCOUNT);
+        chkAccount.setProduct(Product.BASIC_BUSINESS_CHECKING);
+        chkAccount.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
+        chkAccount.setAccountTitle(Generator.genString(10));
+        chkAccount.setOptInOutDate("01/01/2020");
+        chkAccount.setDateOpened("02/27/2020");
+        chkAccount.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
+        chkAccount.setEarningCreditRate(Generator.getRandomStringNumber(3));
 
         debitCard.getAccounts().add(chkAccount);
 
+        // Log in and create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
         clientID = Pages.clientDetailsPage().getClientID();
+
+        // Create account
+        AccountActions.createAccount().createCHKAccount(chkAccount);
+        Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
+
+        //Create debit card and logout
         Pages.clientDetailsPage().clickOnMaintenanceTab();
         Pages.clientDetailsPage().clickOnNewDebitCardButton();
         Actions.debitCardModalWindowActions().fillDebitCard(debitCard);

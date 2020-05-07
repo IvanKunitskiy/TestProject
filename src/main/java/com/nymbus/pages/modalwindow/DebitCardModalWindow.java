@@ -266,6 +266,7 @@ public class DebitCardModalWindow extends PageTools {
     @Step("Click on 'Save and Finish' button")
     public void clickOnSaveAndFinishButton() {
         waitForElementVisibility(saveAndFinishButton);
+        SelenideTools.sleep(3);
         click(saveAndFinishButton);
     }
 
