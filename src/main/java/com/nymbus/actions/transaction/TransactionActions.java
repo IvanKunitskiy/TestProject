@@ -277,10 +277,23 @@ public class TransactionActions {
             setTransactionSource(transaction.getTransactionSource(), 0);
             setTransactionDestination(transaction.getTransactionDestination(), 0);
             clickCommitButton();
+
             if (isCashInOrCashOutTransactionType(transaction)) {
                 Pages.verifyConductorModalPage().clickVerifyButton();
             }
             Pages.tellerPage().closeModal();
         }
+    }
+
+    public void loginTeller() {
+        Pages.navigationPage().clickAccountButton();
+
+        Pages.navigationPage().clickProofDateLogin();
+
+        Pages.tellerModalPage().waitForModalVisibility();
+
+        Pages.tellerModalPage().clickEnterButton();
+
+        Pages.tellerModalPage().waitForModalInvisibility();
     }
 }

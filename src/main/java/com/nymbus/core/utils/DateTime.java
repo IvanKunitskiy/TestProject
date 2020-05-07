@@ -170,4 +170,30 @@ public class DateTime {
             return "";
         }
     }
+
+    public static String getMonthNumberByMonthName(String month) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
+        try {
+            Date date = new SimpleDateFormat("MMM", Locale.ENGLISH).parse(month);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            return simpleDateFormat.format(cal.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public static String getLastTwoDigitsOfYear(String year) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy", Locale.ENGLISH);
+        try {
+            Date date = new SimpleDateFormat("yyyy", Locale.ENGLISH).parse(year);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            return simpleDateFormat.format(cal.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 }

@@ -86,6 +86,11 @@ public class AccountTransactionPage extends PageTools {
         SelenideTools.sleep(1);
     }
 
+    @Step("Is 'Expand All' button visible")
+    public boolean isExpandAllButtonVisible() {
+       return isElementVisible(expandAll);
+    }
+
     @Step("Is amount symbol {0} has correct color")
     public boolean isAmountSymbolColorRight(int index, String expectedColor) {
         waitForElementVisibility(amountSymbol, index);

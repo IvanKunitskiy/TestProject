@@ -1,9 +1,9 @@
 package com.nymbus.core.base;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.core.allure.AllureLogger;
 import com.nymbus.core.config.SelenideConfig;
-import com.nymbus.core.utils.PropertyLoader;
-import com.codeborne.selenide.Selenide;
+import com.nymbus.core.utils.Constants;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
@@ -17,7 +17,7 @@ public class BaseTest extends AllureLogger {
         SelenideConfig.createBrowserConfig(System.getProperty("selenide.browser", "chrome"));
 
         logInfo("Open browser...");
-        Selenide.open(PropertyLoader.get("base_url"));
+        Selenide.open(/*PropertyLoader.get("base_url")*/Constants.URL);
     }
 
     @AfterMethod(alwaysRun = true, description = "Closing web browser...")

@@ -1,7 +1,6 @@
 package com.nymbus.actions.modalwindow;
 
 import com.nymbus.core.utils.DateTime;
-import com.nymbus.newmodels.client.other.account.type.CHKAccount;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
@@ -20,7 +19,7 @@ public class DebitCardModalWindowActions {
         Pages.debitCardModalWindow().typeToCardNumberInputField(debitCard.getCardNumber());
         Pages.debitCardModalWindow().typeToNameOnCardInputField(debitCard.getNameOnCard());
         Pages.debitCardModalWindow().typeToSecondLineEmbossingInputField(debitCard.getSecondLineEmbossing());
-        Pages.debitCardModalWindow().selectAccount(((CHKAccount) debitCard.getAccounts().get(0)).getAccountNumber());
+        Pages.debitCardModalWindow().selectAccount(debitCard.getAccounts().get(0));
 //        Pages.debitCardModalWindow().selectCardDesign(debitCard.getCardDesign()); // TODO: Need for find where I can fill card designs
         Pages.debitCardModalWindow().selectCardStatus(debitCard.getCardStatus());
         Pages.debitCardModalWindow().clickOnYesButton();
@@ -67,5 +66,21 @@ public class DebitCardModalWindowActions {
                 futureDate.split(" ")[1],
                 "Wrong 'Expiration Date' year"
         );
+    }
+
+    public String getExpirationDate() {
+        String year =  DateTime.getLastTwoDigitsOfYear(Pages.debitCardModalWindow().getExpirationDateYear());
+
+        String month = DateTime.getMonthNumberByMonthName(Pages.debitCardModalWindow().getExpirationDateMonth());
+
+        return year + month;
+    }
+
+    public String getCardNumber(int i) {
+        Pages.clientDetailsPage().clickOnViewAllCardsButton();
+
+        Pages.cardsManagementPage().clickEditButton(i);
+
+        return Pages.debitCardModalWindow().getCardNumber();
     }
 }

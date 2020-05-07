@@ -148,7 +148,9 @@ public class Sample {
 
         /*Actions.nonTellerTransactionActions().performDepositTransactions(5, "2706827068428111", "2404", "5000");*/
 
-        System.out.println(DateTime.getDateWithFormat("08/24/2024", "MM/dd/yyyy", "yyMM"));
+       /* System.out.println(DateTime.getDateWithFormat("08/24/2024", "MM/dd/yyyy", "yyMM"));*/
+
+        System.out.println(DateTime.getMonthNumberByMonthName("August"));
     }
 
     private static BaseDocument qwe() {

@@ -1,6 +1,5 @@
 package com.nymbus.newmodels.client.other.debitcard;
 
-import com.nymbus.newmodels.client.other.account.type.Account;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +19,7 @@ public class DebitCard {
     private String clientNumber;
     @NonNull private String nameOnCard;
     private String secondLineEmbossing;
-    @NonNull private List<Account> accounts; // At least one
+    @NonNull private List<String> accounts; // At least one
     private String cardDesign;
     @NonNull CardStatus cardStatus;
     private int pinOffset;

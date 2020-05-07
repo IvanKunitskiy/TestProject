@@ -7,12 +7,17 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.client.other.debitcard.DebitCard;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
+import com.nymbus.newmodels.generation.client.other.DebitCardFactory;
+import com.nymbus.newmodels.generation.settings.BinControlFactory;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitGLCreditTransactionBuilder;
+import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -26,6 +31,7 @@ import java.util.List;
 public class C22601_ViewTransactionHistoryTest extends BaseTest {
     private List<Transaction> transactions;
     private String accountNumber;
+    private String accountNumber2;
 
     @BeforeMethod
     public void prepareTransactionData() {
@@ -36,23 +42,69 @@ public class C22601_ViewTransactionHistoryTest extends BaseTest {
 
         Account savingsAccount = new Account().setSavingsAccountData();
 
+        Account chkAccount = new Account().setCHKAccountData();
+
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Set up credit card
+        DebitCardFactory debitCardFactory = new DebitCardFactory();
+        BinControlFactory binControlFactory = new BinControlFactory();
+
+        BinControl binControl = binControlFactory.getBinControl();
+        binControl.setBinNumber("510986");
+        binControl.setCardDescription("Consumer Debit");
+
+        DebitCard debitCard = debitCardFactory.getDebitCard();
+        debitCard.setBinControl(binControl);
+        debitCard.setATMDailyDollarLimit(binControl.getATMDailyDollarLimit());
+        debitCard.setATMTransactionLimit(binControl.getATMTransactionLimit());
+        debitCard.setDBCDailyDollarLimit(binControl.getDBCDailyDollarLimit());
+        debitCard.setDBCTransactionLimit(binControl.getDBCTransactionLimit());
+        debitCard.getAccounts().add(chkAccount.getAccountNumber());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
 
-        // Create account
+        // Create savings account
+        Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         AccountActions.createAccount().createSavingAccountForTransactionPurpose(savingsAccount);
+
+        // Create CHK account
+        Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
+        AccountActions.createAccount().createCHKAccountForTransactionPurpose(chkAccount);
+
+        //Create debit card
+        Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
+        Pages.clientDetailsPage().clickOnMaintenanceTab();
+        Pages.clientDetailsPage().clickOnNewDebitCardButton();
+        Actions.debitCardModalWindowActions().fillDebitCard(debitCard);
+        String expirationDate = Actions.debitCardModalWindowActions().getExpirationDate();
+        Pages.debitCardModalWindow().clickOnSaveAndFinishButton();
+        Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
+        String debitCardNumber = Actions.debitCardModalWindowActions().getCardNumber(1);
+        Pages.debitCardModalWindow().clickTheCloseModalIcon();
+        Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
 
         // Set up account number
         accountNumber = savingsAccount.getAccountNumber();
+        accountNumber2 = chkAccount.getAccountNumber();
+
+        // Set up nonTeller transaction data
+        NonTellerTransactionData nonTellerTransactionData = new NonTellerTransactionData();
+        nonTellerTransactionData.setCardNumber(debitCardNumber);
+        nonTellerTransactionData.setAmount(40.00);
+        nonTellerTransactionData.setExpirationDate(expirationDate);
 
         // Set up transactions
         transactions = getTransactionList(accountNumber);
 
+        // Create nonTellerTransactions
+        Actions.nonTellerTransactionActions().performDepositTransactions(10, nonTellerTransactionData);
+
         // Create transactions
+        Actions.transactionActions().loginTeller();
         Actions.transactionActions().performTransactionList(transactions);
         Actions.loginActions().doLogOut();
     }
@@ -80,6 +132,14 @@ public class C22601_ViewTransactionHistoryTest extends BaseTest {
         logInfo("Step 5: Click [Expand All] button");
         Pages.accountTransactionPage().clickExpandAllButton();
         Assert.assertTrue(AccountActions.accountTransactionActions().isAllImageVisible(), "Transaction image isn't displayed!");
+
+        logInfo("Step 6: Search for the Account#2 from the precondition and open it on the Transactions tab");
+        Actions.clientPageActions().searchAndOpenClientByName(accountNumber2);
+        AccountActions.retrievingAccountData().goToTransactionsTab();
+        Assert.assertEquals(Pages.accountTransactionPage().getTransactionItemsCount(), 10,
+                "Transaction items count don't match!");
+
+        Assert.assertFalse(Pages.accountTransactionPage().isExpandAllButtonVisible(), "Expand All Button is visible!");
     }
 
     private List<Transaction> getTransactionList(String accountNumber) {

@@ -33,6 +33,11 @@ public class TellerModalPage extends PageTools {
         waitForElementInvisibility(modalWindow);
     }
 
+    @Step("Wait for modal appear")
+    public void waitForModalVisibility() {
+        waitForElementVisibility(modalWindow);
+    }
+
     @Step("Is modal window visible")
     public boolean isModalWindowVisible() {
         SelenideTools.sleep(1);

@@ -1,6 +1,5 @@
 package com.nymbus.newmodels.transaction.verifyingModels;
 
-import com.nymbus.core.utils.DateTime;
 import lombok.Data;
 
 @Data
@@ -13,7 +12,7 @@ public class NonTellerTransactionData {
         this.amount = String.format("%.2f", amount).replace(".", "");
     }
 
-    private void setExpirationDate(String date) {
+    /*private void setExpirationDate(String date) {
         this.expirationDate = DateTime.getDateWithFormat(date, "MM/dd/yyyy", "yyMM");
-    }
+    }*/
 }

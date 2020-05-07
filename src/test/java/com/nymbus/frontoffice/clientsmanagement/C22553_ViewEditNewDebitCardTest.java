@@ -53,7 +53,7 @@ public class C22553_ViewEditNewDebitCardTest extends BaseTest {
         chkAccount = new CHKAccount();
         chkAccount.setAccountNumber("12400585126");
 
-        debitCard.getAccounts().add(chkAccount);
+        debitCard.getAccounts().add(chkAccount.getAccountNumber());
 
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Pages.navigationPage().waitForUserMenuVisible();
