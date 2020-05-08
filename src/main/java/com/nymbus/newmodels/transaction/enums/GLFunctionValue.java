@@ -6,7 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum GLFunctionValue {
-    DEPOSIT_ITEM("2.-1.0");
+    DEPOSIT_ITEM("2.-1.0"),
+    DEPOSIT_ITEM_CHK_ACC("1.-1.0");
 
     private final String glFunctionValue;
 }

@@ -90,6 +90,7 @@ public class CreateAccount {
 
     public void createCDAccountForTransactionPurpose(Account account) {
         clickAccountsTab();
+        Actions.clientPageActions().closeAllNotifications();
         Pages.clientDetailsPage().clickAddNewButton();
         Pages.clientDetailsPage().clickAddNewValueOption(account.getAddNewOption());
         Pages.addAccountPage().clickProductTypeSelectorButton();
@@ -107,6 +108,7 @@ public class CreateAccount {
 
     public void createCHKAccountForTransactionPurpose(Account account) {
         clickAccountsTab();
+        Actions.clientPageActions().closeAllNotifications();
         Pages.clientDetailsPage().clickAddNewButton();
         Pages.clientDetailsPage().clickAddNewValueOption(account.getAddNewOption());
         Pages.addAccountPage().clickProductTypeSelectorButton();

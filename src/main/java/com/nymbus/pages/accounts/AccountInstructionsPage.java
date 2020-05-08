@@ -1,6 +1,7 @@
 package com.nymbus.pages.accounts;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -125,8 +126,8 @@ public class AccountInstructionsPage extends PageTools {
 
     @Step("Get created instructions count")
     public int getCreatedInstructionsCount() {
-        waitForElementVisibility(createdInstructionList);
-        return getElements(createdInstructionList).size();
+        SelenideTools.sleep(2);
+        return getElementsWithZeroOption(createdInstructionList).size();
     }
 
     @Step("Is instructions list visible")

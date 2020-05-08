@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.List;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
+import static com.codeborne.selenide.CollectionCondition.sizeGreaterThanOrEqual;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
@@ -191,6 +192,11 @@ public class PageTools extends AllureLogger {
     protected List<SelenideElement> getElements(By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", elements --> " + byLocator(by, args));
         return shouldBe(sizeGreaterThan(0), by, args);
+    }
+
+    protected List<SelenideElement> getElementsWithZeroOption(By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", elements --> " + byLocator(by, args));
+        return shouldBe(sizeGreaterThanOrEqual(0), by, args);
     }
 
     protected List<String> getElementsText(By by, Object... args) {

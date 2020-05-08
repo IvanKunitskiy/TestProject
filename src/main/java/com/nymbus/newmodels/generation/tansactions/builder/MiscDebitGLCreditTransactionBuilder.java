@@ -1,6 +1,6 @@
 package com.nymbus.newmodels.generation.tansactions.builder;
 
-import com.nymbus.core.utils.DateTime;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.newmodels.generation.tansactions.factory.DestinationFactory;
 import com.nymbus.newmodels.generation.tansactions.factory.SourceFactory;
 import com.nymbus.newmodels.transaction.Transaction;
@@ -14,7 +14,7 @@ public class MiscDebitGLCreditTransactionBuilder implements TransactionBuilder {
 
     @Override
     public void setDate() {
-        transaction.setTransactionDate(DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy"));
+        transaction.setTransactionDate(WebAdminActions.loginActions().getSystemDate());
     }
 
     @Override

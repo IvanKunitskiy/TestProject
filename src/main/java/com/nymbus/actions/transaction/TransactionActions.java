@@ -24,8 +24,9 @@ public class TransactionActions {
     }
 
     public void performCashInMiscCreditTransaction(Transaction transaction) {
+        loginTeller();
         goToTellerPage();
-        doLoginTeller();
+       /* doLoginTeller();*/
         createCashInMiscCreditTransaction(transaction);
         clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
@@ -33,24 +34,27 @@ public class TransactionActions {
     }
 
     public void performGLDebitMiscCreditTransaction(Transaction transaction) {
+        loginTeller();
         goToTellerPage();
-        doLoginTeller();
+        /*doLoginTeller();*/
         createGlDebitMiscCreditTransaction(transaction);
         clickCommitButton();
         Pages.tellerPage().closeModal();
     }
 
     public void performMiscDebitGLCreditTransaction(Transaction transaction) {
+        loginTeller();
         goToTellerPage();
-        doLoginTeller();
+       /* doLoginTeller();*/
         createMiscDebitGLCreditTransaction(transaction);
         clickCommitButton();
         Pages.tellerPage().closeModal();
     }
 
     public void performMultipleTransaction(MultipleTransaction transaction) {
+        loginTeller();
         goToTellerPage();
-        doLoginTeller();
+       /* doLoginTeller();*/
         createTransactionWithMultipleSources(transaction);
         clickCommitButton();
         if (isCashInOrCashOutTransactionType(transaction)) {
