@@ -47,7 +47,7 @@ public class C22552_CreateNewDebitCard extends BaseTest {
         chkAccount = new CHKAccount();
         chkAccount.setAccountNumber("12400585233");
 
-        debitCard.getAccounts().add(chkAccount);
+        debitCard.getAccounts().add(chkAccount.getAccountNumber());
     }
 
     @Severity(CRITICAL)

@@ -82,4 +82,10 @@ public class SelenideTools {
         ArrayList<String> tabs = getTabsList();
         SelenideTools.switchTo().window(tabs.get(tabs.size() - 1));
     }
+
+    @Step("Open url in new window")
+    public static void openUrlInNewWindow(String url) {
+        LOG.info("Open url in new window");
+        Selenide.executeJavaScript("window.open('" + url + "')");
+    }
 }

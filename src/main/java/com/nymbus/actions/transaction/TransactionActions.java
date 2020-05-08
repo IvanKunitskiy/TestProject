@@ -1,5 +1,6 @@
 package com.nymbus.actions.transaction;
 
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.transaction.MultipleTransaction;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.TransactionDestination;
@@ -69,9 +70,18 @@ public class TransactionActions {
         return isCashOperationsInSources || isCashOperationsInDestinations;
     }
 
+    private boolean isCashInOrCashOutTransactionType(Transaction transaction) {
+        boolean isCashOperationsInSource = transaction.getTransactionSource().getSourceType().equals(SourceType.CASH_IN);
+        boolean isCashOperationsInDestination = transaction.getTransactionDestination().getSourceType().equals(DestinationType.CASH_OUT);
+
+        return isCashOperationsInSource || isCashOperationsInDestination;
+    }
 
     private void setTransactionSource(TransactionSource source, int index) {
         switch (source.getSourceType()) {
+            case GL_DEBIT:
+                setGLDebitSource(source, index);
+                break;
             case CASH_IN:
                 setCashInSource(source);
                 break;
@@ -83,8 +93,19 @@ public class TransactionActions {
         }
     }
 
+    private void setGLDebitSource(TransactionSource source, int index) {
+        int tempIndex = 1 + index;
+        Pages.tellerPage().clickGLDebitButton();
+        fillSourceAccountNumber(source.getAccountNumber(), tempIndex);
+        fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
+        fillSourceDetails(source.getNotes(), tempIndex);
+    }
+
     private void setTransactionDestination(TransactionDestination destination, int index) {
         switch (destination.getSourceType()) {
+            case GL_CREDIT:
+                setGLCreditDestination(destination, index);
+                break;
             case CASH_OUT:
                 setCashOutDestination(destination);
                 break;
@@ -246,5 +267,34 @@ public class TransactionActions {
         Pages.tellerPage().waitForLoadingSpinnerVisibility();
 
         Pages.tellerPage().waitForLoadingSpinnerInvisibility();
+    }
+
+    public void performTransactionList(List<Transaction> transactions) {
+        goToTellerPage();
+        if (Pages.tellerModalPage().isModalWindowVisible()) {
+            doLoginTeller();
+        }
+        for (Transaction transaction : transactions) {
+            setTransactionSource(transaction.getTransactionSource(), 0);
+            setTransactionDestination(transaction.getTransactionDestination(), 0);
+            clickCommitButton();
+
+            if (isCashInOrCashOutTransactionType(transaction)) {
+                Pages.verifyConductorModalPage().clickVerifyButton();
+            }
+            Pages.tellerPage().closeModal();
+        }
+    }
+
+    public void loginTeller() {
+        Pages.navigationPage().clickAccountButton();
+
+        Pages.navigationPage().clickProofDateLogin();
+
+        SelenideTools.sleep(1);
+
+        Pages.tellerModalPage().clickEnterButton();
+
+        Pages.tellerModalPage().waitForModalInvisibility();
     }
 }

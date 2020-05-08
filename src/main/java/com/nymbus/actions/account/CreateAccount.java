@@ -1,5 +1,7 @@
 package com.nymbus.actions.account;
 
+import com.nymbus.actions.Actions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.pages.Pages;
@@ -71,6 +73,7 @@ public class CreateAccount {
 
     public void createSavingAccountForTransactionPurpose(Account account) {
         clickAccountsTab();
+        Actions.clientPageActions().closeAllNotifications();
         Pages.clientDetailsPage().clickAddNewButton();
         Pages.clientDetailsPage().clickAddNewValueOption(account.getAddNewOption());
         Pages.addAccountPage().clickProductTypeSelectorButton();
@@ -78,10 +81,9 @@ public class CreateAccount {
         Pages.addAccountPage().clickProductSelectorButton();
         Pages.addAccountPage().clickProductOption(account.getProduct());
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
-        Pages.addAccountPage().setDateOpenedValue(DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy"));
+        Pages.addAccountPage().setDateOpenedValue(/*DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
         setStatementCycle(account);
         Pages.addAccountPage().waitForAccountHolderName();
-        Pages.addAccountPage().setDateOpenedValue(DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy"));
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
@@ -112,7 +114,7 @@ public class CreateAccount {
         Pages.addAccountPage().clickProductSelectorButton();
         Pages.addAccountPage().clickProductOption(account.getProduct());
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
-        Pages.addAccountPage().setDateOpenedValue(DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy"));
+        Pages.addAccountPage().setDateOpenedValue(/*DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
         Pages.addAccountPage().clickStatementCycleSelectorButton();
         Pages.addAccountPage().clickStatementCycleOption("1");
         Pages.addAccountPage().waitForAccountHolderName();

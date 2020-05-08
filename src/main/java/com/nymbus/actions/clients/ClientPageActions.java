@@ -74,4 +74,20 @@ public class ClientPageActions {
         Pages.clientsSearchPage().clickOnSearchButton();
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedAccountInSearchResults(account.getAccountNumber());
     }
+
+    public void closeAllNotifications() {
+        int notificationsCount = Pages.clientDetailsPage().getNotificationCount();
+
+        closeNotifications(notificationsCount);
+    }
+
+    private void closeNotifications(int count) {
+        for (int i = 1; i <= count; i++) {
+            Pages.clientDetailsPage().clickCloseNotificationByIndex(i);
+
+            Pages.clientDetailsPage().clickCloseNotificationByIndex(i);
+
+            Pages.clientDetailsPage().waitForNotificationInvisibility(i);
+        }
+    }
 }

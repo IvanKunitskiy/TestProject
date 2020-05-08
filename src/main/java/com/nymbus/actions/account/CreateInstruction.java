@@ -44,6 +44,26 @@ public class CreateInstruction {
         Pages.accountInstructionsPage().waitForDeleteButtonInvisibility();
     }
 
+    public void deleteInstructionByReasonText(String text) {
+        int instructionsCount = Pages.accountInstructionsPage().getCreatedInstructionsCount();
+
+        int instructionToDeleteIndex = getInstructionIndexByReasonText(text, instructionsCount);
+
+        if (instructionToDeleteIndex > 0) {
+            deleteInstruction(instructionToDeleteIndex);
+        }
+    }
+
+    private int getInstructionIndexByReasonText(String text, int count) {
+        for (int i = 1; i <= count; i++) {
+            Pages.accountInstructionsPage().clickInstructionInListByIndex(i);
+            if (Pages.accountInstructionsPage().getReasonText().equals(text)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     private void fillingSupervisorModal() {
         Pages.supervisorModalPage().inputLogin(Constants.USERNAME);
 

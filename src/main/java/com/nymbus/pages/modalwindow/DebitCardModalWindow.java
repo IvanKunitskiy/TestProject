@@ -46,7 +46,7 @@ public class DebitCardModalWindow extends PageTools {
     private By cancelButton = By.xpath("//button[text()='Cancel']");
     private By saveAndFinishButton = By.xpath("//button[span[text()='Save and Finish']]");
     private By saveButton = By.xpath("//button[span[text()='Save']]");
-    private By closeDebitCardModalButton = By.xpath("//button[contains(@aria-label, 'Close')]");
+    private By closeDebitCardModalButton = By.xpath("//div[@class='modal-header']//button[contains(@aria-label, 'Close')]");
 
     /**
      * Select 'Bin Control' Modal Window methods
@@ -318,5 +318,11 @@ public class DebitCardModalWindow extends PageTools {
         waitForElementVisibility(closeDebitCardModalButton);
         waitForElementClickable(closeDebitCardModalButton);
         click(closeDebitCardModalButton);
+    }
+
+    @Step("Get card number input")
+    public String getCardNumber() {
+        waitForElementVisibility(cardNumberInputField);
+        return getWebElement(cardNumberInputField).getAttribute("value").trim();
     }
 }

@@ -17,6 +17,7 @@ import com.nymbus.pages.clients.transfers.EditTransferPage;
 import com.nymbus.pages.clients.transfers.NewTransferPage;
 import com.nymbus.pages.clients.transfers.TransfersPage;
 import com.nymbus.pages.clients.transfers.ViewTransferPage;
+import com.nymbus.pages.creditcards.CardsManagementPage;
 import com.nymbus.pages.journal.JournalDetailsPage;
 import com.nymbus.pages.journal.JournalPage;
 import com.nymbus.pages.loans.LoansPage;
@@ -77,6 +78,7 @@ public class Pages extends AllureLogger {
     private static CallStatementModalPage callStatementModalPage;
     private static BalanceInquiryModalPage balanceInquiryModalPage;
     private static SupervisorModalPage supervisorModalPage;
+    private static CardsManagementPage cardsManagementPage;
     private static AttentionModalPage attentionModalPage;
 
     /**
@@ -543,6 +545,16 @@ public class Pages extends AllureLogger {
             supervisorModalPage = new SupervisorModalPage();
         }
         return supervisorModalPage;
+    }
+
+    /**
+     * This function return an instance of `CardsManagementPage`
+     */
+    public static CardsManagementPage cardsManagementPage() {
+        if (cardsManagementPage == null) {
+            cardsManagementPage = new CardsManagementPage();
+        }
+        return cardsManagementPage;
     }
 
     /**

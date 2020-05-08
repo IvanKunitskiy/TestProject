@@ -120,7 +120,7 @@ public class RetrievingAccountData {
         return Double.parseDouble(value);
     }
 
-    private double getCurrentBalance() {
+    public double getCurrentBalance() {
         String value = Pages.accountDetailsPage().getCurrentBalance();
         return Double.parseDouble(value);
     }
@@ -148,7 +148,7 @@ public class RetrievingAccountData {
         return amountIntegerPart + amountFractionalPart;
     }
 
-    private double getBalanceValue(int index) {
+    public double getBalanceValue(int index) {
         double balanceIntegerPart = getBalance(index);
         double balanceFractionalPart = getBalanceFractional(index);
         return  balanceIntegerPart + balanceFractionalPart;

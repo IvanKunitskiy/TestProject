@@ -15,6 +15,7 @@ public class NavigationPage extends PageTools {
     private By alertNotificationsButton = By.xpath("//button[@data-panel='alert-notifications']");
     private By notificationCircle = By.xpath("//span[contains(@class, 'notificationCircle')]");
     private By notificationsCount = By.xpath("//button[@data-panel='alert-notifications']/i/span/span");
+    private By proofDateLoginButton = By.xpath("//*[@id='user-menu']//a[@ng-click='header.showProofDateLoginModal()']");
 
     @Step("Get notifications count")
     public int getNotificationsCount() {
@@ -78,4 +79,9 @@ public class NavigationPage extends PageTools {
         click(viewMyProfileLink);
     }
 
+    @Step("Click 'Proof date login' link")
+    public void clickProofDateLogin() {
+        waitForElementClickable(proofDateLoginButton);
+        click(proofDateLoginButton);
+    }
 }

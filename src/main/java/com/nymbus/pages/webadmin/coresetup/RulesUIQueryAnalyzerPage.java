@@ -84,4 +84,16 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         waitForElementVisibility(glInterfaceTransactionHeaderId, index);
         return getElementText(glInterfaceTransactionHeaderId, index).trim();
     }
+
+
+    /**
+     * Data BcFile region
+     */
+    private By systemDateField= By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][1]//*[@key-name='date']");
+
+    @Step ("Get current date - 1 in system")
+    public String getDateInSystem() {
+        waitForElementVisibility(systemDateField);
+        return getElementText(systemDateField).trim();
+    }
 }
