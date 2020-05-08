@@ -1,34 +1,34 @@
 package com.nymbus.frontoffice.depositaccountsmanagement;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
-import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.data.entity.User;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.accountinstructions.HoldInstruction;
+import com.nymbus.newmodels.accountinstructions.enums.InstructionType;
 import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.accountinstructions.InstructionConstructor;
+import com.nymbus.newmodels.generation.accountinstructions.builder.HoldInstructionBuilder;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class C22608_AddNewInstructionTest extends BaseTest {
 
     private IndividualClient client;
-    private User user;
     private Account chkAccount;
+    private HoldInstruction instruction;
 
     @BeforeMethod
     public void preCondition() {
-
-        // Set up a user
-        user = new User().setDefaultUserData();
 
         // Set up a client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
@@ -38,18 +38,13 @@ public class C22608_AddNewInstructionTest extends BaseTest {
         // Set up account
         chkAccount = new Account().setCHKAccountData();
 
-        // Create user and set him a password
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        Actions.usersActions().createUser(user);
-        Actions.loginActions().doLogOut();
-        Selenide.open(Constants.WEB_ADMIN_URL);
-        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        WebAdminActions.webAdminUsersActions().setUserPassword(user);
-        WebAdminActions.loginActions().doLogout();
+        // Set up instruction
+        InstructionConstructor instructionConstructor = new InstructionConstructor(new HoldInstructionBuilder());
+        instruction = instructionConstructor.constructInstruction(HoldInstruction.class);
+        instruction.setInstructionType(InstructionType.ACTIVITY_HOLD);
 
         // Create a client
-        Selenide.open(Constants.URL);
-        Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
@@ -57,7 +52,6 @@ public class C22608_AddNewInstructionTest extends BaseTest {
         // Create CHK account
         AccountActions.createAccount().createCHKAccount(chkAccount);
         Actions.loginActions().doLogOut();
-
     }
 
     @Test(description = "C22608, Add new instruction")
@@ -65,23 +59,22 @@ public class C22608_AddNewInstructionTest extends BaseTest {
     public void addNewInstruction() {
 
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Selenide.open(Constants.URL);
-        Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for account from the precondition and open it on Notes tab");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
         Pages.accountNavigationPage().clickInstructionsTab();
 
         logInfo("Step 3: Click [New Instruction] button");
-        Pages.accountInstructionsPage().clickNewInstructionButton();
-
         logInfo("Step 4: Select any Instruction Type (e.g. Activity Hold) and fill in all fields:\n" +
                 "- Notes text field - any alphanumeric value\n" +
                 "- Expiration Date > Current date");
-        // TODO: Implement step
+        AccountActions.createInstruction().createActivityHoldInstruction(instruction);
 
         logInfo("Step 5: Refresh the page and pay attention to the colored bar in the header");
-        // TODO: Implement step
+        SelenideTools.refresh();
+        Assert.assertTrue(Pages.accountInstructionsPage().isInstructionAlertAppeared("Account | " + chkAccount.getAccountNumber() +
+                " | " + instruction.getNotes()), "Note alert not appeared on the page");
 
         logInfo("Step 6: Go to Account Maintenance-> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();

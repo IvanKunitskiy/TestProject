@@ -6,6 +6,8 @@ import org.openqa.selenium.By;
 
 public class AccountInstructionsPage extends PageTools {
 
+    private By instructionAlertByContent = By.xpath("//div[contains(@class, 'notifications-item')]//div/span[contains(text(), '%s')]");
+
     /**
      * Instruction form region
      */
@@ -30,6 +32,11 @@ public class AccountInstructionsPage extends PageTools {
     private By instructionInListCreatedDate = By.xpath("//ul[contains(@class, 'instructionsList')]/li[%s]//div[@ng-if='instruction.dateentered']");
     private By instructionInListExpirationDate = By.xpath("//ul[contains(@class, 'instructionsList')]/li[%s]//div[@ng-if='instruction.expirationdate']");
 
+    @Step("Check that alert for created instruction appeared")
+    public boolean isInstructionAlertAppeared(String noteContent) { // format (Account | {account number} | note)
+        waitForElementClickable(instructionAlertByContent, noteContent);
+        return isElementVisible(instructionAlertByContent, noteContent);
+    }
 
     @Step("Click 'New Instruction' button")
     public void clickNewInstructionButton() {

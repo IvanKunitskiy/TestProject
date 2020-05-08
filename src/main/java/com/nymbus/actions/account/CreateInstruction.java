@@ -15,6 +15,14 @@ public class CreateInstruction {
         Pages.accountInstructionsPage().clickSaveButton();
     }
 
+    public void createActivityHoldInstruction(HoldInstruction instruction) {
+        Pages.accountInstructionsPage().clickNewInstructionButton();
+        setInstructionType(instruction.getType());
+        setDate(instruction.getExpirationDate());
+        setNotes(instruction.getNotes());
+        Pages.accountInstructionsPage().clickSaveButton();
+    }
+
     public void editHoldInstruction(HoldInstruction instruction) {
         Pages.accountInstructionsPage().clickInstructionInListByIndex(1);
         Pages.accountInstructionsPage().clickEditButton();
