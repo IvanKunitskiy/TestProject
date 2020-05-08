@@ -85,6 +85,12 @@ public class AccountInstructionsPage extends PageTools {
         type(notes, notesInput);
     }
 
+    @Step("Add text to 'Notes' field")
+    public void typeNotesValueWithoutWipe(String notes) {
+        waitForElementClickable(notesInput);
+        typeWithoutWipe(notes, notesInput);
+    }
+
     @Step("Click 'Save' button")
     public void clickSaveButton() {
         waitForElementClickable(saveButton);
