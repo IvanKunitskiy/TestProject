@@ -76,6 +76,36 @@ public class ClientDetailsPage extends PageTools {
             "//input)[1]");
 
     /**
+     *  Notifications region
+     */
+    private By notifications = By.xpath("//section[@ui-view='notesNotification']//div[contains(@class, 'notifications-item-text')]");
+    private By notification = By.xpath("//section[@ui-view='notesNotification']//div[contains(@class, 'notifications-item-text')][%s]");
+    private By notificationCloseButton = By.xpath("//section[@ui-view='notesNotification']//" +
+                                        "div[contains(@class, 'notifications-item-close')][%s]");
+
+    @Step("Get Notifications count")
+    public int getNotificationCount() {
+        return getElements(notifications).size();
+    }
+
+    @Step("Click notification {0}")
+    public void clickNotificationByIndex(int index) {
+        waitForElementClickable(notification, index);
+        click(notification, index);
+    }
+
+    @Step("Click close notification {0}")
+    public void clickCloseNotificationByIndex(int index) {
+        waitForElementClickable(notificationCloseButton, index);
+        click(notificationCloseButton, index);
+    }
+
+    @Step("Wait for notification {0} invisibility")
+    public void waitForNotificationInvisibility(int index) {
+        waitForElementInvisibility(notification, index);
+    }
+
+    /**
      * Profile address methods
      */
     @Step("Get 'Address Type' {i} value")

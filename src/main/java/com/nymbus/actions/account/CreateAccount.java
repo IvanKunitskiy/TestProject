@@ -1,5 +1,6 @@
 package com.nymbus.actions.account;
 
+import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
@@ -72,6 +73,7 @@ public class CreateAccount {
 
     public void createSavingAccountForTransactionPurpose(Account account) {
         clickAccountsTab();
+        Actions.clientPageActions().closeAllNotifications();
         Pages.clientDetailsPage().clickAddNewButton();
         Pages.clientDetailsPage().clickAddNewValueOption(account.getAddNewOption());
         Pages.addAccountPage().clickProductTypeSelectorButton();

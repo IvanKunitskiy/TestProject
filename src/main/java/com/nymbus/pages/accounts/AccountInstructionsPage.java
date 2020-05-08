@@ -30,6 +30,16 @@ public class AccountInstructionsPage extends PageTools {
     private By instructionInListCreatedDate = By.xpath("//ul[contains(@class, 'instructionsList')]/li[%s]//div[@ng-if='instruction.dateentered']");
     private By instructionInListExpirationDate = By.xpath("//ul[contains(@class, 'instructionsList')]/li[%s]//div[@ng-if='instruction.expirationdate']");
 
+    /**
+     * Instruction details region
+     */
+    private By reasonText = By.xpath("//article[contains(@class, 'itemDetail')]//div[@ng-if='actualConfig.reason.isShow']//div//span");
+
+    @Step("Get reason text")
+    public String getReasonText() {
+        waitForElementVisibility(reasonText);
+        return getElementText(reasonText).trim();
+    }
 
     @Step("Click 'New Instruction' button")
     public void clickNewInstructionButton() {
