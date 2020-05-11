@@ -7,11 +7,10 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
-import com.nymbus.newmodels.accountinstructions.HoldInstruction;
-import com.nymbus.newmodels.accountinstructions.enums.InstructionType;
+import com.nymbus.newmodels.accountinstructions.ActivityHoldInstruction;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.accountinstructions.InstructionConstructor;
-import com.nymbus.newmodels.generation.accountinstructions.builder.HoldInstructionBuilder;
+import com.nymbus.newmodels.generation.accountinstructions.builder.ActivityHoldInstructionBuilder;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
@@ -25,7 +24,7 @@ public class C22608_AddNewInstructionTest extends BaseTest {
 
     private IndividualClient client;
     private Account chkAccount;
-    private HoldInstruction instruction;
+    private ActivityHoldInstruction activityHoldInstruction;
 
     @BeforeMethod
     public void preCondition() {
@@ -39,9 +38,8 @@ public class C22608_AddNewInstructionTest extends BaseTest {
         chkAccount = new Account().setCHKAccountData();
 
         // Set up instruction
-        InstructionConstructor instructionConstructor = new InstructionConstructor(new HoldInstructionBuilder());
-        instruction = instructionConstructor.constructInstruction(HoldInstruction.class);
-        instruction.setInstructionType(InstructionType.ACTIVITY_HOLD);
+        InstructionConstructor instructionConstructor = new InstructionConstructor(new ActivityHoldInstructionBuilder());
+        activityHoldInstruction = instructionConstructor.constructInstruction(ActivityHoldInstruction.class);
 
         // Create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -69,12 +67,14 @@ public class C22608_AddNewInstructionTest extends BaseTest {
         logInfo("Step 4: Select any Instruction Type (e.g. Activity Hold) and fill in all fields:\n" +
                 "- Notes text field - any alphanumeric value\n" +
                 "- Expiration Date > Current date");
-        AccountActions.createInstruction().createActivityHoldInstruction(instruction);
+        AccountActions.createInstruction().createActivityHoldInstruction(activityHoldInstruction);
 
         logInfo("Step 5: Refresh the page and pay attention to the colored bar in the header");
         SelenideTools.refresh();
+        Pages.accountInstructionsPage().waitForAlertVisible("Account | " + chkAccount.getAccountNumber() +
+                " | " + activityHoldInstruction.getNotes());
         Assert.assertTrue(Pages.accountInstructionsPage().isInstructionAlertAppeared("Account | " + chkAccount.getAccountNumber() +
-                " | " + instruction.getNotes()), "Note alert not appeared on the page");
+                " | " + activityHoldInstruction.getNotes()), "Note alert not appeared on the page");
 
         logInfo("Step 6: Go to Account Maintenance-> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
