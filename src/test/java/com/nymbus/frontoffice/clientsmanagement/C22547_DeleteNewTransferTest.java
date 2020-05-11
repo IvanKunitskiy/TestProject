@@ -13,7 +13,10 @@ import com.nymbus.newmodels.client.other.transfer.HighBalanceTransfer;
 import com.nymbus.newmodels.client.other.transfer.Transfer;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
+import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
+import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.generation.transfers.TransferBuilder;
+import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -51,6 +54,10 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         chkAccount2 = new Account().setCHKAccountData();
         savingsAccount2 = new Account().setSavingsAccountData();
 
+        // Set up transaction
+        Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        transaction.getTransactionDestination().setAccountNumber(chkAccount2.getAccountNumber());
+
         // Set up transfers
         TransferBuilder transferBuilder = new TransferBuilder();
 
@@ -86,22 +93,7 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         AccountActions.createAccount().createSavingsAccount(savingsAccount2);
 
         // Assign Amount to CHK account
-        Pages.aSideMenuPage().clickTellerMenuItem();
-        Pages.tellerModalPage().clickEnterButton();
-        Pages.tellerPage().clickCashInButton();
-        Pages.cashInModalPage().waitCashInModalWindow();
-        Pages.cashInModalPage().typeToHundredsItemCountInputField("2");
-        Pages.cashInModalPage().clickOkButton();
-        Pages.tellerPage().clickMiscCreditButton();
-        Pages.tellerPage().typeDestinationAccountNumber(1, chkAccount2.getAccountNumber());
-        Pages.tellerPage().clickDestinationAccountSuggestionOption(chkAccount2.getAccountNumber());
-        Pages.tellerPage().waitForCreditTransferCodeVisible();
-        Pages.tellerPage().typeDestinationAmountValue(1, "20000");
-        Pages.tellerPage().clickCommitButton();
-        Pages.verifyConductor().waitModalWindow();
-        Pages.verifyConductor().clickVerifyButton();
-        Pages.transactionCompleted().waitModalWindow();
-        Pages.transactionCompleted().clickCloseButton();
+        Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
         Actions.loginActions().doLogOut();
 
         // Create One time only periodic transfer
