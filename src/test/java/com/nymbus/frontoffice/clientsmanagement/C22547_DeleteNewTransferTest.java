@@ -7,43 +7,43 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.transfers.TransfersActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.transfer.HighBalanceTransfer;
 import com.nymbus.newmodels.client.other.transfer.Transfer;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.transfers.TransferBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-//import sun.jvm.hotspot.debugger.Page;
 
 @Epic("Frontoffice")
 @Feature("Clients Management")
 @Owner("Petro")
 public class C22547_DeleteNewTransferTest extends BaseTest {
 
-    private Client client1;
-    private Client client2;
+    private IndividualClient client1;
+    private IndividualClient client2;
     private Account chkAccount1;
     private Account savingsAccount1;
     private Account chkAccount2;
     private Account savingsAccount2;
     private HighBalanceTransfer highBalanceTransfer;
     private Transfer transfer;
+    private String clientID_1;
+    private String clientID_2;
 
     @BeforeMethod
     public void preCondition() {
 
         // Set up clients
-        client1 = new Client().setDefaultClientData();
-        client1.setClientStatus("Member");
-        client1.setClientType("Individual");
-
-        client2 = new Client().setDefaultClientData();
-        client2.setClientStatus("Member");
-        client2.setClientType("Individual");
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client1 = individualClientBuilder.buildClient();
+        client2 = individualClientBuilder.buildClient();
 
         // Set up accounts
         chkAccount1 = new Account().setCHKAccountData();
@@ -64,8 +64,10 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
 
         // Create a client with an active CHK / Savings account and a High Balance transfer
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client1);
-        client1.setClientID(Pages.clientDetailsPage().getClientID());
+        ClientsActions.individualClientActions().createClient(client1);
+        ClientsActions.individualClientActions().setClientDetailsData(client1);
+        ClientsActions.individualClientActions().setDocumentation(client1);
+        clientID_1 = Pages.clientDetailsPage().getClientID();
         AccountActions.createAccount().createCHKAccount(chkAccount1);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createSavingsAccount(savingsAccount1);
@@ -75,8 +77,10 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
 
         // Create a client with an active CHK / Savings account
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client2);
-        client2.setClientID(Pages.clientDetailsPage().getClientID());
+        ClientsActions.individualClientActions().createClient(client2);
+        ClientsActions.individualClientActions().setClientDetailsData(client2);
+        ClientsActions.individualClientActions().setDocumentation(client2);
+        clientID_2 = Pages.clientDetailsPage().getClientID();
         AccountActions.createAccount().createCHKAccount(chkAccount2);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createSavingsAccount(savingsAccount2);
@@ -102,7 +106,7 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
 
         // Create One time only periodic transfer
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        Actions.clientPageActions().searchAndOpenClientByID(client2);
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID_2);
         TransfersActions.addNewTransferActions().addNewTransfer(transfer);
         Actions.loginActions().doLogOut();
     }
@@ -116,7 +120,7 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Go to Clients and search for the client from the precondition");
-        Actions.clientPageActions().searchAndOpenClientByID(client1);
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID_1);
 
         logInfo("Step 3: Open Clients Profile on the Transfers tab");
         Pages.accountNavigationPage().clickTransfersTab();
@@ -138,7 +142,7 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
 
         logInfo("Step 8: Go to Clients page and search for the client from the precondition");
         Pages.aSideMenuPage().clickClientMenuItem();
-        Actions.clientPageActions().searchAndOpenClientByID(client2);
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID_2);
 
         logInfo("Step 9: Open Clients Profile on the Transfers tab");
         Pages.accountNavigationPage().clickTransfersTab();
