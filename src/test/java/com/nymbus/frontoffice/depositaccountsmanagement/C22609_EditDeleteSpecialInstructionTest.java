@@ -7,11 +7,10 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
-import com.nymbus.newmodels.accountinstructions.HoldInstruction;
-import com.nymbus.newmodels.accountinstructions.enums.InstructionType;
+import com.nymbus.newmodels.accountinstructions.ActivityHoldInstruction;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.accountinstructions.InstructionConstructor;
-import com.nymbus.newmodels.generation.accountinstructions.builder.HoldInstructionBuilder;
+import com.nymbus.newmodels.generation.accountinstructions.builder.ActivityHoldInstructionBuilder;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
@@ -27,7 +26,7 @@ public class C22609_EditDeleteSpecialInstructionTest extends BaseTest {
 
     private IndividualClient client;
     private Account chkAccount;
-    private HoldInstruction holdInstruction;
+    private ActivityHoldInstruction activityHoldInstruction;
 
     @BeforeMethod
     public void preCondition() {
@@ -41,9 +40,8 @@ public class C22609_EditDeleteSpecialInstructionTest extends BaseTest {
         chkAccount = new Account().setCHKAccountData();
 
         // Set up instruction
-        InstructionConstructor instructionConstructor = new InstructionConstructor(new HoldInstructionBuilder());
-        holdInstruction = instructionConstructor.constructInstruction(HoldInstruction.class);
-        holdInstruction.setInstructionType(InstructionType.HOLD);
+        InstructionConstructor instructionConstructor = new InstructionConstructor(new ActivityHoldInstructionBuilder());
+        activityHoldInstruction = instructionConstructor.constructInstruction(ActivityHoldInstruction.class);
 
         // Create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -56,7 +54,9 @@ public class C22609_EditDeleteSpecialInstructionTest extends BaseTest {
         Pages.accountNavigationPage().clickInstructionsTab();
 
         // Create instruction and logout
-        AccountActions.createInstruction().createHoldInstruction(holdInstruction);
+        AccountActions.createInstruction().createActivityHoldInstruction(activityHoldInstruction);
+        Pages.accountInstructionsPage().waitForAlertVisible("Account | " + chkAccount.getAccountNumber() +
+                " | " + activityHoldInstruction.getNotes());
         Actions.loginActions().doLogOut();
     }
 
@@ -78,17 +78,31 @@ public class C22609_EditDeleteSpecialInstructionTest extends BaseTest {
         logInfo("Step 4: Make any changes: e.g.\n" +
                 "- add any alphanumeric char. to the Notes text field\n" +
                 "- Select another Expiration Date from the calendar and click [Save] button");
-        AccountActions.editInstructionActions().addTextToNotesField();
-        AccountActions.editInstructionActions().changeExpirationDate();
-        Pages.accountInstructionsPage().clickSaveButton();
+        AccountActions.editInstructionActions().editActivityHoldInstruction(activityHoldInstruction);
+        Pages.accountInstructionsPage().waitForAlertVisible("Account | " + chkAccount.getAccountNumber() +
+                " | " + activityHoldInstruction.getNotes());
 
         logInfo("Step 5: Refresh the page and pay attention to the colored bar in the header");
         SelenideTools.refresh();
-        Assert.assertTrue(Pages.accountInstructionsPage().isInstructionAlertAppeared("Account | " + chkAccount.getAccountNumber() +
-                " | " + holdInstruction.getNotes()), "Note alert not appeared on the page");
+        Pages.accountInstructionsPage().waitForAlertVisible("Account | " + chkAccount.getAccountNumber() +
+                " | " + activityHoldInstruction.getNotes());
+        Assert.assertTrue(Pages.accountInstructionsPage().isInstructionAlertAppeared("Account | " +
+                chkAccount.getAccountNumber() + " | " + activityHoldInstruction.getNotes()), "Instruction alert not appeared on the page");
 
         logInfo("Step 6: Click on the Instruction and click [Delete] button");
-        Pages.accountInstructionsPage().clickDeleteButton();
-        // TODO: Procedd test implementation
+        Pages.accountInstructionsPage().clickInstructionInListByIndex(1);
+        AccountActions.editInstructionActions().deleteActivityHoldInstruction(activityHoldInstruction);
+
+        logInfo("Step 7: Refresh the page and pay attention to the colored bar in the header");
+        SelenideTools.refresh();
+        Assert.assertFalse(Pages.accountInstructionsPage().isInstructionAlertAppeared("Account | " +
+                chkAccount.getAccountNumber() + " | " + activityHoldInstruction.getNotes()), "Note alert appeared on the page");
+
+        logInfo("Step 8: Go to Account Maintenance-> Maintenance History page");
+        Pages.accountNavigationPage().clickMaintenanceTab();
+        Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
+
+        logInfo("Step 9: Look through the records on Maintenance History page and make sure that there is information about editing Instruction and deleting the Instruction");
+        // TODO: Implement verification at Maintenance History page
     }
 }

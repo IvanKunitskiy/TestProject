@@ -37,10 +37,14 @@ public class AccountInstructionsPage extends PageTools {
      */
     private By reasonText = By.xpath("//article[contains(@class, 'itemDetail')]//div[@ng-if='actualConfig.reason.isShow']//div//span");
 
+    @Step("Wait for alert for created instruction appeared")
+    public void waitForAlertVisible(String instructionContent) {
+        waitForElementVisibility(instructionAlertByContent, instructionContent);
+    }
+
     @Step("Check that alert for created instruction appeared")
-    public boolean isInstructionAlertAppeared(String noteContent) { // format (Account | {account number} | note)
-        waitForElementClickable(instructionAlertByContent, noteContent);
-        return isElementVisible(instructionAlertByContent, noteContent);
+    public boolean isInstructionAlertAppeared(String instructionContent) { // format (Account | {account number} | note)
+        return isElementVisible(instructionAlertByContent, instructionContent);
     }
 
     @Step("Get reason text")
