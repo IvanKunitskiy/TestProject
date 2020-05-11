@@ -58,6 +58,15 @@ public class ClientPageActions {
         Pages.clientDetailsPage().waitForPageLoaded();
     }
 
+    public void searchAndOpenIndividualClientByID(String clientID) {
+        Pages.clientsSearchPage().typeToClientsSearchInputField(clientID);
+        Assert.assertEquals(Pages.clientsSearchPage().getAllLookupResults().size(), 1, "There is more than one client found");
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), clientID));
+        Pages.clientsSearchPage().clickOnSearchButton();
+        Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
+        Pages.clientDetailsPage().waitForPageLoaded();
+    }
+
     public void searchAndOpenClientByAccountNumber(Account account) {
         Pages.clientsSearchPage().typeToClientsSearchInputField(account.getAccountNumber());
         Assert.assertEquals(Pages.clientsSearchPage().getAllLookupResults().size(), 1, "There is more than one client found");
