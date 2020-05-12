@@ -7,6 +7,8 @@ import org.openqa.selenium.By;
 
 public class AccountInstructionsPage extends PageTools {
 
+    private By instructionAlertByContent = By.xpath("//div[contains(@class, 'notifications-item')]//div/span[contains(text(), '%s')]");
+
     /**
      * Instruction form region
      */
@@ -35,6 +37,16 @@ public class AccountInstructionsPage extends PageTools {
      * Instruction details region
      */
     private By reasonText = By.xpath("//article[contains(@class, 'itemDetail')]//div[@ng-if='actualConfig.reason.isShow']//div//span");
+
+    @Step("Wait for alert for created instruction appeared")
+    public void waitForAlertVisible(String instructionContent) {
+        waitForElementVisibility(instructionAlertByContent, instructionContent);
+    }
+
+    @Step("Check that alert for created instruction appeared")
+    public boolean isInstructionAlertAppeared(String instructionContent) { // format (Account | {account number} | note)
+        return isElementVisible(instructionAlertByContent, instructionContent);
+    }
 
     @Step("Get reason text")
     public String getReasonText() {
@@ -76,6 +88,12 @@ public class AccountInstructionsPage extends PageTools {
     public void typeNotesValue(String notes) {
         waitForElementClickable(notesInput);
         type(notes, notesInput);
+    }
+
+    @Step("Add text to 'Notes' field")
+    public void typeNotesValueWithoutWipe(String notes) {
+        waitForElementClickable(notesInput);
+        typeWithoutWipe(notes, notesInput);
     }
 
     @Step("Click 'Save' button")

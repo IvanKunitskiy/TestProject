@@ -81,7 +81,6 @@ public class Pages extends AllureLogger {
     private static CardsManagementPage cardsManagementPage;
     private static AttentionModalPage attentionModalPage;
 
-
     /**
      * Modal Windows
      */
