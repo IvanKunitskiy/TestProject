@@ -32,8 +32,10 @@ public class C22558_EditTransferTest extends BaseTest {
 
     @BeforeMethod
     public void preCondition() {
-        // Set up client
-        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+
+        // Set up a client
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         client = individualClientBuilder.buildClient();
 
@@ -55,7 +57,6 @@ public class C22558_EditTransferTest extends BaseTest {
         ClientsActions.individualClientActions().setDocumentation(client);
         clientID = Pages.clientDetailsPage().getClientID();
 
-        // Create accounts
         AccountActions.createAccount().createCHKAccount(chkAccount);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createSavingsAccount(savingsAccount);
