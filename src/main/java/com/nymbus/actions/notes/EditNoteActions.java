@@ -38,4 +38,15 @@ public class EditNoteActions {
         }
         Pages.notesPage().clickSeveritySelectorOption(note.getSeverity());
     }
+
+    public void setTemplate(Note note) {
+        Pages.notesPage().clickTemplateSelectorButton();
+        List<String> listOfTemplate = Pages.notesPage().getTemplateList();
+
+        Assert.assertTrue(listOfTemplate.size() > 0, "There are no options available");
+        if (note.getTemplate() == null) {
+            note.setTemplate(listOfTemplate.get(new Random().nextInt(listOfTemplate.size())).trim());
+        }
+        Pages.notesPage().clickTemplateSelectorOption(note.getSeverity());
+    }
 }

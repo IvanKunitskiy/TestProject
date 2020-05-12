@@ -33,6 +33,7 @@ public class ClientsSearchPage extends PageTools {
     @Step("Type '{client}' to clients input field")
     public void typeToClientsSearchInputField(String client) {
         waitForElementVisibility(clientsSearchInputField);
+        waitForElementClickable(clientsSearchInputField);
         typeWithoutWipe(client, clientsSearchInputField);
     }
 

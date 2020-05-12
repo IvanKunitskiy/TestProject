@@ -19,7 +19,7 @@ public class Note {
         note.setNewNote(Generator.genString(20));
         note.setSeverity("");
         note.setDueDate(DateTime.getLocalDateTimeByPattern("MM/dd/yyyy"));
-        note.setExpirationDate("");
+        note.setExpirationDate(DateTime.getTomorrowDate("MM/dd/yyyy"));
         note.setTemplate("");
 
         return note;

@@ -79,6 +79,8 @@ public class Pages extends AllureLogger {
     private static BalanceInquiryModalPage balanceInquiryModalPage;
     private static SupervisorModalPage supervisorModalPage;
     private static CardsManagementPage cardsManagementPage;
+    private static AttentionModalPage attentionModalPage;
+
 
     /**
      * Modal Windows
@@ -554,5 +556,16 @@ public class Pages extends AllureLogger {
             cardsManagementPage = new CardsManagementPage();
         }
         return cardsManagementPage;
+    }
+
+    /**
+     * This function return an instance of `AttentionModalPage`
+     */
+    public static AttentionModalPage attentionModalPage() {
+        if (attentionModalPage == null) {
+            attentionModalPage = new AttentionModalPage();
+        }
+        return attentionModalPage;
+
     }
 }
