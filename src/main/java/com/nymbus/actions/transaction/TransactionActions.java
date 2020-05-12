@@ -295,7 +295,7 @@ public class TransactionActions {
 
         Pages.navigationPage().clickProofDateLogin();
 
-        SelenideTools.sleep(1);
+        SelenideTools.sleep(2);
 
         Pages.tellerModalPage().clickEnterButton();
 

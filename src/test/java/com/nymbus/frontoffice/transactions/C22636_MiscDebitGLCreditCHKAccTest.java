@@ -115,7 +115,7 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
 
         Actions.loginActions().doLogOut();
 
-        logInfo("Step 15: Log in to the WebAdmin, go to RulesUI and search for the committed transaction items using its bank.data.transaction.header rootid value");
+        logInfo("Step 9: Log in to the WebAdmin, go to RulesUI and search for the committed transaction items using its bank.data.transaction.header rootid value");
         WebAdminTransactionData webAdminTransactionData = new WebAdminTransactionData();
         String date = WebAdminActions.loginActions().getSystemDate();
         webAdminTransactionData.setPostingDate(date);
@@ -126,16 +126,16 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
         Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
                 "Transaction items doesn't find !");
 
-        logInfo("Step 16: Check gldatetimeposted value for Deposit (Misc Credit) item");
+        logInfo("Step 10: Check gldatetimeposted value for Misc Debit item");
         Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDatePosted(1), webAdminTransactionData.getPostingDate(),
                 "Posted date doesn't match!");
 
-        logInfo("Step 17: Check glfunction value for Deposit item");
+        logInfo("Step 11: Check glfunction value for Deposit item");
         Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getGLFunctionValue(1),
                 webAdminTransactionData.getGlFunctionValue().getGlFunctionValue(),
                 "Function value  doesn't match!");
 
-        logInfo("Step 18: Go to bank.data.gl.interface and verify that there is a record for Deposit (Misc Credit) transaction item");
+        logInfo("Step 12: Go tobank.data.gl.interface and verify that there is a record for Misc Debit item transaction item");
         String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(1);
         webAdminTransactionData.setAmount(WebAdminPages.rulesUIQueryAnalyzerPage().getAmount(1));
         WebAdminActions.webAdminTransactionActions().goToGLInterface(transactionHeader);
@@ -145,12 +145,12 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
                 webAdminTransactionData.getGlFunctionValue().getGlFunctionValue(),
                 "Function value doesn't match!");
 
-        logInfo("Step 19: Verify that amount and glfunction values are the same as on b.d.transaction.item level");
+        logInfo("Step 13: Verify that amount and glfunction values are the same as on b.d.transaction.item level");
         Assert.assertEquals( WebAdminPages.rulesUIQueryAnalyzerPage().getAmount(1),
                 webAdminTransactionData.getAmount(),
                 "Amount value doesn't match!");
 
-        logInfo("Step 20: Verify that transactionheaderid from b.d.transaction.item is written to parenttransaction field on bank.data.gl.interface");
+        logInfo("Step 14: Verify that transactionheaderid from b.d.transaction.item is written to parenttransaction field on bank.data.gl.interface");
         Assert.assertEquals( WebAdminPages.rulesUIQueryAnalyzerPage().getGLInterfaceTransactionHeaderIdValue(1),
                 transactionHeader,
                 "HeaderId value doesn't match!");
