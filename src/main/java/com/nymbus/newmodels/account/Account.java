@@ -199,7 +199,6 @@ public class Account {
         account.setNumberOfATMCardsIssued(String.valueOf(Generator.genInt(0, 100)));
         account.setNumberOfDebitCardsIssued(String.valueOf(Generator.genInt(0, 100)));
         account.setFederalWHPercent(String.valueOf(Generator.genInt(0, 100)));
-        account.setEarningCreditRate(String.valueOf(Generator.genInt(0, 100)));
         account.setCashCollDaysBeforeChg(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setCashCollInterestChg(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));

@@ -7,9 +7,11 @@ import com.nymbus.actions.clients.documents.DocumentActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.document.AccountLevelDocument;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.client.other.AccountLevelDocumentFactory;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
@@ -22,7 +24,7 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22600_EditDeleteRestoreAccountLevelDocumentTest extends BaseTest {
 
-    private Client client;
+    private IndividualClient client;
     private Account checkingAccount;
     private AccountLevelDocument accountLevelDocument;
 
@@ -30,9 +32,9 @@ public class C22600_EditDeleteRestoreAccountLevelDocumentTest extends BaseTest {
     public void preCondition() {
 
         // Set up Client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
         // Set up account level document factory
         accountLevelDocument = new AccountLevelDocumentFactory().getAccountLevelDocument();
@@ -45,7 +47,9 @@ public class C22600_EditDeleteRestoreAccountLevelDocumentTest extends BaseTest {
 
         // Login to the system and create a client with checking account and account level document
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
         AccountActions.createAccount().createCHKAccount(checkingAccount);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         Pages.clientDetailsPage().openAccountByNumber(checkingAccount.getAccountNumber());

@@ -2,6 +2,8 @@ package com.nymbus.pages.accounts;
 
 import com.nymbus.core.base.PageTools;
 import com.nymbus.core.utils.SelenideTools;
+import com.nymbus.newmodels.client.other.account.ProductType;
+import com.nymbus.newmodels.settings.product.Product;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -504,6 +506,14 @@ public class AddAccountPage extends PageTools {
         SelenideTools.sleep(2);
     }
 
+    @Step("Click the 'Product' option")
+    public void clickProductOption(Product productOption) {
+        waitForElementVisibility(productSelectorOption, productOption.getProduct());
+        waitForElementClickable(productSelectorOption, productOption.getProduct());
+        click(productSelectorOption, productOption.getProduct());
+        SelenideTools.sleep(2);
+    }
+
     @Step("Returning the 'DBC ODP Opt In/Out Status' value")
     public String getOptInOutStatus() {
         waitForElementVisibility(optInOutStatus);
@@ -645,10 +655,17 @@ public class AddAccountPage extends PageTools {
         click(productTypeSelectorOption, productTypeOption);
     }
 
+    @Step("Click the 'Product Type' option")
+    public void clickProductTypeOption(ProductType productTypeOption) {
+        waitForElementVisibility(productTypeSelectorOption, productTypeOption.getProductType());
+        waitForElementClickable(productTypeSelectorOption, productTypeOption.getProductType());
+        click(productTypeSelectorOption, productTypeOption.getProductType());
+    }
+
     @Step("Click the 'Box size' selector button")
     public void clickBoxSizeSelectorButton() {
         waitForElementVisibility(boxSizeSelectorButton);
-        scrollToElement(boxSizeSelectorButton);
+//        scrollToElement(boxSizeSelectorButton);
         waitForElementClickable(boxSizeSelectorButton);
         click(boxSizeSelectorButton);
     }

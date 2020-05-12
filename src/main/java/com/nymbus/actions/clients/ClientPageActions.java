@@ -49,10 +49,20 @@ public class ClientPageActions {
         Pages.clientsSearchResultsPage().clickSearchResultsWithText(name);
     }
 
+    // TODO: Remove method when not used
     public void searchAndOpenClientByID(Client client) {
         Pages.clientsSearchPage().typeToClientsSearchInputField(client.getClientID());
         Assert.assertEquals(Pages.clientsSearchPage().getAllLookupResults().size(), 1, "There is more than one client found");
         Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), client.getClientID()));
+        Pages.clientsSearchPage().clickOnSearchButton();
+        Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
+        Pages.clientDetailsPage().waitForPageLoaded();
+    }
+
+    public void searchAndOpenIndividualClientByID(String clientID) {
+        Pages.clientsSearchPage().typeToClientsSearchInputField(clientID);
+        Assert.assertEquals(Pages.clientsSearchPage().getAllLookupResults().size(), 1, "There is more than one client found");
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), clientID));
         Pages.clientsSearchPage().clickOnSearchButton();
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
         Pages.clientDetailsPage().waitForPageLoaded();

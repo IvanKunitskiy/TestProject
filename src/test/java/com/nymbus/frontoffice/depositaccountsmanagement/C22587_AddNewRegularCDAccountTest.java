@@ -6,8 +6,10 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -19,18 +21,17 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22587_AddNewRegularCDAccountTest extends BaseTest {
 
-    Client client;
-    Account cdAccount;
-    Account checkingAccount;
+    private IndividualClient client;
+    private Account cdAccount;
+    private Account checkingAccount;
+    private String clientID;
 
     @BeforeMethod
     public void preConditions() {
-
-        // Set up Client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
-        client.setSelectOfficer("autotest autotest"); // Controlling officer to validate 'Bank Branch' value
+        // Set up client
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
         // Set up IRA account
         cdAccount = new Account().setCDAccountData();
@@ -45,8 +46,12 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
 
         // Login to the system and create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
-        client.setClientID(Pages.clientDetailsPage().getClientID());
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+        clientID = Pages.clientDetailsPage().getClientID();
+
+        // Create account and logout
         AccountActions.createAccount().createCHKAccount(checkingAccount);
         Actions.loginActions().doLogOut();
     }
@@ -59,12 +64,7 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the client from the preconditions and open his profile on Accounts tab");
-        Pages.clientsSearchPage().typeToClientsSearchInputField(client.getClientID());
-        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), client.getClientID()), "Search results are not relevant");
-        Pages.clientsSearchPage().clickOnSearchButton();
-        Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
-        Pages.clientDetailsPage().waitForPageLoaded();
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID);
         Pages.clientDetailsPage().clickAccountsTab();
 
         logInfo("Step 3: Click 'Add New' drop down and select 'Account'");
@@ -78,14 +78,14 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         AccountActions.createAccount().setProduct(cdAccount);
 
         logInfo("Step 6: Look through the fields. Check that fields are prefilled by default");
-        Assert.assertEquals(Pages.addAccountPage().getAccountType(), client.getClientType(), "'Account type' is prefilled with wrong value");
-        final String accountHolderName = client.getFirstName() + " " + client.getLastName() + " (" + client.getClientID() + ")";
+        Assert.assertEquals(Pages.addAccountPage().getAccountType(), client.getIndividualType().getClientType().getClientType(), "'Account type' is prefilled with wrong value");
+        final String accountHolderName = client.getIndividualType().getFirstName() + " " + client.getIndividualType().getLastName() + " (" + clientID + ")";
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderName(), accountHolderName, "'Name' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderRelationship(), cdAccount.getAccountHolder(), "'Relationship' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getAccountHolderClientType(), client.getClientType(), "'Client type' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getAccountHolderTaxID(), client.getTaxID(), "'Tax ID' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getOriginatingOfficer(), client.getSelectOfficer(), "'Originating officer' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getCurrentOfficer(), client.getSelectOfficer(), "'Current officer' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getAccountHolderClientType(), client.getIndividualType().getClientType().getClientType(), "'Client type' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getAccountHolderTaxID(), client.getIndividualType().getTaxID(), "'Tax ID' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getOriginatingOfficer(), client.getIndividualClientDetails().getSelectOfficer(), "'Originating officer' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getCurrentOfficer(), client.getIndividualClientDetails().getSelectOfficer(), "'Current officer' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getBankBranch(), cdAccount.getBankBranch(), "'Bank branch' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getTermType(), cdAccount.getTermType(), "'Term Type' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getAutoRenewable(), cdAccount.getAutoRenewable(), "'Auto Renewable' is prefilled with wrong value");

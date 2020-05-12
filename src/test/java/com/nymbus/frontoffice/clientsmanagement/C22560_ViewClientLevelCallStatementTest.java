@@ -4,14 +4,17 @@ import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
-import com.nymbus.actions.transfers.TransfersActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
+import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
+import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
+import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
-import org.aspectj.lang.annotation.Before;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -20,26 +23,35 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22560_ViewClientLevelCallStatementTest extends BaseTest {
 
-    private Client client;
+    private IndividualClient client;
     private Account chkAccount;
+    private String clientID;
+    private Transaction transaction;
 
     @BeforeMethod
     public void preCondition() {
 
-        // Set up client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
+        // Set up Client
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
         // Set up account
         chkAccount = new Account().setCHKAccountData();
 
+        // Set up transaction
+        transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+
         // Create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
-        client.setClientID(Pages.clientDetailsPage().getClientID());
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+        clientID = Pages.clientDetailsPage().getClientID();
         AccountActions.createAccount().createCHKAccount(chkAccount);
-        Actions.tellerActions().assignAmountToAccount(chkAccount, "2", "20000");
+
+        // Create transaction
+        Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
         Actions.loginActions().doLogOut();
     }
 

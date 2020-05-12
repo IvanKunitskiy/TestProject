@@ -6,8 +6,10 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -18,19 +20,20 @@ import org.testng.annotations.Test;
 @Feature("Deposit Accounts Management")
 @Owner("Dmytro")
 public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
-    private Client client;
+
+    private IndividualClient client;
     private Account regularSavingsAccount;
     private Account checkingAccount;
+    private String clientID;
 
     @BeforeMethod
     public void preCondition() {
         // Set up Client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
-        client.setSelectOfficer("autotest autotest"); // Controlling officer to validate 'Bank Branch' value
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
-        // Set up Savings account
+        // Set up account
         regularSavingsAccount = new Account().setSavingsAccountData();
         regularSavingsAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
 
@@ -39,9 +42,10 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
 
         // Login to the system and create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
-        client.setClientID(Pages.clientDetailsPage().getClientID());
-        AccountActions.createAccount().createCHKAccount(checkingAccount);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+        clientID = Pages.clientDetailsPage().getClientID();
         Actions.loginActions().doLogOut();
     }
 
@@ -53,9 +57,9 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the client from the preconditions and open his profile on Accounts tab");
-        Pages.clientsSearchPage().typeToClientsSearchInputField(client.getClientID());
+        Pages.clientsSearchPage().typeToClientsSearchInputField(clientID);
         Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), client.getClientID()), "Search results are not relevant");
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), clientID), "Search results are not relevant");
         Pages.clientsSearchPage().clickOnSearchButton();
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
         Pages.clientDetailsPage().waitForPageLoaded();
@@ -72,15 +76,15 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         AccountActions.createAccount().setProduct(regularSavingsAccount);
 
         logInfo("Step 6: Look through the fields. Check that fields are prefilled by default");
-        Assert.assertEquals(Pages.addAccountPage().getAccountType(), client.getClientType(), "'Account type' is prefilled with wrong value");
-        final String accountHolderName = client.getFirstName() + " " + client.getLastName() + " (" + client.getClientID() + ")";
+        Assert.assertEquals(Pages.addAccountPage().getAccountType(), client.getIndividualType().getClientType().getClientType(), "'Account type' is prefilled with wrong value");
+        final String accountHolderName = client.getIndividualType().getFirstName() + " " + client.getIndividualType().getLastName() + " (" + clientID + ")";
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderName(), accountHolderName, "'Name' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderRelationship(), "Owner", "'Relationship' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getAccountHolderClientType(), client.getClientType(), "'Client type' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getAccountHolderTaxID(), client.getTaxID(), "'Tax ID' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getAccountHolderClientType(), client.getIndividualType().getClientType().getClientType(), "'Client type' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getAccountHolderTaxID(), client.getIndividualType().getTaxID(), "'Tax ID' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getDateOpened(), DateTime.getLocalDateTimeByPattern("MM/dd/yyyy"), "'Date' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getOriginatingOfficer(), client.getSelectOfficer(), "'Originating officer' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getCurrentOfficer(), client.getSelectOfficer(), "'Current officer' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getOriginatingOfficer(), client.getIndividualClientDetails().getSelectOfficer(), "'Originating officer' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getCurrentOfficer(), client.getIndividualClientDetails().getSelectOfficer(), "'Current officer' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getBankBranch(), regularSavingsAccount.getBankBranch(), "'Bank branch' is prefilled with wrong value");
 
         logInfo("Step 7: Select any values in drop-down fields");
@@ -98,7 +102,9 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         Pages.accountDetailsPage().waitForFullProfileButton();
 
         logInfo("Step 11: Pay attention to the fields that were filled in during account creation");
-        Pages.accountDetailsPage().clickMoreButton();
+        if (Pages.accountDetailsPage().isMoreButtonVisible()) {
+            Pages.accountDetailsPage().clickMoreButton();
+        }
         Assert.assertEquals(Pages.accountDetailsPage().getProductValue(), regularSavingsAccount.getProduct(), "'Product' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), regularSavingsAccount.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), regularSavingsAccount.getBankBranch(), "'Bank Branch' value does not match");
@@ -112,7 +118,6 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
 
         logInfo("Step 12: Click [Edit] button and pay attention to the fields that were filled in during account creation");
         Pages.accountDetailsPage().clickEditButton();
-
         Assert.assertEquals(Pages.editAccountPage().getProductValueInEditMode(), regularSavingsAccount.getProduct(), "'Product' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), regularSavingsAccount.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), regularSavingsAccount.getBankBranch(), "'Bank Branch' value does not match");

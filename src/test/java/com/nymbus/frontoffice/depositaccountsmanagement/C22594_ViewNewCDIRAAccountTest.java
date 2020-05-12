@@ -5,8 +5,10 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -18,17 +20,16 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22594_ViewNewCDIRAAccountTest extends BaseTest {
 
-    Client client;
-    Account cdIRAAccount;
+    private IndividualClient client;
+    private Account cdIRAAccount;
 
     @BeforeMethod
     public void preCondition() {
 
-        // Set up Client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
-        client.setSelectOfficer("autotest autotest"); // Controlling officer to validate 'Bank Branch' value
+        // Set up client
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
         // Set up IRA account
         cdIRAAccount = new Account().setCDIRAAccountData();
@@ -36,8 +37,14 @@ public class C22594_ViewNewCDIRAAccountTest extends BaseTest {
 
         // Login to the system and create a client with IRA account
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+
+        // Create account
         AccountActions.createAccount().createCDAccount(cdIRAAccount);
+
+        // Edit Account and logout
         AccountActions.editAccount().editCDAccount(cdIRAAccount);
         Actions.loginActions().doLogOut();
     }
@@ -50,17 +57,13 @@ public class C22594_ViewNewCDIRAAccountTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the Savings account from the precondition and open it on Details");
-        Pages.clientsSearchPage().typeToClientsSearchInputField(cdIRAAccount.getAccountNumber());
-        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), cdIRAAccount.getAccountNumber()));
-        Pages.clientsSearchPage().clickOnSearchButton();
-        Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
-        Pages.clientDetailsPage().waitForPageLoaded();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(cdIRAAccount);
         Pages.clientDetailsPage().clickAccountsTab();
-        Pages.clientDetailsPage().openAccountByNumber(cdIRAAccount.getAccountNumber());
 
         logInfo("Step 3: Click [Load More] button");
-        Pages.accountDetailsPage().clickMoreButton();
+        if (Pages.accountDetailsPage().isMoreButtonVisible()) {
+            Pages.accountDetailsPage().clickMoreButton();
+        }
 
         logInfo("Step 4: Pay attention to the fields on the page");
         Assert.assertEquals(Pages.accountDetailsPage().getProductValue(), cdIRAAccount.getProduct(), "'Product' value does not match");
@@ -84,8 +87,10 @@ public class C22594_ViewNewCDIRAAccountTest extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), cdIRAAccount.getDateOpened(), "'Date Opened' value does not match");
 
         logInfo("Step 5: Click [Less] button");
-        Pages.accountDetailsPage().clickLessButton();
-        Assert.assertTrue(Pages.accountDetailsPage().isMoreButtonVisible(), "More button is not visible");
+        if (Pages.accountDetailsPage().isLessButtonVisible()) {
+            Pages.accountDetailsPage().clickLessButton();
+            Assert.assertTrue(Pages.accountDetailsPage().isMoreButtonVisible(), "More button is not visible");
+        }
     }
 
 }

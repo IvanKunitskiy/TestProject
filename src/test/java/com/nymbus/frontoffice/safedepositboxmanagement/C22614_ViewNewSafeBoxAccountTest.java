@@ -5,8 +5,10 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -18,18 +20,16 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22614_ViewNewSafeBoxAccountTest extends BaseTest {
 
-    private Client client;
+    private IndividualClient client;
     private Account safeDepositBoxAccount;
     private Account checkingAccount;
 
     @BeforeMethod
     public void preConditions() {
-
         // Set up Client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
-        client.setSelectOfficer("autotest autotest"); // Controlling officer to validate 'Bank Branch' value
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
         // Set up Safe Deposit Box Account
         safeDepositBoxAccount = new Account().setSafeDepositBoxData();
@@ -42,7 +42,11 @@ public class C22614_ViewNewSafeBoxAccountTest extends BaseTest {
 
         // Login to the system and create a client with Safe Deposit Box and CHK accounts
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+
+        // Create accounts and logout
         AccountActions.createAccount().createCHKAccount(checkingAccount);
         Pages.accountDetailsPage().clickAccountsLink();
         AccountActions.createAccount().createSafeDepositBoxAccount(safeDepositBoxAccount);
@@ -53,21 +57,12 @@ public class C22614_ViewNewSafeBoxAccountTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "C22614, View New Safe Box Account")
     public void viewNewSafeBoxAccount() {
-
         logInfo("Step 1: Log in to the system as the user from the precondition");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-        logInfo("Step 2: Step 2: Search for the Safe Deposit Box Account from the precondition and open it on Details");
-        Pages.clientsSearchPage().typeToClientsSearchInputField(safeDepositBoxAccount.getAccountNumber());
-        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), safeDepositBoxAccount.getAccountNumber()));
-        Pages.clientsSearchPage().clickOnSearchButton();
-        Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
-        Pages.clientDetailsPage().waitForPageLoaded();
-        Pages.clientDetailsPage().clickAccountsTab();
-
+        logInfo("Step 2: Search for the Safe Deposit Box Account from the precondition");
         logInfo("Step 3: Open the account");
-        Pages.clientDetailsPage().openAccountByNumber(safeDepositBoxAccount.getAccountNumber());
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(safeDepositBoxAccount);
 
         logInfo("Step 4: Verify the displayed fields in view mode");
         Assert.assertEquals(Pages.accountDetailsPage().getBoxSizeValue(), safeDepositBoxAccount.getBoxSize(), "'Box Size' value does not match");

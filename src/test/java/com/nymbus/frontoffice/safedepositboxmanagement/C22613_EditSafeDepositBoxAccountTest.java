@@ -5,8 +5,10 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -18,18 +20,17 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
 
-    private Client client;
+    private IndividualClient client;
     private Account safeDepositBoxAccount;
     private Account checkingAccount;
+    private String clientID;
 
     @BeforeMethod
     public void preConditions() {
-
-        // Set up Client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
-        client.setSelectOfficer("autotest autotest"); // Controlling officer to validate 'Bank Branch' value
+        // Set up client
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
         // Set up Safe Deposit Box Account
         safeDepositBoxAccount = new Account().setSafeDepositBoxData();
@@ -42,28 +43,26 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
 
         // Login to the system and create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
-        client.setClientID(Pages.clientDetailsPage().getClientID());
-        AccountActions.createAccount().createSafeDepositBoxAccount(safeDepositBoxAccount);
-        Pages.accountDetailsPage().clickAccountsLink();
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+        clientID = Pages.clientDetailsPage().getClientID();
+
+        // Create accounts and logout
         AccountActions.createAccount().createCHKAccount(checkingAccount);
+        Pages.accountDetailsPage().clickAccountsLink();
+        AccountActions.createAccount().createSafeDepositBoxAccount(safeDepositBoxAccount);
         Actions.loginActions().doLogOut();
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "C22612, Add New 'Safe Deposit Box' Account")
     public void createSafeBoxAccount() {
-
         logInfo("Step 1: Log in to the system as the user from the precondition");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the client from the preconditions and open his profile on Accounts tab");
-        Pages.clientsSearchPage().typeToClientsSearchInputField(safeDepositBoxAccount.getAccountNumber());
-        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), safeDepositBoxAccount.getAccountNumber()), "Search results are not relevant");
-        Pages.clientsSearchPage().clickOnSearchButton();
-        Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
-        Pages.clientDetailsPage().waitForPageLoaded();
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID);
         Pages.clientDetailsPage().clickAccountsTab();
         Pages.clientDetailsPage().openAccountByNumber(safeDepositBoxAccount.getAccountNumber());
 
@@ -117,7 +116,5 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
 
         logInfo("Step 11: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         // TODO: Implement verification at Maintenance History page
-
     }
-
 }

@@ -8,6 +8,9 @@ import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -19,18 +22,18 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
 
-    Client client;
-    Account savingsIRAAccount;
-    Account checkingAccount;
+    private IndividualClient client;
+    private Account savingsIRAAccount;
+    private Account checkingAccount;
+    private String clientID;
 
     @BeforeMethod
     public void preCondition() {
 
         // Set up Client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
-        client.setSelectOfficer("autotest autotest"); // Controlling officer to validate 'Bank Branch' value
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
         // Set up IRA account
         savingsIRAAccount = new Account().setIRAAccountData();
@@ -41,9 +44,10 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
 
         // Login to the system and create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
-        client.setClientID(Pages.clientDetailsPage().getClientID());
-        AccountActions.createAccount().createCHKAccount(checkingAccount);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+        clientID = Pages.clientDetailsPage().getClientID();
         Actions.loginActions().doLogOut();
     }
 
@@ -55,9 +59,9 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the client from the preconditions and open his profile on Accounts tab");
-        Pages.clientsSearchPage().typeToClientsSearchInputField(client.getClientID());
+        Pages.clientsSearchPage().typeToClientsSearchInputField(clientID);
         Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), client.getClientID()), "Search results are not relevant");
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), clientID), "Search results are not relevant");
         Pages.clientsSearchPage().clickOnSearchButton();
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
         Pages.clientDetailsPage().waitForPageLoaded();
@@ -74,17 +78,17 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
         AccountActions.createAccount().setProduct(savingsIRAAccount);
 
         logInfo("Step 6: Look through the fields. Check that fields are prefilled by default");
-        Assert.assertEquals(Pages.addAccountPage().getAccountType(), client.getClientType(), "'Account type' is prefilled with wrong value");
-        final String accountHolderName = client.getFirstName() + " " + client.getLastName() + " (" + client.getClientID() + ")";
+        Assert.assertEquals(Pages.addAccountPage().getAccountType(), client.getIndividualType().getClientType().getClientType(), "'Account type' is prefilled with wrong value");
+        final String accountHolderName = client.getIndividualType().getFirstName() + " " + client.getIndividualType().getLastName() + " (" + clientID + ")";
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderName(), accountHolderName, "'Name' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderRelationship(), "Owner", "'Relationship' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getAccountHolderClientType(), client.getClientType(), "'Client type' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getAccountHolderTaxID(), client.getTaxID(), "'Tax ID' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getAccountHolderClientType(), client.getIndividualType().getClientType().getClientType(), "'Client type' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getAccountHolderTaxID(), client.getIndividualType().getTaxID(), "'Tax ID' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getDateOpened(), DateTime.getLocalDateTimeByPattern("MM/dd/yyyy"), "'Date' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getOriginatingOfficer(), client.getSelectOfficer(), "'Originating officer' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getCurrentOfficer(), client.getSelectOfficer(), "'Current officer' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getOriginatingOfficer(), client.getIndividualClientDetails().getSelectOfficer(), "'Originating officer' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getCurrentOfficer(), client.getIndividualClientDetails().getSelectOfficer(), "'Current officer' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getBankBranch(), savingsIRAAccount.getBankBranch(), "'Bank branch' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getDateOfBirth(), client.getBirthDate(), "'Date of Birth' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getDateOfBirth(), client.getIndividualType().getBirthDate(), "'Date of Birth' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getIRADistributionFrequency(), savingsIRAAccount.getIraDistributionFrequency(), "'IRA Distribution Frequency' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getIRADistributionCode(), savingsIRAAccount.getIraDistributionCode(), "'IRA Distribution Code' is prefilled with wrong value");
 
@@ -104,7 +108,9 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
         Pages.accountDetailsPage().waitForFullProfileButton();
 
         logInfo("Step 11: Pay attention to the fields that were filled in during account creation");
-        Pages.accountDetailsPage().clickMoreButton();
+        if (Pages.accountDetailsPage().isMoreButtonVisible()) {
+            Pages.accountDetailsPage().clickMoreButton();
+        }
         Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), savingsIRAAccount.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), savingsIRAAccount.getBankBranch(), "'Bank Branch' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getInterestFrequency(), savingsIRAAccount.getInterestFrequency(), "'Interest Frequency' value does not match");

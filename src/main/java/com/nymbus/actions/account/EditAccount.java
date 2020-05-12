@@ -174,15 +174,16 @@ public class EditAccount {
         Pages.editAccountPage().clickApplyInterestToSelectorOption(account.getApplyInterestTo());
     }
 
+    // TODO: Accounts page is under reconstruction. Check elements presence for commented out lines and delete or uncomment respectively.
     public void selectValuesInDropdownFieldsThatWereNotAvailableDuringCheckingAccountCreation(Account account) {
         setFederalWHReason(account);
-        setReasonATMChargeWaived(account);
-        setOdProtectionAcct(account);
-        setReasonAutoNSFChgWaived(account);
+//        setReasonATMChargeWaived(account);
+//        setOdProtectionAcct(account);
+//        setReasonAutoNSFChgWaived(account);
         setReasonDebitCardChargeWaived(account);
         setAutomaticOverdraftStatus(account);
-        setReasonAutoOdChgWaived(account);
-        setWhenSurchargesRefunded(account);
+//        setReasonAutoOdChgWaived(account);
+//        setWhenSurchargesRefunded(account);
     }
 
     public void fillInInputFieldsThatWereNotAvailableDuringCheckingAccountCreation(Account account) {

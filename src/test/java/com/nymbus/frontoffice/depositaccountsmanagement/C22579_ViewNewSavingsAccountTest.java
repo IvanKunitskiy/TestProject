@@ -5,8 +5,10 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -17,16 +19,17 @@ import org.testng.annotations.Test;
 @Feature("Deposit Accounts Management")
 @Owner("Dmytro")
 public class C22579_ViewNewSavingsAccountTest extends BaseTest {
-    private Client client;
+
+    private IndividualClient client;
     private Account savingsAccount;
 
     @BeforeMethod
     public void preCondition() {
+
         // Set up Client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
-        client.setSelectOfficer("autotest autotest"); // Controlling officer to validate 'Bank Branch' value
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
         // Set up savings account
         savingsAccount = new Account().setSavingsAccountData();
@@ -34,7 +37,9 @@ public class C22579_ViewNewSavingsAccountTest extends BaseTest {
 
         // Login to the system and create a client with savings account
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
         AccountActions.createAccount().createSavingsAccount(savingsAccount);
         Actions.loginActions().doLogOut();
     }
@@ -42,21 +47,17 @@ public class C22579_ViewNewSavingsAccountTest extends BaseTest {
     @Test(description = "C22579, View New Savings Account")
     @Severity(SeverityLevel.CRITICAL)
     public void viewNewSavingsAccount() {
+
         logInfo("Step 1: Log in to the system as the user from the precondition");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the Savings account from the precondition and open it on Details");
-        Pages.clientsSearchPage().typeToClientsSearchInputField(savingsAccount.getAccountNumber());
-        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), savingsAccount.getAccountNumber()));
-        Pages.clientsSearchPage().clickOnSearchButton();
-        Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
-        Pages.clientDetailsPage().waitForPageLoaded();
-        Pages.clientDetailsPage().clickAccountsTab();
-        Pages.clientDetailsPage().openAccountByNumber(savingsAccount.getAccountNumber());
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(savingsAccount);
 
         logInfo("Step 3: Click [Load More] button");
-        Pages.accountDetailsPage().clickMoreButton();
+        if (Pages.accountDetailsPage().isMoreButtonVisible()) {
+            Pages.accountDetailsPage().clickMoreButton();
+        }
 
         logInfo("Step 4: Pay attention to the fields on the page");
         Assert.assertEquals(Pages.accountDetailsPage().getProductValue(), savingsAccount.getProduct(), "'Product' value does not match");
@@ -70,7 +71,9 @@ public class C22579_ViewNewSavingsAccountTest extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), savingsAccount.getInterestRate(), "'Interest Rate' value does not match");
 
         logInfo("Step 5: Click [Less] button");
-        Pages.accountDetailsPage().clickLessButton();
-        Assert.assertTrue(Pages.accountDetailsPage().isMoreButtonVisible(), "More button is not visible");
+        if (Pages.accountDetailsPage().isLessButtonVisible()) {
+            Pages.accountDetailsPage().clickLessButton();
+            Assert.assertTrue(Pages.accountDetailsPage().isMoreButtonVisible(), "More button is not visible");
+        }
     }
 }

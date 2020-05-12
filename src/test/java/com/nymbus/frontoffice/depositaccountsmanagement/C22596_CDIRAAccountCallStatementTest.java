@@ -6,8 +6,10 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
@@ -21,7 +23,7 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
 
-    private Client client;
+    private IndividualClient client;
     private Account cdIraAccount;
     private Transaction transaction;
 
@@ -29,9 +31,9 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
     public void preCondition() {
 
         // Set up client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
         // Set up account
         cdIraAccount = new Account().setCDIRAAccountData();
@@ -41,7 +43,9 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
 
         // Create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create account
         AccountActions.createAccount().createCDAccount(cdIraAccount);
@@ -50,12 +54,8 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
         transaction.getTransactionDestination().setAccountNumber(cdIraAccount.getAccountNumber());
         transaction.getTransactionDestination().setTransactionCode("330 - Cur Yr Contrib");
 
-        // Commit transaction to account
-        Actions.transactionActions().goToTellerPage();
-        Actions.transactionActions().doLoginTeller();
-        Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
-        Actions.transactionActions().clickCommitButton();
-        Pages.tellerPage().closeModal();
+        // Commit transaction to account and logout
+        Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
         Actions.loginActions().doLogOut();
     }
 
