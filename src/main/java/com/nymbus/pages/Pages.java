@@ -2,6 +2,7 @@ package com.nymbus.pages;
 
 import com.nymbus.core.allure.AllureLogger;
 import com.nymbus.pages.accounts.*;
+import com.nymbus.pages.accounts.transactions.EditAccountTransactionModal;
 import com.nymbus.pages.accounts.transactions.TransactionsPage;
 import com.nymbus.pages.clients.AddClientPage;
 import com.nymbus.pages.clients.ClientDetailsPage;
@@ -80,6 +81,7 @@ public class Pages extends AllureLogger {
     private static SupervisorModalPage supervisorModalPage;
     private static CardsManagementPage cardsManagementPage;
     private static AttentionModalPage attentionModalPage;
+    private static EditAccountTransactionModal editAccountTransactionModal;
 
     /**
      * Modal Windows
@@ -565,5 +567,15 @@ public class Pages extends AllureLogger {
             attentionModalPage = new AttentionModalPage();
         }
         return attentionModalPage;
+    }
+
+    /**
+     * This function return an instance of `EditAccountTransactionModal`
+     */
+    public static EditAccountTransactionModal editAccountTransactionModal() {
+        if (editAccountTransactionModal == null) {
+            editAccountTransactionModal = new EditAccountTransactionModal();
+        }
+        return editAccountTransactionModal;
     }
 }
