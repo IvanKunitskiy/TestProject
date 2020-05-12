@@ -31,8 +31,10 @@ public class C22546_AddNewClientTransferTest extends BaseTest {
 
     @BeforeMethod
     public void preCondition() {
+
         // Set up Client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         client = individualClientBuilder.buildClient();
 
@@ -46,14 +48,15 @@ public class C22546_AddNewClientTransferTest extends BaseTest {
         highBalanceTransfer.setFromAccount(chkAccount);
         highBalanceTransfer.setToAccount(savingsAccount);
 
-        // Create a client with an active CHK and Savings account
+        // Create client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
         clientID = Pages.clientDetailsPage().getClientID();
-
+        
         // Create accounts and logout
+        // Create CHK, Savings account and logout
         AccountActions.createAccount().createCHKAccount(chkAccount);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createSavingsAccount(savingsAccount);
