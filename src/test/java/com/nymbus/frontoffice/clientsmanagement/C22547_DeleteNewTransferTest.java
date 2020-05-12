@@ -39,10 +39,15 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
     private String client2_ID;
     private Transaction transaction;
 
+    private String clientID_1;
+    private String clientID_2;
+
     @BeforeMethod
     public void preCondition() {
         // Set up clients
+
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         client1 = individualClientBuilder.buildClient();
         client2 = individualClientBuilder.buildClient();
@@ -52,6 +57,10 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         savingsAccount1 = new Account().setSavingsAccountData();
         chkAccount2 = new Account().setCHKAccountData();
         savingsAccount2 = new Account().setSavingsAccountData();
+
+        // Set up transaction
+        Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        transaction.getTransactionDestination().setAccountNumber(chkAccount2.getAccountNumber());
 
         // Set up transfers
         TransferBuilder transferBuilder = new TransferBuilder();
@@ -72,9 +81,9 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         ClientsActions.individualClientActions().createClient(client1);
         ClientsActions.individualClientActions().setClientDetailsData(client1);
         ClientsActions.individualClientActions().setDocumentation(client1);
-        client1_ID = Pages.clientDetailsPage().getClientID();
 
-        // Create accounts and transfer
+        clientID_1 = Pages.clientDetailsPage().getClientID();
+
         AccountActions.createAccount().createCHKAccount(chkAccount1);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createSavingsAccount(savingsAccount1);
@@ -87,9 +96,9 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         ClientsActions.individualClientActions().createClient(client2);
         ClientsActions.individualClientActions().setClientDetailsData(client2);
         ClientsActions.individualClientActions().setDocumentation(client2);
-        client2_ID = Pages.clientDetailsPage().getClientID();
 
-        // Create accounts
+        clientID_2 = Pages.clientDetailsPage().getClientID();
+
         AccountActions.createAccount().createCHKAccount(chkAccount2);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createSavingsAccount(savingsAccount2);
@@ -100,7 +109,8 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
 
         // Log in -> Create 'One time only' periodic transfer -> Log out
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        Actions.clientPageActions().searchAndOpenIndividualClientByID(client2_ID);
+
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID_2);
         TransfersActions.addNewTransferActions().addNewTransfer(transfer);
         Actions.loginActions().doLogOut();
     }
@@ -112,7 +122,8 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Go to Clients and search for the client from the precondition");
-        Actions.clientPageActions().searchAndOpenIndividualClientByID(client1_ID);
+
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID_1);
 
         logInfo("Step 3: Open Clients Profile on the Transfers tab");
         Pages.accountNavigationPage().clickTransfersTab();
@@ -134,7 +145,8 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
 
         logInfo("Step 8: Go to Clients page and search for the client from the precondition");
         Pages.aSideMenuPage().clickClientMenuItem();
-        Actions.clientPageActions().searchAndOpenIndividualClientByID(client2_ID);
+
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID_2);
 
         logInfo("Step 9: Open Clients Profile on the Transfers tab");
         Pages.accountNavigationPage().clickTransfersTab();

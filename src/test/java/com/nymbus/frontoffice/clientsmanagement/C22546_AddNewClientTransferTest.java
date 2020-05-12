@@ -54,7 +54,7 @@ public class C22546_AddNewClientTransferTest extends BaseTest {
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
         clientID = Pages.clientDetailsPage().getClientID();
-        
+
         // Create accounts and logout
         // Create CHK, Savings account and logout
         AccountActions.createAccount().createCHKAccount(chkAccount);
