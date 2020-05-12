@@ -7,6 +7,7 @@ public class NotesActions {
      */
 
     private static EditNoteActions editNoteActions;
+    private static NotePageActions notePageActions;
 
     /**
      * This function return an instance of `editNoteActions`
@@ -17,6 +18,13 @@ public class NotesActions {
             editNoteActions = new EditNoteActions();
         }
         return editNoteActions;
+    }
+
+    public static NotePageActions notePageActions() {
+        if (notePageActions == null) {
+            notePageActions = new NotePageActions();
+        }
+        return notePageActions;
     }
 
 }

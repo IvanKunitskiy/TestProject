@@ -10,6 +10,13 @@ public class Alerts extends PageTools {
     private By closeButton = By.xpath("//section[contains(@class, 'header')]//button");
     private By notificationCircle = By.xpath("//span[contains(@class, 'notificationCircle')]");
     private By alertSelector = By.xpath("//section[@class='content']/article/div//span[contains(text(), '%s')]");
+    private By noteSelector = By.xpath("//article[contains(@class, 'item')][div/h4[contains(text(), '%s')]]" +
+            "[div/p/span/ span[contains(text(), '%s')]]");
+
+    @Step
+    public boolean isNoteAlertVisible(String title, String text) {
+        return isElementVisible(noteSelector, title, text);
+    }
 
     @Step("Wait for alerts side panel")
     public void waitForAlertsSidePanelVisible() {

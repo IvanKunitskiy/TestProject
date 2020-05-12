@@ -1,8 +1,10 @@
 package com.nymbus.pages.clients.notes;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
+import org.graalvm.compiler.phases.common.inlining.info.AbstractInlineInfo;
 import org.openqa.selenium.By;
 
 import java.util.List;
@@ -31,6 +33,13 @@ public class NotesPage extends PageTools {
     private By templateList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By templateSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By expirationDateField = By.xpath("//input[@id='expirationdate']");
+    private By noteAlertByContent = By.xpath("//div[contains(@class, 'notifications-item')]//div/span[contains(text(), '%s')]");
+
+    @Step("Check that alert for created note appeared")
+    public boolean isNoteAlertAppeared(String noteContent) { // format (Account | {account number} | note)
+        waitForElementClickable(noteAlertByContent, noteContent);
+        return isElementVisible(noteAlertByContent, noteContent);
+    }
 
     @Step("Click the 'Severity' option")
     public void clickTemplateSelectorOption(String templateOption) {
@@ -83,6 +92,11 @@ public class NotesPage extends PageTools {
         click(deleteButton);
     }
 
+    @Step("Check if 'Delete' button is disabled")
+    public boolean isDeleteButtonDisabled() {
+        return getElementAttributeValue("disabled", deleteButton).equals("true");
+    }
+
     @Step("Get 'Responsible Officer' value in view mode")
     public String getResponsibleOfficerValueInViewMode() {
         waitForElementVisibility(responsibleOfficerValueInViewMode);
@@ -116,20 +130,20 @@ public class NotesPage extends PageTools {
 
     @Step("Set 'Due Date' value")
     public void setDueDateValue(String date) {
-        waitForElementVisibility(dueDateField);
+//        waitForElementVisibility(dueDateField);
         waitForElementClickable(dueDateField);
         typeWithoutWipe("", dueDateField);
-        SelenideTools.sleep(1);
-        typeWithoutWipe(date, dueDateField);
+        SelenideTools.sleep(2);
+        type(date, dueDateField);
     }
 
     @Step("Set 'Expiration Date' value")
     public void setExpirationDateValue(String date) {
-        waitForElementVisibility(expirationDateField);
+//        waitForElementVisibility(expirationDateField);
         waitForElementClickable(expirationDateField);
         typeWithoutWipe("", expirationDateField);
-        SelenideTools.sleep(1);
-        typeWithoutWipe(date, expirationDateField);
+        SelenideTools.sleep(2);
+        type(date, expirationDateField);
     }
 
     @Step("Is 'Responsible Officer' selected")
@@ -156,11 +170,18 @@ public class NotesPage extends PageTools {
         type(text, newNoteTextArea);
     }
 
+    @Step("Add text to 'New Note' text area")
+    public void addRandomTextToNewNoteTextArea(int length) {
+        String text = Generator.genString(length);
+        waitForElementClickable(newNoteTextArea, text);
+        typeWithoutWipe(text, newNoteTextArea);
+    }
+
     @Step("Click the 'Save' button")
     public void clickSaveButton() {
         waitForElementVisibility(saveNoteButton);
         waitForElementClickable(saveNoteButton);
-        SelenideTools.sleep(3);
+//        SelenideTools.sleep(3);
         click(saveNoteButton);
         SelenideTools.sleep(3);
     }
@@ -183,11 +204,19 @@ public class NotesPage extends PageTools {
         click(noteSelector, noteName);
     }
 
-    @Step("Click the note in list by its name")
+    @Step("Check is note displayed in the notes list by name")
+    public boolean isNotePresentInList(String noteName) {
+        waitForElementClickable(noteSelector, noteName);
+        return isElementVisible(noteSelector, noteName);
+    }
+
+    @Step("Click 'Edit' button")
     public void clickEditButton() {
         waitForElementVisibility(editButton);
         waitForElementClickable(editButton);
         click(editButton);
     }
+
+
 
 }

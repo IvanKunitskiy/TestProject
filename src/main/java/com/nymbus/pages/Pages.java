@@ -566,6 +566,5 @@ public class Pages extends AllureLogger {
             attentionModalPage = new AttentionModalPage();
         }
         return attentionModalPage;
-
     }
 }
