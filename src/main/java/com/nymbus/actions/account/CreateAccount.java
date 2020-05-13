@@ -2,7 +2,6 @@ package com.nymbus.actions.account;
 
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
-import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.other.account.type.CHKAccount;
 import com.nymbus.pages.Pages;
@@ -82,6 +81,7 @@ public class CreateAccount {
         Pages.addAccountPage().clickProductSelectorButton();
         Pages.addAccountPage().clickProductOption(account.getProduct());
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+       /* setBankBranch(account);*/
         Pages.addAccountPage().setDateOpenedValue(/*DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
         setStatementCycle(account);
         Pages.addAccountPage().waitForAccountHolderName();
@@ -99,7 +99,7 @@ public class CreateAccount {
         Pages.addAccountPage().clickProductSelectorButton();
         Pages.addAccountPage().clickProductOption(account.getProduct());
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
-        Pages.addAccountPage().setDateOpenedValue(DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy"));
+        Pages.addAccountPage().setDateOpenedValue(/*DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setApplyInterestTo(account);
         Pages.addAccountPage().waitForAccountHolderName();

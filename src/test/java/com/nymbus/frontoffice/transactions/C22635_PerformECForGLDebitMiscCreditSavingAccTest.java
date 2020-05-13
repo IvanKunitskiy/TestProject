@@ -1,8 +1,10 @@
 package com.nymbus.frontoffice.transactions;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
@@ -16,6 +18,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.AccountDates;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.pages.webadmin.WebAdminPages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
@@ -44,7 +47,7 @@ public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest 
         ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create account
-        AccountActions.createAccount().createSavingsAccount(savingsAccount);
+        AccountActions.createAccount().createSavingAccountForTransactionPurpose(savingsAccount);
 
         // Set up transaction with account number
         transaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
@@ -52,11 +55,17 @@ public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest 
         AccountActions.editAccount().navigateToAccountDetails(transaction.getTransactionDestination().getAccountNumber(), false);
 
         // perform transaction
+        Actions.transactionActions().loginTeller();
         Actions.transactionActions().goToTellerPage();
-        Actions.transactionActions().doLoginTeller();
         Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
+
+        // remove REG CC rule instruction
+        Actions.clientPageActions().searchAndOpenClientByName(transaction.getTransactionDestination().getAccountNumber());
+        AccountActions.editAccount().goToInstructionsTab();
+        String INSTRUCTION_REASON = "Reg CC";
+        AccountActions.createInstruction().deleteInstructionByReasonText(INSTRUCTION_REASON);
 
         // Get balance info after transaction
         AccountActions.editAccount().navigateToAccountDetails(transaction.getTransactionDestination().getAccountNumber(), false);
@@ -70,14 +79,21 @@ public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest 
                 "-",
                 balanceData.getCurrentBalance(),
                 transaction.getTransactionDestination().getAmount());
+
+        Actions.loginActions().doLogOut();
     }
 
     @Test(description = "C22635, Perform EC for GL Debit -> Misc Credit transaction (Savings Account)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyErrorCorrectForGLDebitMiscCreditTransactionOnSavingAcc() {
+        logInfo("Step 1: Log in to the system as the user from the preconditions");
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.transactionActions().loginTeller();
 
         logInfo("Step 2: Go to Journal page and log in to the proof date");
         Actions.journalActions().goToJournalPage();
+        Actions.journalActions().applyFilterByAccountNumber(transaction.getTransactionDestination().getAccountNumber());
+        Actions.journalActions().clickLastTransaction();
 
         logInfo("Step 3: Search for the transaction from the preconditions and click on it to open on Details");
         Actions.journalActions().clickLastTransaction();
@@ -86,7 +102,7 @@ public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest 
         Pages.journalDetailsPage().clickErrorCorrectButton();
         Pages.journalDetailsPage().waitForErrorCorrectButtonInvisibility();
         Assert.assertEquals(Actions.journalActions().getTransactionState(), "Void",
-                   "Transaction state doesn't changed");
+                "Transaction state doesn't changed");
         balanceData.subtractAmount(transaction.getTransactionDestination().getAmount());
         accountDates.reduceLastDepositAmount(transaction.getTransactionDestination().getAmount());
         accountDates.reduceNumberOfDeposits(1);
@@ -103,7 +119,7 @@ public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest 
 
         logInfo("Step 7: Verify such fields: Date Last Deposit, Date Last Activity/Contact");
         Assert.assertEquals(actualAccountDates.getLastDepositDate(), accountDates.getLastDepositDateBeforeTransaction(),
-                    "Last Deposit Date doesn't match!");
+                "Last Deposit Date doesn't match!");
         Assert.assertEquals(actualAccountDates.getLastActivityDate(), accountDates.getLastActivityDateBeforeTransaction(),
                 "Last Activity Date doesn't match!");
 
@@ -120,7 +136,27 @@ public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest 
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionData();
         Assert.assertEquals(actualTransactionData, transactionData, "Transaction data doesn't match!");
+        Actions.loginActions().doLogOut();
 
-        // TODO add verification for webadmin
+        logInfo("Step 11: Log in to the WebAdmin, go to RulesUI and search for the error corrected transaction items");
+        Selenide.open(Constants.WEB_ADMIN_URL);
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.webAdminTransactionActions().goToTransactionUrl(transaction.getTransactionDestination().getAccountNumber());
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
+                "Transaction items doesn't find !");
+
+        logInfo("Step 12: Check gltransactionitempostingstatus value for Deposit (Misc Credit) item");
+        Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getGLTransactionItemPostingStatusValue(1), "Void",
+                "Posted status doesn't match!");
+        String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(1);
+
+        logInfo("Step 13: Go to bank.data.gl.interface and search for the record using deletedIncluded: true");
+        WebAdminActions.webAdminTransactionActions().goToGLInterfaceWithDeletedItems(transactionHeader);
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResultInterfaceTable() > 0,
+                "Transaction items doesn't find!");
+        Assert.assertNotEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDeletedWhenValue(1), "",
+                "Deleted When field is blank!");
+        Assert.assertNotEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDeletedBy(1), "",
+                "Deleted By field is blank!");
     }
 }

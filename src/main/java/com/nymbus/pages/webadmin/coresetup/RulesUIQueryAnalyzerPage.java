@@ -47,6 +47,8 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private By glDateTimePosted = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//div[@key-name='gldatetimeposted']");
     private By glFunctionValue = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//div[@key-name='glfunction']");
     private By transactionHeaderId = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//*[@key-name='transactionheaderid']");
+    private By glTransactionItemPostingStatus = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]" +
+            "//*[@key-name='gltransactionitempostingstatus']//..//span[5]/span");
 
 
     @Step("Get date posted  {0}")
@@ -67,11 +69,26 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         return getElementText(transactionHeaderId, index).trim();
     }
 
+    @Step("Get gltransactionitempostingstatus {0} value")
+    public String getGLTransactionItemPostingStatusValue(int index) {
+        waitForElementVisibility(glTransactionItemPostingStatus, index);
+        return getElementText(glTransactionItemPostingStatus, index).trim();
+    }
+
     /**
      * GL interface region
      */
     private By amountField = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//*[@key-name='amount']");
     private By glInterfaceTransactionHeaderId= By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//*[@key-name='parenttransaction']");
+    private By deletedWhen = By.xpath("//*[@id='searchResultTable']//tr[contains(@class, 'searchResultRow restore')][%s]//td[8]//div");
+    private By deletedBy = By.xpath("//*[@id='searchResultTable']//tr[contains(@class, 'searchResultRow restore')][%s]//td[9]//div");
+    private By listOfSearchResultInterfaceTable = By.xpath("//table[@id='searchResultTable']//tr[contains(@class, 'searchResultRow restore')]");
+
+    @Step("Get number of search result")
+    public int getNumberOfSearchResultInterfaceTable() {
+        waitForElementVisibility(listOfSearchResultInterfaceTable);
+        return getElements(listOfSearchResultInterfaceTable).size();
+    }
 
     @Step("Get amount {0} value")
     public String getAmount(int index) {
@@ -85,6 +102,18 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         return getElementText(glInterfaceTransactionHeaderId, index).trim();
     }
 
+
+    @Step("Get deletedWhen {0} value")
+    public String getDeletedWhenValue(int index) {
+        waitForElementVisibility(deletedWhen, index);
+        return getElementText(deletedWhen, index).trim();
+    }
+
+    @Step("Get deletedBy {0} value")
+    public String getDeletedBy(int index) {
+        waitForElementVisibility(deletedBy, index);
+        return getElementText(deletedBy, index).trim();
+    }
 
     /**
      * Data BcFile region

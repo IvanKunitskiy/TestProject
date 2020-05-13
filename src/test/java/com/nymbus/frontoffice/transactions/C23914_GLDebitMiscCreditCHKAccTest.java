@@ -1,8 +1,10 @@
 package com.nymbus.frontoffice.transactions;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
@@ -12,9 +14,12 @@ import com.nymbus.newmodels.generation.client.builder.type.individual.Individual
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditCHKAccBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.newmodels.transaction.enums.GLFunctionValue;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
+import com.nymbus.newmodels.transaction.verifyingModels.WebAdminTransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.pages.webadmin.WebAdminPages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
@@ -25,6 +30,7 @@ public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
     private Transaction transaction;
     private BalanceDataForCHKAcc balanceData;
     private TransactionData transactionData;
+    private  Account checkAccount;
 
     @BeforeMethod
     public void prepareTransactionData() {
@@ -32,7 +38,7 @@ public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         IndividualClient client = individualClientBuilder.buildClient();
-        Account checkAccount = new Account().setCHKAccountData();
+        checkAccount = new Account().setCHKAccountData();
         transaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
@@ -57,10 +63,8 @@ public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
     @Test(description = "23914, Commit transaction GL Debit -> Misc Credit(on CHK Account)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyTransactionGLDebitMiscCredit() {
-
+        Actions.transactionActions().loginTeller();
         Actions.transactionActions().goToTellerPage();
-
-        Actions.transactionActions().doLoginTeller();
 
         Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
 
@@ -70,8 +74,16 @@ public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
                 "Transaction was successfully completed.",
                 "Transaction doesn't commit");
 
+        logInfo("Step 7: Close Transaction Receipt popup and \n" +
+                "Go to the account used in Misc Credit item. \n" +
+                "Open it on Instructions tab");
         Pages.tellerPage().closeModal();
+        Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
+        AccountActions.editAccount().goToInstructionsTab();
 
+        logInfo("Step 8: Check the list of instructions for the account (if exist) and delete the Hold with type Reg CC");
+        String INSTRUCTION_REASON = "Reg CC";
+        AccountActions.createInstruction().deleteInstructionByReasonText(INSTRUCTION_REASON);
         balanceData.addAmount(transaction.getTransactionDestination().getAmount());
 
         AccountActions.editAccount().navigateToAccountDetails(transaction.getTransactionDestination().getAccountNumber(), false);
@@ -94,6 +106,44 @@ public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
 
         Assert.assertEquals(actualTransactionData, transactionData, "Transaction data doesn't match!");
 
-        // TODO add verification for webadmin
+        logInfo("Step 15: Log in to the WebAdmin, go to RulesUI and search for the committed transaction items using its bank.data.transaction.header rootid value");
+        WebAdminTransactionData transactionData = new WebAdminTransactionData();
+        String date = WebAdminActions.loginActions().getSystemDate();
+        transactionData.setPostingDate(date);
+        transactionData.setGlFunctionValue(GLFunctionValue.DEPOSIT_ITEM_CHK_ACC);
+        Selenide.open(Constants.WEB_ADMIN_URL);
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.webAdminTransactionActions().goToTransactionUrl(checkAccount.getAccountNumber());
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
+                "Transaction items doesn't find !");
+
+        logInfo("Step 16: Check gldatetimeposted value for Deposit (Misc Credit) item");
+        Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDatePosted(1), transactionData.getPostingDate(),
+                "Posted date doesn't match!");
+
+        logInfo("Step 17: Check glfunction value for Deposit item");
+        Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getGLFunctionValue(1),
+                transactionData.getGlFunctionValue().getGlFunctionValue(),
+                "Function value  doesn't match!");
+
+        logInfo("Step 18: Go to bank.data.gl.interface and verify that there is a record for Deposit (Misc Credit) transaction item");
+        String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(1);
+        transactionData.setAmount(WebAdminPages.rulesUIQueryAnalyzerPage().getAmount(1));
+        WebAdminActions.webAdminTransactionActions().goToGLInterface(transactionHeader);
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
+                "Transaction items doesn't find!");
+        Assert.assertEquals( WebAdminPages.rulesUIQueryAnalyzerPage().getGLFunctionValue(1),
+                transactionData.getGlFunctionValue().getGlFunctionValue(),
+                "Function value doesn't match!");
+
+        logInfo("Step 19: Verify that amount and glfunction values are the same as on b.d.transaction.item level");
+        Assert.assertEquals( WebAdminPages.rulesUIQueryAnalyzerPage().getAmount(1),
+                transactionData.getAmount(),
+                "Amount value doesn't match!");
+
+        logInfo("Step 20: Verify that transactionheaderid from b.d.transaction.item is written to parenttransaction field on bank.data.gl.interface");
+        Assert.assertEquals( WebAdminPages.rulesUIQueryAnalyzerPage().getGLInterfaceTransactionHeaderIdValue(1),
+                transactionHeader,
+                "HeaderId value doesn't match!");
     }
 }

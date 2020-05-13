@@ -12,7 +12,8 @@ public class NavigationPage extends PageTools {
     private By accountsItem = By.xpath("//ul/li[@data-name='actmst (Accounts)']/a[@class='navigatorItem']");
     private By usersItem = By.xpath("//ul/li[@data-name='Users']/a[@class='navigatorItem']");
     private By logoutMenu = By.xpath("//div[@id='logoutMenu']/div/p");
-    private By signOutOption = By.xpath("//div[@id='logoutMenu']/ul/li/a[contains(@class, 'logout')]");
+    private By signOutOption = By.xpath("//div[@id='logoutMenu' and contains(@class, 'jDropDown')]/ul/li/a[contains(@class, 'logout')]");
+    private By optionsUl = By.xpath("//div[@id='logoutMenu']/ul");
 
     @Step("Wait for 'Navigation' page")
     public void waitForPageLoaded() {
@@ -24,6 +25,10 @@ public class NavigationPage extends PageTools {
         click(logoutMenu);
     }
 
+    @Step("Wait for options list visibility")
+    public void waitForOptionUlVisibility() {
+        waitForElementVisibility(optionsUl);
+    }
     @Step("Click 'Sign Out' option")
     public void clickSignOut() {
         waitForElementVisibility(signOutOption);

@@ -10,7 +10,19 @@ public class JournalPage extends PageTools {
      * Filter region
      */
     private By accountNumberInput = By.xpath("//input[@ng-model='filter.number.account']");
+    private By proofDateSpan = By.xpath("//div[@ng-model='teller.proofDate']//span[@class='select2-chosen']/span");
 
+    @Step("Type account number")
+    public void fillInAccountNumber(String accountNumber) {
+        waitForElementVisibility(accountNumberInput);
+        waitForElementClickable(accountNumberInput);
+        type(accountNumber, accountNumberInput);
+    }
+
+    @Step("Wait for Proof date span")
+    public void waitForProofDateSpan() {
+        waitForElementVisibility(proofDateSpan);
+    }
     /**
      * Items row region
      */
@@ -42,5 +54,31 @@ public class JournalPage extends PageTools {
     public String getItemType(int index) {
         waitForElementVisibility(itemInTableType, index);
         return getElementText(itemInTableType, index);
+    }
+
+    /**
+     * Spinners region
+     */
+    private By leftAsideSpinner = By.xpath("//div[contains(@class, 'filter-fixed-body')]//dn-loading-spinner");
+    private By mainSpinner = By.xpath("//main/dn-loading-spinner");
+
+    @Step("Wait for aside spinner visibility")
+    public void waitForAsideSpinnerVisibility() {
+        waitForElementVisibility(leftAsideSpinner);
+    }
+
+    @Step("Wait for aside spinner invisibility")
+    public void waitForAsideSpinnerInvisibility() {
+        waitForElementInvisibility(leftAsideSpinner);
+    }
+
+    @Step("Wait for main spinner visibility")
+    public void waitForMainSpinnerVisibility() {
+        waitForElementVisibility(mainSpinner);
+    }
+
+    @Step("Wait for aside spinner invisibility")
+    public void waitForMainSpinnerInvisibility() {
+        waitForElementInvisibility(mainSpinner);
     }
 }

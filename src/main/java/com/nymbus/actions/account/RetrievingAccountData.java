@@ -1,6 +1,6 @@
 package com.nymbus.actions.account;
 
-import com.nymbus.core.utils.DateTime;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.newmodels.accountinstructions.verifyingModels.InstructionBalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.*;
 import com.nymbus.pages.Pages;
@@ -8,7 +8,7 @@ import com.nymbus.pages.Pages;
 public class RetrievingAccountData {
     public String getDateLastInterestPaid() {
         String result = Pages.accountDetailsPage().getDateLastInterestPaid();
-        return result.equals("") ? DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy") : result;
+        return result.equals("") ? WebAdminActions.loginActions().getSystemDate() : result;
     }
 
     public BalanceDataForCDAcc getBalanceDataForCDAcc() {

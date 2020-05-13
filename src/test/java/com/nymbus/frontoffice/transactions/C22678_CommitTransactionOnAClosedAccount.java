@@ -52,8 +52,8 @@ public class C22678_CommitTransactionOnAClosedAccount extends BaseTest {
     public void verifyCommittingTransactionOnCloseAcc() {
 
         logInfo("Step 2: Go to Teller screen and log in to proof date");
+        Actions.transactionActions().loginTeller();
         Actions.transactionActions().goToTellerPage();
-        Actions.transactionActions().doLoginTeller();
 
         logInfo("Step 3: Select any source / destination fund types so that at least one is related to regular account");
         logInfo("Step 4: Select closed account from preconditions in any of the added line items which are related to regular account");

@@ -72,7 +72,7 @@ public class C22634_GLDebit_MiscCredit_SavingsAcc_Test extends BaseTest {
                 "- Source: GL Debit \n" +
                 "- Destination: Misc Credit");
         logInfo("Step 4: Fill in fields for source line item: \n" +
-                "- search for any GL account (use %%% and select any value) \n" +
+                "- search for any GL account (use and select any value) \n" +
                 "- specify some amount (e.g. $100) \n" +
                 "- expand line item and specify Note");
         logInfo("Step 5: Fill in fields for destination line item: \n" +
