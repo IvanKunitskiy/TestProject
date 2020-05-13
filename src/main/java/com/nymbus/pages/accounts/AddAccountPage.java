@@ -446,6 +446,7 @@ public class AddAccountPage extends PageTools {
 
     @Step("Returning the 'Bank Branch' value")
     public String getBankBranch() {
+        waitForElementClickable(bankBranch);
         return getElementText(bankBranch).trim();
     }
 
