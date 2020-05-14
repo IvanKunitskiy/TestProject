@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.safedepositboxmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
@@ -34,8 +35,12 @@ public class C22614_ViewNewSafeBoxAccountTest extends BaseTest {
         // Set up Safe Deposit Box Account
         safeDepositBoxAccount = new Account().setSafeDepositBoxData();
         safeDepositBoxAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
-        safeDepositBoxAccount.setBoxSize("10");
-        safeDepositBoxAccount.setRentalAmount("100.00");
+        safeDepositBoxAccount.setBoxSize("10x10");
+        safeDepositBoxAccount.setRentalAmount("10.00");
+        safeDepositBoxAccount.setCurrentOfficer(Constants.FIRST_NAME + " " + Constants.LAST_NAME);
+        safeDepositBoxAccount.setDiscountReason("reason0001");
+        safeDepositBoxAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
+        safeDepositBoxAccount.setDateOpened(WebAdminActions.loginActions().getSystemDate());
 
         // Set up CHK account (required to point the 'Corresponding Account')
         checkingAccount = new Account().setCHKAccountData();
@@ -47,10 +52,11 @@ public class C22614_ViewNewSafeBoxAccountTest extends BaseTest {
         ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create accounts and logout
-        AccountActions.createAccount().createCHKAccount(checkingAccount);
+        AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkingAccount);
+        safeDepositBoxAccount.setCorrespondingAccount(checkingAccount.getAccountNumber());
         Pages.accountDetailsPage().clickAccountsLink();
+        Actions.clientPageActions().closeAllNotifications();
         AccountActions.createAccount().createSafeDepositBoxAccount(safeDepositBoxAccount);
-        AccountActions.editAccount().editSafeDepositBoxAccount(safeDepositBoxAccount);
         Actions.loginActions().doLogOut();
     }
 
@@ -73,7 +79,7 @@ public class C22614_ViewNewSafeBoxAccountTest extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getMailCodeValue(), safeDepositBoxAccount.getMailCode(), "'Mail Code' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), safeDepositBoxAccount.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), safeDepositBoxAccount.getBankBranch(), "'Bank Branch' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getCorrespondingAccount(), safeDepositBoxAccount.getCorrespondingAccount(), "'Corresponding Account' value does not match");
+        Assert.assertTrue(Pages.accountDetailsPage().getCorrespondingAccount().contains(safeDepositBoxAccount.getCorrespondingAccount()), "'Corresponding Account' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getDiscountReason(), safeDepositBoxAccount.getDiscountReason(), "'Discount Reason' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_1(), safeDepositBoxAccount.getUserDefinedField_1(), "'User Defined Field 1' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_2(), safeDepositBoxAccount.getUserDefinedField_2(), "'User Defined Field 2' value does not match");
