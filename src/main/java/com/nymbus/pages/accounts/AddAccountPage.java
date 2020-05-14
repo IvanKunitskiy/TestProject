@@ -409,7 +409,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Current Officer' selector button")
     public void clickCurrentOfficerSelectorButton() {
         waitForElementVisibility(currentOfficerSelectorButton);
-        scrollToElement(currentOfficerSelectorButton);
+        scrollToElement(accountType);
         waitForElementClickable(currentOfficerSelectorButton);
         click(currentOfficerSelectorButton);
     }
@@ -665,7 +665,6 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Box size' selector button")
     public void clickBoxSizeSelectorButton() {
         waitForElementVisibility(boxSizeSelectorButton);
-//        scrollToElement(boxSizeSelectorButton);
         waitForElementClickable(boxSizeSelectorButton);
         click(boxSizeSelectorButton);
     }

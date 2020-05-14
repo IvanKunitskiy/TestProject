@@ -34,7 +34,7 @@ public class LoginActions {
     public void doLogout() {
         WebAdminPages.navigationPage().clickLogoutMenu();
         WebAdminPages.navigationPage().waitForOptionUlVisibility();
-        SelenideTools.sleep(2);
+        /*SelenideTools.sleep(2);*/
         WebAdminPages.navigationPage().clickSignOut();
         WebAdminPages.loginPage().waitForLoginForm();
     }

@@ -534,516 +534,431 @@ public class EditAccountPage extends PageTools {
     }
 
     /**
-    * Check if field is disabled in edit mode
+     * Check if field is disabled in edit mode
      */
 
     @Step("Check if 'IRA Distribution Account Number' field is disabled edit mode")
     public boolean isIraDistributionAccountNumberDisabledInEditMode() {
-        waitForElementVisibility(iraDistributionAccountNumber);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", iraDistributionAccountNumber));
     }
 
     @Step("Check if 'Interest Paid YTD' field is disabled edit mode")
     public boolean isInterestPaidYTDDisabledInEditMode() {
-        waitForElementVisibility(interestPaidYTD);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", interestPaidYTD));
     }
 
     @Step("Check if 'Date Next Billing' field is disabled edit mode")
     public boolean isDateNextBillingDisabledInEditMode() {
-        waitForElementVisibility(dateNextBilling);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", interestPaidYTD));
     }
 
     @Step("Check if 'Date Last Paid' field is disabled edit mode")
     public boolean isDateLastPaidDisabledInEditMode() {
-        waitForElementVisibility(dateLastPaid);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", dateLastPaid));
     }
 
     @Step("Check if 'Amount Last Paid' field is disabled edit mode")
     public boolean isAmountLastPaidDisabledInEditMode() {
-        waitForElementVisibility(amountLastPaid);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", amountLastPaid));
     }
 
     @Step("Check if 'Balance At End Of Year' field is disabled edit mode")
     public boolean isBalanceAtEndOfYearDisabledInEditMode() {
-        waitForElementVisibility(balanceAtEndOfYear);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", balanceAtEndOfYear));
     }
 
     @Step("Check if 'Accrued Interest At End Of Year' field is disabled edit mode")
     public boolean isAccruedInterestAtEndOfYearDisabledInEditMode() {
-        waitForElementVisibility(accruedInterestAtEndOfYear);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", accruedInterestAtEndOfYear));
     }
 
     @Step("Check if 'IRA Plan Number' field is disabled edit mode")
     public boolean isIraPlanNumberDisabledInEditMode() {
-        waitForElementVisibility(iraPlanNumber);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", iraPlanNumber));
     }
 
     @Step("Check if 'Print Interest Notice Override' field is disabled edit mode")
     public boolean isPrintInterestNoticeOverrideDisabledInEditMode() {
-        waitForElementVisibility(printInterestNoticeOverride);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", printInterestNoticeOverride));
     }
 
     @Step("Check if 'Total Earnings' field is disabled edit mode")
     public boolean isTotalEarningsDisabledInEditMode() {
-        waitForElementVisibility(totalEarnings);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", totalEarnings));
     }
 
     @Step("Check if 'Interest Rate At Renewal' field is disabled edit mode")
     public boolean isInterestRateAtRenewalDisabledInEditMode() {
-        waitForElementVisibility(interestRateAtRenewal);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", interestRateAtRenewal));
     }
 
     @Step("Check if 'Renewal Amount' field is disabled edit mode")
     public boolean isRenewalAmountDisabledInEditMode() {
-        waitForElementVisibility(renewalAmount);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", renewalAmount));
     }
 
     @Step("Check if 'Penalty Amount YTD' field is disabled edit mode")
     public boolean isPenaltyAmountYTDDisabledInEditMode() {
-        waitForElementVisibility(penaltyAmountYTD);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", dateNextInterest));
     }
 
     @Step("Check if 'Daily Interest Accrual' field is disabled edit mode")
     public boolean isDailyInterestAccrualDisabledInEditMode() {
-        waitForElementVisibility(dailyInterestAccrual);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", dailyInterestAccrual));
     }
 
     @Step("Check if 'Balance At Renewal' field is disabled edit mode")
     public boolean isBalanceAtRenewalDisabledInEditMode() {
-        waitForElementVisibility(balanceAtRenewal);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", balanceAtRenewal));
     }
 
     @Step("Check if 'Date Of Renewal' field is disabled edit mode")
     public boolean isDateOfRenewalDisabledInEditMode() {
-        waitForElementVisibility(dateOfRenewal);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", dateOfRenewal));
     }
 
     @Step("Check if 'Date Next Interest' field is disabled edit mode")
     public boolean isDateNextInterestDisabledInEditMode() {
-        waitForElementVisibility(dateNextInterest);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", dateNextInterest));
     }
 
     @Step("Check if 'Next Interest Payment Amount' field is disabled edit mode")
     public boolean isNextInterestPaymentAmountDisabledInEditMode() {
-        waitForElementVisibility(nextInterestPaymentAmount);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", nextInterestPaymentAmount));
     }
 
     @Step("Check if 'Maturity Date' field is disabled edit mode")
     public boolean isMaturityDateDisabledInEditMode() {
-        waitForElementVisibility(maturityDate);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", maturityDate));
     }
 
     @Step("Check if 'Accrued Interest' field is disabled edit mode")
     public boolean isAccruedInterestDisabledInEditMode() {
-        waitForElementVisibility(accruedInterest);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", accruedInterest));
     }
 
     @Step("Check if 'Original Balance' field is disabled edit mode")
     public boolean isOriginalBalanceDisabledInEditMode() {
-        waitForElementVisibility(originalBalance);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", originalBalance));
     }
 
     @Step("Check if 'Amount Last Interest Paid' field is disabled edit mode")
     public boolean isAmountLastInterestPaidDisabledInEditMode() {
-        waitForElementVisibility(amountLastInterestPaid);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", amountLastInterestPaid));
     }
 
     @Step("Check if 'Date Last Interest Paid' field is disabled edit mode")
     public boolean isDateLastInterestPaidDisabledInEditMode() {
-        waitForElementVisibility(dateLastInterestPaid);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", dateLastInterestPaid));
     }
 
     @Step("Check if 'Term Type Months' field is disabled edit mode")
     public boolean isTermTypeMonthsDisabledInEditMode() {
-        waitForElementVisibility(termTypeMonths);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", termTypeMonths));
     }
 
     @Step("Check if 'IRA Distribution Account Number' field is disabled edit mode")
     public boolean isIRADistributionAccountNumberDisabledInEditMode() {
-        waitForElementVisibility(iraDistributionAccountNumber);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", iraDistributionAccountNumber));
     }
 
     @Step("Check if 'Bank Routing Number for IRA Distr' field is disabled edit mode")
     public boolean isBankRoutingNumberForIRADistrDisabledInEditMode() {
-        waitForElementVisibility(bankRoutingNumberForIRADistr);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", bankRoutingNumberForIRADistr));
     }
 
     @Step("Check if 'Bank Account Number For IRA Distr' field is disabled edit mode")
     public boolean isBankAccountNumberForIRADistrDisabledInEditMode() {
-        waitForElementVisibility(bankAccountNumberForIRADistr);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", bankAccountNumberForIRADistr));
     }
 
     @Step("Check if 'Amount last IRA distribution' field is disabled edit mode")
     public boolean isAmountLastIRADistributionDisabledInEditMode() {
-        waitForElementVisibility(amountLastIRADistribution);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", amountLastIRADistribution));
     }
 
     @Step("Check if 'Date last IRA distribution' field is disabled edit mode")
     public boolean isDateLastIRADistributionDisabledInEditMode() {
-        waitForElementVisibility(dateLastIRADistribution);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", dateLastIRADistribution));
     }
 
     @Step("Check if 'IRA distributions YTD' field is disabled edit mode")
     public boolean isIRADistributionsYTDDisabledInEditMode() {
-        waitForElementVisibility(iraDistributionsYTD);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", iraDistributionsYTD));
     }
 
     @Step("Check if 'Interest Paid Last Year' field is disabled edit mode")
     public boolean isInterestPaidLastYearDisabledInEditMode() {
-        waitForElementVisibility(interestPaidLastYear);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", interestPaidLastYear));
     }
 
     @Step("Check if 'One Day Float' field is disabled edit mode")
     public boolean isOneDayFloatDisabledInEditMode() {
-        waitForElementVisibility(oneDayFloat);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", oneDayFloat));
     }
 
     @Step("Check if 'Two Day Float' field is disabled edit mode")
     public boolean isTwoDayFloatDisabledInEditMode() {
-        waitForElementVisibility(twoDayFloat);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", twoDayFloat));
     }
 
     @Step("Check if 'Three Day Float' field is disabled edit mode")
     public boolean isThreeDayFloatDisabledInEditMode() {
-        waitForElementVisibility(threeDayFloat);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", threeDayFloat));
     }
 
     @Step("Check if 'Four Day Float' field is disabled edit mode")
     public boolean isFourDayFloatDisabledInEditMode() {
-        waitForElementVisibility(fourDayFloat);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", fourDayFloat));
     }
 
     @Step("Check if 'Five Day Float' field is disabled edit mode")
     public boolean isFiveDayFloatDisabledInEditMode() {
-        waitForElementVisibility(fiveDayFloat);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", fiveDayFloat));
     }
 
     @Step("Check if 'Aggregate col bal' field is disabled edit mode")
     public boolean isAggregateColBalDisabledInEditMode() {
-        waitForElementVisibility(aggregateColBal);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", aggregateColBal));
     }
 
     @Step("Check if 'Aggr col lst stmt' field is disabled edit mode")
     public boolean isAggrColLstStmtDisabledInEditMode() {
-        waitForElementVisibility(aggrColLstStmt);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", aggrColLstStmt));
     }
 
     @Step("Check if 'YTD aggr col bal' field is disabled edit mode")
     public boolean isYtdAggrColBalDisabledInEditMode() {
-        waitForElementVisibility(ytdAggrColBal);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", ytdAggrColBal));
     }
 
     @Step("Check if 'Aggr OD balance' field is disabled edit mode")
     public boolean isAggrOdBalanceDisabledInEditMode() {
-        waitForElementVisibility(aggrOdBalance);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", aggrOdBalance));
     }
 
     @Step("Check if 'Date Last Activity/Contact' field is disabled edit mode")
     public boolean isDateLastActivityContactDisabledInEditMode() {
-        waitForElementVisibility(dateLastActivityContact);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", dateLastActivityContact));
     }
 
     @Step("Check if 'Aggr OD lst stmt' field is disabled edit mode")
     public boolean isAggrOdLstStmtDisabledInEditMode() {
-        waitForElementVisibility(aggrOdLstStmt);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", aggrOdLstStmt));
     }
 
     @Step("Check if 'Aggr col OD bal' field is disabled edit mode")
     public boolean isAggrColOdBalDisabledInEditMode() {
-        waitForElementVisibility(aggrColOdBal);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", aggrColOdBal));
     }
 
     @Step("Check if 'Aggr col OD lst stmt' field is disabled edit mode")
     public boolean isAggrColOdLstStmtDisabledInEditMode() {
-        waitForElementVisibility(aggrColOdLstStmt);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", aggrColOdLstStmt));
     }
 
     @Step("Check if 'Online Banking login' field is disabled edit mode")
     public boolean isOnlineBankingLoginDisabledInEditMode() {
-        waitForElementVisibility(onlineBankingLogin);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", onlineBankingLogin));
     }
 
     @Step("Check if 'Total Earnings for Life of Account' field is disabled edit mode")
     public boolean isTotalEarningsForLifeOfAccountDisabledInEditMode() {
-        waitForElementVisibility(totalEarningsForLifeOfAccount);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", totalEarningsForLifeOfAccount));
     }
 
     @Step("Check if 'Total Contributions for Life of Account' field is disabled edit mode")
     public boolean isTotalContributionsDisabledInEditMode() {
-        waitForElementVisibility(totalContributions);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", totalContributions));
     }
 
     @Step("Check if 'Aggregate Balance Year to date' field is disabled edit mode")
     public boolean isAggregateBalanceYTDDisabledInEditMode() {
-        waitForElementVisibility(aggregateBalanceYTD);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", aggregateBalanceYTD));
     }
 
     @Step("Check if 'Special Mailing Instructions' field is disabled edit mode")
     public boolean isSpecialMailingInstructionsDisabledInEditMode() {
-        waitForElementVisibility(specialMailingInstructions);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", specialMailingInstructions));
     }
 
     @Step("Check if 'Taxes Withheld YTD' field is disabled edit mode")
     public boolean isTaxesWithheldYTDDisabledInEditMode() {
-        waitForElementVisibility(taxesWithheldYTD);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", taxesWithheldYTD));
     }
 
     @Step("Check if 'YTD charges waived' field is disabled edit mode")
     public boolean isChargesWaivedYTDDisabledInEditMode() {
-        waitForElementVisibility(chargesWaivedYTD);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", chargesWaivedYTD));
     }
 
     @Step("Check if 'Number Reg D items (6)' field is disabled edit mode")
     public boolean isNumberRegDItemsDisabledInEditMode() {
-        waitForElementVisibility(numberRegDItems);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", numberRegDItems));
     }
 
     @Step("Check if 'Monthly low balance' field is disabled edit mode")
     public boolean isMonthlyLowBalanceDisabledInEditMode() {
-        waitForElementVisibility(monthlyLowBalance);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", monthlyLowBalance));
     }
 
     @Step("Check if 'Monthly number of withdrawals' field is disabled edit mode")
     public boolean isMonthlyNumberOfWithdrawalsDisabledInEditMode() {
-        waitForElementVisibility(monthlyNumberOfWithdrawals);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", monthlyNumberOfWithdrawals));
     }
 
     @Step("Check if 'Accrued Interest this statement cycle' field is disabled edit mode")
     public boolean isAccruedInterestThisStatementCycleDisabledInEditMode() {
-        waitForElementVisibility(accruedInterestThisStatementCycle);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", accruedInterestThisStatementCycle));
     }
 
     @Step("Check if 'Interest Last paid' field is disabled edit mode")
     public boolean isAmountInterestLastPaidDisabledInEditMode() {
-        waitForElementVisibility(amountInterestLastPaid);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", amountInterestLastPaid));
     }
 
     @Step("Check if 'Last withdrawal amount' field is disabled edit mode")
     public boolean isLastWithdrawalAmountDisabledInEditMode() {
-        waitForElementVisibility(lastWithdrawalAmount);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", lastWithdrawalAmount));
     }
 
     @Step("Check if 'Last Deposit Amount' field is disabled edit mode")
     public boolean isLastDepositAmountDisabledInEditMode() {
-        waitForElementVisibility(lastDepositAmount);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", lastDepositAmount));
     }
 
     @Step("Check if 'Previous Statement Balance' field is disabled edit mode")
     public boolean isPreviousStatementBalanceDisabledInEditMode() {
-        waitForElementVisibility(previousStatementBalance);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", previousStatementBalance));
     }
 
     @Step("Check if 'Previous Statement Date' field is disabled edit mode")
     public boolean isPreviousStatementDateDisabledInEditMode() {
-        waitForElementVisibility(previousStatementDate);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", previousStatementDate));
     }
 
     @Step("Check if 'Service charges YTD' field is disabled edit mode")
     public boolean isServiceChargesYTDDisabledInEditMode() {
-        waitForElementVisibility(serviceChargesYTD);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", serviceChargesYTD));
     }
 
     @Step("Check if 'Current Balance' field is disabled edit mode")
     public boolean isCurrentBalanceDisabledInEditMode() {
-        waitForElementVisibility(currentBalance);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", currentBalance));
     }
 
     @Step("Check if 'Total Earnings' field is disabled edit mode")
     public boolean isAvailableBalanceDisabledInEditMode() {
-        waitForElementVisibility(availableBalance);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", availableBalance));
     }
 
     @Step("Check if 'Average Balance' field is disabled edit mode")
     public boolean isAverageBalanceDisabledInEditMode() {
-        waitForElementVisibility(averageBalance);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", averageBalance));
     }
 
     @Step("Check if 'Low Balance This Statement Cycle' field is disabled edit mode")
     public boolean isLowBalanceThisStatementCycleDisabledInEditMode() {
-        waitForElementVisibility(lowBalanceThisStatementCycle);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", lowBalanceThisStatementCycle));
     }
 
     @Step("Check if 'Balance Last Statement' field is disabled edit mode")
     public boolean isBalanceLastStatementDisabledInEditMode() {
-        waitForElementVisibility(balanceLastStatement);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", balanceLastStatement));
     }
 
     @Step("Check if 'Date Last Withdrawal' field is disabled edit mode")
     public boolean isDateLastWithdrawalDisabledInEditMode() {
-        waitForElementVisibility(dateLastWithdrawal);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", dateLastWithdrawal));
     }
 
     @Step("Check if 'Date Last Deposit' field is disabled edit mode")
     public boolean isDateLastDepositDisabledInEditMode() {
-        waitForElementVisibility(dateLastDeposit);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", dateLastDeposit));
     }
 
     @Step("Check if 'Date Last Statement' field is disabled edit mode")
     public boolean isDateLastStatementDisabledInEditMode() {
-        waitForElementVisibility(dateLastStatement);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", dateLastStatement));
     }
 
     @Step("Check if 'Number Of Withdrawals This Statement Cycle' field is disabled edit mode")
     public boolean isNumberOfWithdrawalsThisStatementCycleDisabledInEditMode() {
-        waitForElementVisibility(numberOfWithdrawalsThisStatementCycle);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", numberOfWithdrawalsThisStatementCycle));
     }
 
     @Step("Check if 'Number Of Deposits This Statement Cycle' field is disabled edit mode")
     public boolean isNumberOfDepositsThisStatementCycleDisabledInEditMode() {
-        waitForElementVisibility(numberOfDepositsThisStatementCycle);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", numberOfDepositsThisStatementCycle));
     }
 
     @Step("Check if 'Total Earnings' field is disabled edit mode")
     public boolean isTotalEarningsFieldDisabledInEditMode() {
-        waitForElementVisibility(totalEarningsField);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", totalEarningsField));
     }
 
     @Step("Check if 'Automatic Overdraft Limit Field' field is disabled edit mode")
     public boolean isAutomaticOverdraftLimitFieldDisabledInEditMode() {
-        waitForElementVisibility(automaticOverdraftLimitField);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", automaticOverdraftLimitField));
     }
 
     @Step("Check if 'Last Debit Amount' field is disabled edit mode")
     public boolean isLastDebitAmountFieldDisabledInEditMode() {
-        waitForElementVisibility(lastDebitAmountField);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", lastDebitAmountField));
     }
 
     @Step("Check if 'Times $5000 Overdrawn-6 Months' field is disabled edit mode")
     public boolean isDaysOverdraftAboveLimitFieldDisabledInEditMode() {
-        waitForElementVisibility(daysOverdraftAboveLimitField);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", daysOverdraftAboveLimitField));
     }
 
     @Step("Check if 'Times Overdrawn-6 Months' field is disabled edit mode")
     public boolean isDaysOverdraftFieldDisabledInEditMode() {
-        waitForElementVisibility(daysOverdraftField);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", daysOverdraftField));
     }
 
     @Step("Check if 'Annual Percentage Yield' field is disabled edit mode")
     public boolean isAnnualPercentageYieldFieldDisabledInEditMode() {
-        waitForElementVisibility(annualPercentageYieldField);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", annualPercentageYieldField));
     }
 
     @Step("Check if 'Date Opened' field is disabled edit mode")
     public boolean isDateClosedFieldDisabledInEditMode() {
-        waitForElementVisibility(dateClosedField);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", dateClosedField));
     }
 
     @Step("Check if 'Date Opened' field is disabled edit mode")
     public boolean isDateOpenedFieldDisabledInEditMode() {
-        waitForElementVisibility(dateOpenedField);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", dateOpenedField));
     }
 
     @Step("Check if 'Account Status' field is disabled edit mode")
     public boolean isAccountStatusFieldDisabledInEditMode() {
-        waitForElementVisibility(accountStatusField);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", accountStatusField));
     }
 
     @Step("Check if 'Originating Officer' field is disabled edit mode")
     public boolean isOriginatingOfficerFieldDisabledInEditMode() {
-        waitForElementVisibility(originatingOfficerField);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", originatingOfficerField));
     }
 
     @Step("Check if 'Account Type' field is disabled edit mode")
     public boolean isAccountTypeFieldDisabledInEditMode() {
-        waitForElementVisibility(accountTypeField);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", accountTypeField));
     }
 
     @Step("Check if 'Account Number' field is disabled edit mode")
     public boolean isAccountNumberFieldDisabledInEditMode() {
-        waitForElementVisibility(accountNumberField);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", accountNumberField));
     }
 
     @Step("Check if 'Product' field is disabled edit mode")
     public boolean isProductFieldDisabledInEditMode() {
-        waitForElementVisibility(productField);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", productField));
     }
 
     @Step("Check if 'Product type' field is disabled edit mode")
     public boolean isProductTypeFieldDisabledInEditMode() {
-        waitForElementVisibility(productTypeField);
         return Boolean.parseBoolean(getElementAttributeValue("disabled", productTypeField));
     }
 

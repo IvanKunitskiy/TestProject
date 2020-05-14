@@ -12,7 +12,7 @@ public class NavigationPage extends PageTools {
     private By accountsItem = By.xpath("//ul/li[@data-name='actmst (Accounts)']/a[@class='navigatorItem']");
     private By usersItem = By.xpath("//ul/li[@data-name='Users']/a[@class='navigatorItem']");
     private By logoutMenu = By.xpath("//div[@id='logoutMenu']/div/p");
-    private By signOutOption = By.xpath("//div[@id='logoutMenu' and contains(@class, 'jDropDown')]/ul/li/a[contains(@class, 'logout')]");
+    private By signOutOption = By.xpath("//div[@id='logoutMenu' and contains(@class, 'jDropDown')]/ul/li[2]");
     private By optionsUl = By.xpath("//div[@id='logoutMenu']/ul");
 
     @Step("Wait for 'Navigation' page")

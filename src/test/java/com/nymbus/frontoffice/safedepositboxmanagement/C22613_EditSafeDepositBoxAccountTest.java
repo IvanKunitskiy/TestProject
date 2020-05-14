@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.safedepositboxmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
@@ -35,8 +36,13 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
         // Set up Safe Deposit Box Account
         safeDepositBoxAccount = new Account().setSafeDepositBoxData();
         safeDepositBoxAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
-        safeDepositBoxAccount.setBoxSize("10");
-        safeDepositBoxAccount.setRentalAmount("100.00");
+        safeDepositBoxAccount.setBoxSize("10x10");
+        safeDepositBoxAccount.setRentalAmount("10.00");
+        safeDepositBoxAccount.setCurrentOfficer(Constants.FIRST_NAME + " " + Constants.LAST_NAME);
+        safeDepositBoxAccount.setDiscountReason("reason0001");
+        safeDepositBoxAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
+        safeDepositBoxAccount.setDateOpened(WebAdminActions.loginActions().getSystemDate());
+        safeDepositBoxAccount.setDateLastAccess(WebAdminActions.loginActions().getSystemDate());
 
         // Set up CHK account (required to point the 'Corresponding Account')
         checkingAccount = new Account().setCHKAccountData();
@@ -49,8 +55,10 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
         clientID = Pages.clientDetailsPage().getClientID();
 
         // Create accounts and logout
-        AccountActions.createAccount().createCHKAccount(checkingAccount);
+        AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkingAccount);
+        safeDepositBoxAccount.setCorrespondingAccount(checkingAccount.getAccountNumber());
         Pages.accountDetailsPage().clickAccountsLink();
+        Actions.clientPageActions().closeAllNotifications();
         AccountActions.createAccount().createSafeDepositBoxAccount(safeDepositBoxAccount);
         Actions.loginActions().doLogOut();
     }
