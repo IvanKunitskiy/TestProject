@@ -52,13 +52,8 @@ public class C23637_CreateCheckingAccountTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for any client and open his profile on Accounts tab");
-        Pages.clientsSearchPage().typeToClientsSearchInputField(clientID);
-        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), clientID), "Search results are not relevant");
-        Pages.clientsSearchPage().clickOnSearchButton();
-        Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
-        Pages.clientDetailsPage().waitForPageLoaded();
-        Pages.clientDetailsPage().clickAccountsTab();
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID);
+        Pages.accountNavigationPage().clickAccountsTab();
 
         logInfo("Step 3: Click 'Add New' drop down and select 'Account'");
         Pages.clientDetailsPage().clickAddNewButton();
@@ -81,13 +76,9 @@ public class C23637_CreateCheckingAccountTest extends BaseTest {
         Assert.assertEquals(Pages.addAccountPage().getOptInOutStatus(), "Client Has Not Responded", "'DBC ODP Opt In/Out Status' is prefilled with wrong value");
 
         logInfo("Step 6: Select any values in drop-down fields");
-        AccountActions.createAccount().selectValuesInDropdownFieldsRequiredForCheckingAccount(checkingAccount);
-
         logInfo("Step 7: Fill in text fields with valid data. NOTE: do not fill in Account Number field");
-        AccountActions.createAccount().fillInInputFieldsRequiredForCheckingAccount(checkingAccount);
-
         logInfo("Step 8: Select any date ≤ Current Date in DBC ODP Opt In/Out Status Date field");
-        Pages.addAccountPage().setOptInOutDateValue(checkingAccount.getOptInOutDate());
+        AccountActions.createAccount().setValuesInFieldsRequiredForCheckingAccount(checkingAccount);
 
         logInfo("Step 9: Submit the account creation by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();

@@ -46,6 +46,7 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
         clientID = Pages.clientDetailsPage().getClientID();
+        AccountActions.createAccount().createCHKAccount(checkingAccount);
         Actions.loginActions().doLogOut();
     }
 
@@ -57,13 +58,8 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the client from the preconditions and open his profile on Accounts tab");
-        Pages.clientsSearchPage().typeToClientsSearchInputField(clientID);
-        Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() == 1, "There is more than one client found");
-        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), clientID), "Search results are not relevant");
-        Pages.clientsSearchPage().clickOnSearchButton();
-        Pages.clientsSearchResultsPage().clickTheExactlyMatchedClientInSearchResults();
-        Pages.clientDetailsPage().waitForPageLoaded();
-        Pages.clientDetailsPage().clickAccountsTab();
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID);
+        Pages.accountNavigationPage().clickAccountsTab();
 
         logInfo("Step 3: Click 'Add New' drop down and select 'Account'");
         Pages.clientDetailsPage().clickAddNewButton();
@@ -88,14 +84,9 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         Assert.assertEquals(Pages.addAccountPage().getBankBranch(), regularSavingsAccount.getBankBranch(), "'Bank branch' is prefilled with wrong value");
 
         logInfo("Step 7: Select any values in drop-down fields");
-        AccountActions.createAccount().selectValuesInDropdownFieldsRequiredForSavingsAccount(regularSavingsAccount);
-
         logInfo("Step 8: Fill in text fields with valid data. NOTE: do not fill in Account Number field");
-        Pages.addAccountPage().setAccountTitleValue(regularSavingsAccount.getAccountTitle());
-        Pages.addAccountPage().setInterestRate(regularSavingsAccount.getInterestRate());
-
         logInfo("Step 9: Select Date Opened as any date < Current Date");
-        Pages.addAccountPage().setDateOpenedValue(regularSavingsAccount.getDateOpened());
+        AccountActions.createAccount().setValuesInFieldsRequiredForSavingsAccount(regularSavingsAccount);
 
         logInfo("Step 10: Submit the account creation by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
@@ -108,7 +99,6 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getProductValue(), regularSavingsAccount.getProduct(), "'Product' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), regularSavingsAccount.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), regularSavingsAccount.getBankBranch(), "'Bank Branch' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getInterestFrequency(), regularSavingsAccount.getInterestFrequency());
         Assert.assertEquals(Pages.accountDetailsPage().getStatementCycle(), regularSavingsAccount.getStatementCycle(), "'Statement Cycle' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCorrespondingAccount(), regularSavingsAccount.getCorrespondingAccount());
         Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), regularSavingsAccount.getCallClassCode(), "'Call Class' value does not match");
@@ -121,7 +111,6 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         Assert.assertEquals(Pages.editAccountPage().getProductValueInEditMode(), regularSavingsAccount.getProduct(), "'Product' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), regularSavingsAccount.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), regularSavingsAccount.getBankBranch(), "'Bank Branch' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getInterestFrequency(), regularSavingsAccount.getInterestFrequency(), "'Interest Frequency' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getStatementCycleValueInEditMode(), regularSavingsAccount.getStatementCycle(), "'Statement Cycle' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getCorrespondingAccount(), regularSavingsAccount.getCorrespondingAccount(), "'Corresponding Account' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), regularSavingsAccount.getCallClassCode(), "'Call Class' value does not match");

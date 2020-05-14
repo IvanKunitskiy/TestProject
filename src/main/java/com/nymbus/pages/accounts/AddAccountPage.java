@@ -166,7 +166,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Interest Type' selector button")
     public void clickInterestTypeSelectorButton() {
         waitForElementVisibility(interestTypeSelectorButton);
-        scrollToElement(interestTypeSelectorButton);
+//        scrollToElement(interestTypeSelectorButton);
         waitForElementClickable(interestTypeSelectorButton);
         click(interestTypeSelectorButton);
     }
@@ -188,7 +188,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Apply Interest To' selector button")
     public void clickApplyInterestToSelectorButton() {
         waitForElementVisibility(applyInterestToSelectorButton);
-        scrollToElement(applyInterestToSelectorButton);
+//        scrollToElement(applyInterestToSelectorButton);
         waitForElementClickable(applyInterestToSelectorButton);
         click(applyInterestToSelectorButton);
     }
@@ -275,7 +275,7 @@ public class AddAccountPage extends PageTools {
 
     @Step("Click the 'Interest Frequency' selector button")
     public void clickInterestFrequencySelectorButton() {
-        scrollToElement(interestFrequencySelectorButton);
+//        scrollToElement(interestFrequencySelectorButton);
         click(interestFrequencySelectorButton);
     }
 
@@ -446,6 +446,7 @@ public class AddAccountPage extends PageTools {
 
     @Step("Returning the 'Bank Branch' value")
     public String getBankBranch() {
+        waitForElementClickable(bankBranch);
         return getElementText(bankBranch).trim();
     }
 
@@ -479,7 +480,7 @@ public class AddAccountPage extends PageTools {
 
     @Step("Click the 'Statement Cycle' selector button")
     public void clickStatementCycleSelectorButton() {
-        scrollToElement(statementCycleSelectorButton);
+//        scrollToElement(statementCycleSelectorButton);
         click(statementCycleSelectorButton);
     }
 
@@ -710,7 +711,7 @@ public class AddAccountPage extends PageTools {
     @Step("Set 'Account Number' value")
     public void setAccountNumberValue(String accountNumberValue) {
         waitForElementVisibility(accountNumberField);
-//        scrollToElement(accountNumberField);
+        scrollToElement(accountNumberField);
         waitForElementClickable(accountNumberField);
         type(accountNumberValue, accountNumberField);
     }
@@ -768,7 +769,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Bank branch' selector button")
     public void clickBankBranchSelectorButton() {
         waitForElementVisibility(bankBranchSelectorButton);
-        scrollToElement(bankBranchSelectorButton);
+//        scrollToElement(bankBranchSelectorButton);
         waitForElementClickable(bankBranchSelectorButton);
         click(bankBranchSelectorButton);
     }

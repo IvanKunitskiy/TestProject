@@ -76,7 +76,7 @@ public class AccountDetailsPage extends PageTools {
     private By cashCollInterestChg= By.xpath("//tr[@data-config-name='cashcollectioninterestchargesperstatementcycle']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By cashCollFloat= By.xpath("//tr[@data-config-name='cashcollectionfloat']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By positivePay= By.xpath("//tr[@data-config-name='positivepaycustomer']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private By interestFrequency= By.xpath("//tr[@data-config-name='interestfrequencycode']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By interestFrequency= By.xpath("//tr[@data-config-name='interestfrequency']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By correspondingAccount= By.xpath("//tr[@data-config-name='correspondingaccountid']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By printStatementNextUpdate= By.xpath("//tr[@data-config-name='printstatementnextupdate']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By interestPaidYTD= By.xpath("//tr[@data-config-name='interestpaidytd']//span[contains(@class, 'dnTextFixedWidthText')]");

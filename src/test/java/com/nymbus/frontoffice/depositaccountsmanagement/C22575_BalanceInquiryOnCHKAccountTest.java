@@ -46,6 +46,8 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
 
         // Set up transaction
         transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        transaction.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
+        transaction.getTransactionDestination().setTransactionCode("109 - Deposit");
 
         // Set up instruction
         instruction =  new InstructionConstructor(new HoldInstructionBuilder()).constructInstruction(HoldInstruction.class);
