@@ -188,6 +188,19 @@ public class CreateAccount {
         setCallClassCode(account);
     }
 
+    public void setValuesInFieldsRequiredForSavingsAccount(Account account) {
+        Pages.addAccountPage().setAccountNumberValue(""); // can be removed when page scrolling is normalized
+        Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
+        Pages.addAccountPage().setInterestRate(account.getInterestRate());
+        setInterestFrequency(account);
+        setStatementCycle(account);
+        setCorrespondingAccount(account);
+        setCallClassCode(account);
+    }
+
     public void selectValuesInDropdownFieldsRequiredForSavingsIRAAccount(Account account) {
         setCurrentOfficer(account);
         setBankBranch(account);
