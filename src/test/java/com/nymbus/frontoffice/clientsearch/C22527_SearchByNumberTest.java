@@ -28,7 +28,7 @@ public class C22527_SearchByNumberTest extends BaseTest {
     @BeforeMethod
     public void preCondition() {
         client = new Client();
-        client.setAccountNumber("28461564083");
+        client.setAccountNumber("96302734083");
 
         Selenide.open(Constants.URL);
 

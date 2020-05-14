@@ -4,7 +4,6 @@ import com.nymbus.core.base.PageTools;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
-import org.graalvm.compiler.phases.common.inlining.info.AbstractInlineInfo;
 import org.openqa.selenium.By;
 
 import java.util.List;

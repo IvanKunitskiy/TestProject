@@ -48,6 +48,11 @@ public class C22532_SearchByTaxIDTest extends BaseTest {
 
         logInfo("Step 3: Clear the data from the field and try to search for an existing client (by full tax id number)");
         Pages.clientsSearchPage().clickOnSearchInputFieldClearButton();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Pages.clientsSearchPage().typeToClientsSearchInputField(client.getTaxID());
         Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), client.getTaxID()), "Search results are not relevant");
 

@@ -29,7 +29,7 @@ public class C22528_SearchByDebitCardTest extends BaseTest {
     @BeforeMethod
     public void preCondition() {
         client = new Client();
-        client.setCardNumber("4133441334495808");
+        client.setCardNumber("1425504407949279");
 
         Selenide.open(Constants.URL);
 
@@ -61,6 +61,13 @@ public class C22528_SearchByDebitCardTest extends BaseTest {
 
         logInfo("Step 4: Clear the data from the field and try to search for an existing client");
         Pages.clientsSearchPage().clickOnSearchInputFieldClearButton();
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         Pages.clientsSearchPage().typeToClientsSearchInputField(cardNumber);
 
         clients = Pages.clientsSearchPage().getAllLookupResults();
