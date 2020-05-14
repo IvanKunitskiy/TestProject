@@ -38,8 +38,6 @@ public class C22606_AssignAccountLevelNotesToUserTest extends BaseTest {
     @BeforeMethod
     public void preCondition() {
 
-        // TODO: Rerun TC after fixing date issue on test env
-
         // Set up a user
         user = new User().setDefaultUserData();
 
