@@ -100,6 +100,7 @@ public class AccountInstructionsPage extends PageTools {
     public void clickSaveButton() {
         waitForElementClickable(saveButton);
         click(saveButton);
+        SelenideTools.sleep(5);
     }
 
     @Step("Click 'Edit' button")
