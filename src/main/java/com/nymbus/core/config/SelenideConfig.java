@@ -51,6 +51,6 @@ public class SelenideConfig {
         Configuration.headless = Boolean.parseBoolean(System.getProperty("headless", "false"));
         Configuration.pollingInterval = 5000;
         Configuration.pageLoadStrategy = "eager";
-        Configuration.timeout = 60000;
+        Configuration.timeout = 120000;
     }
 }

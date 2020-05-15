@@ -40,6 +40,7 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
         Account checkAccount = new Account().setCHKAccountData();
         miscDebitGLCreditTransaction = new TransactionConstructor(new MiscDebitGLCreditTransactionBuilder()).constructTransaction();
         Transaction glDebitMiscCreditTransaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
+        checkAccount.setDateOpened(glDebitMiscCreditTransaction.getTransactionDate());
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Create client
@@ -48,7 +49,7 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
         ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create account
-        AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkAccount);
+        AccountActions.createAccount().createCHKAccount(checkAccount);
 
         // Set up transaction with account number
         accountNumber = checkAccount.getAccountNumber();

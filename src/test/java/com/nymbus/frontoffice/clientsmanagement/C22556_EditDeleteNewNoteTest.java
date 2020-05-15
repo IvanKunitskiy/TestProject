@@ -9,6 +9,7 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.data.entity.User;
 import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.client.other.verifyingmodels.MaintenanceHistoryDebitCardVerifyingModel;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.note.Note;
@@ -25,8 +26,8 @@ public class C22556_EditDeleteNewNoteTest extends BaseTest {
 
     private User user;
     private Note note;
-    private IndividualClient client;
     private String clientID;
+    private MaintenanceHistoryDebitCardVerifyingModel verifyingModel;
 
     @BeforeMethod
     public void preCondition() {
@@ -36,7 +37,9 @@ public class C22556_EditDeleteNewNoteTest extends BaseTest {
         // Set up a client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
+        verifyingModel = new MaintenanceHistoryDebitCardVerifyingModel();
+        verifyingModel.getRow().setFieldName("Due Date");
 
         // Set up a note
         note = new Note().setDefaultNoteData();
@@ -49,7 +52,7 @@ public class C22556_EditDeleteNewNoteTest extends BaseTest {
         Selenide.open(Constants.WEB_ADMIN_URL);
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         WebAdminActions.webAdminUsersActions().setUserPassword(user);
-        WebAdminActions.loginActions().doLogout();
+        WebAdminActions.loginActions().doLogoutProgrammatically();
 
         // Create a client with a note and logout
         Selenide.open(Constants.URL);
@@ -59,6 +62,7 @@ public class C22556_EditDeleteNewNoteTest extends BaseTest {
         ClientsActions.individualClientActions().setDocumentation(client);
         clientID = Pages.clientDetailsPage().getClientID();
         Pages.accountNavigationPage().clickNotesTab();
+        Actions.clientPageActions().closeAllNotifications();
         Pages.notesPage().clickAddNewNoteButton();
         Pages.notesPage().typeToNewNoteTextArea(note.getNewNote());
         Pages.notesPage().clickSaveButton();
@@ -92,6 +96,7 @@ public class C22556_EditDeleteNewNoteTest extends BaseTest {
         NotesActions.editActions().setResponsibleOfficer(note);
         Pages.notesPage().setDueDateValue(note.getDueDate());
         Pages.notesPage().clickSaveButton();
+        verifyingModel.getRow().setNewValue(note.getDueDate());
 
         logInfo("Step 6: Verify that updated data is displayed for the note in the notes list");
         Assert.assertEquals(Pages.notesPage().getDueDateOfTheActiveNote(), note.getDueDate(), "'Due Date' value does not match");
@@ -103,12 +108,15 @@ public class C22556_EditDeleteNewNoteTest extends BaseTest {
 
         logInfo("Step 8: Click [Delete] button");
         Pages.notesPage().clickDeleteButton();
+        verifyingModel.getRow().setNewValue("");
 
         logInfo("Step 9: Open Clients profile on Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 10: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
-        // TODO: Implement verification at Maintenance History page
+        Assert.assertEquals(Pages.accountMaintenancePage().getRowNewValueByRowName(verifyingModel.getRow().getFieldName(), 1),
+                verifyingModel.getRow().getNewValue(),
+                "Due Date new value doesn't match!");
     }
 }

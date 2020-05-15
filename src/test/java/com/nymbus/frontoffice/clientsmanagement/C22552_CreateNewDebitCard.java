@@ -1,10 +1,17 @@
 package com.nymbus.frontoffice.clientsmanagement;
 
 import com.nymbus.actions.Actions;
+import com.nymbus.actions.account.AccountActions;
+import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.account.type.CHKAccount;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.client.other.DebitCardFactory;
 import com.nymbus.newmodels.generation.settings.BinControlFactory;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
@@ -23,17 +30,26 @@ import static io.qameta.allure.SeverityLevel.CRITICAL;
 @Feature("Clients Management")
 @Owner("Dmytro")
 public class C22552_CreateNewDebitCard extends BaseTest {
-    private BinControl binControl;
     private DebitCard debitCard;
-    private CHKAccount chkAccount;
+    private IndividualClient client;
+    private  Account checkingAccount;
 
     @BeforeMethod
     public void preCondition() {
+        // Set up Client
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
+
+        // Set up CHK account
+        checkingAccount = new Account().setCHKAccountData();
+        checkingAccount.setDateOpened(WebAdminActions.loginActions().getSystemDate());
+
         // TODO: Refactor to using builder
         DebitCardFactory debitCardFactory = new DebitCardFactory();
         BinControlFactory binControlFactory = new BinControlFactory();
 
-        binControl = binControlFactory.getBinControl();
+        BinControl binControl = binControlFactory.getBinControl();
         binControl.setBinNumber("510986");
         binControl.setCardDescription("Consumer Debit");
 
@@ -43,11 +59,21 @@ public class C22552_CreateNewDebitCard extends BaseTest {
         debitCard.setATMTransactionLimit(binControl.getATMTransactionLimit());
         debitCard.setDBCDailyDollarLimit(binControl.getDBCDailyDollarLimit());
         debitCard.setDBCTransactionLimit(binControl.getDBCTransactionLimit());
+        debitCard.setNameOnCard(client.getNameForDebitCard());
 
-        chkAccount = new CHKAccount();
-        chkAccount.setAccountNumber("12400585233");
+        // Login
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-        debitCard.getAccounts().add(chkAccount.getAccountNumber());
+        // Create client
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+
+        AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkingAccount);
+
+        debitCard.getAccounts().add(checkingAccount.getAccountNumber());
+
+        Actions.loginActions().doLogOut();
     }
 
     @Severity(CRITICAL)
@@ -58,12 +84,7 @@ public class C22552_CreateNewDebitCard extends BaseTest {
         Pages.navigationPage().waitForUserMenuVisible();
 
         logInfo("Step 2: Search for any individualClient and open his profile on the Maintenance tab");
-        Pages.clientsSearchPage().typeToClientsSearchInputField("AAA");
-
-        Assert.assertEquals(Pages.clientsSearchPage().getLookupResultsCount(), 1);
-        Assert.assertFalse(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible());
-
-        Pages.clientsSearchPage().clickOnViewAccountButtonByValue("AAA");
+        Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
 
         logInfo("Step 3: Open client profile on the Maintenance tab");
         Pages.clientDetailsPage().clickOnMaintenanceTab();
@@ -89,11 +110,11 @@ public class C22552_CreateNewDebitCard extends BaseTest {
 
         logInfo("Step 11: Go to the Accounts tab and search for the account that was assigned to the card. Open account on Maintenance-> Maintenance History page");
         Pages.clientDetailsPage().clickAccountsTab();
-        Pages.clientDetailsPage().openAccountByNumber(chkAccount.getAccountNumber());
+        Pages.clientDetailsPage().openAccountByNumber(checkingAccount.getAccountNumber());
         Pages.accountDetailsPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 12: Look through Account's Maintenance History and verify that there are records about the newly created Debit Card");
-        Actions.maintenanceHistoryPageActions().verifyMaintenanceHistoryFields(debitCard, chkAccount);
+        Actions.maintenanceHistoryPageActions().verifyMaintenanceHistoryFields(debitCard, checkingAccount);
     }
 }
