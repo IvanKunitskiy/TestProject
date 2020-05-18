@@ -10,6 +10,7 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.account.ProductType;
 import com.nymbus.newmodels.client.other.account.type.CHKAccount;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
+import com.nymbus.newmodels.client.other.verifyingmodels.MaintenanceHistoryDebitCardVerifyingModel;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.client.other.DebitCardFactory;
@@ -27,12 +28,10 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22553_ViewEditNewDebitCardTest extends BaseTest {
 
-//    private User user;
-    private IndividualClient client;
     private DebitCard debitCard;
-    private BinControl binControl;
     private CHKAccount chkAccount;
     private String clientID;
+    private MaintenanceHistoryDebitCardVerifyingModel verifyingModel;
 
     @BeforeMethod
     public void preCondition() {
@@ -40,14 +39,16 @@ public class C22553_ViewEditNewDebitCardTest extends BaseTest {
         // Set up client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        //    private User user;
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up debit card and account
         DebitCardFactory debitCardFactory = new DebitCardFactory();
         BinControlFactory binControlFactory = new BinControlFactory();
+        verifyingModel = new MaintenanceHistoryDebitCardVerifyingModel();
 
-        binControl = binControlFactory.getBinControl();
-        binControl.setBinNumber("510986");
+        BinControl binControl = binControlFactory.getBinControl();
+        binControl.setBinNumber(Constants.BIN_NUMBER);
         binControl.setCardDescription("Consumer Debit");
 
         debitCard = debitCardFactory.getDebitCard();
@@ -56,6 +57,7 @@ public class C22553_ViewEditNewDebitCardTest extends BaseTest {
         debitCard.setATMTransactionLimit(binControl.getATMTransactionLimit());
         debitCard.setDBCDailyDollarLimit(binControl.getDBCDailyDollarLimit());
         debitCard.setDBCTransactionLimit(binControl.getDBCTransactionLimit());
+        debitCard.setNameOnCard(client.getNameForDebitCard());
 
         chkAccount = new CHKAccount();
         chkAccount.setAddNewOption("Account");
@@ -69,6 +71,8 @@ public class C22553_ViewEditNewDebitCardTest extends BaseTest {
         chkAccount.setEarningCreditRate(Generator.getRandomStringNumber(3));
 
         debitCard.getAccounts().add(chkAccount.getAccountNumber());
+        verifyingModel.getRow().setFieldName("Pin Offset");
+        verifyingModel.getRow().setOldValue(String.valueOf(debitCard.getPinOffset()));
 
         // Log in and create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -111,7 +115,9 @@ public class C22553_ViewEditNewDebitCardTest extends BaseTest {
         Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowVisibility();
 
         logInfo("Step 6: Change some values , e.g. Pin Offset / ATM Daily Limit Number / Add additional account etc");
-        debitCard.setPinOffset(6666); // new value assigned for editing
+        int newPinOffset = 6666;
+        verifyingModel.getRow().setNewValue(String.valueOf(newPinOffset));
+        debitCard.setPinOffset(newPinOffset); // new value assigned for editing
         Pages.debitCardModalWindow().typeToPinOffsetInputField(debitCard.getPinOffset());
 
         logInfo("Step 7: Click [Save] button");
@@ -131,7 +137,12 @@ public class C22553_ViewEditNewDebitCardTest extends BaseTest {
         Pages.accountDetailsPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
-        logInfo("Step 12: Look through Account's Maintenance History and verify that there are records about the newly created Debit Card");
-        // TODO: Implement verification at Maintenance History page
+        logInfo("Step 11: Look through Account's Maintenance History and verify that there are records about the editing of Debit Card");
+        Assert.assertEquals(Pages.accountMaintenancePage().getRowOldValueByRowName(verifyingModel.getRow().getFieldName(), 1),
+                            verifyingModel.getRow().getOldValue(),
+                            "Pin Offset old value doesn't match!");
+        Assert.assertEquals(Pages.accountMaintenancePage().getRowNewValueByRowName(verifyingModel.getRow().getFieldName(), 1),
+                            verifyingModel.getRow().getNewValue(),
+                            "Pin Offset new value doesn't match!");
     }
 }

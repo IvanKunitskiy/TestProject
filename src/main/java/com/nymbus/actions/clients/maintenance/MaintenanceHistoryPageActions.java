@@ -2,7 +2,7 @@ package com.nymbus.actions.clients.maintenance;
 
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Mapper;
-import com.nymbus.newmodels.client.other.account.type.Account;
+import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
 import com.nymbus.newmodels.other.MaintenanceHistoryField;
 import com.nymbus.pages.Pages;
@@ -99,7 +99,7 @@ public class MaintenanceHistoryPageActions {
         );*/
         Assert.assertEquals(
                 Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.PIN_OFFSET),
-                debitCard.getPinOffset(),
+                String.valueOf(debitCard.getPinOffset()),
                 "Pin Offset is not equal"
         );
         Assert.assertEquals(
