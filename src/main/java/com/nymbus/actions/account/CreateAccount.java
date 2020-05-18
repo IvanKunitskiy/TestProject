@@ -213,18 +213,6 @@ public class CreateAccount {
         setIRADistributionCode(account);
     }
 
-    public void selectValuesInDropdownFieldsRequiredForCDIRAAccount(Account account) {
-        setCurrentOfficer(account);
-        setBankBranch(account);
-        setCorrespondingAccount(account);
-        setInterestFrequency(account);
-        setApplyInterestTo(account);
-        setInterestType(account);
-        setCallClassCode(account);
-        setIRADistributionFrequency(account);
-        setIRADistributionCode(account);
-    }
-
     public void setValuesInFieldsRequiredForCDIRAAccount(Account account) {
         Pages.addAccountPage().setAccountNumberValue(""); // can be removed when page scrolling is normalized
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
