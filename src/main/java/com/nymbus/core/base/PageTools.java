@@ -151,6 +151,11 @@ public class PageTools extends AllureLogger {
         shouldBe(Condition.enabled, by, args);
     }
 
+    protected void waitForElementDisabled(By by, Object... args) {
+        shouldBe(Condition.visible, by, args);
+        shouldBe(Condition.disabled, by, args);
+    }
+
     /**
      * Is condition
      */
@@ -196,6 +201,12 @@ public class PageTools extends AllureLogger {
 
     protected List<SelenideElement> getElementsWithZeroOption(By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", elements --> " + byLocator(by, args));
+        return shouldBe(sizeGreaterThanOrEqual(0), by, args);
+    }
+
+    protected List<SelenideElement> getElementsWithZeroOptionWithWait(int waitTimeout, By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", elements --> " + byLocator(by, args));
+        Selenide.sleep(waitTimeout * 1000);
         return shouldBe(sizeGreaterThanOrEqual(0), by, args);
     }
 

@@ -13,7 +13,7 @@ import com.nymbus.newmodels.client.other.transfer.Transfer;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
-import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
+import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditCHKAccBuilder;
 import com.nymbus.newmodels.generation.transfers.TransferBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
@@ -59,7 +59,7 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         savingsAccount2 = new Account().setSavingsAccountData();
 
         // Set up transaction
-        Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
         transaction.getTransactionDestination().setAccountNumber(chkAccount2.getAccountNumber());
 
         // Set up transfers
@@ -73,8 +73,8 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         transfer.setFromAccount(chkAccount2);
         transfer.setToAccount(savingsAccount2);
 
-        // Set up transaction
-        transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        /*// Set up transaction
+        transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();*/
 
         // Create a client with an active CHK / Savings account and a High Balance transfer
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -115,7 +115,7 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C22558, Delete new transfer")
+    @Test(description = "C22547, Delete new transfer")
     @Severity(SeverityLevel.CRITICAL)
     public void deleteNewTransfer() {
         logInfo("Step 1: Log in to the system as User from the preconditions");

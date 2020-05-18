@@ -56,6 +56,7 @@ public class CreateAccount {
 
     public void createSavingsAccount(Account account) {
         clickAccountsTab();
+        Actions.clientPageActions().closeAllNotifications();
         setAddNewOption(account);
         setProductType(account);
         setProduct(account);
@@ -127,6 +128,7 @@ public class CreateAccount {
 
     public void createCHKAccount(Account account) {
         clickAccountsTab();
+        Actions.clientPageActions().closeAllNotifications();
         setAddNewOption(account);
         setProductType(account);
         setProduct(account);

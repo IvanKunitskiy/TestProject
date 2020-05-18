@@ -118,4 +118,8 @@ public class MaintenanceHistoryPageActions {
                 "Card Status is not equal"
         );
     }
+
+    public void expandAllRows() {
+
+    }
 }

@@ -1,5 +1,6 @@
 package com.nymbus.newmodels.account;
 
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
 
@@ -166,7 +167,7 @@ public class Account {
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setProduct("Regular Savings Account");
         account.setAccountTitle(Generator.genString(5));
-        account.setDateOpened(DateTime.getYesterdayDate("MM/dd/yyyy"));
+        account.setDateOpened(/*DateTime.getYesterdayDate("MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
         account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
         account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setNumberOfDebitCardsIssued(String.valueOf(Generator.genInt(0, 100)));
