@@ -25,7 +25,6 @@ public class C22555_AssignNoteToAUserTest extends BaseTest {
 
     private User user1;
     private User user2;
-    private IndividualClient client;
     private Note note;
     private String clientID;
 
@@ -39,7 +38,7 @@ public class C22555_AssignNoteToAUserTest extends BaseTest {
         // Set up clients
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up note
         note = new Note().setDefaultNoteData();
@@ -52,15 +51,17 @@ public class C22555_AssignNoteToAUserTest extends BaseTest {
         Selenide.open(Constants.WEB_ADMIN_URL);
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         WebAdminActions.webAdminUsersActions().setUserPassword(user1);
-        WebAdminActions.loginActions().doLogout();
+        WebAdminActions.loginActions().doLogoutProgrammatically();
 
         // Create a client with a note. Set note's 'Due Date' to current date
+        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(user1.getLoginID(), user1.getPassword());
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
         clientID = Pages.clientDetailsPage().getClientID();
         Pages.accountNavigationPage().clickNotesTab();
+        Actions.clientPageActions().closeAllNotifications();
         Pages.notesPage().clickAddNewNoteButton();
         Pages.notesPage().typeToNewNoteTextArea(note.getNewNote());
         Pages.notesPage().setDueDateValue(note.getDueDate());
@@ -75,7 +76,7 @@ public class C22555_AssignNoteToAUserTest extends BaseTest {
         Selenide.open(Constants.WEB_ADMIN_URL);
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         WebAdminActions.webAdminUsersActions().setUserPassword(user2);
-        WebAdminActions.loginActions().doLogout();
+        WebAdminActions.loginActions().doLogoutProgrammatically();
     }
 
     @Test(description = "C22555, Assign Note To A User Test")
@@ -118,6 +119,4 @@ public class C22555_AssignNoteToAUserTest extends BaseTest {
         Pages.alerts().clickAlertByNoteText(note.getNewNote());
         Assert.assertEquals(Pages.notesPage().getDueDateValueInViewMode(), note.getDueDate(), "'Due date' is not equal to 'Current date'");
     }
-
-
 }

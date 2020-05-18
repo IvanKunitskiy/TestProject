@@ -20,6 +20,10 @@ public class LoginActions {
                 + "where%3A+%0D%0A-+%28databean%29CODE%3A+DateFilesUpdatedThrough%0D%0A&source=";
     }
 
+    private String getLogoutUrl() {
+        return Constants.WEB_ADMIN_URL + "controller?action=LogoutAction";
+    }
+
     public void doLogin(String userName, String password) {
         WebAdminPages.loginPage().waitForLoginForm();
         WebAdminPages.loginPage().typeUserName(userName);
@@ -39,6 +43,11 @@ public class LoginActions {
         WebAdminPages.loginPage().waitForLoginForm();
     }
 
+    public void doLogoutProgrammatically() {
+        SelenideTools.openUrl(getLogoutUrl());
+        WebAdminPages.loginPage().waitForLoginForm();
+    }
+
     private String getSystemDateFromWebAdmin() {
         SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
         SelenideTools.switchTo().window(1);
@@ -46,7 +55,7 @@ public class LoginActions {
         SelenideTools.openUrl(getDateUrl());
         waitForSearchResults();
         String result = WebAdminPages.rulesUIQueryAnalyzerPage().getDateInSystem();
-        doLogout();
+        doLogoutProgrammatically();
         SelenideTools.closeCurrentTab();
         SelenideTools.switchTo().window(0);
 
