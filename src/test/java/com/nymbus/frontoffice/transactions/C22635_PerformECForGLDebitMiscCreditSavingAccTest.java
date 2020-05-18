@@ -39,6 +39,7 @@ public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest 
         IndividualClient client = individualClientBuilder.buildClient();
         Account savingsAccount = new Account().setSavingsAccountData();
         transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        savingsAccount.setDateOpened(transaction.getTransactionDate());
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Create client
@@ -47,7 +48,7 @@ public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest 
         ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create account
-        AccountActions.createAccount().createSavingAccountForTransactionPurpose(savingsAccount);
+        AccountActions.createAccount().createSavingsAccount(savingsAccount);
 
         // Set up transaction with account number
         transaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());

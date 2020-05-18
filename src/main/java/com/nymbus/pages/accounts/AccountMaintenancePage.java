@@ -10,6 +10,20 @@ public class AccountMaintenancePage extends PageTools {
     private By viewMoreButton = By.xpath("//button[@data-test-id='action-loadMore']");
     private By changeTypeFields = By.xpath("//table//tr//td/span[text()='%s']");
     private By rowsInTable = By.xpath("//table//tr");
+    private By rowOldValueByRowName = By.xpath("(//table//tr//td/span[text()='%s']//ancestor::node()[3]/td[4]/span)[%s]");
+    private By rowNewValueByRowName = By.xpath("(//table//tr//td/span[text()='%s']//ancestor::node()[3]/td[5]/span)[%s]");
+
+    @Step("Get row {0} old value by {1}")
+    public String getRowOldValueByRowName(String text, int index) {
+        waitForElementVisibility(rowOldValueByRowName, text, index);
+        return getElementText(rowOldValueByRowName, text, index).trim();
+    }
+
+    @Step("Get row {0} new value by {1}")
+    public String getRowNewValueByRowName(String text, int index) {
+        waitForElementVisibility(rowNewValueByRowName, text, index);
+        return getElementText(rowNewValueByRowName, text, index).trim();
+    }
 
     @Step("Click 'ViewAllMaintenanceHistory' button")
     public void clickViewAllMaintenanceHistoryLink() {

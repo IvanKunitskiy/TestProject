@@ -9,6 +9,7 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.data.entity.User;
 import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.client.other.verifyingmodels.MaintenanceHistoryDebitCardVerifyingModel;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.note.Note;
@@ -25,8 +26,8 @@ public class C22554_AddNewClientLevelNoteTest extends BaseTest {
 
     private User user;
     private Note note;
-    private IndividualClient client;
     private String clientID;
+    private MaintenanceHistoryDebitCardVerifyingModel verifyingModel;
 
     @BeforeMethod
     public void preCondition() {
@@ -36,11 +37,14 @@ public class C22554_AddNewClientLevelNoteTest extends BaseTest {
         // Set up client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up a note
         note = new Note().setDefaultNoteData();
         note.setResponsibleOfficer(user.getFirstName() + " " + user.getLastName());
+        verifyingModel = new MaintenanceHistoryDebitCardVerifyingModel();
+        verifyingModel.getRow().setFieldName("Subject");
+        verifyingModel.getRow().setNewValue(note.getNewNote());
 
         // Create user and set him a password
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -49,9 +53,10 @@ public class C22554_AddNewClientLevelNoteTest extends BaseTest {
         Selenide.open(Constants.WEB_ADMIN_URL);
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         WebAdminActions.webAdminUsersActions().setUserPassword(user);
-        WebAdminActions.loginActions().doLogout();
+        WebAdminActions.loginActions().doLogoutProgrammatically();
 
         // Create a client
+        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
@@ -97,6 +102,8 @@ public class C22554_AddNewClientLevelNoteTest extends BaseTest {
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 8: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
-        // TODO: Implement verification at Maintenance History page
+        Assert.assertEquals(Pages.accountMaintenancePage().getRowNewValueByRowName(verifyingModel.getRow().getFieldName(), 1),
+                verifyingModel.getRow().getNewValue(),
+                "Subject new value doesn't match!");
     }
 }

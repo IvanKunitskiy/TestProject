@@ -64,7 +64,7 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "C22612, Add New 'Safe Deposit Box' Account")
+    @Test(description = "C22613, Client Accounts: Edit safe deposit box account")
     public void createSafeBoxAccount() {
         logInfo("Step 1: Log in to the system as the user from the precondition");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
