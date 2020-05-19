@@ -199,6 +199,12 @@ public class PageTools extends AllureLogger {
         return shouldBe(sizeGreaterThanOrEqual(0), by, args);
     }
 
+    protected List<SelenideElement> getElementsWithZeroOptionWithWait(int waitTimeout, By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", elements --> " + byLocator(by, args));
+        Selenide.sleep(waitTimeout * 1000);
+        return shouldBe(sizeGreaterThanOrEqual(0), by, args);
+    }
+
     protected List<String> getElementsText(By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", elements --> " + byLocator(by, args));
         return shouldBe(sizeGreaterThan(0), by, args).texts();

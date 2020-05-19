@@ -12,6 +12,7 @@ public class AccountActions {
     private static CallStatement callStatement;
     private static AccountTransactionActions accountTransactionActions;
     private static EditInstructionActions editInstructionActions;
+    private static AccountMaintenanceActions accountMaintenanceActions;
 
     /**
      * This function return an instance of `CreateAccount`
@@ -81,5 +82,15 @@ public class AccountActions {
             editInstructionActions = new EditInstructionActions();
         }
         return editInstructionActions;
+    }
+
+    /**
+     * This function return an instance of `AccountMaintenanceActions`
+     */
+    public static AccountMaintenanceActions accountMaintenanceActions() {
+        if (accountMaintenanceActions == null) {
+            accountMaintenanceActions = new AccountMaintenanceActions();
+        }
+        return accountMaintenanceActions;
     }
 }

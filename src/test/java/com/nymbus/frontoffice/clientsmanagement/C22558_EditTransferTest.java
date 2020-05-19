@@ -50,7 +50,6 @@ public class C22558_EditTransferTest extends BaseTest {
         highBalanceTransfer.setToAccount(savingsAccount);
 
         // Create a client with an active CHK and Savings account
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
@@ -104,6 +103,8 @@ public class C22558_EditTransferTest extends BaseTest {
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 8: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
-        // TODO: Implement verification at Maintenance History page
+        AccountActions.accountMaintenanceActions().expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Amount to transfer") >= 2,
+                        "Rows count is incorrect!");
     }
 }
