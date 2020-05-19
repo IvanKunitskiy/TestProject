@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -15,6 +16,7 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -38,6 +40,7 @@ public class C22602_EditTransactionDescriptionTest extends BaseTest {
         // Set up transaction
         transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
         transaction.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
+        transaction.getTransactionDestination().setTransactionCode("109 - Deposit");
 
         // Create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -67,8 +70,10 @@ public class C22602_EditTransactionDescriptionTest extends BaseTest {
         Pages.transactionsPage().clickEditOption();
 
         logInfo("Step 4: Fill in Description field with any data and click [Save Changes] button");
-        Pages.editAccountTransactionModal().editDescriptionField();
+        String description = Generator.genString(5);
+        Pages.editAccountTransactionModal().editDescriptionField(description);
         Pages.editAccountTransactionModal().clickTheSaveChangesButton();
-        // TODO: retest after switching back to dev6 env
+        Assert.assertEquals(Pages.transactionsPage().getDescriptionForTransactionByNumberInList(1), description,
+                "Description field of selected transaction does not contain just added data");
     }
 }
