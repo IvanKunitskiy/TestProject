@@ -5,11 +5,14 @@ import com.nymbus.newmodels.transaction.MultipleTransaction;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
+import com.nymbus.newmodels.transaction.enums.Denominations;
 import com.nymbus.newmodels.transaction.enums.DestinationType;
 import com.nymbus.newmodels.transaction.enums.SourceType;
 import com.nymbus.pages.Pages;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TransactionActions {
 
@@ -143,8 +146,27 @@ public class TransactionActions {
 
     private void setCashInSource(TransactionSource source) {
         Pages.tellerPage().clickCashInButton();
-        Pages.cashInModalWindowPage().typeHundredsAmountValue(String.format("%.0f", source.getAmount()));
+        setAmounts(source.getDenominationsHashMap());
         Pages.cashInModalWindowPage().clickOKButton();
+    }
+
+    private void setAmounts(HashMap<Denominations, Double> denominationsHashMap) {
+        for (Map.Entry<Denominations,Double> entry : denominationsHashMap.entrySet()) {
+            setMappedAmount(entry.getKey(), entry.getValue());
+        }
+    }
+
+    private void setMappedAmount(Denominations key, Double value) {
+        switch (key) {
+            case HUNDREDS:
+                Pages.cashInModalWindowPage().typeHundredsAmountValue(String.format("%.0f", value));
+                break;
+            case FIFTIES:
+                Pages.cashInModalWindowPage().typeFiftiesAmountValue(String.format("%.0f", value));
+                break;
+            default:
+                break;
+        }
     }
 
     private void setMiscDebitSource(TransactionSource source, int index) {
@@ -156,7 +178,7 @@ public class TransactionActions {
 
     private void setCashOutDestination(TransactionDestination transactionDestination) {
         Pages.tellerPage().clickCashOutButton();
-        Pages.cashInModalWindowPage().typeHundredsAmountValue(String.format("%.0f", transactionDestination.getAmount()));
+        setAmounts(transactionDestination.getDenominationsHashMap());
         Pages.cashInModalWindowPage().clickOKButton();
     }
 

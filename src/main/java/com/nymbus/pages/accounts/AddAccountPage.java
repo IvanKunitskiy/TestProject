@@ -188,7 +188,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Apply Interest To' selector button")
     public void clickApplyInterestToSelectorButton() {
         waitForElementVisibility(applyInterestToSelectorButton);
-//        scrollToElement(applyInterestToSelectorButton);
+        scrollToElement(applyInterestToSelectorButton);
         waitForElementClickable(applyInterestToSelectorButton);
         click(applyInterestToSelectorButton);
     }
@@ -480,7 +480,7 @@ public class AddAccountPage extends PageTools {
 
     @Step("Click the 'Statement Cycle' selector button")
     public void clickStatementCycleSelectorButton() {
-//        scrollToElement(statementCycleSelectorButton);
+        scrollToElement(statementCycleSelectorButton);
         click(statementCycleSelectorButton);
     }
 

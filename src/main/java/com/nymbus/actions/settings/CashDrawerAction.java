@@ -1,6 +1,9 @@
 package com.nymbus.actions.settings;
 
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.data.entity.CashDrawer;
+import com.nymbus.newmodels.transaction.verifyingModels.CashDrawerData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
 import org.testng.Assert;
@@ -129,4 +132,33 @@ public class CashDrawerAction {
         return cashDrawer;
     }
 
+    public void goToCashDrawerPage() {
+        Pages.aSideMenuPage().clickCashDrawerMenuItem();
+
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
+    }
+
+    public CashDrawerData getCashDrawerData() {
+        CashDrawerData data = new CashDrawerData();
+        data.setCashIn(getCashInValue());
+        data.setCashOut(getCashOutValue());
+        data.setCountedCash(getCountedCashValue());
+
+        return data;
+    }
+
+    private double getCashInValue() {
+        String value = Pages.cashDrawerBalancePage().getCashIn();
+        return Double.parseDouble(value);
+    }
+
+    private double getCashOutValue() {
+        String value = Pages.cashDrawerBalancePage().getCashOut();
+        return Double.parseDouble(value);
+    }
+
+    private double getCountedCashValue() {
+        String value = Pages.cashDrawerBalancePage().getCountedCash();
+        return Double.parseDouble(value);
+    }
 }
