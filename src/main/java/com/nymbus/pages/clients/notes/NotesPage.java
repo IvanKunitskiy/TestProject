@@ -40,6 +40,11 @@ public class NotesPage extends PageTools {
         return isElementVisible(noteAlertByContent, noteContent);
     }
 
+    @Step("Check that alert for created note visible")
+    public boolean isNoteAlertVisible(String noteContent) { // format (Account | {account number} | note)
+        return isElementVisible(noteAlertByContent, noteContent);
+    }
+
     @Step("Click the 'Severity' option")
     public void clickTemplateSelectorOption(String templateOption) {
         waitForElementVisibility(templateSelectorOption, templateOption);
