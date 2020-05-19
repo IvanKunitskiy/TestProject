@@ -76,22 +76,22 @@ public class C22605_AddAccountLevelNotesTest extends BaseTest {
                 "fill in all other fields including 'Severity' field with any value from the drop-down\n" +
                 "and click [Save] button");
         Pages.notesPage().clickAddNewNoteButton();
+        Pages.notesPage().typeToNewNoteTextArea(note2.getNewNote());
         NotesActions.editActions().setSeverity(note2);
         Pages.notesPage().setDueDateValue(note2.getDueDate());
         Pages.notesPage().setExpirationDateValue(note2.getExpirationDate());
-        NotesActions.editActions().setTemplate(note2);
         Pages.notesPage().clickSaveButton();
+        Pages.notesPage().waitForAddNewNoteButtonIsClickable();
 
         logInfo("Step 6: Open Teller page in the new tab\n" +
                 "and search for the Account from the precondition in the Source or Destination");
         Pages.aSideMenuPage().clickTellerMenuItem();
         Pages.tellerModalPage().clickEnterButton();
         Pages.tellerPage().clickMiscDebitButton();
-
         Pages.tellerPage().clickAccountNumberDiv(1);
         Pages.tellerPage().typeAccountNumber(1, chkAccount.getAccountNumber());
         Pages.tellerPage().clickOnAutocompleteDropDownItem(chkAccount.getAccountNumber());
-        Assert.assertTrue(Pages.tellerPage().isAlertWithTextVisible("Account | " + chkAccount.getAccountNumber() + " | erased"), "Alert for second note is not visible");
+        Assert.assertTrue(Pages.tellerPage().isAlertWithTextVisible("Account | " + chkAccount.getAccountNumber() + " | " + note2.getNewNote()), "Alert for second note is not visible");
 
         logInfo("Step 7: Open Account from the precondition on Maintenance -> Maintenance History page");
         Pages.aSideMenuPage().clickClientMenuItem();
