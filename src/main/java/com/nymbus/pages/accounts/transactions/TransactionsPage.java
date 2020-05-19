@@ -10,7 +10,7 @@ public class TransactionsPage extends PageTools {
     private By callStatementButton = By.xpath("//button/span[contains(text(), 'Call Statement')]");
     private By transactionInListSelector = By.xpath("//dn-context-menu[@data-test-id='contextmenu-transaction-%s']//button[@data-test-id='action-showContextMenu']");
     private By editButton = By.xpath("//*[contains(text(), 'Edit')]");
-    private By descriptionInListSelector = By.xpath("//tr[%s]/td[7]/span");
+    private By descriptionInListSelector = By.xpath("//tr[1]//td/span[contains(text(), '%s')]");
 
     @Step("Check that 'Withdraw & Close' transaction is written on the transaction history page")
     public boolean isWithdrawAndCloseTransactionsVisible() {
@@ -37,8 +37,8 @@ public class TransactionsPage extends PageTools {
     }
 
     @Step("Get 'Description' value for transaction by number in the list")
-    public String getDescriptionForTransactionByNumberInList(int number) {
-        waitForElementVisibility(descriptionInListSelector, number);
-        return getElementText(descriptionInListSelector, number);
+    public boolean isTransactionWithDescriptionVisibleInList(String description) {
+        waitForElementVisibility(descriptionInListSelector, description);
+        return isElementVisible(descriptionInListSelector, description);
     }
 }

@@ -73,7 +73,7 @@ public class C22602_EditTransactionDescriptionTest extends BaseTest {
         String description = Generator.genString(5);
         Pages.editAccountTransactionModal().editDescriptionField(description);
         Pages.editAccountTransactionModal().clickTheSaveChangesButton();
-        Assert.assertEquals(Pages.transactionsPage().getDescriptionForTransactionByNumberInList(1), description,
-                "Description field of selected transaction does not contain just added data");
+        Assert.assertTrue(Pages.transactionsPage().isTransactionWithDescriptionVisibleInList(description),
+                "Description for created transaction is not modified");
     }
 }
