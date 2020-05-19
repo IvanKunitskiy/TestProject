@@ -44,7 +44,7 @@ public class Alerts extends PageTools {
 
     @Step("Is note visible in the notes list")
     public boolean isNoteVisibleInTheListByText(String name) {
-        waitForElementVisibility(alertSelector, name);
+//        waitForElementVisibility(alertSelector, name);
         return isElementVisible(alertSelector, name);
     }
 }
