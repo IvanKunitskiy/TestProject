@@ -5,7 +5,6 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.CashDrawer;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -16,7 +15,6 @@ import com.nymbus.newmodels.generation.tansactions.builder.CashInMiscCreditCHKAc
 import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitCashDepositMultipleTransactionBuilder;
 import com.nymbus.newmodels.transaction.MultipleTransaction;
 import com.nymbus.newmodels.transaction.Transaction;
-import com.nymbus.newmodels.transaction.enums.Denominations;
 import com.nymbus.newmodels.transaction.verifyingModels.*;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
@@ -84,7 +82,12 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
         multipleTransaction.getDestinations().get(2).setAccountNumber(cdAccount.getAccountNumber());
 
         // perform transaction
-        Actions.transactionActions().performCashInMiscCreditTransaction(transaction);
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
+        Actions.transactionActions().createCashInMiscCreditTransaction(transaction);
+        Actions.transactionActions().clickCommitButton();
+        Pages.verifyConductorModalPage().clickVerifyButton();
+        Pages.tellerPage().closeModal();
         chkAccBalanceData.addAmount(transaction.getTransactionDestination().getAmount());
 
         Actions.transactionActions().loginTeller();
@@ -183,16 +186,21 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
         actualTransactionData = AccountActions.retrievingAccountData().getTransactionData();
         Assert.assertEquals(actualTransactionData, savingAccTransactionData, "Transaction data doesn't match!");
 
-        logInfo("Step 21: Go to cash drawer and verify its:");
+        logInfo("Step 21: Go to cash drawer and verify its: \n" +
+                "- denominations \n" +
+                "- total cash in \n" +
+                "- total cash out");
         // prepare calculations
         double cashIn = multipleTransaction.getSources().get(0).getAmount();
         double cashOut = multipleTransaction.getDestinations().get(0).getAmount();
         double countedCash = cashIn - cashOut;
 
-        // prepare cash drawer data
+        // prepare expected cash drawer data
         cashDrawerData.addCashIn(cashIn);
         cashDrawerData.addCashOut(cashOut);
         cashDrawerData.addCountedCash(countedCash);
+        cashDrawerData.addHundredsAmount(cashIn);
+        cashDrawerData.reduceFiftiesAmount(cashOut);
 
         Actions.transactionActions().loginTeller();
         Actions.cashDrawerAction().goToCashDrawerPage();

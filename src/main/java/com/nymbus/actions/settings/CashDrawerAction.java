@@ -135,7 +135,7 @@ public class CashDrawerAction {
     public void goToCashDrawerPage() {
         Pages.aSideMenuPage().clickCashDrawerMenuItem();
 
-        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
+      //  SelenideTools.sleep(Constants.SMALL_TIMEOUT);
     }
 
     public CashDrawerData getCashDrawerData() {
@@ -143,6 +143,8 @@ public class CashDrawerAction {
         data.setCashIn(getCashInValue());
         data.setCashOut(getCashOutValue());
         data.setCountedCash(getCountedCashValue());
+        data.setHundredsAmount(getHundredsValue());
+        data.setFiftiesAmount(getFiftiesValue());
 
         return data;
     }
@@ -159,6 +161,16 @@ public class CashDrawerAction {
 
     private double getCountedCashValue() {
         String value = Pages.cashDrawerBalancePage().getCountedCash();
+        return Double.parseDouble(value);
+    }
+
+    private double getHundredsValue() {
+        String value = Pages.cashDrawerBalancePage().getHundredsAmount();
+        return Double.parseDouble(value);
+    }
+
+    private double getFiftiesValue() {
+        String value = Pages.cashDrawerBalancePage().getFiftiesAmount();
         return Double.parseDouble(value);
     }
 }
