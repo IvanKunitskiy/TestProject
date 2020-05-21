@@ -84,7 +84,15 @@ public class C22599_AddAccountLevelDocumentTest extends BaseTest {
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 7: Look through the records on the Maintenance History page and verify that records about newly created Document are present on the Maintenance History page");
-        // TODO: Implement verification at Maintenance History page
+        AccountActions.accountMaintenanceActions().expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Drag and Drop Documents here") >= 1,
+                "'Drag and Drop Documents here' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Category") >= 1,
+                "'Category' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Parent Category") >= 1,
+                "'Parent Category' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Notes") >= 1,
+                "'Notes' row count is incorrect!");
     }
 
 }

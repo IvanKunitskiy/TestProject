@@ -103,6 +103,12 @@ public class C22609_EditDeleteSpecialInstructionTest extends BaseTest {
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 9: Look through the records on Maintenance History page and make sure that there is information about editing Instruction and deleting the Instruction");
-        // TODO: Implement verification at Maintenance History page
+        AccountActions.accountMaintenanceActions().expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Instruction Type") >= 2,
+                "'Instruction Type' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Notes") >= 2,
+                "'Notes' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 2,
+                "'Expiration Date' row count is incorrect!");
     }
 }

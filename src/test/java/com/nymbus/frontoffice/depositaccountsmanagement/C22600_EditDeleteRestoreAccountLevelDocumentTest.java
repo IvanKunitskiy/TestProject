@@ -89,7 +89,15 @@ public class C22600_EditDeleteRestoreAccountLevelDocumentTest extends BaseTest {
         logInfo("Step 6: Go to Account Maintenance-> Maintenance History page and check that records about the updated document are present. (Account Details->Maintenance->Maintenance History)");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
-        // TODO: Implement verification at Maintenance History page
+        AccountActions.accountMaintenanceActions().expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Drag and Drop Documents here") >= 2,
+                "'Drag and Drop Documents here' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Category") >= 2,
+                "'Category' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Parent Category") >= 2,
+                "'Parent Category' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Notes") >= 2,
+                "'Notes' row count is incorrect!");
 
         logInfo("Step 7: Go back to Documents tab and check the checkbox next to the document record");
         Pages.accountNavigationPage().clickDocumentsTab();
@@ -105,7 +113,15 @@ public class C22600_EditDeleteRestoreAccountLevelDocumentTest extends BaseTest {
         logInfo("Step 10: Go to Account Maintenance-> Maintenance History page and check that records about document delete and restore are written to account Maintenance History");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
-        // TODO: Implement verification at Maintenance History page
+        AccountActions.accountMaintenanceActions().expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Drag and Drop Documents here") >= 3,
+                "'Drag and Drop Documents here' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Category") >= 4,
+                "'Category' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Parent Category") >= 4,
+                "'Parent Category' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Notes") >= 4,
+                "'Notes' row count is incorrect!");
 
     }
 }

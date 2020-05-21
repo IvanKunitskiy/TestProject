@@ -9,6 +9,9 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.note.Note;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
@@ -21,27 +24,33 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22605_AddAccountLevelNotesTest extends BaseTest {
 
-    private Client client;
+    private IndividualClient client;
     private Account chkAccount;
     private Note note1;
     private Note note2;
 
     @BeforeMethod
     public void preCondition() {
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
 
+        // Set up a client
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
+
+        // Set up a note
         note1 = new Note().setDefaultNoteData();
         note2 = new Note().setDefaultNoteData();
 
         // Set up account
         chkAccount = new Account().setCHKAccountData();
 
-        // Create a client with a note. Set note's 'Due Date' to current date
-        Selenide.open(Constants.URL);
+        // Create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+
+        // Create account and logout
         AccountActions.createAccount().createCHKAccount(chkAccount);
         Actions.loginActions().doLogOut();
     }
@@ -102,6 +111,12 @@ public class C22605_AddAccountLevelNotesTest extends BaseTest {
 
         logInfo("Step 8: Look through the records on Maintenance History page\n" +
                 "and make sure that there is information about newly created account note");
-        // TODO: Implement verification at Maintenance History page
+        AccountActions.accountMaintenanceActions().expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Due Date") >= 1,
+                "'Due Date' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 1,
+                "'Expiration Date' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Subject") >= 1,
+                "'Subject' row count is incorrect!");
     }
 }
