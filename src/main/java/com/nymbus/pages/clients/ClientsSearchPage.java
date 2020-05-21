@@ -19,6 +19,7 @@ public class ClientsSearchPage extends PageTools {
     private By loadMoreResultsButton = By.xpath("//div[text()='Load More Results']");
     private By clearSearchInputFieldButton = By.xpath("//button[@class='btn btn-link btnIcon']");
     private By viewAccountButtonByValue = By.xpath("//div[contains(text(),'%s')]/parent::div");
+    private By lookupResultOptions = By.xpath("//div[contains(@class, 'ui-select-choices-content selectize-dropdown-content bgWhite')]//div[@role='option']");
 
     @Step("Wait for a side menu")
     public void waitForASideMenu(){
@@ -28,6 +29,12 @@ public class ClientsSearchPage extends PageTools {
     @Step("Wait for 'Add new client' button")
     public void waitForAddNewClientButton() {
         waitForElementVisibility(addNewClientButton);
+    }
+
+    @Step("Get all search results options")
+    public int getLookupResultOptionsCount() {
+        waitForElementVisibility(lookupResultOptions);
+        return getElements(lookupResultOptions).size();
     }
 
     @Step("Type '{client}' to clients input field")
