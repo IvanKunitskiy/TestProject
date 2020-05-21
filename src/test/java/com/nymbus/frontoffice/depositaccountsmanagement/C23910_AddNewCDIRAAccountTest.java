@@ -40,7 +40,7 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
         cdIRAAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
         cdIRAAccount.setApplyInterestTo("CHK Acct");
         cdIRAAccount.setTermType("6");
-        cdIRAAccount.setInterestRate("0.6%");
+        cdIRAAccount.setInterestRate("0.6");
         cdIRAAccount.setMaturityDate(DateTime.getDateWithNMonthAdded(cdIRAAccount.getDateOpened(), "MM/dd/yyyy", Integer.parseInt(cdIRAAccount.getTermType())));
         cdIRAAccount.setDateNextInterest(DateTime.getDateWithNMonthAdded(cdIRAAccount.getDateOpened(), "MM/dd/yyyy", 3)); // 3 month added as 'Interest Frequency' is set to 'Quarterly'
 
@@ -63,7 +63,7 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
     public void addNewCDIRAAccount() {
 
         logInfo("Step 1: Log in to the system as the user from the precondition");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+//        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the client from the preconditions and open his profile on Accounts tab");
         Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID);
@@ -101,15 +101,9 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
         Assert.assertEquals(Pages.addAccountPage().getIRADistributionCode(), cdIRAAccount.getIraDistributionCode(), "'IRA Distribution Code' is prefilled with wrong value");
 
         logInfo("Step 7: Select values in such drop-down fields:");
-        AccountActions.createAccount().selectValuesInDropdownFieldsRequiredForCDIRAAccount(cdIRAAccount);
-
         logInfo("Step 8: Fill in such text fields with valid data (except Account Number field):");
-        Pages.addAccountPage().setAccountTitleValue(cdIRAAccount.getAccountTitle());
-        Pages.addAccountPage().setIRADistributionAmountValue(cdIRAAccount.getIraDistributionAmount());
-
         logInfo("Step 9: Select Date Opened as any date < Current Date and Select Date next IRA distribution as any date > Current Date");
-        Pages.addAccountPage().setDateOpenedValue(cdIRAAccount.getDateOpened());
-        Pages.addAccountPage().setDateNextIRADistributionValue(cdIRAAccount.getDateNextIRADistribution());
+        AccountActions.createAccount().setValuesInFieldsRequiredForCDIRAAccount(cdIRAAccount);
 
         logInfo("Step 10: Submit the account creation by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();

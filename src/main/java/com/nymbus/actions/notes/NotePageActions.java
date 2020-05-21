@@ -14,5 +14,6 @@ public class NotePageActions {
         Pages.notesPage().setDueDateValue(note.getDueDate());
         Pages.notesPage().setExpirationDateValue(note.getExpirationDate());
         Pages.notesPage().clickSaveButton();
+        Pages.notesPage().waitForAddNewNoteButton();
     }
 }

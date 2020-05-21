@@ -28,17 +28,11 @@ import org.testng.annotations.Test;
 public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
 
     private IndividualClient client;
-    private User user;
     private Account chkAccount;
     private Note note;
 
-    // TODO: Rerun TC after fixing date issue on test env
-
     @BeforeMethod
     public void preCondition() {
-
-        // Set up a user
-        user = new User().setDefaultUserData();
 
         // Set up a client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
@@ -47,22 +41,14 @@ public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
 
         // Set up a note
         note = new Note().setDefaultNoteData();
+        note.setResponsibleOfficer(Constants.FIRST_NAME + " " + Constants.LAST_NAME);
 
         // Set up account
         chkAccount = new Account().setCHKAccountData();
 
-        // Create user and set him a password
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        Actions.usersActions().createUser(user);
-        Actions.loginActions().doLogOut();
-        Selenide.open(Constants.WEB_ADMIN_URL);
-        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        WebAdminActions.webAdminUsersActions().setUserPassword(user);
-        WebAdminActions.loginActions().doLogout();
-
         // Create a client
         Selenide.open(Constants.URL);
-        Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
@@ -77,6 +63,7 @@ public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
         Pages.notesPage().setDueDateValue(note.getDueDate());
         Pages.notesPage().setExpirationDateValue(note.getExpirationDate());
         Pages.notesPage().clickSaveButton();
+        Pages.notesPage().waitForAddNewNoteButton();
         Actions.loginActions().doLogOut();
     }
 
@@ -85,8 +72,7 @@ public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
     public void editDeleteAccountLevelNotesTest() {
 
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Selenide.open(Constants.URL);
-        Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for account from the precondition and open it on Notes tab");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
@@ -140,8 +126,8 @@ public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
 
         logInfo("Step 9: Refresh the page and pay attention to the colored bar in the header");
         SelenideTools.refresh();
-        Assert.assertFalse(Pages.notesPage().isNoteAlertAppeared("Account | " + chkAccount.getAccountNumber() +
-                " | " + note.getNewNote()), "Note alert not appeared on the page");
+        Assert.assertFalse(Pages.notesPage().isNoteAlertVisible("Account | " + chkAccount.getAccountNumber() +
+                " | " + note.getNewNote()), "Note alert appeared on the page");
 
         logInfo("Step 10: Click bell icon in the top right of the header and pay attention to the Alerts panel");
         Pages.navigationPage().clickAlertNotificationsButton();

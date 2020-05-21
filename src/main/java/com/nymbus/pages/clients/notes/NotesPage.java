@@ -40,6 +40,11 @@ public class NotesPage extends PageTools {
         return isElementVisible(noteAlertByContent, noteContent);
     }
 
+    @Step("Check that alert for created note visible")
+    public boolean isNoteAlertVisible(String noteContent) { // format (Account | {account number} | note)
+        return isElementVisible(noteAlertByContent, noteContent);
+    }
+
     @Step("Click the 'Severity' option")
     public void clickTemplateSelectorOption(String templateOption) {
         waitForElementVisibility(templateSelectorOption, templateOption);
@@ -162,6 +167,12 @@ public class NotesPage extends PageTools {
         click(addNewNote);
     }
 
+    @Step("Wait for 'Add new note' button is clickable")
+    public void waitForAddNewNoteButtonIsClickable() {
+        waitForElementVisibility(addNewNote);
+        waitForElementClickable(addNewNote);
+    }
+
     @Step("Type text to 'New Note' text area")
     public void typeToNewNoteTextArea(String text) {
         waitForElementVisibility(newNoteTextArea, text);
@@ -180,7 +191,6 @@ public class NotesPage extends PageTools {
     public void clickSaveButton() {
         waitForElementVisibility(saveNoteButton);
         waitForElementClickable(saveNoteButton);
-//        SelenideTools.sleep(3);
         click(saveNoteButton);
         SelenideTools.sleep(3);
     }
