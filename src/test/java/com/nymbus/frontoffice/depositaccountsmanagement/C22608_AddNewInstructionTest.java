@@ -14,12 +14,14 @@ import com.nymbus.newmodels.generation.accountinstructions.builder.ActivityHoldI
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Clients Management")
+@Owner("Petro")
 public class C22608_AddNewInstructionTest extends BaseTest {
 
     private IndividualClient client;
@@ -81,6 +83,12 @@ public class C22608_AddNewInstructionTest extends BaseTest {
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 7: Look through the Maintenance History records and check that records about the newly created Instruction are present in the list");
-        // TODO: Implement verification at Maintenance History page
+        AccountActions.accountMaintenanceActions().expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Instruction Type") >= 1,
+                "'Instruction Type' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Notes") >= 1,
+                "'Notes' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 1,
+                "'Expiration Date' row count is incorrect!");
     }
 }
