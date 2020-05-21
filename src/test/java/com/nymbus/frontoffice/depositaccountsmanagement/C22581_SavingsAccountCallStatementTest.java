@@ -1,6 +1,7 @@
 package com.nymbus.frontoffice.depositaccountsmanagement;
 
 import com.nymbus.actions.Actions;
+import com.nymbus.actions.LoginActions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
@@ -19,39 +20,42 @@ import org.testng.annotations.Test;
 @Feature("Deposit Accounts Management")
 @Owner("Petro")
 public class C22581_SavingsAccountCallStatementTest extends BaseTest {
+
     private String savingsAccountNumber = "";
 
     @BeforeMethod
     public void prepareData() {
-        // Set up Client, Account, Transaction and Instruction
+        // Set up client
         Client client = new Client().setDefaultClientData();
         client.setClientStatus("Member");
         client.setClientType("Individual");
-        Account savingsAccount = new Account().setSavingsAccountData();
-        Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-        // Create client
+        // Set iup account
+        Account savingsAccount = new Account().setSavingsAccountData();
+
+        // Set up transaction with account number
+        Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        transaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
+
+        // Log in and create a client
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.createClient().createClient(client);
 
         // Create account
         AccountActions.createAccount().createSavingsAccount(savingsAccount);
         savingsAccountNumber = savingsAccount.getAccountNumber();
 
-        // Set up transaction with account number
-        transaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
-
         // Create transaction
-        Actions.transactionActions().goToTellerPage();
-        Actions.transactionActions().doLoginTeller();
-        Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
-        Actions.transactionActions().clickCommitButton();
-        Pages.tellerPage().closeModal();
+        Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
+        Actions.loginActions().doLogOut();
     }
 
     @Test(description = "C22581, Client Accounts: Savings account call statement")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyCallStatementOnSavingsAccount() {
+
+        logInfo("Step 1: Log in to the system as User from the preconditions");
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the Savings account from the precondition and open it on Transactions tab");
         AccountActions.editAccount().navigateToAccountDetails(savingsAccountNumber, false);

@@ -56,6 +56,7 @@ public class AccountInstructionsPage extends PageTools {
 
     @Step("Click 'New Instruction' button")
     public void clickNewInstructionButton() {
+        waitForElementVisibility(newInstructionButton);
         waitForElementClickable(newInstructionButton);
         click(newInstructionButton);
     }

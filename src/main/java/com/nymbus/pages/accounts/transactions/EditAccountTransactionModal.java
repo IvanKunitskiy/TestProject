@@ -10,9 +10,9 @@ public class EditAccountTransactionModal extends PageTools {
     private By saveChanges = By.xpath("//button[contains(text(), 'Save Changes')]");
 
     @Step("Edit 'Description' field")
-    public void editDescriptionField() {
+    public void editDescriptionField(String s) {
         waitForElementClickable(descriptionField);
-        typeWithoutWipe(Generator.genString(5), descriptionField);
+        type(s, descriptionField);
     }
 
     @Step("Click the 'Save Changes' button")

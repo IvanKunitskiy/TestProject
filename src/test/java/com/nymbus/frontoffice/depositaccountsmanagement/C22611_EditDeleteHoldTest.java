@@ -108,7 +108,8 @@ public class C22611_EditDeleteHoldTest extends BaseTest {
         Assert.assertEquals(actualBalanceData, balanceData, "Balance data doesn't match!");
 
         logInfo("Step 9: Go to Account Maintenance-> Maintenance History page");
-        AccountActions.editAccount().goToMaintenanceHistory();
+        Pages.accountNavigationPage().clickMaintenanceTab();
+        Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 10: Look through the Maintenance History records and check that records about the editing Hold and deleting the hold");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("instruction") > 0,

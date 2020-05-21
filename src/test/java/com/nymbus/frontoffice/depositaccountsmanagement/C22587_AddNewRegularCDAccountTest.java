@@ -110,10 +110,11 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         Pages.accountDetailsPage().waitForFullProfileButton();
 
         logInfo("Step 12: Check the fields that were filled in during account creation");
-        Pages.accountDetailsPage().clickMoreButton();
+        if (Pages.accountDetailsPage().isMoreButtonVisible()) {
+            Pages.accountDetailsPage().clickMoreButton();
+        }
         Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), cdAccount.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), cdAccount.getBankBranch(), "'Bank Branch' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getInterestFrequency(), cdAccount.getInterestFrequency(), "'Interest Frequency' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getApplyInterestTo(), cdAccount.getApplyInterestTo(), "'Apply Interest To' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getInterestType(), cdAccount.getInterestType(), "'Interest Type' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCorrespondingAccount(), cdAccount.getCorrespondingAccount(), "'Corresponding Account' value does not match");
