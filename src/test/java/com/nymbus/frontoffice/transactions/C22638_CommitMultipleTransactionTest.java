@@ -15,10 +15,8 @@ import com.nymbus.newmodels.generation.tansactions.builder.CashInMiscCreditCHKAc
 import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitCashDepositMultipleTransactionBuilder;
 import com.nymbus.newmodels.transaction.MultipleTransaction;
 import com.nymbus.newmodels.transaction.Transaction;
-import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
-import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCDAcc;
-import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
-import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
+import com.nymbus.newmodels.transaction.verifyingModels.*;
+import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
@@ -33,6 +31,7 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
     private BalanceData savingAccBalanceData;
     private BalanceDataForCDAcc cdAccBalanceData;
     private BalanceDataForCHKAcc chkAccBalanceData;
+    private CashDrawerData cashDrawerData;
 
     @BeforeMethod
     public void prepareTransactionData() {
@@ -48,6 +47,8 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
         // Set up  transactions
         Transaction transaction = new TransactionConstructor(new CashInMiscCreditCHKAccBuilder()).constructTransaction();
         multipleTransaction = new MultipleTransactionConstructor(new MiscDebitCashDepositMultipleTransactionBuilder()).constructTransaction();
+
+        // Log in
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Create client
@@ -81,8 +82,18 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
         multipleTransaction.getDestinations().get(2).setAccountNumber(cdAccount.getAccountNumber());
 
         // perform transaction
-        Actions.transactionActions().performCashInMiscCreditTransaction(transaction);
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
+        Actions.transactionActions().createCashInMiscCreditTransaction(transaction);
+        Actions.transactionActions().clickCommitButton();
+        Pages.verifyConductorModalPage().clickVerifyButton();
+        Pages.tellerPage().closeModal();
         chkAccBalanceData.addAmount(transaction.getTransactionDestination().getAmount());
+
+        Actions.transactionActions().loginTeller();
+        Actions.cashDrawerAction().goToCashDrawerPage();
+        cashDrawerData = Actions.cashDrawerAction().getCashDrawerData();
+
         Actions.loginActions().doLogOut();
     }
 
@@ -147,12 +158,22 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
 
         savingAccBalanceData.addAmount(multipleTransaction.getDestinations().get(1).getAmount());
 
-        logInfo("Step 16: Search for Savings account that was used in Deposit item and verify such fields: \n" +
+        logInfo("Step 16: Search for Savings account that was used in Deposit item and Open it on Instructions tab");
+        Actions.clientPageActions().searchAndOpenClientByName(saveAccount.getAccountNumber());
+        AccountActions.editAccount().goToInstructionsTab();
+
+        logInfo("Step 17: Check the list of instructions for the account (if exist) and delete the Hold with type Reg CC");
+        String INSTRUCTION_REASON = "Reg CC";
+        AccountActions.createInstruction().deleteInstructionByReasonText(INSTRUCTION_REASON);
+
+        logInfo("Step 18: Open account on Details and refresh the page");
+        AccountActions.editAccount().goToDetailsTab();
+
+        logInfo("Step 19: Verify such fields: \n" +
                 "- current balance \n" +
                 "- available balance");
-        Actions.clientPageActions().searchAndOpenClientByName(saveAccount.getAccountNumber());
         BalanceData actualBalanceDataForSavingAcc = AccountActions.retrievingAccountData().getBalanceData();
-        Assert.assertEquals(actualBalanceDataForSavingAcc, savingAccBalanceData,"CDAccount balances is not correct!");
+        Assert.assertEquals(actualBalanceDataForSavingAcc, savingAccBalanceData,"Saving account balances is not correct!");
 
         TransactionData savingAccTransactionData = new TransactionData(multipleTransaction.getTransactionDate(),
                 multipleTransaction.getTransactionDate(),
@@ -160,11 +181,30 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
                 cdAccBalanceData.getCurrentBalance(),
                 multipleTransaction.getDestinations().get(1).getAmount());
 
-        logInfo("Step 17: Open account on Transactions tab and verify that transaction is written on transactions history page");
+        logInfo("Step 20: Open account on Transactions tab and verify that transaction is written on transactions history page");
         AccountActions.retrievingAccountData().goToTransactionsTab();
         actualTransactionData = AccountActions.retrievingAccountData().getTransactionData();
         Assert.assertEquals(actualTransactionData, savingAccTransactionData, "Transaction data doesn't match!");
 
-        // TODO add verifications for cash drawer page
+        logInfo("Step 21: Go to cash drawer and verify its: \n" +
+                "- denominations \n" +
+                "- total cash in \n" +
+                "- total cash out");
+        // prepare calculations
+        double cashIn = multipleTransaction.getSources().get(0).getAmount();
+        double cashOut = multipleTransaction.getDestinations().get(0).getAmount();
+        double countedCash = cashIn - cashOut;
+
+        // prepare expected cash drawer data
+        cashDrawerData.addCashIn(cashIn);
+        cashDrawerData.addCashOut(cashOut);
+        cashDrawerData.addCountedCash(countedCash);
+        cashDrawerData.addHundredsAmount(cashIn);
+        cashDrawerData.reduceFiftiesAmount(cashOut);
+
+        Actions.transactionActions().loginTeller();
+        Actions.cashDrawerAction().goToCashDrawerPage();
+        CashDrawerData actualData =  Actions.cashDrawerAction().getCashDrawerData();
+        Assert.assertEquals(actualData, cashDrawerData, "Cash drawer data doesn't match!");
     }
 }

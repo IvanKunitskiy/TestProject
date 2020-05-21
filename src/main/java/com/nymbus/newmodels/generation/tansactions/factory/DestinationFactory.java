@@ -1,8 +1,11 @@
 package com.nymbus.newmodels.generation.tansactions.factory;
 
 import com.nymbus.newmodels.transaction.TransactionDestination;
+import com.nymbus.newmodels.transaction.enums.Denominations;
 import com.nymbus.newmodels.transaction.enums.DestinationType;
 import com.nymbus.util.Random;
+
+import java.util.HashMap;
 
 public class DestinationFactory {
 
@@ -10,6 +13,8 @@ public class DestinationFactory {
         TransactionDestination destination = new TransactionDestination();
         destination.setSourceType(DestinationType.CASH_OUT);
         destination.setAmount(100);
+        destination.setDenominationsHashMap(new HashMap<>());
+        destination.getDenominationsHashMap().put(Denominations.FIFTIES, 100d);
         return destination;
     }
 
