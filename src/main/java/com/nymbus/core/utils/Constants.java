@@ -64,4 +64,11 @@ public class Constants {
                 return "408079";
         }
     }
+
+    /**
+     * Timeouts
+     */
+    public static final int MICRO_TIMEOUT = 2;
+    public static final int MINI_TIMEOUT = 5;
+    public static final int SMALL_TIMEOUT = 10;
 }

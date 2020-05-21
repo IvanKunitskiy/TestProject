@@ -38,7 +38,6 @@ public class C22557_ViewEditDeleteRestoreClientLevelDocumentationTest extends Ba
         companyIDDocument = new DocumentFactory().getCompanyIDDocument();
 
         // Create the client
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);

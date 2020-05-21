@@ -55,6 +55,10 @@ public class PageTools extends AllureLogger {
         return $(byLocator(by, args)).shouldBe(condition);
     }
 
+    protected SelenideElement shouldMatchText(String pattern, By by, Object... args) {
+        return $(byLocator(by, args)).should(Condition.matchesText(pattern));
+    }
+
     /**
      * Main Actions
      */
@@ -196,6 +200,12 @@ public class PageTools extends AllureLogger {
 
     protected List<SelenideElement> getElementsWithZeroOption(By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", elements --> " + byLocator(by, args));
+        return shouldBe(sizeGreaterThanOrEqual(0), by, args);
+    }
+
+    protected List<SelenideElement> getElementsWithZeroOptionWithWait(int waitTimeout, By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", elements --> " + byLocator(by, args));
+        Selenide.sleep(waitTimeout * 1000);
         return shouldBe(sizeGreaterThanOrEqual(0), by, args);
     }
 
