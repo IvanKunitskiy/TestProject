@@ -41,7 +41,7 @@ public class AddAccountPage extends PageTools {
     private By dateNextIRADistribution = By.xpath("//input[@id='datenextiradistribution']");
     private By termType = By.xpath("//input[@id='terminmonthsordays']");
     private By autoRenewable = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span[contains(@class, 'ng-scope')]");
-    private By interestFrequency = By.xpath("//div[@id='interestfrequencycode']/a/span/span[contains(@class, 'ng-scope')]");
+    private By interestFrequency = By.xpath("//div[@id='interestfrequency']/a/span/span[contains(@class, 'ng-scope')]");
     private By interestRate = By.xpath("//input[@id='interestrate']");
     private By interestType = By.xpath("//div[@id='interesttype']/a/span/span[contains(@class, 'ng-scope')]");
     private By transactionalAccountSwitch = By.xpath("//dn-switch[@id='transactionalaccount']");

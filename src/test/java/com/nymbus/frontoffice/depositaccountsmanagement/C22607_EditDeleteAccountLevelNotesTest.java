@@ -140,6 +140,16 @@ public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 12: Look through the records on Maintenance History page and make sure that there is information about editing note and deleting the note");
-        // TODO: Implement verification at Maintenance History page
+        AccountActions.accountMaintenanceActions().expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Responsible Officer") >= 2,
+                "'Responsible Officer' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Due Date") >= 2,
+                "'Due Date' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 2,
+                "'Expiration Date' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Subject") >= 2,
+                "'Subject' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Severity") >= 2,
+                "'Severity' row count is incorrect!");
     }
 }
