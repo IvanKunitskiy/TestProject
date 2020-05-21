@@ -19,6 +19,7 @@ public class CreateAccount {
 
     public void createCDAccount(Account account) {
         clickAccountsTab();
+        Actions.clientPageActions().closeAllNotifications();
         setAddNewOption(account);
         setProductType(account);
         setProduct(account);

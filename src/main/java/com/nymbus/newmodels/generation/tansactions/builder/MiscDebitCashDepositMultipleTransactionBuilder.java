@@ -1,5 +1,6 @@
 package com.nymbus.newmodels.generation.tansactions.builder;
 
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.generation.tansactions.factory.DestinationFactory;
 import com.nymbus.newmodels.generation.tansactions.factory.SourceFactory;
@@ -18,7 +19,7 @@ public class MiscDebitCashDepositMultipleTransactionBuilder implements MultipleT
 
     @Override
     public void setDate() {
-        multipleTransaction.setTransactionDate(DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy"));
+        multipleTransaction.setTransactionDate(WebAdminActions.loginActions().getSystemDate());
     }
 
     @Override

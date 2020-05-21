@@ -1,7 +1,10 @@
 package com.nymbus.newmodels.generation.tansactions.factory;
 
 import com.nymbus.newmodels.transaction.TransactionSource;
+import com.nymbus.newmodels.transaction.enums.Denominations;
 import com.nymbus.newmodels.transaction.enums.SourceType;
+
+import java.util.HashMap;
 
 public class SourceFactory {
 
@@ -9,6 +12,8 @@ public class SourceFactory {
         TransactionSource source = new TransactionSource();
         source.setSourceType(SourceType.CASH_IN);
         source.setAmount(100);
+        source.setDenominationsHashMap(new HashMap<>());
+        source.getDenominationsHashMap().put(Denominations.HUNDREDS, 100.00);
         return source;
     }
 

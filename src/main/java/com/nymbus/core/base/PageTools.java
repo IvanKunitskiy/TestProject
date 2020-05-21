@@ -55,6 +55,10 @@ public class PageTools extends AllureLogger {
         return $(byLocator(by, args)).shouldBe(condition);
     }
 
+    protected SelenideElement shouldMatchText(String pattern, By by, Object... args) {
+        return $(byLocator(by, args)).should(Condition.matchesText(pattern));
+    }
+
     /**
      * Main Actions
      */
