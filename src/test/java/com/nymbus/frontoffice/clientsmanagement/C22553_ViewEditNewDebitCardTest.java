@@ -35,11 +35,9 @@ public class C22553_ViewEditNewDebitCardTest extends BaseTest {
 
     @BeforeMethod
     public void preCondition() {
-        // TODO: Rewrite preconditions after normalizing new models. User, debit card and chk account should be created in precondition
         // Set up client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        //    private User user;
         IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up debit card and account
