@@ -33,6 +33,10 @@ public class User {
     private boolean isTeller;
     private CashDrawer cashDrawer;
 
+    public String getFirstNameAndLastName() {
+        return String.format("%s %s", this.firstName, this.lastName);
+    }
+
     public User setDefaultUserData() {
         User user = new User();
         user.setFirstName(Generator.genString(2));
