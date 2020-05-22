@@ -1,11 +1,54 @@
 package com.nymbus.actions.webadmin;
 
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Generator;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.data.entity.User;
+import com.nymbus.data.entity.verifyingmodels.TellerSessionVerifyingModel;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.pages.webadmin.WebAdminPages;
 
 public class WebAdminUsersActions {
+
+    private String getTellerSessionUrl(String userId) {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev6DS&"
+                + "dqlQuery=count%3A+20%0D%0A"
+                + "from%3A+bank.session.teller.parameters%0D%0A"
+                + "where%3A+%0D%0A-+.userid->Code%3A+"
+                +  userId
+                + "+%23user%27s+login%0D%0AorderBy%3A+-id&source=";
+    }
+
+    private String getBankControlFileUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "rulesui2.sbs.bcfile.ct?"
+                + "formName=bank.data.bcfile&filter_(databean)code=CFMIntegrationEnable";
+    }
+
+    public TellerSessionVerifyingModel getTellerSessionDate(String userId) {
+        TellerSessionVerifyingModel verifyingModel = new TellerSessionVerifyingModel();
+
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        SelenideTools.openUrl(getBankControlFileUrl());
+        verifyingModel.setCFMIntegrationEnabled(WebAdminPages.rulesUIQueryAnalyzerPage().getBankControlFileNameFieldValue());
+        int bcfValue = Integer.parseInt(WebAdminPages.rulesUIQueryAnalyzerPage().getBankControlFileValue());
+        verifyingModel.setCFMIntegrationEnabledSettingValue(bcfValue);
+
+        SelenideTools.openUrl(getTellerSessionUrl(userId));
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        verifyingModel.setUserSessionExist(WebAdminPages.rulesUIQueryAnalyzerPage().isSearchResultTableExist());
+
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+
+        return verifyingModel;
+    }
 
     public void setUserPassword(User user) {
         WebAdminPages.navigationPage().waitForPageLoaded();

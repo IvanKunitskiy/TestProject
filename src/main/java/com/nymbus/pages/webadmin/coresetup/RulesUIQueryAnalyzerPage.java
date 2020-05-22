@@ -1,5 +1,6 @@
 package com.nymbus.pages.webadmin.coresetup;
 
+import com.codeborne.selenide.Condition;
 import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -38,6 +39,11 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getLastNameByIndex(int index) {
         waitForElementVisibility(lastNameByIndex, index);
         return getElementText(lastNameByIndex, index);
+    }
+
+    @Step("Is search results table exist")
+    public boolean isSearchResultTableExist() {
+        return isCondition(Condition.exist, searchResultTable);
     }
 
     /**
@@ -118,11 +124,29 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     /**
      * Data BcFile region
      */
-    private By systemDateField= By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][1]//*[@key-name='date']");
+    private By systemDateField = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][1]//*[@key-name='date']");
 
     @Step ("Get current date - 1 in system")
     public String getDateInSystem() {
         waitForElementVisibility(systemDateField);
         return getElementText(systemDateField).trim();
+    }
+
+    /**
+     * CFMIntegrationEnabled BcFile region
+     */
+    private By nameField = By.xpath("//*[@id='databean_1']//td[contains(@class, 'rulesui-form-item_(databean)name')]/input");
+    private By valueField = By.xpath("//*[@id='databean_1']//td[contains(@class, 'rulesui-form-item_long')]/input");
+
+    @Step ("Get 'CFMIntegrationEnabled' name field value")
+    public String getBankControlFileNameFieldValue() {
+        waitForElementVisibility(nameField);
+        return getElementAttributeValue("value", nameField).trim();
+    }
+
+    @Step ("Get 'CFMIntegrationEnabled' value field")
+    public String getBankControlFileValue() {
+        waitForElementVisibility(valueField);
+        return getElementAttributeValue("value", valueField).trim();
     }
 }
