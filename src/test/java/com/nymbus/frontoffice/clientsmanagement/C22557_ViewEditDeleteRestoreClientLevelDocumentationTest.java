@@ -2,6 +2,7 @@ package com.nymbus.frontoffice.clientsmanagement;
 
 import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
+import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.clients.documents.DocumentActions;
 import com.nymbus.core.base.BaseTest;
@@ -92,6 +93,22 @@ public class C22557_ViewEditDeleteRestoreClientLevelDocumentationTest extends Ba
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 11: Look through the records on the Maintenance History page and verify that records about editing, deleting/ restoring the Document are present on the Maintenance History page");
-        // TODO: Implement verification at Maintenance History page
+        AccountActions.accountMaintenanceActions().expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Drag and Drop Documents here") >= 3,
+                "'Drag and Drop Documents here' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("ID Type") >= 2,
+                "'ID Type' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("ID Number") >= 3,
+                "'ID Number' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Issued by") >= 2,
+                "'Issued by' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Country") >= 2,
+                "'Country' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Issued Date") >= 2,
+                "'Issued Date' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 2,
+                "'Expiration Date' row count is incorrect!");
+
+
     }
 }
