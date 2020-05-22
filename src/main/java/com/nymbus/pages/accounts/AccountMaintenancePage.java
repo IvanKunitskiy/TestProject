@@ -13,6 +13,11 @@ public class AccountMaintenancePage extends PageTools {
     private By rowOldValueByRowName = By.xpath("(//table//tr//td/span[text()='%s']//ancestor::node()[3]/td[4]/span)[%s]");
     private By rowNewValueByRowName = By.xpath("(//table//tr//td/span[text()='%s']//ancestor::node()[3]/td[5]/span)[%s]");
 
+    @Step("Is more button visible")
+    public boolean isMoreButtonVisible() {
+        return isElementVisible(viewMoreButton);
+    }
+
     @Step("Get row {0} old value by {1}")
     public String getRowOldValueByRowName(String text, int index) {
         waitForElementVisibility(rowOldValueByRowName, text, index);

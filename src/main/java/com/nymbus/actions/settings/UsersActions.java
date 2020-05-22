@@ -1,5 +1,7 @@
 package com.nymbus.actions.settings;
 
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.data.entity.CashDrawer;
 import com.nymbus.data.entity.User;
 import com.nymbus.pages.Pages;
@@ -14,7 +16,6 @@ public class UsersActions {
 
     public void openViewAllUsersPage() {
         Pages.aSideMenuPage().clickSettingsMenuItem();
-
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().waitForUserRegion();
         SettingsPage.mainPage().clickViewAllUsersLink();
@@ -23,9 +24,9 @@ public class UsersActions {
 
     public void searUserOnCustomerSearchPage(User user) {
         openViewAllUsersPage();
-        SettingsPage.usersSearchPage().waitViewUsersListVisible();
         SettingsPage.usersSearchPage().waitForPageLoaded();
-        SettingsPage.usersSearchPage().setUserDataForSearching(user.getFirstName());
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        SettingsPage.usersSearchPage().setUserDataForSearching(user.getFirstNameAndLastName());
         SettingsPage.usersSearchPage().clickSearchButton();
         SettingsPage.usersSearchPage().clickCellByUserData(user.getEmail());
     }

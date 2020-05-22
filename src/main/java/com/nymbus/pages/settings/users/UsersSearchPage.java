@@ -6,21 +6,13 @@ import org.openqa.selenium.By;
 
 public class UsersSearchPage extends PageTools {
 
-    private By overlay = By.xpath("//div[contains(@class, 'blockOverlay')]");
-    private By loadingOverlay = By.xpath("//div[contains(@class, 'loading_overlay')]");
+    private By loadingOverlay = By.xpath("//div[contains(@class, 'xwidget_loading_overlay')]");
     private By searchRegion = By.xpath("//main[contains(@id, 'usruserssearch')]");
     private By cellNyUserData = By.xpath("//td[contains(text(), '%s')]");
     private By searchField = By.xpath("//div[contains(@id, 'usruserssearch-search')]//input[contains(@name, 'search')]");
     private By searchButton = By.xpath("//div[contains(@id, 'usruserssearch-search')]//button[span[text()='Search']]");
 
-
-    public void waitViewUsersListVisible() {
-//        waitForElementVisibility(overlay);
-//        waitForElementInvisibility(overlay);
-//        waitForElementVisibility(searchButton);
-//        waitForElementClickable(searchButton);
-    }
-
+    @Step("Wait for loading animation invisibility")
     public void waitViewUsersListLoading() {
         waitForElementVisibility(loadingOverlay);
         waitForElementInvisibility(loadingOverlay);
@@ -48,7 +40,6 @@ public class UsersSearchPage extends PageTools {
     public void setUserDataForSearching(String userData) {
         waitForElementVisibility(searchField);
         waitForElementClickable(searchField);
-        wipeText(searchField);
         type(userData, searchField);
     }
 
@@ -58,5 +49,4 @@ public class UsersSearchPage extends PageTools {
         waitForElementClickable(searchButton);
         click(searchButton);
     }
-
 }
