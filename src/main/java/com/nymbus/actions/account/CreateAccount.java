@@ -178,7 +178,6 @@ public class CreateAccount {
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccount(account);
-        Pages.addAccountPage().setDiscountPeriods(account.getDiscountPeriods());
         fillInInputFieldsRequiredForSafeDepositBoxAccount(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
