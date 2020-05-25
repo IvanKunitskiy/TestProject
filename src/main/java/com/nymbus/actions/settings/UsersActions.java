@@ -4,6 +4,7 @@ import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.data.entity.CashDrawer;
 import com.nymbus.data.entity.User;
+import com.nymbus.newmodels.settings.UserSettings;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
 import org.testng.Assert;
@@ -13,6 +14,21 @@ import java.util.List;
 import java.util.Random;
 
 public class UsersActions {
+
+    public UserSettings getUserSettings() {
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        Pages.settings().waitForSettingsPageLoaded();
+        SettingsPage.mainPage().clickViewProfile();
+        UserSettings userSettings = new UserSettings();
+        userSettings.setCashDrawer(getCashDrawerWithoutUserName());
+        userSettings.setLocation(SettingsPage.viewUserPage().getLocationValue());
+        return  userSettings;
+    }
+
+    private String getCashDrawerWithoutUserName() {
+        String [] cashDrawerFullValue = SettingsPage.viewUserPage().getCashDrawerValue().split(" ");
+        return String.format("%s", cashDrawerFullValue[0]);
+    }
 
     public void openViewAllUsersPage() {
         Pages.aSideMenuPage().clickSettingsMenuItem();
