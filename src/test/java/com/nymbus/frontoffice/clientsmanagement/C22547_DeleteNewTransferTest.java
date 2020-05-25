@@ -134,6 +134,7 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 7: Look through the records on the Maintenance History page and verify that records about deleting the transfer are present on the Maintenance History page");
+        AccountActions.accountMaintenanceActions().expandAllRows();
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Transfer Type") >= 2,
                 "'Transfer Type' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("To Account") >= 2,
