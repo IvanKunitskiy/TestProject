@@ -27,7 +27,7 @@ public class UsersActions {
 
     private String getCashDrawerWithoutUserName() {
         String [] cashDrawerFullValue = SettingsPage.viewUserPage().getCashDrawerValue().split(" ");
-        return String.format("%s %s %s", cashDrawerFullValue[0],  cashDrawerFullValue[1], cashDrawerFullValue[2]);
+        return String.format("%s", cashDrawerFullValue[0]);
     }
 
     public void openViewAllUsersPage() {

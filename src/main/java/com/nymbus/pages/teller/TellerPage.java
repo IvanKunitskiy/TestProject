@@ -9,12 +9,19 @@ public class TellerPage extends PageTools {
     private By commitButton = By.xpath("//button[text()='Commit Transaction']");
     private By modalWindow = By.xpath("//div[@class='modal-content']");
     private By cashDrawerName = By.xpath("//div[@name='cashDrawerTemplate']/a/span/span");
-    private By effectiveDate = By.xpath("//*[@id='']");
+    private By effectiveDate = By.xpath("//input[@data-test-id='field-']");
+    private By drawerNameInFooter = By.xpath("//footer//span[contains(text(), 'Drawer Name')]/span");
 
     @Step("Wait 'Proof Date Login' modal window")
     public void waitModalWindow() {
         waitForElementVisibility(modalWindow);
         waitForElementClickable(modalWindow);
+    }
+
+    @Step("Get 'Cash Drawer' name")
+    public String getCashDrawerNameInFooter() {
+        waitForElementVisibility(drawerNameInFooter);
+        return getElementText(drawerNameInFooter).trim();
     }
 
     @Step("Get 'Cash Drawer' name")
@@ -35,6 +42,11 @@ public class TellerPage extends PageTools {
         type(date, effectiveDate);
     }
 
+    @Step("Get effective date")
+    public String getEffectiveDate() {
+        waitForElementClickable(effectiveDate);
+        return getElementAttributeValue("value", effectiveDate);
+    }
     /**
      * Success transaction Modal dialog region
      */

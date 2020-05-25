@@ -1,12 +1,16 @@
 package com.nymbus.frontoffice.transactions;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.data.entity.CashDrawer;
+import com.nymbus.data.entity.User;
 import com.nymbus.data.entity.verifyingmodels.TellerSessionVerifyingModel;
 import com.nymbus.newmodels.settings.UserSettings;
 import com.nymbus.pages.Pages;
+import com.nymbus.pages.webadmin.WebAdminPages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
@@ -14,13 +18,45 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class C23995_ProofDateLoginPopupTest extends BaseTest {
+    private User user;
 
     @BeforeMethod
-    public void verifyWebAdminTellerSession() {
-        TellerSessionVerifyingModel verifyingModel = WebAdminActions.webAdminUsersActions().getTellerSessionDate(Constants.USERNAME);
+    public void prepareData() {
+        // Set up user and cashDrawer
+        user = new User().setDefaultUserData();
+        CashDrawer cashDrawer = new CashDrawer().setDefaultTellerValues();
+
+        // Create user
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.usersActions().createUser(user);
+        Actions.loginActions().doLogOut();
+
+        // Set password for new user on webAdmin page
+        Selenide.open(Constants.WEB_ADMIN_URL);
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.webAdminUsersActions().setUserPassword(user);
+
+        // Set additional data for cash drawer
+        user.setTeller(true);
+        cashDrawer.setDefaultUser(user.getFirstName() + " " + user.getLastName());
+        cashDrawer.setBranch(user.getBranch());
+        cashDrawer.setLocation(user.getLocation());
+        user.setCashDrawer(cashDrawer);
+
+        // Get teller session data for new user
+        TellerSessionVerifyingModel verifyingModel = WebAdminActions.webAdminUsersActions().getTellerSessionDate(user.getLoginID());
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+
+        // Login, create cash drawer and logout
+        Selenide.open(Constants.URL);
+        Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
+        Actions.cashDrawerAction().createCashDrawer(cashDrawer);
+        Actions.loginActions().doLogOut();
+
+        // Verifying preconditions (1 is expected value for CFMIntegrationEnabled)
         Assert.assertEquals(verifyingModel.getCFMIntegrationEnabled(), "CFMIntegrationEnabled",
                         "Bank control file setting CFMIntegrationEnabled name doesn't match!");
-        Assert.assertEquals(verifyingModel.getCFMIntegrationEnabledSettingValue(), 0,
+        Assert.assertEquals(verifyingModel.getCFMIntegrationEnabledSettingValue(), 1,
                 "Bank control file setting CFMIntegrationEnabled value doesn't match!");
         Assert.assertFalse(verifyingModel.isUserSessionExist(), "Teller session is active for current user!");
     }
@@ -29,7 +65,7 @@ public class C23995_ProofDateLoginPopupTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void verifyProofDateLoginPopup() {
         logInfo("Step 1: Log in to the system as the User from the precondition");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
         UserSettings userSettings = Actions.usersActions().getUserSettings();
 
         logInfo("Step 2: Go to Teller page");
@@ -44,5 +80,16 @@ public class C23995_ProofDateLoginPopupTest extends BaseTest {
 
         logInfo("Step 4: Сlick [Enter] button");
         Actions.transactionActions().doLoginTeller();
+        Assert.assertFalse(Pages.tellerModalPage().isModalWindowVisible(), "Proof date login popup is visible");
+        Assert.assertEquals(Pages.tellerPage().getEffectiveDate(), WebAdminActions.loginActions().getSystemDate(), "System date is incorrect!");
+        Assert.assertEquals(Pages.tellerPage().getCashDrawerNameInFooter(), userSettings.getCashDrawer(), "Cash drawer name is incorrect!");
+
+        // Navigate to bank.session.teller.parameters
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.webAdminUsersActions().goToTellerSessionUrl(user.getLoginID());
+
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().isSearchResultTableExist(),
+                "Teller session is not active for " + user.getLoginID() + " user!");
     }
 }

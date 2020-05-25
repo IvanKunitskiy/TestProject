@@ -62,6 +62,12 @@ public class LoginActions {
         return result;
     }
 
+    public void openWebAdminPageInNewWindow() {
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
+        SelenideTools.switchToLastTab();
+    }
+
+
     private void waitForSearchResults() {
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
 

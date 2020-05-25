@@ -30,10 +30,6 @@ public class WebAdminUsersActions {
     public TellerSessionVerifyingModel getTellerSessionDate(String userId) {
         TellerSessionVerifyingModel verifyingModel = new TellerSessionVerifyingModel();
 
-        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
-        SelenideTools.switchTo().window(1);
-        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-
         SelenideTools.openUrl(getBankControlFileUrl());
         verifyingModel.setCFMIntegrationEnabled(WebAdminPages.rulesUIQueryAnalyzerPage().getBankControlFileNameFieldValue());
         int bcfValue = Integer.parseInt(WebAdminPages.rulesUIQueryAnalyzerPage().getBankControlFileValue());
@@ -43,11 +39,12 @@ public class WebAdminUsersActions {
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
         verifyingModel.setUserSessionExist(WebAdminPages.rulesUIQueryAnalyzerPage().isSearchResultTableExist());
 
-        WebAdminActions.loginActions().doLogoutProgrammatically();
-        SelenideTools.closeCurrentTab();
-        SelenideTools.switchTo().window(0);
-
         return verifyingModel;
+    }
+
+    public void goToTellerSessionUrl(String userId) {
+        SelenideTools.openUrl(getTellerSessionUrl(userId));
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
     }
 
     public void setUserPassword(User user) {
