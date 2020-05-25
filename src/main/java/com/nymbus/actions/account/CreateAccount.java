@@ -149,6 +149,24 @@ public class CreateAccount {
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
 
+    public void createCHKAccountForDormantPurpose(Account account) {
+        clickAccountsTab();
+        Actions.clientPageActions().closeAllNotifications();
+        setAddNewOption(account);
+        setProductType(account);
+        setProduct(account);
+        Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
+        Pages.addAccountPage().setInterestRate(account.getInterestRate());
+        setStatementCycle(account);
+        Pages.addAccountPage().setOptInOutDateValue(account.getOptInOutDate());
+        Pages.addAccountPage().clickSaveAccountButton();
+        Pages.accountDetailsPage().waitForFullProfileButton();
+    }
+
     public void createCHKAccount(CHKAccount account) {
         clickAccountsTab();
         setAddNewOption(account);
