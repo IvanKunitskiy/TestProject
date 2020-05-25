@@ -6,6 +6,9 @@ import org.openqa.selenium.By;
 
 public class MainPage extends PageTools {
 
+    // User Profile
+    private By viewProfileLink = By.xpath("//div[contains(@class, 'profileModule')]//a[text()='View Profile']");
+
     //Cash Drawer
     private By cashDrawerRegion = By.xpath("//div[div[h2[text()='Cash Drawer']]]");
     private By addNewCashDrawerLink = By.xpath("//div[div[h2[text()='Cash Drawer']]]//span");
@@ -79,4 +82,9 @@ public class MainPage extends PageTools {
         click(viewAllUsersLink);
     }
 
+    @Step("Click 'View Profile' link")
+    public void clickViewProfile() {
+        waitForElementClickable(viewProfileLink);
+        click(viewProfileLink);
+    }
 }
