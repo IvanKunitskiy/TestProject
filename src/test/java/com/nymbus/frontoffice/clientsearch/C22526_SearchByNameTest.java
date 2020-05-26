@@ -1,10 +1,12 @@
 package com.nymbus.frontoffice.clientsearch;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
+import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -21,35 +23,45 @@ import static org.testng.Assert.assertTrue;
 @Feature("Clients search")
 @Owner("Dmytro")
 public class C22526_SearchByNameTest extends BaseTest {
-    private Client client;
+    private IndividualClient client;
 
     @BeforeMethod
-    public void preCondition() {
-        client = new Client();
-        client.setFirstName("Anna");
-        client.setLastName("Adams");
+        public void preCondition() {
 
-        Selenide.open(Constants.URL);
+        // Set up Client and Account
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
-        logInfo("Step 1: Log in to the system as the User from the precondition");
+        // Login to the system and create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        Pages.navigationPage().waitForUserMenuVisible();
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+        Pages.clientDetailsPage().waitForPageLoaded();
+
+        Actions.loginActions().doLogOut();
     }
 
     @Severity(CRITICAL)
     @Test(description = "C22526, Search individualClient by name")
     public void searchByName() {
+
+        logInfo("Step 1: Log in to the system as the User from the precondition");
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Pages.navigationPage().waitForUserMenuVisible();
+
         logInfo("Step 2: Click within search field and try to search for an existing client (by first name)");
-        String firstNameLetters = client.getFirstName().substring(0, 3);
+        String firstNameLetters = client.getIndividualType().getFirstName().substring(0, 3);
         Pages.clientsSearchPage().typeToClientsSearchInputField(firstNameLetters);
 
-        int lookupResultsCount = Pages.clientsSearchPage().getLookupResultsCount();
+        int lookupResultsCount = Pages.clientsSearchPage().getLookupResultOptionsCount();
         Assert.assertTrue(lookupResultsCount > 0);
-        if (lookupResultsCount >= 8)
+        if (lookupResultsCount == 9) {
             assertTrue(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible());
+        }
 
-        Pages.clientsSearchPage().getAllLookupResults()
-                .stream().forEach(c -> assertTrue(c.contains(firstNameLetters)));
+        Pages.clientsSearchPage().getAllLookupResults().forEach(c -> assertTrue(c.contains(firstNameLetters)));
 
         logInfo("Step 3: Click [Search] button");
         Pages.clientsSearchPage().clickOnSearchButton();
@@ -58,11 +70,11 @@ public class C22526_SearchByNameTest extends BaseTest {
 
         Assert.assertTrue(searchResults > 0);
 
-        Pages.clientsSearchResultsPage().getListOfClientsName()
-                .stream().forEach(c -> assertTrue(c.contains(firstNameLetters)));
+        Pages.clientsSearchResultsPage().getListOfClientsName().forEach(c -> assertTrue(c.contains(firstNameLetters)));
 
-        if (searchResults > 8)
+        if (searchResults > 8) {
             assertTrue(Pages.clientsSearchResultsPage().isLoadMoreResultsButtonVisible());
+        }
 
         logInfo("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
         Pages.clientsSearchPage().clickOnSearchInputFieldClearButton();
@@ -73,16 +85,16 @@ public class C22526_SearchByNameTest extends BaseTest {
             e.printStackTrace();
         }
 
-        String lastNameLetters = client.getLastName().substring(0, 3);
+        String lastNameLetters = client.getIndividualType().getLastName().substring(0, 3);
         Pages.clientsSearchPage().typeToClientsSearchInputField(lastNameLetters);
 
-        lookupResultsCount = Pages.clientsSearchPage().getLookupResultsCount();
+        lookupResultsCount = Pages.clientsSearchPage().getLookupResultOptionsCount();
         Assert.assertTrue(lookupResultsCount > 0);
-        if (lookupResultsCount > 8)
+        if (lookupResultsCount == 9) {
             assertTrue(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible());
+        }
 
-        Pages.clientsSearchPage().getAllLookupResults()
-                .stream().forEach(c -> assertTrue(c.contains(lastNameLetters)));
+        Pages.clientsSearchPage().getAllLookupResults().forEach(c -> assertTrue(c.contains(lastNameLetters)));
 
         Pages.clientsSearchPage().clickOnSearchInputFieldClearButton();
 
@@ -92,11 +104,9 @@ public class C22526_SearchByNameTest extends BaseTest {
             e.printStackTrace();
         }
 
-        Pages.clientsSearchPage().typeToClientsSearchInputField(client.getFirstName() + " " + client.getLastName());
+        Pages.clientsSearchPage().typeToClientsSearchInputField(client.getNameForDebitCard());
 
-        Pages.clientsSearchPage().getAllLookupResults()
-                .stream().forEach(c -> assertTrue(c.contains(client.getFirstName()) &&
-                c.contains(client.getLastName())));
-
+        Pages.clientsSearchPage().getAllLookupResults().forEach(c -> assertTrue(c.contains(client.getIndividualType().getFirstName()) &&
+                c.contains(client.getIndividualType().getLastName())));
     }
 }

@@ -81,6 +81,10 @@ public class DebitCardModalWindowActions {
 
         Pages.cardsManagementPage().clickEditButton(i);
 
-        return Pages.debitCardModalWindow().getCardNumber();
+        String cardNumber = Pages.debitCardModalWindow().getCardNumber();
+
+        Pages.debitCardModalWindow().clickOnCancelButton();
+
+        return cardNumber;
     }
 }

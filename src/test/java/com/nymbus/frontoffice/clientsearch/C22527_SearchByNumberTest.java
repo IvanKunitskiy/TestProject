@@ -1,10 +1,14 @@
 package com.nymbus.frontoffice.clientsearch;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
+import com.nymbus.actions.account.AccountActions;
+import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
+import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -23,25 +27,37 @@ import static org.testng.Assert.assertTrue;
 @Feature("Clients search")
 @Owner("Dmytro")
 public class C22527_SearchByNumberTest extends BaseTest {
-    private Client client;
+    private Account savingsAccount;
 
     @BeforeMethod
     public void preCondition() {
-        client = new Client();
-        client.setAccountNumber("96302734083");
+        // Set up Client and Account
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        IndividualClient client = individualClientBuilder.buildClient();
+        savingsAccount = new Account().setSavingsAccountData();
 
-        Selenide.open(Constants.URL);
-
-        logInfo("Step 1: Log in to the system as the User from the precondition");
+        // Login to the system and create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        Pages.navigationPage().waitForUserMenuVisible();
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+        Pages.clientDetailsPage().waitForPageLoaded();
+
+        // Create Saving account
+        AccountActions.createAccount().createSavingsAccount(savingsAccount);
+        Actions.loginActions().doLogOut();
     }
 
     @Severity(CRITICAL)
     @Test(description = "C22527, Search individualClient by number")
     public void searchByNumber() {
+        logInfo("Step 1: Log in to the system as the User from the precondition");
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Pages.navigationPage().waitForUserMenuVisible();
+
         logInfo("Step 2: Click within search field and try to search for an existing client (by first name)");
-        String accountNumber = client.getAccountNumber();
+        String accountNumber = savingsAccount.getAccountNumber();
         String lastFourNumbers = accountNumber.substring(accountNumber.length() - 4);
         Pages.clientsSearchPage().typeToClientsSearchInputField(lastFourNumbers);
         int lookupResultsCount = Pages.clientsSearchPage().getLookupResultsCount();
@@ -49,7 +65,7 @@ public class C22527_SearchByNumberTest extends BaseTest {
         assertTrue(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible());
 
         List<String> clients = Pages.clientsSearchPage().getAllLookupResults();
-        clients.stream().forEach(s -> Assert.assertEquals(s.substring(s.length() - 4), lastFourNumbers));
+        clients.forEach(s -> Assert.assertEquals(s.substring(s.length() - 4), lastFourNumbers));
 
         logInfo("Step 3: Click [Search] button");
         Pages.clientsSearchPage().clickOnSearchButton();
@@ -59,7 +75,7 @@ public class C22527_SearchByNumberTest extends BaseTest {
             assertTrue(Pages.clientsSearchResultsPage().isLoadMoreResultsButtonVisible());
 
         clients = Pages.clientsSearchResultsPage().getAccountNumbersFromSearchResults();
-        clients.stream().forEach(s -> assertTrue(s.substring(s.length() - 4).contains(lastFourNumbers)));
+        clients.forEach(s -> assertTrue(s.substring(s.length() - 4).contains(lastFourNumbers)));
 
         logInfo("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
         Pages.clientsSearchPage().clickOnSearchInputFieldClearButton();
@@ -70,13 +86,13 @@ public class C22527_SearchByNumberTest extends BaseTest {
             e.printStackTrace();
         }
 
-        Pages.clientsSearchPage().typeToClientsSearchInputField(client.getAccountNumber());
+        Pages.clientsSearchPage().typeToClientsSearchInputField(savingsAccount.getAccountNumber());
         lookupResultsCount = Pages.clientsSearchPage().getLookupResultsCount();
         Assert.assertEquals(lookupResultsCount, 1);
         Assert.assertFalse(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible());
 
         clients = Pages.clientsSearchPage().getAllLookupResults();
-        Assert.assertEquals(clients.get(0), client.getAccountNumber());
+        Assert.assertEquals(clients.get(0), savingsAccount.getAccountNumber());
 
         logInfo("Step 5: Click [Search] button and pay attention to the search results list");
         // TODO: Need to implement assertion for exist Client object

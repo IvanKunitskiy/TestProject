@@ -5,6 +5,9 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.models.client.Client;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -15,19 +18,24 @@ import org.testng.annotations.Test;
 @Feature("Clients search")
 @Owner("Dmytro")
 public class C22531_SearchByLastFourDigitsOfTaxIDTest extends BaseTest {
-    private Client client;
+    private IndividualClient client;
+    private String clientId;
 
     @BeforeMethod
     public void preConditions() {
-        // Set up Client
-        client = new Client().setDefaultClientData();
-        client.setClientStatus("Member");
-        client.setClientType("Individual");
+        // Set up Client and Account
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
 
         // Login to the system and create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.createClient().createClient(client);
-        client.setClientID(Pages.clientDetailsPage().getClientID());
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+        Pages.clientDetailsPage().waitForPageLoaded();
+        clientId = Pages.clientDetailsPage().getClientID();
+
         Actions.loginActions().doLogOut();
     }
 
@@ -38,16 +46,16 @@ public class C22531_SearchByLastFourDigitsOfTaxIDTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Click within search field and try to search for an existing client (by 4 last digits of tax id number)");
-        final String taxIDQuery = client.getTaxID().substring(5);
+        final String taxIDQuery = client.getIndividualType().getTaxID().substring(5);
         Pages.clientsSearchPage().typeToClientsSearchInputField(taxIDQuery);
         Assert.assertTrue(Pages.clientsSearchPage().getAllLookupResults().size() > 0, "There are no relevant lookup results");
-        if (Pages.clientsSearchPage().getAllLookupResults().size() == 8) {
+        if (Pages.clientsSearchPage().getLookupResultOptionsCount() == 9) {
             Assert.assertTrue(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible(), "'Load more results' button is not visible in search lookup list");
         }
         Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), taxIDQuery), "Search results are not relevant");
 
         logInfo("Step 3: Click the 'Search' button");
         Pages.clientsSearchPage().clickOnSearchButton();
-        Assert.assertTrue(Pages.clientsSearchResultsPage().getClientIDsFromSearchResults().contains(client.getClientID()), "Client not found in search results by 'Client ID' criteria");
+        Assert.assertTrue(Pages.clientsSearchResultsPage().getClientIDsFromSearchResults().contains(clientId), "Client not found in search results by 'Client ID' criteria");
     }
 }

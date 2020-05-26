@@ -1,10 +1,19 @@
 package com.nymbus.frontoffice.clientsearch;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
+import com.nymbus.actions.account.AccountActions;
+import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
+import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.client.other.debitcard.DebitCard;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
+import com.nymbus.newmodels.generation.client.other.DebitCardFactory;
+import com.nymbus.newmodels.generation.settings.BinControlFactory;
+import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -24,40 +33,85 @@ import static org.testng.Assert.assertTrue;
 @Feature("Clients search")
 @Owner("Dmytro")
 public class C22528_SearchByDebitCardTest extends BaseTest {
-    private Client client;
+    private DebitCard debitCard;
 
     @BeforeMethod
     public void preCondition() {
-        client = new Client();
-        client.setCardNumber("1425504407949279");
+        // Set up Client
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        IndividualClient client = individualClientBuilder.buildClient();
 
-        Selenide.open(Constants.URL);
+        // Set up CHK account
+        Account checkingAccount = new Account().setCHKAccountData();
+        checkingAccount.setDateOpened(WebAdminActions.loginActions().getSystemDate());
 
-        logInfo("Step 1: Log in to the system as the User from the precondition");
+        // Set up bin control and debit card
+        DebitCardFactory debitCardFactory = new DebitCardFactory();
+        BinControlFactory binControlFactory = new BinControlFactory();
+
+        BinControl binControl = binControlFactory.getBinControl();
+        binControl.setBinNumber(Constants.BIN_NUMBER);
+        binControl.setCardDescription("Consumer Debit");
+
+        debitCard = debitCardFactory.getDebitCard();
+        debitCard.setBinControl(binControl);
+        debitCard.setATMDailyDollarLimit(binControl.getATMDailyDollarLimit());
+        debitCard.setATMTransactionLimit(binControl.getATMTransactionLimit());
+        debitCard.setDBCDailyDollarLimit(binControl.getDBCDailyDollarLimit());
+        debitCard.setDBCTransactionLimit(binControl.getDBCTransactionLimit());
+        debitCard.setNameOnCard(client.getNameForDebitCard());
+
+        // Login
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        Pages.navigationPage().waitForUserMenuVisible();
+
+        // Create client
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+
+        // Create account
+        AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkingAccount);
+        debitCard.getAccounts().add(checkingAccount.getAccountNumber());
+
+        // Create debit card
+        Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
+        Pages.clientDetailsPage().clickOnMaintenanceTab();
+        Pages.clientDetailsPage().clickOnNewDebitCardButton();
+        Actions.debitCardModalWindowActions().fillDebitCard(debitCard);
+        Pages.debitCardModalWindow().clickOnSaveAndFinishButton();
+        Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
+
+        // Set debit card Number
+        debitCard.setCardNumber(Actions.debitCardModalWindowActions().getCardNumber(1));
+
+        Actions.loginActions().doLogOut();
     }
 
     @Severity(CRITICAL)
     @Test(description = "C22528, Search individualClient by debitcard number")
     public void searchByCardNumber() {
-        String cardNumber = client.getCardNumber();
-        String lastFourNumbers = cardNumber.substring(cardNumber.length() - 4);
+        String lastFourNumbers = debitCard.getCardNumber().substring(debitCard.getCardNumber().length() - 4);
         String hiddenNumber = "XXXX-XXXX-XXXX-" + lastFourNumbers;
+
+        logInfo("Step 1: Log in to the system as the User from the precondition");
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Pages.navigationPage().waitForUserMenuVisible();
 
         logInfo("Step 2: Click within search field and try to search for an existing Debit Card");
         Pages.clientsSearchPage().typeToClientsSearchInputField(lastFourNumbers);
 
-        int lookupResultsCount = Pages.clientsSearchPage().getLookupResultsCount();
-        Assert.assertTrue(lookupResultsCount <= 8);
-        if (lookupResultsCount == 8)
-            assertTrue(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible());
+        int lookupResultsCount = Pages.clientsSearchPage().getLookupResultOptionsCount();
+        Assert.assertTrue(lookupResultsCount > 0);
+        if (lookupResultsCount == 9) {
+            assertTrue(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible(), "Load more button is not visible!");
+        }
 
         logInfo("Step 3: Pay attention to the display of the Debit Card in the quick search field");
         List<String> clients = Pages.clientsSearchPage().getAllLookupResults();
         clients.stream()
                 .filter(s -> s.contains("XXXX-XXXX-XXXX-"))
-                .forEach(s -> Assert.assertEquals(s, hiddenNumber));
+                .forEach(s -> Assert.assertEquals(s, hiddenNumber, "Search result is incorrect!"));
 
         logInfo("Step 4: Clear the data from the field and try to search for an existing client");
         Pages.clientsSearchPage().clickOnSearchInputFieldClearButton();
@@ -68,9 +122,9 @@ public class C22528_SearchByDebitCardTest extends BaseTest {
             e.printStackTrace();
         }
 
-        Pages.clientsSearchPage().typeToClientsSearchInputField(cardNumber);
+        Pages.clientsSearchPage().typeToClientsSearchInputField(debitCard.getCardNumber());
 
         clients = Pages.clientsSearchPage().getAllLookupResults();
-        assertEquals(clients.get(0), hiddenNumber);
+        assertEquals(clients.get(0), hiddenNumber, "Search result is incorrect!");
     }
 }
