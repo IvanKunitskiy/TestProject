@@ -1,8 +1,8 @@
 package com.nymbus.newmodels.generation.client.other;
 
-import com.nymbus.newmodels.client.other.debitcard.CardStatus;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
-import com.nymbus.newmodels.client.other.debitcard.TranslationTypeAllowed;
+import com.nymbus.newmodels.client.other.debitcard.types.CardStatus;
+import com.nymbus.newmodels.client.other.debitcard.types.TranslationTypeAllowed;
 import com.nymbus.util.Random;
 
 import java.util.ArrayList;

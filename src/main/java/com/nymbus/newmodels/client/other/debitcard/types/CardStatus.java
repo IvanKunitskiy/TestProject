@@ -1,4 +1,4 @@
-package com.nymbus.newmodels.client.other.debitcard;
+package com.nymbus.newmodels.client.other.debitcard.types;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

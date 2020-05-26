@@ -2,8 +2,8 @@ package com.nymbus.pages.modalwindow;
 
 import com.nymbus.core.base.PageTools;
 import com.nymbus.core.utils.SelenideTools;
-import com.nymbus.newmodels.client.other.debitcard.CardStatus;
-import com.nymbus.newmodels.client.other.debitcard.TranslationTypeAllowed;
+import com.nymbus.newmodels.client.other.debitcard.types.CardStatus;
+import com.nymbus.newmodels.client.other.debitcard.types.TranslationTypeAllowed;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -47,6 +47,7 @@ public class DebitCardModalWindow extends PageTools {
     private By saveAndFinishButton = By.xpath("//button[span[text()='Save and Finish']]");
     private By saveButton = By.xpath("//button[span[text()='Save']]");
     private By closeDebitCardModalButton = By.xpath("//div[@class='modal-header']//button[contains(@aria-label, 'Close')]");
+    private By dateEffective = By.xpath("//input[@data-test-id='field-dateeffective']");
 
     /**
      * Select 'Bin Control' Modal Window methods
@@ -325,5 +326,11 @@ public class DebitCardModalWindow extends PageTools {
     public String getCardNumber() {
         waitForElementVisibility(cardNumberInputField);
         return getWebElement(cardNumberInputField).getAttribute("value").trim();
+    }
+
+    @Step("Get 'Date Effective' input value")
+    public String getDateEffective() {
+        waitForElementVisibility(dateEffective);
+        return getElementAttributeValue("value", dateEffective).trim();
     }
 }
