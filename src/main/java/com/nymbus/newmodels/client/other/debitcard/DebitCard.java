@@ -1,5 +1,7 @@
 package com.nymbus.newmodels.client.other.debitcard;
 
+import com.nymbus.newmodels.client.other.debitcard.types.CardStatus;
+import com.nymbus.newmodels.client.other.debitcard.types.TranslationTypeAllowed;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import lombok.Data;
 import lombok.NoArgsConstructor;

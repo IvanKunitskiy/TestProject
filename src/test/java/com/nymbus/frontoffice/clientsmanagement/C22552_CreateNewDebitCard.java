@@ -8,19 +8,19 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
-import com.nymbus.newmodels.client.other.account.type.CHKAccount;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
+import com.nymbus.newmodels.generation.bincontrol.BinControlConstructor;
+import com.nymbus.newmodels.generation.bincontrol.builder.BinControlBuilder;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
-import com.nymbus.newmodels.generation.client.other.DebitCardFactory;
-import com.nymbus.newmodels.generation.settings.BinControlFactory;
+import com.nymbus.newmodels.generation.debitcard.DebitCardConstructor;
+import com.nymbus.newmodels.generation.debitcard.builder.DebitCardBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -32,7 +32,7 @@ import static io.qameta.allure.SeverityLevel.CRITICAL;
 public class C22552_CreateNewDebitCard extends BaseTest {
     private DebitCard debitCard;
     private IndividualClient client;
-    private  Account checkingAccount;
+    private Account checkingAccount;
 
     @BeforeMethod
     public void preCondition() {
@@ -45,15 +45,20 @@ public class C22552_CreateNewDebitCard extends BaseTest {
         checkingAccount = new Account().setCHKAccountData();
         checkingAccount.setDateOpened(WebAdminActions.loginActions().getSystemDate());
 
-        // TODO: Refactor to using builder
-        DebitCardFactory debitCardFactory = new DebitCardFactory();
-        BinControlFactory binControlFactory = new BinControlFactory();
+        // Set up debit card and bin control
+        DebitCardConstructor debitCardConstructor = new DebitCardConstructor();
+        DebitCardBuilder debitCardBuilder = new DebitCardBuilder();
+        debitCardConstructor.constructDebitCard(debitCardBuilder);
+        debitCard = debitCardBuilder.getCard();
 
-        BinControl binControl = binControlFactory.getBinControl();
+        BinControlConstructor binControlConstructor = new BinControlConstructor();
+        BinControlBuilder binControlBuilder = new BinControlBuilder();
+        binControlConstructor.constructBinControl(binControlBuilder);
+        BinControl binControl = binControlBuilder.getBinControl();
+
         binControl.setBinNumber("510986");
         binControl.setCardDescription("Consumer Debit");
 
-        debitCard = debitCardFactory.getDebitCard();
         debitCard.setBinControl(binControl);
         debitCard.setATMDailyDollarLimit(binControl.getATMDailyDollarLimit());
         debitCard.setATMTransactionLimit(binControl.getATMTransactionLimit());
@@ -61,18 +66,17 @@ public class C22552_CreateNewDebitCard extends BaseTest {
         debitCard.setDBCTransactionLimit(binControl.getDBCTransactionLimit());
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
-        // Login
+        // Login and create a clint
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-
-        // Create client
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
 
+        // Create CHK account
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkingAccount);
 
+        // Set created CHK account as related to credit card
         debitCard.getAccounts().add(checkingAccount.getAccountNumber());
-
         Actions.loginActions().doLogOut();
     }
 
@@ -85,7 +89,6 @@ public class C22552_CreateNewDebitCard extends BaseTest {
 
         logInfo("Step 2: Search for any individualClient and open his profile on the Maintenance tab");
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
-
         logInfo("Step 3: Open client profile on the Maintenance tab");
         Pages.clientDetailsPage().clickOnMaintenanceTab();
 
