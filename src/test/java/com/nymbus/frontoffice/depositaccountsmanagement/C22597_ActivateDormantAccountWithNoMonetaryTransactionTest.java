@@ -26,9 +26,11 @@ public class C22597_ActivateDormantAccountWithNoMonetaryTransactionTest extends 
 
     private IndividualClient client;
     private Account chkAccount;
+    private String systemDate;
 
     @BeforeMethod
     public void preCondition() {
+
         // Set up client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
@@ -37,15 +39,17 @@ public class C22597_ActivateDormantAccountWithNoMonetaryTransactionTest extends 
         // Set up account
         chkAccount = new Account().setCHKAccountData();
 
+        // Get system date
+        systemDate = WebAdminActions.loginActions().getSystemDate();
+
         // Create a client
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create CHK account
-        AccountActions.createAccount().createCHKAccount(chkAccount);
+        AccountActions.createAccount().createCHKAccountForDormantPurpose(chkAccount);
         String[] url = WebDriverRunner.url().split("/");
         String rootID = url[url.length - 2];
         Actions.loginActions().doLogOut();
@@ -54,7 +58,6 @@ public class C22597_ActivateDormantAccountWithNoMonetaryTransactionTest extends 
         Selenide.open(Constants.WEB_ADMIN_URL);
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         WebAdminActions.webAdminUsersActions().setDormantAccount(rootID, chkAccount);
-        // TODO: Discover the reason of server error appears after saving account changes
         WebAdminActions.loginActions().doLogout();
     }
 
@@ -68,7 +71,6 @@ public class C22597_ActivateDormantAccountWithNoMonetaryTransactionTest extends 
 
         logInfo("Step 2: Search for the CHK account from the precondition and open it on Details");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
-        Assert.assertFalse(Pages.accountDetailsPage().isEditButtonVisible(), "'Edit' button is visible");
         Assert.assertTrue(Pages.accountDetailsPage().isActivateButtonVisible(), "'Activate' button not visible");
 
         logInfo("Step 3: Click [Activate] button and pay attention to the Account Status");
@@ -77,14 +79,15 @@ public class C22597_ActivateDormantAccountWithNoMonetaryTransactionTest extends 
 
         logInfo("Step 4: Pay attention to the available buttons on the page");
         Assert.assertTrue(Pages.accountDetailsPage().isEditButtonVisible(), "'Edit' button is not visible");
-        Assert.assertFalse(Pages.accountDetailsPage().isActivateButtonVisible(), "'Activate' button is visible");
 
         logInfo("Step 5: Pay attention to the 'Date Last Activity/Contact' field");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateLastActivityValue(), DateTime.getLocalDateTimeByPattern("MMM d, yyyy"));
+        Assert.assertEquals(Pages.accountDetailsPage().getDateLastActivityValue(), systemDate);
 
         logInfo("Step 6: Go to Account Maintenance-> Maintenance History page and check that there are records about changing Account status to 'Active' and updating the 'Date Last Activity/Contact' field");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
-        // TODO: Implement verification at Maintenance History page
+        AccountActions.accountMaintenanceActions().expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date Last Activity/Contact") >= 1,
+                "'Date Last Activity/Contact' row count is incorrect!");
     }
 }

@@ -108,6 +108,7 @@ public class AccountDetailsPage extends PageTools {
     private By averageBalance = By.xpath("//*[@data-config-name='averagebalance']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By collectedBalance = By.xpath("//*[@data-config-name='collectedbalance']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By accountStatus = By.xpath("//tr[@data-test-id='field-accountstatus']//span[contains(@class, 'ng-binding')]");
+    private By activeAccountStatus = By.xpath("//tr[@data-test-id='field-accountstatus']//span[contains(text(), 'Active')]");
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -122,7 +123,7 @@ public class AccountDetailsPage extends PageTools {
 
     @Step("Get 'Account Status'")
     public String getAccountStatus() {
-        waitForElementVisibility(accountStatus);
+        waitForElementVisibility(activeAccountStatus);
         return getElementText(accountStatus).trim();
     }
 
@@ -676,6 +677,7 @@ public class AccountDetailsPage extends PageTools {
 
     @Step("Check if 'Activate' button is visible")
     public boolean isActivateButtonVisible() {
+        waitForElementVisibility(activateButton);
         return isElementVisible(activateButton);
     }
 }

@@ -139,6 +139,34 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 14: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
-        // TODO: Implement verification at Maintenance History page
+        AccountActions.accountMaintenanceActions().expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Product") == 1,
+                "'Product' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("accounttype") == 1,
+                "'accounttype' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account Title") == 1,
+                "'Account Title' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Current Officer") == 1,
+                "'Current Officer' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Bank Branch") == 1,
+                "'Bank Branch' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Frequency") == 1,
+                "'Interest Frequency' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date Opened") == 1,
+                "'Date Opened' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Statement Cycle") == 1,
+                "'Statement Cycle' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("IRA distribution amount") == 1,
+                "'IRA distribution amount' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date next IRA distribution") == 1,
+                "'Date next IRA distribution' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Call Class Code") == 1,
+                "'Call Class Code' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Corresponding Account") == 1,
+                "'Corresponding Account' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("IRA Distribution Frequency") == 1,
+                "'IRA Distribution Frequency' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("IRA Distribution Code") == 1,
+                "'IRA Distribution Code' row count is incorrect!");
     }
 }

@@ -35,8 +35,6 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
     private Account savingsAccount2;
     private HighBalanceTransfer highBalanceTransfer;
     private Transfer transfer;
-    private String client1_ID;
-    private String client2_ID;
     private Transaction transaction;
 
     private String clientID_1;
@@ -44,10 +42,9 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
 
     @BeforeMethod
     public void preCondition() {
+
         // Set up clients
-
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
-
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         client1 = individualClientBuilder.buildClient();
         client2 = individualClientBuilder.buildClient();
@@ -55,11 +52,12 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         // Set up accounts
         chkAccount1 = new Account().setCHKAccountData();
         savingsAccount1 = new Account().setSavingsAccountData();
+
         chkAccount2 = new Account().setCHKAccountData();
         savingsAccount2 = new Account().setSavingsAccountData();
 
         // Set up transaction
-        Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
+        transaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
         transaction.getTransactionDestination().setAccountNumber(chkAccount2.getAccountNumber());
 
         // Set up transfers
@@ -72,9 +70,6 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         transfer = transferBuilder.getTransfer();
         transfer.setFromAccount(chkAccount2);
         transfer.setToAccount(savingsAccount2);
-
-        /*// Set up transaction
-        transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();*/
 
         // Create a client with an active CHK / Savings account and a High Balance transfer
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -109,7 +104,6 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
 
         // Log in -> Create 'One time only' periodic transfer -> Log out
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-
         Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID_2);
         TransfersActions.addNewTransferActions().addNewTransfer(transfer);
         Actions.loginActions().doLogOut();
@@ -122,7 +116,6 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Go to Clients and search for the client from the precondition");
-
         Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID_1);
 
         logInfo("Step 3: Open Clients Profile on the Transfers tab");
@@ -140,8 +133,26 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
-        logInfo("Step 7: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
-        // TODO: Implement verification at Maintenance History page
+        logInfo("Step 7: Look through the records on the Maintenance History page and verify that records about deleting the transfer are present on the Maintenance History page");
+        AccountActions.accountMaintenanceActions().expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Transfer Type") >= 2,
+                "'Transfer Type' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("To Account") >= 2,
+                "'To Account' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("From Account") >= 2,
+                "'From Account' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("To Account Type") >= 2,
+                "'To Account Type' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("From Account Type") >= 2,
+                "'From Account Type' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Effective Date") >= 2,
+                "'Effective Date' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Transfer Threshold") >= 2,
+                "'Transfer Threshold' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Transfer Charge") >= 2,
+                "'Transfer Charge' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Amount to transfer") >= 2,
+                "'Amount to transfer' row count is incorrect!");
 
         logInfo("Step 8: Go to Clients page and search for the client from the precondition");
         Pages.aSideMenuPage().clickClientMenuItem();
