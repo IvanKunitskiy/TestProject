@@ -41,6 +41,10 @@ public class IndividualClient extends Client {
         return String.format("%s, %s %s", individualType.getLastName(), individualType.getFirstName(), individualType.getMiddleName());
     }
 
+    public String getLastNameAndFirstName() {
+        return String.format("%s, %s", individualType.getLastName(), individualType.getFirstName());
+    }
+
     public String getNameForDebitCard() {
         return String.format("%s %s", individualType.getFirstName(), individualType.getLastName());
     }

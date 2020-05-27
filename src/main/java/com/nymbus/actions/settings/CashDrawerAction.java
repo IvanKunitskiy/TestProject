@@ -151,26 +151,26 @@ public class CashDrawerAction {
 
     private double getCashInValue() {
         String value = Pages.cashDrawerBalancePage().getCashIn();
-        return Double.parseDouble(value);
+        return value.equals("") ? 0.00 : Double.parseDouble(value);
     }
 
     private double getCashOutValue() {
         String value = Pages.cashDrawerBalancePage().getCashOut();
-        return Double.parseDouble(value);
+        return value.equals("") ? 0.00 : Double.parseDouble(value);
     }
 
     private double getCountedCashValue() {
         String value = Pages.cashDrawerBalancePage().getCountedCash();
-        return Double.parseDouble(value);
+        return value.equals("") ? 0.00 : Double.parseDouble(value);
     }
 
     private double getHundredsValue() {
         String value = Pages.cashDrawerBalancePage().getHundredsAmount();
-        return Double.parseDouble(value);
+        return value.equals("") ? 0.00 : Double.parseDouble(value);
     }
 
     private double getFiftiesValue() {
         String value = Pages.cashDrawerBalancePage().getFiftiesAmount();
-        return Double.parseDouble(value);
+        return value.equals("") ? 0.00 : Double.parseDouble(value);
     }
 }
