@@ -84,8 +84,6 @@ public class C22601_ViewTransactionHistoryTest extends BaseTest {
         Pages.debitCardModalWindow().clickOnSaveAndFinishButton();
         Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
         String debitCardNumber = Actions.debitCardModalWindowActions().getCardNumber(1);
-        Pages.debitCardModalWindow().clickTheCloseModalIcon();
-        Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
 
         // Set up account number
         accountNumber = savingsAccount.getAccountNumber();
