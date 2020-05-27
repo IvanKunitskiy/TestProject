@@ -1,9 +1,6 @@
 package com.nymbus.frontoffice.depositaccountsmanagement;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
-import com.nymbus.actions.account.AccountActions;
-import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
@@ -43,6 +40,7 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
 
         // Set up account
         chkAccount = new Account().setCHKAccountData();
+        chkAccount.setAccountNumber("35324535352");
 
         // Set up transaction
         transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
@@ -54,24 +52,23 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
         instruction.setAmount(10);
 
         // Create a client
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        ClientsActions.individualClientActions().createClient(client);
-        ClientsActions.individualClientActions().setClientDetailsData(client);
-        ClientsActions.individualClientActions().setDocumentation(client);
+//        ClientsActions.individualClientActions().createClient(client);
+//        ClientsActions.individualClientActions().setClientDetailsData(client);
+//        ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create account
-        AccountActions.createAccount().createCHKAccount(chkAccount);
-
-        // Create transaction
-        Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
-
-        // Create instruction and logout
-        Pages.aSideMenuPage().clickClientMenuItem();
-        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
-        Pages.accountNavigationPage().clickInstructionsTab();
-        AccountActions.createInstruction().createHoldInstruction(instruction);
-        Actions.loginActions().doLogOut();
+//        AccountActions.createAccount().createCHKAccount(chkAccount);
+//
+//        // Create transaction
+//        Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
+//
+//        // Create instruction and logout
+//        Pages.aSideMenuPage().clickClientMenuItem();
+//        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
+//        Pages.accountNavigationPage().clickInstructionsTab();
+//        AccountActions.createInstruction().createHoldInstruction(instruction);
+//        Actions.loginActions().doLogOut();
     }
 
     @Test(description = "C22575, 'Balance inquiry' on CHK account")
@@ -79,8 +76,8 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
     public void viewClientLevelCallStatement() {
 
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Selenide.open(Constants.URL);
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+//        Selenide.open(Constants.URL);
+//        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the CHK account from the precondition and open it on Details");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
@@ -90,6 +87,12 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
 
         logInfo("Step 4: Pay attention to the Available Balance and Current Balance values");
         // TODO: parse receipt
+        // wait for image loaded
+        // get source attribute
+        Actions.balanceInquiryActions().readBalanceInquiryImage();
+        // read image
+//        String img = ImageParser.getTextFromImage(imgSource);
+        // check Available Balance and Current Balance
 
         logInfo("Step 5: Click [Print] button");
         Pages.balanceInquiryModalPage().clickPrintButton();

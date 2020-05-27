@@ -10,6 +10,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.codeborne.selenide.FileDownloadMode.PROXY;
+
 public class SelenideConfig {
     private static final String VIDEO_NAME_PATTERN = "HH:mm:ss:SSS";
 
@@ -52,5 +54,8 @@ public class SelenideConfig {
         Configuration.pollingInterval = 5000;
         Configuration.pageLoadStrategy = "eager";
         Configuration.timeout = 120000;
+        Configuration.reportsFolder = "screenshots";
+        Configuration.proxyEnabled = true;
+        Configuration.fileDownload = PROXY;
     }
 }
