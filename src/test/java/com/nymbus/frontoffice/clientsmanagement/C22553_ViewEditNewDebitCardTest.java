@@ -11,10 +11,12 @@ import com.nymbus.newmodels.client.other.account.ProductType;
 import com.nymbus.newmodels.client.other.account.type.CHKAccount;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
 import com.nymbus.newmodels.client.other.verifyingmodels.MaintenanceHistoryDebitCardVerifyingModel;
+import com.nymbus.newmodels.generation.bincontrol.BinControlConstructor;
+import com.nymbus.newmodels.generation.bincontrol.builder.BinControlBuilder;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
-import com.nymbus.newmodels.generation.client.other.DebitCardFactory;
-import com.nymbus.newmodels.generation.settings.BinControlFactory;
+import com.nymbus.newmodels.generation.debitcard.DebitCardConstructor;
+import com.nymbus.newmodels.generation.debitcard.builder.DebitCardBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.settings.product.Product;
 import com.nymbus.pages.Pages;
@@ -41,15 +43,21 @@ public class C22553_ViewEditNewDebitCardTest extends BaseTest {
         IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up debit card and account
-        DebitCardFactory debitCardFactory = new DebitCardFactory();
-        BinControlFactory binControlFactory = new BinControlFactory();
-        verifyingModel = new MaintenanceHistoryDebitCardVerifyingModel();
+        DebitCardConstructor debitCardConstructor = new DebitCardConstructor();
+        DebitCardBuilder debitCardBuilder = new DebitCardBuilder();
+        debitCardConstructor.constructDebitCard(debitCardBuilder);
+        debitCard = debitCardBuilder.getCard();
 
-        BinControl binControl = binControlFactory.getBinControl();
+        BinControlConstructor binControlConstructor = new BinControlConstructor();
+        BinControlBuilder binControlBuilder = new BinControlBuilder();
+        binControlConstructor.constructBinControl(binControlBuilder);
+        BinControl binControl = binControlBuilder.getBinControl();
+
         binControl.setBinNumber(Constants.BIN_NUMBER);
         binControl.setCardDescription("Consumer Debit");
 
-        debitCard = debitCardFactory.getDebitCard();
+        verifyingModel = new MaintenanceHistoryDebitCardVerifyingModel();
+
         debitCard.setBinControl(binControl);
         debitCard.setATMDailyDollarLimit(binControl.getATMDailyDollarLimit());
         debitCard.setATMTransactionLimit(binControl.getATMTransactionLimit());
