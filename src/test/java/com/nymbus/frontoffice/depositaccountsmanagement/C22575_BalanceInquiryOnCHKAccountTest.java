@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.depositaccountsmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.ImageParser;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.accountinstructions.HoldInstruction;
 import com.nymbus.newmodels.client.IndividualClient;
@@ -89,6 +90,10 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
         // TODO: parse receipt
         // wait for image loaded
         // get source attribute
+//        Actions.balanceInquiryActions().readBalanceInquiryImage();
+        Pages.balanceInquiryModalPage().waitForLoadingSpinnerInvisibility();
+        String src = Pages.balanceInquiryModalPage().getBalanceInquiryImageSrc();
+        ImageParser.getImage(src);
         Actions.balanceInquiryActions().readBalanceInquiryImage();
         // read image
 //        String img = ImageParser.getTextFromImage(imgSource);
