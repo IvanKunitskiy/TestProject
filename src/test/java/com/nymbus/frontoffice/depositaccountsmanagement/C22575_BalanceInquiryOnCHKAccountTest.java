@@ -1,9 +1,10 @@
 package com.nymbus.frontoffice.depositaccountsmanagement;
 
 import com.nymbus.actions.Actions;
+import com.nymbus.actions.account.AccountActions;
+import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.core.utils.ImageParser;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.accountinstructions.HoldInstruction;
 import com.nymbus.newmodels.client.IndividualClient;
@@ -21,6 +22,8 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.io.File;
 
 @Epic("Frontoffice")
 @Feature("Deposit Accounts Management")
@@ -54,22 +57,22 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
 
         // Create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-//        ClientsActions.individualClientActions().createClient(client);
-//        ClientsActions.individualClientActions().setClientDetailsData(client);
-//        ClientsActions.individualClientActions().setDocumentation(client);
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create account
-//        AccountActions.createAccount().createCHKAccount(chkAccount);
-//
-//        // Create transaction
-//        Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
-//
-//        // Create instruction and logout
-//        Pages.aSideMenuPage().clickClientMenuItem();
-//        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
-//        Pages.accountNavigationPage().clickInstructionsTab();
-//        AccountActions.createInstruction().createHoldInstruction(instruction);
-//        Actions.loginActions().doLogOut();
+        AccountActions.createAccount().createCHKAccount(chkAccount);
+
+        // Create transaction
+        Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
+
+        // Create instruction and logout
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
+        Pages.accountNavigationPage().clickInstructionsTab();
+        AccountActions.createInstruction().createHoldInstruction(instruction);
+        Actions.loginActions().doLogOut();
     }
 
     @Test(description = "C22575, 'Balance inquiry' on CHK account")
@@ -78,7 +81,7 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
 
         logInfo("Step 1: Log in to the system as User from the preconditions");
 //        Selenide.open(Constants.URL);
-//        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the CHK account from the precondition and open it on Details");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
@@ -87,17 +90,10 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
         Pages.accountDetailsPage().clickBalanceInquiry();
 
         logInfo("Step 4: Pay attention to the Available Balance and Current Balance values");
-        // TODO: parse receipt
-        // wait for image loaded
-        // get source attribute
-//        Actions.balanceInquiryActions().readBalanceInquiryImage();
-        Pages.balanceInquiryModalPage().waitForLoadingSpinnerInvisibility();
-        String src = Pages.balanceInquiryModalPage().getBalanceInquiryImageSrc();
-        ImageParser.getImage(src);
-        Actions.balanceInquiryActions().readBalanceInquiryImage();
-        // read image
-//        String img = ImageParser.getTextFromImage(imgSource);
-        // check Available Balance and Current Balance
+        File balanceInquiryImage = Actions.balanceInquiryActions().saveBalanceInquiryImage();
+        String balanceInquiryImageContent = Actions.balanceInquiryActions().readBalanceInquiryImage(balanceInquiryImage);
+        String availableBalanceValue = Actions.balanceInquiryActions().getAccountAvailableBalanceValue(balanceInquiryImageContent);
+        // TODO: assert 'Accounts Available Balance' and 'Current Balance' values
 
         logInfo("Step 5: Click [Print] button");
         Pages.balanceInquiryModalPage().clickPrintButton();

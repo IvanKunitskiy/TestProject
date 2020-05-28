@@ -102,9 +102,9 @@
         </dependency>
 
         <dependency>
-            <groupId>net.sourceforge.tess4j</groupId>
-            <artifactId>tess4j</artifactId>
-            <version>4.5.1</version>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>tesseract-platform</artifactId>
+            <version>4.1.1-1.5.3</version>
         </dependency>
 
     </dependencies>
