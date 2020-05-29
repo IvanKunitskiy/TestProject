@@ -8,10 +8,12 @@ import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
+import com.nymbus.newmodels.generation.bincontrol.BinControlConstructor;
+import com.nymbus.newmodels.generation.bincontrol.builder.BinControlBuilder;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
-import com.nymbus.newmodels.generation.client.other.DebitCardFactory;
-import com.nymbus.newmodels.generation.settings.BinControlFactory;
+import com.nymbus.newmodels.generation.debitcard.DebitCardConstructor;
+import com.nymbus.newmodels.generation.debitcard.builder.DebitCardBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitGLCreditTransactionBuilder;
@@ -41,20 +43,22 @@ public class C22601_ViewTransactionHistoryTest extends BaseTest {
         IndividualClient client = individualClientBuilder.buildClient();
 
         Account savingsAccount = new Account().setSavingsAccountData();
-
         Account chkAccount = new Account().setCHKAccountData();
 
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        // Set up debit card and bin control
+        DebitCardConstructor debitCardConstructor = new DebitCardConstructor();
+        DebitCardBuilder debitCardBuilder = new DebitCardBuilder();
+        debitCardConstructor.constructDebitCard(debitCardBuilder);
+        DebitCard debitCard = debitCardBuilder.getCard();
 
-        // Set up credit card
-        DebitCardFactory debitCardFactory = new DebitCardFactory();
-        BinControlFactory binControlFactory = new BinControlFactory();
+        BinControlConstructor binControlConstructor = new BinControlConstructor();
+        BinControlBuilder binControlBuilder = new BinControlBuilder();
+        binControlConstructor.constructBinControl(binControlBuilder);
+        BinControl binControl = binControlBuilder.getBinControl();
 
-        BinControl binControl = binControlFactory.getBinControl();
         binControl.setBinNumber("510986");
         binControl.setCardDescription("Consumer Debit");
 
-        DebitCard debitCard = debitCardFactory.getDebitCard();
         debitCard.setBinControl(binControl);
         debitCard.setATMDailyDollarLimit(binControl.getATMDailyDollarLimit());
         debitCard.setATMTransactionLimit(binControl.getATMTransactionLimit());
@@ -62,7 +66,8 @@ public class C22601_ViewTransactionHistoryTest extends BaseTest {
         debitCard.setDBCTransactionLimit(binControl.getDBCTransactionLimit());
         debitCard.getAccounts().add(chkAccount.getAccountNumber());
 
-        // Create client
+        // Log in and create client
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);

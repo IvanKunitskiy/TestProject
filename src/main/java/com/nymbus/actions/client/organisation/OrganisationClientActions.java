@@ -8,6 +8,7 @@ import com.nymbus.newmodels.client.clientdetails.contactinformation.documents.Do
 import com.nymbus.newmodels.client.clientdetails.contactinformation.email.Email;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.phone.Phone;
 import com.nymbus.newmodels.client.clientdetails.type.ClientStatus;
+import com.nymbus.newmodels.client.verifyingmodels.TrustAccountPredefinedField;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
@@ -294,4 +295,42 @@ public class OrganisationClientActions {
         asert.assertAll();
     }
 
+    public void createClient(OrganisationClient client, TrustAccountPredefinedField predefinedField) {
+        openClientPage();
+        Pages.clientsSearchPage().clickAddNewClient();
+        setBasicInformation(client, predefinedField);
+        Assert.assertTrue(Pages.addClientPage().isVerificationSuccess(),
+                "Client data verification is not success");
+        Pages.addClientPage().clickOkModalButton();
+    }
+
+    public void setBasicInformation(OrganisationClient client, TrustAccountPredefinedField predefinedField) {
+        setClientType(client);
+        setClientStatus(client);
+        verifyTrustAccountPredefinedFields(predefinedField);
+        Pages.addClientPage().setOrganizationName(client.getOrganisationType().getName());
+        setTaxPayerIDType(client);
+        Pages.addClientPage().setTaxIDValue(client.getOrganisationType().getTaxID());
+
+        for (Address address : client.getOrganisationType().getAddresses()) {
+            setAddress(address);
+        }
+        Pages.addClientPage().clickSaveAndContinueButton();
+        Pages.addClientPage().waitForModalWindow();
+    }
+
+    public void verifyTrustAccountPredefinedFields(TrustAccountPredefinedField predefinedField) {
+        SoftAssert softAssert = new SoftAssert();
+
+        softAssert.assertEquals(Pages.addClientPage().getTaxPayerIdTypeSelectedSpan(1),
+                predefinedField.getTaxPayerIDType().getTaxPayerIDType(),
+                "Tax payer id type is not correct!");
+        softAssert.assertEquals(Pages.addClientPage().getAddressTypeSelectedSpan(1),
+                predefinedField.getAddressType().getAddressType(),
+                "Address type is not correct!");
+        softAssert.assertEquals(Pages.addClientPage().getAddressCountrySelectedSpan(1),
+                predefinedField.getCountry().getCountry(),
+                "Address country is not correct!");
+        softAssert.assertAll();
+    }
 }
