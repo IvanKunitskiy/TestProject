@@ -34,7 +34,11 @@ public class BalanceInquiryActions {
         TessBaseAPI api = new TessBaseAPI();
 
         // Initialize tesseract-ocr with English, without specifying tessdata path
-        if (api.Init(null, "eng") != 0) {
+        // TESSDATA_PREFIX=/usr/local/Cellar/tesseract-lang/4.0.0/share
+        // TODO: move dictionary to current lib path?
+        if (api.Init(System.getProperty("user.dir") + "/src/main/resources/tessdata", "eng") != 0) {
+            System.out.println(System.getProperty("TESSDATA_PREFIX"));
+            System.out.println(System.getenv("TESSDATA_PREFIX"));
             System.err.println("Could not initialize tesseract.");
             System.exit(1);
         }
@@ -42,7 +46,7 @@ public class BalanceInquiryActions {
         while (!balanceInquiryImage.exists()) {
             try {
                 Thread.sleep(1000);
-                System.out.println("---------------> File does not exist in folder");
+                System.out.println("File does not exist in folder");
                 // TODO: add check if file does not exist after some time
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -66,17 +70,15 @@ public class BalanceInquiryActions {
         return outText.getString();
     }
 
-    public String getAccountAvailableBalanceValue(String imageText) {
+    public String getAccountBalanceValueByType(String imageText, String accountBalanceType) {
         String[] lines = imageText.split("\n");
         String accountAvailableBalanceValue = "";
 
         for (String line : lines) {
-            if (line.toLowerCase().contains("available balance")) {
+            if (line.contains(accountBalanceType)) {
                 accountAvailableBalanceValue = line.split(" ")[3].replaceAll("[^0-9.]", "").trim();
             }
         }
         return accountAvailableBalanceValue;
     }
-
-    // TODO: getAccountCurrentBalanceValue
 }

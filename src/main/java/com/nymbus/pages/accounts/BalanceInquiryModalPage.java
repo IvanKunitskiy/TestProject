@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 public class BalanceInquiryModalPage extends PageTools {
     private By printButton = By.xpath("//button[span[contains(text(), 'Print')]]");
     private By closeButton = By.xpath("//button[contains(text(), 'Close')]");
-    private By closeModalButton = By.xpath("//button[@type='button']/span[contains(text(), '×')]");
+    private By closeModalButton = By.xpath("//button[contains(@aria-label, 'Close')]//span[contains(text(), '×')]");
     private By balanceInquiryImage = By.xpath("//img[@id='receiptTemplate'][contains(@src, 'base64')]");
     private By imageLoadSpinner =By.xpath("//div[@id='printReceipt']/dn-loading-spinner/div/svg");
 
@@ -39,8 +39,7 @@ public class BalanceInquiryModalPage extends PageTools {
     @Step("Get 'src' attribute of balance inquiry image")
     public String getBalanceInquiryImageSrc() {
         waitForElementVisibility(balanceInquiryImage);
-        String src = getElementAttributeValue("src", balanceInquiryImage);
-        return src;
+        return getElementAttributeValue("src", balanceInquiryImage);
     }
 
     @Step("Wait for loading spinner invisibility")
