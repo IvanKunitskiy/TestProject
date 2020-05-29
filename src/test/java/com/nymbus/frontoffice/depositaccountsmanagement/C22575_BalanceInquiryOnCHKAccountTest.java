@@ -16,17 +16,14 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.io.File;
-
 @Epic("Frontoffice")
 @Feature("Deposit Accounts Management")
+@Owner("Petro")
 public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
 
     private IndividualClient client;
@@ -44,7 +41,7 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
 
         // Set up account
         chkAccount = new Account().setCHKAccountData();
-        chkAccount.setAccountNumber("35324535352");
+//        chkAccount.setAccountNumber("35324535352"); // remove later
 
         // Set up transaction
         transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
@@ -80,20 +77,29 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
     public void viewClientLevelCallStatement() {
 
         logInfo("Step 1: Log in to the system as User from the preconditions");
-//        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the CHK account from the precondition and open it on Details");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
+        String accountAvailableBalance = Pages.accountDetailsPage().getAvailableBalance();
+        String accountCurrentBalance = Pages.accountDetailsPage().getCurrentBalance();
+        System.out.println(accountAvailableBalance); // TODO: remove print
+        System.out.println(accountCurrentBalance); // TODO: remove print
 
         logInfo("Step 3: Click [Balance Inquiry] button");
         Pages.accountDetailsPage().clickBalanceInquiry();
+        Pages.balanceInquiryModalPage().clickCloseModalButton();
+        Pages.accountDetailsPage().clickBalanceInquiry();
 
         logInfo("Step 4: Pay attention to the Available Balance and Current Balance values");
-        File balanceInquiryImage = Actions.balanceInquiryActions().saveBalanceInquiryImage();
-        String balanceInquiryImageContent = Actions.balanceInquiryActions().readBalanceInquiryImage(balanceInquiryImage);
-        String availableBalanceValue = Actions.balanceInquiryActions().getAccountAvailableBalanceValue(balanceInquiryImageContent);
-        // TODO: assert 'Accounts Available Balance' and 'Current Balance' values
+        String balanceInquiryImageContent = Actions.balanceInquiryActions().readBalanceInquiryImage(Actions.balanceInquiryActions().saveBalanceInquiryImage());
+        String balanceInquiryAvailableBalance = Actions.balanceInquiryActions().getAccountBalanceValueByType(balanceInquiryImageContent, "Available Balance");
+        System.out.println("balanceInquiryAvailableBalance "+ balanceInquiryAvailableBalance);
+        Assert.assertEquals(accountAvailableBalance, balanceInquiryAvailableBalance, "'Available balance' values are not equal");
+
+        String balanceInquiryCurrentBalance = Actions.balanceInquiryActions().getAccountBalanceValueByType(balanceInquiryImageContent, "Current Balance");
+        System.out.println("balanceInquiryCurrentBalance " + balanceInquiryCurrentBalance);
+        Assert.assertEquals(accountCurrentBalance, balanceInquiryCurrentBalance, "'Current balance' values are not equal");
 
         logInfo("Step 5: Click [Print] button");
         Pages.balanceInquiryModalPage().clickPrintButton();
