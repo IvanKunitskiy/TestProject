@@ -21,4 +21,19 @@ public class AddressFactory {
 
         return address;
     }
+
+    public Address getAdditionalAddress() {
+        Address address = new Address();
+        address.setType(AddressType.ALTERNATE);
+        address.setCountry(Country.UNITED_STATES);
+        address.setAddress(Random.genAddress());
+        address.setAddressLine2(Random.genAddress());
+        address.setCity(Random.genCity());
+        address.setState(State.ALABAMA);
+        address.setDistrictName(Random.genString(10));
+        address.setZipCode(Random.genPostalCode());
+        address.setYearsInThisAddress(Random.genInt(1, 10));
+
+        return address;
+    }
 }

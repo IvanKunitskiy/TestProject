@@ -3,6 +3,7 @@ package com.nymbus.actions.client.organisation;
 import com.nymbus.newmodels.client.basicinformation.address.Address;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.email.Email;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.phone.Phone;
+import com.nymbus.newmodels.client.verifyingmodels.TrustAccountUpdateModel;
 import com.nymbus.pages.Pages;
 import org.testng.asserts.SoftAssert;
 
@@ -109,7 +110,7 @@ public class ClientDetailsActions {
         softAssert.assertNotEquals(Pages.clientDetailsPage().getStatus(),
                  empty,
                 "Client status is empty!");
-        softAssert.assertNotEquals(Pages.clientDetailsPage().getFirstName(),
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getOrganizationName(),
                  empty,
                 "Client name is empty!");
         softAssert.assertNotEquals(Pages.clientDetailsPage().getTaxPairIdType(),
@@ -130,6 +131,101 @@ public class ClientDetailsActions {
         softAssert.assertNotEquals(Pages.clientDetailsPage().getAddress(),
                  empty,
                 "Client Address is empty!");
+        softAssert.assertAll();
+    }
+
+    public void verifyTrustAccountUpdatedFields(TrustAccountUpdateModel updateModel) {
+        SoftAssert softAssert = new SoftAssert();
+        int addressIndex = Pages.clientDetailsPage().getAddressRowsCount();
+        verifyUserDefinedFields(softAssert, updateModel);
+        verifyPhones(softAssert, updateModel.getUpdatedPhones());
+        verifyAddress(softAssert, updateModel.getAdditionalAddress(), addressIndex);
+        softAssert.assertAll();
+    }
+
+    private void verifyUserDefinedFields(SoftAssert softAssert, TrustAccountUpdateModel updateModel) {
+        softAssert.assertEquals(Pages.clientDetailsPage().getUserDefined1(),
+                updateModel.getUserDefinedField1(),
+                "User defined field1 is not correct");
+        softAssert.assertEquals(Pages.clientDetailsPage().getUserDefined2(),
+                updateModel.getUserDefinedField2(),
+                "User defined field2 is not correct");
+        softAssert.assertEquals(Pages.clientDetailsPage().getUserDefined3(),
+                updateModel.getUserDefinedField3(),
+                "User defined field3 is not correct");
+        softAssert.assertEquals(Pages.clientDetailsPage().getUserDefined4(),
+                updateModel.getUserDefinedField4(),
+                "User defined field4 is not correct");
+    }
+
+    private void verifyPhones(SoftAssert softAssert, List<Phone> phones) {
+        for (int i = 0; i < phones.size(); i++) {
+            softAssert.assertEquals(Pages.clientDetailsPage().getPhoneTypeByIndex(i+1),
+                    phones.get(i).getPhoneType().getPhoneType(),
+                    "phone type " + i + " is not correct!");
+            softAssert.assertEquals(Pages.clientDetailsPage().getPhoneCountryByIndex(i+1),
+                    phones.get(i).getCountry().getCountry(),
+                    "phone type " + i + " is not correct!");
+            softAssert.assertEquals(Pages.clientDetailsPage().getPhoneNumberByIndex(i+1),
+                    phones.get(i).getPhoneNumber(),
+                    "phone type " + i + " is not correct!");
+        }
+    }
+
+    private void verifyAddress(SoftAssert softAssert, Address address, int addressIndex) {
+        softAssert.assertEquals(Pages.clientDetailsPage().getAddressType1(addressIndex),
+                address.getType().getAddressType(),
+                "address type is incorrect!");
+        softAssert.assertEquals(Pages.clientDetailsPage().getAddressCountry1(addressIndex),
+                address.getCountry().getCountry(),
+                "address country is incorrect!");
+        softAssert.assertEquals(Pages.clientDetailsPage().getAddress1(addressIndex),
+                address.getAddress(),
+                "address address line is incorrect!");
+        softAssert.assertEquals(Pages.clientDetailsPage().getAddressCity1(addressIndex),
+                address.getCity(),
+                "address city line is incorrect!");
+        softAssert.assertEquals(Pages.clientDetailsPage().getAddressState1(addressIndex),
+                address.getState().getState(),
+                "address state line is incorrect!");
+        softAssert.assertEquals(Pages.clientDetailsPage().getAddressZipCode1(addressIndex),
+                address.getZipCode(),
+                "address zipCode line is incorrect!");
+    }
+
+    public void clickSaveChangesButton() {
+        Pages.clientDetailsPage().clickSaveChangesButtonWithJs();
+        Pages.clientDetailsPage().waitForProfileNotEditable();
+    }
+
+    public void verifyClientInformationOnMaintenanceTab(TrustAccountUpdateModel updateModel, int rowsCount) {
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals(Pages.accountMaintenancePage().getRowNewValueByRowName("Zip Code", 1),
+                                updateModel.getAdditionalAddress().getZipCode(),
+                                "Zip code is incorrect !");
+        softAssert.assertEquals(Pages.accountMaintenancePage().getRowNewValueByRowName("State", 1),
+                                updateModel.getAdditionalAddress().getState().getState(),
+                                "State is incorrect !");
+        softAssert.assertEquals(Pages.accountMaintenancePage().getRowNewValueByRowName("Country", 1),
+                                updateModel.getAdditionalAddress().getCountry().getCountry(),
+                                "Country is incorrect !");
+        softAssert.assertEquals(Pages.accountMaintenancePage().getRowNewValueByRowName("City", 1),
+                                updateModel.getAdditionalAddress().getCity(),
+                                "City is incorrect !");
+        softAssert.assertEquals(Pages.accountMaintenancePage().getRowNewValueByRowName("Type", 1),
+                                updateModel.getAdditionalAddress().getType().getAddressType(),
+                                "Type is incorrect !");
+        softAssert.assertEquals(Pages.accountMaintenancePage().getRowNewValueByRowName("Address", 1),
+                                updateModel.getAdditionalAddress().getAddress(),
+                                "Address line1 is incorrect!");
+        softAssert.assertEquals(Pages.accountMaintenancePage().getRowNewValueByRowName("Phone", 2),
+                                updateModel.getUpdatedPhones().get(0).getPhoneNumber(),
+                                "phone number1 is incorrect!");
+        softAssert.assertEquals(Pages.accountMaintenancePage().getRowNewValueByRowName("Phone", 3),
+                                updateModel.getUpdatedPhones().get(1).getPhoneNumber(),
+                                "phone number1 is incorrect!");
+        softAssert.assertTrue(Pages.accountMaintenancePage().getRowsCount() > rowsCount,
+                            "Rows count is incorrect!");
         softAssert.assertAll();
     }
 }

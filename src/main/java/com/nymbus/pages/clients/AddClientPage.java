@@ -264,7 +264,7 @@ public class AddClientPage extends PageTools {
     @Step("Click on 'Address Type' selectorButton")
     public void clickAddressTypeSelectorButton1(int i) {
         waitForElementClickable(addressTypeSelectorButton1, i);
-        click(addressTypeSelectorButton, i);
+        click(addressTypeSelectorButton1, i);
     }
 
     @Step("Click on 'Country' selectorButton")

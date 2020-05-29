@@ -11,6 +11,7 @@ public class ClientDetailsPage extends PageTools {
 
     private By profileForm = By.xpath("//div[@name='profileForm']");
     private By editProfileButton = By.xpath("//button[@ng-click='editCustomerProfile()']");
+    private By saveChangesButton = By.xpath("//button[@type='submit']");
 
     /**
      * Tabs button
@@ -62,6 +63,34 @@ public class ClientDetailsPage extends PageTools {
     private By addressCity = By.name("cityname_0");
     private By addressState = By.xpath("//div[@name='states_0']//span[contains(@class, 'select2-chosen')]/span");
     private By addressZipCode = By.name("zipcode_0");
+
+
+    /**
+     * Phones information
+     */
+    private By phoneType1 = By.xpath("//*[@ng-repeat='phone in profile.phones'][%s]" +
+            "//*[@ng-model='phone.phoneuse']/a//span[@class='ng-binding ng-scope']");
+    private By phoneCountry = By.xpath("//*[@ng-repeat='phone in profile.phones'][%s]" +
+            "//*[@ng-model='phone.country']/a//span[@class='ng-binding ng-scope']");
+    private By phoneNumber = By.xpath("//*[@ng-repeat='phone in profile.phones'][%s]" +
+            "//input[@ng-model='phone.phone']");
+
+    @Step("Get phone type by index {0}")
+    public String getPhoneTypeByIndex(int index) {
+        waitForElementVisibility(phoneType1, index);
+        return getElementText(phoneType1, index).trim();
+    }
+
+    @Step("Get phone country by index {0}")
+    public String getPhoneCountryByIndex(int index) {
+        waitForElementVisibility(phoneCountry, index);
+        return getElementText(phoneCountry, index).trim();
+    }
+    @Step("Get phone number by index {0}")
+    public String getPhoneNumberByIndex(int index) {
+        waitForElementVisibility(phoneNumber, index);
+        return getElementAttributeValue("value", phoneNumber, index).trim().replaceAll("[\\W_&&[^°]]+", "");
+    }
 
     /**
      * Profile tab address information
@@ -121,25 +150,25 @@ public class ClientDetailsPage extends PageTools {
 
     @Step("Delete phone row {0}")
     public void deletePhoneRow(int index) {
-        waitForElementInvisibility(deletePhoneRowImage, index);
+        waitForElementVisibility(deletePhoneRowImage, index);
         click(deletePhoneRowImage, index);
     }
 
     @Step("Delete email row {0}")
     public void deleteEmailRow(int index) {
-        waitForElementInvisibility(deleteEmailImage, index);
+        waitForElementVisibility(deleteEmailImage, index);
         click(deleteEmailImage, index);
     }
 
     @Step("Click add phone button")
     public void clickAddPhoneButton() {
-        waitForElementInvisibility(addPhoneButton);
+        waitForElementVisibility(addPhoneButton);
         click(addPhoneButton);
     }
 
     @Step("Click add email button")
     public void clickAddEmailButton() {
-        waitForElementInvisibility(addEmailButton);
+        waitForElementVisibility(addEmailButton);
         click(addEmailButton);
     }
 
@@ -222,6 +251,18 @@ public class ClientDetailsPage extends PageTools {
         waitForElementVisibility(addressZipCode1, i);
         return getElementAttributeValue("value", addressZipCode1, i).trim();
     }
+
+    @Step("Click 'Save changes' button")
+    public void clickSaveChangesButton() {
+        waitForElementVisibility(saveChangesButton);
+        click(saveChangesButton);
+    }
+
+    @Step("Click 'Save changes'  button with js")
+    public void clickSaveChangesButtonWithJs() {
+        jsClick(saveChangesButton);
+    }
+
     /**
      * Documents Tab
      */
@@ -269,6 +310,11 @@ public class ClientDetailsPage extends PageTools {
     @Step("Wait for Client profile to be editable")
     public void waitForProfileEditable() {
         shouldNotHaveClass("select2-container-disabled", statusDiv);
+    }
+
+    @Step("Wait for Client profile to be not editable")
+    public void waitForProfileNotEditable() {
+        shouldHaveClass("select2-container-disabled", statusDiv);
     }
 
     @Step("Click 'Edit Profile' button")
