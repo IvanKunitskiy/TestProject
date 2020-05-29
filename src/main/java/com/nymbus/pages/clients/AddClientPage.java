@@ -106,6 +106,7 @@ public class AddClientPage extends PageTools {
     private By addressStateSelectorOption = By.xpath("//div[@name='states_0']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By addressZipCodeField = By.xpath("//input[@name='zipcode_0']");
+    private By taxPayerIDTypeSelectedSpan = By.xpath("//div[@id='taxpayeridtype']//span[@class='select2-chosen']/span");
 
     /**
      * Address information
@@ -132,6 +133,10 @@ public class AddClientPage extends PageTools {
     private By itemInDropDown = By.xpath("//div[contains(@class, 'select2-drop-active') and not(contains(@class, 'select2-display-none'))]" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By addAddress = By.xpath("//tr[@class='addRow']//button");
+    private By addressTypeSelectedSpan = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.addressuse.isShow'][%s]" +
+            "//span[@class='select2-chosen']/span");
+    private By addressCountrySelectedSpan = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.country.isShow'][%s]" +
+            "//span[@class='select2-chosen']/span");
 
     /**
      * Phones and Emails information
@@ -1276,4 +1281,24 @@ public class AddClientPage extends PageTools {
         click(viewMemberProfileButton);
     }
 
+    @Step("Get tax payer id type selected span")
+    public String getTaxPayerIdTypeSelectedSpan(int index) {
+        waitForElementVisibility(taxPayerIDTypeSelectedSpan, index);
+        waitForElementClickable(taxPayerIDTypeSelectedSpan, index);
+        return getElementText(taxPayerIDTypeSelectedSpan, index).trim();
+    }
+
+    @Step("Get address type selected value")
+    public String getAddressTypeSelectedSpan(int index) {
+        waitForElementVisibility(addressTypeSelectedSpan, index);
+        waitForElementClickable(addressTypeSelectedSpan, index);
+        return getElementText(addressTypeSelectedSpan, index).trim();
+    }
+
+    @Step("Get address country selected value")
+    public String getAddressCountrySelectedSpan(int index) {
+        waitForElementVisibility(addressCountrySelectedSpan, index);
+        waitForElementClickable(addressCountrySelectedSpan, index);
+        return getElementText(addressCountrySelectedSpan, index).trim();
+    }
 }

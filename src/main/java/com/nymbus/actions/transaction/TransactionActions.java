@@ -312,6 +312,12 @@ public class TransactionActions {
         }
     }
 
+    public void createTransaction(Transaction transaction) {
+        int tempIndex = 0;
+        setTransactionSource(transaction.getTransactionSource(), tempIndex);
+        setTransactionDestination(transaction.getTransactionDestination(), tempIndex);
+    }
+
     public void loginTeller() {
         Pages.navigationPage().clickAccountButton();
 

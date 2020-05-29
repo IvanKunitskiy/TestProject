@@ -24,6 +24,57 @@ public class IndividualClientActions {
                 "Client page is not opened");
     }
 
+    public void createClientOnVerifyConductorModalPage(IndividualClient client) {
+        Pages.verifyConductorModalPage().clickAddNewClientButton();
+        Pages.verifyConductorModalPage().waitForFirstNameFieldEnabled();
+        Pages.addClientPage().setFirstNameValue(client.getIndividualType().getFirstName());
+        Pages.addClientPage().setLastNameValue(client.getIndividualType().getLastName());
+        Pages.addClientPage().setTaxIDValue(client.getIndividualType().getTaxID());
+        setBirthDateOnVerifyConductorModal(client.getIndividualType().getBirthDate());
+        Pages.verifyConductorModalPage().typeAddressField(client.getIndividualType().getAddresses().get(0).getAddress());
+        Pages.verifyConductorModalPage().typeCityField(client.getIndividualType().getAddresses().get(0).getCity());
+        setAddressStatesOnVerifyConductorModal(client.getIndividualType().getAddresses().get(0).getState().getState());
+        Pages.verifyConductorModalPage().typeZipCodeField(client.getIndividualType().getAddresses().get(0).getZipCode());
+        Pages.verifyConductorModalPage().typePhoneField(client.getIndividualClientDetails().getPhones().get(0).getPhoneNumber());
+        setIdTypeOnVerifyConductorModal(client.getIndividualClientDetails().getDocuments().get(0).getIdType().getIdType());
+        Pages.verifyConductorModalPage().typeIdNumberField(client.getIndividualClientDetails().getDocuments().get(0).getIdNumber());
+        setCountryOnVerifyConductorModal(client.getIndividualClientDetails().getDocuments().get(0).getCountry().getCountry());
+        setExpirationDateOnVerifyConductorModal(client.getIndividualClientDetails().getDocuments().get(0).getExpirationDate());
+    }
+
+    private void setExpirationDateOnVerifyConductorModal(String date) {
+        Pages.verifyConductorModalPage().clickCalendarIconWithJs();
+        Pages.verifyConductorModalPage().clickCalendarIconWithJs();
+        Pages.verifyConductorModalPage().setExpirationDateValue(date);
+    }
+
+    private void setBirthDateOnVerifyConductorModal(String date) {
+        Pages.verifyConductorModalPage().clickBirthDateCalendarIconWithJs();
+        Pages.verifyConductorModalPage().clickBirthDateCalendarIconWithJs();
+        Pages.addClientPage().setBirthDateValue(date);
+    }
+
+    private void setAddressStatesOnVerifyConductorModal(String state) {
+        Pages.verifyConductorModalPage().clickStateDropdownButton();
+        Pages.verifyConductorModalPage().clickItemInDropdown(state);
+    }
+
+    private void setIdTypeOnVerifyConductorModal(String idType) {
+        Pages.verifyConductorModalPage().clickIdTypeDropdownButton();
+        Pages.verifyConductorModalPage().clickItemInDropdown(idType);
+    }
+
+    private void setCountryOnVerifyConductorModal(String country) {
+        Pages.verifyConductorModalPage().clickCountryDropdownButton();
+        Pages.verifyConductorModalPage().clickItemInDropdown(country);
+    }
+
+    public void waitForOFACModalWindowVerification() {
+        Assert.assertTrue(Pages.addClientPage().isVerificationSuccess(),
+                "Client data verification is not success");
+        Pages.addClientPage().clickOkModalButton();
+    }
+
     public void createClient(IndividualClient client) {
         openClientPage();
         Pages.clientsSearchPage().clickAddNewClient();
