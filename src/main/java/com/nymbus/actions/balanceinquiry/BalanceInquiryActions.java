@@ -1,11 +1,13 @@
 package com.nymbus.actions.balanceinquiry;
 
-import com.nymbus.core.utils.Generator;
+import com.nymbus.actions.Actions;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.ImageParser;
 import com.nymbus.pages.Pages;
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.leptonica.PIX;
 import org.bytedeco.tesseract.TessBaseAPI;
+import org.testng.Assert;
 
 import java.io.File;
 
@@ -21,7 +23,7 @@ public class BalanceInquiryActions {
         String src = Pages.balanceInquiryModalPage().getBalanceInquiryImageSrc();
 
         // Generate name for balance inquiry image
-        String imageName = "bi-image-" + Generator.genInt(100000000, 999999999);
+        String imageName = "bi-image-" + DateTime.getLocalDateTimeByPattern("yyMMddHHmmss");
         File biImage = new File(System.getProperty("user.dir") + "/screenshots/" + imageName + ".png");
 
         // Save the image
@@ -34,11 +36,8 @@ public class BalanceInquiryActions {
         TessBaseAPI api = new TessBaseAPI();
 
         // Initialize tesseract-ocr with English, without specifying tessdata path
-        // TESSDATA_PREFIX=/usr/local/Cellar/tesseract-lang/4.0.0/share
-        // TODO: move dictionary to current lib path?
+        // TESSDATA_PREFIX = /src/main/resources/tessdata
         if (api.Init(System.getProperty("user.dir") + "/src/main/resources/tessdata", "eng") != 0) {
-            System.out.println(System.getProperty("TESSDATA_PREFIX"));
-            System.out.println(System.getenv("TESSDATA_PREFIX"));
             System.err.println("Could not initialize tesseract.");
             System.exit(1);
         }
@@ -46,7 +45,7 @@ public class BalanceInquiryActions {
         while (!balanceInquiryImage.exists()) {
             try {
                 Thread.sleep(1000);
-                System.out.println("File does not exist in folder");
+                System.err.println("File does not exist in folder");
                 // TODO: add check if file does not exist after some time
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -55,12 +54,10 @@ public class BalanceInquiryActions {
 
         // Open input image with leptonica library
         PIX image = pixRead(balanceInquiryImage.getAbsolutePath());
-        System.out.println("Path: -> " + balanceInquiryImage.getAbsolutePath()); // TODO: remove
         api.SetImage(image);
 
         // Get OCR result
         outText = api.GetUTF8Text();
-        System.out.println("OCR output:\n" + outText.getString()); // TODO: remove
 
         // Destroy used object and release memory
         api.End();
@@ -72,13 +69,19 @@ public class BalanceInquiryActions {
 
     public String getAccountBalanceValueByType(String imageText, String accountBalanceType) {
         String[] lines = imageText.split("\n");
-        String accountAvailableBalanceValue = "";
 
         for (String line : lines) {
             if (line.contains(accountBalanceType)) {
-                accountAvailableBalanceValue = line.split(" ")[3].replaceAll("[^0-9.]", "").trim();
+                return line.split("\\$")[1].trim();
             }
         }
-        return accountAvailableBalanceValue;
+        return null;
+    }
+
+    public void assertAvailableAndCurrentBalanceValuesFromReceipt(String balanceInquiryImageData, String availableBalance, String currentBalance) {
+        String balanceInquiryAvailableBalance = Actions.balanceInquiryActions().getAccountBalanceValueByType(balanceInquiryImageData, "Available Balance");
+        Assert.assertEquals(availableBalance, balanceInquiryAvailableBalance, "'Available balance' values are not equal");
+        String balanceInquiryCurrentBalance = Actions.balanceInquiryActions().getAccountBalanceValueByType(balanceInquiryImageData, "Current Balance");
+        Assert.assertEquals(currentBalance, balanceInquiryCurrentBalance, "'Current balance' values are not equal");
     }
 }

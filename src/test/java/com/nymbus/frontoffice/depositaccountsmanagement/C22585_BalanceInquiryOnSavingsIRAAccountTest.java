@@ -18,7 +18,6 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuil
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -91,11 +90,8 @@ public class C22585_BalanceInquiryOnSavingsIRAAccountTest extends BaseTest {
         Pages.accountDetailsPage().clickBalanceInquiry();
 
         logInfo("Step 4: Check Available Balance and Current Balance values");
-        String balanceInquiryImageContent = Actions.balanceInquiryActions().readBalanceInquiryImage(Actions.balanceInquiryActions().saveBalanceInquiryImage());
-        String balanceInquiryAvailableBalance = Actions.balanceInquiryActions().getAccountBalanceValueByType(balanceInquiryImageContent, "available balance");
-        Assert.assertEquals(accountAvailableBalance, balanceInquiryAvailableBalance, "'Available balance' values are not equal");
-        String balanceInquiryCurrentBalance = Actions.balanceInquiryActions().getAccountBalanceValueByType(balanceInquiryImageContent, "current balance");
-        Assert.assertEquals(accountCurrentBalance, balanceInquiryCurrentBalance, "'Current balance' values are not equal");
+        String balanceInquiryImageData = Actions.balanceInquiryActions().readBalanceInquiryImage(Actions.balanceInquiryActions().saveBalanceInquiryImage());
+        Actions.balanceInquiryActions().assertAvailableAndCurrentBalanceValuesFromReceipt(balanceInquiryImageData, accountAvailableBalance, accountCurrentBalance);
 
         logInfo("Step 5: Click [Close] button");
         Pages.balanceInquiryModalPage().clickCloseButton();

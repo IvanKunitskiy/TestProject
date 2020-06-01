@@ -17,7 +17,6 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuil
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -41,7 +40,6 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
 
         // Set up account
         chkAccount = new Account().setCHKAccountData();
-//        chkAccount.setAccountNumber("35324535352"); // remove later
 
         // Set up transaction
         transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
@@ -83,8 +81,6 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
         String accountAvailableBalance = Pages.accountDetailsPage().getAvailableBalance();
         String accountCurrentBalance = Pages.accountDetailsPage().getCurrentBalance();
-        System.out.println(accountAvailableBalance); // TODO: remove print
-        System.out.println(accountCurrentBalance); // TODO: remove print
 
         logInfo("Step 3: Click [Balance Inquiry] button");
         Pages.accountDetailsPage().clickBalanceInquiry();
@@ -92,14 +88,8 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
         Pages.accountDetailsPage().clickBalanceInquiry();
 
         logInfo("Step 4: Pay attention to the Available Balance and Current Balance values");
-        String balanceInquiryImageContent = Actions.balanceInquiryActions().readBalanceInquiryImage(Actions.balanceInquiryActions().saveBalanceInquiryImage());
-        String balanceInquiryAvailableBalance = Actions.balanceInquiryActions().getAccountBalanceValueByType(balanceInquiryImageContent, "Available Balance");
-        System.out.println("balanceInquiryAvailableBalance "+ balanceInquiryAvailableBalance);
-        Assert.assertEquals(accountAvailableBalance, balanceInquiryAvailableBalance, "'Available balance' values are not equal");
-
-        String balanceInquiryCurrentBalance = Actions.balanceInquiryActions().getAccountBalanceValueByType(balanceInquiryImageContent, "Current Balance");
-        System.out.println("balanceInquiryCurrentBalance " + balanceInquiryCurrentBalance);
-        Assert.assertEquals(accountCurrentBalance, balanceInquiryCurrentBalance, "'Current balance' values are not equal");
+        String balanceInquiryImageData = Actions.balanceInquiryActions().readBalanceInquiryImage(Actions.balanceInquiryActions().saveBalanceInquiryImage());
+        Actions.balanceInquiryActions().assertAvailableAndCurrentBalanceValuesFromReceipt(balanceInquiryImageData, accountAvailableBalance, accountCurrentBalance);
 
         logInfo("Step 5: Click [Print] button");
         Pages.balanceInquiryModalPage().clickPrintButton();
