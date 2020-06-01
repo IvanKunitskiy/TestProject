@@ -52,5 +52,6 @@ public class SelenideConfig {
         Configuration.pollingInterval = 5000;
         Configuration.pageLoadStrategy = "eager";
         Configuration.timeout = 120000;
+        Configuration.reportsFolder = "screenshots";
     }
 }

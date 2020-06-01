@@ -75,5 +75,9 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
 
         logInfo("Step 4: Look through the CHK Call Statement data and verify it contains correct data");
         // TODO: parse statement file
+        Pages.accountStatementPage().waitForLoadingSpinnerInvisibility();
+        Pages.accountStatementPage().downloadCallStatementPDF();
+
+//        Pages.balanceInquiryModalPage().waitForLoadingSpinnerInvisibility();
     }
 }
