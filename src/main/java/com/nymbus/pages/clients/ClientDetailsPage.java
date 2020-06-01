@@ -10,6 +10,8 @@ import java.util.List;
 public class ClientDetailsPage extends PageTools {
 
     private By profileForm = By.xpath("//div[@name='profileForm']");
+    private By editProfileButton = By.xpath("//button[@ng-click='editCustomerProfile()']");
+    private By saveChangesButton = By.xpath("//button[@type='submit']");
 
     /**
      * Tabs button
@@ -22,6 +24,7 @@ public class ClientDetailsPage extends PageTools {
     /**
      * Profile Tab
      */
+    private By statusDiv = By.xpath("//div[@id='statusid']");
     private By clientID = By.xpath("//p[@data-test-id='display-customerNumber']");
     private By type = By.xpath("//p[@data-test-id='display-customerType']");
     private By status = By.xpath("//div[@id='statusid']//span[@class='select2-chosen']/span");
@@ -61,9 +64,39 @@ public class ClientDetailsPage extends PageTools {
     private By addressState = By.xpath("//div[@name='states_0']//span[contains(@class, 'select2-chosen')]/span");
     private By addressZipCode = By.name("zipcode_0");
 
+
+    /**
+     * Phones information
+     */
+    private By phoneType1 = By.xpath("//*[@ng-repeat='phone in profile.phones'][%s]" +
+            "//*[@ng-model='phone.phoneuse']/a//span[@class='ng-binding ng-scope']");
+    private By phoneCountry = By.xpath("//*[@ng-repeat='phone in profile.phones'][%s]" +
+            "//*[@ng-model='phone.country']/a//span[@class='ng-binding ng-scope']");
+    private By phoneNumber = By.xpath("//*[@ng-repeat='phone in profile.phones'][%s]" +
+            "//input[@ng-model='phone.phone']");
+
+    @Step("Get phone type by index {0}")
+    public String getPhoneTypeByIndex(int index) {
+        waitForElementVisibility(phoneType1, index);
+        return getElementText(phoneType1, index).trim();
+    }
+
+    @Step("Get phone country by index {0}")
+    public String getPhoneCountryByIndex(int index) {
+        waitForElementVisibility(phoneCountry, index);
+        return getElementText(phoneCountry, index).trim();
+    }
+    @Step("Get phone number by index {0}")
+    public String getPhoneNumberByIndex(int index) {
+        waitForElementVisibility(phoneNumber, index);
+        return getElementAttributeValue("value", phoneNumber, index).trim().replaceAll("[\\W_&&[^°]]+", "");
+    }
+
     /**
      * Profile tab address information
      */
+    private By addAddressButton = By.xpath("//button[@ng-click='addAddress()']");
+    private By addressRows = By.xpath("//tr[@ng-repeat-start='(key, address) in profile.addresses']");
     private By addressType1 = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.addressuse.isShow'][%s]" +
             "//span[contains(@class, 'ng-binding') and not(contains(@class, 'ng-hide'))]");
     private By addressCountry1 = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.country.isShow'][%s]" +
@@ -74,6 +107,70 @@ public class ClientDetailsPage extends PageTools {
              "//span[contains(@class, 'ng-binding') and not(contains(@class, 'ng-hide'))]");
     private By addressZipCode1 =By.xpath("(//tr[@class='ng-scope' and @ng-if='address.pageConfig.zipcode.isShow'][%s]" +
             "//input)[1]");
+
+    /**
+     * Profile tab contacts information
+     */
+    private By contactInformationHeader = By.xpath("//div[@ui-view='contactInformation']//h3");
+    private By phoneRows = By.xpath("//div[@ui-view='contactInformation']//tr[@ng-repeat='phone in profile.phones']");
+    private By phoneRow = By.xpath("//div[@ui-view='contactInformation']//tr[@ng-repeat='phone in profile.phones'][%s]");
+    private By emailRows = By.xpath("//div[@ui-view='contactInformation']//tr[@ng-repeat='email in profile.emails']");
+    private By emailRow = By.xpath("//div[@ui-view='contactInformation']//tr[@ng-repeat='email in profile.emails'][%s]");
+    private By deletePhoneRowImage = By.xpath("(//div[@ui-view='contactInformation']//tr[@ng-repeat='phone in profile.phones']//button)[%s]");
+    private By deleteEmailImage = By.xpath("(//div[@ui-view='contactInformation']//tr[@ng-repeat='email in profile.emails']//button)[%s]");
+    private By addPhoneButton = By.xpath("//button[@ng-click='addPhone()']");
+    private By addEmailButton = By.xpath("//button[@ng-click='addEmail()']");
+
+    @Step("Wait for contacts header visibility")
+    public void waitForContactsHeaderVisibility() {
+       waitForElementInvisibility(contactInformationHeader);
+    }
+
+    @Step("Wait for phone row {0} invisibility")
+    public void waitForPhoneRowInvisibility(int index) {
+        waitForElementInvisibility(phoneRow, index);
+    }
+
+    @Step("Wait for email row {0} invisibility")
+    public void waitForEmailRowInvisibility(int index) {
+        waitForElementInvisibility(emailRow, index);
+    }
+
+    @Step("Get phones count")
+    public int getPhonesRows() {
+        waitForElementVisibility(contactInformationHeader);
+        return getElementsWithZeroOptionWithWait(1, phoneRows).size();
+    }
+
+    @Step("Get emails count")
+    public int getEmailsCount() {
+        waitForElementVisibility(contactInformationHeader);
+        return getElementsWithZeroOptionWithWait(1, emailRows).size();
+    }
+
+    @Step("Delete phone row {0}")
+    public void deletePhoneRow(int index) {
+        waitForElementVisibility(deletePhoneRowImage, index);
+        click(deletePhoneRowImage, index);
+    }
+
+    @Step("Delete email row {0}")
+    public void deleteEmailRow(int index) {
+        waitForElementVisibility(deleteEmailImage, index);
+        click(deleteEmailImage, index);
+    }
+
+    @Step("Click add phone button")
+    public void clickAddPhoneButton() {
+        waitForElementVisibility(addPhoneButton);
+        click(addPhoneButton);
+    }
+
+    @Step("Click add email button")
+    public void clickAddEmailButton() {
+        waitForElementVisibility(addEmailButton);
+        click(addEmailButton);
+    }
 
     /**
      *  Notifications region
@@ -108,6 +205,17 @@ public class ClientDetailsPage extends PageTools {
     /**
      * Profile address methods
      */
+    @Step("Click add address button")
+    public void clickAddAddressButton() {
+        waitForElementClickable(addAddressButton);
+        click(addAddressButton);
+    }
+
+    @Step("Get address rows count")
+    public int getAddressRowsCount() {
+        return getElementsWithZeroOptionWithWait(1, addressRows).size();
+    }
+
     @Step("Get 'Address Type' {i} value")
     public String getAddressType1(int i) {
         waitForElementVisibility(addressType1, i);
@@ -143,6 +251,18 @@ public class ClientDetailsPage extends PageTools {
         waitForElementVisibility(addressZipCode1, i);
         return getElementAttributeValue("value", addressZipCode1, i).trim();
     }
+
+    @Step("Click 'Save changes' button")
+    public void clickSaveChangesButton() {
+        waitForElementVisibility(saveChangesButton);
+        click(saveChangesButton);
+    }
+
+    @Step("Click 'Save changes'  button with js")
+    public void clickSaveChangesButtonWithJs() {
+        jsClick(saveChangesButton);
+    }
+
     /**
      * Documents Tab
      */
@@ -185,6 +305,23 @@ public class ClientDetailsPage extends PageTools {
     public void waitForPageLoaded() {
         waitForElementVisibility(profileForm);
         waitForElementClickable(profileForm);
+    }
+
+    @Step("Wait for Client profile to be editable")
+    public void waitForProfileEditable() {
+        shouldNotHaveClass("select2-container-disabled", statusDiv);
+    }
+
+    @Step("Wait for Client profile to be not editable")
+    public void waitForProfileNotEditable() {
+        shouldHaveClass("select2-container-disabled", statusDiv);
+    }
+
+    @Step("Click 'Edit Profile' button")
+    public void clickEditProfileButton() {
+        waitForElementVisibility(editProfileButton);
+        waitForElementClickable(editProfileButton);
+        click(editProfileButton);
     }
 
     /**
