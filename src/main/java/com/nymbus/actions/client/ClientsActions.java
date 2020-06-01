@@ -1,6 +1,7 @@
 package com.nymbus.actions.client;
 
 import com.nymbus.actions.client.individual.IndividualClientActions;
+import com.nymbus.actions.client.organisation.ClientDetailsActions;
 import com.nymbus.actions.client.organisation.OrganisationClientActions;
 
 public class ClientsActions {
@@ -14,6 +15,7 @@ public class ClientsActions {
     private static IndividualClientActions individualClientActions;
     private static OrganisationClientActions organisationClientActions;
     private static MainActions mainActions;
+    private static ClientDetailsActions clientDetailsActions;
 
     /**
      * This function return an instance of `CreateClient`
@@ -73,5 +75,15 @@ public class ClientsActions {
             mainActions = new MainActions();
         }
         return mainActions;
+    }
+
+    /**
+     * This function return an instance of 'ClientDetailsActions'
+     */
+    public static ClientDetailsActions clientDetailsActions() {
+        if (clientDetailsActions == null) {
+            clientDetailsActions = new ClientDetailsActions();
+        }
+        return clientDetailsActions;
     }
 }

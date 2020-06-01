@@ -59,6 +59,14 @@ public class PageTools extends AllureLogger {
         return $(byLocator(by, args)).should(Condition.matchesText(pattern));
     }
 
+    protected void shouldNotHaveClass(String className, By by, Object... args) {
+        $(byLocator(by, args)).shouldNotHave(Condition.cssClass(className));
+    }
+
+    protected void shouldHaveClass(String className, By by, Object... args) {
+        $(byLocator(by, args)).shouldHave(Condition.cssClass(className));
+    }
+
     /**
      * Main Actions
      */
