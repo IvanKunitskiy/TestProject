@@ -1,6 +1,5 @@
 package com.nymbus.frontoffice.depositaccountsmanagement;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -17,15 +16,13 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 @Epic("Frontoffice")
 @Feature("Deposit Accounts Management")
+@Owner("Petro")
 public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
 
     private IndividualClient client;
@@ -54,7 +51,6 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
         instruction.setAmount(10);
 
         // Create a client
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
@@ -79,17 +75,21 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
     public void viewClientLevelCallStatement() {
 
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the CHK account from the precondition and open it on Details");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
+        String accountAvailableBalance = Pages.accountDetailsPage().getAvailableBalance();
+        String accountCurrentBalance = Pages.accountDetailsPage().getCurrentBalance();
 
         logInfo("Step 3: Click [Balance Inquiry] button");
         Pages.accountDetailsPage().clickBalanceInquiry();
+        Pages.balanceInquiryModalPage().clickCloseModalButton();
+        Pages.accountDetailsPage().clickBalanceInquiry();
 
         logInfo("Step 4: Pay attention to the Available Balance and Current Balance values");
-        // TODO: parse receipt
+        String balanceInquiryImageData = Actions.balanceInquiryActions().readBalanceInquiryImage(Actions.balanceInquiryActions().saveBalanceInquiryImage());
+        Actions.balanceInquiryActions().assertAvailableAndCurrentBalanceValuesFromReceipt(balanceInquiryImageData, accountAvailableBalance, accountCurrentBalance);
 
         logInfo("Step 5: Click [Print] button");
         Pages.balanceInquiryModalPage().clickPrintButton();

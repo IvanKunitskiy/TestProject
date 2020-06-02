@@ -77,13 +77,17 @@ public class C22580_BalanceInquiryTest extends BaseTest {
 
         logInfo("Step 2: Search for the Savings account from the precondition and open it on Details tab");
         AccountActions.editAccount().navigateToAccountDetails(savingsAccountNumber, false);
+        String accountAvailableBalance = Pages.accountDetailsPage().getAvailableBalance();
+        String accountCurrentBalance = Pages.accountDetailsPage().getCurrentBalance();
 
         logInfo("Step 3: Click 'Balance Inquiry' button");
         Pages.accountDetailsPage().clickBalanceInquiry();
-        Pages.accountDetailsModalPage().waitForLoadSpinnerInvisibility();
+        Pages.balanceInquiryModalPage().clickCloseModalButton();
+        Pages.accountDetailsPage().clickBalanceInquiry();
 
         logInfo("Step 4: Check Available Balance and Current Balance values");
-        // TODO add image recognizer
+        String balanceInquiryImageData = Actions.balanceInquiryActions().readBalanceInquiryImage(Actions.balanceInquiryActions().saveBalanceInquiryImage());
+        Actions.balanceInquiryActions().assertAvailableAndCurrentBalanceValuesFromReceipt(balanceInquiryImageData, accountAvailableBalance, accountCurrentBalance);
 
         logInfo("Step 5: Click [Close] button");
         Pages.balanceInquiryModalPage().clickCloseButton();
