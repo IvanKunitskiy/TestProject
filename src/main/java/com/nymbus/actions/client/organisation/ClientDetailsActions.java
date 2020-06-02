@@ -104,6 +104,33 @@ public class ClientDetailsActions {
         Pages.addClientPage().clickItemInDropDown(country);
     }
 
+    public void verifyNotBlankFieldsForCorporationClient() {
+        SoftAssert softAssert = new SoftAssert();
+        String empty = "";
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getStatus(),
+                empty,
+                "Client status is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getOrganizationName(),
+                empty,
+                "Client name is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getTaxPairIdType(),
+                empty,
+                "Client Tax Payer ID Type is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getTaxID(),
+                empty,
+                "Client Tax ID is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getSelectOfficer(),
+                empty,
+                "Client selected officer is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getPhone(),
+                empty,
+                "Client Phone is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getAddress(),
+                empty,
+                "Client Address is empty!");
+        softAssert.assertAll();
+    }
+
     public void verifyNotBlankFields() {
         SoftAssert softAssert = new SoftAssert();
         String empty = "";
