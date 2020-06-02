@@ -1,5 +1,6 @@
 package com.nymbus.actions;
 
+import com.nymbus.actions.balanceinquiry.BalanceInquiryActions;
 import com.nymbus.actions.clients.ClientPageActions;
 import com.nymbus.actions.clients.ClientsSearchResultsPageActions;
 import com.nymbus.actions.clients.maintenance.MaintenanceHistoryPageActions;
@@ -28,6 +29,7 @@ public class Actions {
     private static JournalActions journalActions;
     private static TellerActions tellerActions;
     private static NonTellerTransactionActions nonTellerTransactionActions;
+    private static BalanceInquiryActions balanceInquiryActions;
 
     /**
      * Modal Window Actions
@@ -162,5 +164,15 @@ public class Actions {
             nonTellerTransactionActions = new NonTellerTransactionActions();
         }
         return nonTellerTransactionActions;
+    }
+
+    /**
+     * This function returns an instance of `BalanceInquiryActions`
+     */
+    public static BalanceInquiryActions balanceInquiryActions() {
+        if (balanceInquiryActions == null) {
+            balanceInquiryActions = new BalanceInquiryActions();
+        }
+        return balanceInquiryActions;
     }
 }

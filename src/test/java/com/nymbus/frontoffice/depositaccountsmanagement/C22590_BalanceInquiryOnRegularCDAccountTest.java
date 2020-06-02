@@ -1,6 +1,5 @@
 package com.nymbus.frontoffice.depositaccountsmanagement;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -80,17 +79,21 @@ public class C22590_BalanceInquiryOnRegularCDAccountTest extends BaseTest {
     public void viewClientLevelCallStatement() {
 
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the CD account from the precondition and open it on Details");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(cdAccount);
+        String accountAvailableBalance = Pages.accountDetailsPage().getAvailableBalance();
+        String accountCurrentBalance = Pages.accountDetailsPage().getCurrentBalance();
 
         logInfo("Step 3: Click [Balance Inquiry] button");
         Pages.accountDetailsPage().clickBalanceInquiry();
+        Pages.balanceInquiryModalPage().clickCloseModalButton();
+        Pages.accountDetailsPage().clickBalanceInquiry();
 
         logInfo("Step 4: heck Available Balance and Current Balance values");
-        // TODO: parse receipt
+        String balanceInquiryImageData = Actions.balanceInquiryActions().readBalanceInquiryImage(Actions.balanceInquiryActions().saveBalanceInquiryImage());
+        Actions.balanceInquiryActions().assertAvailableAndCurrentBalanceValuesFromReceipt(balanceInquiryImageData, accountAvailableBalance, accountCurrentBalance);
 
         logInfo("Step 5: Click [Close] button");
         Pages.balanceInquiryModalPage().clickCloseButton();

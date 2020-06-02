@@ -189,7 +189,6 @@ public class AccountDetailsPage extends PageTools {
 
     @Step("Get 'CurrentBalance' value")
     public String getCurrentBalance() {
-        scrollToElement(currentBalance);
         waitForElementVisibility(currentBalance);
         String currentBalanceValue = getElementText(currentBalance).trim();
         return currentBalanceValue.replaceAll("[^0-9.]", "");
@@ -197,7 +196,6 @@ public class AccountDetailsPage extends PageTools {
 
     @Step("Get 'AvailableBalance' value")
     public String getAvailableBalance() {
-        scrollToElement(availableBalance);
         waitForElementVisibility(availableBalance);
         String availableBalanceValue = getElementText(availableBalance).trim();
         return availableBalanceValue.replaceAll("[^0-9.]", "");
