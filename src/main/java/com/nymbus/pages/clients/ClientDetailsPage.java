@@ -24,6 +24,7 @@ public class ClientDetailsPage extends PageTools {
     /**
      * Profile Tab
      */
+    private By clientType = By.xpath("//*[@id='typeid_person']//span[@class='select2-chosen']/span");
     private By statusDiv = By.xpath("//div[@id='statusid']");
     private By clientID = By.xpath("//p[@data-test-id='display-customerNumber']");
     private By type = By.xpath("//p[@data-test-id='display-customerType']");
@@ -369,6 +370,12 @@ public class ClientDetailsPage extends PageTools {
     public String getType() {
         waitForElementVisibility(type);
         return getElementText(type).trim();
+    }
+
+    @Step("Get 'Client type' value from input field")
+    public String getClientTypeFromInputField() {
+        waitForElementVisibility(clientType);
+        return getElementText(clientType).trim();
     }
 
     @Step("Get 'Status' value")
