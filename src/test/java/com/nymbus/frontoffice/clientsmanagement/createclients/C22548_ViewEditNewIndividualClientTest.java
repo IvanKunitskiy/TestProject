@@ -22,7 +22,6 @@ import java.util.List;
 
 public class C22548_ViewEditNewIndividualClientTest extends BaseTest {
     private String clientId;
-    private IndividualClient individualClient;
     private TrustAccountUpdateModel updateModel;
 
     @BeforeMethod
@@ -35,7 +34,7 @@ public class C22548_ViewEditNewIndividualClientTest extends BaseTest {
         // Setup individual client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        individualClient = individualClientBuilder.buildClient();
+        IndividualClient individualClient = individualClientBuilder.buildClient();
 
         // Login
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
