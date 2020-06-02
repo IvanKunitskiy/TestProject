@@ -189,7 +189,7 @@ public class Account {
         account.setAddNewOption("Account");
         account.setProductType("CHK Account");
         account.setAccountTitle(Generator.genString(5));
-        account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
+        account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 92233720368L)));
         account.setProduct("Basic Business Checking");
         account.setOptInOutDate("01/01/2020");
         account.setDateOpened("02/27/2020");
