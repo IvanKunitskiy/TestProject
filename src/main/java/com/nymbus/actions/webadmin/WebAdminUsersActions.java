@@ -6,7 +6,10 @@ import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.data.entity.User;
 import com.nymbus.data.entity.verifyingmodels.TellerSessionVerifyingModel;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.verifyingmodels.FirstNameAndLastNameModel;
 import com.nymbus.pages.webadmin.WebAdminPages;
+
+import java.util.Random;
 
 public class WebAdminUsersActions {
 
@@ -21,10 +24,36 @@ public class WebAdminUsersActions {
                 + "+%23user%27s+login%0D%0AorderBy%3A+-id&source=";
     }
 
+    private String getSecurityOfacEntryUrl(String individualType) {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev6DS&"
+                + "dqlQuery=count%3A+100%0D%0A"
+                + "from%3A+security.ofac.entry%0D%0A"
+                + "where%3A+%0D%0A"
+                + "-+.sdntype->name%3A+"
+                +  individualType
+                + "&source=";
+    }
+
     private String getBankControlFileUrl() {
         return Constants.WEB_ADMIN_URL
                 + "rulesui2.sbs.bcfile.ct?"
                 + "formName=bank.data.bcfile&filter_(databean)code=CFMIntegrationEnable";
+    }
+
+    public FirstNameAndLastNameModel getExistingIndividualClient() {
+        FirstNameAndLastNameModel existingUser = new FirstNameAndLastNameModel();
+        SelenideTools.openUrl(getSecurityOfacEntryUrl(Constants.INDIVIDUAL_TYPE_FOR_WEB_ADMIN_QUERY));
+
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        int index = (new Random().nextInt(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult())) + 1;
+        existingUser.setFirstName(WebAdminPages.rulesUIQueryAnalyzerPage().getFirstNameByIndex(index));
+        existingUser.setLastName(WebAdminPages.rulesUIQueryAnalyzerPage().getLastNameByIndex(index));
+
+        return existingUser;
     }
 
     public TellerSessionVerifyingModel getTellerSessionDate(String userId) {
