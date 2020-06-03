@@ -12,6 +12,8 @@ public class Constants {
     public static String FIRST_NAME = "autotest";
     public static String LAST_NAME = "autotest";
 
+    public static String INDIVIDUAL_TYPE_FOR_WEB_ADMIN_QUERY = getIndividualType();
+
     /**
      * Browsers
      */
@@ -62,6 +64,20 @@ public class Constants {
                 return "510986";
             case "dev21":
                 return "408079";
+        }
+    }
+
+    /**
+     * Individual type
+     */
+    private static String getIndividualType() {
+        switch (System.getProperty("domain", "dev6")) {
+            case "dev6":
+            default:
+                return "IndividualType";
+            case "dev12":
+            case "dev21":
+                return "Individual";
         }
     }
 

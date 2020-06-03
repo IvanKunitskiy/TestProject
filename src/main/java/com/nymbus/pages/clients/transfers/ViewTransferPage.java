@@ -19,6 +19,12 @@ public class ViewTransferPage extends PageTools {
         return Boolean.parseBoolean(value);
     }
 
+    @Step("Check if 'Delete' button disabled")
+    public boolean isDeleteButtonDisabled() {
+        String value = getElementAttributeValue("disabled", deleteButton);
+        return Boolean.parseBoolean(value);
+    }
+
     @Step("Click 'Delete' button")
     public void clickDeleteButton() {
         waitForElementClickable(deleteButton);

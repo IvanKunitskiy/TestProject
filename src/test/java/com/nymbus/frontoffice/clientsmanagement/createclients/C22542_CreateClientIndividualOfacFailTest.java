@@ -7,10 +7,10 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.client.verifyingmodels.FirstNameAndLastNameModel;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
-import com.nymbus.pages.webadmin.WebAdminPages;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -36,21 +36,11 @@ public class C22542_CreateClientIndividualOfacFailTest extends BaseTest {
 
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-        Selenide.open(Constants.WEB_ADMIN_URL + "RulesUIQuery.ct?" +
-                "waDbName=nymbusdev6DS&" +
-                "dqlQuery=count%3A+100%0D%0A" +
-                "from%3A+security.ofac.entry%0D%0A" +
-                "where%3A+%0D%0A" +
-                "-+.sdntype->name%3A+IndividualType&source=");
+        FirstNameAndLastNameModel existingClient = WebAdminActions.webAdminUsersActions().getExistingIndividualClient();
 
-        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
-        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
-
-        int index = (new Random().nextInt(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult())) + 1;
-
-        individualClient.getIndividualType().setFirstName(WebAdminPages.rulesUIQueryAnalyzerPage().getFirstNameByIndex(index));
+        individualClient.getIndividualType().setFirstName(existingClient.getFirstName());
         individualClient.getIndividualType().setMiddleName("");
-        individualClient.getIndividualType().setLastName(WebAdminPages.rulesUIQueryAnalyzerPage().getLastNameByIndex(index));
+        individualClient.getIndividualType().setLastName(existingClient.getLastName());
     }
 
     @Test(description = "C22542, Create Client - IndividualType - Ofac check fail")
