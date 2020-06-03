@@ -14,6 +14,7 @@ import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.client.other.DocumentFactory;
 import com.nymbus.pages.Pages;
+import com.nymbus.util.Random;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -67,7 +68,7 @@ public class C22557_ViewEditDeleteRestoreClientLevelDocumentationTest extends Ba
         Pages.documentsPage().clickEditButtonByDocumentID(companyIDDocument.getIdNumber());
 
         logInfo("Step 5: Make any changes in the populated fields, change the attached document and click [Save Changes] button");
-        companyIDDocument.setIdNumber("C00000000");
+        companyIDDocument.setIdNumber(Random.genString(10));
         Pages.addNewDocumentPage().replaceDocument(Functions.getFilePathByName("clientDocument2.png"));
         Pages.addNewDocumentPage().typeValueToIDNumberField(companyIDDocument.getIdNumber());
         Pages.addNewDocumentPage().clickSaveChangesButton();
@@ -104,11 +105,9 @@ public class C22557_ViewEditDeleteRestoreClientLevelDocumentationTest extends Ba
                 "'Issued by' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Country") >= 2,
                 "'Country' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Issued Date") >= 2,
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Issue Date") >= 2,
                 "'Issued Date' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 2,
                 "'Expiration Date' row count is incorrect!");
-
-
     }
 }
