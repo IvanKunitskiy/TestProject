@@ -1,6 +1,7 @@
 package com.nymbus.pages.accounts;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.client.other.account.ProductType;
 import com.nymbus.newmodels.settings.product.Product;
@@ -675,6 +676,11 @@ public class AddAccountPage extends PageTools {
         waitForElementVisibility(boxSizeList);
         waitForElementClickable(boxSizeList);
         return getElementsText(boxSizeList);
+    }
+
+    @Step("Returning list of 'Box Size'")
+    public List<String> getBoxSizeListWithZeroOption() {
+       return getElementsTextWithWait(Constants.MICRO_TIMEOUT, boxSizeList);
     }
 
     @Step("Set 'Box Size' option")

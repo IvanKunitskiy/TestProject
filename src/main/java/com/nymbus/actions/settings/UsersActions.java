@@ -4,14 +4,13 @@ import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.data.entity.CashDrawer;
 import com.nymbus.data.entity.User;
+import com.nymbus.newmodels.account.verifyingmodels.SafeDepositKeyValues;
 import com.nymbus.newmodels.settings.UserSettings;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
 import org.testng.Assert;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class UsersActions {
 
@@ -223,4 +222,21 @@ public class UsersActions {
         return user;
     }
 
+    public void openSafeDepositBoxSizesPage() {
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        Pages.settings().waitForSettingsPageLoaded();
+        SettingsPage.mainPage().waitViewAllSafeDepositBoxSizes();
+        SettingsPage.mainPage().clickViewAllSafeDepositBoxSizes();
+    }
+
+    public List<SafeDepositKeyValues> getSafeDepositBoxValues() {
+        List<SafeDepositKeyValues> safeDepositKeyValues = new ArrayList<>();
+        int rowsCount = SettingsPage.safeDepositBoxSizesPage().getBoxSizeRowsCount();
+        for (int i = 0; i < rowsCount; i++) {
+            String boxSize = SettingsPage.safeDepositBoxSizesPage().getBoxSizeValueByIndex(i+1);
+            String rentalAmount = SettingsPage.safeDepositBoxSizesPage().getRentalAmountByIndex(i+1);
+            safeDepositKeyValues.add(new SafeDepositKeyValues(boxSize, Double.parseDouble(rentalAmount)));
+        }
+        return safeDepositKeyValues;
+    }
 }
