@@ -1,6 +1,9 @@
 package com.nymbus.core.utils;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
+import java.io.IOException;
 
 public class Functions {
 
@@ -16,5 +19,13 @@ public class Functions {
         int days = DateTime.getDaysBetweenTwoDates(fromDate, toDate);
         double result = (currentBalance * (rate/ 365) * days)/100;
         return String.format("%.2f", result);
+    }
+
+    public static void cleanDirectory(String path) {
+        try {
+            FileUtils.cleanDirectory(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

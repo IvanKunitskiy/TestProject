@@ -192,7 +192,7 @@ public class Account {
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 92233720368L)));
         account.setProduct("Basic Business Checking");
         account.setOptInOutDate("01/01/2020");
-        account.setDateOpened("02/27/2020");
+        account.setDateOpened(/*DateTime.getYesterdayDate("MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
         account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
         account.setEarningCreditRate(Generator.getRandomStringNumber(3));
         account.setAutomaticOverdraftStatus("Active");

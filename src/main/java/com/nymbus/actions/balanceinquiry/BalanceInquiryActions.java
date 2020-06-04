@@ -24,7 +24,7 @@ public class BalanceInquiryActions {
 
         // Generate name for balance inquiry image
         String imageName = "bi-image-" + DateTime.getLocalDateTimeByPattern("yyMMddHHmmss");
-        File biImage = new File(System.getProperty("user.dir") + "/screenshots/" + imageName + ".png");
+        File biImage = new File(System.getProperty("user.dir") + "/downloads/" + imageName + ".png");
 
         // Save the image
         ImageParser.loadImage(src, biImage.getAbsolutePath());

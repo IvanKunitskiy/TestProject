@@ -5,7 +5,6 @@ import com.nymbus.core.base.PageTools;
 import org.openqa.selenium.By;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 public class AccountStatementPage extends PageTools {
 
@@ -13,15 +12,8 @@ public class AccountStatementPage extends PageTools {
     private By downloadButtonLink = By.xpath("//a[@download='document.pdf']");
     private By pdfLoadSpinner = By.xpath("//div[@class='spinnerWrapper']");
 
-    public File downloadCallStatementPDF() {
-        try {
-            File f = getSelenideElement(downloadButtonLink).download();
-            System.out.println("Abs path: " + f.getAbsolutePath()); // TODO: remove
-            return f;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public File downloadCallStatementPdf() {
+        return downloadFile(downloadButtonLink);
     }
 
     public void waitForLoadingSpinnerInvisibility() {

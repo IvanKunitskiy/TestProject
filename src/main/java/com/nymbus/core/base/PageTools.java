@@ -10,6 +10,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
@@ -240,5 +241,14 @@ public class PageTools extends AllureLogger {
         Color expectedColor = Color.fromString(expected);
 
         return actualColor.equals(expectedColor);
+    }
+
+    protected File downloadFile(By by, Object... args) {
+        try {
+            return getSelenideElement(by, args).download();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
