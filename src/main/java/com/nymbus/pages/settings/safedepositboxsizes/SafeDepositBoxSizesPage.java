@@ -10,7 +10,14 @@ public class SafeDepositBoxSizesPage extends PageTools {
     private By boxSizeRowsCount = By.xpath("//table//tbody//tr[position() mod 2 = 1]");
     private By boxSizeValueByIndex = By.xpath("(//table//tbody//tr[position() mod 2 = 1]//td[1])[%s]");
     private By rentalAmountByIndex = By.xpath("(//table//tbody//tr[position() mod 2 = 1]//td[2])[%s]");
+    private By safeDepositBoxSizesPageHeader = By.xpath("//h1[text()='Safe Deposit Box Sizes']");
+    private By loadingOverlay = By.xpath("//div[contains(@class, 'xwidget_loading_overlay')]");
 
+    @Step("Wait for Report Generator page loaded")
+    public void waitForPageLoaded() {
+        waitForElementVisibility(safeDepositBoxSizesPageHeader);
+        waitForElementInvisibility(loadingOverlay);
+    }
     @Step("Get boxSizeRowsCount")
     public int getBoxSizeRowsCount() {
        return getElementsWithZeroOptionWithWait(Constants.MICRO_TIMEOUT, boxSizeRowsCount).size();

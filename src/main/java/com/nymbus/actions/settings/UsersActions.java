@@ -227,9 +227,11 @@ public class UsersActions {
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().waitViewAllSafeDepositBoxSizes();
         SettingsPage.mainPage().clickViewAllSafeDepositBoxSizes();
+        SettingsPage.safeDepositBoxSizesPage().waitForPageLoaded();
     }
 
     public List<SafeDepositKeyValues> getSafeDepositBoxValues() {
+
         List<SafeDepositKeyValues> safeDepositKeyValues = new ArrayList<>();
         int rowsCount = SettingsPage.safeDepositBoxSizesPage().getBoxSizeRowsCount();
         for (int i = 0; i < rowsCount; i++) {

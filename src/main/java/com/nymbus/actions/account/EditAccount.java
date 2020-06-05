@@ -210,11 +210,11 @@ public class EditAccount {
     }
 
     public void selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccount(Account account) {
-        AccountActions.editAccount().setMailCode(account);
         AccountActions.editAccount().setCurrentOfficer(account);
         AccountActions.editAccount().setBankBranch(account);
+        AccountActions.editAccount().setMailCode(account);
         AccountActions.editAccount().setCorrespondingAccount(account);
-        AccountActions.editAccount().setDiscountReason(account);
+      /*  AccountActions.editAccount().setDiscountReason(account);*/
     }
 
     public void fillInInputFieldsThatWereNotAvailableDuringSavingsAccountCreation(Account account) {

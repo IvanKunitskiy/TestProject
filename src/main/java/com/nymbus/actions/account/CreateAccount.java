@@ -254,8 +254,8 @@ public class CreateAccount {
     public void selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccount(Account account) {
         setCurrentOfficer(account);
         setBankBranch(account);
-       /* setCorrespondingAccount(account);
-        setDiscountReason(account);*/
+        setCorrespondingAccount(account);
+         /*setDiscountReason(account);*/
     }
 
     public void setValuesInFieldsRequiredForCheckingAccount(Account account) {
