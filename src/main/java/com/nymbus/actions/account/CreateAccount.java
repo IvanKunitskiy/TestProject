@@ -255,7 +255,7 @@ public class CreateAccount {
         setCurrentOfficer(account);
         setBankBranch(account);
         setCorrespondingAccount(account);
-        setDiscountReason(account);
+         /*setDiscountReason(account);*/
     }
 
     public void setValuesInFieldsRequiredForCheckingAccount(Account account) {
@@ -560,12 +560,6 @@ public class CreateAccount {
 
     public void setBoxSize(Account account) {
         Pages.addAccountPage().clickBoxSizeSelectorButton();
-        List<String> listOfBoxSize = Pages.addAccountPage().getBoxSizeList();
-
-        Assert.assertTrue(listOfBoxSize.size() > 0, "There are no box sizes available");
-        if (account.getBoxSize() == null) {
-            account.setBoxSize(listOfBoxSize.get(new Random().nextInt(listOfBoxSize.size())).trim());
-        }
         Pages.addAccountPage().clickBoxSizeSelectorOption(account.getBoxSize());
     }
 
