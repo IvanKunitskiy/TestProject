@@ -18,6 +18,8 @@ import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.io.File;
+
 @Epic("Frontoffice")
 @Feature("Deposit Accounts Management")
 @Owner("Petro")
@@ -73,9 +75,8 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
         Pages.accountNavigationPage().clickTransactionsTab();
 
         logInfo("Step 3: Click [Call Statement] button");
-        Pages.transactionsPage().clickTheCallStatementButton();
-
         logInfo("Step 4: Look through the CHK Call Statement data and verify it contains correct data");
-        // TODO: parse statement file
+        File file = AccountActions.callStatement().downloadCallStatementPdfFile();
+        AccountActions.callStatement().verifyCDIRAAccountCallStatementData(file, iraAccount, client, transaction);
     }
 }

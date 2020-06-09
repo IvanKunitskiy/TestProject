@@ -18,6 +18,8 @@ import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.io.File;
+
 @Epic("Frontoffice")
 @Feature("Deposit Accounts Management")
 @Owner("Petro")
@@ -40,6 +42,8 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
 
         // Set up transaction
         transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        transaction.getTransactionDestination().setAccountNumber(cdIraAccount.getAccountNumber());
+        transaction.getTransactionDestination().setTransactionCode("330 - Cur Yr Contrib");
 
         // Create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -49,10 +53,6 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
 
         // Create account
         AccountActions.createAccount().createCDAccount(cdIraAccount);
-
-        // Set up transaction with account number
-        transaction.getTransactionDestination().setAccountNumber(cdIraAccount.getAccountNumber());
-        transaction.getTransactionDestination().setTransactionCode("330 - Cur Yr Contrib");
 
         // Commit transaction to account and logout
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
@@ -72,9 +72,8 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
         Pages.accountNavigationPage().clickTransactionsTab();
 
         logInfo("Step 3: Click [Call Statement] button");
-        Pages.transactionsPage().clickTheCallStatementButton();
-
         logInfo("Step 4: Look through the Savings Call Statement data and verify it contains correct data");
-        // TODO: parse statement file
+        File file = AccountActions.callStatement().downloadCallStatementPdfFile();
+        AccountActions.callStatement().verifyCDIRAAccountCallStatementData(file, cdIraAccount, client, transaction);
     }
 }

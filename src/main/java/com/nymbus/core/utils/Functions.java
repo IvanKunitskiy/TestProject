@@ -28,4 +28,17 @@ public class Functions {
             e.printStackTrace();
         }
     }
+
+    public static void deleteFile(String path) {
+        new File(path).delete();
+    }
+
+    public static void deleteDirectory(String path) {
+        try {
+            System.out.println(" ------------> " + new File(path).getParent());
+            FileUtils.deleteDirectory(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
