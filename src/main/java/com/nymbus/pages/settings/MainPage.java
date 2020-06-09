@@ -23,6 +23,10 @@ public class MainPage extends PageTools {
     private By searchUserButton = By.xpath("//div[div[h2[text()='Users']]]//form/button");
     private By viewAllUsersLink = By.xpath("//div[div[h2[text()='Users']]]/div[@class='footer']//a");
 
+    // Safe deposit Box region
+    private By safeDepositBoxRegion = By.xpath("//div[div[h2[text()='Safe Deposit Box Sizes']]]");
+    private By viewAllSafeDepositBoxSizesLink = By.xpath("//div[div[h2[text()='Safe Deposit Box Sizes']]]/div[@class='footer']//a");
+
     @Step("Waiting 'Cash Drawer' region")
     public void waitForCashDrawerRegion() {
         waitForElementVisibility(cashDrawerRegion);
@@ -86,5 +90,17 @@ public class MainPage extends PageTools {
     public void clickViewProfile() {
         waitForElementClickable(viewProfileLink);
         click(viewProfileLink);
+    }
+
+    // Safe Deposit Box Sizes
+    @Step("Waiting 'ViewAllSafeDepositBoxSizes' region")
+    public void waitViewAllSafeDepositBoxSizes() {
+        waitForElementVisibility(safeDepositBoxRegion);
+    }
+
+    @Step("Click 'ViewAllSafeDepositBoxSizes' link")
+    public void clickViewAllSafeDepositBoxSizes() {
+        waitForElementClickable(viewAllSafeDepositBoxSizesLink);
+        click(viewAllSafeDepositBoxSizesLink);
     }
 }

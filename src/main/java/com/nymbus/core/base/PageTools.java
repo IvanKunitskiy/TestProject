@@ -223,6 +223,12 @@ public class PageTools extends AllureLogger {
         return shouldBe(sizeGreaterThan(0), by, args).texts();
     }
 
+    protected List<String> getElementsTextWithWait(int waitTimeout, By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", elements --> " + byLocator(by, args));
+        Selenide.sleep(waitTimeout * 1000);
+        return shouldBe(sizeGreaterThanOrEqual(0), by, args).texts();
+    }
+
     protected void scrollToElement(By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", elements --> " + byLocator(by, args));
         waitForElementVisibility(by);

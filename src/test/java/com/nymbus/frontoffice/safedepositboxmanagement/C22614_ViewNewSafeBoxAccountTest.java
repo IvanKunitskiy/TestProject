@@ -7,6 +7,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.verifyingmodels.SafeDepositKeyValues;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
@@ -16,37 +17,42 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 @Epic("Frontoffice")
 @Feature("Box Accounts Management")
 @Owner("Dmytro")
 public class C22614_ViewNewSafeBoxAccountTest extends BaseTest {
-
-    private IndividualClient client;
     private Account safeDepositBoxAccount;
-    private Account checkingAccount;
 
     @BeforeMethod
     public void preConditions() {
         // Set up Client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up Safe Deposit Box Account
         safeDepositBoxAccount = new Account().setSafeDepositBoxData();
-        safeDepositBoxAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
-        safeDepositBoxAccount.setBoxSize("10x10");
-        safeDepositBoxAccount.setRentalAmount("10.00");
         safeDepositBoxAccount.setCurrentOfficer(Constants.FIRST_NAME + " " + Constants.LAST_NAME);
-        safeDepositBoxAccount.setDiscountReason("reason0001");
         safeDepositBoxAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         safeDepositBoxAccount.setDateOpened(WebAdminActions.loginActions().getSystemDate());
 
         // Set up CHK account (required to point the 'Corresponding Account')
-        checkingAccount = new Account().setCHKAccountData();
+        Account checkingAccount = new Account().setCHKAccountData();
 
         // Login to the system and create a client with Safe Deposit Box and CHK accounts
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Get safeDepositKeyValues
+        Actions.usersActions().openSafeDepositBoxSizesPage();
+        List<SafeDepositKeyValues> safeDepositKeyValues = Actions.usersActions().getSafeDepositBoxValues();
+        Assert.assertTrue(safeDepositKeyValues.size() > 0, "Safe deposits values are not set!");
+
+        // Set box size and amount
+        AccountActions.verifyingAccountDataActions().setSafeDepositBoxSizeAndRentalAmount(safeDepositBoxAccount, safeDepositKeyValues);
+
+        // Create client
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
@@ -71,19 +77,6 @@ public class C22614_ViewNewSafeBoxAccountTest extends BaseTest {
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(safeDepositBoxAccount);
 
         logInfo("Step 4: Verify the displayed fields in view mode");
-        Assert.assertEquals(Pages.accountDetailsPage().getBoxSizeValue(), safeDepositBoxAccount.getBoxSize(), "'Box Size' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getRentalAmount(), safeDepositBoxAccount.getRentalAmount(), "'Rental Amount' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), safeDepositBoxAccount.getAccountTitle(), "'Title' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getDiscountPeriods(), safeDepositBoxAccount.getDiscountPeriods(), "'Discount Periods' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), safeDepositBoxAccount.getDateOpened(), "'Date Opened' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getMailCodeValue(), safeDepositBoxAccount.getMailCode(), "'Mail Code' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), safeDepositBoxAccount.getCurrentOfficer(), "'Current Officer' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), safeDepositBoxAccount.getBankBranch(), "'Bank Branch' value does not match");
-        Assert.assertTrue(Pages.accountDetailsPage().getCorrespondingAccount().contains(safeDepositBoxAccount.getCorrespondingAccount()), "'Corresponding Account' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getDiscountReason(), safeDepositBoxAccount.getDiscountReason(), "'Discount Reason' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_1(), safeDepositBoxAccount.getUserDefinedField_1(), "'User Defined Field 1' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_2(), safeDepositBoxAccount.getUserDefinedField_2(), "'User Defined Field 2' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_3(), safeDepositBoxAccount.getUserDefinedField_3(), "'User Defined Field 3' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_4(), safeDepositBoxAccount.getUserDefinedField_4(), "'User Defined Field 4' value does not match");
+        AccountActions.verifyingAccountDataActions().verifyFieldsInViewMode(safeDepositBoxAccount);
     }
 }

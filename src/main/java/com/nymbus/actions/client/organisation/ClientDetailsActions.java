@@ -104,6 +104,102 @@ public class ClientDetailsActions {
         Pages.addClientPage().clickItemInDropDown(country);
     }
 
+    public void verifyNotBlankFieldsForCorporationClient() {
+        SoftAssert softAssert = new SoftAssert();
+        String empty = "";
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getStatus(),
+                empty,
+                "Client status is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getOrganizationName(),
+                empty,
+                "Client name is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getTaxPairIdType(),
+                empty,
+                "Client Tax Payer ID Type is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getTaxID(),
+                empty,
+                "Client Tax ID is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getSelectOfficer(),
+                empty,
+                "Client selected officer is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getPhone(),
+                empty,
+                "Client Phone is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getAddress(),
+                empty,
+                "Client Address is empty!");
+        softAssert.assertAll();
+    }
+
+    public void verifyNotBlankFieldsForConsumerClient() {
+        SoftAssert softAssert = new SoftAssert();
+        String empty = "";
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getClientTypeFromInputField(),
+                 empty,
+                "Client type is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getStatus(),
+                 empty,
+                "Client status is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getFirstName(),
+                 empty,
+                "Client First Name is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getLastName(),
+                 empty,
+                "Client Last Name is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getTaxPairIdType(),
+                 empty,
+                "Client Tax Payer ID Type is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getTaxID(),
+                 empty,
+                "Client Tax ID is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getBirthDate(),
+                 empty,
+                "Client BirthDate is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getAddress(),
+                 empty,
+                "Client Address is empty!");
+        softAssert.assertAll();
+    }
+
+    public void verifyNotBlankFieldsForIndividualClient() {
+        SoftAssert softAssert = new SoftAssert();
+        String empty = "";
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getClientTypeFromInputField(),
+                 empty,
+                "Client type is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getStatus(),
+                 empty,
+                "Client status is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getFirstName(),
+                empty,
+                "Client First Name is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getLastName(),
+                 empty,
+                "Client Last Name is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getTaxPairIdType(),
+                 empty,
+                "Client Tax Payer ID Type is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getTaxID(),
+                 empty,
+                "Client Tax ID is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getBirthDate(),
+                 empty,
+                "Client BirthDate is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getOccupation(),
+                 empty,
+                "Client occupation is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getSelectOfficer(),
+                 empty,
+                "Client selected officer is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getPhone(),
+                 empty,
+                "Client Phone is empty!");
+        softAssert.assertNotEquals(Pages.clientDetailsPage().getAddress(),
+                 empty,
+                "Client Address is empty!");
+        softAssert.assertAll();
+    }
+
     public void verifyNotBlankFields() {
         SoftAssert softAssert = new SoftAssert();
         String empty = "";
