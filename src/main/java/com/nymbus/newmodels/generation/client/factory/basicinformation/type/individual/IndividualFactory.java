@@ -15,7 +15,7 @@ public class IndividualFactory implements IndividualTypeFactory {
     @Override
     public IndividualType getIndividualType() {
         Individual individual = new Individual();
-        individual.setClientStatus(ClientStatus.MEMBER);
+        setIndividualStatus(individual);
         individual.setFirstName(Random.genString(10));
         individual.setMiddleName(Random.genString(10));
         individual.setLastName(Random.genString(10));
@@ -29,5 +29,14 @@ public class IndividualFactory implements IndividualTypeFactory {
 //        individual.setExpirationDate("01/01/2050");
 
         return individual;
+    }
+
+    private void setIndividualStatus(Individual client) {
+        if (System.getProperty("domain").equals("dev21")) {
+            client.setClientStatus(ClientStatus.CUSTOMER);
+        }
+        else {
+            client.setClientStatus(ClientStatus.MEMBER);
+        }
     }
 }

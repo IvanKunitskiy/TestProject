@@ -8,7 +8,8 @@ import lombok.Getter;
 public enum ClientStatus {
     MEMBER("Member"),
     NON_MEMBER("Non-member"),
-    CONSUMER("Consumer");
+    CONSUMER("Consumer"),
+    CUSTOMER("Customer");
 
     private final String clientStatus;
 }
