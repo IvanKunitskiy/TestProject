@@ -1,7 +1,7 @@
 package com.nymbus.actions.balanceinquiry;
 
-import com.nymbus.actions.Actions;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.ImageParser;
 import com.nymbus.pages.Pages;
 import org.bytedeco.javacpp.BytePointer;
@@ -24,7 +24,7 @@ public class BalanceInquiryActions {
 
         // Generate name for balance inquiry image
         String imageName = "bi-image-" + DateTime.getLocalDateTimeByPattern("yyMMddHHmmss");
-        File biImage = new File(System.getProperty("user.dir") + "/downloads/" + imageName + ".png");
+        File biImage = new File(System.getProperty("user.dir") + "/screenshots/" + imageName + ".png");
 
         // Save the image
         ImageParser.loadImage(src, biImage.getAbsolutePath());
@@ -78,10 +78,12 @@ public class BalanceInquiryActions {
         return null;
     }
 
-    public void assertAvailableAndCurrentBalanceValuesFromReceipt(String balanceInquiryImageData, String availableBalance, String currentBalance) {
-        String balanceInquiryAvailableBalance = Actions.balanceInquiryActions().getAccountBalanceValueByType(balanceInquiryImageData, "Available Balance");
-        Assert.assertEquals(availableBalance, balanceInquiryAvailableBalance, "'Available balance' values are not equal");
-        String balanceInquiryCurrentBalance = Actions.balanceInquiryActions().getAccountBalanceValueByType(balanceInquiryImageData, "Current Balance");
-        Assert.assertEquals(currentBalance, balanceInquiryCurrentBalance, "'Current balance' values are not equal");
+    public void assertAvailableAndCurrentBalanceValuesFromReceipt(File file, String availableBalance, String currentBalance) {
+        String balanceInquiryImageData = readBalanceInquiryImage(file);
+        Assert.assertEquals(availableBalance,  getAccountBalanceValueByType(balanceInquiryImageData, "Available Balance"),
+                "'Available balance' values are not equal");
+        Assert.assertEquals(currentBalance, getAccountBalanceValueByType(balanceInquiryImageData, "Current Balance"),
+                "'Current balance' values are not equal");
+        Functions.deleteFile(file.getAbsolutePath());
     }
 }
