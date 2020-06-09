@@ -20,6 +20,8 @@ import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.io.File;
+
 @Epic("Frontoffice")
 @Feature("Deposit Accounts Management")
 @Owner("Petro")
@@ -88,8 +90,8 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
         Pages.accountDetailsPage().clickBalanceInquiry();
 
         logInfo("Step 4: Pay attention to the Available Balance and Current Balance values");
-        String balanceInquiryImageData = Actions.balanceInquiryActions().readBalanceInquiryImage(Actions.balanceInquiryActions().saveBalanceInquiryImage());
-        Actions.balanceInquiryActions().assertAvailableAndCurrentBalanceValuesFromReceipt(balanceInquiryImageData, accountAvailableBalance, accountCurrentBalance);
+        File balanceInquiryImageFile = Actions.balanceInquiryActions().saveBalanceInquiryImage();
+        Actions.balanceInquiryActions().assertAvailableAndCurrentBalanceValuesFromReceipt(balanceInquiryImageFile, accountAvailableBalance, accountCurrentBalance);
 
         logInfo("Step 5: Click [Print] button");
         Pages.balanceInquiryModalPage().clickPrintButton();
