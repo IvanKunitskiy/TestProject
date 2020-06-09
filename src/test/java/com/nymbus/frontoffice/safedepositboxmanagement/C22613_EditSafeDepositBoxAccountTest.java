@@ -81,7 +81,6 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
 
         logInfo("Step 3: Click [Edit] button");
         Pages.accountDetailsPage().clickEditButton();
-        Actions.clientPageActions().closeAllNotifications();
 
         logInfo("Step 4: Look at the fields and verify that such fields are disabled for editing");
         Assert.assertTrue(Pages.editAccountPage().isProductTypeFieldDisabledInEditMode(), "'Product Type' field is not disabled");
@@ -95,7 +94,7 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
         Assert.assertTrue(Pages.editAccountPage().isAmountLastPaidDisabledInEditMode(), "'Amount Last Paid' field is not disabled");
 
         logInfo("Step 5: Select any other value in such drop-down fields:");
-        AccountActions.editAccount().selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccount(safeDepositBoxAccount);
+        AccountActions.editAccount().selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccountWithJs(safeDepositBoxAccount);
 
         logInfo("Step 6: Make some changes in such fields:");
         Pages.editAccountPage().setUserDefinedField_1(safeDepositBoxAccount.getUserDefinedField_1());
@@ -120,8 +119,6 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
 
         logInfo("Step 11: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         AccountActions.accountMaintenanceActions().expandAllRows();
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Product") >= 1,
-                "'Product' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("accounttype") >= 1,
                 "'accounttype' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account Title") >= 1,
@@ -134,10 +131,6 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
                 "'Bank Branch' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date Opened") >= 1,
                 "'Date Opened' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Rate") >= 1,
-                "'Interest Rate' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Statement Cycle") >= 1,
-                "'Statement Cycle' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Box Size") >= 1,
                 "'Box Size' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("User Defined Field 1") >= 1,
@@ -156,7 +149,9 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
         }
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Mail Code") >= 1,
                 "'Mail Code' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Corresponding Account") >= 1,
-                "'Corresponding Account' row count is incorrect!");
+        if (safeDepositBoxAccount.getCorrespondingAccount() != null) {
+            Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Corresponding Account") >= 1,
+                    "'Corresponding Account' row count is incorrect!");
+        }
     }
 }

@@ -99,7 +99,7 @@ public class EditAccountPage extends PageTools {
     private By whenSurchargesRefundedList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By whenSurchargesRefundedSelectorOption = By.xpath("//div[@id='whensurchargesrefunded']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By currentOfficerSelectorButton = By.xpath("//div[@data-test-id='field-officer']");
+    private By currentOfficerSelectorButton = By.xpath("//div[@id='officer']//span[contains(@class, 'select2-arrow')]");
     private By currentOfficerList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By currentOfficerSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
@@ -107,11 +107,13 @@ public class EditAccountPage extends PageTools {
     private By callClassCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By callClassCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By bankBranchSelectorButton = By.xpath("//div[@id='bankbranch']");
+    private By bankBranchSelectorButton = By.xpath("//div[@id='bankbranch']//span[contains(@class, 'select2-arrow')]");
     private By bankBranchSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By bankBranchList = By.xpath("//li[contains(@role, 'option')]/div/span");
 
-    private By correspondingAccountSelectorButton = By.xpath("//div[@id='correspondingaccountid']");
+    private By itemInDropdown =  By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By correspondingAccountSelectorButton = By.xpath("//div[@id='correspondingaccountid']//span[contains(@class, 'select2-arrow')]");
     private By correspondingAccountList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By correspondingAccountSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
@@ -119,7 +121,7 @@ public class EditAccountPage extends PageTools {
     private By discountReasonList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By discountReasonSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By mailCodeSelectorButton = By.xpath("//div[@id='mailingcode']");
+    private By mailCodeSelectorButton = By.xpath("//div[@id='mailingcode']//span[contains(@class, 'select2-arrow')]");
     private By mailCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By mailCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
@@ -1182,6 +1184,12 @@ public class EditAccountPage extends PageTools {
         click(correspondingAccountSelectorButton);
     }
 
+    @Step("Click the 'Corresponding Account' selector button with js")
+    public void clickCorrespondingAccountSelectorButtonWithJs() {
+        waitForElementVisibility(correspondingAccountSelectorButton);
+        jsClick(correspondingAccountSelectorButton);
+    }
+
     public void clickDiscountReasonSelectorOption(String discountReasonOption) {
         waitForElementVisibility(discountReasonSelectorOption,  discountReasonOption);
         waitForElementClickable(discountReasonSelectorOption,  discountReasonOption);
@@ -1223,6 +1231,12 @@ public class EditAccountPage extends PageTools {
         scrollToElement(mailCodeSelectorButton);
         waitForElementClickable(mailCodeSelectorButton);
         click(mailCodeSelectorButton);
+    }
+
+    @Step("Click the 'Mail Code' selector button with js")
+    public void clickMailCodeSelectorButtonWithJs() {
+        waitForElementVisibility(mailCodeSelectorButton);
+        jsClick(mailCodeSelectorButton);
     }
 
     @Step("Set 'Date Opened' value")
@@ -1381,6 +1395,12 @@ public class EditAccountPage extends PageTools {
         click(bankBranchSelectorButton);
     }
 
+    @Step("Click the 'Bank branch' selector button with js")
+    public void clickBankBranchSelectorButtonWithJs() {
+        waitForElementVisibility(bankBranchSelectorButton);
+        jsClick(bankBranchSelectorButton);
+    }
+
     @Step("Click the 'Bank branch' option")
     public void clickBankBranchOption(String bankBranchOption) {
         waitForElementVisibility(bankBranchSelectorOption, bankBranchOption);
@@ -1393,6 +1413,12 @@ public class EditAccountPage extends PageTools {
         waitForElementVisibility(currentOfficerSelectorOption, currentOfficerOption);
         waitForElementClickable(currentOfficerSelectorOption, currentOfficerOption);
         click(currentOfficerSelectorOption, currentOfficerOption);
+    }
+
+    @Step("Click item in dropdown")
+    public void clickItemInDropDownWithJs(String option) {
+        waitForElementVisibility(itemInDropdown, option);
+        jsClick(itemInDropdown, option);
     }
 
     @Step("Returning list of 'Current Officer' options")
@@ -1408,6 +1434,12 @@ public class EditAccountPage extends PageTools {
         scrollToElement(currentOfficerSelectorButton);
         waitForElementClickable(currentOfficerSelectorButton);
         click(currentOfficerSelectorButton);
+    }
+
+    @Step("Click the 'Current Officer' selector button with js")
+    public void clickCurrentOfficerSelectorButtonWithJs() {
+        waitForElementVisibility(currentOfficerSelectorButton);
+        jsClick(currentOfficerSelectorButton);
     }
 
     @Step("Click the 'Apply Interest To' option")

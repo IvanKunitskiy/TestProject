@@ -108,6 +108,17 @@ public class EditAccount {
         Pages.editAccountPage().clickCurrentOfficerSelectorOption(account.getCurrentOfficer());
     }
 
+    public void setCurrentOfficerWithJs(Account account) {
+        Pages.editAccountPage().clickCurrentOfficerSelectorButtonWithJs();
+        List<String> listOfCurrentOfficers = Pages.editAccountPage().getCurrentOfficerList();
+
+        Assert.assertTrue(listOfCurrentOfficers.size() > 0, "There are no options available");
+        if (account.getCurrentOfficer() == null) {
+            account.setCurrentOfficer(listOfCurrentOfficers.get(new Random().nextInt(listOfCurrentOfficers.size())).trim());
+        }
+        Pages.editAccountPage().clickItemInDropDownWithJs(account.getCurrentOfficer());
+    }
+
     public void setBankBranch(Account account) {
         Pages.editAccountPage().clickBankBranchSelectorButton();
         List<String> listOfBankBranchOptions = Pages.editAccountPage().getBankBranchList();
@@ -117,6 +128,17 @@ public class EditAccount {
             account.setBankBranch(listOfBankBranchOptions.get(new Random().nextInt(listOfBankBranchOptions.size())).trim());
         }
         Pages.editAccountPage().clickBankBranchOption(account.getBankBranch());
+    }
+
+    public void setBankBranchWithJs(Account account) {
+        Pages.editAccountPage().clickBankBranchSelectorButtonWithJs();
+        List<String> listOfBankBranchOptions = Pages.editAccountPage().getBankBranchList();
+
+        Assert.assertTrue(listOfBankBranchOptions.size() > 0, "There are no options available");
+        if (account.getBankBranch() == null) {
+            account.setBankBranch(listOfBankBranchOptions.get(new Random().nextInt(listOfBankBranchOptions.size())).trim());
+        }
+        Pages.editAccountPage().clickItemInDropDownWithJs(account.getBankBranch());
     }
 
     public void setCallClassCode(Account account) {
@@ -141,6 +163,17 @@ public class EditAccount {
         Pages.editAccountPage().clickCorrespondingAccountSelectorOption(account.getCorrespondingAccount().replaceAll("[^0-9]", ""));
     }
 
+    public void setCorrespondingAccountWithJs(Account account) {
+        Pages.editAccountPage().clickCorrespondingAccountSelectorButtonWithJs();
+        List<String> listOfCorrespondingAccount = Pages.editAccountPage().getCorrespondingAccountList();
+
+        Assert.assertTrue(listOfCorrespondingAccount.size() > 0, "There are no product types available");
+        if (account.getCorrespondingAccount() == null) {
+            account.setCorrespondingAccount(listOfCorrespondingAccount.get(new Random().nextInt(listOfCorrespondingAccount.size())).trim());
+        }
+        Pages.editAccountPage().clickItemInDropDownWithJs(account.getCorrespondingAccount().replaceAll("[^0-9]", ""));
+    }
+
     public void setDiscountReason(Account account) {
         Pages.editAccountPage().clickDiscountReasonSelectorButton();
         List<String> listOfDiscountReason = Pages.editAccountPage().getDiscountReasonList();
@@ -161,6 +194,17 @@ public class EditAccount {
             account.setMailCode(listOfMailCode.get(new Random().nextInt(listOfMailCode.size())).trim());
         }
         Pages.editAccountPage().clickMailCodeSelectorOption(account.getMailCode());
+    }
+
+    public void setMailCodeWithJs(Account account) {
+        Pages.editAccountPage().clickMailCodeSelectorButtonWithJs();
+        List<String> listOfMailCode = Pages.editAccountPage().getMailCodeList();
+
+        Assert.assertTrue(listOfMailCode.size() > 0, "There are no options available");
+        if (account.getMailCode() == null) {
+            account.setMailCode(listOfMailCode.get(new Random().nextInt(listOfMailCode.size())).trim());
+        }
+        Pages.editAccountPage().clickItemInDropDownWithJs(account.getMailCode());
     }
 
     public void setApplyInterestTo(Account account) {
@@ -215,6 +259,14 @@ public class EditAccount {
         AccountActions.editAccount().setMailCode(account);
         AccountActions.editAccount().setCorrespondingAccount(account);
       /*  AccountActions.editAccount().setDiscountReason(account);*/
+    }
+
+    public void selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccountWithJs(Account account) {
+        AccountActions.editAccount().setCurrentOfficerWithJs(account);
+        AccountActions.editAccount().setBankBranchWithJs(account);
+        AccountActions.editAccount().setMailCodeWithJs(account);
+        AccountActions.editAccount().setCorrespondingAccountWithJs(account);
+        /*  AccountActions.editAccount().setDiscountReason(account);*/
     }
 
     public void fillInInputFieldsThatWereNotAvailableDuringSavingsAccountCreation(Account account) {
