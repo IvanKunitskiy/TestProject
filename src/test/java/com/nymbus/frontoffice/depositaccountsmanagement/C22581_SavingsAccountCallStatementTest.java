@@ -27,7 +27,6 @@ public class C22581_SavingsAccountCallStatementTest extends BaseTest {
     private Transaction transaction;
     private Account savingsAccount;
     private IndividualClient client;
-    private String savingsAccountNumber = "";
 
     @BeforeMethod
     public void prepareData() {

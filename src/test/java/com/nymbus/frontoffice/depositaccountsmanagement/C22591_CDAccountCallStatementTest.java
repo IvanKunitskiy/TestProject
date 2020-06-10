@@ -53,6 +53,7 @@ public class C22591_CDAccountCallStatementTest extends BaseTest {
 
         // Create account
         AccountActions.createAccount().createCDAccount(cdAccount);
+        client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
 
         // Commit transaction to account and logout
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);

@@ -53,6 +53,7 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
 
         // Create account
         AccountActions.createAccount().createCDAccount(cdIraAccount);
+        client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
 
         // Commit transaction to account and logout
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);

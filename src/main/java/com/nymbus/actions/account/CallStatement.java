@@ -54,7 +54,7 @@ public class CallStatement {
         // Branch - Bank Branch Number on account
         Assert.assertTrue(containsText(account.getBankBranch()).matches(pdf));
         // Client Name - Client's First Name, Middle Name, Last Name
-        Assert.assertTrue(containsText(client.getFullName()).matches(pdf));
+        Assert.assertTrue(containsText(client.getFullName()).matches(pdf), "Client name does not match, received: " + client.getFullName());
         // Client Address - Address selected on Account (Account Holders and Signers section)
         Assert.assertTrue(containsText(client.getIndividualType().getAddresses().get(0).getAddress()).matches(pdf));
         // Phone - Clients Phone
@@ -63,18 +63,21 @@ public class CallStatement {
     }
 
     private void verifyTransactionSectionInPdf(PDF pdf, Transaction transaction) {
+        String transactionCode = String.join(" ", transaction.getTransactionDestination().getTransactionCode().split("\\W+"));
+        String transactionAmount = String.valueOf(transaction.getTransactionSource().getAmount());
+
         // Date - Transaction Posting Date for committed transaction from transactions tab
         Assert.assertTrue(containsText(transaction.getTransactionDate()).matches(pdf));
         // Transaction Description - Transaction Code for committed transaction from transactions tab
-        String transactionCode = String.join(" ", transaction.getTransactionDestination().getTransactionCode().split("\\W+"));
         Assert.assertTrue(containsText(transactionCode).matches(pdf));
         // Credits - transaction amount of Credit transaction (Amount is displayed with green color and with '+' sign for such transactions)
-        String transactionAmount = String.valueOf(transaction.getTransactionSource().getAmount());
         Assert.assertTrue(containsText(transactionAmount).matches(pdf));
         // Balance - Balance for committed transaction from transactions tab
         Assert.assertTrue(containsText(transactionAmount).matches(pdf));
         // Totals - calculated # of all transactions, total Debits and Total Credits
-        Assert.assertTrue(containsText("1 Credits").matches(pdf));
+        if (transactionCode.contains("109") || transactionCode.contains("209")) {
+            Assert.assertTrue(containsText("1 Credits").matches(pdf)); // TODO: Present only for checking and savings account
+        }
     }
 
     private void verifyChkAccountSectionInPdf(PDF pdf, Account account) {

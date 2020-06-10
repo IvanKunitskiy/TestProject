@@ -42,6 +42,8 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
 
         // Set up transaction
         transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        transaction.getTransactionDestination().setAccountNumber(iraAccount.getAccountNumber());
+        transaction.getTransactionDestination().setTransactionCode("2330 - Cur Yr Contrib");
 
         // Create a client
         Selenide.open(Constants.URL);
@@ -52,10 +54,7 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
 
         // Create account
         AccountActions.createAccount().createIRAAccount(iraAccount);
-
-        // Set up transaction with account number
-        transaction.getTransactionDestination().setAccountNumber(iraAccount.getAccountNumber());
-        transaction.getTransactionDestination().setTransactionCode("2330 - Cur Yr Contrib");
+        client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
 
         // Commit transaction to account
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
