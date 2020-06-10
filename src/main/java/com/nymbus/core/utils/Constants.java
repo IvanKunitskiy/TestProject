@@ -6,6 +6,7 @@ public class Constants {
     public static String API_URL = getApiUrl();
     public static String REMOTE_URL = System.getProperty("remoteurl");
     public static String BIN_NUMBER = getBinNumber();
+    public static FinancialInstitutionType INSTITUTION_TYPE = getInstitutionType();
 
     public static String USERNAME = "autotest";
     public static String PASSWORD = "autotest";
@@ -78,6 +79,17 @@ public class Constants {
             case "dev12":
             case "dev21":
                 return "Individual";
+        }
+    }
+
+    private static FinancialInstitutionType getInstitutionType() {
+        switch (System.getProperty("domain", "dev6")) {
+            case "dev6":
+            case "dev12":
+            default:
+                return FinancialInstitutionType.FEDERAL_CREDIT_UNION;
+            case "dev21":
+                return FinancialInstitutionType.BANK;
         }
     }
 
