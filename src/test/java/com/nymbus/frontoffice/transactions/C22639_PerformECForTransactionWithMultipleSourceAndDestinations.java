@@ -1,5 +1,6 @@
 package com.nymbus.frontoffice.transactions;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -21,6 +22,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCDAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.pages.webadmin.WebAdminPages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
@@ -72,7 +74,6 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
 
         // Create Savings account
         AccountActions.createAccount().createSavingAccountForTransactionPurpose(saveAccount);
-        Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
 
         // Set up transaction with account number
         transaction.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
@@ -85,18 +86,18 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
         multipleTransaction.getDestinations().get(2).setAccountNumber(cdAccount.getAccountNumber());
 
         // Perform cash in transaction for CHK acc
+        Actions.transactionActions().loginTeller();
         Actions.transactionActions().goToTellerPage();
-        Actions.transactionActions().doLoginTeller();
         Actions.transactionActions().createCashInMiscCreditTransaction(transaction);
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
+        Assert.assertFalse(Pages.tellerPage().isNotificationsPresent(), "Error message is visible!");
         Pages.tellerPage().closeModal();
 
         // Perform multiple transaction
         Actions.transactionActions().createTransactionWithMultipleSources(multipleTransaction);
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
-        Actions.transactionActions().waitForLoadSpinnerInvisibility();
         Assert.assertFalse(Pages.tellerPage().isNotificationsPresent(), "Error message is visible!");
         Pages.tellerPage().closeModal();
 
@@ -115,7 +116,7 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
         // Set up transaction data
         chkAccTransactionData = getExpectedTransactionData(multipleTransaction.getTransactionDate(), "+",
                 chkAccBalanceData.getCurrentBalance(), multipleTransaction.getSources().get(1).getAmount());
-        cdAccTransactionData = getExpectedTransactionData(multipleTransaction.getTransactionDate(), "+",
+        cdAccTransactionData = getExpectedTransactionData(multipleTransaction.getTransactionDate(), "-",
                 cdAccBalanceData.getCurrentBalance(),multipleTransaction.getDestinations().get(2).getAmount());
         savingAccTransactionData = getExpectedTransactionData(multipleTransaction.getTransactionDate(), "-",
                 savingAccBalanceData.getCurrentBalance(), multipleTransaction.getDestinations().get(1).getAmount());
@@ -130,8 +131,8 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Go to Journal page and log in to the proof date");
+        Actions.transactionActions().loginTeller();
         Actions.journalActions().goToJournalPage();
-        Actions.transactionActions().doLoginTeller();
 
         logInfo("Step 3: Search for the transaction from the preconditions and click on it to open on Details");
         Actions.journalActions().applyFilterByAccountNumber(multipleTransaction.getDestinations().get(1).getAccountNumber());
@@ -160,6 +161,45 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionData();
         Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
+
+        logInfo("Step 7: Search for CD account that was used in Misc Credit item and verify its current balance");
+        Actions.clientPageActions().searchAndOpenClientByName(cdAccount.getAccountNumber());
+        BalanceDataForCDAcc actualBalanceDataForCDAcc = AccountActions.retrievingAccountData().getBalanceDataForCDAcc();
+        Assert.assertEquals(actualBalanceDataForCDAcc.getCurrentBalance(), cdAccBalanceData.getCurrentBalance(), "CDAccount current balances is not correct!");
+
+        logInfo("Step 8: Open account on Transactions history and verify that transaction is written to transactions history page with EC status (last column)");
+        AccountActions.retrievingAccountData().goToTransactionsTab();
+        actualTransactionData = AccountActions.retrievingAccountData().getTransactionData();
+        Assert.assertEquals(actualTransactionData, cdAccTransactionData, "Transaction data doesn't match!");
+
+        logInfo("Step 9: Search for Savings account that was used in Deposit item and verify such fields: \n" +
+                "- current balance \n" +
+                "- available balance");
+        Actions.clientPageActions().searchAndOpenClientByName(saveAccount.getAccountNumber());
+        BalanceData actualBalanceDataForSavingAcc = AccountActions.retrievingAccountData().getBalanceData();
+        Assert.assertEquals(actualBalanceDataForSavingAcc, savingAccBalanceData, "Saving account balances is not correct!");
+
+        logInfo("Step 10: Open account on Transactions history and verify that transaction is written to transactions history page with EC status (last column)");
+        AccountActions.retrievingAccountData().goToTransactionsTab();
+        actualTransactionData = AccountActions.retrievingAccountData().getTransactionData();
+        Assert.assertEquals(actualTransactionData, savingAccTransactionData, "Transaction data doesn't match!");
+        Actions.loginActions().doLogOut();
+
+        logInfo("Step 11: Log in to the WebAdmin, go to RulesUI and search for the error corrected transaction items");
+        Selenide.open(Constants.WEB_ADMIN_URL);
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.webAdminTransactionActions().goToTransactionUrl(multipleTransaction.getDestinations().get(2).getAccountNumber());
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
+                "Transaction items doesn't find !");
+
+        logInfo("Step 12: Check gltransactionitempostingstatus value for Deposit (Misc Credit) item");
+        Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getGLTransactionItemPostingStatusValue(1), "Void",
+                "Posted status doesn't match!");
+        String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(1);
+
+        logInfo("Step 13: Go to bank.data.gl.interface and search for the record using deletedIncluded: true");
+        WebAdminActions.webAdminTransactionActions().goToGLInterfaceWithDeletedItems(transactionHeader);
+        WebAdminActions.webAdminTransactionActions().verifyDeletedRecords();
     }
 
     private TransactionData getExpectedTransactionData(String date, String symbol,  double currentBalance, double amount) {

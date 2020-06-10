@@ -87,7 +87,7 @@ public class TellerPage extends PageTools {
      */
     private By notificationWithText = By.xpath("//div[@class='toast-message' and contains(text(), '%s')]");
     private By noteAlert = By.xpath("//section[contains(@class, 'alerts-section')]/div/div/span[contains(text(), '%s')]");
-    private By notifications = By.xpath("//section[contains(@class, 'alerts-section')]/div");
+    private By notifications = By.xpath("//div[@class='toast-message']");
 
     @Step("Is any notifications present")
     public boolean isNotificationsPresent() {
