@@ -1,5 +1,7 @@
 package com.nymbus.newmodels.generation.client.factory.basicinformation.type.individual;
 
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.FinancialInstitutionType;
 import com.nymbus.newmodels.client.basicinformation.address.Country;
 import com.nymbus.newmodels.client.basicinformation.address.State;
 import com.nymbus.newmodels.client.basicinformation.type.TaxPayerIDType;
@@ -32,7 +34,7 @@ public class IndividualFactory implements IndividualTypeFactory {
     }
 
     private void setIndividualStatus(Individual client) {
-        if (System.getProperty("domain").equals("dev21")) {
+        if (Constants.INSTITUTION_TYPE.equals(FinancialInstitutionType.BANK)) {
             client.setClientStatus(ClientStatus.CUSTOMER);
         }
         else {
