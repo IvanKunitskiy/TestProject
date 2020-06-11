@@ -1,5 +1,6 @@
 package com.nymbus.pages.teller;
 
+import com.codeborne.selenide.Condition;
 import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -86,6 +87,12 @@ public class TellerPage extends PageTools {
      */
     private By notificationWithText = By.xpath("//div[@class='toast-message' and contains(text(), '%s')]");
     private By noteAlert = By.xpath("//section[contains(@class, 'alerts-section')]/div/div/span[contains(text(), '%s')]");
+    private By notifications = By.xpath("//div[@class='toast-message']");
+
+    @Step("Is any notifications present")
+    public boolean isNotificationsPresent() {
+        return isCondition(Condition.appears, notifications);
+    }
 
     @Step("Is message with text {0} present")
     public boolean isMessageWithTextPresent(String text) {
