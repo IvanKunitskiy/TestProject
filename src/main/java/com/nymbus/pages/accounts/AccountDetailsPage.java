@@ -90,8 +90,8 @@ public class AccountDetailsPage extends PageTools {
     private By bankAccountNumberInterestOnCD = By.xpath("//tr[@data-config-name='bankaccountnumberinterestoncd']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By bankRoutingNumberInterestOnCD = By.xpath("//tr[@data-config-name='bankroutingnumberinterestoncd']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By transactionalAccount = By.xpath("//tr[@data-config-name='transactionalaccount']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private By currentBalance = By.xpath("//tr[@data-config-name = 'currentbalance']/td[2]//span[contains(@class, 'dnTextFixedWidthText')]");
-    private By availableBalance = By.xpath("//tr[@data-config-name = 'memopostingbalance']/td[2]//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By currentBalance = By.xpath("//div[@ng-if='accountHeaderConfig.currentbalance.isShow']//p[contains(@class, 'lineX14')]");
+    private By availableBalance = By.xpath("//div[@ng-if='accountHeaderConfig.memobalance.isShow']//p[contains(@class, 'lineX14')]");
     private By aggregateBalanceYearToDate = By.xpath("//*[@data-config-name='aggregatebalanceytd']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By totalContributionsForLifeOfAccount = By.xpath("//*[@data-config-name='totalContributions']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By dateLastDeposit = By.xpath("//*[@data-config-name='datelastdeposit']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");

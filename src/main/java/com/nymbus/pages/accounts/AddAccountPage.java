@@ -42,7 +42,7 @@ public class AddAccountPage extends PageTools {
     private By dateNextIRADistribution = By.xpath("//input[@id='datenextiradistribution']");
     private By termType = By.xpath("//input[@id='terminmonthsordays']");
     private By autoRenewable = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span[contains(@class, 'ng-scope')]");
-    private By interestFrequency = By.xpath("//div[@id='interestfrequency']/a/span/span[contains(@class, 'ng-scope')]");
+    private By interestFrequency = By.xpath("//div[@id='interestfrequencycode']/a/span/span[contains(@class, 'ng-scope')]");
     private By interestRate = By.xpath("//input[@id='interestrate']");
     private By interestType = By.xpath("//div[@id='interesttype']/a/span/span[contains(@class, 'ng-scope')]");
     private By transactionalAccountSwitch = By.xpath("//dn-switch[@id='transactionalaccount']");
@@ -87,7 +87,7 @@ public class AddAccountPage extends PageTools {
     private By chargeOrAnalyzeList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By chargeOrAnalyzeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By interestFrequencySelectorButton = By.xpath("//div[@id='interestfrequency']//span[contains(@class, 'select2-arrow')]");
+    private By interestFrequencySelectorButton = By.xpath("//div[@id='interestfrequencycode']//span[contains(@class, 'select2-arrow')]");
     private By interestFrequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By interestFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 

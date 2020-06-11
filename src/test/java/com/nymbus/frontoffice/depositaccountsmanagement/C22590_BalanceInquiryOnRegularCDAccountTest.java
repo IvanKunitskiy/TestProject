@@ -41,10 +41,14 @@ public class C22590_BalanceInquiryOnRegularCDAccountTest extends BaseTest {
         // Set up account
         cdAccount = new Account().setCDAccountData();
 
+        // Set up transaction with account number
+        transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        transaction.getTransactionDestination().setAccountNumber(cdAccount.getAccountNumber());
+        transaction.getTransactionDestination().setTransactionCode("311 - New CD");
+
         // Set up instruction
         instruction =  new InstructionConstructor(new HoldInstructionBuilder()).constructInstruction(HoldInstruction.class);
         instruction.setAmount(10);
-        transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
 
         // Create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -55,22 +59,17 @@ public class C22590_BalanceInquiryOnRegularCDAccountTest extends BaseTest {
         // Create CD account
         AccountActions.createAccount().createCDAccount(cdAccount);
 
-        // Set up transaction with account number
-        transaction.getTransactionDestination().setAccountNumber(cdAccount.getAccountNumber());
-        transaction.getTransactionDestination().setTransactionCode("311 - New CD");
-
         // Commit transaction to account
-        Actions.transactionActions().goToTellerPage();
-        Actions.transactionActions().doLoginTeller();
-        Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
-        Actions.transactionActions().clickCommitButton();
-        Pages.tellerPage().closeModal();
+        Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
+
+        // Navigate to instructions tab
+        Actions.clientPageActions().searchAndOpenClientByName(cdAccount.getAccountNumber());
+        AccountActions.editAccount().goToInstructionsTab();
+        int instructionsCount = AccountActions.createInstruction().getInstructionCount();
 
         // Create instruction
-        Pages.aSideMenuPage().clickClientMenuItem();
-        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(cdAccount);
-        Pages.accountNavigationPage().clickInstructionsTab();
         AccountActions.createInstruction().createHoldInstruction(instruction);
+        Pages.accountInstructionsPage().waitForCreatedInstruction(instructionsCount + 1);
         Actions.loginActions().doLogOut();
     }
 
