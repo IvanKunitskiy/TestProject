@@ -10,19 +10,17 @@ public class ViewTransferPage extends PageTools {
     private By highBalance = By.xpath("//input[@id='transferthreshold']");
     private By maxAmountToTransfer = By.xpath("//input[@id='transferamount']");
     private By transferCharge = By.xpath("//input[@id='transfercharge']");
-    private By editButton = By.xpath("//button//span[contains(text(), 'Edit')]");
-    private By deleteButton = By.xpath("//button//span[contains(text(), 'Delete')]");
+    private By editButton = By.xpath("//button//span[contains(text(), 'Edit')]/ancestor::button");
+    private By deleteButton = By.xpath("//button//span[contains(text(), 'Delete')]/ancestor::button");
 
-    @Step("Check if 'Edit' button disabled")
-    public boolean isEditButtonDisabled() {
-        String value = getElementAttributeValue("disabled", editButton);
-        return Boolean.parseBoolean(value);
+    @Step("Check if 'Edit' button enabled")
+    public boolean isEditButtonEnabled() {
+        return getWebElement(editButton).isEnabled();
     }
 
-    @Step("Check if 'Delete' button disabled")
-    public boolean isDeleteButtonDisabled() {
-        String value = getElementAttributeValue("disabled", deleteButton);
-        return Boolean.parseBoolean(value);
+    @Step("Check if 'Delete' button enabled")
+    public boolean isDeleteButtonEnabled() {
+        return getWebElement(deleteButton).isEnabled();
     }
 
     @Step("Click 'Delete' button")

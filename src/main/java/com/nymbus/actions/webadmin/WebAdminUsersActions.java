@@ -6,6 +6,7 @@ import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.data.entity.User;
 import com.nymbus.data.entity.verifyingmodels.TellerSessionVerifyingModel;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.client.basicinformation.type.ClientType;
 import com.nymbus.newmodels.client.verifyingmodels.FirstNameAndLastNameModel;
 import com.nymbus.pages.webadmin.WebAdminPages;
 
@@ -44,7 +45,7 @@ public class WebAdminUsersActions {
 
     public FirstNameAndLastNameModel getExistingIndividualClient() {
         FirstNameAndLastNameModel existingUser = new FirstNameAndLastNameModel();
-        SelenideTools.openUrl(getSecurityOfacEntryUrl(Constants.INDIVIDUAL_TYPE_FOR_WEB_ADMIN_QUERY));
+        SelenideTools.openUrl(getSecurityOfacEntryUrl(ClientType.INDIVIDUAL.getClientType()));
 
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();

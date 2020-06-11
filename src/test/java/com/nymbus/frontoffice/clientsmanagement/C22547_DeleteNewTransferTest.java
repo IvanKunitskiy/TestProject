@@ -164,6 +164,6 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
 
         logInfo("Step 10: Search for the modified transfer in the left part of the screen and click it. Try to click [Delete] button");
         Pages.transfersPage().clickTransferInTheListByType(transfer.getTransferType().getTransferType());
-        Assert.assertTrue(Pages.viewTransferPage().isDeleteButtonDisabled(), "Expired transfer can be deleted!");
+        Assert.assertFalse(Pages.viewTransferPage().isDeleteButtonEnabled(), "Expired transfer can be deleted!");
     }
 }
