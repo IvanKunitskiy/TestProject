@@ -20,6 +20,16 @@ public class LoginActions {
                 + "where%3A+%0D%0A-+%28databean%29CODE%3A+DateFilesUpdatedThrough%0D%0A&source=";
     }
 
+    private String getFinancialTypeUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev6DS&"
+                + "dqlQuery=count%3A+10%0D%0A"
+                + "select%3A+name%2C+reference%0D%0A"
+                + "from%3A+bank.data.bcfile%0D%0A"
+                + "where%3A+%0D%0A-+code%3A+FinancialInstitutionType+&source=";
+    }
+
     private String getLogoutUrl() {
         return Constants.WEB_ADMIN_URL + "controller?action=LogoutAction";
     }
@@ -58,6 +68,20 @@ public class LoginActions {
         doLogoutProgrammatically();
         SelenideTools.closeCurrentTab();
         SelenideTools.switchTo().window(0);
+
+        return result;
+    }
+
+    public String getFinancialType() {
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
+        SelenideTools.switchToLastTab();
+        doLogin(Constants.USERNAME, Constants.PASSWORD);
+        SelenideTools.openUrl(getFinancialTypeUrl());
+        waitForSearchResults();
+        String result = WebAdminPages.rulesUIQueryAnalyzerPage().getFinancialInstitutionType();
+        doLogoutProgrammatically();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchToLastTab();
 
         return result;
     }

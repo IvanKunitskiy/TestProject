@@ -29,6 +29,10 @@ public class SelenideTools {
         return new ArrayList<>(getDriver().getWindowHandles());
     }
 
+    public static int getTabsCount() {
+        return getDriver().getWindowHandles().size();
+    }
+
     public static void sleep(int sec) {
         Selenide.sleep(sec * 1000);
     }
