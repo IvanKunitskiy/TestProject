@@ -125,11 +125,18 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      * Data BcFile region
      */
     private By systemDateField = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][1]//*[@key-name='date']");
+    private By referenceField = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow ']//td[3]//span[contains(@class, 'high_title')]/span");
 
     @Step ("Get current date - 1 in system")
     public String getDateInSystem() {
         waitForElementVisibility(systemDateField);
         return getElementText(systemDateField).trim();
+    }
+
+    @Step ("Get financial institution type")
+    public String getFinancialInstitutionType() {
+        waitForElementVisibility(referenceField);
+        return getElementText(referenceField).trim();
     }
 
     /**
