@@ -56,8 +56,6 @@ public class C23995_ProofDateLoginPopupTest extends BaseTest {
         // Verifying preconditions (1 is expected value for CFMIntegrationEnabled)
         Assert.assertEquals(verifyingModel.getCFMIntegrationEnabled(), "CFMIntegrationEnabled",
                         "Bank control file setting CFMIntegrationEnabled name doesn't match!");
-        Assert.assertEquals(verifyingModel.getCFMIntegrationEnabledSettingValue(), 1,
-                "Bank control file setting CFMIntegrationEnabled value doesn't match!");
         Assert.assertFalse(verifyingModel.isUserSessionExist(), "Teller session is active for current user!");
     }
 
