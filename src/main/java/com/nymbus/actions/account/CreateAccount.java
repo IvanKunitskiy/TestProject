@@ -201,25 +201,17 @@ public class CreateAccount {
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
 
-    public void selectValuesInDropdownFieldsRequiredForSavingsAccount(Account account) {
-        setCurrentOfficer(account);
-        setBankBranch(account);
-        setInterestFrequency(account);
-        setStatementCycle(account);
-        setCorrespondingAccount(account);
-        setCallClassCode(account);
-    }
-
     public void setValuesInFieldsRequiredForSavingsAccount(Account account) {
         Pages.addAccountPage().setAccountNumberValue(""); // can be removed when page scrolling is normalized
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
         setBankBranch(account);
+        setMailCode(account);
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setInterestFrequency(account);
-        setStatementCycle(account);
         setCorrespondingAccount(account);
+        setStatementCycle(account);
         setCallClassCode(account);
     }
 
@@ -266,9 +258,9 @@ public class CreateAccount {
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
         setChargeOrAnalyze(account);
-        setAccountAnalysis(account); // if present
+        setAccountAnalysis(account);
         Pages.addAccountPage().setOptInOutDateValue(account.getOptInOutDate());
-        setCallClassCode(account); // if present
+        setCallClassCode(account);
     }
 
     public void selectValuesInDropdownFieldsRequiredForCDAccount(Account account) {

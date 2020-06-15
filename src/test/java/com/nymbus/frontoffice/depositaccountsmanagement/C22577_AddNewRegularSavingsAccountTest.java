@@ -37,7 +37,7 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         regularSavingsAccount = new Account().setSavingsAccountData();
         regularSavingsAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
 
-        // Set up CHK account (required to point the 'Primary Account for Combined Statement' / 'Primary Account for Combined Statement' value)
+        // Set up CHK account (required as Corresponding Account)
         checkingAccount = new Account().setCHKAccountData();
 
         // Login to the system and create a client
@@ -82,6 +82,8 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         Assert.assertEquals(Pages.addAccountPage().getOriginatingOfficer(), client.getIndividualClientDetails().getSelectOfficer(), "'Originating officer' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getCurrentOfficer(), client.getIndividualClientDetails().getSelectOfficer(), "'Current officer' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getBankBranch(), regularSavingsAccount.getBankBranch(), "'Bank branch' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getMailCode(), client.getIndividualClientDetails().getMailCode().getMailCode(), "'Mail code' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' is prefilled with wrong value");
 
         logInfo("Step 7: Select any values in drop-down fields");
         logInfo("Step 8: Fill in text fields with valid data. NOTE: do not fill in Account Number field");
@@ -101,10 +103,13 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), regularSavingsAccount.getBankBranch(), "'Bank Branch' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getStatementCycle(), regularSavingsAccount.getStatementCycle(), "'Statement Cycle' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCorrespondingAccount(), regularSavingsAccount.getCorrespondingAccount());
-        Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), regularSavingsAccount.getCallClassCode(), "'Call Class' value does not match");
+        if (checkingAccount.getCallClassCode() != null) {
+            Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), checkingAccount.getCallClassCode(), "'Call Class' value does not match");
+        }
         Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), regularSavingsAccount.getAccountTitle(), "'Title' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), regularSavingsAccount.getInterestRate(), "'Interest Rate' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), regularSavingsAccount.getDateOpened(), "'Date Opened' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getMailCodeValue(), regularSavingsAccount.getMailCode(), "'Mail Code' value does not match");
 
         logInfo("Step 12: Click [Edit] button and pay attention to the fields that were filled in during account creation");
         Pages.accountDetailsPage().clickEditButton();
@@ -113,7 +118,10 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), regularSavingsAccount.getBankBranch(), "'Bank Branch' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getStatementCycleValueInEditMode(), regularSavingsAccount.getStatementCycle(), "'Statement Cycle' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getCorrespondingAccount(), regularSavingsAccount.getCorrespondingAccount(), "'Corresponding Account' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), regularSavingsAccount.getCallClassCode(), "'Call Class' value does not match");
+        if (checkingAccount.getCallClassCode() != null) {
+            Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), checkingAccount.getCallClassCode(), "'Call Class' value does not match");
+        }
+        Assert.assertEquals(Pages.editAccountPage().getMailCode(), regularSavingsAccount.getMailCode(), "'Mail Code' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getAccountTitleValueInEditMode(), regularSavingsAccount.getAccountTitle(), "'Title' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), regularSavingsAccount.getInterestRate(), "'Interest Rate' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getDateOpenedValueInEditMode(), regularSavingsAccount.getDateOpened(), "'Date Opened' value does not match");
@@ -124,31 +132,29 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
 
         logInfo("Step 14: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         AccountActions.accountMaintenanceActions().expandAllRows();
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Product") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Product"), 1,
                 "'Product' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("accounttype") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("accounttype"), 1,
                 "'accounttype' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account Title") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account Title"), 1,
                 "'Account Title' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Current Officer") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Current Officer"), 1,
                 "'Current Officer' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Bank Branch") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Bank Branch"), 1,
                 "'Bank Branch' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date Opened") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date Opened"), 1,
                 "'Date Opened' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Rate") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Rate"), 1,
                 "'Interest Rate' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Statement Cycle") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Statement Cycle"), 1,
                 "'Statement Cycle' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Charge or analyze") == 1,
-                "'Charge or analyze' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account analysis") == 1,
-                "'Account analysis' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Call Class Code") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Mail Code"), 1,
+                "'Mail Code' row count is incorrect!");
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Call Class Code"), 1,
                 "'Call Class Code' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Corresponding Account") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Corresponding Account"), 1,
                 "'Corresponding Account' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Frequency") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Frequency"), 1,
                 "'Interest Frequency' row count is incorrect!");
     }
 }
