@@ -8,6 +8,7 @@ import com.nymbus.newmodels.settings.product.Product;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
+import java.util.Collections;
 import java.util.List;
 
 public class AddAccountPage extends PageTools {
@@ -55,6 +56,7 @@ public class AddAccountPage extends PageTools {
     private By userDefinedFieldInput_3 = By.xpath("//input[@id='userdefinedfield3']");
     private By userDefinedFieldInput_4 = By.xpath("//input[@id='userdefinedfield4']");
     private By discountPeriods = By.xpath("//input[@id='discountperiods']");
+    private By applySeasonalAddress = By.xpath("//dn-switch[@id='useseasonaladdress']//span[@ng-if='model']");
 
     /**
      * Account holders and signers
@@ -358,9 +360,10 @@ public class AddAccountPage extends PageTools {
 
     @Step("Returning list of 'Account Analysis' options")
     public List<String> getAccountAnalysisList() {
-        waitForElementVisibility(accountAnalysisList);
-        waitForElementClickable(accountAnalysisList);
-        return getElementsText(accountAnalysisList);
+        if (isElementVisible(accountAnalysisList)) {
+            return getElementsText(accountAnalysisList);
+        }
+        return Collections.emptyList();
     }
 
     @Step("Click the 'Account Analysis' selector button")
@@ -380,9 +383,10 @@ public class AddAccountPage extends PageTools {
 
     @Step("Returning list of 'Call Class Code' options")
     public List<String> getCallClassCodeList() {
-        waitForElementVisibility(callClassCodeList);
-        waitForElementClickable(callClassCodeList);
-        return getElementsText(callClassCodeList);
+        if (isElementVisible(callClassCodeList)) {
+            return getElementsText(callClassCodeList);
+        }
+        return Collections.emptyList();
     }
 
     @Step("Click the 'Call Class Code' selector button")
@@ -815,5 +819,12 @@ public class AddAccountPage extends PageTools {
         scrollToElement(saveAccountButton);
         waitForElementClickable(saveAccountButton);
         click(saveAccountButton);
+    }
+
+    @Step("Get the 'Apply Seasonal Address' value")
+    public String getApplySeasonalAddress() {
+        waitForElementVisibility(applySeasonalAddress);
+        waitForElementClickable(applySeasonalAddress);
+        return getElementText(applySeasonalAddress);
     }
 }
