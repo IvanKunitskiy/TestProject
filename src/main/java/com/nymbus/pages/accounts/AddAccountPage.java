@@ -10,6 +10,7 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AddAccountPage extends PageTools {
 
@@ -359,8 +360,10 @@ public class AddAccountPage extends PageTools {
     }
 
     @Step("Returning list of 'Account Analysis' options")
-    public List<SelenideElement> getAccountAnalysisList() {
-        return getElementsWithZeroOption(accountAnalysisList);
+    public List<String> getAccountAnalysisList() {
+        return getElementsWithZeroOption(accountAnalysisList).stream()
+                .map(SelenideElement::text)
+                .collect(Collectors.toList());
     }
 
     @Step("Click the 'Account Analysis' selector button")
@@ -379,8 +382,10 @@ public class AddAccountPage extends PageTools {
     }
 
     @Step("Returning list of 'Call Class Code' options")
-    public List<SelenideElement> getCallClassCodeList() {
-        return getElementsWithZeroOption(callClassCodeList);
+    public List<String> getCallClassCodeList() {
+        return getElementsWithZeroOption(callClassCodeList).stream()
+                .map(SelenideElement::text)
+                .collect(Collectors.toList());
     }
 
     @Step("Click the 'Call Class Code' selector button")
