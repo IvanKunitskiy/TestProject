@@ -1,7 +1,6 @@
 package com.nymbus.actions.balanceinquiry;
 
 import com.nymbus.core.utils.DateTime;
-import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.ImageParser;
 import com.nymbus.pages.Pages;
 import org.bytedeco.javacpp.BytePointer;
@@ -84,6 +83,5 @@ public class BalanceInquiryActions {
                 "'Available balance' values are not equal");
         Assert.assertEquals(currentBalance, getAccountBalanceValueByType(balanceInquiryImageData, "Current Balance"),
                 "'Current balance' values are not equal");
-        Functions.deleteFile(file.getAbsolutePath());
     }
 }
