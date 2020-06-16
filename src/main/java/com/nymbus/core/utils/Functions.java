@@ -35,7 +35,6 @@ public class Functions {
 
     public static void deleteDirectory(String path) {
         try {
-            System.out.println(" ------------> " + new File(path).getParent());
             FileUtils.deleteDirectory(new File(path));
         } catch (IOException e) {
             e.printStackTrace();

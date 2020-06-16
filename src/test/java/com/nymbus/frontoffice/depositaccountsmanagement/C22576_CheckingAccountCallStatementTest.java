@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -15,6 +16,7 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -25,6 +27,7 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
     private IndividualClient client;
     private Account chkAccount;
     private Transaction transaction;
+    private File callStatementPdfFile;
 
     @BeforeMethod
     public void preCondition() {
@@ -70,7 +73,13 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
 
         logInfo("Step 3: Click [Call Statement] button");
         logInfo("Step 4: Look through the CHK Call Statement data and verify it contains correct data");
-        File callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
+        callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
         AccountActions.callStatement().verifyChkAccountCallStatementData(callStatementPdfFile, chkAccount, client, transaction);
+    }
+
+    @AfterMethod(description = "Delete the downloaded PDF.")
+    public void postCondition() {
+        logInfo("Deleting the downloaded PDF...");
+        Functions.deleteDirectory(callStatementPdfFile.getParent());
     }
 }

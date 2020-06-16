@@ -178,7 +178,6 @@ public class CallStatement {
         verifyClientSectionInPdf(pdf, client, account);
         verifySavingsAccountSectionInPdf(pdf, account);
         verifyTransactionSectionInPdf(pdf, transaction);
-        Functions.deleteDirectory(file.getParent());
     }
 
     public void verifySavingsAccountCallStatementData(File file, Account account, IndividualClient client, Transaction transaction) {
