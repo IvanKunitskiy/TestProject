@@ -251,7 +251,6 @@ public class CreateAccount {
     }
 
     public void setValuesInFieldsRequiredForCheckingAccount(Account account) {
-        setProduct(account);
         Pages.addAccountPage().setAccountNumberValue(""); // can be removed when page scrolling is normalized
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
