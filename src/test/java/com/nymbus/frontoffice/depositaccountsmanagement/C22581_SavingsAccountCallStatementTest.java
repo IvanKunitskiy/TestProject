@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -14,6 +15,7 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuil
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -27,6 +29,7 @@ public class C22581_SavingsAccountCallStatementTest extends BaseTest {
     private Transaction transaction;
     private Account savingsAccount;
     private IndividualClient client;
+    private File callStatementPdfFile;
 
     @BeforeMethod
     public void prepareData() {
@@ -70,7 +73,14 @@ public class C22581_SavingsAccountCallStatementTest extends BaseTest {
 
         logInfo("Step 3: Click 'Call Statement' button");
         logInfo("Step 4: Look through the Savings Call Statement data and verify it contains correct data");
-        File file = AccountActions.callStatement().downloadCallStatementPdfFile();
-        AccountActions.callStatement().verifySavingsAccountCallStatementData(file, savingsAccount, client, transaction);
+        callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
+        AccountActions.callStatement().verifySavingsAccountCallStatementData(callStatementPdfFile, savingsAccount, client, transaction);
+    }
+
+    @AfterMethod(description = "Delete the downloaded PDF.")
+    public void postCondition() {
+        logInfo("Deleting the downloaded PDF...");
+        Functions.deleteDirectory(callStatementPdfFile.getParent());
+        Functions.deleteFile(System.getProperty("user.dir") + "/proxy.pdf"); // TODO: Discover reason of duplicating pdf file
     }
 }

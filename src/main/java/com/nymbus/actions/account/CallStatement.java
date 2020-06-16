@@ -3,7 +3,6 @@ package com.nymbus.actions.account;
 import com.codeborne.pdftest.PDF;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
-import com.nymbus.core.utils.Functions;
 import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
@@ -168,7 +167,26 @@ public class CallStatement {
         //    Anticipated (Next Interest Payment Amount value)
         //    Accrued (Accrued Interest value)
         //    Daily Accrual (Daily Interest Accrual value)
+    }
 
+    private void verifySavingsIraAccountSectionInPdf(PDF pdf, Account account) {
+        // Officer - selected account's Current Officer
+        StringBuilder initials = new StringBuilder();
+        for (String word : account.getCurrentOfficer().split(" ")) {
+            initials.append(word.charAt(0));
+        }
+        Assert.assertTrue(containsText(initials.toString()).matches(pdf));
+        // Opened - selected account's Date Opened
+        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf));
+        // Dividend Rate - selected account's Interest Rate
+        Assert.assertTrue(containsText(account.getInterestRate()).matches(pdf));
+
+        // TODO: not filled in during account creation
+
+        // Accrued Interest
+        // YTD Dividends Paid - selected account's Interest Paid Year to date value
+        // Dividends Paid Last Year - selected account's Interest Paid Last Year value
+        // YTD Taxes withheld- selected account's Taxes Withheld YTD value
     }
 
     public void verifyChkAccountCallStatementData(File file, Account account, IndividualClient client, Transaction transaction) {
@@ -187,7 +205,6 @@ public class CallStatement {
         verifyClientSectionInPdf(pdf, client, account);
         verifySavingsAccountSectionInPdf(pdf, account);
         verifyTransactionSectionInPdf(pdf, transaction);
-        Functions.deleteDirectory(file.getParent());
     }
 
     public void verifyCDAccountCallStatementData(File file, Account account, IndividualClient client, Transaction transaction) {
@@ -197,7 +214,6 @@ public class CallStatement {
         verifyClientSectionInPdf(pdf, client, account);
         verifyCDAccountSectionInPdf(pdf, account);
         verifyTransactionSectionInPdf(pdf, transaction);
-        Functions.deleteDirectory(file.getParent());
     }
 
     public void verifyCDIRAAccountCallStatementData(File file, Account account, IndividualClient client, Transaction transaction) {
@@ -207,6 +223,14 @@ public class CallStatement {
         verifyClientSectionInPdf(pdf, client, account);
         verifyCDIRAAccountSectionInPdf(pdf, account);
         verifyTransactionSectionInPdf(pdf, transaction);
-        Functions.deleteDirectory(file.getParent());
+    }
+
+    public void verifySavingsIraAccountCallStatementData(File file, Account account, IndividualClient client, Transaction transaction) {
+        PDF pdf = new PDF(file);
+
+        verifyDateInPdf(pdf);
+        verifyClientSectionInPdf(pdf, client, account);
+        verifySavingsIraAccountSectionInPdf(pdf, account);
+        verifyTransactionSectionInPdf(pdf, transaction);
     }
 }
