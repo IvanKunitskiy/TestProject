@@ -61,6 +61,7 @@ public class C23637_CreateCheckingAccountTest extends BaseTest {
 
         logInfo("Step 4: Select 'Product Type' = 'CHK Account'");
         AccountActions.createAccount().setProductType(checkingAccount);
+        AccountActions.createAccount().setProduct(checkingAccount);
 
         logInfo("Step 5: Look through the fields. Check that fields are prefilled by default");
         Assert.assertEquals(Pages.addAccountPage().getAccountType(), client.getIndividualType().getClientType().getClientType(), "'Account type' is prefilled with wrong value");
