@@ -79,7 +79,6 @@ public class ClientPageActions {
 
     public void searchAndOpenAccountByAccountNumber(Account account) {
         Pages.clientsSearchPage().typeToClientsSearchInputField(account.getAccountNumber());
-        Assert.assertEquals(Pages.clientsSearchPage().getAllLookupResults().size(), 1, "There is more than one client found");
         Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), account.getAccountNumber()));
         Pages.clientsSearchPage().clickOnSearchButton();
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedAccountInSearchResults(account.getAccountNumber());
