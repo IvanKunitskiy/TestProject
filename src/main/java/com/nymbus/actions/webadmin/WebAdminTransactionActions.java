@@ -3,6 +3,8 @@ package com.nymbus.actions.webadmin;
 import com.codeborne.selenide.Selenide;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.pages.webadmin.WebAdminPages;
+import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
 public class WebAdminTransactionActions {
 
@@ -61,5 +63,19 @@ public class WebAdminTransactionActions {
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
 
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+    }
+
+    public void verifyDeletedRecords() {
+        int recordsCount = WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResultInterfaceTable();
+        Assert.assertTrue(recordsCount > 0,"Transaction items doesn't find!");
+        SoftAssert softAssert = new SoftAssert();
+        String empty = "";
+        for (int i = 1; i <= recordsCount; i++ ) {
+            softAssert.assertNotEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDeletedWhenValue(i), empty,
+                    "Deleted When field is blank!");
+            softAssert.assertNotEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDeletedBy(i), empty,
+                    "Deleted By field is blank!");
+        }
+        softAssert.assertAll();
     }
 }

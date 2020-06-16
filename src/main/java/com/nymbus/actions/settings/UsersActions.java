@@ -41,6 +41,7 @@ public class UsersActions {
         openViewAllUsersPage();
         SettingsPage.usersSearchPage().waitForPageLoaded();
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        SettingsPage.usersSearchPage().waitViewUsersListLoading();
         SettingsPage.usersSearchPage().setUserDataForSearching(user.getFirstNameAndLastName());
         SettingsPage.usersSearchPage().clickSearchButton();
         SettingsPage.usersSearchPage().clickCellByUserData(user.getEmail());

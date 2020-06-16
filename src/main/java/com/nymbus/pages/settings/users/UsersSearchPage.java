@@ -14,7 +14,7 @@ public class UsersSearchPage extends PageTools {
 
     @Step("Wait for loading animation invisibility")
     public void waitViewUsersListLoading() {
-        waitForElementVisibility(loadingOverlay);
+       /* waitForElementVisibility(loadingOverlay);*/
         waitForElementInvisibility(loadingOverlay);
     }
 

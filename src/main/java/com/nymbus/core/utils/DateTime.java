@@ -144,13 +144,16 @@ public class DateTime {
         return simpleDateFormat.format(calendar.getTime());
     }
 
-    public static int getDaysBetweenTwoDates(String from, String to) {
+    public static int getDaysBetweenTwoDates(String from, String to, boolean includeToDate) {
         int days = 0;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
         try {
             Date date1 = simpleDateFormat.parse(from);
             Date date2 = simpleDateFormat.parse(to);
             days = Math.toIntExact(ChronoUnit.DAYS.between(date1.toInstant(), date2.toInstant()));
+            if(includeToDate) {
+                ++days;
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }

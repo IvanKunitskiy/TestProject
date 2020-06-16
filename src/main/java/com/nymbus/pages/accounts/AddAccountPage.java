@@ -1,5 +1,6 @@
 package com.nymbus.pages.accounts;
 
+import com.codeborne.selenide.SelenideElement;
 import com.nymbus.core.base.PageTools;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
@@ -9,6 +10,7 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AddAccountPage extends PageTools {
 
@@ -42,7 +44,7 @@ public class AddAccountPage extends PageTools {
     private By dateNextIRADistribution = By.xpath("//input[@id='datenextiradistribution']");
     private By termType = By.xpath("//input[@id='terminmonthsordays']");
     private By autoRenewable = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span[contains(@class, 'ng-scope')]");
-    private By interestFrequency = By.xpath("//div[@id='interestfrequency']/a/span/span[contains(@class, 'ng-scope')]");
+    private By interestFrequency = By.xpath("//div[@id='interestfrequencycode']/a/span/span[contains(@class, 'ng-scope')]");
     private By interestRate = By.xpath("//input[@id='interestrate']");
     private By interestType = By.xpath("//div[@id='interesttype']/a/span/span[contains(@class, 'ng-scope')]");
     private By transactionalAccountSwitch = By.xpath("//dn-switch[@id='transactionalaccount']");
@@ -55,6 +57,7 @@ public class AddAccountPage extends PageTools {
     private By userDefinedFieldInput_3 = By.xpath("//input[@id='userdefinedfield3']");
     private By userDefinedFieldInput_4 = By.xpath("//input[@id='userdefinedfield4']");
     private By discountPeriods = By.xpath("//input[@id='discountperiods']");
+    private By applySeasonalAddress = By.xpath("//dn-switch[@id='useseasonaladdress']//span[@ng-if='model']");
 
     /**
      * Account holders and signers
@@ -358,9 +361,9 @@ public class AddAccountPage extends PageTools {
 
     @Step("Returning list of 'Account Analysis' options")
     public List<String> getAccountAnalysisList() {
-        waitForElementVisibility(accountAnalysisList);
-        waitForElementClickable(accountAnalysisList);
-        return getElementsText(accountAnalysisList);
+        return getElementsWithZeroOption(accountAnalysisList).stream()
+                .map(SelenideElement::text)
+                .collect(Collectors.toList());
     }
 
     @Step("Click the 'Account Analysis' selector button")
@@ -380,9 +383,9 @@ public class AddAccountPage extends PageTools {
 
     @Step("Returning list of 'Call Class Code' options")
     public List<String> getCallClassCodeList() {
-        waitForElementVisibility(callClassCodeList);
-        waitForElementClickable(callClassCodeList);
-        return getElementsText(callClassCodeList);
+        return getElementsWithZeroOption(callClassCodeList).stream()
+                .map(SelenideElement::text)
+                .collect(Collectors.toList());
     }
 
     @Step("Click the 'Call Class Code' selector button")
@@ -815,5 +818,12 @@ public class AddAccountPage extends PageTools {
         scrollToElement(saveAccountButton);
         waitForElementClickable(saveAccountButton);
         click(saveAccountButton);
+    }
+
+    @Step("Get the 'Apply Seasonal Address' value")
+    public String getApplySeasonalAddress() {
+        waitForElementVisibility(applySeasonalAddress);
+        waitForElementClickable(applySeasonalAddress);
+        return getElementText(applySeasonalAddress);
     }
 }

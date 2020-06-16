@@ -15,8 +15,8 @@ public class Functions {
         return new File("src" + File.separator + "main" + File.separator + "resources" + File.separator + "client" + File.separator + fileName).getAbsolutePath();
     }
 
-    public static String getCalculatedInterestAmount(double currentBalance, double rate, String fromDate, String toDate) {
-        int days = DateTime.getDaysBetweenTwoDates(fromDate, toDate);
+    public static String getCalculatedInterestAmount(double currentBalance, double rate, String fromDate, String toDate, boolean includeToDate) {
+        int days = DateTime.getDaysBetweenTwoDates(fromDate, toDate, includeToDate);
         double result = (currentBalance * (rate/ 365) * days)/100;
         return String.format("%.2f", result);
     }
