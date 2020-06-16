@@ -201,25 +201,17 @@ public class CreateAccount {
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
 
-    public void selectValuesInDropdownFieldsRequiredForSavingsAccount(Account account) {
-        setCurrentOfficer(account);
-        setBankBranch(account);
-        setInterestFrequency(account);
-        setStatementCycle(account);
-        setCorrespondingAccount(account);
-        setCallClassCode(account);
-    }
-
     public void setValuesInFieldsRequiredForSavingsAccount(Account account) {
         Pages.addAccountPage().setAccountNumberValue(""); // can be removed when page scrolling is normalized
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
         setBankBranch(account);
+        setMailCode(account);
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setInterestFrequency(account);
-        setStatementCycle(account);
         setCorrespondingAccount(account);
+        setStatementCycle(account);
         setCallClassCode(account);
     }
 
@@ -259,12 +251,9 @@ public class CreateAccount {
     }
 
     public void setValuesInFieldsRequiredForCheckingAccount(Account account) {
-        setProduct(account);
         Pages.addAccountPage().setAccountNumberValue(""); // can be removed when page scrolling is normalized
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
-        setBankBranch(account);
-        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
         setChargeOrAnalyze(account);
@@ -395,11 +384,12 @@ public class CreateAccount {
         Pages.addAccountPage().clickAccountAnalysisSelectorButton();
         List<String> listOfAccountAnalysis = Pages.addAccountPage().getAccountAnalysisList();
 
-        Assert.assertTrue(listOfAccountAnalysis.size() > 0, "There are no product types available");
-        if (account.getAccountAnalysis() == null) {
-            account.setAccountAnalysis(listOfAccountAnalysis.get(new Random().nextInt(listOfAccountAnalysis.size())).trim());
+        if (listOfAccountAnalysis.size() > 0) {
+            if (account.getAccountAnalysis() == null) {
+                account.setAccountAnalysis(listOfAccountAnalysis.get(new Random().nextInt(listOfAccountAnalysis.size())).trim());
+            }
+            Pages.addAccountPage().clickAccountAnalysisSelectorOption(account.getAccountAnalysis());
         }
-        Pages.addAccountPage().clickAccountAnalysisSelectorOption(account.getAccountAnalysis());
     }
 
     public void setAccountAnalysis(CHKAccount account) {
@@ -417,11 +407,12 @@ public class CreateAccount {
         Pages.addAccountPage().clickCallClassCodeSelectorButton();
         List<String> listOfCallClassCode = Pages.addAccountPage().getCallClassCodeList();
 
-        Assert.assertTrue(listOfCallClassCode.size() > 0, "There are no product types available");
-        if (account.getCallClassCode() == null) {
-            account.setCallClassCode(listOfCallClassCode.get(new Random().nextInt(listOfCallClassCode.size())).trim());
+        if (listOfCallClassCode.size() > 0) {
+            if (account.getCallClassCode() == null) {
+                account.setCallClassCode(listOfCallClassCode.get(new Random().nextInt(listOfCallClassCode.size())).trim());
+            }
+            Pages.addAccountPage().clickCallClassCodeSelectorOption(account.getCallClassCode());
         }
-        Pages.addAccountPage().clickCallClassCodeSelectorOption(account.getCallClassCode());
     }
 
     public void setCallClassCode(CHKAccount account) {
