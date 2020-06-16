@@ -1,5 +1,6 @@
 package com.nymbus.pages.accounts;
 
+import com.codeborne.selenide.SelenideElement;
 import com.nymbus.core.base.PageTools;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
@@ -8,7 +9,6 @@ import com.nymbus.newmodels.settings.product.Product;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
-import java.util.Collections;
 import java.util.List;
 
 public class AddAccountPage extends PageTools {
@@ -359,11 +359,8 @@ public class AddAccountPage extends PageTools {
     }
 
     @Step("Returning list of 'Account Analysis' options")
-    public List<String> getAccountAnalysisList() {
-        if (isElementVisible(accountAnalysisList)) {
-            return getElementsText(accountAnalysisList);
-        }
-        return Collections.emptyList();
+    public List<SelenideElement> getAccountAnalysisList() {
+        return getElementsWithZeroOption(accountAnalysisList);
     }
 
     @Step("Click the 'Account Analysis' selector button")
@@ -382,11 +379,8 @@ public class AddAccountPage extends PageTools {
     }
 
     @Step("Returning list of 'Call Class Code' options")
-    public List<String> getCallClassCodeList() {
-        if (isElementVisible(callClassCodeList)) {
-            return getElementsText(callClassCodeList);
-        }
-        return Collections.emptyList();
+    public List<SelenideElement> getCallClassCodeList() {
+        return getElementsWithZeroOption(callClassCodeList);
     }
 
     @Step("Click the 'Call Class Code' selector button")

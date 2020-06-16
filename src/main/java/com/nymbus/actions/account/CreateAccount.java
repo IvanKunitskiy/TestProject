@@ -1,5 +1,6 @@
 package com.nymbus.actions.account;
 
+import com.codeborne.selenide.SelenideElement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.newmodels.account.Account;
@@ -382,11 +383,11 @@ public class CreateAccount {
 
     public void setAccountAnalysis(Account account) {
         Pages.addAccountPage().clickAccountAnalysisSelectorButton();
-        List<String> listOfAccountAnalysis = Pages.addAccountPage().getAccountAnalysisList();
+        List<SelenideElement> listOfAccountAnalysis = Pages.addAccountPage().getAccountAnalysisList();
 
         if (listOfAccountAnalysis.size() > 0) {
             if (account.getAccountAnalysis() == null) {
-                account.setAccountAnalysis(listOfAccountAnalysis.get(new Random().nextInt(listOfAccountAnalysis.size())).trim());
+                account.setAccountAnalysis(listOfAccountAnalysis.get(new Random().nextInt(listOfAccountAnalysis.size())).getText());
             }
             Pages.addAccountPage().clickAccountAnalysisSelectorOption(account.getAccountAnalysis());
         }
@@ -394,22 +395,22 @@ public class CreateAccount {
 
     public void setAccountAnalysis(CHKAccount account) {
         Pages.addAccountPage().clickAccountAnalysisSelectorButton();
-        List<String> listOfAccountAnalysis = Pages.addAccountPage().getAccountAnalysisList();
+        List<SelenideElement> listOfAccountAnalysis = Pages.addAccountPage().getAccountAnalysisList();
 
         Assert.assertTrue(listOfAccountAnalysis.size() > 0, "There are no product types available");
         if (account.getAccountAnalysis() == null) {
-            account.setAccountAnalysis(listOfAccountAnalysis.get(new Random().nextInt(listOfAccountAnalysis.size())).trim());
+            account.setAccountAnalysis(listOfAccountAnalysis.get(new Random().nextInt(listOfAccountAnalysis.size())).getText());
         }
         Pages.addAccountPage().clickAccountAnalysisSelectorOption(account.getAccountAnalysis());
     }
 
     public void setCallClassCode(Account account) {
         Pages.addAccountPage().clickCallClassCodeSelectorButton();
-        List<String> listOfCallClassCode = Pages.addAccountPage().getCallClassCodeList();
+        List<SelenideElement> listOfCallClassCode = Pages.addAccountPage().getCallClassCodeList();
 
         if (listOfCallClassCode.size() > 0) {
             if (account.getCallClassCode() == null) {
-                account.setCallClassCode(listOfCallClassCode.get(new Random().nextInt(listOfCallClassCode.size())).trim());
+                account.setCallClassCode(listOfCallClassCode.get(new Random().nextInt(listOfCallClassCode.size())).getText());
             }
             Pages.addAccountPage().clickCallClassCodeSelectorOption(account.getCallClassCode());
         }
@@ -417,11 +418,11 @@ public class CreateAccount {
 
     public void setCallClassCode(CHKAccount account) {
         Pages.addAccountPage().clickCallClassCodeSelectorButton();
-        List<String> listOfCallClassCode = Pages.addAccountPage().getCallClassCodeList();
+        List<SelenideElement> listOfCallClassCode = Pages.addAccountPage().getCallClassCodeList();
 
         Assert.assertTrue(listOfCallClassCode.size() > 0, "There are no product types available");
         if (account.getCallClassCode() == null) {
-            account.setCallClassCode(listOfCallClassCode.get(new Random().nextInt(listOfCallClassCode.size())).trim());
+            account.setCallClassCode(listOfCallClassCode.get(new Random().nextInt(listOfCallClassCode.size())).getText());
         }
         Pages.addAccountPage().clickCallClassCodeSelectorOption(account.getCallClassCode());
     }
