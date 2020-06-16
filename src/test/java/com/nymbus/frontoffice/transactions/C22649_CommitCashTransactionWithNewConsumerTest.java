@@ -92,6 +92,7 @@ public class C22649_CommitCashTransactionWithNewConsumerTest extends BaseTest {
 
         logInfo("Step 9: Click [Verify] button");
         Pages.verifyConductorModalPage().clickVerifyButton();
+        Assert.assertFalse(Pages.tellerPage().isNotificationsPresent(), "Error message is visible!");
         Pages.tellerPage().closeModal();
 
         logInfo("Step 10: Go to Clients screen and search for created consumer");
