@@ -83,7 +83,7 @@ public class Account {
         account.setApplyInterestTo("Remain in Account");
         account.setAccountHolder("Owner");
         account.setAccountTitle(Generator.genString(5));
-        account.setDateOpened(DateTime.getYesterdayDate("MM/dd/yyyy"));
+        account.setDateOpened(/*DateTime.getYesterdayDate("MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setInterestRate(String.valueOf(Generator.genFloat(0.001, 99.999, 1)));
         account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
@@ -103,7 +103,7 @@ public class Account {
         account.setProductType("CD");
         account.setProduct("6 Month Roth IRA Certificate");
         account.setAccountTitle(Generator.genString(5));
-        account.setDateOpened(DateTime.getYesterdayDate("MM/dd/yyyy"));
+        account.setDateOpened(/*DateTime.getYesterdayDate("MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setIraDistributionCode("No dist");
         account.setIraDistributionFrequency("No Dist");
@@ -139,7 +139,7 @@ public class Account {
         account.setProductType("Savings Account");
         account.setProduct("Traditional IRA Accumulation Acct");
         account.setAccountTitle(Generator.genString(5));
-        account.setDateOpened(DateTime.getYesterdayDate("MM/dd/yyyy"));
+        account.setDateOpened(/*DateTime.getYesterdayDate("MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setIraDistributionCode("No dist");
         account.setIraDistributionFrequency("No Dist");
@@ -189,10 +189,10 @@ public class Account {
         account.setAddNewOption("Account");
         account.setProductType("CHK Account");
         account.setAccountTitle(Generator.genString(5));
-        account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
+        account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 92233720368L)));
         account.setProduct("Basic Business Checking");
         account.setOptInOutDate("01/01/2020");
-        account.setDateOpened("02/27/2020");
+        account.setDateOpened(/*DateTime.getYesterdayDate("MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
         account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
         account.setEarningCreditRate(Generator.getRandomStringNumber(3));
         account.setAutomaticOverdraftStatus("Active");

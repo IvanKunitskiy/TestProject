@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.accountinstructions.HoldInstruction;
 import com.nymbus.newmodels.client.IndividualClient;
@@ -17,8 +18,11 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuil
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.io.File;
 
 @Epic("Frontoffice")
 @Feature("Deposit Accounts Management")
@@ -29,6 +33,7 @@ public class C22595_CDIRABalanceInquiryTest extends BaseTest {
     private Account cdIraAccount;
     private HoldInstruction instruction;
     private Transaction transaction;
+    private File balanceInquiryImageFile;
 
     @BeforeMethod
     public void preCondition() {
@@ -89,10 +94,16 @@ public class C22595_CDIRABalanceInquiryTest extends BaseTest {
         Pages.accountDetailsPage().clickBalanceInquiry();
 
         logInfo("Step 4: Check Available Balance and Current Balance values");
-        String balanceInquiryImageData = Actions.balanceInquiryActions().readBalanceInquiryImage(Actions.balanceInquiryActions().saveBalanceInquiryImage());
-        Actions.balanceInquiryActions().assertAvailableAndCurrentBalanceValuesFromReceipt(balanceInquiryImageData, accountAvailableBalance, accountCurrentBalance);
+        balanceInquiryImageFile = Actions.balanceInquiryActions().saveBalanceInquiryImage();
+        Actions.balanceInquiryActions().assertAvailableAndCurrentBalanceValuesFromReceipt(balanceInquiryImageFile, accountAvailableBalance, accountCurrentBalance);
 
         logInfo("Step 5: Click [Close] button");
         Pages.balanceInquiryModalPage().clickCloseButton();
+    }
+
+    @AfterMethod(description = "Delete the downloaded image.")
+    public void postCondition() {
+        logInfo("Deleting the downloaded image...");
+        Functions.cleanDirectory(System.getProperty("user.dir") + "/screenshots/");
     }
 }
