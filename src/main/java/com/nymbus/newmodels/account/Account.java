@@ -85,7 +85,7 @@ public class Account {
         account.setAccountTitle(Generator.genString(5));
         account.setDateOpened(/*DateTime.getYesterdayDate("MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
-        account.setInterestRate(String.valueOf(Generator.genFloat(0.001, 99.999, 1)));
+        account.setInterestRate(String.valueOf(Generator.genInt(0, 100)));
         account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setFederalWHPercent(String.valueOf(Generator.genInt(0, 100)));
         account.setUserDefinedField_1(Generator.genString(5));
