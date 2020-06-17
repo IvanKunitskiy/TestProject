@@ -2,6 +2,7 @@ package com.nymbus.pages.teller;
 
 import com.codeborne.selenide.Condition;
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -39,8 +40,11 @@ public class TellerPage extends PageTools {
 
     @Step("Set effective date")
     public void setEffectiveDate(String date) {
+        waitForElementVisibility(effectiveDate);
         waitForElementClickable(effectiveDate);
-        type(date, effectiveDate);
+        typeWithoutWipe("", effectiveDate);
+        SelenideTools.sleep(1);
+        typeWithoutWipe(date, effectiveDate);
     }
 
     @Step("Get effective date")
@@ -120,7 +124,8 @@ public class TellerPage extends PageTools {
     private By accountNumberField = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]" +
             "//*[@data-name='accountNumber account']//input[contains(@class, 'ui-select-search')]");
 
-    private By transactionCodeDiv = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='tranCode']");
+    private By transactionCodeDropdownArrow = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[1]" +
+            "//*[@data-name='tranCode']//span[contains(@class, 'select2-arrow')]");
     private By transactionCodeField = By.xpath("((//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]" +
             "//*[@data-name='tranCode']//input[contains(@class, 'ui-select-search')])[1]");
 
@@ -203,6 +208,11 @@ public class TellerPage extends PageTools {
         type(note, transactionSourceNotesInput, i);
     }
 
+    @Step("Click transition code {0} dropdown arrow")
+    public void clickSourceTransactionCodeArrow(int i) {
+        waitForElementClickable(transactionCodeDropdownArrow, i);
+        click(transactionCodeDropdownArrow, i);
+    }
     /**
      * Destinations region
      */
@@ -298,5 +308,30 @@ public class TellerPage extends PageTools {
     public void clickOnDropDownItem(String item) {
         waitForElementClickable(itemInDropDown, item);
         click(itemInDropDown, item);
+    }
+
+    /**
+     * Account Quick View
+     */
+    private By accountQuickViewToggleButton = By.xpath("//a[@ng-click='toggleAccountQuick()']//i");
+    private By availableBalance = By.xpath("//*[@id='accordion-operation-aqv-content']" +
+            "//span[text()='Available Balance']//ancestor::node()[1]//span[2]");
+
+    @Step("Is account quick view visible")
+    public boolean isAccountQuickViewVisible() {
+        waitForElementVisibility(accountQuickViewToggleButton);
+        return getWebElement(accountQuickViewToggleButton).getAttribute("class").contains("open-icon");
+    }
+
+    @Step("Click account quick view")
+    public void clickAccountQuickViewArrow() {
+        waitForElementVisibility(accountQuickViewToggleButton);
+        click(accountQuickViewToggleButton);
+    }
+
+    @Step("Get 'Available Balance' value")
+    public String getAvailableBalance() {
+        waitForElementVisibility(availableBalance);
+        return getElementText(availableBalance).trim().replaceAll("[^0-9.]", "");
     }
 }

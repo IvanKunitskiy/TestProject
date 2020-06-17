@@ -1,6 +1,7 @@
 package com.nymbus.actions.account;
 
 import com.nymbus.actions.webadmin.WebAdminActions;
+import com.nymbus.newmodels.account.verifyingmodels.ClosedAccountData;
 import com.nymbus.newmodels.accountinstructions.verifyingModels.InstructionBalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.*;
 import com.nymbus.pages.Pages;
@@ -96,6 +97,17 @@ public class RetrievingAccountData {
         return balanceData;
     }
 
+    public ClosedAccountData getClosedAccountData() {
+        ClosedAccountData closedAccountData = new ClosedAccountData();
+        closedAccountData.setCurrentBalance(getCurrentBalance());
+        closedAccountData.setAvailableBalance(getAvailableBalance());
+        closedAccountData.setAccruedInterest(getAccruedInterest());
+        closedAccountData.setAccountStatus(getAccountStatus());
+        closedAccountData.setDateClosed(Pages.accountDetailsPage().getDateClosed());
+
+        return closedAccountData;
+    }
+
     public InstructionBalanceData getInstructionBalanceData() {
         InstructionBalanceData instructionBalanceData = new InstructionBalanceData();
 
@@ -123,6 +135,15 @@ public class RetrievingAccountData {
     public double getCurrentBalance() {
         String value = Pages.accountDetailsPage().getCurrentBalance();
         return Double.parseDouble(value);
+    }
+
+    public double getCurrentBalanceWithAccruedInterest() {
+        return  getCurrentBalance() + getAccruedInterest();
+    }
+
+    private double getAccruedInterest() {
+        String accruedInterestValue = Pages.accountDetailsPage().getAccruedInterest();
+        return Double.parseDouble(accruedInterestValue);
     }
 
     public void goToTransactionsTab() {
@@ -159,7 +180,7 @@ public class RetrievingAccountData {
         return Double.parseDouble(value);
     }
 
-    private double getAmount(int tempIndex) {
+    public double getAmount(int tempIndex) {
         String value = Pages.accountTransactionPage().getAmountValue(tempIndex);
         return Double.parseDouble(value);
     }
@@ -172,5 +193,9 @@ public class RetrievingAccountData {
     private double getAmountFractionalPart(int tempIndex) {
         String value = Pages.accountTransactionPage().getAmountFractionalValue(tempIndex);
         return Double.parseDouble(value) / 100;
+    }
+
+    private String getAccountStatus() {
+        return Pages.accountDetailsPage().getAccountStatus();
     }
 }
