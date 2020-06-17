@@ -85,7 +85,7 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
     @AfterMethod(description = "Delete the downloaded PDF.")
     public void postCondition() {
         logInfo("Deleting the downloaded PDF...");
-        Functions.deleteDirectory(callStatementPdfFile.getParent());
+        Functions.cleanDirectory(System.getProperty("user.dir") + "/screenshots/");
         Functions.deleteFile(System.getProperty("user.dir") + "/proxy.pdf"); // TODO: Discover reason of duplicating pdf file
     }
 }

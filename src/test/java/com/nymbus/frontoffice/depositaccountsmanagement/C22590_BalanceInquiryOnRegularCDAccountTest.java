@@ -106,6 +106,6 @@ public class C22590_BalanceInquiryOnRegularCDAccountTest extends BaseTest {
     @AfterMethod(description = "Delete the downloaded image.")
     public void postCondition() {
         logInfo("Deleting the downloaded image...");
-        Functions.deleteFile(balanceInquiryImageFile.getAbsolutePath());
+        Functions.cleanDirectory(System.getProperty("user.dir") + "/screenshots/");
     }
 }
