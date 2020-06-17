@@ -262,14 +262,20 @@ public class CreateAccount {
         setCallClassCode(account);
     }
 
-    public void selectValuesInDropdownFieldsRequiredForCDAccount(Account account) {
+    public void selectValuesInFieldsRequiredForCDAccount(Account account) {
+        Pages.addAccountPage().setAccountNumberValue("");
+        Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
         setBankBranch(account);
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         setInterestFrequency(account);
+        account.setApplyInterestTo("CHK Acct");
         setApplyInterestTo(account);
+        Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setInterestType(account);
         setCorrespondingAccount(account);
         setCallClassCode(account);
+        Pages.addAccountPage().clickTransactionalAccountSwitch();
     }
 
     public void fillInInputFieldsRequiredForSafeDepositBoxAccount(Account account) {
