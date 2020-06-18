@@ -28,6 +28,7 @@ import org.testng.annotations.Test;
 public class C22660_CommitWithdrawAndClose extends BaseTest {
     private Transaction withdrawTransaction;
     private TransactionData transactionData;
+    private double accruedInterest;
 
     @BeforeMethod
     public void prepareTransactionData() {
@@ -75,6 +76,7 @@ public class C22660_CommitWithdrawAndClose extends BaseTest {
 
         // Set transaction with amount value
         Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
+        accruedInterest = AccountActions.retrievingAccountData().getAccruedInterest();
         double transactionAmount = AccountActions.retrievingAccountData().getCurrentBalanceWithAccruedInterest();
         withdrawTransaction.getTransactionSource().setAmount(transactionAmount);
         withdrawTransaction.getTransactionDestination().setAmount(transactionAmount);
@@ -129,8 +131,16 @@ public class C22660_CommitWithdrawAndClose extends BaseTest {
 
         logInfo("Step 9: Open Account on Transactions tab and check transaction details");
         AccountActions.retrievingAccountData().goToTransactionsTab();
+        Assert.assertEquals(Pages.accountTransactionPage().getTransactionCodeByIndex(2), TransactionCode.INT_DEPOSIT.getTransCode(),
+                "Transaction 107 - Int Deposit is not displayed!");
+        Assert.assertEquals(Pages.accountTransactionPage().getAmountSymbol(2), "+",
+                            "Transaction 107 - Int Deposit amount symbol is incorrect!");
+        Assert.assertEquals(AccountActions.retrievingAccountData().getAmountValue(2), accruedInterest,
+                            "Transaction 107 - Int Deposit amount value is incorrect!");
+        Assert.assertEquals(AccountActions.retrievingAccountData().getBalanceValue(2),
+                            AccountActions.retrievingAccountData().getAmountValue(1),
+                            "Transaction '107 - Int Deposit' balance and transaction '127 - Withdraw&Close' amount are not equal!");
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionData();
-
         Assert.assertEquals(actualTransactionData, transactionData, "Transaction data doesn't match!");
     }
 }

@@ -132,7 +132,7 @@ public class AccountDetailsPage extends PageTools {
 
     @Step("Get 'Account Status'")
     public String getAccountStatus() {
-        waitForElementVisibility(activeAccountStatus);
+        waitForElementVisibility(accountStatus);
         return getElementText(accountStatus).trim();
     }
 

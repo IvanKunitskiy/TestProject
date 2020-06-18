@@ -141,7 +141,7 @@ public class RetrievingAccountData {
         return  getCurrentBalance() + getAccruedInterest();
     }
 
-    private double getAccruedInterest() {
+    public double getAccruedInterest() {
         String accruedInterestValue = Pages.accountDetailsPage().getAccruedInterest();
         return Double.parseDouble(accruedInterestValue);
     }
@@ -156,14 +156,14 @@ public class RetrievingAccountData {
 
         transactionData.setPostingDate(Pages.accountTransactionPage().getPostingDateValue(tempIndex));
         transactionData.setEffectiveDate(Pages.accountTransactionPage().getEffectiveDateValue(tempIndex));
-        transactionData.setAmount(getAmount(tempIndex));
+        transactionData.setAmount(getAmountValue(tempIndex));
         transactionData.setBalance(getBalanceValue(tempIndex));
         transactionData.setAmountSymbol(Pages.accountTransactionPage().getAmountSymbol(tempIndex));
 
         return transactionData;
     }
 
-    private double getAmountValue(int index) {
+    public double getAmountValue(int index) {
         double amountIntegerPart = getAmount(index);
         double amountFractionalPart = getAmountFractionalPart(index);
         return amountIntegerPart + amountFractionalPart;
