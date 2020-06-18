@@ -32,7 +32,7 @@ public class AccountTransactionPage extends PageTools {
         return getElements(transactionItems).size();
     }
 
-    @Step("Get amountSymbol")
+    @Step("Get transaction code")
     public String getTransactionCodeByIndex(int index) {
         waitForElementVisibility(transactionCode, index);
         return getWebElement(transactionCode, index).getAttribute("innerText").trim();
