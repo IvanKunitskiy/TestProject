@@ -250,9 +250,9 @@ public class AddAccountPage extends PageTools {
 
     @Step("Returning list of 'Corresponding Account' options")
     public List<String> getCorrespondingAccountList() {
-        waitForElementVisibility(correspondingAccountList);
-        waitForElementClickable(correspondingAccountList);
-        return getElementsText(correspondingAccountList);
+        return getElementsWithZeroOption(correspondingAccountList).stream()
+                .map(SelenideElement::text)
+                .collect(Collectors.toList());
     }
 
     @Step("Click the 'Corresponding Account' selector button")
