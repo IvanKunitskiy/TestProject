@@ -65,10 +65,13 @@ public class CreateAccount {
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
         setBankBranch(account);
+        setMailCode(account);
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
         setCallClassCode(account);
+        setInterestFrequency(account);
+        setCorrespondingAccount(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
@@ -137,8 +140,6 @@ public class CreateAccount {
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
-        setBankBranch(account);
-        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
         setChargeOrAnalyze(account);
@@ -346,11 +347,12 @@ public class CreateAccount {
         Pages.addAccountPage().clickCorrespondingAccountSelectorButton();
         List<String> listOfCorrespondingAccount = Pages.addAccountPage().getCorrespondingAccountList();
 
-        Assert.assertTrue(listOfCorrespondingAccount.size() > 0, "There are no product types available");
-        if (account.getCorrespondingAccount() == null) {
-            account.setCorrespondingAccount(listOfCorrespondingAccount.get(new Random().nextInt(listOfCorrespondingAccount.size())).trim());
+        if (listOfCorrespondingAccount.size() > 0) {
+            if (account.getCorrespondingAccount() == null) {
+                account.setCorrespondingAccount(listOfCorrespondingAccount.get(new Random().nextInt(listOfCorrespondingAccount.size())).trim());
+            }
+            Pages.addAccountPage().clickCorrespondingAccountSelectorOption(account.getCorrespondingAccount().replaceAll("[^0-9]", ""));
         }
-        Pages.addAccountPage().clickCorrespondingAccountSelectorOption(account.getCorrespondingAccount().replaceAll("[^0-9]", ""));
     }
 
     public void setInterestFrequency(Account account) {
