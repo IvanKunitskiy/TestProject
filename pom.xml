@@ -107,6 +107,12 @@
             <version>4.1.1-1.5.3</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.codeborne</groupId>
+            <artifactId>pdf-test</artifactId>
+            <version>1.4</version>
+        </dependency>
+
     </dependencies>
 
     <build>

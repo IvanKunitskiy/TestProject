@@ -1,20 +1,15 @@
 package com.nymbus.newmodels.client.basicinformation.type.individual;
 
 import com.nymbus.newmodels.client.basicinformation.address.Address;
-import com.nymbus.newmodels.client.basicinformation.address.Country;
-import com.nymbus.newmodels.client.basicinformation.address.State;
 import com.nymbus.newmodels.client.basicinformation.type.ClientType;
 import com.nymbus.newmodels.client.basicinformation.type.TaxPayerIDType;
-import com.nymbus.newmodels.client.clientdetails.contactinformation.documents.Document;
 import com.nymbus.newmodels.client.clientdetails.type.ClientStatus;
-import com.nymbus.newmodels.client.other.document.IDType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -29,7 +24,7 @@ public abstract class IndividualType {
     @NonNull private String taxID;
     @NonNull private String birthDate;
 //    @NonNull private IDType idType;
-//    @NonNull private String idNumber;
+    private String clientID;
 //    private State issuedBy;
 //    private Country country;
 //    private String expirationDate;

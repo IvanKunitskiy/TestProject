@@ -36,7 +36,6 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         // Set up IRA account
         cdAccount = new Account().setCDAccountData();
         cdAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
-        cdAccount.setApplyInterestTo("CHK Acct");
         cdAccount.setTermType("3");
         cdAccount.setMaturityDate(DateTime.getDateWithNMonthAdded(cdAccount.getDateOpened(), "MM/dd/yyyy", Integer.parseInt(cdAccount.getTermType())));
         cdAccount.setDateNextInterest(DateTime.getDateWithNMonthAdded(cdAccount.getDateOpened(), "MM/dd/yyyy", 3)); // 3 month added as 'Interest Frequency' is set to 'Quarterly'
@@ -84,26 +83,24 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderRelationship(), cdAccount.getAccountHolder(), "'Relationship' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderClientType(), client.getIndividualType().getClientType().getClientType(), "'Client type' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderTaxID(), client.getIndividualType().getTaxID(), "'Tax ID' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getDateOpened(), DateTime.getLocalDateTimeByPattern("MM/dd/yyyy"), "'Date' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getOriginatingOfficer(), client.getIndividualClientDetails().getSelectOfficer(), "'Originating officer' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getCurrentOfficer(), client.getIndividualClientDetails().getSelectOfficer(), "'Current officer' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getBankBranch(), cdAccount.getBankBranch(), "'Bank branch' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getTermType(), cdAccount.getTermType(), "'Term Type' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getAutoRenewable(), cdAccount.getAutoRenewable(), "'Auto Renewable' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getInterestFrequency(), cdAccount.getInterestFrequency(), "'Interest Frequency' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getInterestType(), cdAccount.getInterestType(), "'Interest Type' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getMailCode(), client.getIndividualClientDetails().getMailCode().getMailCode(), "'Mail code' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getApplyInterestTo(), cdAccount.getApplyInterestTo(), "'Apply interes to' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getAutoRenewable(), cdAccount.getAutoRenewable(), "'Auto Renewable' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getTransactionalAccount().toLowerCase(), "no", "'Transactional Account' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' is prefilled with wrong value");
 
         logInfo("Step 7: Select values in such drop-down fields:");
-        AccountActions.createAccount().selectValuesInDropdownFieldsRequiredForCDAccount(cdAccount);
-
         logInfo("Step 8: Fill in such text fields with valid data (except Account Number field):");
-        Pages.addAccountPage().setAccountTitleValue(cdAccount.getAccountTitle());
-        Pages.addAccountPage().setInterestRate(cdAccount.getInterestRate());
-
         logInfo("Step 9: Set 'Transactional Account' switcher to YES):");
-        Pages.addAccountPage().clickTransactionalAccountSwitch();
-
         logInfo("Step 10: Select Date Opened as any date < Current Date");
-        Pages.addAccountPage().setDateOpenedValue(cdAccount.getDateOpened());
+        AccountActions.createAccount().selectValuesInFieldsRequiredForCDAccount(cdAccount);
 
         logInfo("Step 11: Submit the account creation by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
@@ -113,15 +110,16 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         if (Pages.accountDetailsPage().isMoreButtonVisible()) {
             Pages.accountDetailsPage().clickMoreButton();
         }
+        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), cdAccount.getAccountTitle(), "'Title' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), cdAccount.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), cdAccount.getBankBranch(), "'Bank Branch' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), cdAccount.getDateOpened(), "'Date Opened' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getInterestFrequency(), cdAccount.getInterestFrequency(), "'Interest Frequency' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getApplyInterestTo(), cdAccount.getApplyInterestTo(), "'Apply Interest To' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getInterestType(), cdAccount.getInterestType(), "'Interest Type' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCorrespondingAccount(), cdAccount.getCorrespondingAccount(), "'Corresponding Account' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), cdAccount.getCallClassCode(), "'Call Class' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), cdAccount.getAccountTitle(), "'Title' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), cdAccount.getInterestRate(), "'Interest Rate' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), cdAccount.getDateOpened(), "'Date Opened' value does not match");
 
         logInfo("Step 13: Check the Maturity Date field value (verify that it's calculated based on Date Opened + Term of Account)");
         Assert.assertEquals(Pages.accountDetailsPage().getMaturityDate(), cdAccount.getMaturityDate(), "'Maturity Date' value does not match");
@@ -131,16 +129,16 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
 
         logInfo("Step 15: Click [Edit] button and pay attention to the fields that were filled in during account creation");
         Pages.accountDetailsPage().clickEditButton();
+        Assert.assertEquals(Pages.editAccountPage().getAccountTitleValueInEditMode(), cdAccount.getAccountTitle(), "'Title' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), cdAccount.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), cdAccount.getBankBranch(), "'Bank Branch' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getDateOpenedValueInEditMode(), cdAccount.getDateOpened(), "'Date Opened' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getInterestFrequency(), cdAccount.getInterestFrequency(), "'Interest Frequency' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getApplyInterestTo(), cdAccount.getApplyInterestTo(), "'Apply Interest To' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), cdAccount.getInterestRate(), "'Interest Rate' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getInterestType(), cdAccount.getInterestType(), "'Interest Type' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getCorrespondingAccount(), cdAccount.getCorrespondingAccount(), "'Corresponding Account' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), cdAccount.getCallClassCode(), "'Call Class' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getAccountTitleValueInEditMode(), cdAccount.getAccountTitle(), "'Title' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), cdAccount.getInterestRate(), "'Interest Rate' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getDateOpenedValueInEditMode(), cdAccount.getDateOpened(), "'Date Opened' value does not match");
 
         logInfo("Step 16: Do not make any changes and go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
@@ -148,27 +146,27 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
 
         logInfo("Step 17: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         AccountActions.accountMaintenanceActions().expandAllRows();
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Product") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Product"), 1,
                 "'Product' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("accounttype") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("accounttype"), 1,
                 "'accounttype' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account Title") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account Title"), 1,
                 "'Account Title' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Current Officer") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Current Officer"), 1,
                 "'Current Officer' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Bank Branch") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Bank Branch"), 1,
                 "'Bank Branch' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Type") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Type"), 1,
                 "'Interest Type' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Apply Interest To") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Apply Interest To"), 1,
                 "'Apply Interest To' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Apply Interest To") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Apply Interest To"), 1,
                 "'Apply Interest To' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Call Class Code") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Call Class Code"), 1,
                 "'Call Class Code' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date Opened") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date Opened"), 1,
                 "'Date Opened' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Rate") == 1,
+        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Rate"), 1,
                 "'Interest Rate' row count is incorrect!");
     }
 }

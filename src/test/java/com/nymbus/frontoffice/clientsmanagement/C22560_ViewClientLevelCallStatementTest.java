@@ -67,7 +67,7 @@ public class C22560_ViewClientLevelCallStatementTest extends BaseTest {
         logInfo("Step 2: Go to Clients and search for the client from the precondition");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
 
-        logInfo("Step 3: Open Clients Profile on the Transfers tab");
+        logInfo("Step 3: Open Clients Profile on the Accounts tab");
         Pages.accountNavigationPage().clickAccountsTab();
 
         logInfo("Step 4: Click [Call Statement] button");

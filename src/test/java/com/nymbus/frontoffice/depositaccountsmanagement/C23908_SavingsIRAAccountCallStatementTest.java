@@ -6,6 +6,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -15,8 +16,11 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuil
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.io.File;
 
 @Epic("Frontoffice")
 @Feature("Deposit Accounts Management")
@@ -26,6 +30,7 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
     private IndividualClient client;
     private Account iraAccount;
     private Transaction transaction;
+    private File callStatementPdfFile;
 
     @BeforeMethod
     public void preCondition() {
@@ -40,6 +45,8 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
 
         // Set up transaction
         transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        transaction.getTransactionDestination().setAccountNumber(iraAccount.getAccountNumber());
+        transaction.getTransactionDestination().setTransactionCode("2330 - Cur Yr Contrib");
 
         // Create a client
         Selenide.open(Constants.URL);
@@ -50,10 +57,7 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
 
         // Create account
         AccountActions.createAccount().createIRAAccount(iraAccount);
-
-        // Set up transaction with account number
-        transaction.getTransactionDestination().setAccountNumber(iraAccount.getAccountNumber());
-        transaction.getTransactionDestination().setTransactionCode("2330 - Cur Yr Contrib");
+        client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
 
         // Commit transaction to account
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
@@ -73,9 +77,15 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
         Pages.accountNavigationPage().clickTransactionsTab();
 
         logInfo("Step 3: Click [Call Statement] button");
-        Pages.transactionsPage().clickTheCallStatementButton();
-
         logInfo("Step 4: Look through the CHK Call Statement data and verify it contains correct data");
-        // TODO: parse statement file
+        callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
+        AccountActions.callStatement().verifySavingsIraAccountCallStatementData(callStatementPdfFile, iraAccount, client, transaction);
+    }
+
+    @AfterMethod(description = "Delete the downloaded PDF.")
+    public void postCondition() {
+        logInfo("Deleting the downloaded PDF...");
+        Functions.cleanDirectory(System.getProperty("user.dir") + "/screenshots/");
+        Functions.deleteFile(System.getProperty("user.dir") + "/proxy.pdf"); // TODO: Discover reason of duplicating pdf file
     }
 }
