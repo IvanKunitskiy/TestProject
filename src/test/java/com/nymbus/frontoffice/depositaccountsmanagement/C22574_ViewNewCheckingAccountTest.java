@@ -5,7 +5,6 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -59,19 +58,18 @@ public class C22574_ViewNewCheckingAccountTest extends BaseTest {
             Pages.accountDetailsPage().clickMoreButton();
         }
 
-        // TODO: Accounts page is under reconstruction. Check elements presence for commented out lines and delete or uncomment respectively.
         logInfo("Step 4: Pay attention to the fields on the page");
         Assert.assertEquals(Pages.accountDetailsPage().getProductValue(), checkingAccount.getProduct(), "'Product' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), checkingAccount.getDateOpened(), "'Date Opened' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), checkingAccount.getCurrentOfficer(), "'Current Officer' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), checkingAccount.getBankBranch(), "'Bank Branch' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getStatementCycle(), checkingAccount.getStatementCycle(), "'Statement Cycle' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), checkingAccount.getCallClassCode(), "'Call Class' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getChargeOrAnalyze(), checkingAccount.getChargeOrAnalyze(), "'Charge or Analyze' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getAccountAnalysisValue(), checkingAccount.getAccountAnalysis(), "'Account Analysis' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), checkingAccount.getAccountTitle(), "'Title' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), checkingAccount.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), checkingAccount.getInterestRate(), "'Interest Rate' value does not match");
-//        Assert.assertEquals(Pages.accountDetailsPage().getEarningCreditRate(), checkingAccount.getEarningCreditRate(), "'Earning Rate' value does not match");
+        if (checkingAccount.getCallClassCode() != null) {
+            Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), checkingAccount.getCallClassCode(), "'Call Class' value does not match");
+        }
+        if (checkingAccount.getChargeOrAnalyze() != null) {
+            Assert.assertEquals(Pages.accountDetailsPage().getChargeOrAnalyze(), checkingAccount.getChargeOrAnalyze(), "'Charge or Analyze' value does not match");
+        }
+        Assert.assertEquals(Pages.accountDetailsPage().getAccountAnalysisValue(), checkingAccount.getAccountAnalysis(), "'Account Analysis' value does not match");
 
         logInfo("Step 5: Click [Less] button");
         if (Pages.accountDetailsPage().isLessButtonVisible()) {
