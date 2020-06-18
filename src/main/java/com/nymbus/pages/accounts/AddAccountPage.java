@@ -90,7 +90,7 @@ public class AddAccountPage extends PageTools {
     private By chargeOrAnalyzeList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By chargeOrAnalyzeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By interestFrequencySelectorButton = By.xpath("//div[@id='interestfrequencycode']//span[contains(@class, 'select2-arrow')]");
+    private By interestFrequencySelectorButton = By.xpath("//div[@id='interestfrequency']//span[contains(@class, 'select2-arrow')]");
     private By interestFrequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By interestFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
@@ -250,9 +250,9 @@ public class AddAccountPage extends PageTools {
 
     @Step("Returning list of 'Corresponding Account' options")
     public List<String> getCorrespondingAccountList() {
-        waitForElementVisibility(correspondingAccountList);
-        waitForElementClickable(correspondingAccountList);
-        return getElementsText(correspondingAccountList);
+        return getElementsWithZeroOption(correspondingAccountList).stream()
+                .map(SelenideElement::text)
+                .collect(Collectors.toList());
     }
 
     @Step("Click the 'Corresponding Account' selector button")
