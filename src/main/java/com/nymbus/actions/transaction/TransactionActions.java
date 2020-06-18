@@ -176,6 +176,14 @@ public class TransactionActions {
         fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
     }
 
+    public void setMiscDebitSourceForWithDraw(TransactionSource source, int index) {
+        int tempIndex = 1 + index;
+        Pages.tellerPage().clickMiscDebitButton();
+        fillSourceAccountNumber(source.getAccountNumber(), tempIndex);
+        fillSourceAccountCode(source.getTransactionCode(), tempIndex);
+        fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
+    }
+
     private void setCashOutDestination(TransactionDestination transactionDestination) {
         Pages.tellerPage().clickCashOutButton();
         setAmounts(transactionDestination.getDenominationsHashMap());
@@ -198,7 +206,7 @@ public class TransactionActions {
         fillDestinationAmount(String.format("%.2f", transactionDestination.getAmount()), tempIndex);
     }
 
-    private void setGLCreditDestination(TransactionDestination transactionDestination, int index) {
+    public void setGLCreditDestination(TransactionDestination transactionDestination, int index) {
         int tempIndex = index + 1;
         Pages.tellerPage().clickGLCreditButton();
         fillDestinationAccountNumber(transactionDestination.getAccountNumber(), tempIndex);
@@ -230,6 +238,12 @@ public class TransactionActions {
     public void createMiscDebitGLCreditTransaction(Transaction transaction) {
         int currentIndex = 0;
         setMiscDebitSource(transaction.getTransactionSource(), currentIndex);
+        setGLCreditDestination(transaction.getTransactionDestination(), currentIndex);
+    }
+
+    public void createWithdrawMiscDebitGLCreditTransaction (Transaction transaction) {
+        int currentIndex = 0;
+        setMiscDebitSourceForWithDraw(transaction.getTransactionSource(), currentIndex);
         setGLCreditDestination(transaction.getTransactionDestination(), currentIndex);
     }
 
@@ -281,6 +295,12 @@ public class TransactionActions {
         Pages.tellerPage().typeAmountValue(tempIndex, amount);
     }
 
+    private void fillSourceAccountCode(String transactionCode, int tempIndex) {
+        Pages.tellerPage().clickSourceTransactionCodeArrow(tempIndex);
+
+        Pages.tellerPage().clickOnDropDownItem(transactionCode);
+    }
+
     private void fillSourceAccountNumber(String accountNumber, int tempIndex) {
         Pages.tellerPage().clickAccountNumberDiv(tempIndex);
 
@@ -328,5 +348,13 @@ public class TransactionActions {
         Pages.tellerModalPage().clickEnterButton();
 
         Pages.tellerModalPage().waitForModalInvisibility();
+    }
+
+    public double getAvailableBalance() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        String availableBalanceValue = Pages.tellerPage().getAvailableBalance();
+        return Double.parseDouble(availableBalanceValue);
     }
 }
