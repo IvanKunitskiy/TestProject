@@ -145,11 +145,12 @@ public class EditAccount {
         Pages.editAccountPage().clickCallClassCodeSelectorButton();
         List<String> listOfCallClassCode = Pages.editAccountPage().getCallClassCodeList();
 
-        Assert.assertTrue(listOfCallClassCode.size() > 0, "There are no options available");
-        if (account.getCallClassCode() == null) {
-            account.setCallClassCode(listOfCallClassCode.get(new Random().nextInt(listOfCallClassCode.size())).trim());
+        if (listOfCallClassCode.size() > 0) {
+            if (account.getCallClassCode() == null) {
+                account.setCallClassCode(listOfCallClassCode.get(new Random().nextInt(listOfCallClassCode.size())).trim());
+            }
+            Pages.editAccountPage().clickCallClassCodeSelectorOption(account.getCallClassCode());
         }
-        Pages.editAccountPage().clickCallClassCodeSelectorOption(account.getCallClassCode());
     }
 
     public void setCorrespondingAccount(Account account) {
@@ -218,33 +219,48 @@ public class EditAccount {
         Pages.editAccountPage().clickApplyInterestToSelectorOption(account.getApplyInterestTo());
     }
 
-    // TODO: Accounts page is under reconstruction. Check elements presence for commented out lines and delete or uncomment respectively.
-    public void selectValuesInDropdownFieldsThatWereNotAvailableDuringCheckingAccountCreation(Account account) {
-        setFederalWHReason(account);
-//        setReasonATMChargeWaived(account);
-//        setOdProtectionAcct(account);
-//        setReasonAutoNSFChgWaived(account);
-        setReasonDebitCardChargeWaived(account);
-        setAutomaticOverdraftStatus(account);
-//        setReasonAutoOdChgWaived(account);
-//        setWhenSurchargesRefunded(account);
+    public void setChargeOrAnalyze(Account account) {
+        Pages.editAccountPage().clickChargeOrAnalyzeSelectorButton();
+        List<String> listOfChargeOrAnalyze = Pages.editAccountPage().getChargeOrAnalyzeList();
+
+        Assert.assertTrue(listOfChargeOrAnalyze.size() > 0, "There are no product types available");
+        if (account.getChargeOrAnalyze() == null) {
+            account.setChargeOrAnalyze(listOfChargeOrAnalyze.get(new Random().nextInt(listOfChargeOrAnalyze.size())).trim());
+        }
+        Pages.editAccountPage().clickChargeOrAnalyzeSelectorOption(account.getChargeOrAnalyze());
     }
 
-    public void fillInInputFieldsThatWereNotAvailableDuringCheckingAccountCreation(Account account) {
+    public void setBankruptcyJudgement(Account account) {
+        Pages.editAccountPage().clickBankruptcyJudgementSelectorButton();
+        List<String> listOfBankruptcyJudgement = Pages.editAccountPage().getBankruptcyJudgementList();
+
+        Assert.assertTrue(listOfBankruptcyJudgement.size() > 0, "There are no product types available");
+        if (account.getBankruptcyJudgement() == null) {
+            account.setBankruptcyJudgement(listOfBankruptcyJudgement.get(new Random().nextInt(listOfBankruptcyJudgement.size())).trim());
+        }
+        Pages.editAccountPage().clickBankruptcyJudgementSelectorOption(account.getBankruptcyJudgement());
+    }
+
+    public void selectValuesInFieldsThatWereNotAvailableDuringCheckingAccountCreation(Account account) {
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        // Balance and Interest group
+        Pages.editAccountPage().setInterestRate(account.getInterestRate());
+        // Transactions group
+        setChargeOrAnalyze(account);
+        // Overdraft group
+        setAutomaticOverdraftStatus(account);
+        // Misc group
+        setFederalWHReason(account);
         Pages.editAccountPage().setFederalWHPercent(account.getFederalWHPercent());
-        Pages.editAccountPage().setNumberOfATMCardsIssued(account.getNumberOfATMCardsIssued());
-        Pages.editAccountPage().setEarningCreditRate(account.getEarningCreditRate());
         Pages.editAccountPage().setUserDefinedField_1(account.getUserDefinedField_1());
         Pages.editAccountPage().setUserDefinedField_2(account.getUserDefinedField_2());
         Pages.editAccountPage().setUserDefinedField_3(account.getUserDefinedField_3());
         Pages.editAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
+        setCallClassCode(account);
         Pages.editAccountPage().setNumberOfDebitCardsIssued(account.getNumberOfDebitCardsIssued());
-        Pages.editAccountPage().setAutomaticOverdraftLimit(account.getAutomaticOverdraftLimit());
-        Pages.editAccountPage().setCashCollDaysBeforeChg(account.getCashCollDaysBeforeChg());
-        Pages.editAccountPage().setCashCollInterestRate(account.getCashCollInterestRate());
-        Pages.editAccountPage().setCashCollInterestChg(account.getCashCollInterestChg());
-        Pages.editAccountPage().setCashCollFloat(account.getCashCollFloat());
-        Pages.editAccountPage().setPositivePay(account.getPositivePay());
+        setReasonDebitCardChargeWaived(account);
+        setBankruptcyJudgement(account);
     }
 
     public void selectValuesInDropdownFieldsThatWereNotAvailableDuringSavingsAccountCreation(Account account) {

@@ -1,11 +1,13 @@
 package com.nymbus.pages.accounts;
 
+import com.codeborne.selenide.SelenideElement;
 import com.nymbus.core.base.PageTools;
 import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EditAccountPage extends PageTools {
 
@@ -66,6 +68,8 @@ public class EditAccountPage extends PageTools {
     private By mailCode = By.xpath("//div[@id='mailingcode']//span[contains(@class, 'ng-scope')]");
     private By bankAccountNumberInterestOnCD = By.xpath("//input[@id='bankaccountnumberinterestoncd']");
     private By bankRoutingNumberInterestOnCD = By.xpath("//input[@id='bankroutingnumberinterestoncd']");
+    private By applySeasonalAddress = By.xpath("//dn-switch[@id='useseasonaladdress']");
+    private By bankruptcyJudgement = By.xpath("//div[@id='bankruptcyjudgementcode']//span[contains(@class, 'ng-scope')]");
 
     private By federalWHReasonSelectorButton = By.xpath("//div[@id='federalwithholdingreason']");
     private By federalWHReasonList = By.xpath("//li[contains(@role, 'option')]/div/span");
@@ -128,6 +132,14 @@ public class EditAccountPage extends PageTools {
     private By applyInterestToSelectorButton = By.xpath("//div[@id='codetoapplyinterestto']");
     private By applyInterestToList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By applyInterestToSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By chargeOrAnalyzeSelectorButton = By.xpath("//div[@id='chargeoranalyze']");
+    private By chargeOrAnalyzeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By chargeOrAnalyzeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By bankruptcyJudgementSelectorButton = By.xpath("//div[@id='bankruptcyjudgementcode']");
+    private By bankruptcyJudgementList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By bankruptcyJudgementSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
     /**
      * Disabled fields in edit mode
@@ -214,6 +226,16 @@ public class EditAccountPage extends PageTools {
     private By totalEarnings = By.xpath("//input[@id='totalEarnings']");
     private By interstPaidYTD = By.xpath("//input[@id='interestpaidlastyear']");
     private By iraDistributionAccountID = By.xpath("//div[@id='iradistributionaccountid']");
+    private By numberOfDebitsThisStatementCycle = By.xpath("//input[@data-test-id='field-numberofwithdrawalsthisstatementcycle']");
+    private By dateLastDebit = By.xpath("//input[@data-test-id='field-datelastwithdrawal']");
+
+    /**
+     * Groups
+     */
+    private By balanceAndInterestGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Balance and Interest')]");
+    private By transactionsGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Balance and Interest')]");
+    private By overdraftGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Balance and Interest')]");
+    private By miscGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Balance and Interest')]");
 
     /**
      * Click switch elements
@@ -231,6 +253,18 @@ public class EditAccountPage extends PageTools {
         waitForElementVisibility(newAccountSwitch);
         waitForElementClickable(newAccountSwitch);
         return getElementText(newAccountSwitch);
+    }
+
+    @Step("Click 'Apply Seasonal Address' switch")
+    public void clickApplySeasonalAddressSwitch() {
+        click(applySeasonalAddress);
+    }
+
+    @Step("Get 'Apply Seasonal Address' value")
+    public String getApplySeasonalAddressSwitchValue() {
+        waitForElementVisibility(applySeasonalAddress);
+        waitForElementClickable(applySeasonalAddress);
+        return getElementText(applySeasonalAddress);
     }
 
     /**
@@ -422,6 +456,12 @@ public class EditAccountPage extends PageTools {
     public String getReasonDebitCardChargeWaived() {
         waitForElementVisibility(reasonDebitCardChargeWaived);
         return getElementText(reasonDebitCardChargeWaived);
+    }
+
+    @Step("Get 'Bankruptcy Judgement' value in edit mode")
+    public String getBankruptcyJudgement() {
+        waitForElementVisibility(bankruptcyJudgement);
+        return getElementText(bankruptcyJudgement);
     }
 
     @Step("Get 'Automatic Overdraft Status' value in edit mode")
@@ -964,6 +1004,16 @@ public class EditAccountPage extends PageTools {
         return Boolean.parseBoolean(getElementAttributeValue("disabled", productTypeField));
     }
 
+    @Step("Check if 'Date Last Debit' field is disabled edit mode")
+    public boolean isDateLastDebitDisabledInEditMode() {
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", dateLastDebit));
+    }
+
+    @Step("Check if 'Number Of Debits This Statement Cycle' field is disabled edit mode")
+    public boolean isNumberOfDebitsThisStatementCycleDisabledInEditMode() {
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", numberOfDebitsThisStatementCycle));
+    }
+
     @Step("Set 'Print Statement Next Update' option")
     public void setPrintStatementNextUpdate(String printStatementNextUpdateValue) {
         waitForElementVisibility(printStatementNextUpdate);
@@ -980,9 +1030,48 @@ public class EditAccountPage extends PageTools {
 
     @Step("Set 'Interest rate' option")
     public void setInterestRate(String interestRateValue) {
-        waitForElementVisibility(interestRate);
-        waitForElementClickable(interestRate);
+        scrollToPlaceElementInCenter(interestRate);
         type(interestRateValue, interestRate);
+    }
+
+    @Step("Click the 'Charge or Analyze' option")
+    public void clickChargeOrAnalyzeSelectorOption(String chargeOrAnalyzeOption) {
+        waitForElementVisibility(chargeOrAnalyzeSelectorOption, chargeOrAnalyzeOption);
+        waitForElementClickable(chargeOrAnalyzeSelectorOption, chargeOrAnalyzeOption);
+        click(chargeOrAnalyzeSelectorOption, chargeOrAnalyzeOption);
+    }
+
+    @Step("Returning list of 'Charge or Analyze' options")
+    public List<String> getChargeOrAnalyzeList() {
+        waitForElementVisibility(chargeOrAnalyzeList);
+        waitForElementClickable(chargeOrAnalyzeList);
+        return getElementsText(chargeOrAnalyzeList);
+    }
+
+    @Step("Click the 'Charge or Analyze' selector button")
+    public void clickChargeOrAnalyzeSelectorButton() {
+        scrollToPlaceElementInCenter(chargeOrAnalyzeSelectorButton);
+        click(chargeOrAnalyzeSelectorButton);
+    }
+
+    @Step("Click the 'Charge or Analyze' option")
+    public void clickBankruptcyJudgementSelectorOption(String bankruptcyJudgementOption) {
+        waitForElementVisibility(bankruptcyJudgementSelectorOption, bankruptcyJudgementOption);
+        waitForElementClickable(bankruptcyJudgementSelectorOption, bankruptcyJudgementOption);
+        click(bankruptcyJudgementSelectorOption, bankruptcyJudgementOption);
+    }
+
+    @Step("Returning list of 'Bankruptcy Judgement' options")
+    public List<String> getBankruptcyJudgementList() {
+        waitForElementVisibility(bankruptcyJudgementList);
+        waitForElementClickable(bankruptcyJudgementList);
+        return getElementsText(bankruptcyJudgementList);
+    }
+
+    @Step("Click the 'Bankruptcy Judgement' selector button")
+    public void clickBankruptcyJudgementSelectorButton() {
+        scrollToPlaceElementInCenter(bankruptcyJudgementSelectorButton);
+        click(bankruptcyJudgementSelectorButton);
     }
 
     @Step("Set 'Cash coll float' value")
@@ -1023,34 +1112,31 @@ public class EditAccountPage extends PageTools {
     public void setNumberOfDebitCardsIssued(String numberOfDebitCardsIssuedValue) {
         waitForElementVisibility(numberOfDebitCardsIssuedInput);
         waitForElementClickable(numberOfDebitCardsIssuedInput);
+        scrollToPlaceElementInCenter(numberOfDebitCardsIssuedInput);
         type(numberOfDebitCardsIssuedValue, numberOfDebitCardsIssuedInput);
     }
 
     @Step("Set 'User Defined Field 4' value")
     public void setUserDefinedField_4(String value) {
-        waitForElementVisibility(userDefinedFieldInput_4);
-        waitForElementClickable(userDefinedFieldInput_4);
+        scrollToPlaceElementInCenter(userDefinedFieldInput_4);
         type(value, userDefinedFieldInput_4);
     }
 
     @Step("Set 'User Defined Field 3' value")
     public void setUserDefinedField_3(String value) {
-        waitForElementVisibility(userDefinedFieldInput_3);
-        waitForElementClickable(userDefinedFieldInput_3);
+        scrollToPlaceElementInCenter(userDefinedFieldInput_3);
         type(value, userDefinedFieldInput_3);
     }
 
     @Step("Set 'User Defined Field 2' value")
     public void setUserDefinedField_2(String value) {
-        waitForElementVisibility(userDefinedFieldInput_2);
-        waitForElementClickable(userDefinedFieldInput_2);
+        scrollToPlaceElementInCenter(userDefinedFieldInput_2);
         type(value, userDefinedFieldInput_2);
     }
 
     @Step("Set 'User Defined Field 1' value")
     public void setUserDefinedField_1(String value) {
-        waitForElementVisibility(userDefinedFieldInput_1);
-        waitForElementClickable(userDefinedFieldInput_1);
+        scrollToPlaceElementInCenter(userDefinedFieldInput_1);
         type(value, userDefinedFieldInput_1);
     }
 
@@ -1084,8 +1170,7 @@ public class EditAccountPage extends PageTools {
 
     @Step("Set 'Federal W/H percent' value")
     public void setFederalWHPercent(String federalWHPercentValue) {
-        waitForElementVisibility(federalWHPercentInput);
-        waitForElementClickable(federalWHPercentInput);
+        scrollToPlaceElementInCenter(federalWHPercentInput);
         type(federalWHPercentValue, federalWHPercentInput);
     }
 
@@ -1156,9 +1241,7 @@ public class EditAccountPage extends PageTools {
 
     @Step("Click the 'Automatic Overdraft Status' selector button")
     public void clickAutomaticOverdraftStatusSelectorButton() {
-        waitForElementVisibility(automaticOverdraftStatusSelectorButton);
-        scrollToElement(automaticOverdraftStatusSelectorButton);
-        waitForElementClickable(automaticOverdraftStatusSelectorButton);
+        scrollToPlaceElementInCenter(automaticOverdraftStatusSelectorButton);
         click(automaticOverdraftStatusSelectorButton);
     }
 
@@ -1264,9 +1347,7 @@ public class EditAccountPage extends PageTools {
 
     @Step("Click the 'Reason Debit Card Charge Waived' selector button")
     public void clickReasonDebitCardChargeWaivedOptionSelectorButton() {
-        waitForElementVisibility(reasonReasonDebitCardChargeWaivedSelectorButton);
-        scrollToElement(reasonReasonDebitCardChargeWaivedSelectorButton);
-        waitForElementClickable(reasonReasonDebitCardChargeWaivedSelectorButton);
+        scrollToPlaceElementInCenter(reasonReasonDebitCardChargeWaivedSelectorButton);
         click(reasonReasonDebitCardChargeWaivedSelectorButton);
     }
 
@@ -1352,9 +1433,7 @@ public class EditAccountPage extends PageTools {
 
     @Step("Click the 'Federal W/H Reason' selector button")
     public void clickFederalWHReasonSelectorButton() {
-        waitForElementVisibility(federalWHReasonSelectorButton);
-//        scrollToElement(federalWHReasonSelectorButton);
-        waitForElementClickable(federalWHReasonSelectorButton);
+        scrollToPlaceElementInCenter(federalWHReasonSelectorButton);
         click(federalWHReasonSelectorButton);
     }
 
@@ -1367,16 +1446,14 @@ public class EditAccountPage extends PageTools {
 
     @Step("Returning list of 'Call Class Code' options")
     public List<String> getCallClassCodeList() {
-        waitForElementVisibility(callClassCodeList);
-        waitForElementClickable(callClassCodeList);
-        return getElementsText(callClassCodeList);
+        return getElementsWithZeroOption(callClassCodeList).stream()
+                .map(SelenideElement::text)
+                .collect(Collectors.toList());
     }
 
     @Step("Click the 'Call Class Code' selector button")
     public void clickCallClassCodeSelectorButton() {
-        waitForElementVisibility(callClassCodeSelectorButton);
-        scrollToElement(callClassCodeSelectorButton);
-        waitForElementClickable(callClassCodeSelectorButton);
+        scrollToPlaceElementInCenter(callClassCodeSelectorButton);
         click(callClassCodeSelectorButton);
     }
 
@@ -1389,9 +1466,7 @@ public class EditAccountPage extends PageTools {
 
     @Step("Click the 'Bank branch' selector button")
     public void clickBankBranchSelectorButton() {
-        waitForElementVisibility(bankBranchSelectorButton);
-        scrollToElement(bankBranchSelectorButton);
-        waitForElementClickable(bankBranchSelectorButton);
+        scrollToPlaceElementInCenter(bankBranchSelectorButton);
         click(bankBranchSelectorButton);
     }
 
@@ -1430,9 +1505,7 @@ public class EditAccountPage extends PageTools {
 
     @Step("Click the 'Current Officer' selector button")
     public void clickCurrentOfficerSelectorButton() {
-        waitForElementVisibility(currentOfficerSelectorButton);
-        scrollToElement(currentOfficerSelectorButton);
-        waitForElementClickable(currentOfficerSelectorButton);
+        scrollToPlaceElementInCenter(currentOfficerSelectorButton);
         click(currentOfficerSelectorButton);
     }
 
@@ -1474,5 +1547,39 @@ public class EditAccountPage extends PageTools {
     public String getBankRoutingNumberInterestOnCD() {
         waitForElementVisibility(bankRoutingNumberInterestOnCD);
         return getElementAttributeValue("value", bankRoutingNumberInterestOnCD);
+    }
+
+    @Step("Is 'Balance And Interest' group visible")
+    public boolean isBalanceAndInterestGroupVisible() {
+        waitForElementVisibility(balanceAndInterestGroup);
+        waitForElementClickable(balanceAndInterestGroup);
+        return isElementVisible(balanceAndInterestGroup);
+    }
+
+    @Step("Is 'Transactions' group visible")
+    public boolean isTransactionsGroupVisible() {
+        waitForElementVisibility(transactionsGroup);
+        waitForElementClickable(transactionsGroup);
+        return isElementVisible(transactionsGroup);
+    }
+
+    @Step("Is 'Overdraft' group visible")
+    public boolean isOverdraftGroupVisible() {
+        waitForElementVisibility(overdraftGroup);
+        waitForElementClickable(overdraftGroup);
+        return isElementVisible(overdraftGroup);
+    }
+
+    @Step("Is 'Misc' group visible")
+    public boolean isMiscGroupVisible() {
+        waitForElementVisibility(miscGroup);
+        waitForElementClickable(miscGroup);
+        return isElementVisible(miscGroup);
+    }
+
+    @Step("Click the 'Misc' section link")
+    public void clickMiscSectionLink() {
+        scrollToPlaceElementInCenter(miscGroup);
+        click(miscGroup);
     }
 }

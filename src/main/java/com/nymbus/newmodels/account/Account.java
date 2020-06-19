@@ -70,6 +70,7 @@ public class Account {
     private String dateLastAccess;
     private String bankRoutingNumberInterestOnCD;
     private String bankAccountNumberInterestOnCD;
+    private String bankruptcyJudgement;
 
     public Account setCDAccountData() {
         Account account = new Account();
@@ -726,5 +727,13 @@ public class Account {
 
     public void setBankRoutingNumberInterestOnCD(String bankRoutingNumberInterestOnCD) {
         this.bankRoutingNumberInterestOnCD = bankRoutingNumberInterestOnCD;
+    }
+
+    public String getBankruptcyJudgement() {
+        return bankruptcyJudgement;
+    }
+
+    public void setBankruptcyJudgement(String bankruptcyJudgement) {
+        this.bankruptcyJudgement = bankruptcyJudgement;
     }
 }
