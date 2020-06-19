@@ -240,6 +240,12 @@ public class PageTools extends AllureLogger {
         Selenide.executeJavaScript("arguments[0].scrollIntoView();", getWebElement(byLocator(by, args)));
     }
 
+    protected void scrollToPlaceElementInCenter(By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", elements --> " + byLocator(by, args));
+        waitForElementVisibility(by);
+        Selenide.executeJavaScript("arguments[0].scrollIntoView({block: \"center\"});", getWebElement(byLocator(by, args)));
+    }
+
     protected WebElement getWebElement(By by, Object... args){
         return WebDriverRunner.getWebDriver().findElement(byLocator(by, args));
     }
