@@ -67,6 +67,7 @@ public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
         Actions.transactionActions().goToTellerPage();
 
         Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
+        transactionData.setEffectiveDate(Pages.tellerPage().getEffectiveDate());
 
         Actions.transactionActions().clickCommitButton();
 
