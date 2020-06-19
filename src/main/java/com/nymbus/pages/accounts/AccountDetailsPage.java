@@ -109,6 +109,7 @@ public class AccountDetailsPage extends PageTools {
     private By collectedBalance = By.xpath("//*[@data-config-name='collectedbalance']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By accountStatus = By.xpath("//tr[@data-test-id='field-accountstatus']//span[contains(@class, 'ng-binding')]");
     private By activeAccountStatus = By.xpath("//tr[@data-test-id='field-accountstatus']//span[contains(text(), 'Active')]");
+    private By bankruptcyJudgement = By.xpath("//tr[@data-test-id='field-bankruptcyjudgementcode']//span[contains(@class, 'dnTextFixedWidthText')]");
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -418,6 +419,12 @@ public class AccountDetailsPage extends PageTools {
     public String getReasonDebitCardChargeWaived() {
         waitForElementVisibility(reasonDebitCardChargeWaived);
         return getElementText(reasonDebitCardChargeWaived);
+    }
+
+    @Step("Get account 'Bankruptcy Judgement' value")
+    public String getBankruptcyJudgement() {
+        waitForElementVisibility(bankruptcyJudgement);
+        return getElementText(bankruptcyJudgement);
     }
 
     @Step("Get account 'Reason Auto NSF Chg Waived' value")

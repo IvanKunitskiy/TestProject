@@ -316,7 +316,7 @@ public class AddAccountPage extends PageTools {
         click(optInOutDateCalendarIcon);
     }
 
-    @Step("Click the 'Account Analysis' option")
+    @Step("Click the 'Charge or Analyze' option")
     public void clickChargeOrAnalyzeSelectorOption(String chargeOrAnalyzeOption) {
         waitForElementVisibility(chargeOrAnalyzeSelectorOption, chargeOrAnalyzeOption);
         waitForElementClickable(chargeOrAnalyzeSelectorOption, chargeOrAnalyzeOption);
