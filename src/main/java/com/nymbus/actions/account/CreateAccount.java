@@ -116,16 +116,13 @@ public class CreateAccount {
     public void createCHKAccountForTransactionPurpose(Account account) {
         clickAccountsTab();
         Actions.clientPageActions().closeAllNotifications();
-        Pages.clientDetailsPage().clickAddNewButton();
-        Pages.clientDetailsPage().clickAddNewValueOption(account.getAddNewOption());
-        Pages.addAccountPage().clickProductTypeSelectorButton();
-        Pages.addAccountPage().clickProductTypeOption(account.getProductType());
-        Pages.addAccountPage().clickProductSelectorButton();
-        Pages.addAccountPage().clickProductOption(account.getProduct());
+        setAddNewOption(account);
+        setProductType(account);
+        setProduct(account);
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
-        Pages.addAccountPage().setDateOpenedValue(/*DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
-        Pages.addAccountPage().clickStatementCycleSelectorButton();
-        Pages.addAccountPage().clickStatementCycleOption("1");
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
+        Pages.addAccountPage().setInterestRate(account.getInterestRate());
+        setStatementCycle(account);
         Pages.addAccountPage().waitForAccountHolderName();
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();

@@ -59,7 +59,7 @@ public class C22661_PerformECForWithdrawAndCloseCHAccTest extends BaseTest {
         ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create account
-        AccountActions.createAccount().createCHKAccount(checkAccount);
+        AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkAccount);
 
         // Set up transaction with account number
         transaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());

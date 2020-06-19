@@ -7,6 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum TransactionCode {
     WITHDRAW_AND_CLOSE("127 - Withdraw&Close"),
-    INT_DEPOSIT("107 - Int Deposit");
+    WITHDRAW_AND_CLOSE_SAVINGS("227 - Withdraw&Close"),
+    INT_DEPOSIT("107 - Int Deposit"),
+    INT_DEPOSIT_SAVINGS("207 - Int Deposit");
     private final String transCode;
 }

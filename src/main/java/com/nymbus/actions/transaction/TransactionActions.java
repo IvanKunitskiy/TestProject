@@ -23,6 +23,10 @@ public class TransactionActions {
     public void doLoginTeller() {
         Pages.tellerModalPage().clickEnterButton();
 
+        if(Pages.tellerModalPage().isModalWindowVisible() && Pages.tellerModalPage().isEnterButtonClickable()) {
+            Pages.tellerModalPage().clickEnterButton();
+        }
+
         Pages.tellerModalPage().waitForModalInvisibility();
     }
 
