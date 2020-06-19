@@ -50,6 +50,11 @@ public class TellerModalPage extends PageTools {
         click(enterButton);
     }
 
+    @Step("Is Enter button clickable")
+    public boolean isEnterButtonClickable() {
+        return isElementClickable(enterButton);
+    }
+
     @Step("Wait for modal disappear")
     public void waitForModalInvisibility() {
         waitForElementInvisibility(modalWindow);

@@ -179,6 +179,11 @@ public class PageTools extends AllureLogger {
         return isCondition(Condition.visible, by, args);
     }
 
+    protected boolean isElementClickable(By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
+        return isCondition(Condition.enabled, by, args);
+    }
+
     /**
      * Getters
      */
