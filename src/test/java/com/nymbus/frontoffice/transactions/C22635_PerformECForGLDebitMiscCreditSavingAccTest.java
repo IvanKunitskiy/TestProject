@@ -39,7 +39,6 @@ public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest 
         IndividualClient client = individualClientBuilder.buildClient();
         Account savingsAccount = new Account().setSavingsAccountData();
         transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
-        savingsAccount.setDateOpened(transaction.getTransactionDate());
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Create client
@@ -59,6 +58,7 @@ public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest 
         Actions.transactionActions().loginTeller();
         Actions.transactionActions().goToTellerPage();
         Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
+        String effectiveDate = Pages.tellerPage().getEffectiveDate();
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
 
@@ -76,7 +76,7 @@ public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest 
         logInfo("Balance data after transaction: " + balanceData.toString());
 
         transactionData = new TransactionData(transaction.getTransactionDate(),
-                transaction.getTransactionDate(),
+                effectiveDate,
                 "-",
                 balanceData.getCurrentBalance(),
                 transaction.getTransactionDestination().getAmount());

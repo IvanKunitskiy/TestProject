@@ -40,7 +40,6 @@ public class C22634_GLDebit_MiscCredit_SavingsAcc_Test extends BaseTest {
         IndividualClient client = individualClientBuilder.buildClient();
         savingsAccount = new Account().setSavingsAccountData();
         transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
-        savingsAccount.setDateOpened(transaction.getTransactionDate());
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Create client
@@ -81,6 +80,7 @@ public class C22634_GLDebit_MiscCredit_SavingsAcc_Test extends BaseTest {
                 "- specify trancode (e.g. 209 - Deposit) \n" +
                 "- specify the same amount (e.g. $100)");
         Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
+        transactionData.setEffectiveDate(Pages.tellerPage().getEffectiveDate());
 
         logInfo("Step 6: Do not change the Effective Date and click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
