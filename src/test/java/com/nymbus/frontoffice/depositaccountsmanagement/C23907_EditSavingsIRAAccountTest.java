@@ -121,7 +121,7 @@ public class C23907_EditSavingsIRAAccountTest extends BaseTest {
         Assert.assertTrue(Pages.editAccountPage().isTotalContributionsDisabledInEditMode(), "'Total Contributions for Life of Account' field is not disabled");
 
         logInfo("Step 5: Select data in such dropdown fields that were not available in Add New mode");
-        AccountActions.editAccount().selectValuesInDropdownFieldsThatWereNotAvailableDuringSavingsAccountCreation(savingsIRAAccount);
+        AccountActions.editAccount().selectValuesInFieldsThatWereNotAvailableDuringSavingsAccountCreation(savingsIRAAccount);
 
         logInfo("Step 6: Fill in such text fields that were not displayed in Add new mode");
         AccountActions.editAccount().fillInInputFieldsThatWereNotAvailableDuringSavingsAccountCreation(savingsIRAAccount);
