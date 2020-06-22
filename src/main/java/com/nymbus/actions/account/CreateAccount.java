@@ -71,7 +71,6 @@ public class CreateAccount {
         setStatementCycle(account);
         setCallClassCode(account);
         setInterestFrequency(account);
-        setCorrespondingAccount(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
     }

@@ -70,6 +70,7 @@ public class EditAccountPage extends PageTools {
     private By bankRoutingNumberInterestOnCD = By.xpath("//input[@id='bankroutingnumberinterestoncd']");
     private By applySeasonalAddress = By.xpath("//dn-switch[@id='useseasonaladdress']");
     private By bankruptcyJudgement = By.xpath("//div[@id='bankruptcyjudgementcode']//span[contains(@class, 'ng-scope')]");
+    private By exemptFromRegCC = By.xpath("//dn-switch[@id='exemptfromregcc']");
 
     private By federalWHReasonSelectorButton = By.xpath("//div[@id='federalwithholdingreason']");
     private By federalWHReasonList = By.xpath("//li[contains(@role, 'option')]/div/span");
@@ -140,6 +141,10 @@ public class EditAccountPage extends PageTools {
     private By bankruptcyJudgementSelectorButton = By.xpath("//div[@id='bankruptcyjudgementcode']");
     private By bankruptcyJudgementList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By bankruptcyJudgementSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By statementCycleSelectorButton = By.xpath("//div[@id='statementcycle']");
+    private By statementCycleList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By statementCycleSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
     /**
      * Disabled fields in edit mode
@@ -228,6 +233,9 @@ public class EditAccountPage extends PageTools {
     private By iraDistributionAccountID = By.xpath("//div[@id='iradistributionaccountid']");
     private By numberOfDebitsThisStatementCycle = By.xpath("//input[@data-test-id='field-numberofwithdrawalsthisstatementcycle']");
     private By dateLastDebit = By.xpath("//input[@data-test-id='field-datelastwithdrawal']");
+    private By ydtAverageBalance = By.xpath("//input[@data-test-id='field-averagebalanceytd']");
+    private By ytdChargesWaived = By.xpath("//input[@data-test-id='field-chargeswaivedytd']");
+    private By dateOfFirstDeposit = By.xpath("//input[@data-test-id='field-datefirstdeposit']");
 
     /**
      * Groups
@@ -242,17 +250,51 @@ public class EditAccountPage extends PageTools {
      */
 
     @Step("Click 'Transactional Account' switch")
-    public String clickTransactionalAccountSwitch() {
+    public void clickTransactionalAccountSwitch() {
         waitForElementVisibility(transactionalAccountSwitch);
         waitForElementClickable(transactionalAccountSwitch);
+        scrollToPlaceElementInCenter(transactionalAccountSwitch);
+        click(transactionalAccountSwitch);
+    }
+
+    @Step("Get 'Transactional Account' switch value")
+    public String getTransactionalAccountSwitchValue() {
+        waitForElementVisibility(transactionalAccountSwitch);
+        waitForElementClickable(transactionalAccountSwitch);
+        scrollToPlaceElementInCenter(transactionalAccountSwitch);
         return getElementText(transactionalAccountSwitch);
     }
 
     @Step("Click 'New Account' switch")
-    public String clickNewAccountSwitch() {
+    public void clickNewAccountSwitch() {
         waitForElementVisibility(newAccountSwitch);
         waitForElementClickable(newAccountSwitch);
+        scrollToPlaceElementInCenter(newAccountSwitch);
+        click(newAccountSwitch);
+    }
+
+    @Step("Get 'New Account' switch value")
+    public String getNewAccountSwitchValue() {
+        waitForElementVisibility(newAccountSwitch);
+        waitForElementClickable(newAccountSwitch);
+        scrollToPlaceElementInCenter(newAccountSwitch);
         return getElementText(newAccountSwitch);
+    }
+
+    @Step("Click 'Exempt From Reg CC' switch")
+    public void clickExemptFromRegCCSwitch() {
+        waitForElementVisibility(exemptFromRegCC);
+        waitForElementClickable(exemptFromRegCC);
+        scrollToPlaceElementInCenter(exemptFromRegCC);
+        click(exemptFromRegCC);
+    }
+
+    @Step("Get 'Exempt From Reg CC' switch value")
+    public String getExemptFromRegCCSwitchValue() {
+        waitForElementVisibility(exemptFromRegCC);
+        waitForElementClickable(exemptFromRegCC);
+        scrollToPlaceElementInCenter(exemptFromRegCC);
+        return getElementText(exemptFromRegCC);
     }
 
     @Step("Click 'Apply Seasonal Address' switch")
@@ -264,6 +306,7 @@ public class EditAccountPage extends PageTools {
     public String getApplySeasonalAddressSwitchValue() {
         waitForElementVisibility(applySeasonalAddress);
         waitForElementClickable(applySeasonalAddress);
+        scrollToPlaceElementInCenter(applySeasonalAddress);
         return getElementText(applySeasonalAddress);
     }
 
@@ -1014,10 +1057,26 @@ public class EditAccountPage extends PageTools {
         return Boolean.parseBoolean(getElementAttributeValue("disabled", numberOfDebitsThisStatementCycle));
     }
 
+    @Step("Check if 'Ytd Average Balance' field is disabled edit mode")
+    public boolean isYtdAverageBalanceDisabledInEditMode() {
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", ydtAverageBalance));
+    }
+
+    @Step("Check if 'Date Of First Deposit' field is disabled edit mode")
+    public boolean isDateOfFirstDepositDisabledInEditMode() {
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", dateOfFirstDeposit));
+    }
+
+    @Step("Check if 'YTD charges waived' field is disabled edit mode")
+    public boolean isYtdChargesWaivedDisabledInEditMode() {
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", ytdChargesWaived));
+    }
+
     @Step("Set 'Print Statement Next Update' option")
     public void setPrintStatementNextUpdate(String printStatementNextUpdateValue) {
         waitForElementVisibility(printStatementNextUpdate);
         waitForElementClickable(printStatementNextUpdate);
+        scrollToPlaceElementInCenter(printStatementNextUpdate, printStatementNextUpdateValue);
         type(printStatementNextUpdateValue, printStatementNextUpdate);
     }
 
@@ -1054,7 +1113,7 @@ public class EditAccountPage extends PageTools {
         click(chargeOrAnalyzeSelectorButton);
     }
 
-    @Step("Click the 'Charge or Analyze' option")
+    @Step("Click the 'Bankruptcy Judgement' option")
     public void clickBankruptcyJudgementSelectorOption(String bankruptcyJudgementOption) {
         waitForElementVisibility(bankruptcyJudgementSelectorOption, bankruptcyJudgementOption);
         waitForElementClickable(bankruptcyJudgementSelectorOption, bankruptcyJudgementOption);
@@ -1072,6 +1131,26 @@ public class EditAccountPage extends PageTools {
     public void clickBankruptcyJudgementSelectorButton() {
         scrollToPlaceElementInCenter(bankruptcyJudgementSelectorButton);
         click(bankruptcyJudgementSelectorButton);
+    }
+
+    @Step("Click the 'Statement Cycle' option")
+    public void clickStatementCycleOption(String statementCycleOption) {
+        waitForElementVisibility(statementCycleSelectorOption, statementCycleOption);
+        waitForElementClickable(statementCycleSelectorOption, statementCycleOption);
+        click(statementCycleSelectorOption, statementCycleOption);
+    }
+
+    @Step("Returning list of 'Statement Cycle' options")
+    public List<String> getStatementCycleList() {
+        waitForElementVisibility(statementCycleList);
+        waitForElementClickable(statementCycleList);
+        return getElementsText(statementCycleList);
+    }
+
+    @Step("Click the 'Statement Cycle' selector button")
+    public void clickStatementCycleSelectorButton() {
+        scrollToPlaceElementInCenter(statementCycleSelectorButton);
+        click(statementCycleSelectorButton);
     }
 
     @Step("Set 'Cash coll float' value")

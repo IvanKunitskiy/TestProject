@@ -241,16 +241,23 @@ public class EditAccount {
         Pages.editAccountPage().clickBankruptcyJudgementSelectorOption(account.getBankruptcyJudgement());
     }
 
+    public void setStatementCycle(Account account) {
+        Pages.editAccountPage().clickStatementCycleSelectorButton();
+        List<String> listOfStatementCycle = Pages.editAccountPage().getStatementCycleList();
+
+        Assert.assertTrue(listOfStatementCycle.size() > 0, "There are no product types available");
+        if (account.getStatementCycle() == null) {
+            account.setStatementCycle(listOfStatementCycle.get(new Random().nextInt(listOfStatementCycle.size())).trim());
+        }
+        Pages.editAccountPage().clickStatementCycleOption(account.getStatementCycle());
+    }
+
     public void selectValuesInFieldsThatWereNotAvailableDuringCheckingAccountCreation(Account account) {
         setCurrentOfficer(account);
         setBankBranch(account);
-        // Balance and Interest group
         Pages.editAccountPage().setInterestRate(account.getInterestRate());
-        // Transactions group
         setChargeOrAnalyze(account);
-        // Overdraft group
         setAutomaticOverdraftStatus(account);
-        // Misc group
         setFederalWHReason(account);
         Pages.editAccountPage().setFederalWHPercent(account.getFederalWHPercent());
         Pages.editAccountPage().setUserDefinedField_1(account.getUserDefinedField_1());
@@ -261,12 +268,38 @@ public class EditAccount {
         Pages.editAccountPage().setNumberOfDebitCardsIssued(account.getNumberOfDebitCardsIssued());
         setReasonDebitCardChargeWaived(account);
         setBankruptcyJudgement(account);
+        if (Pages.editAccountPage().getApplySeasonalAddressSwitchValue().equals("YES")) {
+            Pages.editAccountPage().clickApplySeasonalAddressSwitch();
+        }
     }
 
-    public void selectValuesInDropdownFieldsThatWereNotAvailableDuringSavingsAccountCreation(Account account) {
+    public void selectValuesInFieldsThatWereNotAvailableDuringSavingsAccountCreation(Account account) {
         setFederalWHReason(account);
-        setReasonATMChargeWaived(account);
         setReasonDebitCardChargeWaived(account);
+        Pages.editAccountPage().setPrintStatementNextUpdate(account.getPrintStatementNextUpdate());
+        Pages.editAccountPage().setFederalWHPercent(account.getFederalWHPercent());
+        Pages.editAccountPage().setUserDefinedField_1(account.getUserDefinedField_1());
+        Pages.editAccountPage().setUserDefinedField_2(account.getUserDefinedField_2());
+        Pages.editAccountPage().setUserDefinedField_3(account.getUserDefinedField_3());
+        Pages.editAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
+        Pages.editAccountPage().setNumberOfDebitCardsIssued(account.getNumberOfDebitCardsIssued());
+        setCurrentOfficer(account);
+        Pages.editAccountPage().setInterestRate(account.getInterestRate());
+        setBankBranch(account);
+        setCallClassCode(account);
+        setStatementCycle(account);
+        if (Pages.editAccountPage().getExemptFromRegCCSwitchValue().equals("no")) {
+            Pages.editAccountPage().clickExemptFromRegCCSwitch();
+        }
+        if (Pages.editAccountPage().getNewAccountSwitchValue().equals("no")) {
+            Pages.editAccountPage().clickNewAccountSwitch();
+        }
+        if (Pages.editAccountPage().getTransactionalAccountSwitchValue().equals("no")) {
+            Pages.editAccountPage().clickTransactionalAccountSwitch();
+        }
+        if (Pages.editAccountPage().getApplySeasonalAddressSwitchValue().equals("yes")) {
+            Pages.editAccountPage().clickApplySeasonalAddressSwitch();
+        }
     }
 
     public void selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccount(Account account) {
@@ -325,7 +358,7 @@ public class EditAccount {
 
     public void editSavingsAccount(Account account) {
         Pages.accountDetailsPage().clickEditButton();
-        AccountActions.editAccount().selectValuesInDropdownFieldsThatWereNotAvailableDuringSavingsAccountCreation(account);
+        AccountActions.editAccount().selectValuesInFieldsThatWereNotAvailableDuringSavingsAccountCreation(account);
         AccountActions.editAccount().fillInInputFieldsThatWereNotAvailableDuringSavingsAccountCreation(account);
         AccountActions.createAccount().setCurrentOfficer(account);
         AccountActions.createAccount().setBankBranch(account);
