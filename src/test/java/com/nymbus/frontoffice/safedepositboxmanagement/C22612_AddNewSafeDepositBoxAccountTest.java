@@ -6,6 +6,7 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.verifyingmodels.SafeDepositKeyValues;
 import com.nymbus.newmodels.client.IndividualClient;
@@ -42,7 +43,6 @@ public class C22612_AddNewSafeDepositBoxAccountTest extends BaseTest {
         // Set up Safe Deposit Box Account
         safeDepositBoxAccount = new Account().setSafeDepositBoxData();
         safeDepositBoxAccount.setCurrentOfficer(Constants.FIRST_NAME + " " + Constants.LAST_NAME);
-        safeDepositBoxAccount.setDateOpened(WebAdminActions.loginActions().getSystemDate());
 
         // Login to the system and create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -98,8 +98,8 @@ public class C22612_AddNewSafeDepositBoxAccountTest extends BaseTest {
         logInfo("Step 8: Fill in such text fields with valid data (except Account Number field):");
         AccountActions.createAccount().fillInInputFieldsRequiredForSafeDepositBoxAccount(safeDepositBoxAccount);
 
-        logInfo("Step 9: Select Date Opened as any date < Current Date and Select Date next IRA distribution as any date > Current Date");
-        Pages.addAccountPage().setDateOpenedValue(WebAdminActions.loginActions().getSystemDate());
+        logInfo("Step 9: Select Date Opened as any date < Current Date");
+        Pages.addAccountPage().setDateOpenedValue(safeDepositBoxAccount.getDateOpened());
 
         logInfo("Step 10: Submit the account creation by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
