@@ -1,6 +1,7 @@
 package com.nymbus.newmodels.account;
 
 import com.nymbus.actions.webadmin.WebAdminActions;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
 
@@ -85,7 +86,7 @@ public class Account {
         account.setApplyInterestTo("Remain in Account");
         account.setAccountHolder("Owner");
         account.setAccountTitle(Generator.genString(5));
-        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 1));
+        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setInterestRate(String.valueOf(Generator.genInt(0, 100)));
         account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
@@ -105,7 +106,7 @@ public class Account {
         account.setProductType("CD");
         account.setProduct("6 Month Roth IRA Certificate");
         account.setAccountTitle(Generator.genString(5));
-        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 1));
+        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setIraDistributionCode("No dist");
         account.setIraDistributionFrequency("No Dist");
@@ -141,7 +142,7 @@ public class Account {
         account.setProductType("Savings Account");
         account.setProduct("Traditional IRA Accumulation Acct");
         account.setAccountTitle(Generator.genString(5));
-        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 1));
+        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setIraDistributionCode("No dist");
         account.setIraDistributionFrequency("No Dist");
@@ -170,7 +171,7 @@ public class Account {
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setProduct("Regular Savings Account");
         account.setAccountTitle(Generator.genString(5));
-        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 1));
+        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
         account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setNumberOfDebitCardsIssued(String.valueOf(Generator.genInt(0, 100)));
@@ -195,7 +196,7 @@ public class Account {
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 92233720368L)));
         account.setProduct("Basic Business Checking");
         account.setOptInOutDate("01/01/2020");
-        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 1));
+        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
         account.setEarningCreditRate(Generator.getRandomStringNumber(3));
         account.setAutomaticOverdraftStatus("Active");
@@ -224,7 +225,7 @@ public class Account {
         account.setAccountHolder("Owner");
         account.setAccountNumber(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setAccountTitle(Generator.genString(5));
-        account.setDateOpened(DateTime.getYesterdayDate("MM/dd/yyyy"));
+        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setDiscountPeriods(String.valueOf(Generator.genInt(1000000000, 2147483646)));
         account.setDateLastAccess(DateTime.getLocalDate());
         account.setUserDefinedField_1(Generator.genString(5));
