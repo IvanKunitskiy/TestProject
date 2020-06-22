@@ -48,7 +48,8 @@ public class EditAccountPage extends PageTools {
     private By earningCreditRateInput = By.xpath("//input[@id='earningscreditrate']");
     private By cashCollFloatInput = By.xpath("//input[@id='cashcollectionfloat']");
     private By automaticOverdraftLimitInput = By.xpath("//input[@id='automaticoverdraftlimit']");
-    private By interestFrequency = By.xpath("//div[@id='interestfrequencycode']//span[contains(@class, 'ng-scope')]");
+    private By interestFrequency = By.xpath("//div[@id='interestfrequency']//span[contains(@class, 'ng-scope')]");
+    private By interestFrequencyCode = By.xpath("//div[@id='interestfrequencycode']//span[contains(@class, 'ng-scope')]");
     private By correspondingAccount = By.xpath("//div[@id='correspondingaccountid']//span[contains(@class, 'ng-scope')]");
     private By newAccountSwitch = By.xpath("//dn-switch[@id='newaccount']");
     private By transactionalAccountSwitch = By.xpath("//dn-switch[@id='transactionalaccount']");
@@ -380,6 +381,12 @@ public class EditAccountPage extends PageTools {
         return getElementAttributeValue("value", iraDateNextIRADistribution);
     }
 
+    @Step("Get 'Date Of First Deposit' value in edit mode")
+    public String getDateOfFirstDeposit() {
+        waitForElementVisibility(dateOfFirstDeposit);
+        return getElementAttributeValue("value", dateOfFirstDeposit);
+    }
+
     @Step("Get 'Corresponding Account' value in edit mode")
     public String getCorrespondingAccount() {
         waitForElementVisibility(correspondingAccount);
@@ -390,6 +397,12 @@ public class EditAccountPage extends PageTools {
     public String getInterestFrequency() {
         waitForElementVisibility(interestFrequency);
         return getElementText(interestFrequency);
+    }
+
+    @Step("Get 'Interest Frequency Code' value in edit mode")
+    public String getInterestFrequencyCode() {
+        waitForElementVisibility(interestFrequencyCode);
+        return getElementText(interestFrequencyCode);
     }
 
     @Step("Get 'Automatic Overdraft Limit' value in edit mode")

@@ -58,6 +58,7 @@ public class AddAccountPage extends PageTools {
     private By userDefinedFieldInput_4 = By.xpath("//input[@id='userdefinedfield4']");
     private By discountPeriods = By.xpath("//input[@id='discountperiods']");
     private By applySeasonalAddress = By.xpath("//dn-switch[@id='useseasonaladdress']//span[@ng-if='model']");
+    private By dateOfFirstDeposit = By.xpath("//input[@id='datefirstdeposit']");
 
     /**
      * Account holders and signers
@@ -214,7 +215,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'IRA Distribution Frequency' selector button")
     public void clickIRADistributionCodeSelectorButton() {
         waitForElementVisibility(iraDistributionCodeSelectorButton);
-        scrollToElement(iraDistributionCodeSelectorButton);
+        scrollToPlaceElementInCenter(iraDistributionCodeSelectorButton);
         waitForElementClickable(iraDistributionCodeSelectorButton);
         click(iraDistributionCodeSelectorButton);
     }
@@ -236,7 +237,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'IRA Distribution Frequency' selector button")
     public void clickIRADistributionFrequencySelectorButton() {
         waitForElementVisibility(iraDistributionFrequencySelectorButton);
-        scrollToElement(iraDistributionFrequencySelectorButton);
+        scrollToPlaceElementInCenter(iraDistributionFrequencySelectorButton);
         waitForElementClickable(iraDistributionFrequencySelectorButton);
         click(iraDistributionFrequencySelectorButton);
     }
@@ -258,7 +259,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Corresponding Account' selector button")
     public void clickCorrespondingAccountSelectorButton() {
         waitForElementVisibility(correspondingAccountSelectorButton);
-        scrollToElement(correspondingAccountSelectorButton);
+        scrollToPlaceElementInCenter(correspondingAccountSelectorButton);
         waitForElementClickable(correspondingAccountSelectorButton);
         click(correspondingAccountSelectorButton);
     }
@@ -287,9 +288,20 @@ public class AddAccountPage extends PageTools {
     public void setDateNextIRADistributionValue(String dateNextIRADistributionValue) {
         waitForElementVisibility(dateNextIRADistribution);
         waitForElementClickable(dateNextIRADistribution);
+        scrollToPlaceElementInCenter(dateNextIRADistribution);
         typeWithoutWipe("", dateNextIRADistribution);
-        SelenideTools.sleep(1);
+        SelenideTools.sleep(3);
         typeWithoutWipe(dateNextIRADistributionValue, dateNextIRADistribution);
+    }
+
+    @Step("Set 'Date Of First Deposit' value")
+    public void setDateOfFirstDepositValue(String dateOfFirstDepositValue) {
+        waitForElementVisibility(dateOfFirstDeposit);
+        waitForElementClickable(dateOfFirstDeposit);
+        scrollToPlaceElementInCenter(dateOfFirstDeposit);
+        typeWithoutWipe("", dateOfFirstDeposit);
+        SelenideTools.sleep(3);
+        typeWithoutWipe(dateOfFirstDepositValue, dateOfFirstDeposit);
     }
 
     @Step("Set 'Date Opened' value")
@@ -333,7 +345,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Charge or Analyze' selector button")
     public void clickChargeOrAnalyzeSelectorButton() {
         waitForElementVisibility(chargeOrAnalyzeSelectorButton);
-        scrollToElement(callClassCodeSelectorButton);
+        scrollToPlaceElementInCenter(callClassCodeSelectorButton);
         waitForElementClickable(chargeOrAnalyzeSelectorButton);
         click(chargeOrAnalyzeSelectorButton);
     }
@@ -369,7 +381,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Account Analysis' selector button")
     public void clickAccountAnalysisSelectorButton() {
         waitForElementVisibility(accountAnalysisSelectorButton);
-        scrollToElement(accountAnalysisSelectorButton);
+        scrollToPlaceElementInCenter(accountAnalysisSelectorButton);
         waitForElementClickable(accountAnalysisSelectorButton);
         click(accountAnalysisSelectorButton);
     }
@@ -391,7 +403,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Call Class Code' selector button")
     public void clickCallClassCodeSelectorButton() {
         waitForElementVisibility(callClassCodeSelectorButton);
-        scrollToElement(callClassCodeSelectorButton);
+        scrollToPlaceElementInCenter(callClassCodeSelectorButton);
         waitForElementClickable(callClassCodeSelectorButton);
         click(callClassCodeSelectorButton);
     }
@@ -413,7 +425,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Current Officer' selector button")
     public void clickCurrentOfficerSelectorButton() {
         waitForElementVisibility(currentOfficerSelectorButton);
-        scrollToElement(accountType);
+        scrollToPlaceElementInCenter(accountType);
         waitForElementClickable(currentOfficerSelectorButton);
         click(currentOfficerSelectorButton);
     }
@@ -484,7 +496,7 @@ public class AddAccountPage extends PageTools {
 
     @Step("Click the 'Statement Cycle' selector button")
     public void clickStatementCycleSelectorButton() {
-        scrollToElement(statementCycleSelectorButton);
+        scrollToPlaceElementInCenter(statementCycleSelectorButton);
         click(statementCycleSelectorButton);
     }
 
@@ -720,7 +732,7 @@ public class AddAccountPage extends PageTools {
     @Step("Set 'Account Number' value")
     public void setAccountNumberValue(String accountNumberValue) {
         waitForElementVisibility(accountNumberField);
-        scrollToElement(accountNumberField);
+        scrollToPlaceElementInCenter(accountNumberField);
         waitForElementClickable(accountNumberField);
         type(accountNumberValue, accountNumberField);
     }
@@ -763,7 +775,6 @@ public class AddAccountPage extends PageTools {
     @Step("Set 'Account Title' value")
     public void setAccountTitleValue(String accountTitleValue) {
         waitForElementVisibility(accountTitleField);
-//        scrollToElement(accountTitleField);
         waitForElementClickable(accountTitleField);
         type(accountTitleValue, accountTitleField);
     }
@@ -772,13 +783,14 @@ public class AddAccountPage extends PageTools {
     public void setIRADistributionAmountValue(String iraDistributionAmountValue) {
         waitForElementVisibility(iraDistributionAmountField);
         waitForElementClickable(iraDistributionAmountField);
+        scrollToPlaceElementInCenter(iraDistributionAmountField);
         type(iraDistributionAmountValue, iraDistributionAmountField);
     }
 
     @Step("Click the 'Bank branch' selector button")
     public void clickBankBranchSelectorButton() {
         waitForElementVisibility(bankBranchSelectorButton);
-//        scrollToElement(bankBranchSelectorButton);
+        scrollToPlaceElementInCenter(bankBranchSelectorButton);
         waitForElementClickable(bankBranchSelectorButton);
         click(bankBranchSelectorButton);
     }
@@ -807,7 +819,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Mail Code' selector button")
     public void clickMailCodeSelectorButton() {
         waitForElementVisibility(mailCodeSelectorButton);
-        scrollToElement(mailCodeSelectorButton);
+        scrollToPlaceElementInCenter(mailCodeSelectorButton);
         waitForElementClickable(mailCodeSelectorButton);
         click(mailCodeSelectorButton);
     }
@@ -815,7 +827,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Save' button")
     public void clickSaveAccountButton() {
         waitForElementVisibility(saveAccountButton);
-        scrollToElement(saveAccountButton);
+        scrollToPlaceElementInCenter(saveAccountButton);
         waitForElementClickable(saveAccountButton);
         click(saveAccountButton);
     }

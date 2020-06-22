@@ -71,6 +71,7 @@ public class Account {
     private String bankRoutingNumberInterestOnCD;
     private String bankAccountNumberInterestOnCD;
     private String bankruptcyJudgement;
+    private String dateOfFirstDeposit;
 
     public Account setCDAccountData() {
         Account account = new Account();
@@ -145,7 +146,7 @@ public class Account {
         account.setIraDistributionCode("No dist");
         account.setIraDistributionFrequency("No Dist");
         account.setIraDistributionAmount(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
-        account.setDateNextIRADistribution(DateTime.getTomorrowDate("MM/dd/yyyy"));
+        account.setDateNextIRADistribution(/*DateTime.getTomorrowDate("MM/dd/yyyy")*/ DateTime.getDateWithFormatPlusDays(WebAdminActions.loginActions().getSystemDate(), "MM/dd/yyyy", "MM/dd/yyyy", 1));
         account.setNumberOfDebitCardsIssued(String.valueOf(Generator.genInt(0, 100)));
         account.setNumberOfATMCardsIssued(String.valueOf(Generator.genInt(0, 100)));
         account.setFederalWHPercent(String.valueOf(Generator.genInt(0, 100)));
@@ -155,6 +156,7 @@ public class Account {
         account.setUserDefinedField_2(Generator.genString(5));
         account.setUserDefinedField_3(Generator.genString(5));
         account.setUserDefinedField_4(Generator.genString(5));
+        account.setDateOfFirstDeposit(DateTime.getDateWithFormatPlusDays(WebAdminActions.loginActions().getSystemDate(), "MM/dd/yyyy", "MM/dd/yyyy", 1));
 
         return account;
     }
@@ -735,5 +737,13 @@ public class Account {
 
     public void setBankruptcyJudgement(String bankruptcyJudgement) {
         this.bankruptcyJudgement = bankruptcyJudgement;
+    }
+
+    public String getDateOfFirstDeposit() {
+        return dateOfFirstDeposit;
+    }
+
+    public void setDateOfFirstDeposit(String dateOfFirstDeposit) {
+        this.dateOfFirstDeposit = dateOfFirstDeposit;
     }
 }
