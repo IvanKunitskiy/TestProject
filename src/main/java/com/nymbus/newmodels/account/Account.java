@@ -85,7 +85,7 @@ public class Account {
         account.setApplyInterestTo("Remain in Account");
         account.setAccountHolder("Owner");
         account.setAccountTitle(Generator.genString(5));
-        account.setDateOpened(/*DateTime.getYesterdayDate("MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
+        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 1));
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setInterestRate(String.valueOf(Generator.genInt(0, 100)));
         account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
@@ -105,7 +105,7 @@ public class Account {
         account.setProductType("CD");
         account.setProduct("6 Month Roth IRA Certificate");
         account.setAccountTitle(Generator.genString(5));
-        account.setDateOpened(/*DateTime.getYesterdayDate("MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
+        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 1));
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setIraDistributionCode("No dist");
         account.setIraDistributionFrequency("No Dist");
@@ -141,7 +141,7 @@ public class Account {
         account.setProductType("Savings Account");
         account.setProduct("Traditional IRA Accumulation Acct");
         account.setAccountTitle(Generator.genString(5));
-        account.setDateOpened(/*DateTime.getYesterdayDate("MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
+        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 1));
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setIraDistributionCode("No dist");
         account.setIraDistributionFrequency("No Dist");
@@ -170,7 +170,7 @@ public class Account {
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
         account.setProduct("Regular Savings Account");
         account.setAccountTitle(Generator.genString(5));
-        account.setDateOpened(/*DateTime.getYesterdayDate("MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
+        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 1));
         account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
         account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         account.setNumberOfDebitCardsIssued(String.valueOf(Generator.genInt(0, 100)));
@@ -195,7 +195,7 @@ public class Account {
         account.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 92233720368L)));
         account.setProduct("Basic Business Checking");
         account.setOptInOutDate("01/01/2020");
-        account.setDateOpened(/*DateTime.getYesterdayDate("MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
+        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 1));
         account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
         account.setEarningCreditRate(Generator.getRandomStringNumber(3));
         account.setAutomaticOverdraftStatus("Active");

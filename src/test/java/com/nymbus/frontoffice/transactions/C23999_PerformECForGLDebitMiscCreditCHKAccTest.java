@@ -58,6 +58,7 @@ public class C23999_PerformECForGLDebitMiscCreditCHKAccTest extends BaseTest {
         Actions.transactionActions().loginTeller();
         Actions.transactionActions().goToTellerPage();
         Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
+        String effectiveDate = Pages.tellerPage().getEffectiveDate();
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
 
@@ -75,7 +76,7 @@ public class C23999_PerformECForGLDebitMiscCreditCHKAccTest extends BaseTest {
         logInfo("Balance data after transaction: " + balanceData.toString());
 
         transactionData = new TransactionData(transaction.getTransactionDate(),
-                transaction.getTransactionDate(),
+                effectiveDate,
                 "-",
                 balanceData.getCurrentBalance(),
                 transaction.getTransactionDestination().getAmount());

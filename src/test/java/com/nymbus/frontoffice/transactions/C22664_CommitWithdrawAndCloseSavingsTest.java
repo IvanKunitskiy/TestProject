@@ -111,6 +111,7 @@ public class C22664_CommitWithdrawAndCloseSavingsTest extends BaseTest {
 
         logInfo("Step 6: Specify details for selected destination line item correctly (Amount should be the same as it was set in Debit Item)");
         Actions.transactionActions().setGLCreditDestination(withdrawTransaction.getTransactionDestination(), currentIndex);
+        transactionData.setEffectiveDate(Pages.tellerPage().getEffectiveDate());
 
         logInfo("Step 7: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
