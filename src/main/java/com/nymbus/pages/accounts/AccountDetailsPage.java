@@ -76,7 +76,8 @@ public class AccountDetailsPage extends PageTools {
     private By cashCollInterestChg= By.xpath("//tr[@data-config-name='cashcollectioninterestchargesperstatementcycle']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By cashCollFloat= By.xpath("//tr[@data-config-name='cashcollectionfloat']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By positivePay= By.xpath("//tr[@data-config-name='positivepaycustomer']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private By interestFrequency= By.xpath("//tr[@data-config-name='interestfrequencycode']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By interestFrequency= By.xpath("//tr[@data-config-name='interestfrequency']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By interestFrequencyCode= By.xpath("//tr[@data-config-name='interestfrequencycode']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By correspondingAccount= By.xpath("//tr[@data-config-name='correspondingaccountid']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By printStatementNextUpdate= By.xpath("//tr[@data-config-name='printstatementnextupdate']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By interestPaidYTD= By.xpath("//tr[@data-config-name='interestpaidytd']//span[contains(@class, 'dnTextFixedWidthText')]");
@@ -114,6 +115,7 @@ public class AccountDetailsPage extends PageTools {
     private By dateClosed = By.xpath("//*[@data-config-name='dateclosed']" +
             "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By bankruptcyJudgement = By.xpath("//tr[@data-test-id='field-bankruptcyjudgementcode']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By dateOfFirstDeposit = By.xpath("//tr[@data-test-id='field-datefirstdeposit']//span[contains(@class, 'dnTextFixedWidthText')]");
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -306,6 +308,12 @@ public class AccountDetailsPage extends PageTools {
         return getElementText(dateNextIRADistribution);
     }
 
+    @Step("Get 'Date Of First Deposit' value")
+    public String getDateOfFirstDeposit() {
+        waitForElementVisibility(dateOfFirstDeposit);
+        return getElementText(dateOfFirstDeposit);
+    }
+
     @Step("Get 'Print Statement Next Update' value")
     public String getPrintStatementNextUpdate() {
         waitForElementVisibility(printStatementNextUpdate);
@@ -329,6 +337,12 @@ public class AccountDetailsPage extends PageTools {
     public String getInterestFrequency() {
         waitForElementVisibility(interestFrequency);
         return getElementText(interestFrequency);
+    }
+
+    @Step("Get 'Interest Frequency Code' value")
+    public String getInterestFrequencyCode() {
+        waitForElementVisibility(interestFrequencyCode);
+        return getElementText(interestFrequencyCode);
     }
 
     @Step("Get 'Positive Pay' value")
