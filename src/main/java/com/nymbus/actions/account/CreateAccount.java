@@ -71,7 +71,6 @@ public class CreateAccount {
         setStatementCycle(account);
         setCallClassCode(account);
         setInterestFrequency(account);
-        setCorrespondingAccount(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
@@ -222,6 +221,11 @@ public class CreateAccount {
         setCallClassCode(account);
         setIRADistributionFrequency(account);
         setIRADistributionCode(account);
+        Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
+        Pages.addAccountPage().setIRADistributionAmountValue(account.getIraDistributionAmount());
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
+        Pages.addAccountPage().setDateNextIRADistributionValue(account.getDateNextIRADistribution());
+        Pages.addAccountPage().setDateOfFirstDepositValue(account.getDateOfFirstDeposit());
     }
 
     public void setValuesInFieldsRequiredForCDIRAAccount(Account account) {

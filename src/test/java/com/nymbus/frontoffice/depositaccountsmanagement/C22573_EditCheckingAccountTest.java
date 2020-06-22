@@ -83,12 +83,8 @@ public class C22573_EditCheckingAccountTest extends BaseTest {
         logInfo("Step 6: Select data in such dropdown fields that were not available in Add New mode");
         logInfo("Step 7: Fill in such text fields that were not displayed in Add new mode");
         logInfo("Step 8: Select any other value in such fields");
-        AccountActions.editAccount().selectValuesInFieldsThatWereNotAvailableDuringCheckingAccountCreation(checkingAccount);
-
         logInfo("Step 9: Set Apply Seasonal Address switcher to NO");
-        if (Pages.editAccountPage().getApplySeasonalAddressSwitchValue().equals("YES")) {
-            Pages.editAccountPage().clickApplySeasonalAddressSwitch();
-        }
+        AccountActions.editAccount().selectValuesInFieldsThatWereNotAvailableDuringCheckingAccountCreation(checkingAccount);
 
         logInfo("Step 10: Click [-] icon next to any section (e.g. Transactions section) and verify that all fields within this section were hidden");
         Pages.editAccountPage().clickMiscSectionLink();
