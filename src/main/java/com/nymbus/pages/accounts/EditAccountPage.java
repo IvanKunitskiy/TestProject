@@ -1085,6 +1085,11 @@ public class EditAccountPage extends PageTools {
         return Boolean.parseBoolean(getElementAttributeValue("disabled", ytdChargesWaived));
     }
 
+    @Step("Check if 'Interest Rate' field is disabled edit mode")
+    public boolean isInterestRateDisabledInEditMode() {
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", interestRate));
+    }
+
     @Step("Set 'Print Statement Next Update' option")
     public void setPrintStatementNextUpdate(String printStatementNextUpdateValue) {
         waitForElementVisibility(printStatementNextUpdate);

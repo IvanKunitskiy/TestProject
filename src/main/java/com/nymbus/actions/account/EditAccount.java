@@ -284,7 +284,9 @@ public class EditAccount {
         Pages.editAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
         Pages.editAccountPage().setNumberOfDebitCardsIssued(account.getNumberOfDebitCardsIssued());
         setCurrentOfficer(account);
-        Pages.editAccountPage().setInterestRate(account.getInterestRate());
+        if (!Pages.editAccountPage().isInterestRateDisabledInEditMode()) {
+            Pages.editAccountPage().setInterestRate(account.getInterestRate());
+        }
         setBankBranch(account);
         setCallClassCode(account);
         setStatementCycle(account);
