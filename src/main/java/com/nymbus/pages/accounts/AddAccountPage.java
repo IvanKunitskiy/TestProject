@@ -95,6 +95,10 @@ public class AddAccountPage extends PageTools {
     private By interestFrequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By interestFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
+    private By interestFrequencyCodeSelectorButton = By.xpath("//div[@id='interestfrequencycode']//span[contains(@class, 'select2-arrow')]");
+    private By interestFrequencyCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By interestFrequencyCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
     private By correspondingAccountSelectorButton = By.xpath("//div[@id='correspondingaccountid']");
     private By correspondingAccountList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By correspondingAccountSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
@@ -280,8 +284,28 @@ public class AddAccountPage extends PageTools {
 
     @Step("Click the 'Interest Frequency' selector button")
     public void clickInterestFrequencySelectorButton() {
-//        scrollToElement(interestFrequencySelectorButton);
+        scrollToPlaceElementInCenter(interestFrequencySelectorButton);
         click(interestFrequencySelectorButton);
+    }
+
+    @Step("Click the 'Interest Frequency code' option")
+    public void clickInterestFrequencyCodeSelectorOption(String interestFrequencyOption) {
+        waitForElementVisibility(interestFrequencyCodeSelectorOption, interestFrequencyOption);
+        waitForElementClickable(interestFrequencyCodeSelectorOption, interestFrequencyOption);
+        click(interestFrequencyCodeSelectorOption, interestFrequencyOption);
+    }
+
+    @Step("Returning list of 'Interest Frequency code' options")
+    public List<String> getInterestFrequencyCodeList() {
+        waitForElementVisibility(interestFrequencyCodeList);
+        waitForElementClickable(interestFrequencyCodeList);
+        return getElementsText(interestFrequencyCodeList);
+    }
+
+    @Step("Click the 'Interest Frequency code' selector button")
+    public void clickInterestFrequencyCodeSelectorButton() {
+        scrollToPlaceElementInCenter(interestFrequencyCodeSelectorButton);
+        click(interestFrequencyCodeSelectorButton);
     }
 
     @Step("Set 'Date Next IRA Distribution' value")
