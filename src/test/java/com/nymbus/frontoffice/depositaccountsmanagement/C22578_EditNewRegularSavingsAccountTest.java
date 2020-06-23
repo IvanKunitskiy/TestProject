@@ -211,7 +211,7 @@ public class C22578_EditNewRegularSavingsAccountTest extends BaseTest {
                 "'Call Class Code' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Statement Cycle") >= 1,
                 "'Statement Cycle' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Rate") >= 1,
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Frequency") >= 1,
                 "'Interest Frequency' row count is incorrect!");
     }
 }

@@ -237,6 +237,7 @@ public class EditAccountPage extends PageTools {
     private By ydtAverageBalance = By.xpath("//input[@data-test-id='field-averagebalanceytd']");
     private By ytdChargesWaived = By.xpath("//input[@data-test-id='field-chargeswaivedytd']");
     private By dateOfFirstDeposit = By.xpath("//input[@data-test-id='field-datefirstdeposit']");
+    private By interestLastPaid = By.xpath("//input[@data-test-id='field-amountinterestlastpaid']");
 
     /**
      * Groups
@@ -1083,6 +1084,16 @@ public class EditAccountPage extends PageTools {
     @Step("Check if 'YTD charges waived' field is disabled edit mode")
     public boolean isYtdChargesWaivedDisabledInEditMode() {
         return Boolean.parseBoolean(getElementAttributeValue("disabled", ytdChargesWaived));
+    }
+
+    @Step("Check if 'Interest Rate' field is disabled edit mode")
+    public boolean isInterestRateDisabledInEditMode() {
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", interestRate));
+    }
+
+    @Step("Check if 'Interest Last paid' field is disabled edit mode")
+    public boolean isInterestLastPaidDisabledInEditMode() {
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", interestLastPaid));
     }
 
     @Step("Set 'Print Statement Next Update' option")

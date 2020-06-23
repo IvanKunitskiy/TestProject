@@ -265,13 +265,12 @@ public class CreateAccount {
     }
 
     public void selectValuesInFieldsRequiredForCDAccount(Account account) {
-        Pages.addAccountPage().setAccountNumberValue("");
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
         setBankBranch(account);
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
-        setInterestFrequency(account);
-        account.setApplyInterestTo("CHK Acct");
+        setInterestFrequencyCode(account);
+        account.setApplyInterestTo("Check");
         setApplyInterestTo(account);
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setInterestType(account);
@@ -365,6 +364,17 @@ public class CreateAccount {
             account.setInterestFrequency(listOfInterestFrequency.get(new Random().nextInt(listOfInterestFrequency.size())).trim());
         }
         Pages.addAccountPage().clickInterestFrequencySelectorOption(account.getInterestFrequency());
+    }
+
+    public void setInterestFrequencyCode(Account account) {
+        Pages.addAccountPage().clickInterestFrequencyCodeSelectorButton();
+        List<String> listOfInterestFrequency = Pages.addAccountPage().getInterestFrequencyCodeList();
+
+        Assert.assertTrue(listOfInterestFrequency.size() > 0, "There are no product types available");
+        if (account.getInterestFrequency() == null) {
+            account.setInterestFrequency(listOfInterestFrequency.get(new Random().nextInt(listOfInterestFrequency.size())).trim());
+        }
+        Pages.addAccountPage().clickInterestFrequencyCodeSelectorOption(account.getInterestFrequency());
     }
 
     public void setChargeOrAnalyze(Account account) {
