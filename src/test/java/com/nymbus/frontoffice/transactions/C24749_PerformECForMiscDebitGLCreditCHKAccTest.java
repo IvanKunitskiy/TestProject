@@ -62,14 +62,24 @@ public class C24749_PerformECForMiscDebitGLCreditCHKAccTest extends BaseTest {
         String INSTRUCTION_REASON = "Reg CC";
         AccountActions.createInstruction().deleteInstructionByReasonText(INSTRUCTION_REASON);
 
-        Actions.transactionActions().performMiscDebitGLCreditTransaction(miscDebitGLCreditTransaction);
+
+        // perform misc debit GL credit transaction
+        // perform transaction
+        Actions.transactionActions().openProofDateLoginModalWindow();
+        String postingDate = Pages.tellerModalPage().getProofDateValue();
+        Actions.transactionActions().doLoginProofDate();
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().createMiscDebitGLCreditTransaction(miscDebitGLCreditTransaction);
+        String effectiveDate = Pages.tellerPage().getEffectiveDate();
+        Actions.transactionActions().clickCommitButton();
+        Pages.tellerPage().closeModal();
 
         Actions.clientPageActions().searchAndOpenClientByName(miscDebitGLCreditTransaction.getTransactionSource().getAccountNumber());
 
         balanceDataForCHKAcc = AccountActions.retrievingAccountData().getExtendedBalanceDataForCHKAcc();
 
-        transactionData = new TransactionData(miscDebitGLCreditTransaction.getTransactionDate(),
-                miscDebitGLCreditTransaction.getTransactionDate(),
+        transactionData = new TransactionData(postingDate,
+                effectiveDate,
                 "+",
                 balanceDataForCHKAcc.getCurrentBalance(),
                 miscDebitGLCreditTransaction.getTransactionDestination().getAmount());

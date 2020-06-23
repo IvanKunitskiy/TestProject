@@ -65,7 +65,9 @@ public class C22634_GLDebit_MiscCredit_SavingsAcc_Test extends BaseTest {
     public void verifyTransactionGLDebitMiscCredit() {
 
         logInfo("Step 2: Go to Teller page and log in to the proof date");
-        Actions.transactionActions().loginTeller();
+        Actions.transactionActions().openProofDateLoginModalWindow();
+        transactionData.setPostingDate(Pages.tellerModalPage().getProofDateValue());
+        Actions.transactionActions().doLoginProofDate();
         Actions.transactionActions().goToTellerPage();
 
         logInfo("Step 3: Select the following fund types: \n" +
@@ -128,10 +130,9 @@ public class C22634_GLDebit_MiscCredit_SavingsAcc_Test extends BaseTest {
         Actions.loginActions().doLogOut();
 
         logInfo("Step 15: Log in to the WebAdmin, go to RulesUI and search for the committed transaction items using its bank.data.transaction.header rootid value");
-        WebAdminTransactionData transactionData = new WebAdminTransactionData();
-        String date = WebAdminActions.loginActions().getSystemDate();
-        transactionData.setPostingDate(date);
-        transactionData.setGlFunctionValue(GLFunctionValue.DEPOSIT_ITEM);
+        WebAdminTransactionData webAdminTransactionData = new WebAdminTransactionData();
+        webAdminTransactionData.setPostingDate(transactionData.getPostingDate());
+        webAdminTransactionData.setGlFunctionValue(GLFunctionValue.DEPOSIT_ITEM);
         Selenide.open(Constants.WEB_ADMIN_URL);
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         WebAdminActions.webAdminTransactionActions().goToTransactionUrl(savingsAccount.getAccountNumber());
@@ -139,27 +140,27 @@ public class C22634_GLDebit_MiscCredit_SavingsAcc_Test extends BaseTest {
                 "Transaction items doesn't find !");
 
         logInfo("Step 16: Check gldatetimeposted value for Deposit (Misc Credit) item");
-        Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDatePosted(1), transactionData.getPostingDate(),
+        Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDatePosted(1), webAdminTransactionData.getPostingDate(),
                 "Posted date doesn't match!");
 
         logInfo("Step 17: Check glfunction value for Deposit item");
         Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getGLFunctionValue(1),
-                transactionData.getGlFunctionValue().getGlFunctionValue(),
+                webAdminTransactionData.getGlFunctionValue().getGlFunctionValue(),
                 "Function value  doesn't match!");
 
         logInfo("Step 18: Go to bank.data.gl.interface and verify that there is a record for Deposit (Misc Credit) transaction item");
         String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(1);
-        transactionData.setAmount(WebAdminPages.rulesUIQueryAnalyzerPage().getAmount(1));
+        webAdminTransactionData.setAmount(WebAdminPages.rulesUIQueryAnalyzerPage().getAmount(1));
         WebAdminActions.webAdminTransactionActions().goToGLInterface(transactionHeader);
         Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
                 "Transaction items doesn't find!");
         Assert.assertEquals( WebAdminPages.rulesUIQueryAnalyzerPage().getGLFunctionValue(1),
-                transactionData.getGlFunctionValue().getGlFunctionValue(),
+                webAdminTransactionData.getGlFunctionValue().getGlFunctionValue(),
                 "Function value doesn't match!");
 
         logInfo("Step 19: Verify that amount and glfunction values are the same as on b.d.transaction.item level");
         Assert.assertEquals( WebAdminPages.rulesUIQueryAnalyzerPage().getAmount(1),
-                transactionData.getAmount(),
+                webAdminTransactionData.getAmount(),
                 "Amount value doesn't match!");
 
         logInfo("Step 20: Verify that transactionheaderid from b.d.transaction.item is written to parenttransaction field on bank.data.gl.interface");

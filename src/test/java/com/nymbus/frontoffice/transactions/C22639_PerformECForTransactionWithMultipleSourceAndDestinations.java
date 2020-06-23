@@ -86,7 +86,9 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
         multipleTransaction.getDestinations().get(2).setAccountNumber(cdAccount.getAccountNumber());
 
         // Perform cash in transaction for CHK acc
-        Actions.transactionActions().loginTeller();
+        Actions.transactionActions().openProofDateLoginModalWindow();
+        String postingDate = Pages.tellerModalPage().getProofDateValue();
+        Actions.transactionActions().doLoginProofDate();
         Actions.transactionActions().goToTellerPage();
         Actions.transactionActions().createCashInMiscCreditTransaction(transaction);
         Actions.transactionActions().clickCommitButton();
@@ -96,6 +98,7 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
 
         // Perform multiple transaction
         Actions.transactionActions().createTransactionWithMultipleSources(multipleTransaction);
+        String effectiveDate = Pages.tellerPage().getEffectiveDate();
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
         Assert.assertFalse(Pages.tellerPage().isNotificationsPresent(), "Error message is visible!");
@@ -114,11 +117,11 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
         savingAccBalanceData = AccountActions.retrievingAccountData().getBalanceData();
 
         // Set up transaction data
-        chkAccTransactionData = getExpectedTransactionData(multipleTransaction.getTransactionDate(), "+",
+        chkAccTransactionData = getExpectedTransactionData(postingDate, effectiveDate, "+",
                 chkAccBalanceData.getCurrentBalance(), multipleTransaction.getSources().get(1).getAmount());
-        cdAccTransactionData = getExpectedTransactionData(multipleTransaction.getTransactionDate(), "-",
+        cdAccTransactionData = getExpectedTransactionData(postingDate, effectiveDate, "-",
                 cdAccBalanceData.getCurrentBalance(),multipleTransaction.getDestinations().get(2).getAmount());
-        savingAccTransactionData = getExpectedTransactionData(multipleTransaction.getTransactionDate(), "-",
+        savingAccTransactionData = getExpectedTransactionData(postingDate, effectiveDate, "-",
                 savingAccBalanceData.getCurrentBalance(), multipleTransaction.getDestinations().get(1).getAmount());
 
         Actions.loginActions().doLogOut();
@@ -202,7 +205,7 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
         WebAdminActions.webAdminTransactionActions().verifyDeletedRecords();
     }
 
-    private TransactionData getExpectedTransactionData(String date, String symbol,  double currentBalance, double amount) {
-       return new TransactionData(date, date, symbol, currentBalance, amount);
+    private TransactionData getExpectedTransactionData(String postingDate, String effectiveDate, String symbol,  double currentBalance, double amount) {
+       return new TransactionData(postingDate, effectiveDate, symbol, currentBalance, amount);
     }
 }

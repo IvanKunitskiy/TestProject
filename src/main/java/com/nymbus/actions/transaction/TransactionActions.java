@@ -1,5 +1,6 @@
 package com.nymbus.actions.transaction;
 
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.transaction.MultipleTransaction;
 import com.nymbus.newmodels.transaction.Transaction;
@@ -349,6 +350,20 @@ public class TransactionActions {
 
         SelenideTools.sleep(2);
 
+        Pages.tellerModalPage().clickEnterButton();
+
+        Pages.tellerModalPage().waitForModalInvisibility();
+    }
+
+    public void openProofDateLoginModalWindow() {
+        Pages.navigationPage().clickAccountButton();
+
+        Pages.navigationPage().clickProofDateLogin();
+
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+    }
+
+    public void doLoginProofDate() {
         Pages.tellerModalPage().clickEnterButton();
 
         Pages.tellerModalPage().waitForModalInvisibility();

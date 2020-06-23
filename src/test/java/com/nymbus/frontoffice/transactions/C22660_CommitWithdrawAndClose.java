@@ -93,6 +93,7 @@ public class C22660_CommitWithdrawAndClose extends BaseTest {
 
         logInfo("Step 2: Go to Journal page and log in to the proof date");
         Actions.transactionActions().goToTellerPage();
+        transactionData.setPostingDate(Pages.tellerModalPage().getProofDateValue());
         Actions.transactionActions().doLoginTeller();
 
         logInfo("Step 3: Select the following fund types: \n" +

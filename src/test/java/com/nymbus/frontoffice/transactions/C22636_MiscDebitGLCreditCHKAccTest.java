@@ -19,6 +19,7 @@ import com.nymbus.newmodels.transaction.enums.GLFunctionValue;
 import com.nymbus.newmodels.transaction.verifyingModels.ExtendedBalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.WebAdminTransactionData;
+import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -58,6 +59,8 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
 
         // Perform transaction
         Actions.transactionActions().performGLDebitMiscCreditTransaction(glDebitMiscCreditTransaction);
+
+        // Delete Reg CC instruction if exists
         Actions.clientPageActions().searchAndOpenClientByName(glDebitMiscCreditTransaction.getTransactionDestination().getAccountNumber());
         AccountActions.editAccount().goToInstructionsTab();
         AccountActions.createInstruction().deleteInstructionByReasonText(INSTRUCTION_REASON);
@@ -75,6 +78,11 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
         logInfo("Balance data " + balanceData.toString());
 
         logInfo("Step 2: Go to Teller screen and log in to proof date");
+        Actions.transactionActions().openProofDateLoginModalWindow();
+        String postingDate = Pages.tellerModalPage().getProofDateValue();
+        Actions.transactionActions().doLoginProofDate();
+        Actions.transactionActions().goToTellerPage();
+
         logInfo("Step 3: Select the following fund types:\n" +
                          "- Source: Misc Debit \n" +
                          "- Destination: GL Credit");
@@ -87,19 +95,19 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
                 "- specify the same amount (e.g. $90.00) \n" +
                 "- expand line item and specify Note");
         logInfo("Step 6: Click [Commit Transaction] button");
-        Actions.transactionActions().performMiscDebitGLCreditTransaction(miscDebitGLCreditTransaction);
-        Actions.clientPageActions().searchAndOpenClientByName(miscDebitGLCreditTransaction.getTransactionSource().getAccountNumber());
-        AccountActions.editAccount().goToInstructionsTab();
-        AccountActions.createInstruction().deleteInstructionByReasonText(INSTRUCTION_REASON);
+        Actions.transactionActions().createMiscDebitGLCreditTransaction(miscDebitGLCreditTransaction);
+        String effectiveDate = Pages.tellerPage().getEffectiveDate();
+        Actions.transactionActions().clickCommitButton();
+        Assert.assertEquals(Pages.tellerPage().getModalText(),
+                "Transaction was successfully completed.",
+                "Transaction doesn't commit");
 
+        // Set transaction data and update balances
         balanceData.reduceAmount(miscDebitGLCreditTransaction.getTransactionSource().getAmount());
-        TransactionData transactionData = new TransactionData(miscDebitGLCreditTransaction.getTransactionDate(),
-                miscDebitGLCreditTransaction.getTransactionDate(), "-",
+        TransactionData transactionData = new TransactionData(postingDate,
+                effectiveDate, "-",
                 balanceData.getCurrentBalance(),
                 miscDebitGLCreditTransaction.getTransactionDestination().getAmount());
-        Actions.clientPageActions().searchAndOpenClientByName(miscDebitGLCreditTransaction.getTransactionSource().getAccountNumber());
-
-        ExtendedBalanceDataForCHKAcc actualBalanceDate = AccountActions.retrievingAccountData().getExtendedBalanceDataForCHKAcc();
 
         logInfo("Step 7: Close Transaction Receipt popup and \n" +
                 "Go to the account used in Misc Debit item. Verify such fields: \n" +
@@ -107,6 +115,9 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
                 "- available balance \n" +
                 "- Collected Balance \n" +
                 "- Average Balance");
+        Pages.tellerPage().closeModal();
+        Actions.clientPageActions().searchAndOpenClientByName(miscDebitGLCreditTransaction.getTransactionSource().getAccountNumber());
+        ExtendedBalanceDataForCHKAcc actualBalanceDate = AccountActions.retrievingAccountData().getExtendedBalanceDataForCHKAcc();
         Assert.assertEquals(actualBalanceDate, balanceData, "Balance data doesn't match!");
 
         logInfo("Step 8: Open account on Transactions history and verify that transaction is written on transactions history page");
@@ -118,8 +129,7 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
 
         logInfo("Step 9: Log in to the WebAdmin, go to RulesUI and search for the committed transaction items using its bank.data.transaction.header rootid value");
         WebAdminTransactionData webAdminTransactionData = new WebAdminTransactionData();
-        String date = WebAdminActions.loginActions().getSystemDate();
-        webAdminTransactionData.setPostingDate(date);
+        webAdminTransactionData.setPostingDate(transactionData.getPostingDate());
         webAdminTransactionData.setGlFunctionValue(GLFunctionValue.DEPOSIT_ITEM_CHK_ACC);
         Selenide.open(Constants.WEB_ADMIN_URL);
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
