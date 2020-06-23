@@ -104,6 +104,11 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Go to Teller screen and log in to proof date");
+        Actions.transactionActions().openProofDateLoginModalWindow();
+        String postingDate = Pages.tellerModalPage().getProofDateValue();
+        Actions.transactionActions().doLoginProofDate();
+        Actions.transactionActions().goToTellerPage();
+
         logInfo("Step 3: Select Cash In in the Source");
         logInfo("Step 4: Select any amount for not zero denomination and click [OK]");
         logInfo("Step 5: Select one more fund type in the Source, e.g. Misc Debit");
@@ -116,12 +121,17 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
                 "- Deposit --> Select Savings account from the preconditions, transaction code = 209");
         logInfo("Step 10: For Misc Credit and Deposit items select transaction amount that \n" +
                 "will result in balanced Source and Destination items");
+        Actions.transactionActions().createTransactionWithMultipleSources(multipleTransaction);
+        String effectiveDate = Pages.tellerPage().getEffectiveDate();
+        Pages.tellerPage().clickCommitButton();
+        Pages.verifyConductorModalPage().clickVerifyButton();
+        Pages.tellerPage().closeModal();
+
         logInfo("Step 11: Click [Commit Transaction] button and confirm Verify popup \n" +
                 "(which should be displayed if cash items were selected for transaction)");
-        Actions.transactionActions().performMultipleTransaction(multipleTransaction);
         chkAccBalanceData.reduceAmount(multipleTransaction.getSources().get(1).getAmount());
-        TransactionData chkAccTransactionData = new TransactionData(multipleTransaction.getTransactionDate(),
-                multipleTransaction.getTransactionDate(),
+        TransactionData chkAccTransactionData = new TransactionData(postingDate,
+                effectiveDate,
                 "-",
                 chkAccBalanceData.getCurrentBalance(),
                 multipleTransaction.getSources().get(1).getAmount());
@@ -139,8 +149,8 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
         Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
 
         cdAccBalanceData.addAmount(multipleTransaction.getDestinations().get(2).getAmount());
-        TransactionData cdAccTransactionData = new TransactionData(multipleTransaction.getTransactionDate(),
-                multipleTransaction.getTransactionDate(),
+        TransactionData cdAccTransactionData = new TransactionData(postingDate,
+                effectiveDate,
                 "+",
                 cdAccBalanceData.getCurrentBalance(),
                 multipleTransaction.getDestinations().get(2).getAmount());
@@ -175,8 +185,8 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
         BalanceData actualBalanceDataForSavingAcc = AccountActions.retrievingAccountData().getBalanceData();
         Assert.assertEquals(actualBalanceDataForSavingAcc, savingAccBalanceData,"Saving account balances is not correct!");
 
-        TransactionData savingAccTransactionData = new TransactionData(multipleTransaction.getTransactionDate(),
-                multipleTransaction.getTransactionDate(),
+        TransactionData savingAccTransactionData = new TransactionData(postingDate,
+                 effectiveDate,
                 "+",
                 cdAccBalanceData.getCurrentBalance(),
                 multipleTransaction.getDestinations().get(1).getAmount());

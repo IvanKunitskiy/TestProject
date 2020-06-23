@@ -16,7 +16,7 @@ public class RetrievingAccountData {
         BalanceDataForCDAcc balanceDataForCDAcc = new BalanceDataForCDAcc();
         balanceDataForCDAcc.setCurrentBalance(getCurrentBalance());
         balanceDataForCDAcc.setOriginalBalance(getOriginalBalance());
-        balanceDataForCDAcc.setTotalContributionForLifeOfAcc(getTotalContribution());
+        // balanceDataForCDAcc.setTotalContributionForLifeOfAcc(getTotalContribution());
 
         return  balanceDataForCDAcc;
     }
