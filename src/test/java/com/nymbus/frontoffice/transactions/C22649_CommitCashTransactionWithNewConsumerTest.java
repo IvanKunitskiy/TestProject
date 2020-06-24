@@ -69,6 +69,7 @@ public class C22649_CommitCashTransactionWithNewConsumerTest extends BaseTest {
 
         logInfo("Step 2: Go to Teller page and log in to the proof date");
         Actions.transactionActions().goToTellerPage();
+        String postingDate = Pages.tellerModalPage().getProofDateValue();
         Actions.transactionActions().doLoginTeller();
 
         logInfo("Step 3: Select any cash item + any one opposite line item, e.g.: \n" +
@@ -76,6 +77,7 @@ public class C22649_CommitCashTransactionWithNewConsumerTest extends BaseTest {
                 "- Destination: Deposit");
         logInfo("Step 4: Select account from the preconditions in the destination and select any trancode (e.g. 109 - Deposit)");
         Actions.transactionActions().createTransaction(transaction);
+        String effectiveDate = Pages.tellerPage().getEffectiveDate();
 
         logInfo("Step 5: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
@@ -157,8 +159,8 @@ public class C22649_CommitCashTransactionWithNewConsumerTest extends BaseTest {
         BalanceDataForCHKAcc actualBalanceDataForSavingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         Assert.assertEquals(actualBalanceDataForSavingAcc, chkAccBalanceData,"Checking account balances is not correct!");
 
-        TransactionData chkAccTransactionData = new TransactionData(transaction.getTransactionDate(),
-                transaction.getTransactionDate(),
+        TransactionData chkAccTransactionData = new TransactionData(postingDate,
+                effectiveDate,
                 "+",
                 chkAccBalanceData.getCurrentBalance(),
                 transaction.getTransactionDestination().getAmount());
