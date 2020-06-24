@@ -136,6 +136,7 @@ public class CreateAccount {
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
+        setBankBranch(account);
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
         setChargeOrAnalyze(account);
@@ -229,20 +230,29 @@ public class CreateAccount {
     }
 
     public void setValuesInFieldsRequiredForCDIRAAccount(Account account) {
-        Pages.addAccountPage().setAccountNumberValue(""); // can be removed when page scrolling is normalized
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
         setBankBranch(account);
-        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
-        setInterestType(account);
-        setInterestFrequency(account);
-        setApplyInterestTo(account);
         setCorrespondingAccount(account);
+        setInterestFrequencyCode(account);
+        setApplyInterestTo(account);
+        setInterestType(account);
         setCallClassCode(account);
         setIRADistributionFrequency(account);
         setIRADistributionCode(account);
         Pages.addAccountPage().setIRADistributionAmountValue(account.getIraDistributionAmount());
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setDateNextIRADistributionValue(account.getDateNextIRADistribution());
+        Pages.addAccountPage().setDateOfFirstDeposit(account.getDateOfFirstDeposit());
+        if (Pages.addAccountPage().getTransactionalAccountSwitchValue().equals("no")) {
+            Pages.addAccountPage().clickTransactionalAccountSwitch();
+        }
+        if (Pages.addAccountPage().getAutoRenewableSwitchValue().equals("yes")) {
+            Pages.addAccountPage().clickAutoRenewableSwitch();
+        }
+        if (Pages.addAccountPage().getApplySeasonalAddressSwitchValue().equals("yes")) {
+            Pages.addAccountPage().clickApplySeasonalAddressSwitch();
+        }
     }
 
     public void selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccount(Account account) {

@@ -130,6 +130,7 @@ public class Account {
         account.setUserDefinedField_2(Generator.genString(5));
         account.setUserDefinedField_3(Generator.genString(5));
         account.setUserDefinedField_4(Generator.genString(5));
+        account.setDateOfFirstDeposit(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 1));
 
         return account;
     }
