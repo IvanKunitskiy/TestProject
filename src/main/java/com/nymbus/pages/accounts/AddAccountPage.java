@@ -58,7 +58,11 @@ public class AddAccountPage extends PageTools {
     private By userDefinedFieldInput_4 = By.xpath("//input[@id='userdefinedfield4']");
     private By discountPeriods = By.xpath("//input[@id='discountperiods']");
     private By applySeasonalAddress = By.xpath("//dn-switch[@id='useseasonaladdress']//span[@ng-if='model']");
+    private By applySeasonalAddressSwitch = By.xpath("//dn-switch[@id='useseasonaladdress']");
+    private By applySeasonalAddressValue = By.xpath("//dn-switch[@id='useseasonaladdress']/div/div/span");
     private By dateOfFirstDeposit = By.xpath("//input[@id='datefirstdeposit']");
+    private By autoRenewableSwitch = By.xpath("//dn-switch[@id='autorenewablecode']");
+    private By autoRenewableSwitchValue = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span");
 
     /**
      * Account holders and signers
@@ -175,7 +179,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Interest Type' selector button")
     public void clickInterestTypeSelectorButton() {
         waitForElementVisibility(interestTypeSelectorButton);
-//        scrollToElement(interestTypeSelectorButton);
+        scrollToPlaceElementInCenter(interestTypeSelectorButton);
         waitForElementClickable(interestTypeSelectorButton);
         click(interestTypeSelectorButton);
     }
@@ -197,7 +201,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Apply Interest To' selector button")
     public void clickApplyInterestToSelectorButton() {
         waitForElementVisibility(applyInterestToSelectorButton);
-        scrollToElement(applyInterestToSelectorButton);
+        scrollToPlaceElementInCenter(applyInterestToSelectorButton);
         waitForElementClickable(applyInterestToSelectorButton);
         click(applyInterestToSelectorButton);
     }
@@ -332,9 +336,20 @@ public class AddAccountPage extends PageTools {
     public void setDateOpenedValue(String dateOpenedValue) {
         waitForElementVisibility(dateOpenedField);
         waitForElementClickable(dateOpenedField);
+        scrollToPlaceElementInCenter(dateOpenedField);
         typeWithoutWipe("", dateOpenedField);
         SelenideTools.sleep(1);
         typeWithoutWipe(dateOpenedValue, dateOpenedField);
+    }
+
+    @Step("Set 'Date Opened' value")
+    public void setDateOfFirstDeposit(String date) {
+        waitForElementVisibility(dateOfFirstDeposit);
+        waitForElementClickable(dateOfFirstDeposit);
+        scrollToPlaceElementInCenter(dateOfFirstDeposit);
+        typeWithoutWipe("", dateOfFirstDeposit);
+        SelenideTools.sleep(1);
+        typeWithoutWipe(date, dateOfFirstDeposit);
     }
 
     @Step("Set 'DBC ODP Opt In/Out Status Date' value")
@@ -449,7 +464,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Current Officer' selector button")
     public void clickCurrentOfficerSelectorButton() {
         waitForElementVisibility(currentOfficerSelectorButton);
-        scrollToPlaceElementInCenter(accountType);
+        scrollToPlaceElementInCenter(currentOfficerSelectorButton);
         waitForElementClickable(currentOfficerSelectorButton);
         click(currentOfficerSelectorButton);
     }
@@ -641,10 +656,48 @@ public class AddAccountPage extends PageTools {
     }
 
     @Step("Click 'Transactional Account' switch")
-    public String clickTransactionalAccountSwitch() {
+    public void clickTransactionalAccountSwitch() {
         waitForElementVisibility(transactionalAccountSwitch);
         waitForElementClickable(transactionalAccountSwitch);
-        return getElementText(transactionalAccountSwitch);
+        click(transactionalAccountSwitch);
+    }
+
+    @Step("Get 'Transactional Account' switch value")
+    public String getTransactionalAccountSwitchValue() {
+        waitForElementVisibility(transactionalAccount);
+        waitForElementClickable(transactionalAccount);
+        scrollToPlaceElementInCenter(transactionalAccount);
+        return getElementText(transactionalAccount);
+    }
+
+    @Step("Click 'Apply Seasonal Address' switch")
+    public String clickApplySeasonalAddressSwitch() {
+        waitForElementVisibility(applySeasonalAddressSwitch);
+        waitForElementClickable(applySeasonalAddressSwitch);
+        return getElementText(applySeasonalAddressSwitch);
+    }
+
+    @Step("Get 'Seasonal Address' switch value")
+    public String getApplySeasonalAddressSwitchValue() {
+        waitForElementVisibility(applySeasonalAddressValue);
+        waitForElementClickable(applySeasonalAddressValue);
+        scrollToPlaceElementInCenter(applySeasonalAddressValue);
+        return getElementText(applySeasonalAddressValue);
+    }
+
+    @Step("Click 'Auto Renewable' switch")
+    public String clickAutoRenewableSwitch() {
+        waitForElementVisibility(autoRenewableSwitch);
+        waitForElementClickable(autoRenewableSwitch);
+        return getElementText(autoRenewableSwitch);
+    }
+
+    @Step("Get 'Auto Renewable' switch value")
+    public String getAutoRenewableSwitchValue() {
+        waitForElementVisibility(autoRenewableSwitchValue);
+        waitForElementClickable(autoRenewableSwitchValue);
+        scrollToPlaceElementInCenter(autoRenewableSwitchValue);
+        return getElementText(autoRenewableSwitchValue);
     }
 
     @Step("Returning the 'Account Holder Name' value")
