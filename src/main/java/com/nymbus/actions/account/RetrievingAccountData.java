@@ -7,9 +7,9 @@ import com.nymbus.newmodels.transaction.verifyingModels.*;
 import com.nymbus.pages.Pages;
 
 public class RetrievingAccountData {
-    public String getDateLastInterestPaid() {
+    public String getDateLastInterestPaid(String dateOpened) {
         String result = Pages.accountDetailsPage().getDateLastInterestPaid();
-        return result.equals("") ? WebAdminActions.loginActions().getSystemDate() : result;
+        return result.equals("") ? dateOpened : result;
     }
 
     public BalanceDataForCDAcc getBalanceDataForCDAcc() {
@@ -48,7 +48,7 @@ public class RetrievingAccountData {
         return balanceDataForCHKAcc;
     }
 
-    private double getAverageBalance() {
+    public double getAverageBalance() {
         String value = Pages.accountDetailsPage().getAverageBalanceValue();
         return Double.parseDouble(value);
     }

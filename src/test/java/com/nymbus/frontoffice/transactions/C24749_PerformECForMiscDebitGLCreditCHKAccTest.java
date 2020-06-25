@@ -58,6 +58,7 @@ public class C24749_PerformECForMiscDebitGLCreditCHKAccTest extends BaseTest {
 
         // remove REG CC rule instruction
         Actions.clientPageActions().searchAndOpenClientByName(glDebitMiscCreditTransaction.getTransactionDestination().getAccountNumber());
+        double averageBalance = AccountActions.retrievingAccountData().getAverageBalance();
         AccountActions.editAccount().goToInstructionsTab();
         String INSTRUCTION_REASON = "Reg CC";
         AccountActions.createInstruction().deleteInstructionByReasonText(INSTRUCTION_REASON);
@@ -77,6 +78,7 @@ public class C24749_PerformECForMiscDebitGLCreditCHKAccTest extends BaseTest {
         Actions.clientPageActions().searchAndOpenClientByName(miscDebitGLCreditTransaction.getTransactionSource().getAccountNumber());
 
         balanceDataForCHKAcc = AccountActions.retrievingAccountData().getExtendedBalanceDataForCHKAcc();
+        balanceDataForCHKAcc.setAverageBalance(averageBalance);
 
         transactionData = new TransactionData(postingDate,
                 effectiveDate,

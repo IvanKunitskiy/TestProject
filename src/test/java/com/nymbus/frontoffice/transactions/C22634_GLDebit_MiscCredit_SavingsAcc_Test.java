@@ -15,6 +15,7 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.GLFunctionValue;
+import com.nymbus.newmodels.transaction.verifyingModels.AccountDates;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.WebAdminTransactionData;
@@ -111,16 +112,24 @@ public class C22634_GLDebit_MiscCredit_SavingsAcc_Test extends BaseTest {
                 "- available balance \n" +
                 "- Aggregate Balance Year to date \n" +
                 "- Total Contributions for Life of Account");
+        Assert.assertEquals(actualBalanceData, balanceData, "Balance data doesn't match!");
+
         logInfo("Step 11: Verify such fields: \n" +
                 "- Date Last Deposit \n" +
                 "- Date Last Activity/Contact");
-        logInfo("Step 12: Verify Number Of Deposits This Statement Cycle");
-        logInfo("Step 13: Verify Last Deposit Amount field");
-        Assert.assertEquals(actualBalanceData, balanceData, "Balance data doesn't match!");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateLastDepositValue(), WebAdminActions.loginActions().getSystemDate(),
+        AccountDates actualAccountDates = AccountActions.retrievingAccountData().getAccountDates();
+        Assert.assertEquals(actualAccountDates.getLastDepositDate(), transactionData.getPostingDate(),
                 "Date Last deposit  doesn't match");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateLastActivityValue(), WebAdminActions.loginActions().getSystemDate(),
+        Assert.assertEquals(actualAccountDates.getLastActivityDate(), transactionData.getPostingDate(),
                 "Date Last activity  doesn't match");
+
+        logInfo("Step 12: Verify Number Of Deposits This Statement Cycle");
+        Assert.assertEquals(actualAccountDates.getNumberOfDeposits(), 1,
+                "Number Of Deposits This Statement Cycle is incorrect!");
+
+        logInfo("Step 13: Verify Last Deposit Amount field");
+        Assert.assertEquals(actualAccountDates.getLastDepositAmount(),  transaction.getTransactionSource().getAmount(),
+                "Number Of Deposits This Statement Cycle is incorrect!");
         transactionData.setBalance(balanceData.getCurrentBalance());
 
         logInfo("Step 14: Open account on Transactions tab and verify that transaction is written on transactions history page");
