@@ -23,6 +23,10 @@ public class Generator {
         return RandomStringUtils.randomNumeric(length);
     }
 
+    public static String genAccountNumber() {
+        return genInt(1, 9) + RandomStringUtils.randomNumeric(11);
+    }
+
     public static String genMobilePhone(int length) {
         return "555" + getRandomStringNumber(7);
     }
