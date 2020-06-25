@@ -2,6 +2,7 @@ package com.nymbus.pages.webadmin.coresetup;
 
 import com.codeborne.selenide.Condition;
 import com.nymbus.core.base.PageTools;
+import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -126,7 +127,8 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      */
     private By systemDateField = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][1]//*[@key-name='date']");
     private By referenceField = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow ']//td[3]//span[contains(@class, 'high_title')]/span");
-
+    
+    @Attachment
     @Step ("Get current date - 1 in system")
     public String getDateInSystem() {
         waitForElementVisibility(systemDateField);
