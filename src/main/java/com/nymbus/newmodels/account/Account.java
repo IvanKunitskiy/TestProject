@@ -186,7 +186,7 @@ public class Account {
         account.setUserDefinedField_2(Generator.genString(5));
         account.setUserDefinedField_3(Generator.genString(5));
         account.setUserDefinedField_4(Generator.genString(5));
-        account.setPrintStatementNextUpdate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setPrintStatementNextUpdate(String.valueOf(Generator.genLong(10000000L, 99999999L)));
         account.setInterestPaidYTD(String.valueOf(Generator.genLong(100000000000L, 922337203685L)));
 
         return account;
