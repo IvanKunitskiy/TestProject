@@ -73,6 +73,8 @@ public class Account {
     private String bankAccountNumberInterestOnCD;
     private String bankruptcyJudgement;
     private String dateOfFirstDeposit;
+    private String dateDeceased;
+    private String birthDate;
 
     public Account setCDAccountData() {
         Account account = new Account();
@@ -132,6 +134,8 @@ public class Account {
         account.setUserDefinedField_3(Generator.genString(5));
         account.setUserDefinedField_4(Generator.genString(5));
         account.setDateOfFirstDeposit(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 1));
+        account.setBirthDate(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 5));
+        account.setDateDeceased(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 1));
 
         return account;
     }
@@ -182,7 +186,7 @@ public class Account {
         account.setUserDefinedField_2(Generator.genString(5));
         account.setUserDefinedField_3(Generator.genString(5));
         account.setUserDefinedField_4(Generator.genString(5));
-        account.setPrintStatementNextUpdate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setPrintStatementNextUpdate(String.valueOf(Generator.genLong(10000000L, 99999999L)));
         account.setInterestPaidYTD(String.valueOf(Generator.genLong(100000000000L, 922337203685L)));
 
         return account;
@@ -747,5 +751,21 @@ public class Account {
 
     public void setDateOfFirstDeposit(String dateOfFirstDeposit) {
         this.dateOfFirstDeposit = dateOfFirstDeposit;
+    }
+
+    public String getDateDeceased() {
+        return dateDeceased;
+    }
+
+    public void setDateDeceased(String dateDeceased) {
+        this.dateDeceased = dateDeceased;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
     }
 }

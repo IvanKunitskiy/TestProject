@@ -116,6 +116,8 @@ public class AccountDetailsPage extends PageTools {
             "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By bankruptcyJudgement = By.xpath("//tr[@data-test-id='field-bankruptcyjudgementcode']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By dateOfFirstDeposit = By.xpath("//tr[@data-test-id='field-datefirstdeposit']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By birthDate = By.xpath("//tr[@data-test-id='field-dateofbirth']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By dateDeceased = By.xpath("//tr[@data-test-id='field-datedeceased']//span[contains(@class, 'dnTextFixedWidthText')]");
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -312,6 +314,18 @@ public class AccountDetailsPage extends PageTools {
     public String getDateOfFirstDeposit() {
         waitForElementVisibility(dateOfFirstDeposit);
         return getElementText(dateOfFirstDeposit);
+    }
+
+    @Step("Get 'Birth Date' value")
+    public String getBirthDate() {
+        waitForElementVisibility(birthDate);
+        return getElementText(birthDate);
+    }
+
+    @Step("Get 'Date Deceased' value")
+    public String getDateDeceased() {
+        waitForElementVisibility(dateDeceased);
+        return getElementText(dateDeceased);
     }
 
     @Step("Get 'Print Statement Next Update' value")
