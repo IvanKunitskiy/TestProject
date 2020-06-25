@@ -238,6 +238,8 @@ public class EditAccountPage extends PageTools {
     private By ytdChargesWaived = By.xpath("//input[@data-test-id='field-chargeswaivedytd']");
     private By dateOfFirstDeposit = By.xpath("//input[@data-test-id='field-datefirstdeposit']");
     private By interestLastPaid = By.xpath("//input[@data-test-id='field-amountinterestlastpaid']");
+    private By birthDate = By.xpath("//input[@data-test-id='field-dateofbirth']");
+    private By dateDeceased = By.xpath("//input[@data-test-id='field-datedeceased']");
 
     /**
      * Groups
@@ -386,6 +388,18 @@ public class EditAccountPage extends PageTools {
     public String getDateOfFirstDeposit() {
         waitForElementVisibility(dateOfFirstDeposit);
         return getElementAttributeValue("value", dateOfFirstDeposit);
+    }
+
+    @Step("Get 'Birth Date' value in edit mode")
+    public String getBirthDate() {
+        waitForElementVisibility(birthDate);
+        return getElementAttributeValue("value", birthDate);
+    }
+
+    @Step("Get 'Date Deceased' value in edit mode")
+    public String getDateDeceased() {
+        waitForElementVisibility(dateDeceased);
+        return getElementAttributeValue("value", dateDeceased);
     }
 
     @Step("Get 'Corresponding Account' value in edit mode")
@@ -1301,7 +1315,7 @@ public class EditAccountPage extends PageTools {
     @Step("Click the 'When surcharges refunded' selector button")
     public void clickWhenSurchargesRefundedSelectorButton() {
         waitForElementVisibility(whenSurchargesRefundedSelectorButton);
-        scrollToElement(whenSurchargesRefundedSelectorButton);
+        scrollToPlaceElementInCenter(whenSurchargesRefundedSelectorButton);
         waitForElementClickable(whenSurchargesRefundedSelectorButton);
         click(whenSurchargesRefundedSelectorButton);
     }
@@ -1323,7 +1337,7 @@ public class EditAccountPage extends PageTools {
     @Step("Click the 'Reason Auto Od Chg Waived' selector button")
     public void clickReasonAutoOdChgWaivedSelectorButton() {
         waitForElementVisibility(reasonAutoOdChgWaivedSelectorButton);
-        scrollToElement(reasonAutoOdChgWaivedSelectorButton);
+        scrollToPlaceElementInCenter(reasonAutoOdChgWaivedSelectorButton);
         waitForElementClickable(reasonAutoOdChgWaivedSelectorButton);
         click(reasonAutoOdChgWaivedSelectorButton);
     }
@@ -1357,15 +1371,15 @@ public class EditAccountPage extends PageTools {
 
     @Step("Returning list of 'Corresponding Account' options")
     public List<String> getCorrespondingAccountList() {
-        waitForElementVisibility(correspondingAccountList);
-        waitForElementClickable(correspondingAccountList);
-        return getElementsText(correspondingAccountList);
+        return getElementsWithZeroOption(correspondingAccountList).stream()
+                .map(SelenideElement::text)
+                .collect(Collectors.toList());
     }
 
     @Step("Click the 'Corresponding Account' selector button")
     public void clickCorrespondingAccountSelectorButton() {
         waitForElementVisibility(correspondingAccountSelectorButton);
-        scrollToElement(correspondingAccountSelectorButton);
+        scrollToPlaceElementInCenter(correspondingAccountSelectorButton);
         waitForElementClickable(correspondingAccountSelectorButton);
         click(correspondingAccountSelectorButton);
     }
@@ -1392,7 +1406,7 @@ public class EditAccountPage extends PageTools {
     @Step("Click the 'Discount Reason' selector button")
     public void clickDiscountReasonSelectorButton() {
         waitForElementVisibility(discountReasonSelectorButton);
-        scrollToElement(discountReasonSelectorButton);
+        scrollToPlaceElementInCenter(discountReasonSelectorButton);
         waitForElementClickable(discountReasonSelectorButton);
         click(discountReasonSelectorButton);
     }
@@ -1414,7 +1428,7 @@ public class EditAccountPage extends PageTools {
     @Step("Click the 'Mail Code' selector button")
     public void clickMailCodeSelectorButton() {
         waitForElementVisibility(mailCodeSelectorButton);
-        scrollToElement(mailCodeSelectorButton);
+        scrollToPlaceElementInCenter(mailCodeSelectorButton);
         waitForElementClickable(mailCodeSelectorButton);
         click(mailCodeSelectorButton);
     }
@@ -1432,6 +1446,33 @@ public class EditAccountPage extends PageTools {
         typeWithoutWipe("", dateLastAccess);
         SelenideTools.sleep(1);
         typeWithoutWipe(dateLastAccessValue, dateLastAccess);
+    }
+
+    @Step("Set 'Date Of First Deposit' value")
+    public void setDateOfFirstDeposit(String date) {
+        waitForElementVisibility(dateOfFirstDeposit);
+        waitForElementClickable(dateOfFirstDeposit);
+        typeWithoutWipe("", dateOfFirstDeposit);
+        SelenideTools.sleep(1);
+        typeWithoutWipe(date, dateOfFirstDeposit);
+    }
+
+    @Step("Set 'Birth Date' value")
+    public void setBirthDate(String date) {
+        waitForElementVisibility(birthDate);
+        waitForElementClickable(birthDate);
+        typeWithoutWipe("", birthDate);
+        SelenideTools.sleep(1);
+        typeWithoutWipe(date, birthDate);
+    }
+
+    @Step("Set 'Date Deceased' value")
+    public void setDateDeceased(String date) {
+        waitForElementVisibility(dateDeceased);
+        waitForElementClickable(dateDeceased);
+        typeWithoutWipe("", dateDeceased);
+        SelenideTools.sleep(1);
+        typeWithoutWipe(date, dateDeceased);
     }
 
     @Step("Click on 'Reason Debit Card Charge Waived' option")
@@ -1471,7 +1512,7 @@ public class EditAccountPage extends PageTools {
     @Step("Click the 'Auto NSF Chg Waived' selector button")
     public void clickReasonAutoNSFChgWaivedSelectorButton() {
         waitForElementVisibility(reasonAutoNSFChgWaivedSelectorButton);
-        scrollToElement(reasonAutoNSFChgWaivedSelectorButton);
+        scrollToPlaceElementInCenter(reasonAutoNSFChgWaivedSelectorButton);
         waitForElementClickable(reasonAutoNSFChgWaivedSelectorButton);
         click(reasonAutoNSFChgWaivedSelectorButton);
     }
@@ -1493,7 +1534,7 @@ public class EditAccountPage extends PageTools {
     @Step("Click the 'Od Protection Acct #' selector button")
     public void clickOdProtectionAcctSelectorButton() {
         waitForElementVisibility(odProtectionAcctSelectorButton);
-        scrollToElement(odProtectionAcctSelectorButton);
+        scrollToPlaceElementInCenter(odProtectionAcctSelectorButton);
         waitForElementClickable(odProtectionAcctSelectorButton);
         click(odProtectionAcctSelectorButton);
     }
@@ -1515,7 +1556,7 @@ public class EditAccountPage extends PageTools {
     @Step("Click the 'Reason ATM charge waived' selector button")
     public void clickReasonATMChargeWaivedSelectorButton() {
         waitForElementVisibility(reasonATMChargeWaivedSelectorButton);
-        scrollToElement(reasonATMChargeWaivedSelectorButton);
+        scrollToPlaceElementInCenter(reasonATMChargeWaivedSelectorButton);
         waitForElementClickable(reasonATMChargeWaivedSelectorButton);
         click(reasonATMChargeWaivedSelectorButton);
     }
@@ -1635,7 +1676,7 @@ public class EditAccountPage extends PageTools {
     @Step("Click the 'Apply Interest To' selector button")
     public void clickApplyInterestToSelectorButton() {
         waitForElementVisibility(applyInterestToSelectorButton);
-        scrollToElement(applyInterestToSelectorButton);
+        scrollToPlaceElementInCenter(applyInterestToSelectorButton);
         waitForElementClickable(applyInterestToSelectorButton);
         click(applyInterestToSelectorButton);
     }

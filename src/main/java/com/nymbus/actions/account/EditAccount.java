@@ -157,11 +157,12 @@ public class EditAccount {
         Pages.editAccountPage().clickCorrespondingAccountSelectorButton();
         List<String> listOfCorrespondingAccount = Pages.editAccountPage().getCorrespondingAccountList();
 
-        Assert.assertTrue(listOfCorrespondingAccount.size() > 0, "There are no product types available");
-        if (account.getCorrespondingAccount() == null) {
-            account.setCorrespondingAccount(listOfCorrespondingAccount.get(new Random().nextInt(listOfCorrespondingAccount.size())).trim());
+        if (listOfCorrespondingAccount.size() > 0) {
+            if (account.getCorrespondingAccount() == null) {
+                account.setCorrespondingAccount(listOfCorrespondingAccount.get(new Random().nextInt(listOfCorrespondingAccount.size())).trim());
+            }
+            Pages.editAccountPage().clickCorrespondingAccountSelectorOption(account.getCorrespondingAccount().replaceAll("[^0-9]", ""));
         }
-        Pages.editAccountPage().clickCorrespondingAccountSelectorOption(account.getCorrespondingAccount().replaceAll("[^0-9]", ""));
     }
 
     public void setCorrespondingAccountWithJs(Account account) {
@@ -341,21 +342,30 @@ public class EditAccount {
     }
 
     public void fillInInputFieldsThatWereNotAvailableDuringCDIRAAccountCreation(Account account) {
-        Pages.editAccountPage().setBankAccountNumberInterestOnCDValue(account.getBankAccountNumberInterestOnCD());
+        AccountActions.editAccount().setFederalWHReason(account);
+        Pages.editAccountPage().setDateOfFirstDeposit(account.getDateOfFirstDeposit());
+        Pages.editAccountPage().setBirthDate(account.getBirthDate());
+        Pages.editAccountPage().setDateDeceased(account.getDateDeceased());
         Pages.editAccountPage().setBankRoutingNumberInterestOnCDValue(account.getBankRoutingNumberInterestOnCD());
         Pages.editAccountPage().setUserDefinedField_1(account.getUserDefinedField_1());
         Pages.editAccountPage().setUserDefinedField_2(account.getUserDefinedField_2());
         Pages.editAccountPage().setUserDefinedField_3(account.getUserDefinedField_3());
         Pages.editAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
-    }
-
-    public void selectValuesInDropdownFieldsRequiredForCDIRAAccount(Account account) {
-        AccountActions.editAccount().setCurrentOfficer(account);
-        Pages.editAccountPage().setInterestRate(account.getInterestRate());
-        AccountActions.editAccount().setBankBranch(account);
-        AccountActions.editAccount().setCallClassCode(account);
-        AccountActions.editAccount().setApplyInterestTo(account);
-        AccountActions.editAccount().setCorrespondingAccount(account);
+        setCurrentOfficer(account);
+        if (!Pages.editAccountPage().isInterestRateDisabledInEditMode()) {
+            Pages.editAccountPage().setInterestRate(account.getInterestRate());
+        }
+        setBankBranch(account);
+        setCallClassCode(account);
+        account.setApplyInterestTo("CHK Acct");
+        setApplyInterestTo(account);
+        setCorrespondingAccount(account);
+        if (!Pages.editAccountPage().getTransactionalAccountInEditMode().equalsIgnoreCase("yes")) {
+            Pages.editAccountPage().clickTransactionalAccountSwitch();
+        }
+        if (Pages.editAccountPage().getApplySeasonalAddressSwitchValue().equals("yes")) {
+            Pages.editAccountPage().clickApplySeasonalAddressSwitch();
+        }
     }
 
     public void editSavingsAccount(Account account) {
