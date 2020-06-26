@@ -74,7 +74,9 @@ public class C22589_ViewNewCDAccountTest extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getApplyInterestTo(), cdAccount.getApplyInterestTo(), "'Apply Interest To' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getInterestType(), cdAccount.getInterestType(), "'Interest Type' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), cdAccount.getInterestRate(), "'Interest Rate' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), cdAccount.getCallClassCode(), "'Call Class' value does not match");
+        if (cdAccount.getCallClassCode() != null) {
+            Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), cdAccount.getCallClassCode(), "'Call Class' value does not match");
+        }
         Assert.assertEquals(Pages.accountDetailsPage().getFederalWHReason(), cdAccount.getFederalWHReason(), "'Federal WH Reason' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getFederalWHPercent(), cdAccount.getFederalWHPercent(), "'Federal WH Percent' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_1(), cdAccount.getUserDefinedField_1(), "'User Defined Field 1' value does not match");

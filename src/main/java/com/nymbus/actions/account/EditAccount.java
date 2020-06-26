@@ -321,19 +321,15 @@ public class EditAccount {
         /*  AccountActions.editAccount().setDiscountReason(account);*/
     }
 
-    public void fillInInputFieldsThatWereNotAvailableDuringSavingsAccountCreation(Account account) {
-        Pages.editAccountPage().setPrintStatementNextUpdate(account.getPrintStatementNextUpdate());
-        Pages.editAccountPage().setInterestPaidYTD(account.getInterestPaidYTD());
-        Pages.editAccountPage().setFederalWHPercent(account.getFederalWHPercent());
-        Pages.editAccountPage().setNumberOfATMCardsIssued(account.getNumberOfATMCardsIssued());
-        Pages.editAccountPage().setUserDefinedField_1(account.getUserDefinedField_1());
-        Pages.editAccountPage().setUserDefinedField_2(account.getUserDefinedField_2());
-        Pages.editAccountPage().setUserDefinedField_3(account.getUserDefinedField_3());
-        Pages.editAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
-        Pages.editAccountPage().setNumberOfDebitCardsIssued(account.getNumberOfDebitCardsIssued());
-    }
-
     public void fillInInputFieldsThatWereNotAvailableDuringCDAccountCreation(Account account) {
+        setFederalWHReason(account);
+        setCurrentOfficer(account);
+        Pages.editAccountPage().setInterestRate(account.getInterestRate());
+        setBankBranch(account);
+        setCallClassCode(account);
+        if (!Pages.editAccountPage().getTransactionalAccountInEditMode().equals("NO")) {
+            Pages.editAccountPage().clickTransactionalAccountSwitch();
+        }
         Pages.editAccountPage().setFederalWHPercent(account.getFederalWHPercent());
         Pages.editAccountPage().setUserDefinedField_1(account.getUserDefinedField_1());
         Pages.editAccountPage().setUserDefinedField_2(account.getUserDefinedField_2());
@@ -371,25 +367,13 @@ public class EditAccount {
     public void editSavingsAccount(Account account) {
         Pages.accountDetailsPage().clickEditButton();
         AccountActions.editAccount().selectValuesInFieldsThatWereNotAvailableDuringSavingsAccountCreation(account);
-        AccountActions.editAccount().fillInInputFieldsThatWereNotAvailableDuringSavingsAccountCreation(account);
-        AccountActions.createAccount().setCurrentOfficer(account);
-        AccountActions.createAccount().setBankBranch(account);
-        AccountActions.createAccount().setCallClassCode(account);
-        AccountActions.createAccount().setStatementCycle(account);
-        Pages.editAccountPage().clickNewAccountSwitch();
-        Pages.editAccountPage().clickTransactionalAccountSwitch();
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForEditButton();
     }
 
     public void editCDAccount(Account account) {
         Pages.accountDetailsPage().clickEditButton();
-        AccountActions.editAccount().setFederalWHReason(account);
         AccountActions.editAccount().fillInInputFieldsThatWereNotAvailableDuringCDAccountCreation(account);
-        AccountActions.createAccount().setCurrentOfficer(account);
-        Pages.editAccountPage().setInterestRate(account.getInterestRate());
-        AccountActions.createAccount().setBankBranch(account);
-        AccountActions.createAccount().setCallClassCode(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForEditButton();
     }
