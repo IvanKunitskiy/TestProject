@@ -120,9 +120,9 @@ public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
         logInfo("Step 12: Verify Number Of Deposits This Statement Cycle");
         logInfo("Step 13: Verify Last Deposit Amount field");
         Assert.assertEquals(actualBalanceData, balanceData, "Balance data doesn't match!");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateLastDepositValue(), transaction.getTransactionDate(),
+        Assert.assertEquals(Pages.accountDetailsPage().getDateLastDepositValue(), transactionData.getPostingDate(),
                 "Date Last deposit  doesn't match!");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateLastActivityValue(), transaction.getTransactionDate(),
+        Assert.assertEquals(Pages.accountDetailsPage().getDateLastActivityValue(), transactionData.getPostingDate(),
                 "Date Last activity  doesn't match!");
 
         transactionData.setBalance(balanceData.getCurrentBalance());

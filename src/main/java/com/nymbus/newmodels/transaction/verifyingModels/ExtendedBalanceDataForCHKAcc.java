@@ -14,14 +14,12 @@ public class ExtendedBalanceDataForCHKAcc extends BalanceDataForCHKAcc {
     @Override
     public void addAmount(double amount) {
         this.collectedBalance += amount;
-        this.averageBalance += amount;
         super.addAmount(amount);
     }
 
     @Override
     public void reduceAmount(double amount) {
         this.collectedBalance -= amount;
-        this.averageBalance -= amount;
         super.reduceAmount(amount);
     }
 }

@@ -71,7 +71,7 @@ public class CreateAccount {
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
         setBankBranch(account);
-        Pages.addAccountPage().setDateOpenedValue(/*DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
         setCallClassCode(account);
@@ -90,7 +90,7 @@ public class CreateAccount {
         Pages.addAccountPage().clickProductSelectorButton();
         Pages.addAccountPage().clickProductOption(account.getProduct());
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
-        Pages.addAccountPage().setDateOpenedValue(/*DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy")*/WebAdminActions.loginActions().getSystemDate());
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setApplyInterestTo(account);
         Pages.addAccountPage().waitForAccountHolderName();

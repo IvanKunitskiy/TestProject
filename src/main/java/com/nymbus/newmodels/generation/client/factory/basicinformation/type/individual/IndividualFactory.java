@@ -18,9 +18,9 @@ public class IndividualFactory implements IndividualTypeFactory {
     public IndividualType getIndividualType() {
         Individual individual = new Individual();
         setIndividualStatus(individual);
-        individual.setFirstName(Random.genString(10));
+        individual.setFirstName(Random.genString(10) + Constants.FIRST_NAME);
         individual.setMiddleName(Random.genString(10));
-        individual.setLastName(Random.genString(10));
+        individual.setLastName(Random.genString(10) + Constants.LAST_NAME);
         individual.setTaxPayerIDType(TaxPayerIDType.INDIVIDUAL_SSN);
         individual.setTaxID(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
         individual.setBirthDate("01/01/1990");
