@@ -43,14 +43,7 @@ public class CreateAccount {
         setProduct(account);
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
-        setCurrentOfficer(account);
-        setBankBranch(account);
-        setInterestFrequency(account);
-        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
-        setStatementCycle(account);
-        Pages.addAccountPage().setIRADistributionAmountValue(account.getIraDistributionAmount());
-        Pages.addAccountPage().setDateNextIRADistributionValue(account.getDateNextIRADistribution());
-        setCallClassCode(account);
+        selectValuesInDropdownFieldsRequiredForSavingsIRAAccount(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
