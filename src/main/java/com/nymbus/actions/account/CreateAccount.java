@@ -24,14 +24,7 @@ public class CreateAccount {
         setProductType(account);
         setProduct(account);
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
-        Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
-        setCurrentOfficer(account);
-        setBankBranch(account);
-        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
-        setInterestType(account);
-        setApplyInterestTo(account);
-        Pages.addAccountPage().setInterestRate(account.getInterestRate());
-        setCallClassCode(account);
+        selectValuesInFieldsRequiredForCDAccount(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
@@ -43,14 +36,7 @@ public class CreateAccount {
         setProduct(account);
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
-        setCurrentOfficer(account);
-        setBankBranch(account);
-        setInterestFrequency(account);
-        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
-        setStatementCycle(account);
-        Pages.addAccountPage().setIRADistributionAmountValue(account.getIraDistributionAmount());
-        Pages.addAccountPage().setDateNextIRADistributionValue(account.getDateNextIRADistribution());
-        setCallClassCode(account);
+        selectValuesInDropdownFieldsRequiredForSavingsIRAAccount(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
@@ -137,6 +123,7 @@ public class CreateAccount {
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
         setBankBranch(account);
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
         setChargeOrAnalyze(account);

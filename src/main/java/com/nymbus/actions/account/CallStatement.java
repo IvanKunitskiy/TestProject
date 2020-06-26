@@ -3,6 +3,7 @@ package com.nymbus.actions.account;
 import com.codeborne.pdftest.PDF;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
@@ -16,6 +17,8 @@ import java.util.List;
 import static com.codeborne.pdftest.PDF.containsText;
 
 public class CallStatement {
+
+    private final String formattedSystemDate = DateTime.getDateWithFormat(WebAdminActions.loginActions().getSystemDate(), "MM/dd/yyyy", "MM/dd/yy");
 
     public void setAddress(Client client) {
         Pages.callStatementModalPage().clickAddressSelectorButton();
@@ -40,8 +43,7 @@ public class CallStatement {
 
     private void verifyDateInPdf(PDF pdf) {
         // Date - current business date
-        String date = WebAdminActions.loginActions().getSystemDate();
-        Assert.assertTrue(containsText(date).matches(pdf));
+        Assert.assertTrue(containsText(formattedSystemDate).matches(pdf));
     }
 
     private void verifyClientSectionInPdf(PDF pdf, IndividualClient client, Account account) {
@@ -66,7 +68,7 @@ public class CallStatement {
         String transactionAmount = String.valueOf(transaction.getTransactionSource().getAmount());
 
         // Date - Transaction Posting Date for committed transaction from transactions tab
-        Assert.assertTrue(containsText(transaction.getTransactionDate()).matches(pdf));
+        Assert.assertTrue(containsText(formattedSystemDate).matches(pdf));
         // Transaction Description - Transaction Code for committed transaction from transactions tab
         Assert.assertTrue(containsText(transactionCode).matches(pdf));
         // Credits - transaction amount of Credit transaction (Amount is displayed with green color and with '+' sign for such transactions)
