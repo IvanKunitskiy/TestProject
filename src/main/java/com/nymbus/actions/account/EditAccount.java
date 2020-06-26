@@ -322,6 +322,14 @@ public class EditAccount {
     }
 
     public void fillInInputFieldsThatWereNotAvailableDuringCDAccountCreation(Account account) {
+        setFederalWHReason(account);
+        setCurrentOfficer(account);
+        Pages.editAccountPage().setInterestRate(account.getInterestRate());
+        setBankBranch(account);
+        setCallClassCode(account);
+        if (!Pages.editAccountPage().getTransactionalAccountInEditMode().equals("NO")) {
+            Pages.editAccountPage().clickTransactionalAccountSwitch();
+        }
         Pages.editAccountPage().setFederalWHPercent(account.getFederalWHPercent());
         Pages.editAccountPage().setUserDefinedField_1(account.getUserDefinedField_1());
         Pages.editAccountPage().setUserDefinedField_2(account.getUserDefinedField_2());
@@ -365,12 +373,7 @@ public class EditAccount {
 
     public void editCDAccount(Account account) {
         Pages.accountDetailsPage().clickEditButton();
-        AccountActions.editAccount().setFederalWHReason(account);
         AccountActions.editAccount().fillInInputFieldsThatWereNotAvailableDuringCDAccountCreation(account);
-        AccountActions.createAccount().setCurrentOfficer(account);
-        Pages.editAccountPage().setInterestRate(account.getInterestRate());
-        AccountActions.createAccount().setBankBranch(account);
-        AccountActions.createAccount().setCallClassCode(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForEditButton();
     }

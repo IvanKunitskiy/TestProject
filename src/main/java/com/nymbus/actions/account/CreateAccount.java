@@ -24,14 +24,7 @@ public class CreateAccount {
         setProductType(account);
         setProduct(account);
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
-        Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
-        setCurrentOfficer(account);
-        setBankBranch(account);
-        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
-        setInterestType(account);
-        setApplyInterestTo(account);
-        Pages.addAccountPage().setInterestRate(account.getInterestRate());
-        setCallClassCode(account);
+        selectValuesInFieldsRequiredForCDAccount(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
