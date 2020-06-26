@@ -104,6 +104,7 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
 
         // Set transaction data and update balances
         balanceData.reduceAmount(miscDebitGLCreditTransaction.getTransactionSource().getAmount());
+        balanceData.reduceAverageBalance(miscDebitGLCreditTransaction.getTransactionSource().getAmount());
         TransactionData transactionData = new TransactionData(postingDate,
                 effectiveDate, "-",
                 balanceData.getCurrentBalance(),
