@@ -70,7 +70,7 @@ public class CallStatement {
         // Date - Transaction Posting Date for committed transaction from transactions tab
         Assert.assertTrue(containsText(formattedSystemDate).matches(pdf));
         // Transaction Description - Transaction Code for committed transaction from transactions tab
-        Assert.assertTrue(containsText(transactionCode).matches(pdf));
+        // TODO: Add verification for 'Transaction Description' after TC is updated
         // Credits - transaction amount of Credit transaction (Amount is displayed with green color and with '+' sign for such transactions)
         Assert.assertTrue(containsText(transactionAmount).matches(pdf));
         // Balance - Balance for committed transaction from transactions tab
