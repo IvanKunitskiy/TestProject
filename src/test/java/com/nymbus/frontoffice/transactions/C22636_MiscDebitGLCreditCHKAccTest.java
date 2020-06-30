@@ -41,7 +41,6 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
         Account checkAccount = new Account().setCHKAccountData();
         miscDebitGLCreditTransaction = new TransactionConstructor(new MiscDebitGLCreditTransactionBuilder()).constructTransaction();
         Transaction glDebitMiscCreditTransaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
-        checkAccount.setDateOpened(glDebitMiscCreditTransaction.getTransactionDate());
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Create client
@@ -74,6 +73,7 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Actions.clientPageActions().searchAndOpenClientByName(miscDebitGLCreditTransaction.getTransactionSource().getAccountNumber());
         ExtendedBalanceDataForCHKAcc balanceData = AccountActions.retrievingAccountData().getExtendedBalanceDataForCHKAcc();
+        double averageBalance = balanceData.getAverageBalance();
 
         logInfo("Balance data " + balanceData.toString());
 
@@ -104,7 +104,7 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
 
         // Set transaction data and update balances
         balanceData.reduceAmount(miscDebitGLCreditTransaction.getTransactionSource().getAmount());
-        balanceData.reduceAverageBalance(miscDebitGLCreditTransaction.getTransactionSource().getAmount());
+        balanceData.reduceAverageBalance(averageBalance);
         TransactionData transactionData = new TransactionData(postingDate,
                 effectiveDate, "-",
                 balanceData.getCurrentBalance(),
