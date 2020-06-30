@@ -109,7 +109,7 @@ public class AccountDetailsPage extends PageTools {
     private By averageBalance = By.xpath("//*[@data-config-name='averagebalance']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By collectedBalance = By.xpath("//*[@data-config-name='collectedbalance']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By accountStatus = By.xpath("//tr[@data-test-id='field-accountstatus']//span[contains(@class, 'ng-binding')]");
-    private By activeAccountStatus = By.xpath("//tr[@data-test-id='field-accountstatus']//span[contains(text(), 'Active')]");
+    private By activeStatus = By.xpath("//tr[@data-test-id='field-accountstatus']//span[contains(text(), 'Active')]");
     private By accruedInterest = By.xpath("//*[contains(@data-config-name, 'accruedinterest')]" +
             "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By dateClosed = By.xpath("//*[@data-config-name='dateclosed']" +
@@ -139,6 +139,11 @@ public class AccountDetailsPage extends PageTools {
     public String getAccountStatus() {
         waitForElementVisibility(accountStatus);
         return getElementText(accountStatus).trim();
+    }
+
+    @Step("Wait for status changed to 'Active'")
+    public void waitForStatusChangedToActive() {
+        waitForElementVisibility(activeStatus);
     }
 
     @Step("Get 'Average Balance' value")
@@ -512,6 +517,7 @@ public class AccountDetailsPage extends PageTools {
     public void clickActivateButton() {
         waitForElementClickable(activateButton);
         click(activateButton);
+        waitForStatusChangedToActive();
     }
 
     @Step("Get account 'Earning Credit Rate' value")
