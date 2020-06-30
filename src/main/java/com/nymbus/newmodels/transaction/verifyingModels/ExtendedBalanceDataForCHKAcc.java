@@ -22,4 +22,8 @@ public class ExtendedBalanceDataForCHKAcc extends BalanceDataForCHKAcc {
         this.collectedBalance -= amount;
         super.reduceAmount(amount);
     }
+
+    public void reduceAverageBalance(double amount) {
+        this.averageBalance -= amount;
+    }
 }

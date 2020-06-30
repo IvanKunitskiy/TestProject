@@ -150,7 +150,9 @@ public class Sample {
 
        /* System.out.println(DateTime.getDateWithFormat("08/24/2024", "MM/dd/yyyy", "yyMM"));*/
 
-        System.out.println(DateTime.getMonthNumberByMonthName("August"));
+       /* System.out.println(DateTime.getMonthNumberByMonthName("August"));*/
+
+        System.out.println(DateTime.getLocalDateWithFormatPlusDays("2020-06-25","yyyy-MM-dd", "MM/dd/yyyy", 10));
     }
 
     private static BaseDocument qwe() {
