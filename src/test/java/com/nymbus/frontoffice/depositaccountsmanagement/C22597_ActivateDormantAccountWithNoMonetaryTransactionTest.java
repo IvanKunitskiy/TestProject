@@ -8,7 +8,6 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -74,7 +73,7 @@ public class C22597_ActivateDormantAccountWithNoMonetaryTransactionTest extends 
         Assert.assertTrue(Pages.accountDetailsPage().isActivateButtonVisible(), "'Activate' button not visible");
 
         logInfo("Step 3: Click [Activate] button and pay attention to the Account Status");
-        Pages.accountDetailsPage().clickActivateButton();
+        AccountActions.editAccount().activateAccount();
         Assert.assertEquals(Pages.accountDetailsPage().getAccountStatus(), "Active", "Account status is not 'Active'");
 
         logInfo("Step 4: Pay attention to the available buttons on the page");

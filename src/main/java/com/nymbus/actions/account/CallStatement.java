@@ -180,12 +180,11 @@ public class CallStatement {
         Assert.assertTrue(containsText(initials.toString()).matches(pdf));
         // Opened - selected account's Date Opened
         Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf));
-        // Dividend Rate - selected account's Interest Rate
-        Assert.assertTrue(containsText(account.getInterestRate()).matches(pdf));
 
         // TODO: not filled in during account creation
 
         // Accrued Interest
+        // Dividend Rate - selected account's Interest Rate
         // YTD Dividends Paid - selected account's Interest Paid Year to date value
         // Dividends Paid Last Year - selected account's Interest Paid Last Year value
         // YTD Taxes withheld- selected account's Taxes Withheld YTD value

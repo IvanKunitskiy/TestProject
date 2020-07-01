@@ -517,7 +517,6 @@ public class AccountDetailsPage extends PageTools {
     public void clickActivateButton() {
         waitForElementClickable(activateButton);
         click(activateButton);
-        waitForStatusChangedToActive();
     }
 
     @Step("Get account 'Earning Credit Rate' value")

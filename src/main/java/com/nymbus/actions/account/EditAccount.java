@@ -425,4 +425,9 @@ public class EditAccount {
 
         Pages.accountDetailsPage().waitForReopenButton();
     }
+
+    public void activateAccount() {
+        Pages.accountDetailsPage().clickActivateButton();
+        Pages.accountDetailsPage().waitForStatusChangedToActive();
+    }
 }
