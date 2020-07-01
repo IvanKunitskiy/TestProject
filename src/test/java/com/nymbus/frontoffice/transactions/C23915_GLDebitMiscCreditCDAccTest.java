@@ -97,9 +97,9 @@ public class C23915_GLDebitMiscCreditCDAccTest extends BaseTest {
         logInfo("Step 8: Verify Next Interest Payment Amount field value");
         String expectedPaymentAmount = getCalculatedInterestAmount(balanceData.getCurrentBalance(),
                                                                     Double.parseDouble(cdAccount.getInterestRate()),
-                                                                    AccountActions.retrievingAccountData().getDateLastInterestPaid(cdAccount.getDateOpened()),
+                                                                    transactionData.getEffectiveDate(),
                                                                     Pages.accountDetailsPage().getDateNextInterest(),
-                                                                    false);
+                                                                    true);
         String actualPaymentAmount = Pages.accountDetailsPage().getNextInterestPaymentAmount();
         Assert.assertEquals(actualPaymentAmount, expectedPaymentAmount, "Payment amount doesn't match!");
 
