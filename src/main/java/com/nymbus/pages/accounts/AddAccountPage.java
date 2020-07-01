@@ -659,6 +659,7 @@ public class AddAccountPage extends PageTools {
     public void clickTransactionalAccountSwitch() {
         waitForElementVisibility(transactionalAccountSwitch);
         waitForElementClickable(transactionalAccountSwitch);
+        scrollToPlaceElementInCenter(transactionalAccountSwitch);
         click(transactionalAccountSwitch);
     }
 
