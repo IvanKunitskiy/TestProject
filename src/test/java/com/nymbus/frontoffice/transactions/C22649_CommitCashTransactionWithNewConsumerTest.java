@@ -25,16 +25,15 @@ import org.testng.asserts.SoftAssert;
 
 public class C22649_CommitCashTransactionWithNewConsumerTest extends BaseTest {
     private Transaction transaction;
-    private IndividualClient newClientForTransactionPurpose;
     private CashDrawerData cashDrawerData;
     private BalanceDataForCHKAcc chkAccBalanceData;
+    private IndividualClientBuilder individualClientBuilder;
 
     @BeforeMethod
     public void prepareTransactionData() {
         // Set up Client and Account
-        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        newClientForTransactionPurpose = individualClientBuilder.buildClient();
         IndividualClient client = individualClientBuilder.buildClient();
         Account chkAccount = new Account().setCHKAccountData();
 
@@ -85,6 +84,7 @@ public class C22649_CommitCashTransactionWithNewConsumerTest extends BaseTest {
 
         logInfo("Step 6: Click [Add new Client] button on the Verify screen");
         logInfo("Step 7: Fill in all fields for the new client");
+        IndividualClient newClientForTransactionPurpose = individualClientBuilder.buildClient();
         ClientsActions.individualClientActions().createClientOnVerifyConductorModalPage(newClientForTransactionPurpose);
 
         logInfo("Step 8: Click [Save] button");
