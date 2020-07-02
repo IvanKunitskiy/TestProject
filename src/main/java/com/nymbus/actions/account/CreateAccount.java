@@ -1,7 +1,6 @@
 package com.nymbus.actions.account;
 
 import com.nymbus.actions.Actions;
-import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.other.account.type.CHKAccount;
 import com.nymbus.pages.Pages;
@@ -120,16 +119,8 @@ public class CreateAccount {
         setProductType(account);
         setProduct(account);
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
-        Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
-        setCurrentOfficer(account);
-        setBankBranch(account);
+        setValuesInFieldsRequiredForCheckingAccount(account);
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
-        Pages.addAccountPage().setInterestRate(account.getInterestRate());
-        setStatementCycle(account);
-        setChargeOrAnalyze(account);
-        setAccountAnalysis(account);
-        Pages.addAccountPage().setOptInOutDateValue(account.getOptInOutDate());
-        setCallClassCode(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
@@ -187,7 +178,6 @@ public class CreateAccount {
     }
 
     public void setValuesInFieldsRequiredForSavingsAccount(Account account) {
-        Pages.addAccountPage().setAccountNumberValue(""); // can be removed when page scrolling is normalized
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
         setBankBranch(account);
@@ -250,9 +240,9 @@ public class CreateAccount {
     }
 
     public void setValuesInFieldsRequiredForCheckingAccount(Account account) {
-        Pages.addAccountPage().setAccountNumberValue(""); // can be removed when page scrolling is normalized
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
+        setBankBranch(account);
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
         setChargeOrAnalyze(account);
