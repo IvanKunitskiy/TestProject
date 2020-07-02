@@ -69,15 +69,15 @@ public class CallStatement {
 
         // Date - Transaction Posting Date for committed transaction from transactions tab
         Assert.assertTrue(containsText(formattedSystemDate).matches(pdf));
-        // Transaction Description - Transaction Code for committed transaction from transactions tab
-        // TODO: Add verification for 'Transaction Description' after TC is updated
         // Credits - transaction amount of Credit transaction (Amount is displayed with green color and with '+' sign for such transactions)
         Assert.assertTrue(containsText(transactionAmount).matches(pdf));
         // Balance - Balance for committed transaction from transactions tab
         Assert.assertTrue(containsText(transactionAmount).matches(pdf));
+        // Transaction Description - Transaction Code for committed transaction from transactions tab
         // Totals - calculated # of all transactions, total Debits and Total Credits
         if (transactionCode.contains("109") || transactionCode.contains("209")) {
-            Assert.assertTrue(containsText("1 Credits").matches(pdf)); // TODO: Present only for checking and savings account
+            Assert.assertTrue(containsText(transactionCode).matches(pdf));
+            Assert.assertTrue(containsText("1 Credits").matches(pdf));
         }
     }
 
@@ -195,7 +195,7 @@ public class CallStatement {
 
         verifyDateInPdf(pdf);
         verifyClientSectionInPdf(pdf, client, account);
-        verifySavingsAccountSectionInPdf(pdf, account);
+        verifyChkAccountSectionInPdf(pdf, account);
         verifyTransactionSectionInPdf(pdf, transaction);
     }
 
