@@ -42,80 +42,52 @@ public class CallStatement {
     }
 
     private void verifyDateInPdf(PDF pdf) {
-        // Date - current business date
-        Assert.assertTrue(containsText(formattedSystemDate).matches(pdf));
+        Assert.assertTrue(containsText(formattedSystemDate).matches(pdf), "'Current business date' does not match");
     }
 
     private void verifyClientSectionInPdf(PDF pdf, IndividualClient client, Account account) {
-        // Member number - Client ID from clients profile (customer->ACCOUNTNUMBER)
-        Assert.assertTrue(containsText(client.getIndividualType().getClientID()).matches(pdf));
-        // Account number - masked account# (last 4 digits are displayed)
         String accountNumber = account.getAccountNumber();
-        Assert.assertTrue(containsText(accountNumber.substring(accountNumber.length() - 4)).matches(pdf));
-        // Branch - Bank Branch Number on account
-        Assert.assertTrue(containsText(account.getBankBranch()).matches(pdf));
-        // Client Name - Client's First Name, Middle Name, Last Name
-        Assert.assertTrue(containsText(client.getFullName()).matches(pdf), "Client name does not match, received: " + client.getFullName());
-        // Client Address - Address selected on Account (Account Holders and Signers section)
-        Assert.assertTrue(containsText(client.getIndividualType().getAddresses().get(0).getAddress()).matches(pdf));
-        // Phone - Clients Phone
         String phoneNumber = client.getIndividualClientDetails().getPhones().get(1).getPhoneNumber().replaceFirst("(\\d{3})(\\d{3})(\\d+)", "$1-$2-$3");
-        Assert.assertTrue(containsText(phoneNumber).matches(pdf));
+
+        Assert.assertTrue(containsText(client.getIndividualType().getClientID()).matches(pdf), "'Member number' does not match.");
+        Assert.assertTrue(containsText(accountNumber.substring(accountNumber.length() - 4)).matches(pdf), "'Account number' does not match.");
+        Assert.assertTrue(containsText(account.getBankBranch()).matches(pdf), "'Bank Branch' does not match.");
+        Assert.assertTrue(containsText(client.getFullName()).matches(pdf), "'Client name' does not match");
+        Assert.assertTrue(containsText(client.getIndividualType().getAddresses().get(0).getAddress()).matches(pdf), "'Client Addres' does not match.");
+        Assert.assertTrue(containsText(phoneNumber).matches(pdf), "'Phone' does not match.");
     }
 
     private void verifyTransactionSectionInPdf(PDF pdf, Transaction transaction) {
         String transactionCode = String.join(" ", transaction.getTransactionDestination().getTransactionCode().split("\\W+"));
         String transactionAmount = String.valueOf(transaction.getTransactionSource().getAmount());
 
-        // Date - Transaction Posting Date for committed transaction from transactions tab
-        Assert.assertTrue(containsText(formattedSystemDate).matches(pdf));
-        // Credits - transaction amount of Credit transaction (Amount is displayed with green color and with '+' sign for such transactions)
-        Assert.assertTrue(containsText(transactionAmount).matches(pdf));
-        // Balance - Balance for committed transaction from transactions tab
-        Assert.assertTrue(containsText(transactionAmount).matches(pdf));
-        // Transaction Description - Transaction Code for committed transaction from transactions tab
-        // Totals - calculated # of all transactions, total Debits and Total Credits
+        Assert.assertTrue(containsText(formattedSystemDate).matches(pdf), "'Transaction Posting Date' does not match.");
+        Assert.assertTrue(containsText(transactionAmount).matches(pdf), "'Transaction amount of Credit' does not match.");
+        Assert.assertTrue(containsText(transactionAmount).matches(pdf), "'Balance for committed transaction' does not match.");
         if (transactionCode.contains("109") || transactionCode.contains("209")) {
-            Assert.assertTrue(containsText(transactionCode).matches(pdf));
-            Assert.assertTrue(containsText("1 Credits").matches(pdf));
+            Assert.assertTrue(containsText(transactionCode).matches(pdf), "'Transaction Description' does not match.");
+            Assert.assertTrue(containsText("1 Credits").matches(pdf), "'Calculated # of all transactions' does not match.");
         }
     }
 
     private void verifyChkAccountSectionInPdf(PDF pdf, Account account) {
-        // Account Type - selected account's Account Type
-        Assert.assertTrue(containsText(account.getProduct()).matches(pdf));
-        // Officer - selected account's Current Officer
-        StringBuilder initials = new StringBuilder();
-        for (String word : account.getCurrentOfficer().split(" ")) {
-            initials.append(word.charAt(0));
-        }
-        Assert.assertTrue(containsText(initials.toString()).matches(pdf));
-        // Opened - selected account's Date Opened
-        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf));
-        // Dividend Rate - selected account's Interest Rate
-        Assert.assertTrue(containsText(account.getInterestRate()).matches(pdf));
+        Assert.assertTrue(containsText(getCurrentOfficerInitials(account)).matches(pdf), "'Current Officer' does not match.");
+        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf), "'Date Opened' does not match.");
+        Assert.assertTrue(containsText(account.getInterestRate()).matches(pdf), "'Dividend Rate' does not match.");
 
         // TODO: not filled in during account creation
-
+        // Accrued Interest - selected account's Accrued Interest
         // YTD Dividends Paid - selected account's Interest Paid Year to date value
         // Dividends Paid Last Year - selected account's Interest Paid Last Year value
         // YTD Taxes withheld- selected account's Taxes Withheld YTD value
     }
 
     private void verifySavingsAccountSectionInPdf(PDF pdf, Account account) {
-        // Officer - selected account's Current Officer
-        StringBuilder initials = new StringBuilder();
-        for (String word : account.getCurrentOfficer().split(" ")) {
-            initials.append(word.charAt(0));
-        }
-        Assert.assertTrue(containsText(initials.toString()).matches(pdf));
-        // Dividend Rate - selected account's Interest Rate
-        Assert.assertTrue(containsText(account.getInterestRate()).matches(pdf));
-        // Opened - selected account's Date Opened
-        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf));
+        Assert.assertTrue(containsText(getCurrentOfficerInitials(account)).matches(pdf), "'Current Officer' does not match.");
+        Assert.assertTrue(containsText(account.getInterestRate()).matches(pdf), "'Dividend Rate' does not match.");
+        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf), "'Date Opened' does not match.");
 
         // TODO: not filled in during account creation
-
         // Accrued Interest - selected account's Accrued Interest
         // YTD Dividends Paid - selected account's Interest Paid Year to date value
         // Dividends Paid Last Year - selected account's Interest Paid Last Year value
@@ -123,9 +95,8 @@ public class CallStatement {
     }
 
     private void verifyCDAccountSectionInPdf(PDF pdf, Account account) {
-        // Opened - selected account's Date Opened
-        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf));
-        
+        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf), "'Date Opened' does not match.");
+
         // TODO: not filled in during account creation
 
         //    Original Balance
@@ -148,8 +119,7 @@ public class CallStatement {
     }
 
     private void verifyCDIRAAccountSectionInPdf(PDF pdf, Account account) {
-        // Opened - selected account's Date Opened
-        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf));
+        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf), "'Date Opened' does not match.");
 
         // TODO: not filled in during account creation
 
@@ -172,14 +142,8 @@ public class CallStatement {
     }
 
     private void verifySavingsIraAccountSectionInPdf(PDF pdf, Account account) {
-        // Officer - selected account's Current Officer
-        StringBuilder initials = new StringBuilder();
-        for (String word : account.getCurrentOfficer().split(" ")) {
-            initials.append(word.charAt(0));
-        }
-        Assert.assertTrue(containsText(initials.toString()).matches(pdf));
-        // Opened - selected account's Date Opened
-        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf));
+        Assert.assertTrue(containsText(getCurrentOfficerInitials(account)).matches(pdf), "'Current Officer' does not match.");
+        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf), "'Date Opened' does not match.");
 
         // TODO: not filled in during account creation
 
@@ -233,5 +197,13 @@ public class CallStatement {
         verifyClientSectionInPdf(pdf, client, account);
         verifySavingsIraAccountSectionInPdf(pdf, account);
         verifyTransactionSectionInPdf(pdf, transaction);
+    }
+
+    private String getCurrentOfficerInitials(Account account) {
+        StringBuilder initials = new StringBuilder();
+        for (String word : account.getCurrentOfficer().split(" ")) {
+            initials.append(word.charAt(0));
+        }
+        return initials.toString();
     }
 }
