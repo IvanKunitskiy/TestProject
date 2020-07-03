@@ -98,6 +98,8 @@ public class C22552_CreateNewDebitCard extends BaseTest {
         logInfo("Step 5: Select Bin Number from the precondition and make sure its description is populated automatically");
         logInfo("Step 6: Click [Next] button");
         Actions.debitCardModalWindowActions().fillDebitCard(debitCard);
+        String dateEffective = Pages.debitCardModalWindow().getDateEffective();
+        debitCard.setDateEffective(dateEffective);
 
         logInfo("Step 7: Look at the ATM Daily Limit Number (Amount and Number), Debit Purchase Daily Limit Number (Amount and Number)");
         logInfo("Step 8: Look at the Expiration Date field");

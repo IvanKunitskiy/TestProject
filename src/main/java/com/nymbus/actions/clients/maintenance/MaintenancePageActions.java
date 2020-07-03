@@ -32,7 +32,7 @@ public class MaintenancePageActions {
         );
         Assert.assertEquals(
                 Pages.clientDetailsPage().getExpirationDate(),
-                DateTime.plusMonthsToCurrentDateWithLastDayOfMonth(48, "MM/dd/yyyy"),
+                DateTime.getLocalDatePlusMonthsWithPatternAndLastDay(debitCard.getDateEffective(), 48, "MM/dd/yyyy"),
                 "Expiration Date is not equal"
         );
         Assert.assertEquals(
