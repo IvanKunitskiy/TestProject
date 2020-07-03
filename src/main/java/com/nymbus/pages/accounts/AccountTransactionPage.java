@@ -1,6 +1,7 @@
 package com.nymbus.pages.accounts;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -16,6 +17,7 @@ public class AccountTransactionPage extends PageTools {
     /**
      * Data in table
      */
+    private By noResultsLabel = By.xpath("//section[@ng-if='!haveTransactions()']//div//p");
     private By amountSymbol = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[1]");
     private By postingDate = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[2]//span");
     private By effectiveDate = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[3]//span");
@@ -26,6 +28,12 @@ public class AccountTransactionPage extends PageTools {
     private By transactionItems = By.xpath("//tr[contains(@class, 'transactionLine')]");
     private By image = By.xpath("//tr[contains(@class, 'detail-view')][1]//img");
     private By transactionCode = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-switch-when='transactioncode']");
+
+    @Step("Is 'No results' label visible")
+    public boolean isNoResultsVisible() {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        return isElementVisible(noResultsLabel);
+    }
 
     @Step("Get transaction item count")
     public int getTransactionItemsCount() {
@@ -80,6 +88,11 @@ public class AccountTransactionPage extends PageTools {
         return getElementText(balanceFractional, index).trim().replaceAll("[^0-9.]", "");
     }
 
+    @Step("Wait for 'Call Statement' button")
+    public void waitForCallStatementButton() {
+        waitForElementVisibility(callStatementButton);
+    }
+
     @Step("Click 'Call Statement' button")
     public void clickStatementButton() {
         waitForElementClickable(callStatementButton);
@@ -109,4 +122,14 @@ public class AccountTransactionPage extends PageTools {
     public boolean isImageVisible(int index) {
         return isImageLoaded(image, index);
     }
+
+    /**
+     * Filter region
+     */
+    private By transactionsFromArrowButton = By.xpath("//*[@ng-model='transactionsFilter.statement']//span[contains(@class, 'select2-arrow')]");
+    private By itemInDropDown = By.xpath("//div[contains(@class, 'select2-drop-active') and not(contains(@class, 'select2-display-none'))]" +
+                                 "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By applyFiltersButton = By.xpath("//button[@ng-click='applyFilter()']");
+
+
 }

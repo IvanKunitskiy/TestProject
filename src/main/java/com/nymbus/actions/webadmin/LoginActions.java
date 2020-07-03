@@ -91,6 +91,10 @@ public class LoginActions {
         SelenideTools.switchToLastTab();
     }
 
+    public void closeWebAdminPageAndSwitchToPreviousTab() {
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchToLastTab();
+    }
 
     private void waitForSearchResults() {
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();

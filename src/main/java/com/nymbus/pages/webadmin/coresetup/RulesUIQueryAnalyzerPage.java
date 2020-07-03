@@ -57,7 +57,6 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private By glTransactionItemPostingStatus = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]" +
             "//*[@key-name='gltransactionitempostingstatus']//..//span[5]/span");
 
-
     @Step("Get date posted  {0}")
     public String getDatePosted(int index) {
         waitForElementVisibility(glDateTimePosted, index);
@@ -157,5 +156,17 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getBankControlFileValue() {
         waitForElementVisibility(valueField);
         return getElementAttributeValue("value", valueField).trim();
+    }
+
+    /**
+     * Warehouse transaction section
+     */
+    private By accountNumber = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]" +
+            "//td[10]/span[last()]/span");
+
+    @Step ("Get 'accountNumber' {0} value")
+    public String getAccountNumberWithWarehouseTransaction(int index) {
+        waitForElementVisibility(accountNumber, index);
+        return getElementText(accountNumber, index).trim();
     }
 }
