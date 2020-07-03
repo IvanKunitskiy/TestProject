@@ -211,6 +211,12 @@ public class DateTime {
             return localDate.plusDays(days).format(DateTimeFormatter.ofPattern(newPattern));
     }
 
+    public static String getLocalDatePlusMonthsWithPatternAndLastDay(String date, int month, String pattern) {
+        LocalDate localDate = LocalDate.parse(date , DateTimeFormatter.ofPattern(pattern));
+        LocalDate resultDate = localDate.plusMonths(month);
+        return resultDate.withDayOfMonth(resultDate.lengthOfMonth()).format(DateTimeFormatter.ofPattern(pattern));
+    }
+
     public static String getMonthNumberByMonthName(String month) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
         try {
