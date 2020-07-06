@@ -162,8 +162,10 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
                 "'IRA distribution amount' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date next IRA distribution") >= 1,
                 "'Date next IRA distribution' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Call Class Code") >= 1,
-                "'Call Class Code' row count is incorrect!");
+        if (savingsIRAAccount.getCallClassCode() != null) {
+            Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Call Class Code") >= 1,
+                    "'Call Class Code' row count is incorrect!");
+        }
         if (savingsIRAAccount.getCorrespondingAccount() != null) {
             Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Corresponding Account") >= 1,
                     "'Corresponding Account' row count is incorrect!");
