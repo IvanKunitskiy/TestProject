@@ -156,7 +156,7 @@ public class Account {
         account.setNumberOfDebitCardsIssued(String.valueOf(Generator.genInt(0, 100)));
         account.setNumberOfATMCardsIssued(String.valueOf(Generator.genInt(0, 100)));
         account.setFederalWHPercent(String.valueOf(Generator.genInt(0, 100)));
-        account.setPrintStatementNextUpdate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
+        account.setPrintStatementNextUpdate(String.valueOf(Generator.genLong(100000000L, 999999999L)));
         account.setInterestPaidYTD(String.valueOf(Generator.genLong(100000000000L, 922337203685L)));
         account.setUserDefinedField_1(Generator.genString(5));
         account.setUserDefinedField_2(Generator.genString(5));
