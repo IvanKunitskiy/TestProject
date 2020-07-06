@@ -5,10 +5,8 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.core.utils.Generator;
+import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
-import com.nymbus.newmodels.client.other.account.ProductType;
-import com.nymbus.newmodels.client.other.account.type.CHKAccount;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
 import com.nymbus.newmodels.client.other.verifyingmodels.MaintenanceHistoryDebitCardVerifyingModel;
 import com.nymbus.newmodels.generation.bincontrol.BinControlConstructor;
@@ -18,7 +16,6 @@ import com.nymbus.newmodels.generation.client.builder.type.individual.Individual
 import com.nymbus.newmodels.generation.debitcard.DebitCardConstructor;
 import com.nymbus.newmodels.generation.debitcard.builder.DebitCardBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
-import com.nymbus.newmodels.settings.product.Product;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -31,7 +28,7 @@ import org.testng.annotations.Test;
 public class C22553_ViewEditNewDebitCardTest extends BaseTest {
 
     private DebitCard debitCard;
-    private CHKAccount chkAccount;
+    private Account chkAccount;
     private String clientID;
     private MaintenanceHistoryDebitCardVerifyingModel verifyingModel;
 
@@ -65,16 +62,7 @@ public class C22553_ViewEditNewDebitCardTest extends BaseTest {
         debitCard.setDBCTransactionLimit(binControl.getDBCTransactionLimit());
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
-        chkAccount = new CHKAccount();
-        chkAccount.setAddNewOption("Account");
-        chkAccount.setProductType(ProductType.CHK_ACCOUNT);
-        chkAccount.setProduct(Product.BASIC_BUSINESS_CHECKING);
-        chkAccount.setAccountNumber(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));
-        chkAccount.setAccountTitle(Generator.genString(10));
-        chkAccount.setOptInOutDate("01/01/2020");
-        chkAccount.setDateOpened("02/27/2020");
-        chkAccount.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
-        chkAccount.setEarningCreditRate(Generator.getRandomStringNumber(3));
+        chkAccount = new Account().setCHKAccountData();
 
         debitCard.getAccounts().add(chkAccount.getAccountNumber());
         verifyingModel.getRow().setFieldName("Pin Offset");
