@@ -1,6 +1,5 @@
 package com.nymbus.frontoffice.clientsearch;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -94,7 +93,6 @@ public class C22533_SearchByLastFourOfDebitCardTest extends BaseTest {
     public void searchByCardNumber() {
 
         logInfo("Step 1: Log in to the system as the User from the precondition");
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Pages.navigationPage().waitForUserMenuVisible();
 
