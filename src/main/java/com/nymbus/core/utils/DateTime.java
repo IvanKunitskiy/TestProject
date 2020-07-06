@@ -236,4 +236,18 @@ public class DateTime {
             return "";
         }
     }
+
+    public static boolean isDateBefore(String actualDate, String expectedDate, String pattern) {
+        LocalDate actual = LocalDate.parse(actualDate , DateTimeFormatter.ofPattern(pattern));
+        LocalDate expected = LocalDate.parse(expectedDate , DateTimeFormatter.ofPattern(pattern));
+
+        return actual.isBefore(expected);
+    }
+
+    public static boolean isDateAfter(String actualDate, String expectedDate, String pattern) {
+        LocalDate actual = LocalDate.parse(actualDate , DateTimeFormatter.ofPattern(pattern));
+        LocalDate expected = LocalDate.parse(expectedDate , DateTimeFormatter.ofPattern(pattern));
+
+        return actual.isAfter(expected);
+    }
 }

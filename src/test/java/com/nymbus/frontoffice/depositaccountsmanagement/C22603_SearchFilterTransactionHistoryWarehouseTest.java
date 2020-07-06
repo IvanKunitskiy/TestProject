@@ -39,5 +39,20 @@ public class C22603_SearchFilterTransactionHistoryWarehouseTest extends BaseTest
 
         logInfo("Step 3: Look through the list of transactions and make sure that \n" +
                 "Warehouse transactions are not displayed in transactions list by default");
+        AccountActions.accountTransactionActions().verifyTransactionList(WebAdminActions.loginActions().getSystemDate(), true);
+
+        logInfo("Step 4: Click 'Show Transactions from' drop-down search filter and select Warehouse \n" +
+                "Click [Apply Filter] button");
+        AccountActions.accountTransactionActions().applyFilterByTransactionFromFiled("Warehouse");
+        Assert.assertTrue(AccountActions.accountTransactionActions().getRowCount() > 0,
+                        "Warehouse items count is incorrect!");
+
+        logInfo("Step 5: Look through the list of the transactions and make sure that there are no transactions \n" +
+                "were Effective Date is less than or equal to Current Date");
+        AccountActions.accountTransactionActions().verifyTransactionList(WebAdminActions.loginActions().getSystemDate(), false);
+
+        logInfo("Step 6: Remove the value from the 'Show Transactions from' drop-down search filter and click [Apply Filter] button");
+        AccountActions.accountTransactionActions().clearFilterRegion();
+        AccountActions.accountTransactionActions().verifyTransactionList(WebAdminActions.loginActions().getSystemDate(), true);
     }
 }

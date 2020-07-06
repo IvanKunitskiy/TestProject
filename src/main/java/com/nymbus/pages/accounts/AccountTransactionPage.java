@@ -40,6 +40,11 @@ public class AccountTransactionPage extends PageTools {
         return getElements(transactionItems).size();
     }
 
+    @Step("Get transaction item count")
+    public int getTransactionItemsCountWithZeroOption() {
+        return getElementsWithZeroOptionWithWait(Constants.MICRO_TIMEOUT, transactionItems).size();
+    }
+
     @Step("Get transaction code")
     public String getTransactionCodeByIndex(int index) {
         waitForElementVisibility(transactionCode, index);
@@ -130,6 +135,29 @@ public class AccountTransactionPage extends PageTools {
     private By itemInDropDown = By.xpath("//div[contains(@class, 'select2-drop-active') and not(contains(@class, 'select2-display-none'))]" +
                                  "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By applyFiltersButton = By.xpath("//button[@ng-click='applyFilter()']");
+    private By clearFilterButton = By.xpath("//*[@ng-model='transactionsFilter.statement']//abbr");
 
+    @Step("Click 'Transaction from dropdown' arrow")
+    public void clickTransactionFromDropdown() {
+        waitForElementClickable(transactionsFromArrowButton);
+        click(transactionsFromArrowButton);
+    }
 
+    @Step("Click item in dropdown {0}")
+    public void clickItemInDropdown(String item) {
+        waitForElementClickable(itemInDropDown, item);
+        click(itemInDropDown, item);
+    }
+
+    @Step("Click apply filter button")
+    public void clickApplyFilterButton() {
+        waitForElementClickable(applyFiltersButton);
+        click(applyFiltersButton);
+    }
+
+    @Step("Click clear filter button")
+    public void clickClearFilterButton() {
+        waitForElementClickable(clearFilterButton);
+        click(clearFilterButton);
+    }
 }
