@@ -1,7 +1,9 @@
 package com.nymbus.actions.account;
 
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
+import org.testng.asserts.SoftAssert;
 
 import java.util.Collections;
 import java.util.List;
@@ -58,5 +60,45 @@ public class AccountTransactionActions {
 
     private boolean isCreditTransaction(Transaction transaction, String number) {
         return transaction.getTransactionDestination().getAccountNumber().equals(number);
+    }
+
+    public int getRowCount() {
+        Pages.accountTransactionPage().waitForCallStatementButton();
+        return Pages.accountTransactionPage().getTransactionItemsCountWithZeroOption();
+    }
+
+    public void verifyTransactionList(String currentBusinessDate, boolean isBefore) {
+        int rowsCount = getRowCount();
+        verifyEffectiveDate(currentBusinessDate, rowsCount, isBefore);
+    }
+
+    private void verifyEffectiveDate(String expectedDate, int count, boolean isBefore) {
+        SoftAssert softAssert = new SoftAssert();
+        for(int i = 1; i <= count; ++i) {
+            if (isBefore) {
+                String actualDate = Pages.accountTransactionPage().getEffectiveDateValue(i);
+                softAssert.assertTrue(DateTime.isDateBefore(actualDate, expectedDate, "MM/dd/yyyy"),
+                        String.format("Transaction %s effective date is incorrect!", i));
+            }
+            else {
+                String actualDate = Pages.accountTransactionPage().getEffectiveDateWithAppliedFilterValue(i);
+                softAssert.assertTrue(DateTime.isDateAfter(actualDate, expectedDate, "MM/dd/yyyy"),
+                        String.format("Transaction %s effective date is incorrect!", i));
+            }
+        }
+        softAssert.assertAll();
+    }
+
+    public void applyFilterByTransactionFromFiled(String transactionSource) {
+        Pages.accountTransactionPage().clickTransactionFromDropdown();
+        Pages.accountTransactionPage().clickItemInDropdown(transactionSource);
+        Pages.accountTransactionPage().clickApplyFilterButton();
+        Pages.accountTransactionPage().waitForCallStatementButton();
+    }
+
+    public void clearFilterRegion() {
+        Pages.accountTransactionPage().clickClearFilterButton();
+        Pages.accountTransactionPage().clickApplyFilterButton();
+        Pages.accountTransactionPage().waitForCallStatementButton();
     }
 }

@@ -91,6 +91,10 @@ public class LoginActions {
         SelenideTools.switchToLastTab();
     }
 
+    public void closeWebAdminPageAndSwitchToPreviousTab() {
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchToLastTab();
+    }
 
     private void waitForSearchResults() {
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
@@ -101,7 +105,7 @@ public class LoginActions {
     public String getSystemDate() {
         if (systemDate == null) {
             String systemDateFromWebAdmin = getSystemDateFromWebAdmin();
-            systemDate = DateTime.getDateWithFormatPlusDays(systemDateFromWebAdmin, "yyyy-MM-dd", "MM/dd/yyyy", 1);
+            systemDate = DateTime.getLocalDateWithFormatPlusDays(systemDateFromWebAdmin, "yyyy-MM-dd", "MM/dd/yyyy", 1);
         }
         return systemDate;
     }
