@@ -150,8 +150,10 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
                 "'Statement Cycle' row count is incorrect!");
         Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Mail Code"), 1,
                 "'Mail Code' row count is incorrect!");
-        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Call Class Code"), 1,
-                "'Call Class Code' row count is incorrect!");
+        if (regularSavingsAccount.getCallClassCode() != null) {
+            Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Call Class Code"), 1,
+                    "'Call Class Code' row count is incorrect!");
+        }
         Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Corresponding Account"), 1,
                 "'Corresponding Account' row count is incorrect!");
         Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Frequency"), 1,
