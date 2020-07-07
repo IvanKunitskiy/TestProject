@@ -74,12 +74,12 @@ public class MaintenanceHistoryPageActions {
         );
         Assert.assertEquals(
                 Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.DATE_EFFECTIVE),
-                DateTime.parseDate(new Date(), "MM/dd/yyyy"),
+                debitCard.getDateEffective(),
                 "Date Effective is not equal"
         );
         Assert.assertEquals(
                 Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.EXPIRATION_DATE),
-                DateTime.plusMonthsToCurrentDateWithLastDayOfMonth(debitCard.getBinControl().getCardLifeInMonths(), "MM/dd/yyyy"),
+                DateTime.getLocalDatePlusMonthsWithPatternAndLastDay(debitCard.getDateEffective(), debitCard.getBinControl().getCardLifeInMonths(), "MM/dd/yyyy"),
                 "Expiration Date is not equal"
         );
         /*Assert.assertEquals( // TODO: Need to ask what is this

@@ -1,56 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Suite" parallel="tests" thread-count="1" >
+<suite name="Suite" parallel="tests" thread-count="4" >
     <listeners>
         <listener class-name="com.nymbus.core.retry.AnnotationTransformer"/>
     </listeners>
 
-    <test name="Log In">
+    <test name="Log In" parallel="true">
         <packages>
             <package name="com.nymbus.frontoffice.login.*"/>
         </packages>
     </test>
 
-    <test name="User management">
+    <test name="User management" parallel="true">
         <packages>
             <package name="com.nymbus.frontoffice.usermanagement.*"/>
         </packages>
     </test>
 
-    <test name="Create Clients">
+    <test name="Create Clients" parallel="true">
         <packages>
             <package name="com.nymbus.frontoffice.clientsmanagement.createclients.*"/>
         </packages>
     </test>
 
-    <test name="Clients management">
+    <test name="Clients management" parallel="true">
         <packages>
             <package name="com.nymbus.frontoffice.clientsmanagement.*"/>
         </packages>
     </test>
 
-    <test name="Clients search">
+    <test name="Clients search" parallel="true">
         <packages>
             <package name="com.nymbus.frontoffice.clientsearch.*"/>
         </packages>
     </test>
 
-    <test name="Transactions">
-        <packages>
-            <package name="com.nymbus.frontoffice.transactions.*"/>
-        </packages>
-    </test>
+<!--    <test name="Transactions">-->
+<!--        <packages>-->
+<!--            <package name="com.nymbus.frontoffice.transactions.*"/>-->
+<!--        </packages>-->
+<!--    </test>-->
 
-    <test name="Safe deposit box management">
-        <packages>
-            <package name="com.nymbus.frontoffice.safedepositboxmanagement.*"/>
-        </packages>
-    </test>
+<!--    <test name="Safe deposit box management">-->
+<!--        <packages>-->
+<!--            <package name="com.nymbus.frontoffice.safedepositboxmanagement.*"/>-->
+<!--        </packages>-->
+<!--    </test>-->
 
-    <test name="Deposit accounts management">
-        <packages>
-            <package name="com.nymbus.frontoffice.depositaccountsmanagement.*"/>
-        </packages>
-    </test>
+<!--    <test name="Deposit accounts management">-->
+<!--        <packages>-->
+<!--            <package name="com.nymbus.frontoffice.depositaccountsmanagement.*"/>-->
+<!--        </packages>-->
+<!--    </test>-->
 
 </suite>

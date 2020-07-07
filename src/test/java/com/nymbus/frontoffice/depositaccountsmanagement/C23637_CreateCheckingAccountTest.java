@@ -141,6 +141,10 @@ public class C23637_CreateCheckingAccountTest extends BaseTest {
                 "'Interest Rate' row count is incorrect!");
         Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Statement Cycle"), 1,
                 "'Statement Cycle' row count is incorrect!");
+        if (checkingAccount.getCallClassCode() != null) {
+            Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Call Class Code") >= 1,
+                    "'Call Class Code' row count is incorrect!");
+        }
         Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Charge or analyze"), 1,
                 "'Charge or analyze' row count is incorrect!");
         Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account analysis"), 1,
