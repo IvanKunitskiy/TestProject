@@ -1,5 +1,6 @@
 package com.nymbus.models;
 
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Generator;
 
 import java.util.ArrayList;
@@ -35,8 +36,8 @@ public class User {
 
     public User setDefaultUserData(){
         User user = new User();
-        user.setFirstName(Generator.genString(2));
-        user.setLastName(Generator.genString(2));
+        user.setFirstName(Generator.genString(2) + Constants.FIRST_NAME);
+        user.setLastName(Generator.genString(2) + Constants.LAST_NAME);
         user.setInitials(Generator.genString(2));
         user.setTitle(Generator.genString(2));
         user.setBusinessPhone(Generator.genMobilePhone(10));
