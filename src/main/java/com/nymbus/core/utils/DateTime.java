@@ -207,7 +207,7 @@ public class DateTime {
     }
 
     public static String getLocalDateWithFormatPlusDays(String date, String currentPattern, String newPattern, int days) {
-            LocalDate localDate = LocalDate.parse(date , DateTimeFormatter.ofPattern(currentPattern));
+            LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern(currentPattern));
             return localDate.plusDays(days).format(DateTimeFormatter.ofPattern(newPattern));
     }
 

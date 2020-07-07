@@ -75,12 +75,13 @@ public class AccountTransactionActions {
     private void verifyEffectiveDate(String expectedDate, int count, boolean isBefore) {
         SoftAssert softAssert = new SoftAssert();
         for(int i = 1; i <= count; ++i) {
-            String actualDate = Pages.accountTransactionPage().getEffectiveDateValue(i);
             if (isBefore) {
+                String actualDate = Pages.accountTransactionPage().getEffectiveDateValue(i);
                 softAssert.assertTrue(DateTime.isDateBefore(actualDate, expectedDate, "MM/dd/yyyy"),
                         String.format("Transaction %s effective date is incorrect!", i));
             }
             else {
+                String actualDate = Pages.accountTransactionPage().getEffectiveDateWithAppliedFilterValue(i);
                 softAssert.assertTrue(DateTime.isDateAfter(actualDate, expectedDate, "MM/dd/yyyy"),
                         String.format("Transaction %s effective date is incorrect!", i));
             }
@@ -92,10 +93,12 @@ public class AccountTransactionActions {
         Pages.accountTransactionPage().clickTransactionFromDropdown();
         Pages.accountTransactionPage().clickItemInDropdown(transactionSource);
         Pages.accountTransactionPage().clickApplyFilterButton();
+        Pages.accountTransactionPage().waitForCallStatementButton();
     }
 
     public void clearFilterRegion() {
         Pages.accountTransactionPage().clickClearFilterButton();
         Pages.accountTransactionPage().clickApplyFilterButton();
+        Pages.accountTransactionPage().waitForCallStatementButton();
     }
 }

@@ -7,17 +7,24 @@ import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
 public class WebAdminTransactionActions {
+    private String getCurrentEnvironment() {
+        return System.getProperty("domain", "dev6");
+    }
+
     private String getWarehouseTransactionsUrl() {
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?"
-                + "waDbName=nymbusdev6DS&"
+                + "waDbName=nymbus"
+                + getCurrentEnvironment()
+                + "DS&"
                 + "dqlQuery=count%3A+10%0D%0A"
                 + "from%3A+bank.data.transaction.item%0D%0A"
-                + "where%3A+%0D%0A-+effectiveentrydate%3A+%7Bgreater%3A"
-                + "+%28currentday%29%7D%0D%0A-+rejectstatus%3A+%7Bnull%7D%0D%0A-"
-                + "+amount%3A+%7Bgreater%3A+0%7D%0D%0A-+accountnumber%3A+%7Bnot+null%7D%0D%0A"
+                + "where%3A+%0D%0A-+effectiveentrydate%3A"
+                + "+%7Bgreater%3A+%28currentday%29%7D%0D%0A-+rejectstatus%3A+%7Bnull%7D%0D%0A"
+                + "-+amount%3A+%7Bgreater%3A+0%7D%0D%0A-+accountnumber%3A+%7Bnot+null%7D%0D%0A"
                 + "orderBy%3A+-id%0D%0A%0D%0A"
-                + "formats%3A+%0D%0A-+->bank.data.actmst%3A+%24%7Baccountnumber%7D&source=";
+                + "formats%3A+%0D%0A-+-%3Ebank.data.actmst%3A"
+                + "+%24%7Baccountnumber%7D%0D%0A&source=";
     }
 
     private String getTransactionUrl(String accountNumber) {

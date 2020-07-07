@@ -21,6 +21,7 @@ public class AccountTransactionPage extends PageTools {
     private By amountSymbol = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[1]");
     private By postingDate = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[2]//span");
     private By effectiveDate = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[3]//span");
+    private By effectiveDateWithSourceFilter = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[2]//span");
     private By amount = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[2]");
     private By balance = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[2]");
     private By balanceFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[3]");
@@ -67,6 +68,12 @@ public class AccountTransactionPage extends PageTools {
     public String getEffectiveDateValue(int index) {
         waitForElementVisibility(effectiveDate, index);
         return getElementText(effectiveDate, index).trim().replaceAll("-", "/");
+    }
+
+    @Step("Get 'Effective date' value with applied filter")
+    public String getEffectiveDateWithAppliedFilterValue(int index) {
+        waitForElementVisibility(effectiveDateWithSourceFilter, index);
+        return getElementText(effectiveDateWithSourceFilter, index).trim().replaceAll("-", "/");
     }
 
     @Step("Get 'Amount' value")
