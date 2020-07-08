@@ -207,7 +207,7 @@ public class DateTime {
     }
 
     public static String getLocalDateWithFormatPlusDays(String date, String currentPattern, String newPattern, int days) {
-            LocalDate localDate = LocalDate.parse(date , DateTimeFormatter.ofPattern(currentPattern));
+            LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern(currentPattern));
             return localDate.plusDays(days).format(DateTimeFormatter.ofPattern(newPattern));
     }
 
@@ -241,5 +241,19 @@ public class DateTime {
             e.printStackTrace();
             return "";
         }
+    }
+
+    public static boolean isDateBefore(String actualDate, String expectedDate, String pattern) {
+        LocalDate actual = LocalDate.parse(actualDate , DateTimeFormatter.ofPattern(pattern));
+        LocalDate expected = LocalDate.parse(expectedDate , DateTimeFormatter.ofPattern(pattern));
+
+        return actual.isBefore(expected);
+    }
+
+    public static boolean isDateAfter(String actualDate, String expectedDate, String pattern) {
+        LocalDate actual = LocalDate.parse(actualDate , DateTimeFormatter.ofPattern(pattern));
+        LocalDate expected = LocalDate.parse(expectedDate , DateTimeFormatter.ofPattern(pattern));
+
+        return actual.isAfter(expected);
     }
 }
