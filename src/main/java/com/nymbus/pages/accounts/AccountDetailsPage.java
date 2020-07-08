@@ -93,6 +93,7 @@ public class AccountDetailsPage extends PageTools {
     private By transactionalAccount = By.xpath("//tr[@data-config-name='transactionalaccount']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By currentBalance = By.xpath("//tr[@data-config-name='currentbalance']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By availableBalance = By.xpath("//tr[@data-config-name='memopostingbalance']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By availableBalance1 = By.xpath("//div[@ng-if='accountHeaderConfig.memobalance.isShow']//p");
     private By aggregateBalanceYearToDate = By.xpath("//*[@data-config-name='aggregatebalanceytd']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By totalContributionsForLifeOfAccount = By.xpath("//*[@data-config-name='totalContributions']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By dateLastDeposit = By.xpath("//*[@data-config-name='datelastdeposit']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
@@ -224,6 +225,13 @@ public class AccountDetailsPage extends PageTools {
     public String getAvailableBalance() {
         waitForElementVisibility(availableBalance);
         String availableBalanceValue = getElementText(availableBalance).trim();
+        return availableBalanceValue.replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'AvailableBalance' value from header menu")
+    public String getAvailableBalanceFromHeaderMenu() {
+        waitForElementVisibility(availableBalance1);
+        String availableBalanceValue = getElementText(availableBalance1).trim();
         return availableBalanceValue.replaceAll("[^0-9.]", "");
     }
 
