@@ -69,7 +69,6 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
     public void savingsIRAAccountCallStatement() {
 
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the CHK account from the precondition and open it on Transactions tab");

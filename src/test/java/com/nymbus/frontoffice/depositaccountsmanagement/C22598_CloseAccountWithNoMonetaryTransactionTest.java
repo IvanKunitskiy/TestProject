@@ -53,7 +53,6 @@ public class C22598_CloseAccountWithNoMonetaryTransactionTest extends BaseTest {
     public void closeAccountWithNoMonetaryTransaction() {
 
         logInfo("Step 1: Log in to the system as the User from the precondition");
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the account from the precondition (e.g. CHK account) and open it on Details");
