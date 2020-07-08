@@ -85,7 +85,6 @@ public class C22606_AssignAccountLevelNotesToUserTest extends BaseTest {
     public void assignAccountLevelNotesToUser() {
 
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
 
         logInfo("Step 2: Search for account from the precondition and open it on Notes tab");
