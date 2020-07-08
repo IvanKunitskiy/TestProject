@@ -37,7 +37,6 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         cdAccount = new Account().setCDAccountData();
         cdAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
         cdAccount.setTermType("3");
-        cdAccount.setApplyInterestTo("CHK Acct");
         cdAccount.setMaturityDate(DateTime.getDateWithNMonthAdded(cdAccount.getDateOpened(), "MM/dd/yyyy", Integer.parseInt(cdAccount.getTermType())));
         cdAccount.setDateNextInterest(DateTime.getDateWithNMonthAdded(cdAccount.getDateOpened(), "MM/dd/yyyy", 3)); // 3 month added as 'Interest Frequency' is set to 'Quarterly'
 
@@ -101,6 +100,7 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         logInfo("Step 8: Fill in such text fields with valid data (except Account Number field):");
         logInfo("Step 9: Set 'Transactional Account' switcher to YES):");
         logInfo("Step 10: Select Date Opened as any date < Current Date");
+        cdAccount.setApplyInterestTo("CHK Acct");
         AccountActions.createAccount().selectValuesInFieldsRequiredForCDAccount(cdAccount);
 
         logInfo("Step 11: Submit the account creation by clicking [Save] button");

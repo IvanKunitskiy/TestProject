@@ -257,7 +257,6 @@ public class CreateAccount {
         setBankBranch(account);
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         setInterestFrequencyCode(account);
-        account.setApplyInterestTo("Check");
         setApplyInterestTo(account);
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setInterestType(account);
