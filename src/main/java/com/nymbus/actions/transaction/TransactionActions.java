@@ -42,11 +42,11 @@ public class TransactionActions {
     }
 
     public void performGLDebitMiscCreditTransaction(Transaction transaction) {
-        loginTeller();
+        /*loginTeller();*/
         goToTellerPage();
-        /*doLoginTeller();*/
+        doLoginTeller();
         createGlDebitMiscCreditTransaction(transaction);
-        clickCommitButton();
+        clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().closeModal();
     }
 
@@ -254,6 +254,15 @@ public class TransactionActions {
 
     public void clickCommitButton() {
         Pages.tellerPage().clickCommitButton();
+    }
+
+    public void clickCommitButtonWithProofDateModalVerification() {
+        Pages.tellerPage().clickCommitButton();
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        if(Pages.tellerModalPage().isModalWindowVisible()) {
+            doLoginTeller();
+            Pages.tellerPage().clickCommitButton();
+        }
     }
 
     private void fillDestinationInformation(TransactionDestination transactionDestination) {

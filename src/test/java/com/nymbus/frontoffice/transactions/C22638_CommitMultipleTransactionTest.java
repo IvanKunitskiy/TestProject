@@ -85,13 +85,17 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
         Actions.transactionActions().goToTellerPage();
         Actions.transactionActions().doLoginTeller();
         Actions.transactionActions().createCashInMiscCreditTransaction(transaction);
-        Actions.transactionActions().clickCommitButton();
+        Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.verifyConductorModalPage().clickVerifyButton();
         Pages.tellerPage().closeModal();
         chkAccBalanceData.addAmount(transaction.getTransactionDestination().getAmount());
 
-        Actions.transactionActions().loginTeller();
+        // Logout and login for update teller session
+        Actions.loginActions().doLogOut();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
         Actions.cashDrawerAction().goToCashDrawerPage();
+        Actions.transactionActions().doLoginTeller();
         cashDrawerData = Actions.cashDrawerAction().getCashDrawerData();
 
         Actions.loginActions().doLogOut();
@@ -123,7 +127,7 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
                 "will result in balanced Source and Destination items");
         Actions.transactionActions().createTransactionWithMultipleSources(multipleTransaction);
         String effectiveDate = Pages.tellerPage().getEffectiveDate();
-        Pages.tellerPage().clickCommitButton();
+        Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.verifyConductorModalPage().clickVerifyButton();
         Pages.tellerPage().closeModal();
 

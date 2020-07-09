@@ -99,7 +99,7 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
         // Perform multiple transaction
         Actions.transactionActions().createTransactionWithMultipleSources(multipleTransaction);
         String effectiveDate = Pages.tellerPage().getEffectiveDate();
-        Actions.transactionActions().clickCommitButton();
+        Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.verifyConductorModalPage().clickVerifyButton();
         Assert.assertFalse(Pages.tellerPage().isNotificationsPresent(), "Error message is visible!");
         Pages.tellerPage().closeModal();

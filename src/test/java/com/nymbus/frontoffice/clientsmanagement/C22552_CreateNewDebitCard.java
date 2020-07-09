@@ -43,7 +43,6 @@ public class C22552_CreateNewDebitCard extends BaseTest {
 
         // Set up CHK account
         checkingAccount = new Account().setCHKAccountData();
-        checkingAccount.setDateOpened(WebAdminActions.loginActions().getSystemDate());
 
         // Set up debit card and bin control
         DebitCardConstructor debitCardConstructor = new DebitCardConstructor();

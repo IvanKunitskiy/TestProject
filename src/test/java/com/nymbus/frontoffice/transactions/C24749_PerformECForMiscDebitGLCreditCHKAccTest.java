@@ -63,13 +63,15 @@ public class C24749_PerformECForMiscDebitGLCreditCHKAccTest extends BaseTest {
         String INSTRUCTION_REASON = "Reg CC";
         AccountActions.createInstruction().deleteInstructionByReasonText(INSTRUCTION_REASON);
 
+        // Logout and login for update teller session
+        Actions.loginActions().doLogOut();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // perform misc debit GL credit transaction
         // perform transaction
-        Actions.transactionActions().openProofDateLoginModalWindow();
+        Actions.transactionActions().goToTellerPage();
         String postingDate = Pages.tellerModalPage().getProofDateValue();
         Actions.transactionActions().doLoginProofDate();
-        Actions.transactionActions().goToTellerPage();
         Actions.transactionActions().createMiscDebitGLCreditTransaction(miscDebitGLCreditTransaction);
         String effectiveDate = Pages.tellerPage().getEffectiveDate();
         Actions.transactionActions().clickCommitButton();
@@ -94,10 +96,10 @@ public class C24749_PerformECForMiscDebitGLCreditCHKAccTest extends BaseTest {
     public void verifyErrorCorrectForMiscDebitGLCreditTransactionOnCHKAcc() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        Actions.transactionActions().loginTeller();
 
         logInfo("Step 2: Go to Journal page and log in to the proof date");
         Actions.journalActions().goToJournalPage();
+        Actions.transactionActions().doLoginProofDate();
 
         logInfo("Step 3: Search for the transaction from the preconditions and click on it to open on Details");
         Actions.journalActions().applyFilterByAccountNumber(miscDebitGLCreditTransaction.getTransactionSource().getAccountNumber());
