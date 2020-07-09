@@ -115,7 +115,7 @@ public class C22668_CommitCDRedemptionTest extends BaseTest {
         transactionData.setEffectiveDate(Pages.tellerPage().getEffectiveDate());
 
         logInfo("Step 7: Click [Commit Transaction] button");
-        Actions.transactionActions().clickCommitButton();
+        Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Assert.assertFalse(Pages.tellerPage().isNotificationsPresent(), "Error message is visible!");
         Pages.tellerPage().closeModal();
 

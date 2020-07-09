@@ -48,6 +48,11 @@ public class AccountInstructionsPage extends PageTools {
         return isElementVisible(instructionAlertByContent, instructionContent);
     }
 
+    @Step("Wait for Edit button visibility")
+    public void waitForEditButtonVisibility() {
+        waitForElementVisibility(editInstructionButton);
+    }
+
     @Step("Get reason text")
     public String getReasonText() {
         waitForElementVisibility(reasonText);
@@ -136,6 +141,11 @@ public class AccountInstructionsPage extends PageTools {
     @Step("Wait for created instruction list item {0} to be visible")
     public void waitForCreatedInstruction(int i) {
         waitForElementVisibility(createdInstructionListItem, i);
+    }
+
+    @Step("Wait for deleted instruction list item {0} invisibility")
+    public void waitForDeletedInstructionInvisibility(int i) {
+        waitForElementInvisibility(createdInstructionListItem, i);
     }
 
     @Step("Click instruction in list by index")

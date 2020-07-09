@@ -43,6 +43,7 @@ public class CreateInstruction {
         fillingSupervisorModal();
 
         Pages.accountInstructionsPage().waitForDeleteButtonInvisibility();
+        Pages.accountInstructionsPage().waitForDeletedInstructionInvisibility(index);
     }
 
     public void deleteInstructionByReasonText(String text) {
