@@ -23,7 +23,6 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
 
     private IndividualClient client;
     private Account regularSavingsAccount;
-    private Account checkingAccount;
     private String clientID;
 
     @BeforeMethod
@@ -38,7 +37,7 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         regularSavingsAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
 
         // Set up CHK account (required as Corresponding Account)
-        checkingAccount = new Account().setCHKAccountData();
+        Account checkingAccount = new Account().setCHKAccountData();
 
         // Login to the system and create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -103,8 +102,8 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), regularSavingsAccount.getBankBranch(), "'Bank Branch' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getStatementCycle(), regularSavingsAccount.getStatementCycle(), "'Statement Cycle' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCorrespondingAccount(), regularSavingsAccount.getCorrespondingAccount());
-        if (checkingAccount.getCallClassCode() != null) {
-            Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), checkingAccount.getCallClassCode(), "'Call Class' value does not match");
+        if (regularSavingsAccount.getCallClassCode() != null) {
+            Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), regularSavingsAccount.getCallClassCode(), "'Call Class' value does not match");
         }
         Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), regularSavingsAccount.getAccountTitle(), "'Title' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), regularSavingsAccount.getInterestRate(), "'Interest Rate' value does not match");
@@ -118,8 +117,8 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), regularSavingsAccount.getBankBranch(), "'Bank Branch' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getStatementCycleValueInEditMode(), regularSavingsAccount.getStatementCycle(), "'Statement Cycle' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getCorrespondingAccount(), regularSavingsAccount.getCorrespondingAccount(), "'Corresponding Account' value does not match");
-        if (checkingAccount.getCallClassCode() != null) {
-            Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), checkingAccount.getCallClassCode(), "'Call Class' value does not match");
+        if (regularSavingsAccount.getCallClassCode() != null) {
+            Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), regularSavingsAccount.getCallClassCode(), "'Call Class' value does not match");
         }
         Assert.assertEquals(Pages.editAccountPage().getMailCode(), regularSavingsAccount.getMailCode(), "'Mail Code' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getAccountTitleValueInEditMode(), regularSavingsAccount.getAccountTitle(), "'Title' value does not match");
