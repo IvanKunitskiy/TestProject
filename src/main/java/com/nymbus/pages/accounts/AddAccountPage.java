@@ -479,7 +479,7 @@ public class AddAccountPage extends PageTools {
     @Step("Returning the 'Mail Code' value")
     public String getMailCode() {
         waitForElementVisibility(mailCode);
-        waitForElementClickable(mailCode);
+        SelenideTools.sleep(2);
         return getElementText(mailCode);
     }
 
