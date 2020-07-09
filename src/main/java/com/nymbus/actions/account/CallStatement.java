@@ -62,8 +62,7 @@ public class CallStatement {
         String transactionAmount = String.valueOf(transaction.getTransactionSource().getAmount());
 
         Assert.assertTrue(containsText(formattedSystemDate).matches(pdf), "'Transaction Posting Date' does not match.");
-        Assert.assertTrue(containsText(transactionAmount).matches(pdf), "'Transaction amount of Credit' does not match.");
-        Assert.assertTrue(containsText(transactionAmount).matches(pdf), "'Balance for committed transaction' does not match.");
+        Assert.assertTrue(containsText(transactionAmount).matches(pdf), "'Balance for committed transaction' and 'Transaction amount of Credit' does not match.");
         if (transactionCode.contains("109") || transactionCode.contains("209")) {
             Assert.assertTrue(containsText(transactionCode).matches(pdf), "'Transaction Description' does not match.");
             Assert.assertTrue(containsText("1 Credits").matches(pdf), "'Calculated # of all transactions' does not match.");
