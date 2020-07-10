@@ -108,6 +108,18 @@ public class RetrievingAccountData {
         return closedAccountData;
     }
 
+    public ClosedAccountData getClosedAccountDataForCDAccount() {
+        ClosedAccountData closedAccountData = new ClosedAccountData();
+        closedAccountData.setCurrentBalance(getCurrentBalance());
+        closedAccountData.setAvailableBalance(getAvailableBalanceFromHeaderMenu());
+        closedAccountData.setAccruedInterest(getAccruedInterest());
+        closedAccountData.setAccountStatus(getAccountStatus());
+        closedAccountData.setDateClosed(Pages.accountDetailsPage().getDateClosed());
+
+        return closedAccountData;
+    }
+
+
     public InstructionBalanceData getInstructionBalanceData() {
         InstructionBalanceData instructionBalanceData = new InstructionBalanceData();
 
@@ -129,6 +141,11 @@ public class RetrievingAccountData {
 
     private double getAvailableBalance() {
         String value = Pages.accountDetailsPage().getAvailableBalance();
+        return Double.parseDouble(value);
+    }
+
+    private double getAvailableBalanceFromHeaderMenu() {
+        String value = Pages.accountDetailsPage().getAvailableBalanceFromHeaderMenu();
         return Double.parseDouble(value);
     }
 

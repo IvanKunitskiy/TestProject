@@ -127,7 +127,7 @@ public class C22668_CommitCDRedemptionTest extends BaseTest {
                 "- account date closed");
         Actions.clientPageActions().searchAndOpenClientByName(withdrawTransaction.getTransactionSource().getAccountNumber());
         ClosedAccountData expectedClosedAccountData = new ClosedAccountData();
-        ClosedAccountData actualClosedAccountData = AccountActions.retrievingAccountData().getClosedAccountData();
+        ClosedAccountData actualClosedAccountData = AccountActions.retrievingAccountData().getClosedAccountDataForCDAccount();
         Assert.assertEquals(actualClosedAccountData, expectedClosedAccountData, "Closed account data is incorrect!");
 
         logInfo("Step 9: Open Account on Transactions tab and check transaction details");
