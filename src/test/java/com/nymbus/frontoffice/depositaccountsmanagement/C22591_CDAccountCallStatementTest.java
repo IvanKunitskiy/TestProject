@@ -71,12 +71,13 @@ public class C22591_CDAccountCallStatementTest extends BaseTest {
 
         logInfo("Step 2: Search for the CD account from the precondition and open it on Transactions tab");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(cdAccount);
+        AccountActions.callStatement().setDataForCDIRAAAccountCallStatementVerification(cdAccount);
         Pages.accountNavigationPage().clickTransactionsTab();
 
         logInfo("Step 3: Click [Call Statement] button");
         logInfo("Step 4: Look through the Savings Call Statement data and verify it contains correct data");
         callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
-        AccountActions.callStatement().verifyCDAccountCallStatementData(callStatementPdfFile, cdAccount, client, transaction);
+        AccountActions.callStatement().verifyCDIRAAccountCallStatementData(callStatementPdfFile, cdAccount, client, transaction);
     }
 
     @AfterMethod(description = "Delete the downloaded PDF.")

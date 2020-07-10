@@ -69,136 +69,58 @@ public class CallStatement {
         }
     }
 
-    private void verifyChkAccountSectionInPdf(PDF pdf, Account account) {
+    // Common for Checking, Savings and Savings Ira
+    private void verifyChkSavingsIraAccountSectionInPdf(PDF pdf, Account account) {
         Assert.assertTrue(containsText(getCurrentOfficerInitials(account)).matches(pdf), "'Current Officer' does not match.");
         Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf), "'Date Opened' does not match.");
         Assert.assertTrue(containsText(account.getInterestRate()).matches(pdf), "'Dividend Rate' does not match.");
-
-        // TODO: not filled in during account creation
-        // Accrued Interest - selected account's Accrued Interest
-        // YTD Dividends Paid - selected account's Interest Paid Year to date value
-        // Dividends Paid Last Year - selected account's Interest Paid Last Year value
-        // YTD Taxes withheld- selected account's Taxes Withheld YTD value
-    }
-
-    private void verifySavingsAccountSectionInPdf(PDF pdf, Account account) {
-        Assert.assertTrue(containsText(getCurrentOfficerInitials(account)).matches(pdf), "'Current Officer' does not match.");
-        Assert.assertTrue(containsText(account.getInterestRate()).matches(pdf), "'Dividend Rate' does not match.");
-        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf), "'Date Opened' does not match.");
-
-        // TODO: not filled in during account creation
-        // Accrued Interest - selected account's Accrued Interest
-        // YTD Dividends Paid - selected account's Interest Paid Year to date value
-        // Dividends Paid Last Year - selected account's Interest Paid Last Year value
-        // YTD Taxes withheld- selected account's Taxes Withheld YTD value
-    }
-
-    private void verifyCDAccountSectionInPdf(PDF pdf, Account account) {
-        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf), "'Date Opened' does not match.");
-
-        // TODO: not filled in during account creation
-
-        //    Original Balance
-        //    Term (months)
-        //    Renew - Auto-Renewable field value
-        //    Class (Call Class code)
-        //    Dividend Freq (Interest Frequency value)
-        //    Dividend Rate (Interest Rate)
-        //    Maturity
-        //    Dividend Type (Interest Type)
-        //    Apply To - (Apply interest to value)
-        //    YTD Dividends Paid (YTD Interest Paid value)
-        //    Dividends Paid Last Year (Interest Paid Last Year value)
-        //    YTD taxes withheld (Taxes Withheld YTD value)
-        //    Next Dividend (Date next interest value)
-        //    Anticipated (Next Interest Payment Amount value)
-        //    Accrued (Accrued Interest value)
-        //    Daily Accrual (Daily Interest Accrual value)
-
-    }
-
-    private void verifyCDIRAAccountSectionInPdf(PDF pdf, Account account) {
-        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf), "'Date Opened' does not match.");
-
-        // TODO: not filled in during account creation
-
-        //    Original Balance
-        //    Term (months)
-        //    Renew - Auto-Renewable field value
-        //    Class (Call Class code)
-        //    Dividend Freq (Interest Frequency value)
-        //    Dividend Rate (Interest Rate)
-        //    Maturity
-        //    Dividend Type (Interest Type)
-        //    Apply To - (Apply interest to value)
-        //    YTD Dividends Paid (YTD Interest Paid value)
-        //    Dividends Paid Last Year (Interest Paid Last Year value)
-        //    YTD taxes withheld (Taxes Withheld YTD value)
-        //    Next Dividend (Date next interest value)
-        //    Anticipated (Next Interest Payment Amount value)
-        //    Accrued (Accrued Interest value)
-        //    Daily Accrual (Daily Interest Accrual value)
-    }
-
-    private void verifySavingsIraAccountSectionInPdf(PDF pdf, Account account) {
-        // Current Officer
-        Assert.assertTrue(containsText(getCurrentOfficerInitials(account)).matches(pdf), "'Current Officer' does not match.");
-        // Dividend Rate - selected account's Interest Rate
-        Assert.assertTrue(containsText(account.getInterestRate()).matches(pdf), "'Dividend Rate' does not match");
-        // Date Opened
-        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf), "'Date Opened' does not match.");
-        // Accrued Interest
         Assert.assertTrue(containsText(account.getAccruedInterest()).matches(pdf), "'Accrued Interest' does not match");
-        // YTD Dividends Paid - selected account's Interest Paid Year to date value
         Assert.assertTrue(containsText(account.getInterestPaidYTD()).matches(pdf), "'Interest Paid YTD' does not match");
-        // Dividends Paid Last Year - selected account's Interest Paid Last Year value
         Assert.assertTrue(containsText(account.getInterestPaidLastYear()).matches(pdf), "'Interest Paid Last Year' does not match");
-        // YTD Taxes withheld- selected account's Taxes Withheld YTD value
         Assert.assertTrue(containsText(account.getTaxesWithheldYTD()).matches(pdf), "'YTD Taxes withheld' does not match");
     }
 
-    public void verifyChkAccountCallStatementData(File file, Account account, IndividualClient client, Transaction transaction) {
+    // Common for CD and CD IRA account
+    private void verifyCdIraAccountSectionInPdf(PDF pdf, Account account) {
+        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf), "'Date Opened' does not match.");
+        Assert.assertTrue(containsText(account.getAccruedInterest()).matches(pdf), "'Accrued Interest' does not match");
+        Assert.assertTrue(containsText(account.getInterestPaidYTD()).matches(pdf), "'Interest Paid YTD' does not match");
+        Assert.assertTrue(containsText(account.getInterestPaidLastYear()).matches(pdf), "'Interest Paid Last Year' does not match");
+        Assert.assertTrue(containsText(account.getTaxesWithheldYTD()).matches(pdf), "'YTD Taxes withheld' does not match");
+
+        // TODO: not filled in during account creation
+
+        //    Original Balance
+        //    Term (months)
+        //    Renew - Auto-Renewable field value
+        //    Class (Call Class code)
+        //    Dividend Freq (Interest Frequency value)
+        //    Dividend Rate (Interest Rate)
+        //    Maturity
+        //    Dividend Type (Interest Type)
+        //    Apply To - (Apply interest to value)
+        //    Next Dividend (Date next interest value)
+        //    Anticipated (Next Interest Payment Amount value)
+        //    Daily Accrual (Daily Interest Accrual value)
+    }
+
+    // Verify CHK, Savings, Savings IRA call statement pdf
+    public void verifyChkSavingsIraAccountCallStatementData(File file, Account account, IndividualClient client, Transaction transaction) {
         PDF pdf = new PDF(file);
 
         verifyDateInPdf(pdf);
         verifyClientSectionInPdf(pdf, client, account);
-        verifyChkAccountSectionInPdf(pdf, account);
+        verifyChkSavingsIraAccountSectionInPdf(pdf, account);
         verifyTransactionSectionInPdf(pdf, transaction);
     }
 
-    public void verifySavingsAccountCallStatementData(File file, Account account, IndividualClient client, Transaction transaction) {
-        PDF pdf = new PDF(file);
-
-        verifyDateInPdf(pdf);
-        verifyClientSectionInPdf(pdf, client, account);
-        verifySavingsAccountSectionInPdf(pdf, account);
-        verifyTransactionSectionInPdf(pdf, transaction);
-    }
-
-    public void verifyCDAccountCallStatementData(File file, Account account, IndividualClient client, Transaction transaction) {
-        PDF pdf = new PDF(file);
-
-        verifyDateInPdf(pdf);
-        verifyClientSectionInPdf(pdf, client, account);
-        verifyCDAccountSectionInPdf(pdf, account);
-        verifyTransactionSectionInPdf(pdf, transaction);
-    }
-
+    // Verify CD, CD IRA call statement pdf
     public void verifyCDIRAAccountCallStatementData(File file, Account account, IndividualClient client, Transaction transaction) {
         PDF pdf = new PDF(file);
 
         verifyDateInPdf(pdf);
         verifyClientSectionInPdf(pdf, client, account);
-        verifyCDIRAAccountSectionInPdf(pdf, account);
-        verifyTransactionSectionInPdf(pdf, transaction);
-    }
-
-    public void verifySavingsIraAccountCallStatementData(File file, Account account, IndividualClient client, Transaction transaction) {
-        PDF pdf = new PDF(file);
-
-        verifyDateInPdf(pdf);
-        verifyClientSectionInPdf(pdf, client, account);
-        verifySavingsIraAccountSectionInPdf(pdf, account);
+        verifyCdIraAccountSectionInPdf(pdf, account);
         verifyTransactionSectionInPdf(pdf, transaction);
     }
 
@@ -208,5 +130,35 @@ public class CallStatement {
             initials.append(word.charAt(0));
         }
         return initials.toString();
+    }
+
+    public void setDataForChkSavingsIraAccountCallStatementVerification(Account account) {
+        account.setAccruedInterest(Pages.accountDetailsPage().getAccruedInterest());
+        account.setInterestRate(Pages.accountDetailsPage().getInterestRateValue());
+        account.setInterestPaidYTD(Pages.accountDetailsPage().getInterestPaidYTD());
+        account.setInterestPaidLastYear(Pages.accountDetailsPage().getInterestPaidLastYear());
+        account.setTaxesWithheldYTD(Pages.accountDetailsPage().getTaxesWithheldYTD());
+    }
+
+    public void setDataForCDIRAAAccountCallStatementVerification(Account account) {
+        account.setAccruedInterest(Pages.accountDetailsPage().getAccruedInterest());
+        account.setInterestPaidYTD(Pages.accountDetailsPage().getInterestPaidYTD());
+        account.setInterestPaidLastYear(Pages.accountDetailsPage().getInterestPaidLastYear());
+        account.setTaxesWithheldYTD(Pages.accountDetailsPage().getTaxesWithheldYTD());
+
+        // TODO: set account data
+
+        //    Original Balance
+        //    Term (months)
+        //    Renew - Auto-Renewable field value
+        //    Class (Call Class code)
+        //    Dividend Freq (Interest Frequency value)
+        //    Dividend Rate (Interest Rate)
+        //    Maturity
+        //    Dividend Type (Interest Type)
+        //    Apply To - (Apply interest to value)
+        //    Next Dividend (Date next interest value)
+        //    Anticipated (Next Interest Payment Amount value)
+        //    Daily Accrual (Daily Interest Accrual value)
     }
 }
