@@ -73,6 +73,11 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
 
         logInfo("Step 2: Search for the CHK account from the precondition and open it on Transactions tab");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(iraAccount);
+        iraAccount.setAccruedInterest(Pages.accountDetailsPage().getAccruedInterest());
+        iraAccount.setInterestRate(Pages.accountDetailsPage().getInterestRateValue());
+        iraAccount.setInterestPaidYTD(Pages.accountDetailsPage().getInterestPaidYTD());
+        iraAccount.setInterestPaidLastYear(Pages.accountDetailsPage().getInterestPaidLastYear());
+        iraAccount.setTaxesWithheldYTD(Pages.accountDetailsPage().getTaxesWithheldYTD());
         Pages.accountNavigationPage().clickTransactionsTab();
 
         logInfo("Step 3: Click [Call Statement] button");

@@ -75,6 +75,9 @@ public class Account {
     private String dateOfFirstDeposit;
     private String dateDeceased;
     private String birthDate;
+    private String accruedInterest;
+    private String interestPaidLastYear;
+    private String taxesWithheldYTD;
 
     public Account setCDAccountData() {
         Account account = new Account();
@@ -767,5 +770,29 @@ public class Account {
 
     public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public String getAccruedInterest() {
+        return accruedInterest;
+    }
+
+    public void setAccruedInterest(String accruedInterest) {
+        this.accruedInterest = accruedInterest;
+    }
+
+    public String getInterestPaidLastYear() {
+        return interestPaidLastYear;
+    }
+
+    public void setInterestPaidLastYear(String interestPaidLastYear) {
+        this.interestPaidLastYear = interestPaidLastYear;
+    }
+
+    public String getTaxesWithheldYTD() {
+        return taxesWithheldYTD;
+    }
+
+    public void setTaxesWithheldYTD(String taxesWithheldYTD) {
+        this.taxesWithheldYTD = taxesWithheldYTD;
     }
 }

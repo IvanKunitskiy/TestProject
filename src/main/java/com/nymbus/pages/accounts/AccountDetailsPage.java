@@ -80,7 +80,7 @@ public class AccountDetailsPage extends PageTools {
     private By interestFrequencyCode= By.xpath("//tr[@data-config-name='interestfrequencycode']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By correspondingAccount= By.xpath("//tr[@data-config-name='correspondingaccountid']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By printStatementNextUpdate= By.xpath("//tr[@data-config-name='printstatementnextupdate']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private By interestPaidYTD= By.xpath("//tr[@data-config-name='interestpaidytd']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By interestPaidYTD= By.xpath("//tr[@data-config-name='interestpaidytd']//span[contains(@class, 'dnTextFixedWidthText')]"); //
     private By dateNextInterest= By.xpath("//tr[@data-config-name='datenextinterestpayment']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By rentalAmount = By.xpath("//tr[@data-config-name='rentalamount']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By discountReason = By.xpath("//tr[@data-config-name='discountreason']//span[contains(@class, 'dnTextFixedWidthText')]");
@@ -119,6 +119,8 @@ public class AccountDetailsPage extends PageTools {
     private By dateOfFirstDeposit = By.xpath("//tr[@data-test-id='field-datefirstdeposit']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By birthDate = By.xpath("//tr[@data-test-id='field-dateofbirth']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By dateDeceased = By.xpath("//tr[@data-test-id='field-datedeceased']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By interestPaidLastYear = By.xpath("//tr[@data-config-name='interestpaidlastyear']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By taxesWithheldYTD = By.xpath("//tr[@data-config-name='taxeswithheldytd']//span[contains(@class, 'dnTextFixedWidthText')]");
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -351,7 +353,30 @@ public class AccountDetailsPage extends PageTools {
     public String getInterestPaidYTD() {
         waitForElementVisibility(interestPaidYTD);
         String interestPaidYTDValue = getElementText(interestPaidYTD);
-        return interestPaidYTDValue.replaceAll("[^0-9]", "");
+        if (!interestPaidYTDValue.isEmpty()) {
+            return interestPaidYTDValue.replaceAll("[^0-9]", "");
+        }
+        return "0.00";
+    }
+
+    @Step("Get 'Interest Paid Last Year' value")
+    public String getInterestPaidLastYear() {
+        waitForElementVisibility(interestPaidLastYear);
+        String interestPaidLastYearValue = getElementText(interestPaidLastYear);
+        if (!interestPaidLastYearValue.isEmpty()) {
+            return interestPaidLastYearValue.replaceAll("[^0-9]", "");
+        }
+        return "0.00";
+    }
+
+    @Step("Get 'Taxes Withheld YTD' value")
+    public String getTaxesWithheldYTD() {
+        waitForElementVisibility(taxesWithheldYTD);
+        String taxesWithheldYTDValue = getElementText(taxesWithheldYTD);
+        if (!taxesWithheldYTDValue.isEmpty()) {
+            return taxesWithheldYTDValue.replaceAll("[^0-9]", "");
+        }
+        return "0.00";
     }
 
     @Step("Get 'Corresponding Account' value")
@@ -538,7 +563,10 @@ public class AccountDetailsPage extends PageTools {
     public String getInterestRateValue() {
         waitForElementVisibility(interestRate);
         String rate = getElementText(interestRate);
-        return rate.substring(0, rate.length() - 1);
+        if (!rate.isEmpty()) {
+            return rate.substring(0, rate.length() - 1);
+        }
+        return "0.00";
     }
 
     @Step("Get 'Bank Account Number Interest On CD' value")

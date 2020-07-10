@@ -141,16 +141,20 @@ public class CallStatement {
     }
 
     private void verifySavingsIraAccountSectionInPdf(PDF pdf, Account account) {
+        // Current Officer
         Assert.assertTrue(containsText(getCurrentOfficerInitials(account)).matches(pdf), "'Current Officer' does not match.");
-        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf), "'Date Opened' does not match.");
-
-        // TODO: not filled in during account creation
-
-        // Accrued Interest
         // Dividend Rate - selected account's Interest Rate
+        Assert.assertTrue(containsText(account.getInterestRate()).matches(pdf), "'Dividend Rate' does not match");
+        // Date Opened
+        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf), "'Date Opened' does not match.");
+        // Accrued Interest
+        Assert.assertTrue(containsText(account.getAccruedInterest()).matches(pdf), "'Accrued Interest' does not match");
         // YTD Dividends Paid - selected account's Interest Paid Year to date value
+        Assert.assertTrue(containsText(account.getInterestPaidYTD()).matches(pdf), "'Interest Paid YTD' does not match");
         // Dividends Paid Last Year - selected account's Interest Paid Last Year value
+        Assert.assertTrue(containsText(account.getInterestPaidLastYear()).matches(pdf), "'Interest Paid Last Year' does not match");
         // YTD Taxes withheld- selected account's Taxes Withheld YTD value
+        Assert.assertTrue(containsText(account.getTaxesWithheldYTD()).matches(pdf), "'YTD Taxes withheld' does not match");
     }
 
     public void verifyChkAccountCallStatementData(File file, Account account, IndividualClient client, Transaction transaction) {
