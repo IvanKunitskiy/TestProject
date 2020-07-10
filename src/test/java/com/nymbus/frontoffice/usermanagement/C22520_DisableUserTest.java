@@ -67,7 +67,7 @@ public class C22520_DisableUserTest extends BaseTest {
         Pages.loginPage().clickEnterButton();
 
         Assert.assertEquals(Pages.loginPage().getErrorMessage(),
-                "The user account has been disabled, please contact your system administrator",
+                "The user account has been disabled. Please contact your System Administrator to restore access.",
                 "Expected message is not visible");
 
         Assert.assertTrue(Pages.loginPage().isUserNameFieldHasError(),
