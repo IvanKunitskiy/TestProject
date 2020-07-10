@@ -69,12 +69,13 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
 
         logInfo("Step 2: Search for the CHK account from the precondition and open it on Transactions tab");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
+        AccountActions.callStatement().setDataForChkSavingsIraAccountCallStatementVerification(chkAccount);
         Pages.accountNavigationPage().clickTransactionsTab();
 
         logInfo("Step 3: Click [Call Statement] button");
         logInfo("Step 4: Look through the CHK Call Statement data and verify it contains correct data");
         callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
-        AccountActions.callStatement().verifyChkAccountCallStatementData(callStatementPdfFile, chkAccount, client, transaction);
+        AccountActions.callStatement().verifyChkSavingsIraAccountCallStatementData(callStatementPdfFile, chkAccount, client, transaction);
     }
 
     @AfterMethod(description = "Delete the downloaded PDF.")

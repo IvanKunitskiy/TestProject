@@ -71,6 +71,7 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
 
         logInfo("Step 2: Search for the CD IRA account from the precondition and open it on Transactions tab");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(cdIraAccount);
+        AccountActions.callStatement().setDataForCDIRAAAccountCallStatementVerification(cdIraAccount);
         Pages.accountNavigationPage().clickTransactionsTab();
 
         logInfo("Step 3: Click [Call Statement] button");

@@ -73,12 +73,13 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
 
         logInfo("Step 2: Search for the CHK account from the precondition and open it on Transactions tab");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(iraAccount);
+        AccountActions.callStatement().setDataForChkSavingsIraAccountCallStatementVerification(iraAccount);
         Pages.accountNavigationPage().clickTransactionsTab();
 
         logInfo("Step 3: Click [Call Statement] button");
         logInfo("Step 4: Look through the CHK Call Statement data and verify it contains correct data");
         callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
-        AccountActions.callStatement().verifySavingsIraAccountCallStatementData(callStatementPdfFile, iraAccount, client, transaction);
+        AccountActions.callStatement().verifyChkSavingsIraAccountCallStatementData(callStatementPdfFile, iraAccount, client, transaction);
     }
 
     @AfterMethod(description = "Delete the downloaded PDF.")

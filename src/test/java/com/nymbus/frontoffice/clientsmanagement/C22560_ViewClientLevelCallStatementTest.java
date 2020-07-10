@@ -55,7 +55,7 @@ public class C22560_ViewClientLevelCallStatementTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C22560, View client level 'Call Statement'")
+    @Test(description = "C22560, View client level 'Call Statement'", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void viewClientLevelCallStatement() {
 
