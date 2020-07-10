@@ -133,18 +133,18 @@ public class CallStatement {
     }
 
     public void setDataForChkSavingsIraAccountCallStatementVerification(Account account) {
-        account.setAccruedInterest(Pages.accountDetailsPage().getAccruedInterest());
-        account.setInterestRate(Pages.accountDetailsPage().getInterestRateValue());
-        account.setInterestPaidYTD(Pages.accountDetailsPage().getInterestPaidYTD());
-        account.setInterestPaidLastYear(Pages.accountDetailsPage().getInterestPaidLastYear());
-        account.setTaxesWithheldYTD(Pages.accountDetailsPage().getTaxesWithheldYTD());
+        setAccruedInterest(account);
+        setInterestRate(account);
+        setInterestPaidYTD(account);
+        setInterestPaidLastYear(account);
+        setTaxesWithheldYTD(account);
     }
 
     public void setDataForCDIRAAAccountCallStatementVerification(Account account) {
-        account.setAccruedInterest(Pages.accountDetailsPage().getAccruedInterest());
-        account.setInterestPaidYTD(Pages.accountDetailsPage().getInterestPaidYTD());
-        account.setInterestPaidLastYear(Pages.accountDetailsPage().getInterestPaidLastYear());
-        account.setTaxesWithheldYTD(Pages.accountDetailsPage().getTaxesWithheldYTD());
+        setAccruedInterest(account);
+        setInterestPaidYTD(account);
+        setInterestPaidLastYear(account);
+        setTaxesWithheldYTD(account);
 
         // TODO: set account data
 
@@ -160,5 +160,50 @@ public class CallStatement {
         //    Next Dividend (Date next interest value)
         //    Anticipated (Next Interest Payment Amount value)
         //    Daily Accrual (Daily Interest Accrual value)
+    }
+
+    public void setAccruedInterest(Account account) {
+        String accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
+        if (!accruedInterest.isEmpty()) {
+            account.setAccruedInterest(accruedInterest);
+        } else {
+            account.setAccruedInterest("0.00");
+        }
+    }
+
+    public void setInterestRate(Account account) {
+        String interestRate = Pages.accountDetailsPage().getInterestRateValue();
+        if (!interestRate.isEmpty()) {
+            account.setAccruedInterest(interestRate);
+        } else {
+            account.setAccruedInterest("0.00");
+        }
+    }
+
+    public void setInterestPaidYTD(Account account) {
+        String interestPaidYTD = Pages.accountDetailsPage().getInterestPaidYTD();
+        if (!interestPaidYTD.isEmpty()) {
+            account.setAccruedInterest(interestPaidYTD);
+        } else {
+            account.setAccruedInterest("0.00");
+        }
+    }
+
+    public void setInterestPaidLastYear(Account account) {
+        String interestPaidLastYear = Pages.accountDetailsPage().getInterestPaidLastYear();
+        if (!interestPaidLastYear.isEmpty()) {
+            account.setAccruedInterest(interestPaidLastYear);
+        } else {
+            account.setAccruedInterest("0.00");
+        }
+    }
+
+    public void setTaxesWithheldYTD(Account account) {
+        String taxesWithheldYTD = Pages.accountDetailsPage().getTaxesWithheldYTD();
+        if (!taxesWithheldYTD.isEmpty()) {
+            account.setAccruedInterest(taxesWithheldYTD);
+        } else {
+            account.setAccruedInterest("0.00");
+        }
     }
 }

@@ -352,31 +352,19 @@ public class AccountDetailsPage extends PageTools {
     @Step("Get 'Interest Paid YTD' value")
     public String getInterestPaidYTD() {
         waitForElementVisibility(interestPaidYTD);
-        String interestPaidYTDValue = getElementText(interestPaidYTD);
-        if (!interestPaidYTDValue.isEmpty()) {
-            return interestPaidYTDValue.replaceAll("[^0-9]", "");
-        }
-        return "0.00";
+        return getElementText(interestPaidYTD).replaceAll("[^0-9]", "");
     }
 
     @Step("Get 'Interest Paid Last Year' value")
     public String getInterestPaidLastYear() {
         waitForElementVisibility(interestPaidLastYear);
-        String interestPaidLastYearValue = getElementText(interestPaidLastYear);
-        if (!interestPaidLastYearValue.isEmpty()) {
-            return interestPaidLastYearValue.replaceAll("[^0-9]", "");
-        }
-        return "0.00";
+        return getElementText(interestPaidLastYear).replaceAll("[^0-9]", "");
     }
 
     @Step("Get 'Taxes Withheld YTD' value")
     public String getTaxesWithheldYTD() {
         waitForElementVisibility(taxesWithheldYTD);
-        String taxesWithheldYTDValue = getElementText(taxesWithheldYTD);
-        if (!taxesWithheldYTDValue.isEmpty()) {
-            return taxesWithheldYTDValue.replaceAll("[^0-9]", "");
-        }
-        return "0.00";
+        return getElementText(taxesWithheldYTD).replaceAll("[^0-9]", "");
     }
 
     @Step("Get 'Corresponding Account' value")
@@ -563,10 +551,7 @@ public class AccountDetailsPage extends PageTools {
     public String getInterestRateValue() {
         waitForElementVisibility(interestRate);
         String rate = getElementText(interestRate);
-        if (!rate.isEmpty()) {
-            return rate.substring(0, rate.length() - 1);
-        }
-        return "0.00";
+        return rate.substring(0, rate.length() - 1);
     }
 
     @Step("Get 'Bank Account Number Interest On CD' value")
