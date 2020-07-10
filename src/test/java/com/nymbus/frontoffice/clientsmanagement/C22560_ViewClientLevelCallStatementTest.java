@@ -20,6 +20,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Clients Management")
 @Owner("Petro")
+@Test(enabled = false)
 public class C22560_ViewClientLevelCallStatementTest extends BaseTest {
 
     private IndividualClient client;
@@ -55,7 +56,7 @@ public class C22560_ViewClientLevelCallStatementTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C22560, View client level 'Call Statement'", enabled = false)
+    @Test(description = "C22560, View client level 'Call Statement'")
     @Severity(SeverityLevel.CRITICAL)
     public void viewClientLevelCallStatement() {
 
