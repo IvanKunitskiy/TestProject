@@ -39,7 +39,6 @@ public class C22533_SearchByLastFourOfDebitCardTest extends BaseTest {
 
         // Set up CHK account
         Account checkingAccount = new Account().setCHKAccountData();
-        checkingAccount.setDateOpened(WebAdminActions.loginActions().getSystemDate());
 
         // Set up bin control and debit card
         DebitCardConstructor debitCardConstructor = new DebitCardConstructor();

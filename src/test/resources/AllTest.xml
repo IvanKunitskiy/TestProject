@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Suite" parallel="tests" thread-count="4" >
+<suite name="Suite" parallel="tests" thread-count="1" >
     <listeners>
         <listener class-name="com.nymbus.core.retry.AnnotationTransformer"/>
     </listeners>
 
-    <test name="Log In" parallel="true">
+    <test name="Log In">
         <packages>
             <package name="com.nymbus.frontoffice.login.*"/>
         </packages>
     </test>
 
-    <test name="User management" parallel="true">
+    <test name="User management">
         <packages>
             <package name="com.nymbus.frontoffice.usermanagement.*"/>
         </packages>
     </test>
 
-    <test name="Create Clients" parallel="true">
+    <test name="Create Clients">
         <packages>
             <package name="com.nymbus.frontoffice.clientsmanagement.createclients.*"/>
         </packages>
     </test>
 
-    <test name="Clients management" parallel="true">
+    <test name="Clients management">
         <packages>
             <package name="com.nymbus.frontoffice.clientsmanagement.*"/>
         </packages>
     </test>
 
-    <test name="Clients search" parallel="true">
+    <test name="Clients search">
         <packages>
             <package name="com.nymbus.frontoffice.clientsearch.*"/>
         </packages>
