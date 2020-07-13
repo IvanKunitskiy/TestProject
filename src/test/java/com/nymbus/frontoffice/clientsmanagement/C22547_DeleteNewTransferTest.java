@@ -47,7 +47,6 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         client1 = individualClientBuilder.buildClient();
-        client2 = individualClientBuilder.buildClient();
 
         // Set up accounts
         chkAccount1 = new Account().setCHKAccountData();
@@ -88,6 +87,7 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
 
         // Create a client with an active CHK / Savings account
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        client2 = individualClientBuilder.buildClient();
         ClientsActions.individualClientActions().createClient(client2);
         ClientsActions.individualClientActions().setClientDetailsData(client2);
         ClientsActions.individualClientActions().setDocumentation(client2);

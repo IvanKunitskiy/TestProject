@@ -61,21 +61,21 @@ public class C22527_SearchByNumberTest extends BaseTest {
         String lastFourNumbers = accountNumber.substring(accountNumber.length() - 4);
         Pages.clientsSearchPage().typeToClientsSearchInputField(lastFourNumbers);
         int lookupResultsCount = Pages.clientsSearchPage().getLookupResultsCount();
-        Assert.assertEquals(lookupResultsCount, 8);
-        assertTrue(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible());
+        Assert.assertEquals(lookupResultsCount, 8, "Lookup results is incorrect!");
+        assertTrue(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible(), "Load more results button is not visible!");
 
         List<String> clients = Pages.clientsSearchPage().getAllLookupResults();
-        clients.forEach(s -> Assert.assertEquals(s.substring(s.length() - 4), lastFourNumbers));
+        verifyResultsList(clients, lastFourNumbers);
 
         logInfo("Step 3: Click [Search] button");
         Pages.clientsSearchPage().clickOnSearchButton();
         int searchResults = Pages.clientsSearchResultsPage().getAccountNumbersFromSearchResults().size();
-        assertTrue(searchResults <= 10);
+        assertTrue(searchResults <= 10, "Search result count is more then 10!");
         if (searchResults == 10)
-            assertTrue(Pages.clientsSearchResultsPage().isLoadMoreResultsButtonVisible());
+            assertTrue(Pages.clientsSearchResultsPage().isLoadMoreResultsButtonVisible(), "Load more button is not visible!");
 
         clients = Pages.clientsSearchResultsPage().getAccountNumbersFromSearchResults();
-        clients.forEach(s -> assertTrue(s.substring(s.length() - 4).contains(lastFourNumbers)));
+        verifyResultsList(clients, lastFourNumbers);
 
         logInfo("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
         Pages.clientsSearchPage().clickOnSearchInputFieldClearButton();
@@ -86,7 +86,7 @@ public class C22527_SearchByNumberTest extends BaseTest {
             e.printStackTrace();
         }
 
-        Pages.clientsSearchPage().typeToClientsSearchInputField(savingsAccount.getAccountNumber());
+        Pages.clientsSearchPage().typeToClientsSearchInputField(accountNumber);
         lookupResultsCount = Pages.clientsSearchPage().getLookupResultsCount();
         Assert.assertEquals(lookupResultsCount, 1);
         Assert.assertFalse(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible());
@@ -96,5 +96,13 @@ public class C22527_SearchByNumberTest extends BaseTest {
 
         logInfo("Step 5: Click [Search] button and pay attention to the search results list");
         // TODO: Need to implement assertion for exist Client object
+    }
+
+    private void verifyResultsList(List<String> clients, String number) {
+        for (int i = 0; i < clients.size(); i++) {
+            String client = clients.get(i);
+            assertTrue(client.substring(client.length() - 4).contains(number),
+                    "Search result " +i + "account number isn't relevant!");
+        }
     }
 }
