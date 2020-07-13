@@ -202,9 +202,9 @@ public class CallStatement {
     public void setTaxesWithheldYTD(Account account) {
         String taxesWithheldYTD = Pages.accountDetailsPage().getTaxesWithheldYTD();
         if (!taxesWithheldYTD.isEmpty()) {
-            account.setAccruedInterest(taxesWithheldYTD);
+            account.setTaxesWithheldYTD(taxesWithheldYTD);
         } else {
-            account.setAccruedInterest("0.00");
+            account.setTaxesWithheldYTD("0.00");
         }
     }
 }
