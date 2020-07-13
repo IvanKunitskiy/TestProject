@@ -551,15 +551,13 @@ public class AccountDetailsPage extends PageTools {
     @Step("Get account 'Earning Credit Rate' value")
     public String getEarningCreditRate() {
         waitForElementVisibility(earningCreditRate);
-        String rate = getElementText(earningCreditRate);
-        return rate.substring(0, rate.length() - 1);
+        return getElementText(earningCreditRate).replaceAll("[^0-9]", "");
     }
 
     @Step("Get account 'Statement Flag' value")
     public String getInterestRateValue() {
         waitForElementVisibility(interestRate);
-        String rate = getElementText(interestRate);
-        return rate.substring(0, rate.length() - 1);
+        return getElementText(interestRate).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Bank Account Number Interest On CD' value")
@@ -579,7 +577,6 @@ public class AccountDetailsPage extends PageTools {
         waitForElementVisibility(transactionalAccount);
         return getElementText(transactionalAccount).trim().toUpperCase();
     }
-
 
     @Step("Get account 'Account Analysis' value")
     public String getAccountAnalysisValue() {
