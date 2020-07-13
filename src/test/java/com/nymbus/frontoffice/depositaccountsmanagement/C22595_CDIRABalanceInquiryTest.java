@@ -85,8 +85,8 @@ public class C22595_CDIRABalanceInquiryTest extends BaseTest {
 
         logInfo("Step 2: Search for the CD IRA account from the precondition and open it on Details");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(cdIraAccount);
-        String accountAvailableBalance = Pages.accountDetailsPage().getAvailableBalance();
-        String accountCurrentBalance = Pages.accountDetailsPage().getCurrentBalance();
+        String accountAvailableBalance = Pages.accountDetailsPage().getAvailableBalanceFromHeaderMenu();
+        String accountCurrentBalance = Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu();
 
         logInfo("Step 3: Click [Balance Inquiry] button");
         Pages.accountDetailsPage().clickBalanceInquiry();

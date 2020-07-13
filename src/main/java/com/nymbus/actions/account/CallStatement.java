@@ -174,36 +174,37 @@ public class CallStatement {
     public void setInterestRate(Account account) {
         String interestRate = Pages.accountDetailsPage().getInterestRateValue();
         if (!interestRate.isEmpty()) {
-            account.setAccruedInterest(interestRate);
+            account.setInterestRate(interestRate);
         } else {
-            account.setAccruedInterest("0.00");
+            account.setInterestRate("0.00");
         }
     }
 
     public void setInterestPaidYTD(Account account) {
         String interestPaidYTD = Pages.accountDetailsPage().getInterestPaidYTD();
+        System.out.println("interestPaidYTD : " + interestPaidYTD);
         if (!interestPaidYTD.isEmpty()) {
-            account.setAccruedInterest(interestPaidYTD);
+            account.setInterestPaidYTD(interestPaidYTD);
         } else {
-            account.setAccruedInterest("0.00");
+            account.setInterestPaidYTD("0.00");
         }
     }
 
     public void setInterestPaidLastYear(Account account) {
         String interestPaidLastYear = Pages.accountDetailsPage().getInterestPaidLastYear();
         if (!interestPaidLastYear.isEmpty()) {
-            account.setAccruedInterest(interestPaidLastYear);
+            account.setInterestPaidLastYear(interestPaidLastYear);
         } else {
-            account.setAccruedInterest("0.00");
+            account.setInterestPaidLastYear("0.00");
         }
     }
 
     public void setTaxesWithheldYTD(Account account) {
         String taxesWithheldYTD = Pages.accountDetailsPage().getTaxesWithheldYTD();
         if (!taxesWithheldYTD.isEmpty()) {
-            account.setAccruedInterest(taxesWithheldYTD);
+            account.setTaxesWithheldYTD(taxesWithheldYTD);
         } else {
-            account.setAccruedInterest("0.00");
+            account.setTaxesWithheldYTD("0.00");
         }
     }
 }
