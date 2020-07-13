@@ -1,6 +1,5 @@
 package com.nymbus.frontoffice.clientsmanagement;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -71,7 +70,6 @@ public class C22558_EditTransferTest extends BaseTest {
     public void editTransfer() {
 
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Go to Clients and search for the client from the precondition");

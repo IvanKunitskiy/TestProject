@@ -75,7 +75,6 @@ public class C22556_EditDeleteNewNoteTest extends BaseTest {
     public void editDeleteNewNote() {
 
         logInfo("Step 1: Log in to the system as User1 from the preconditions");
-        Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
 
         logInfo("Step 2: Go to Clients and search for the client from the precondition");

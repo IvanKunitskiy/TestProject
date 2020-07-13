@@ -92,6 +92,7 @@ public class AccountDetailsPage extends PageTools {
     private By bankRoutingNumberInterestOnCD = By.xpath("//tr[@data-config-name='bankroutingnumberinterestoncd']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By transactionalAccount = By.xpath("//tr[@data-config-name='transactionalaccount']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By currentBalance = By.xpath("//tr[@data-config-name='currentbalance']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By currentBalance1 = By.xpath("//div[@ng-if='accountHeaderConfig.currentbalance.isShow']//p");
     private By availableBalance = By.xpath("//tr[@data-config-name='memopostingbalance']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By availableBalance1 = By.xpath("//div[@ng-if='accountHeaderConfig.memobalance.isShow']//p");
     private By aggregateBalanceYearToDate = By.xpath("//*[@data-config-name='aggregatebalanceytd']//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
@@ -213,6 +214,13 @@ public class AccountDetailsPage extends PageTools {
     public String getCurrentBalance() {
         waitForElementVisibility(currentBalance);
         String currentBalanceValue = getElementText(currentBalance).trim();
+        return currentBalanceValue.replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'CurrentBalance' value from header menu")
+    public String getCurrentBalanceFromHeaderMenu() {
+        waitForElementVisibility(currentBalance1);
+        String currentBalanceValue = getElementText(currentBalance1).trim();
         return currentBalanceValue.replaceAll("[^0-9.]", "");
     }
 
@@ -543,15 +551,13 @@ public class AccountDetailsPage extends PageTools {
     @Step("Get account 'Earning Credit Rate' value")
     public String getEarningCreditRate() {
         waitForElementVisibility(earningCreditRate);
-        String rate = getElementText(earningCreditRate);
-        return rate.substring(0, rate.length() - 1);
+        return getElementText(earningCreditRate).replaceAll("[^0-9]", "");
     }
 
     @Step("Get account 'Statement Flag' value")
     public String getInterestRateValue() {
         waitForElementVisibility(interestRate);
-        String rate = getElementText(interestRate);
-        return rate.substring(0, rate.length() - 1);
+        return getElementText(interestRate).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Bank Account Number Interest On CD' value")
@@ -571,7 +577,6 @@ public class AccountDetailsPage extends PageTools {
         waitForElementVisibility(transactionalAccount);
         return getElementText(transactionalAccount).trim().toUpperCase();
     }
-
 
     @Step("Get account 'Account Analysis' value")
     public String getAccountAnalysisValue() {
