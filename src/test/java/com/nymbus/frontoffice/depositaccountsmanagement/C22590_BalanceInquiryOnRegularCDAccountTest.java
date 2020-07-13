@@ -87,8 +87,8 @@ public class C22590_BalanceInquiryOnRegularCDAccountTest extends BaseTest {
 
         logInfo("Step 2: Search for the CD account from the precondition and open it on Details");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(cdAccount);
-        String accountAvailableBalance = Pages.accountDetailsPage().getAvailableBalance();
-        String accountCurrentBalance = Pages.accountDetailsPage().getCurrentBalance();
+        String accountAvailableBalance = Pages.accountDetailsPage().getAvailableBalanceFromHeaderMenu();
+        String accountCurrentBalance = Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu();
 
         logInfo("Step 3: Click [Balance Inquiry] button");
         Pages.accountDetailsPage().clickBalanceInquiry();
