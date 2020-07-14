@@ -78,6 +78,9 @@ public class Account {
     private String accruedInterest;
     private String interestPaidLastYear;
     private String taxesWithheldYTD;
+    private String originalBalance;
+    private String term;
+    private String dailyInterestAccrual;
 
     public Account setCDAccountData() {
         Account account = new Account();
@@ -794,5 +797,29 @@ public class Account {
 
     public void setTaxesWithheldYTD(String taxesWithheldYTD) {
         this.taxesWithheldYTD = taxesWithheldYTD;
+    }
+
+    public String getOriginalBalance() {
+        return originalBalance;
+    }
+
+    public void setOriginalBalance(String originalBalance) {
+        this.originalBalance = originalBalance;
+    }
+
+    public String getTerm() {
+        return term;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
+    }
+
+    public String getDailyInterestAccrual() {
+        return dailyInterestAccrual;
+    }
+
+    public void setDailyInterestAccrual(String dailyInterestAccrual) {
+        this.dailyInterestAccrual = dailyInterestAccrual;
     }
 }
