@@ -35,22 +35,22 @@
         </packages>
     </test>
 
-<!--    <test name="Transactions">-->
-<!--        <packages>-->
-<!--            <package name="com.nymbus.frontoffice.transactions.*"/>-->
-<!--        </packages>-->
-<!--    </test>-->
+    <test name="Transactions">
+        <packages>
+            <package name="com.nymbus.frontoffice.transactions.*"/>
+        </packages>
+    </test>
 
-<!--    <test name="Safe deposit box management">-->
-<!--        <packages>-->
-<!--            <package name="com.nymbus.frontoffice.safedepositboxmanagement.*"/>-->
-<!--        </packages>-->
-<!--    </test>-->
+    <test name="Safe deposit box management">
+        <packages>
+            <package name="com.nymbus.frontoffice.safedepositboxmanagement.*"/>
+        </packages>
+    </test>
 
-<!--    <test name="Deposit accounts management">-->
-<!--        <packages>-->
-<!--            <package name="com.nymbus.frontoffice.depositaccountsmanagement.*"/>-->
-<!--        </packages>-->
-<!--    </test>-->
+    <test name="Deposit accounts management">
+        <packages>
+            <package name="com.nymbus.frontoffice.depositaccountsmanagement.*"/>
+        </packages>
+    </test>
 
 </suite>
