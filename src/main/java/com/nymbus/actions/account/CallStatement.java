@@ -4,6 +4,7 @@ import com.codeborne.pdftest.PDF;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
@@ -87,21 +88,17 @@ public class CallStatement {
         Assert.assertTrue(containsText(account.getInterestPaidYTD()).matches(pdf), "'Interest Paid YTD' does not match");
         Assert.assertTrue(containsText(account.getInterestPaidLastYear()).matches(pdf), "'Interest Paid Last Year' does not match");
         Assert.assertTrue(containsText(account.getTaxesWithheldYTD()).matches(pdf), "'YTD Taxes withheld' does not match");
-
-        // TODO: not filled in during account creation
-
-        //    Original Balance
-        //    Term (months)
-        //    Renew - Auto-Renewable field value
-        //    Class (Call Class code)
-        //    Dividend Freq (Interest Frequency value)
-        //    Dividend Rate (Interest Rate)
-        //    Maturity
-        //    Dividend Type (Interest Type)
-        //    Apply To - (Apply interest to value)
-        //    Next Dividend (Date next interest value)
-        //    Anticipated (Next Interest Payment Amount value)
-        //    Daily Accrual (Daily Interest Accrual value)
+        Assert.assertTrue(containsText(account.getOriginalBalance()).matches(pdf), "'Original Balance' does not match");
+        Assert.assertTrue(containsText(account.getProduct()).matches(pdf), "'Class' does not match");
+        Assert.assertTrue(containsText(account.getInterestFrequency()).matches(pdf), "'Dividend Freq (Interest Frequency value)', does not match");
+        Assert.assertTrue(containsText(account.getInterestRate()).matches(pdf), "'Dividend Rate (Interest Rate)' doe not match");
+        Assert.assertTrue(containsText(account.getInterestType()).matches(pdf), "'Dividend Type (Interest Type)' does not match");
+        Assert.assertTrue(containsText(account.getApplyInterestTo()).matches(pdf), "Apply To (Apply interest to value) does not match");
+        Assert.assertTrue(containsText(account.getTerm()).matches(pdf), "'Term (months)' does not match");
+        Assert.assertTrue(containsText(account.getDateNextInterest()).matches(pdf), "'Next Dividend (Date next interest value)' does not match");
+        Assert.assertTrue(containsText(Functions.capitalize(account.getAutoRenewable().toLowerCase())).matches(pdf), "'Renew - Auto-Renewable' does not match");
+        Assert.assertTrue(containsText(account.getMaturityDate()).matches(pdf), "'Maturity' does not match");
+        Assert.assertTrue(containsText(account.getDailyInterestAccrual()).matches(pdf), "'Daily Interest Accrual' does not match");
     }
 
     // Verify CHK, Savings, Savings IRA call statement pdf
@@ -145,21 +142,44 @@ public class CallStatement {
         setInterestPaidYTD(account);
         setInterestPaidLastYear(account);
         setTaxesWithheldYTD(account);
+        setOriginalBalance(account);
+        setTerm(account);
+        setDateNextInterest(account);
+        setMaturityDate(account);
+        setDailyInterestAccrual(account);
+    }
 
-        // TODO: set account data
+    public void setDailyInterestAccrual(Account account) {
+        String dailyInterestAccrual = Pages.accountDetailsPage().getDailyInterestAccrual();
+        if (!dailyInterestAccrual.isEmpty()) {
+            account.setDailyInterestAccrual(dailyInterestAccrual);
+        } else {
+            account.setDailyInterestAccrual("0.00");
+        }
+    }
 
-        //    Original Balance
-        //    Term (months)
-        //    Renew - Auto-Renewable field value
-        //    Class (Call Class code)
-        //    Dividend Freq (Interest Frequency value)
-        //    Dividend Rate (Interest Rate)
-        //    Maturity
-        //    Dividend Type (Interest Type)
-        //    Apply To - (Apply interest to value)
-        //    Next Dividend (Date next interest value)
-        //    Anticipated (Next Interest Payment Amount value)
-        //    Daily Accrual (Daily Interest Accrual value)
+    public void setMaturityDate(Account account) {
+        String maturityDate = Pages.accountDetailsPage().getMaturityDate();
+        account.setMaturityDate(maturityDate);
+    }
+
+    public void setDateNextInterest(Account account) {
+        String dateNextInterest = Pages.accountDetailsPage().getDateNextInterest();
+        account.setDateNextInterest(dateNextInterest);
+    }
+
+    public void setTerm(Account account) {
+        String term = Pages.accountDetailsPage().getTermInMonthOrDays().replaceAll("[^0-9]", "");
+        account.setTerm(term);
+    }
+
+    public void setOriginalBalance(Account account) {
+        String originalBalance = Pages.accountDetailsPage().getOriginalBalanceValue();
+        if (!originalBalance.isEmpty()) {
+            account.setOriginalBalance(originalBalance);
+        } else {
+            account.setOriginalBalance("0.00");
+        }
     }
 
     public void setAccruedInterest(Account account) {

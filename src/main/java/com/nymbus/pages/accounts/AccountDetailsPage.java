@@ -122,6 +122,8 @@ public class AccountDetailsPage extends PageTools {
     private By dateDeceased = By.xpath("//tr[@data-test-id='field-datedeceased']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By interestPaidLastYear = By.xpath("//tr[@data-config-name='interestpaidlastyear']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By taxesWithheldYTD = By.xpath("//tr[@data-config-name='taxeswithheldytd']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By termInMonthOrDays = By.xpath("//tr[@data-config-name='terminmonthsordays']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By dailyInterestAccrual = By.xpath("//tr[@data-config-name='dailyinterestaccrual']//span[contains(@class, 'dnTextFixedWidthText')]");
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -153,19 +155,19 @@ public class AccountDetailsPage extends PageTools {
     @Step("Get 'Average Balance' value")
     public String getAverageBalanceValue() {
         waitForElementVisibility(averageBalance);
-        return getElementText(averageBalance).trim().replaceAll("[^0-9.]", "");
+        return getElementText(averageBalance).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Collected Balance' value")
     public String getCollectedBalanceValue() {
         waitForElementVisibility(collectedBalance);
-        return getElementText(collectedBalance).trim().replaceAll("[^0-9.]", "");
+        return getElementText(collectedBalance).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Next Interest Payment amount' value")
     public String getNextInterestPaymentAmount() {
         waitForElementVisibility(nextInterestPaymentAmount);
-        return getElementText(nextInterestPaymentAmount).trim().replaceAll("[^0-9.]", "");
+        return getElementText(nextInterestPaymentAmount).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Date Next Interest Paid'")
@@ -183,13 +185,25 @@ public class AccountDetailsPage extends PageTools {
     @Step("Get 'Original balance' value")
     public String getOriginalBalanceValue() {
         waitForElementVisibility(originalBalance);
-        return getElementText(originalBalance).trim().replaceAll("[^0-9.]", "");
+        return getElementText(originalBalance).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Term In Month Or Days' value")
+    public String getTermInMonthOrDays() {
+        waitForElementVisibility(termInMonthOrDays);
+        return getElementText(termInMonthOrDays).trim();
+    }
+
+    @Step("Get 'Daily Interest Accrual' value")
+    public String getDailyInterestAccrual() {
+        waitForElementVisibility(dailyInterestAccrual);
+        return getElementText(dailyInterestAccrual).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Last Deposit Amount' value")
     public String getLastDepositAmountValue() {
         waitForElementVisibility(lastDepositAmount);
-        return getElementText(lastDepositAmount).trim().replaceAll("[^0-9.]", "");
+        return getElementText(lastDepositAmount).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Number Of Deposits This Statement Cycle' value")
