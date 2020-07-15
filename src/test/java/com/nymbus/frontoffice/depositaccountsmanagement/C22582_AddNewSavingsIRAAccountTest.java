@@ -35,7 +35,6 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
 
         // Set up IRA account
         savingsIRAAccount = new Account().setIRAAccountData();
-        savingsIRAAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
 
         // Login to the system and create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);

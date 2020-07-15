@@ -34,7 +34,6 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
 
         // Set up account
         regularSavingsAccount = new Account().setSavingsAccountData();
-        regularSavingsAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
 
         // Set up CHK account (required as Corresponding Account)
         Account checkingAccount = new Account().setCHKAccountData();
