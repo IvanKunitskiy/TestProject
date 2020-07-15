@@ -1,12 +1,10 @@
 package com.nymbus.newmodels.client.other.debitcard;
 
+import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.client.other.debitcard.types.CardStatus;
 import com.nymbus.newmodels.client.other.debitcard.types.TranslationTypeAllowed;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -19,7 +17,7 @@ public class DebitCard {
 
     private String cardNumber;
     private String clientNumber;
-    @NonNull private String nameOnCard;
+    @Getter(AccessLevel.NONE) @NonNull private String nameOnCard;
     private String secondLineEmbossing;
     @NonNull private List<String> accounts; // At least one
     private String cardDesign;
@@ -33,4 +31,8 @@ public class DebitCard {
     private TranslationTypeAllowed translationTypeAllowed;
     private boolean chargeForCardReplacement;
     private boolean allowForeignTransactions;
+
+    public String getNameOnCard() {
+        return Functions.setNameOnDebitCard(nameOnCard);
+    }
 }
