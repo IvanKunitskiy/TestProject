@@ -1,5 +1,6 @@
 package com.nymbus.newmodels.account;
 
+import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
@@ -88,6 +89,7 @@ public class Account {
         account.setAddNewOption("Account");
         account.setProductType("CD Account");
         account.setProduct("3 Month Regular Certificate");
+        account.setBankBranch(AccountActions.retrievingAccountData().getBankBranch());
         account.setAutoRenewable("YES");
         account.setInterestFrequency("Quarterly");
         account.setInterestType("Simple");
@@ -114,6 +116,7 @@ public class Account {
         account.setProductType("CD");
         account.setProduct("6 Month Roth IRA Certificate");
         account.setAccountTitle(Generator.genString(5));
+        account.setBankBranch(AccountActions.retrievingAccountData().getBankBranch());
         account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setAccountNumber(Generator.genAccountNumber());
         account.setIraDistributionCode("No dist");
@@ -153,6 +156,7 @@ public class Account {
         account.setProductType("Savings Account");
         account.setProduct("Traditional IRA Accumulation Acct");
         account.setAccountTitle(Generator.genString(5));
+        account.setBankBranch(AccountActions.retrievingAccountData().getBankBranch());
         account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setAccountNumber(Generator.genAccountNumber());
         account.setIraDistributionCode("No dist");
@@ -182,6 +186,7 @@ public class Account {
         account.setAccountNumber(/*String.valueOf(Generator.genLong(10000000000L, 922337203685L))*/Generator.genAccountNumber());
         account.setProduct("Regular Savings Account");
         account.setAccountTitle(Generator.genString(5));
+        account.setBankBranch(AccountActions.retrievingAccountData().getBankBranch());
         account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
         account.setCashCollInterestRate(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
@@ -207,6 +212,7 @@ public class Account {
         account.setAccountNumber(Generator.genAccountNumber());
         account.setProduct("Basic Business Checking");
         account.setOptInOutDate("01/01/2020");
+        account.setBankBranch(AccountActions.retrievingAccountData().getBankBranch());
         account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
         account.setEarningCreditRate(Generator.getRandomStringNumber(3));

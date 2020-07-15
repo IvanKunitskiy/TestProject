@@ -37,7 +37,6 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
 
         // Set up CD IRA account
         cdIRAAccount = new Account().setCDIRAAccountData();
-        cdIRAAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
         cdIRAAccount.setApplyInterestTo("CHK Acct");
         cdIRAAccount.setMaturityDate(DateTime.getDateWithNMonthAdded(cdIRAAccount.getDateOpened(), "MM/dd/yyyy", Integer.parseInt(cdIRAAccount.getTermType())));
         cdIRAAccount.setDateNextInterest(DateTime.getDateWithNMonthAdded(cdIRAAccount.getDateOpened(), "MM/dd/yyyy", 3)); // 3 month added as 'Interest Frequency' is set to 'Quarterly'

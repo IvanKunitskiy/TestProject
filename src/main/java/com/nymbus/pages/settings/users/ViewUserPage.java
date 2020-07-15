@@ -42,6 +42,7 @@ public class ViewUserPage extends PageTools {
     private By cashOutLimit = By.xpath("//div[@id='usrusers-cashoutlimit']//span");
     private By teller = By.xpath("//div[@id='usrusers-telleryn']//input[contains(@name, 'teller')]");
     private By cashDrawer = By.xpath("//div[@id='usrusers-cashdrawerid']//span[contains(@class, 'xwidget_readonly_value')]");
+    private By bankBranch = By.xpath("//div[@id='usrusers-branchid']//span[@class='xwidget_readonly_value']");
 
     public void waitForUserDataRegion(){
         waitForElementVisibility(userDataRegion);
@@ -207,4 +208,9 @@ public class ViewUserPage extends PageTools {
         return getElementText(cashDrawer).trim();
     }
 
+    @Step("Get 'Bank Branch' value")
+    public String getBankBranch() {
+        waitForElementVisibility(bankBranch);
+        return getElementText(bankBranch).trim();
+    }
 }

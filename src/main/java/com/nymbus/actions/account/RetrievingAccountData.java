@@ -1,9 +1,13 @@
 package com.nymbus.actions.account;
 
+import com.nymbus.actions.Actions;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.verifyingmodels.ClosedAccountData;
 import com.nymbus.newmodels.accountinstructions.verifyingModels.InstructionBalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.*;
 import com.nymbus.pages.Pages;
+import com.nymbus.pages.settings.SettingsPage;
 
 public class RetrievingAccountData {
     public String getDateLastInterestPaid(String dateOpened) {
@@ -213,5 +217,19 @@ public class RetrievingAccountData {
 
     private String getAccountStatus() {
         return Pages.accountDetailsPage().getAccountStatus();
+    }
+
+    public String getBankBranch() {
+        SelenideTools.openUrlInNewWindow(Constants.URL);
+        SelenideTools.switchTo().window(1);
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        SettingsPage.mainPage().clickViewProfile();
+        String branch = SettingsPage.viewUserPage().getBankBranch();
+        Actions.loginActions().doLogOut();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+
+        return branch;
     }
 }

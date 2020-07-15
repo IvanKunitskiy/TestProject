@@ -34,7 +34,6 @@ public class C23637_CreateCheckingAccountTest extends BaseTest {
 
         // Set up account
         checkingAccount = new Account().setCHKAccountData();
-        checkingAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
 
         // Login to the system and create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
