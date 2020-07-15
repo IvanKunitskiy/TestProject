@@ -48,7 +48,8 @@ public class C22523_CreateCashDrawerTest extends BaseTest {
         Assert.assertEquals(Actions.cashDrawerAction().getCashDrawerFromCashDrawerViewPage(), cashDrawer,
                 "Cash Drawer's data isn't the same");
 
-        Actions.usersActions().searUserOnCustomerSearchPage(user);
+        Actions.usersActions().searchUser(user);
+        SettingsPage.usersSearchPage().clickCellByUserData(user.getEmail());
 
         Assert.assertEquals(SettingsPage.viewUserPage().getCashDrawerValue(),
                 cashDrawer.getName() + " (Default User: " + user.getFirstName() + " " + user.getLastName() + ")",
