@@ -116,6 +116,7 @@ public class C22553_ViewEditNewDebitCardTest extends BaseTest {
 
         logInfo("Step 7: Click [Save] button");
         Pages.debitCardModalWindow().clickOnSaveButton();
+        Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
 
         logInfo("Step 8: Click [Edit] button again");
         Pages.maintenancePage().clickEditButtonInListByNameOnCard(debitCard.getNameOnCard());

@@ -8,11 +8,17 @@ public class Constants {
     public static String BIN_NUMBER = getBinNumber();
     public static FinancialInstitutionType INSTITUTION_TYPE = getInstitutionType();
 
-    public static String USERNAME = "autotest";
-    public static String PASSWORD = "autotest";
-    public static String FIRST_NAME = "autotest";
-    public static String LAST_NAME = "autotest";
+    public static String USERNAME = "autestthredone";
+    //    public static String USERNAME = "autotest";
+    public static String PASSWORD = "autestthredone";
+    //    public static String PASSWORD = "autotest";
+    //    public static String FIRST_NAME = "autotest";
+    public static String FIRST_NAME = "autestthredone";
+    //    public static String LAST_NAME = "autotest";
+    public static String LAST_NAME = "autestthredone";
+
     public static int DAYS_BEFORE_SYSTEM_DATE = 3;
+    public static int MAX_CHARACTERS_ON_DEBIT_CARD = 25;
 
     public static String INDIVIDUAL_TYPE_FOR_WEB_ADMIN_QUERY = getIndividualType();
 

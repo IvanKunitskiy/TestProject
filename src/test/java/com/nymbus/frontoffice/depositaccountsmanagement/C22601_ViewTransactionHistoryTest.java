@@ -65,6 +65,7 @@ public class C22601_ViewTransactionHistoryTest extends BaseTest {
         debitCard.setDBCDailyDollarLimit(binControl.getDBCDailyDollarLimit());
         debitCard.setDBCTransactionLimit(binControl.getDBCTransactionLimit());
         debitCard.getAccounts().add(chkAccount.getAccountNumber());
+        debitCard.setNameOnCard(client.getNameForDebitCard());
 
         // Log in and create client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
