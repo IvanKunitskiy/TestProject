@@ -47,4 +47,8 @@ public class Functions {
         }
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
+
+    public static String setNameOnDebitCard(String str) {
+        return str.substring(0, Math.min(Constants.MAX_CHARACTERS_ON_DEBIT_CARD, str.length()));
+    }
 }

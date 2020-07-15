@@ -121,6 +121,7 @@ public class DebitCardModalWindow extends PageTools {
     @Step("Typing '{nameOnCard}' to 'Name On Card' input field")
     public void typeToNameOnCardInputField(String nameOnCard) {
         waitForElementVisibility(nameOnCardInputField);
+        wipeText(nameOnCardInputField);
         type(nameOnCard, nameOnCardInputField);
     }
 
