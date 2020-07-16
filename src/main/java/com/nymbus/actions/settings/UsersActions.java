@@ -10,7 +10,10 @@ import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
 import org.testng.Assert;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class UsersActions {
 
@@ -241,5 +244,12 @@ public class UsersActions {
             safeDepositKeyValues.add(new SafeDepositKeyValues(boxSize, Double.parseDouble(rentalAmount)));
         }
         return safeDepositKeyValues;
+    }
+
+    public String getBankBranch() {
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        SettingsPage.mainPage().clickViewProfile();
+
+        return SettingsPage.viewUserPage().getBankBranch();
     }
 }

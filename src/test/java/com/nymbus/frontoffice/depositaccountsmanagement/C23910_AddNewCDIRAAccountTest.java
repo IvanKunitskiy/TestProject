@@ -1,6 +1,5 @@
 package com.nymbus.frontoffice.depositaccountsmanagement;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -24,8 +23,6 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
 
     private IndividualClient client;
     private Account cdIRAAccount;
-    private Account checkingAccount;
-    private String clientID;
 
     @BeforeMethod
     public void preCondition() {
@@ -42,15 +39,21 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
         cdIRAAccount.setDateNextInterest(DateTime.getDateWithNMonthAdded(cdIRAAccount.getDateOpened(), "MM/dd/yyyy", 3)); // 3 month added as 'Interest Frequency' is set to 'Quarterly'
 
         // Set up CHK account (required to point the 'Corresponding Account')
-        checkingAccount = new Account().setCHKAccountData();
+        Account checkingAccount = new Account().setCHKAccountData();
 
-        // Login to the system and create a client
-        Selenide.open(Constants.URL);
+        // Login to the system
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Set the bank branch of the user to account
+        cdIRAAccount.setBankBranch(Actions.usersActions().getBankBranch());
+
+        // Create a client
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
-        clientID = Pages.clientDetailsPage().getClientID();
+        client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
+
+        // Create CHK account and logout
         AccountActions.createAccount().createCHKAccount(checkingAccount);
         Actions.loginActions().doLogOut();
     }
@@ -63,7 +66,7 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the client from the preconditions and open his profile on Accounts tab");
-        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID);
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(client.getIndividualType().getClientID());
         Pages.clientDetailsPage().clickAccountsTab();
 
         logInfo("Step 3: Click 'Add New' drop down and select 'Account'");
@@ -78,7 +81,7 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
 
         logInfo("Step 6: Look through the fields. Check that fields are prefilled by default");
         Assert.assertEquals(Pages.addAccountPage().getAccountType(), client.getIndividualType().getClientType().getClientType(), "'Account type' is prefilled with wrong value");
-        final String accountHolderName = client.getIndividualType().getFirstName() + " " + client.getIndividualType().getLastName() + " (" + clientID + ")";
+        final String accountHolderName = client.getIndividualType().getFirstName() + " " + client.getIndividualType().getLastName() + " (" + client.getIndividualType().getClientID() + ")";
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderName(), accountHolderName, "'Name' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderRelationship(), cdIRAAccount.getAccountHolder(), "'Relationship' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderClientType(), client.getIndividualType().getClientType().getClientType(), "'Client type' is prefilled with wrong value");
