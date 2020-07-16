@@ -24,7 +24,6 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
     private IndividualClient client;
     private Account cdAccount;
     private Account checkingAccount;
-    private String clientID;
 
     @BeforeMethod
     public void preConditions() {
@@ -42,12 +41,17 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         // Set up CHK account (required to point the 'Corresponding Account')
         checkingAccount = new Account().setCHKAccountData();
 
-        // Login to the system and create a client
+        // Login to the system
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Set the bank branch of the user to account
+        cdAccount.setBankBranch(Actions.usersActions().getBankBranch());
+
+        // Create a client
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
-        clientID = Pages.clientDetailsPage().getClientID();
+        client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
 
         // Create account and logout
         AccountActions.createAccount().createCHKAccount(checkingAccount);
@@ -62,7 +66,7 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Search for the client from the preconditions and open his profile on Accounts tab");
-        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID);
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(client.getIndividualType().getClientID());
         Pages.clientDetailsPage().clickAccountsTab();
 
         logInfo("Step 3: Click 'Add New' drop down and select 'Account'");
@@ -77,7 +81,7 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
 
         logInfo("Step 6: Look through the fields. Check that fields are prefilled by default");
         Assert.assertEquals(Pages.addAccountPage().getAccountType(), client.getIndividualType().getClientType().getClientType(), "'Account type' is prefilled with wrong value");
-        final String accountHolderName = client.getIndividualType().getFirstName() + " " + client.getIndividualType().getLastName() + " (" + clientID + ")";
+        final String accountHolderName = client.getIndividualType().getFirstName() + " " + client.getIndividualType().getLastName() + " (" + client.getIndividualType().getClientID() + ")";
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderName(), accountHolderName, "'Name' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderRelationship(), cdAccount.getAccountHolder(), "'Relationship' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderClientType(), client.getIndividualType().getClientType().getClientType(), "'Client type' is prefilled with wrong value");
