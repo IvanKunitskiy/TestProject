@@ -43,6 +43,37 @@ public class WebAdminUsersActions {
                 + "formName=bank.data.bcfile&filter_(databean)code=CFMIntegrationEnable";
     }
 
+    private String getAccountsWithYtdDividendsPaidNotNullUrl() {
+        return Constants.WEB_ADMIN_URL
+            + "RulesUIQuery.ct?"
+            + "waDbName=nymbusdev6DS&"
+            + "dqlQuery=count%3A+10%0D%0Aselect%3A+accountid%2C+interestpaidytd%0D%0A"
+            + "from%3A+bank.data.actchecking%0D%0A"
+            + "where%3A+%0D%0A"
+            + "-+interestpaidytd%3A+%7Bgreater%3A+0%7D%0D%0A"
+            + "-+.accountid-%3Edateclosed%3A+%7Bnull%7D%0D%0A"
+            + "formats%3A+%0D%0A"
+            + "-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A"
+            + "orderBy%3A+-id&source=";
+    }
+
+    public String getAccountWithYtdDividendsPaidNotNull() {
+        SelenideTools.openUrl(getAccountsWithYtdDividendsPaidNotNullUrl());
+
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        int index = (new Random().nextInt(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult())) + 1;
+        String accountNumber = WebAdminPages.rulesUIQueryAnalyzerPage().getAccountNumberByIndex(index);
+
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+
+        return accountNumber;
+    }
+
     public FirstNameAndLastNameModel getExistingIndividualClient() {
         FirstNameAndLastNameModel existingUser = new FirstNameAndLastNameModel();
         SelenideTools.openUrl(getSecurityOfacEntryUrl(ClientType.INDIVIDUAL.getClientType()));

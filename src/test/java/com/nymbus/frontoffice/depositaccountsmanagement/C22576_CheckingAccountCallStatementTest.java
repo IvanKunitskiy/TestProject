@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.depositaccountsmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
@@ -76,6 +77,25 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
         logInfo("Step 4: Look through the CHK Call Statement data and verify it contains correct data");
         callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
         AccountActions.callStatement().verifyChkSavingsIraAccountCallStatementData(callStatementPdfFile, chkAccount, client, transaction);
+
+        // Get account number with 'interestPaidYTD'
+        String accountNumber = WebAdminActions.webAdminUsersActions().getAccountWithYtdDividendsPaidNotNull();
+        System.out.println("ACCOUNT : " + accountNumber);
+
+        // Open received account
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(accountNumber);
+
+        // Get 'interestPaidYTD' value
+        String interestPaidYTD = Pages.accountDetailsPage().getInterestPaidYTD();
+        System.out.println("interestPaidYTD : " + interestPaidYTD);
+
+        // Navigate to transactions tab and get the pdf
+        Pages.accountNavigationPage().clickTransactionsTab();
+        callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
+
+        // Check the 'interestPaidYTD' value presence in pdf
+        AccountActions.callStatement().verifyInterestPaidYTDInPdf(callStatementPdfFile, interestPaidYTD);
     }
 
     @AfterMethod(description = "Delete the downloaded PDF.")

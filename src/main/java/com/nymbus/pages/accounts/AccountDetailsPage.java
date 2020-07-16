@@ -374,19 +374,19 @@ public class AccountDetailsPage extends PageTools {
     @Step("Get 'Interest Paid YTD' value")
     public String getInterestPaidYTD() {
         waitForElementVisibility(interestPaidYTD);
-        return getElementText(interestPaidYTD).replaceAll("[^0-9]", "");
+        return getElementText(interestPaidYTD).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Interest Paid Last Year' value")
     public String getInterestPaidLastYear() {
         waitForElementVisibility(interestPaidLastYear);
-        return getElementText(interestPaidLastYear).replaceAll("[^0-9]", "");
+        return getElementText(interestPaidLastYear).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Taxes Withheld YTD' value")
     public String getTaxesWithheldYTD() {
         waitForElementVisibility(taxesWithheldYTD);
-        return getElementText(taxesWithheldYTD).replaceAll("[^0-9]", "");
+        return getElementText(taxesWithheldYTD).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Corresponding Account' value")

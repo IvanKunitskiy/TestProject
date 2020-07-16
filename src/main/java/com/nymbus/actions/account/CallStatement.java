@@ -68,6 +68,7 @@ public class CallStatement {
             Assert.assertTrue(containsText(transactionCode).matches(pdf), "'Transaction Description' does not match.");
             Assert.assertTrue(containsText("1 Credits").matches(pdf), "'Calculated # of all transactions' does not match.");
         }
+//        Overdraft Charged Off - selected account's Overdraft Charged Off value - skip this field for Account, for which 105-Overdraft Charge Off transaction was not performed.
     }
 
     // Common for Checking, Savings and Savings Ira
@@ -76,9 +77,9 @@ public class CallStatement {
         Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf), "'Date Opened' does not match.");
         Assert.assertTrue(containsText(account.getInterestRate()).matches(pdf), "'Dividend Rate' does not match.");
         Assert.assertTrue(containsText(account.getAccruedInterest()).matches(pdf), "'Accrued Interest' does not match");
-        Assert.assertTrue(containsText(account.getInterestPaidYTD()).matches(pdf), "'Interest Paid YTD' does not match");
-        Assert.assertTrue(containsText(account.getInterestPaidLastYear()).matches(pdf), "'Interest Paid Last Year' does not match");
-        Assert.assertTrue(containsText(account.getTaxesWithheldYTD()).matches(pdf), "'YTD Taxes withheld' does not match");
+//        Assert.assertTrue(containsText(account.getInterestPaidYTD()).matches(pdf), "'Interest Paid YTD' does not match");
+//        Assert.assertTrue(containsText(account.getInterestPaidLastYear()).matches(pdf), "'Interest Paid Last Year' does not match");
+//        Assert.assertTrue(containsText(account.getTaxesWithheldYTD()).matches(pdf), "'YTD Taxes withheld' does not match");
     }
 
     // Common for CD and CD IRA account
@@ -111,6 +112,11 @@ public class CallStatement {
         verifyTransactionSectionInPdf(pdf, transaction);
     }
 
+    public void verifyInterestPaidYTDInPdf(File file, String interestPaidYTDInPdf) {
+        PDF pdf = new PDF(file);
+        Assert.assertTrue(containsText(interestPaidYTDInPdf).matches(pdf), "'Interest Paid YTD' does not match");
+    }
+
     // Verify CD, CD IRA call statement pdf
     public void verifyCDIRAAccountCallStatementData(File file, Account account, IndividualClient client, Transaction transaction) {
         PDF pdf = new PDF(file);
@@ -132,16 +138,16 @@ public class CallStatement {
     public void setDataForChkSavingsIraAccountCallStatementVerification(Account account) {
         setAccruedInterest(account);
         setInterestRate(account);
-        setInterestPaidYTD(account);
-        setInterestPaidLastYear(account);
-        setTaxesWithheldYTD(account);
+//        setInterestPaidYTD(account);
+//        setInterestPaidLastYear(account);
+//        setTaxesWithheldYTD(account);
     }
 
     public void setDataForCDIRAAAccountCallStatementVerification(Account account) {
         setAccruedInterest(account);
-        setInterestPaidYTD(account);
-        setInterestPaidLastYear(account);
-        setTaxesWithheldYTD(account);
+//        setInterestPaidYTD(account);
+//        setInterestPaidLastYear(account);
+//        setTaxesWithheldYTD(account);
         setOriginalBalance(account);
         setTerm(account);
         setDateNextInterest(account);

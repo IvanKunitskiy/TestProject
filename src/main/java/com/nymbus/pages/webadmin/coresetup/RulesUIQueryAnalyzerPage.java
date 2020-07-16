@@ -13,6 +13,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private By listOfSearchResult = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow ']");
     private By firstNameByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[11]/div");
     private By lastNameByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[12]/div");
+    private By accountNumberByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[2]/span/span");
 
     @Step("Wait for 'Rules UI Query Analyzer' page loaded")
     public void waitForPageLoad() {
@@ -40,6 +41,12 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getLastNameByIndex(int index) {
         waitForElementVisibility(lastNameByIndex, index);
         return getElementText(lastNameByIndex, index);
+    }
+
+    @Step("Get account number value")
+    public String getAccountNumberByIndex(int index) {
+        waitForElementVisibility(accountNumberByIndex, index);
+        return getElementText(accountNumberByIndex, index);
     }
 
     @Step("Is search results table exist")
