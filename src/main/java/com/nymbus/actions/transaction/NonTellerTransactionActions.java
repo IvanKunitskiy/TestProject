@@ -12,4 +12,9 @@ public class NonTellerTransactionActions {
             SelenideTools.sleep(1);
         }
     }
+
+    public void performATMWithdrawalONUSTransaction(NonTellerTransactionData transactionData, String onusTerminalId) {
+        NonTellerTransaction.generateWithdrawalONUSTransaction(transactionData.getCardNumber(),
+                transactionData.getExpirationDate(), transactionData.getAmount(), onusTerminalId);
+    }
 }

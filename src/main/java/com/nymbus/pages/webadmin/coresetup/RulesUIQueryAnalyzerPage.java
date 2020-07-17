@@ -169,4 +169,16 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         waitForElementVisibility(accountNumber, index);
         return getElementText(accountNumber, index).trim();
     }
+
+    /**
+     *  terminalId section
+     */
+    private By terminalIdNumber = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]" +
+            "//td[@class='fieldsCell']//div");
+
+    @Step ("Get 'terminalId' {0} value")
+    public String getTerminalIdValue(int index) {
+        waitForElementVisibility(terminalIdNumber, index);
+        return getElementText(terminalIdNumber, index).trim();
+    }
 }

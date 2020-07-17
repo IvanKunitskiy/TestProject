@@ -7,6 +7,7 @@ public class NonTellerTransactionData {
     private String cardNumber;
     private String expirationDate;
     private String amount;
+    private String terminalId;
 
     public void setAmount(double amount) {
         this.amount = String.format("%.2f", amount).replace(".", "");
