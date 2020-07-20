@@ -19,6 +19,7 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditCHKAccBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
@@ -35,13 +36,14 @@ public class C22759_124ATMWithdrawlONUSTest extends BaseTest {
     private TransactionData chkAccTransactionData;
     private String checkingAccountNumber;
     private double transactionAmount;
+    private IndividualClient client;
 
     @BeforeMethod
     public void prepareTransactionData() {
         // Set up Client, Account and Transaction
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        IndividualClient client = individualClientBuilder.buildClient();
+        client = individualClientBuilder.buildClient();
         Account checkAccount = new Account().setCHKAccountData();
         Transaction glDebitMiscCreditTransaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
 
@@ -55,15 +57,10 @@ public class C22759_124ATMWithdrawlONUSTest extends BaseTest {
         BinControlBuilder binControlBuilder = new BinControlBuilder();
         binControlConstructor.constructBinControl(binControlBuilder);
         BinControl binControl = binControlBuilder.getBinControl();
-
         binControl.setBinNumber("510986");
         binControl.setCardDescription("Consumer Debit");
 
-        debitCard.setBinControl(binControl);
-        debitCard.setATMDailyDollarLimit(binControl.getATMDailyDollarLimit());
-        debitCard.setATMTransactionLimit(binControl.getATMTransactionLimit());
-        debitCard.setDBCDailyDollarLimit(binControl.getDBCDailyDollarLimit());
-        debitCard.setDBCTransactionLimit(binControl.getDBCTransactionLimit());
+        Actions.debitCardModalWindowActions().setDebitCardWithBinControl(debitCard, binControl);
         debitCard.getAccounts().add(checkAccount.getAccountNumber());
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
@@ -94,8 +91,16 @@ public class C22759_124ATMWithdrawlONUSTest extends BaseTest {
         Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
         String debitCardNumber = Actions.debitCardModalWindowActions().getCardNumber(1);
 
+        // Re-login in system for updating teller session
+        Actions.loginActions().doLogOut();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
         // Perform transaction
-        Actions.transactionActions().performGLDebitMiscCreditTransaction(glDebitMiscCreditTransaction);
+        Actions.transactionActions().loginTeller();
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().createGlDebitMiscCreditTransaction(glDebitMiscCreditTransaction);
+        Actions.transactionActions().clickCommitButton();
+        Pages.tellerPage().closeModal();
         transactionAmount = glDebitMiscCreditTransaction.getTransactionDestination().getAmount();
 
         Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
@@ -107,7 +112,7 @@ public class C22759_124ATMWithdrawlONUSTest extends BaseTest {
         nonTellerTransactionData.setAmount(glDebitMiscCreditTransaction.getTransactionDestination().getAmount());
         nonTellerTransactionData.setExpirationDate(expirationDate);
         nonTellerTransactionData.setTerminalId(terminalId);
-        chkAccTransactionData = new TransactionData(DateTime.getLocalDate(), DateTime.getLocalDate(),
+        chkAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "-", expectedBalanceData.getCurrentBalance(),
                 glDebitMiscCreditTransaction.getTransactionDestination().getAmount());
 
@@ -136,5 +141,18 @@ public class C22759_124ATMWithdrawlONUSTest extends BaseTest {
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionData();
         Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
+
+        logInfo("Step 5: Verify that there is NO 129-ATM Usage Fee for 124 ATM Withdrawal ONUS transaction");
+        Assert.assertEquals(Pages.accountTransactionPage().getTransactionItemsCount(), 2,
+                            "Transaction count is incorrect!");
+        Assert.assertFalse(Actions.transactionActions().isTransactionCodePresent(TransactionCode.ATM_USAGE_129.getTransCode()),
+                            "129-ATM Usage Fee presents in transaction list");
+
+        logInfo("Step 6: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
+        logInfo("Step 7: Click [View History] link on the Debit Card from the precondition");
+        Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
+        Actions.debitCardModalWindowActions().goToCardHistory(1);
+        double actualAmount = Actions.debitCardModalWindowActions().getTransactionAmount(1);
+        Assert.assertEquals(actualAmount, chkAccTransactionData.getAmount(), "Transaction amount is incorrect!");
     }
 }
