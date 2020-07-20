@@ -124,6 +124,7 @@ public class AccountDetailsPage extends PageTools {
     private By taxesWithheldYTD = By.xpath("//tr[@data-config-name='taxeswithheldytd']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By termInMonthOrDays = By.xpath("//tr[@data-config-name='terminmonthsordays']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By dailyInterestAccrual = By.xpath("//tr[@data-config-name='dailyinterestaccrual']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By overdraftChargedOff = By.xpath("//tr[@data-config-name='overdraftchargedoff']//span[contains(@class, 'dnTextFixedWidthText')]");
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -387,6 +388,12 @@ public class AccountDetailsPage extends PageTools {
     public String getTaxesWithheldYTD() {
         waitForElementVisibility(taxesWithheldYTD);
         return getElementText(taxesWithheldYTD).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Overdraft Charged Off' value")
+    public String getOverdraftChargedOff() {
+        waitForElementVisibility(overdraftChargedOff);
+        return getElementText(overdraftChargedOff).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Corresponding Account' value")

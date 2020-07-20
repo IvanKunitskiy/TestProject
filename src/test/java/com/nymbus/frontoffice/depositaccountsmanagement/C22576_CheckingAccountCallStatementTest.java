@@ -3,7 +3,6 @@ package com.nymbus.frontoffice.depositaccountsmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
-import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
@@ -75,27 +74,39 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
 
         logInfo("Step 3: Click [Call Statement] button");
         logInfo("Step 4: Look through the CHK Call Statement data and verify it contains correct data");
-        callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
         AccountActions.callStatement().verifyChkSavingsIraAccountCallStatementData(callStatementPdfFile, chkAccount, client, transaction);
 
-        // Get account number with 'interestPaidYTD'
-        String accountNumber = WebAdminActions.webAdminUsersActions().getAccountWithYtdDividendsPaidNotNull();
-        System.out.println("ACCOUNT : " + accountNumber);
+//        logInfo("Step 5: Go to the WebAdmin -> RulesUI and search for active CHK account,"
+//                + "where YTD Interest Paid field is not null.\n"
+//                + "Using the Query open it on Transactions tab and click [Call Statement] button.\n"
+//                + "SKIP STEP if QUERY DOES NOT RETURN AT LEAST ONE ACCOUNT\n");
+//        logInfo("Step 6: Verify YTD Interest Paid field value.\n" +
+//                "SKIP STEP if THERE ARE NO SUCH ACCOUNTS");
+//        AccountActions.callStatement().verifyYtdInterestPaidValue();
+//
+//        logInfo("Step 7: Go to the WebAdmin->RulesUI and search for active CHK account,"
+//                + "where Interest Paid Last Year field is not null.\n"
+//                + "Using the Query open it on Transactions tab and click [Call Statement] button\n"
+//                + "SKIP STEP if QUERY DOES NOT RETURN AT LEAST ONE ACCOUNT\n");
+//        logInfo("Step 8: Verify Interest Paid Last Year field value.\n" +
+//                "SKIP STEP if THERE ARE NO SUCH ACCOUNTS");
+//        AccountActions.callStatement().verifyInterestPaidLastYearValue();
+//
+//        logInfo("Step 9: Go to the WebAdmin->RulesUI and search for active CHK account,"
+//                + "where YTD Taxes withheld field is not null.\n"
+//                + "Using the Query open it on Transactions tab and click [Call Statement] button\n"
+//                + "SKIP STEP if QUERY DOES NOT RETURN AT LEAST ONE ACCOUNT\n");
+//        logInfo("Step 10: Verify YTD Taxes withheld field value.\n" +
+//                "SKIP STEP if THERE ARE NO SUCH ACCOUNTS");
+//        AccountActions.callStatement().verifyYtdTaxesWithheldValue();
 
-        // Open received account
-        Pages.aSideMenuPage().clickClientMenuItem();
-        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(accountNumber);
-
-        // Get 'interestPaidYTD' value
-        String interestPaidYTD = Pages.accountDetailsPage().getInterestPaidYTD();
-        System.out.println("interestPaidYTD : " + interestPaidYTD);
-
-        // Navigate to transactions tab and get the pdf
-        Pages.accountNavigationPage().clickTransactionsTab();
-        callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
-
-        // Check the 'interestPaidYTD' value presence in pdf
-        AccountActions.callStatement().verifyInterestPaidYTDInPdf(callStatementPdfFile, interestPaidYTD);
+        logInfo("Step 11: Go to the WebAdmin->RulesUI and search for active CHK account,"
+                + "where Overdraft Charge Off > 0.\n"
+                + "Using the Query open it on Transactions tab and click [Call Statement] button\n"
+                + "SKIP STEP if QUERY DOES NOT RETURN AT LEAST ONE ACCOUNT\n");
+        logInfo("Step 12: Verify 'overdraft was charged off' field value.\n" +
+                "SKIP STEP if THERE ARE NO SUCH ACCOUNTS");
+        AccountActions.callStatement().verifyOverdraftWasChargedOffValue();
     }
 
     @AfterMethod(description = "Delete the downloaded PDF.")

@@ -5,6 +5,7 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Functions;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
@@ -104,17 +105,16 @@ public class CallStatement {
 
     // Verify CHK, Savings, Savings IRA call statement pdf
     public void verifyChkSavingsIraAccountCallStatementData(File file, Account account, IndividualClient client, Transaction transaction) {
-        PDF pdf = new PDF(file);
+        File callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
+        PDF pdf = new PDF(callStatementPdfFile);
 
         verifyDateInPdf(pdf);
         verifyClientSectionInPdf(pdf, client, account);
         verifyChkSavingsIraAccountSectionInPdf(pdf, account);
         verifyTransactionSectionInPdf(pdf, transaction);
-    }
 
-    public void verifyInterestPaidYTDInPdf(File file, String interestPaidYTDInPdf) {
-        PDF pdf = new PDF(file);
-        Assert.assertTrue(containsText(interestPaidYTDInPdf).matches(pdf), "'Interest Paid YTD' does not match");
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
     }
 
     // Verify CD, CD IRA call statement pdf
@@ -206,31 +206,57 @@ public class CallStatement {
         }
     }
 
-    public void setInterestPaidYTD(Account account) {
-        String interestPaidYTD = Pages.accountDetailsPage().getInterestPaidYTD();
-        System.out.println("interestPaidYTD : " + interestPaidYTD);
-        if (!interestPaidYTD.isEmpty()) {
-            account.setInterestPaidYTD(interestPaidYTD);
-        } else {
-            account.setInterestPaidYTD("0.00");
-        }
+    public void navigateToTransactionsAndVerifyPdfContainsText(String text) {
+        Pages.accountNavigationPage().clickTransactionsTab();
+        PDF pdf = new PDF(AccountActions.callStatement().downloadCallStatementPdfFile());
+        Assert.assertTrue(containsText(text).matches(pdf), "Given text is not present in PDF document");
     }
 
-    public void setInterestPaidLastYear(Account account) {
-        String interestPaidLastYear = Pages.accountDetailsPage().getInterestPaidLastYear();
-        if (!interestPaidLastYear.isEmpty()) {
-            account.setInterestPaidLastYear(interestPaidLastYear);
-        } else {
-            account.setInterestPaidLastYear("0.00");
+    public void verifyYtdInterestPaidValue() {
+        String ytdInterestPaidAccountNumber = WebAdminActions.webAdminUsersActions().getAccountWithYtdInterestPaidNotNull();
+        if (!ytdInterestPaidAccountNumber.isEmpty()) {
+            Pages.aSideMenuPage().clickClientMenuItem();
+            Actions.clientPageActions().searchAndOpenAccountByAccountNumber(ytdInterestPaidAccountNumber);
+            String interestPaidYTD = Pages.accountDetailsPage().getInterestPaidYTD();
+            AccountActions.callStatement().navigateToTransactionsAndVerifyPdfContainsText(interestPaidYTD);
         }
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
     }
 
-    public void setTaxesWithheldYTD(Account account) {
-        String taxesWithheldYTD = Pages.accountDetailsPage().getTaxesWithheldYTD();
-        if (!taxesWithheldYTD.isEmpty()) {
-            account.setTaxesWithheldYTD(taxesWithheldYTD);
-        } else {
-            account.setTaxesWithheldYTD("0.00");
+    public void verifyInterestPaidLastYearValue() {
+        String interestPaidLastYearAccountNumber = WebAdminActions.webAdminUsersActions().getAccountWithInterestPaidLastYearNotNull();
+        if (!interestPaidLastYearAccountNumber.isEmpty()) {
+            Pages.aSideMenuPage().clickClientMenuItem();
+            Actions.clientPageActions().searchAndOpenAccountByAccountNumber(interestPaidLastYearAccountNumber);
+            String interestPaidLastYear = Pages.accountDetailsPage().getInterestPaidLastYear();
+            AccountActions.callStatement().navigateToTransactionsAndVerifyPdfContainsText(interestPaidLastYear);
         }
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+    }
+
+    public void verifyYtdTaxesWithheldValue() {
+        String ytdTaxesWithheldAccountNumber = WebAdminActions.webAdminUsersActions().getAccountWithYtdTaxesWithheldNotNull();
+        if (!ytdTaxesWithheldAccountNumber.isEmpty()) {
+            Pages.aSideMenuPage().clickClientMenuItem();
+            Actions.clientPageActions().searchAndOpenAccountByAccountNumber(ytdTaxesWithheldAccountNumber);
+            String ytdTaxesWithheld = Pages.accountDetailsPage().getTaxesWithheldYTD();
+            AccountActions.callStatement().navigateToTransactionsAndVerifyPdfContainsText(ytdTaxesWithheld);
+        }
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+    }
+
+    public void verifyOverdraftWasChargedOffValue() {
+        String overdraftChargedOffAccountNumber = WebAdminActions.webAdminUsersActions().getAccountsWithOverdraftChargedOffMoreThanZeroNull();
+        if (!overdraftChargedOffAccountNumber.isEmpty()) {
+            Pages.aSideMenuPage().clickClientMenuItem();
+            Actions.clientPageActions().searchAndOpenAccountByAccountNumber(overdraftChargedOffAccountNumber);
+            String overdraftChargedOff = Pages.accountDetailsPage().getOverdraftChargedOff();
+            AccountActions.callStatement().navigateToTransactionsAndVerifyPdfContainsText(overdraftChargedOff);
+        }
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
     }
 }
