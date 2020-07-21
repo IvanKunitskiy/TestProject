@@ -1,10 +1,12 @@
 package com.nymbus.core.base;
 
 import com.codeborne.selenide.*;
+import com.codeborne.selenide.drivercommands.WebDriverWrapper;
 import com.nymbus.core.allure.AllureLogger;
 import com.nymbus.core.utils.LocatorParser;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
@@ -267,5 +269,23 @@ public class PageTools extends AllureLogger {
             e.printStackTrace();
         }
         return null;
+    }
+
+    protected boolean isAlertPresent() {
+        try {
+            Selenide.switchTo().alert();
+            return true;
+        }
+        catch (NoAlertPresentException Ex) {
+            return false;
+        }
+    }
+
+    protected void acceptAlert() {
+        Selenide.switchTo().alert().accept();
+    }
+
+    protected void dismissAlert() {
+        Selenide.switchTo().alert().dismiss();
     }
 }

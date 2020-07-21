@@ -179,9 +179,28 @@ public class RetrievingAccountData {
         return transactionData;
     }
 
+    public TransactionData getTransactionDataForATM() {
+        int tempIndex = 1;
+        TransactionData transactionData = new TransactionData();
+
+        transactionData.setPostingDate(Pages.accountTransactionPage().getPostingDateValue1(tempIndex));
+        transactionData.setEffectiveDate(Pages.accountTransactionPage().getEffectiveDateValue1(tempIndex));
+        transactionData.setAmount(getATMAmountValue(tempIndex));
+        transactionData.setBalance(getATMBalanceValue(tempIndex));
+        transactionData.setAmountSymbol(Pages.accountTransactionPage().getAmountSymbol1(tempIndex));
+
+        return transactionData;
+    }
+
     public double getAmountValue(int index) {
         double amountIntegerPart = getAmount(index);
         double amountFractionalPart = getAmountFractionalPart(index);
+        return amountIntegerPart + amountFractionalPart;
+    }
+
+    public double getATMAmountValue(int index) {
+        double amountIntegerPart = getATMAmount(index);
+        double amountFractionalPart = getATMAmountFractionalPart(index);
         return amountIntegerPart + amountFractionalPart;
     }
 
@@ -191,8 +210,19 @@ public class RetrievingAccountData {
         return  balanceIntegerPart + balanceFractionalPart;
     }
 
+    public double getATMBalanceValue(int index) {
+        double balanceIntegerPart = getATMBalance(index);
+        double balanceFractionalPart = getATMBalanceFractional(index);
+        return  balanceIntegerPart + balanceFractionalPart;
+    }
+
     private double getBalance(int tempIndex) {
         String value = Pages.accountTransactionPage().getBalanceValue(tempIndex);
+        return Double.parseDouble(value);
+    }
+
+    private double getATMBalance(int tempIndex) {
+        String value = Pages.accountTransactionPage().getBalanceValue1(tempIndex);
         return Double.parseDouble(value);
     }
 
@@ -201,13 +231,28 @@ public class RetrievingAccountData {
         return Double.parseDouble(value);
     }
 
+    public double getATMAmount(int tempIndex) {
+        String value = Pages.accountTransactionPage().getAmountValue1(tempIndex);
+        return Double.parseDouble(value);
+    }
+
     private double getBalanceFractional(int tempIndex) {
         String value = Pages.accountTransactionPage().getBalanceFractionalValue(tempIndex);
         return Double.parseDouble(value) / 100;
     }
 
+    private double getATMBalanceFractional(int tempIndex) {
+        String value = Pages.accountTransactionPage().getBalanceFractionalValue1(tempIndex);
+        return Double.parseDouble(value) / 100;
+    }
+
     private double getAmountFractionalPart(int tempIndex) {
         String value = Pages.accountTransactionPage().getAmountFractionalValue(tempIndex);
+        return Double.parseDouble(value) / 100;
+    }
+
+    private double getATMAmountFractionalPart(int tempIndex) {
+        String value = Pages.accountTransactionPage().getAmountFractionalValue1(tempIndex);
         return Double.parseDouble(value) / 100;
     }
 

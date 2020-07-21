@@ -136,6 +136,66 @@ public class AccountTransactionPage extends PageTools {
     }
 
     /**
+     * Duplicated selectors for atm transactions
+     */
+    private By amountSymbol1 = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-if='showCurrency']/span[1]");
+    private By postingDate1 = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[1]//span");
+    private By effectiveDate1 = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[2]//span");
+    private By amount1 = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-if='showCurrency']/span[2]");
+    private By balance1 = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[2]");
+    private By balanceFractional1 = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[3]");
+    private By amountFractional1 = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-if='showCurrency']/span[3]");
+    private By transactionCode1 = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[4]//span[@ng-switch-when='transactioncode']");
+
+    @Step("Get transaction code")
+    public String getTransactionCodeByIndex1(int index) {
+        waitForElementVisibility(transactionCode1, index);
+        return getWebElement(transactionCode1, index).getAttribute("innerText").trim();
+    }
+
+    @Step("Get amountSymbol")
+    public String getAmountSymbol1(int index) {
+        waitForElementVisibility(amountSymbol1, index);
+        return getElementText(amountSymbol1, index).trim();
+    }
+
+    @Step("Get 'Posting date' value")
+    public String getPostingDateValue1(int index) {
+        waitForElementVisibility(postingDate1, index);
+        return getElementText(postingDate1, index).trim().replaceAll("-", "/");
+    }
+
+    @Step("Get 'Effective date' value")
+    public String getEffectiveDateValue1(int index) {
+        waitForElementVisibility(effectiveDate1, index);
+        return getElementText(effectiveDate1, index).trim().replaceAll("-", "/");
+    }
+
+    @Step("Get 'Amount' value")
+    public String getAmountValue1(int index) {
+        waitForElementVisibility(amount1, index);
+        return getElementText(amount1, index).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Amount' fractional value")
+    public String getAmountFractionalValue1(int index) {
+        waitForElementVisibility(amountFractional1, index);
+        return getElementText(amountFractional1, index).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Balance' value")
+    public String getBalanceValue1(int index) {
+        waitForElementVisibility(balance1, index);
+        return getElementText(balance1, index).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Balance' value")
+    public String getBalanceFractionalValue1(int index) {
+        waitForElementVisibility(balanceFractional1, index);
+        return getElementText(balanceFractional1, index).trim().replaceAll("[^0-9.]", "");
+    }
+
+    /**
      * Filter region
      */
     private By transactionsFromArrowButton = By.xpath("//*[@ng-model='transactionsFilter.statement']//span[contains(@class, 'select2-arrow')]");

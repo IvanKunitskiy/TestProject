@@ -55,9 +55,26 @@ public class NonTellerTransaction {
                 contentType(ContentType.JSON).
                 relaxedHTTPSValidation().
                 body(requestBody.toString()).
-                when().
+        when().
                 post(GENERIC_PROCESS_URL).
-                then().
+        then().
+                statusCode(200).
+                body("data[0].field.39", equalTo("00"));
+    }
+
+    public static void generateDepositONUSTransaction(String cardNumber, String expirationDate, String amount, String onusTerminalID) {
+        JSONObject requestBody = CHKAccountData.getAtmDepositData(cardNumber, expirationDate, amount, onusTerminalID);
+
+        System.out.println(requestBody.toString());
+
+        given().
+                auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
+                contentType(ContentType.JSON).
+                relaxedHTTPSValidation().
+                body(requestBody.toString()).
+        when().
+                post(GENERIC_PROCESS_URL).
+        then().
                 statusCode(200).
                 body("data[0].field.39", equalTo("00"));
     }
