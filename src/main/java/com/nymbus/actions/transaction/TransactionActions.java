@@ -385,4 +385,15 @@ public class TransactionActions {
         String availableBalanceValue = Pages.tellerPage().getAvailableBalance();
         return Double.parseDouble(availableBalanceValue);
     }
+
+    public boolean isTransactionCodePresent(String transCode) {
+        boolean result = false;
+        int transactionItems = Pages.accountTransactionPage().getTransactionItemsCount();
+        for (int i = 1; i <= transactionItems; ++i) {
+            if (Pages.accountTransactionPage().getTransactionCodeByIndex(i).contains(transCode)) {
+                result = true;
+            }
+        }
+        return result;
+    }
 }

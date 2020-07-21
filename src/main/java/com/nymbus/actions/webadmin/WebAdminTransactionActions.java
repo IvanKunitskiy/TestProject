@@ -11,6 +11,18 @@ public class WebAdminTransactionActions {
         return System.getProperty("domain", "dev6");
     }
 
+    private String getTerminalIdUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbus"
+                + getCurrentEnvironment()
+                + "DS&"
+                + "dqlQuery=count%3A+10%0D%0A"
+                + "select%3A+terminalid%0D%0A"
+                + "from%3A+bank.data.datmlc%0D%0A"
+                + "orderBy%3A+-id%0D%0A&source=";
+    }
+
     private String getWarehouseTransactionsUrl() {
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?"
@@ -58,6 +70,12 @@ public class WebAdminTransactionActions {
                 + "where%3A+%0D%0A+-+parenttransaction%3A+"
                 + transactionNumber
                 + "%0D%0AdeletedIncluded%3A+true&source=";
+    }
+
+    public void goToTerminalIdUrl() {
+        Selenide.open(getTerminalIdUrl());
+
+        waitForSearchResults();
     }
 
     public void goToWarehouseTransactionsUrl() {
