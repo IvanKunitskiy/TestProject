@@ -20,14 +20,11 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.io.File;
-
 public class C22576_CheckingAccountCallStatementTest extends BaseTest {
 
     private IndividualClient client;
     private Account chkAccount;
     private Transaction transaction;
-    private File callStatementPdfFile;
 
     @BeforeMethod
     public void preCondition() {
@@ -57,6 +54,7 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
 
         // Create transaction and logout
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
+        // TODO: Add creating the debit transaction
         Actions.loginActions().doLogOut();
     }
 
@@ -74,8 +72,39 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
 
         logInfo("Step 3: Click [Call Statement] button");
         logInfo("Step 4: Look through the CHK Call Statement data and verify it contains correct data");
-        callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
-        AccountActions.callStatement().verifyChkSavingsIraAccountCallStatementData(callStatementPdfFile, chkAccount, client, transaction);
+        AccountActions.callStatement().verifyChkSavingsIraAccountCallStatementData(chkAccount, client, transaction);
+
+        logInfo("Step 5: Go to the WebAdmin -> RulesUI and search for active CHK account,"
+                + "where YTD Interest Paid field is not null.\n"
+                + "Using the Query open it on Transactions tab and click [Call Statement] button.\n"
+                + "SKIP STEP if QUERY DOES NOT RETURN AT LEAST ONE ACCOUNT\n");
+        logInfo("Step 6: Verify YTD Interest Paid field value.\n" +
+                "SKIP STEP if THERE ARE NO SUCH ACCOUNTS");
+        AccountActions.callStatement().verifyYtdInterestPaidValue();
+
+        logInfo("Step 7: Go to the WebAdmin->RulesUI and search for active CHK account,"
+                + "where Interest Paid Last Year field is not null.\n"
+                + "Using the Query open it on Transactions tab and click [Call Statement] button\n"
+                + "SKIP STEP if QUERY DOES NOT RETURN AT LEAST ONE ACCOUNT\n");
+        logInfo("Step 8: Verify Interest Paid Last Year field value.\n" +
+                "SKIP STEP if THERE ARE NO SUCH ACCOUNTS");
+        AccountActions.callStatement().verifyInterestPaidLastYearValue();
+
+        logInfo("Step 9: Go to the WebAdmin->RulesUI and search for active CHK account,"
+                + "where YTD Taxes withheld field is not null.\n"
+                + "Using the Query open it on Transactions tab and click [Call Statement] button\n"
+                + "SKIP STEP if QUERY DOES NOT RETURN AT LEAST ONE ACCOUNT\n");
+        logInfo("Step 10: Verify YTD Taxes withheld field value.\n" +
+                "SKIP STEP if THERE ARE NO SUCH ACCOUNTS");
+        AccountActions.callStatement().verifyYtdTaxesWithheldValue();
+
+        logInfo("Step 11: Go to the WebAdmin->RulesUI and search for active CHK account,"
+                + "where Overdraft Charge Off > 0.\n"
+                + "Using the Query open it on Transactions tab and click [Call Statement] button\n"
+                + "SKIP STEP if QUERY DOES NOT RETURN AT LEAST ONE ACCOUNT\n");
+        logInfo("Step 12: Verify 'overdraft was charged off' field value.\n" +
+                "SKIP STEP if THERE ARE NO SUCH ACCOUNTS");
+        AccountActions.callStatement().verifyOverdraftWasChargedOffValue();
     }
 
     @AfterMethod(description = "Delete the downloaded PDF.")

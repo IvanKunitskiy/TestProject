@@ -19,8 +19,6 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.io.File;
-
 @Epic("Frontoffice")
 @Feature("Deposit Accounts Management")
 @Owner("Petro")
@@ -29,7 +27,6 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
     private IndividualClient client;
     private Account cdIraAccount;
     private Transaction transaction;
-    private File callStatementPdfFile;
 
     @BeforeMethod
     public void preCondition() {
@@ -59,6 +56,7 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
 
         // Commit transaction to account and logout
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
+        // TODO: Add creating the debit transaction
         Actions.loginActions().doLogOut();
     }
 
@@ -75,9 +73,33 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
         Pages.accountNavigationPage().clickTransactionsTab();
 
         logInfo("Step 3: Click [Call Statement] button");
-        logInfo("Step 4: Look through the Savings Call Statement data and verify it contains correct data");
-        callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
-        AccountActions.callStatement().verifyCDIRAAccountCallStatementData(callStatementPdfFile, cdIraAccount, client, transaction);
+        logInfo("Step 4: Pay attention to the Certificate Call Statement data");
+        logInfo("Step 5: Look through the Call Statement for the selected CD IRA account");
+        AccountActions.callStatement().verifyCDIRAAccountCallStatementData(cdIraAccount, client, transaction);
+
+        logInfo("Step 6: Go to the WebAdmin -> RulesUI and search for active CD IRA account,"
+                + "where YTD Interest Paid field is not null.\n"
+                + "Using the Query open it on Transactions tab and click [Call Statement] button.\n"
+                + "SKIP STEP if QUERY DOES NOT RETURN AT LEAST ONE ACCOUNT\n");
+        logInfo("Step 7: Verify YTD Interest Paid field value.\n" +
+                "SKIP STEP if THERE ARE NO SUCH ACCOUNTS");
+        AccountActions.callStatement().verifyYtdInterestPaidValue();
+
+        logInfo("Step 8: Go to the WebAdmin->RulesUI and search for active CD IRA account,"
+                + "where Interest Paid Last Year field is not null.\n"
+                + "Using the Query open it on Transactions tab and click [Call Statement] button\n"
+                + "SKIP STEP if QUERY DOES NOT RETURN AT LEAST ONE ACCOUNT\n");
+        logInfo("Step 9: Verify Interest Paid Last Year field value.\n" +
+                "SKIP STEP if THERE ARE NO SUCH ACCOUNTS");
+        AccountActions.callStatement().verifyInterestPaidLastYearValue();
+
+        logInfo("Step 10: Go to the WebAdmin->RulesUI and search for active CD IRA account,"
+                + "where YTD Taxes withheld field is not null.\n"
+                + "Using the Query open it on Transactions tab and click [Call Statement] button\n"
+                + "SKIP STEP if QUERY DOES NOT RETURN AT LEAST ONE ACCOUNT\n");
+        logInfo("Step 11: Verify YTD Taxes withheld field value.\n" +
+                "SKIP STEP if THERE ARE NO SUCH ACCOUNTS");
+        AccountActions.callStatement().verifyYtdTaxesWithheldValue();
     }
 
     @AfterMethod(description = "Delete the downloaded PDF.")

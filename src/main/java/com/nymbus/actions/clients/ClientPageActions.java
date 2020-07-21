@@ -84,6 +84,13 @@ public class ClientPageActions {
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedAccountInSearchResults(account.getAccountNumber());
     }
 
+    public void searchAndOpenAccountByAccountNumber(String accountNumber) {
+        Pages.clientsSearchPage().typeToClientsSearchInputField(accountNumber);
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), accountNumber));
+        Pages.clientsSearchPage().clickOnSearchButton();
+        Pages.clientsSearchResultsPage().clickTheExactlyMatchedAccountInSearchResults(accountNumber);
+    }
+
     public void closeAllNotifications() {
         int notificationsCount = Pages.clientDetailsPage().getNotificationCount();
 
