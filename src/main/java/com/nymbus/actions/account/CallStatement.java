@@ -48,6 +48,7 @@ public class CallStatement {
         Assert.assertTrue(containsText(formattedSystemDate).matches(pdf), "'Current business date' does not match");
     }
 
+    // Client Section
     private void verifyClientSectionInPdf(PDF pdf, IndividualClient client, Account account) {
         String accountNumber = account.getAccountNumber();
         String phoneNumber = client.getIndividualClientDetails().getPhones().get(1).getPhoneNumber().replaceFirst("(\\d{3})(\\d{3})(\\d+)", "$1-$2-$3");
@@ -56,10 +57,12 @@ public class CallStatement {
         Assert.assertTrue(containsText(accountNumber.substring(accountNumber.length() - 4)).matches(pdf), "'Account number' does not match.");
         Assert.assertTrue(containsText(account.getBankBranch()).matches(pdf), "'Bank Branch' does not match.");
         Assert.assertTrue(containsText(client.getFullName()).matches(pdf), "'Client name' does not match");
+        // TODO: Address should be equal to 'Client's Seasonal Address'
         Assert.assertTrue(containsText(client.getIndividualType().getAddresses().get(0).getAddress()).matches(pdf), "'Client Addres' does not match.");
         Assert.assertTrue(containsText(phoneNumber).matches(pdf), "'Phone' does not match.");
     }
 
+    // Transaction Section
     private void verifyTransactionSectionInPdf(PDF pdf, Transaction transaction) {
         String transactionCode = String.join(" ", transaction.getTransactionDestination().getTransactionCode().split("\\W+"));
         String transactionAmount = String.format("%.2f", transaction.getTransactionSource().getAmount());
@@ -70,7 +73,7 @@ public class CallStatement {
             Assert.assertTrue(containsText(transactionCode).matches(pdf), "'Transaction Description' does not match.");
             Assert.assertTrue(containsText("1 Credits").matches(pdf), "'Calculated # of all transactions' does not match.");
         }
-//        Overdraft Charged Off - selected account's Overdraft Charged Off value - skip this field for Account, for which 105-Overdraft Charge Off transaction was not performed.
+        // TODO: verify Overdraft Charged Off (account's Overdraft Charged Off value) - skip this field for account, for which 105-Overdraft Charge Off transaction was not performed.
     }
 
     // Common for Checking, Savings and Savings Ira
@@ -79,18 +82,12 @@ public class CallStatement {
         Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf), "'Date Opened' does not match.");
         Assert.assertTrue(containsText(account.getInterestRate()).matches(pdf), "'Dividend Rate' does not match.");
         Assert.assertTrue(containsText(account.getAccruedInterest()).matches(pdf), "'Accrued Interest' does not match");
-//        Assert.assertTrue(containsText(account.getInterestPaidYTD()).matches(pdf), "'Interest Paid YTD' does not match");
-//        Assert.assertTrue(containsText(account.getInterestPaidLastYear()).matches(pdf), "'Interest Paid Last Year' does not match");
-//        Assert.assertTrue(containsText(account.getTaxesWithheldYTD()).matches(pdf), "'YTD Taxes withheld' does not match");
     }
 
     // Common for CD and CD IRA account
     private void verifyCdIraAccountSectionInPdf(PDF pdf, Account account) {
         Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf), "'Date Opened' does not match.");
         Assert.assertTrue(containsText(account.getAccruedInterest()).matches(pdf), "'Accrued Interest' does not match");
-        Assert.assertTrue(containsText(account.getInterestPaidYTD()).matches(pdf), "'Interest Paid YTD' does not match");
-        Assert.assertTrue(containsText(account.getInterestPaidLastYear()).matches(pdf), "'Interest Paid Last Year' does not match");
-        Assert.assertTrue(containsText(account.getTaxesWithheldYTD()).matches(pdf), "'YTD Taxes withheld' does not match");
         Assert.assertTrue(containsText(account.getOriginalBalance()).matches(pdf), "'Original Balance' does not match");
         Assert.assertTrue(containsText(account.getProduct()).matches(pdf), "'Class' does not match");
         Assert.assertTrue(containsText(account.getInterestFrequency()).matches(pdf), "'Dividend Freq (Interest Frequency value)', does not match");
@@ -105,7 +102,7 @@ public class CallStatement {
     }
 
     // Verify CHK, Savings, Savings IRA call statement pdf
-    public void verifyChkSavingsIraAccountCallStatementData(File file, Account account, IndividualClient client, Transaction transaction) {
+    public void verifyChkSavingsIraAccountCallStatementData(Account account, IndividualClient client, Transaction transaction) {
         File callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
         PDF pdf = new PDF(callStatementPdfFile);
 
@@ -119,13 +116,17 @@ public class CallStatement {
     }
 
     // Verify CD, CD IRA call statement pdf
-    public void verifyCDIRAAccountCallStatementData(File file, Account account, IndividualClient client, Transaction transaction) {
-        PDF pdf = new PDF(file);
+    public void verifyCDIRAAccountCallStatementData(Account account, IndividualClient client, Transaction transaction) {
+        File callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
+        PDF pdf = new PDF(callStatementPdfFile);
 
         verifyDateInPdf(pdf);
         verifyClientSectionInPdf(pdf, client, account);
         verifyCdIraAccountSectionInPdf(pdf, account);
         verifyTransactionSectionInPdf(pdf, transaction);
+
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
     }
 
     private String getCurrentOfficerInitials(Account account) {
@@ -139,16 +140,10 @@ public class CallStatement {
     public void setDataForChkSavingsIraAccountCallStatementVerification(Account account) {
         setAccruedInterest(account);
         setInterestRate(account);
-//        setInterestPaidYTD(account);
-//        setInterestPaidLastYear(account);
-//        setTaxesWithheldYTD(account);
     }
 
     public void setDataForCDIRAAAccountCallStatementVerification(Account account) {
         setAccruedInterest(account);
-//        setInterestPaidYTD(account);
-//        setInterestPaidLastYear(account);
-//        setTaxesWithheldYTD(account);
         setOriginalBalance(account);
         setTerm(account);
         setDateNextInterest(account);
