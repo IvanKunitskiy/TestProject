@@ -72,6 +72,10 @@ public class DateTime {
         return DateTimeFormatter.ofPattern("MMM d, yyyy", Locale.ENGLISH).format(LocalDate.now());
     }
 
+    public static String getLocalDateOfPattern(String pattern) {
+        return LocalDate.now().format(DateTimeFormatter.ofPattern(pattern));
+    }
+
     public static String parseDate(String date) {
         return DateTimeFormatter.ofPattern("MMMM d, yyyy").format(LocalDate.parse(date));
     }

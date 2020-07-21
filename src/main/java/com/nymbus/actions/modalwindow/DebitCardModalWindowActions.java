@@ -2,6 +2,7 @@ package com.nymbus.actions.modalwindow;
 
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
+import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 
@@ -86,5 +87,25 @@ public class DebitCardModalWindowActions {
         Pages.debitCardModalWindow().clickOnCancelButton();
 
         return cardNumber;
+    }
+
+    public void goToCardHistory(int index) {
+        Pages.clientDetailsPage().clickOnMaintenanceTab();
+        Pages.clientDetailsPage().clickOnViewAllCardsButton();
+        Pages.cardsManagementPage().clickViewHistoryButton(index);
+    }
+
+    public void setDebitCardWithBinControl(DebitCard debitCard, BinControl binControl) {
+        debitCard.setBinControl(binControl);
+        debitCard.setATMDailyDollarLimit(binControl.getATMDailyDollarLimit());
+        debitCard.setATMTransactionLimit(binControl.getATMTransactionLimit());
+        debitCard.setDBCDailyDollarLimit(binControl.getDBCDailyDollarLimit());
+        debitCard.setDBCTransactionLimit(binControl.getDBCTransactionLimit());
+    }
+
+    public double getTransactionAmount(int index) {
+        String amount = Pages.cardsManagementPage().getTransactionAmount(index);
+
+        return Double.parseDouble(amount);
     }
 }
