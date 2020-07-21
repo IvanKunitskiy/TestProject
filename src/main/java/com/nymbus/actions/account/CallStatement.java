@@ -60,7 +60,7 @@ public class CallStatement {
 
     private void verifyTransactionSectionInPdf(PDF pdf, Transaction transaction) {
         String transactionCode = String.join(" ", transaction.getTransactionDestination().getTransactionCode().split("\\W+"));
-        String transactionAmount = String.valueOf(transaction.getTransactionSource().getAmount());
+        String transactionAmount = String.format("%.2f", transaction.getTransactionSource().getAmount());
 
         Assert.assertTrue(containsText(formattedSystemDate).matches(pdf), "'Transaction Posting Date' does not match.");
         Assert.assertTrue(containsText(transactionAmount).matches(pdf), "'Balance for committed transaction' and 'Transaction amount of Credit' does not match.");
