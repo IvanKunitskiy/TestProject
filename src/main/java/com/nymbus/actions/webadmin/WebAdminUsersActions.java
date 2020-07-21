@@ -128,7 +128,7 @@ public class WebAdminUsersActions {
             accountNumber = WebAdminPages.rulesUIQueryAnalyzerPage().getAccountNumberByIndex(index);
         }
 
-        WebAdminActions.loginActions().doLogout();
+        WebAdminActions.loginActions().doLogoutProgrammatically();
         SelenideTools.closeCurrentTab();
         SelenideTools.switchTo().window(0);
 
