@@ -13,6 +13,7 @@ import com.nymbus.pages.Pages;
 import org.testng.Assert;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import static com.codeborne.pdftest.PDF.containsText;
@@ -150,9 +151,12 @@ public class CallStatement {
     }
 
     public void setDailyInterestAccrual(Account account) {
-        String dailyInterestAccrual = Pages.accountDetailsPage().getDailyInterestAccrual();
-        if (!dailyInterestAccrual.isEmpty()) {
-            account.setDailyInterestAccrual(dailyInterestAccrual);
+        String interestRate = Pages.accountDetailsPage().getInterestRateValue();
+        if (!interestRate.isEmpty()) {
+            DecimalFormat df = new DecimalFormat("#.####");
+            double rate = Double.parseDouble(interestRate);
+            double dailyAccrual = ((rate / 100) / 365) * 100;
+            account.setDailyInterestAccrual(df.format(dailyAccrual));
         } else {
             account.setDailyInterestAccrual("0.00");
         }
