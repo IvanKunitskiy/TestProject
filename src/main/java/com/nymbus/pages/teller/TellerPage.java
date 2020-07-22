@@ -13,6 +13,27 @@ public class TellerPage extends PageTools {
     private By cashDrawerName = By.xpath("//div[@name='cashDrawerTemplate']/a/span/span");
     private By effectiveDate = By.xpath("//input[@data-test-id='field-']");
     private By drawerNameInFooter = By.xpath("//footer//span[contains(text(), 'Drawer Name')]/span");
+    private By transactionSection = By.xpath("//section[@ui-view='transaction']");
+
+    @Step("Wait for transaction section visibility")
+    public void waitForTransactionSectionVisibility() {
+        waitForElementVisibility(transactionSection);
+    }
+
+    @Step("Is alert present")
+    public boolean isAlertPresentOnTellerPage() {
+        return isAlertPresent();
+    }
+
+    @Step("Accept alert on Teller page")
+    public void acceptAlertOnTellerPage() {
+        acceptAlert();
+    }
+
+    @Step("Dismiss alert on Teller page")
+    public void dismissAlertOnTellerPage() {
+        dismissAlert();
+    }
 
     @Step("Wait 'Proof Date Login' modal window")
     public void waitModalWindow() {

@@ -21,6 +21,11 @@ public class NonTellerTransactionActions {
                 transactionData.getExpirationDate(), transactionData.getAmount(), transactionData.getTerminalId());
     }
 
+    public void performATMWDepositONUSTransaction(NonTellerTransactionData transactionData) {
+        NonTellerTransaction.generateDepositONUSTransaction(transactionData.getCardNumber(),
+                transactionData.getExpirationDate(), transactionData.getAmount(), transactionData.getTerminalId());
+    }
+
     public String getTerminalID(int index) {
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);

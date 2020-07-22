@@ -33,6 +33,15 @@ public class CHKAccountData {
         return json;
     }
 
+    public static JSONObject getAtmDepositData(String cardNumber, String cardExpiration, String amount, String onusTerminalID) {
+        JSONObject json = new JSONObject();
+        json.put("actions", getDepositActionsArray());
+        json.put("ruleType", "eft");
+        json.put("beans", getDepositBeansArray(cardNumber, cardExpiration, amount, onusTerminalID));
+
+        return json;
+    }
+
     private static JSONObject getFieldsArr(String cardNumber, String cardExpiration, String amount) {
         JSONObject fields = new JSONObject();
         fields.put("0", "0220");
@@ -64,6 +73,7 @@ public class CHKAccountData {
 
         return fields;
     }
+
     private static JSONObject getDepositFieldsArr(String cardNumber, String cardExpiration, String amount) {
         JSONObject fields = new JSONObject();
         fields.put("0", "0200");
@@ -78,6 +88,25 @@ public class CHKAccountData {
         fields.put("48","SHELL");
         fields.put("49","840");
         fields.put("58","0000000002U");
+
+        return fields;
+    }
+
+    private static JSONObject getDepositFieldsArr(String cardNumber, String cardExpiration, String amount, String onusTerminalID) {
+        JSONObject fields = new JSONObject();
+        fields.put("0", "0200");
+        fields.put("3", "210000");
+        fields.put("4", amount);
+        fields.put("11", String.valueOf(Generator.genInt(100000000, 922337203)));
+        fields.put("18", "5542");
+        fields.put("22","022");
+        fields.put("35", getCardNumberExpirationString(cardNumber, cardExpiration));
+        fields.put("41", onusTerminalID);
+        fields.put("42","01 sample av.");
+        fields.put("43","Long ave. bld. 34      Nashville      US");
+        fields.put("48","SHELL");
+        fields.put("49","840");
+        fields.put("58","10000000612");
 
         return fields;
     }
@@ -108,6 +137,16 @@ public class CHKAccountData {
 
         return beans;
     }
+
+    private static JSONArray getDepositBeansArray(String cardNumber, String cardExpiration, String amount, String onusTerminalID) {
+        JSONArray beans = new JSONArray();
+        JSONObject json = new JSONObject();
+        json.put("fields", getDepositFieldsArr(cardNumber, cardExpiration, amount, onusTerminalID));
+        beans.put(json);
+
+        return beans;
+    }
+
     private static JSONArray getActionsArray() {
         JSONArray actions = new JSONArray();
         actions.put("0220");
