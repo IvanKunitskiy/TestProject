@@ -38,14 +38,14 @@ public class CallStatement {
      * Verify CHK, Savings, Savings IRA account call statement PDF file
      */
 
-    public void verifyChkSavingsIraAccountCallStatementData(Account account, IndividualClient client, Transaction transaction) {
+    public void verifyChkSavingsIraAccountCallStatementData(Account account, IndividualClient client, Transaction creditTransaction, Transaction debitTransaction) {
         File callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
         PDF pdf = new PDF(callStatementPdfFile);
 
         verifyDateInPdf(pdf);
         verifyClientSectionInPdf(pdf, client, account);
         verifyChkSavingsIraAccountSectionInPdf(pdf, account);
-        verifyTransactionSectionInPdf(pdf, transaction);
+        verifyTransactionSectionInPdf(pdf, creditTransaction, debitTransaction);
 
         SelenideTools.closeCurrentTab();
         SelenideTools.switchTo().window(0);
@@ -55,14 +55,14 @@ public class CallStatement {
      * Verify CD, CD IRA account call statement PDF file
      */
 
-    public void verifyCDIRAAccountCallStatementData(Account account, IndividualClient client, Transaction transaction) {
+    public void verifyCDIRAAccountCallStatementData(Account account, IndividualClient client, Transaction creditTransaction, Transaction debitTransaction) {
         File callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
         PDF pdf = new PDF(callStatementPdfFile);
 
         verifyDateInPdf(pdf);
         verifyClientSectionInPdf(pdf, client, account);
         verifyCdIraAccountSectionInPdf(pdf, account);
-        verifyTransactionSectionInPdf(pdf, transaction);
+        verifyTransactionSectionInPdf(pdf, creditTransaction, debitTransaction);
 
         SelenideTools.closeCurrentTab();
         SelenideTools.switchTo().window(0);
@@ -82,13 +82,11 @@ public class CallStatement {
      */
 
     private void verifyClientSectionInPdf(PDF pdf, IndividualClient client, Account account) {
-        String accountNumber = account.getAccountNumber();
-        String phoneNumber = client.getIndividualClientDetails().getPhones().get(1).getPhoneNumber().replaceFirst("(\\d{3})(\\d{3})(\\d+)", "$1-$2-$3");
-
         // PIF Number (or Member number) - Client ID from clients profile
         assertThat(pdf, containsText(client.getIndividualType().getClientID()));
 
         // Account number - masked account# (last 4 digits are displayed)
+        String accountNumber = account.getAccountNumber();
         assertThat(pdf, containsText(accountNumber.substring(accountNumber.length() - 4)));
 
         // Branch - Bank Branch Number on account
@@ -97,10 +95,12 @@ public class CallStatement {
         // Client Name - Client's First Name, Middle Name, Last Name
         assertThat(pdf, containsText(client.getFullName()));
 
+        // Client Address - Client's Seasonal Address
         // TODO: Address should be equal to 'Client's Seasonal Address'
         assertThat(pdf, containsText(client.getIndividualType().getAddresses().get(0).getAddress()));
 
         // Phone - Clients Phone
+        String phoneNumber = client.getIndividualClientDetails().getPhones().get(1).getPhoneNumber().replaceFirst("(\\d{3})(\\d{3})(\\d+)", "$1-$2-$3");
         assertThat(pdf, containsText(phoneNumber));
     }
 
@@ -108,17 +108,31 @@ public class CallStatement {
      * Verify 'Transaction section' in PDF file
      */
 
-    private void verifyTransactionSectionInPdf(PDF pdf, Transaction transaction) {
-        String transactionCode = String.join(" ", transaction.getTransactionDestination().getTransactionCode().split("\\W+"));
-        String transactionAmount = String.format("%.2f", transaction.getTransactionSource().getAmount());
-
+    private void verifyTransactionSectionInPdf(PDF pdf, Transaction creditTransaction, Transaction debitTransaction) {
+        // Date - Transaction Posting Date for committed transaction from transactions tab
         assertThat(pdf, containsText(formattedSystemDate));
-        assertThat(pdf, containsText(transactionAmount));
-        if (transactionCode.contains("109") || transactionCode.contains("209")) {
-            assertThat(pdf, containsText(transactionCode));
-            assertThat(pdf, containsText("1 Credits"));
-        }
-        // TODO: verify Overdraft Charged Off (account's Overdraft Charged Off value) - skip this field for account, for which 105-Overdraft Charge Off transaction was not performed.
+
+        // Transaction Description - Transaction Code for committed transaction from transactions tab
+        String debitTransactionCode = String.join(" ", debitTransaction.getTransactionDestination().getTransactionCode().split("\\W+"));
+        assertThat(pdf, containsText(debitTransactionCode));
+        String creditTransactionCode = String.join(" ", creditTransaction.getTransactionDestination().getTransactionCode().split("\\W+"));
+        assertThat(pdf, containsText(creditTransactionCode));
+
+        // Debits - transaction amount of Debit transaction (Amount is displayed with '-' sign for such transactions)
+        assertThat(pdf, containsText("1 Credits"));
+
+        // Credits - transaction amount of Credit transaction (Amount is displayed with '+' sign for such transactions)
+        assertThat(pdf, containsText("1 Debits"));
+
+        // Balance - Balance for committed transaction from transactions tab
+        String creditTransactionAmount = String.format("%.2f", creditTransaction.getTransactionSource().getAmount());
+        assertThat(pdf, containsText(creditTransactionAmount));
+        String debitTransactionAmount = String.format("%.2f", debitTransaction.getTransactionSource().getAmount());
+        assertThat(pdf, containsText(debitTransactionAmount));
+
+        // Totals - calculated # of all transactions, total Debits and Total Credits
+        double total = debitTransaction.getTransactionSource().getAmount() - creditTransaction.getTransactionSource().getAmount();
+        assertThat(pdf, containsText((String.format(".2f", total))));
     }
 
     /**
@@ -126,9 +140,19 @@ public class CallStatement {
      */
 
     private void verifyChkSavingsIraAccountSectionInPdf(PDF pdf, Account account) {
+        // Account Type - selected account's Account Type
+        assertThat(pdf, containsText(account.getProduct()));
+
+        // Officer - selected account's Current Officer
         assertThat(pdf, containsText(getCurrentOfficerInitials(account)));
+
+        // Opened - selected account's Date Opened
         assertThat(pdf, containsText(account.getDateOpened()));
+
+        // Interest Rate - selected account's Interest Rate
         assertThat(pdf, containsText(account.getInterestRate()));
+
+        // Accrued Interest - selected account's Accrued Interest
         assertThat(pdf, containsText(account.getAccruedInterest()));
     }
 
@@ -137,18 +161,46 @@ public class CallStatement {
      */
 
     private void verifyCdIraAccountSectionInPdf(PDF pdf, Account account) {
+        // Date Opened - selected account's Date Opened
         assertThat(pdf, containsText(account.getDateOpened()));
-        assertThat(pdf, containsText(account.getAccruedInterest()));
+
+        // Original Balance - selected account's Original Balance value
         assertThat(pdf, containsText(account.getOriginalBalance()));
-        assertThat(pdf, containsText(account.getProduct()));
-        assertThat(pdf, containsText(account.getInterestFrequency()));
-        assertThat(pdf, containsText(account.getInterestRate()));
-        assertThat(pdf, containsText(account.getInterestType()));
-        assertThat(pdf, containsText(account.getApplyInterestTo()));
+
+        // Term (months) - selected account's Term In Months Or Days value
         assertThat(pdf, containsText(account.getTerm()));
-        assertThat(pdf, containsText(account.getDateNextInterest()));
+
+        // Class - selected account's Call Class code value
+        // TODO: Add 'call class code' verification
+
+        // Renew - selected account's Auto-Renewable field value
         assertThat(pdf, containsText(Functions.capitalize(account.getAutoRenewable().toLowerCase())));
+
+        // Interest Freq - selected account's Interest Frequency value
+        assertThat(pdf, containsText(account.getInterestFrequency()));
+
+        // Interest Rate selected account's Interest Rate value
+        assertThat(pdf, containsText(account.getInterestRate()));
+
+        // Maturity - selected account's Maturity Date
         assertThat(pdf, containsText(account.getMaturityDate()));
+
+        // Interest Type - selected account's Interest Type
+        assertThat(pdf, containsText(account.getInterestType()));
+
+        // Apply To - selected account's Apply interest to value
+        assertThat(pdf, containsText(account.getApplyInterestTo()));
+
+        // Next Interest - selected account's Date next interest value
+        assertThat(pdf, containsText(account.getDateNextInterest()));
+
+        // Anticipated - selected account's Next Interest Payment Amount value
+        // TODO: Add 'Anticipated' verification
+
+        // Accrued - selected account's Accrued Interest value
+        assertThat(pdf, containsText(account.getAccruedInterest()));
+
+        // Daily Accrual - selected account's Daily Interest Accrual value
         assertThat(pdf, containsText(account.getDailyInterestAccrual()));
     }
 

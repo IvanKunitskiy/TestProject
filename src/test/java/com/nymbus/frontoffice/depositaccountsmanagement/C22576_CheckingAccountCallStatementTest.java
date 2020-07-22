@@ -12,6 +12,7 @@ import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
+import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitGLCreditTransactionBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
@@ -24,7 +25,8 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
 
     private IndividualClient client;
     private Account chkAccount;
-    private Transaction transaction;
+    private Transaction creditTransaction;
+    private Transaction debitTransaction;
 
     @BeforeMethod
     public void preCondition() {
@@ -37,10 +39,13 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
         // Set up account
         chkAccount = new Account().setCHKAccountData();
 
-        // Set up transaction with account number
-        transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
-        transaction.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
-        transaction.getTransactionDestination().setTransactionCode("109 - Deposit");
+        // Set up credit and debit transactions
+        creditTransaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        creditTransaction.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
+        creditTransaction.getTransactionDestination().setTransactionCode("109 - Deposit");
+
+        debitTransaction = new TransactionConstructor(new MiscDebitGLCreditTransactionBuilder()).constructTransaction();
+        debitTransaction.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
 
         // Create client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -53,8 +58,8 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
         client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
 
         // Create transaction and logout
-        Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
-        // TODO: Add creating the debit transaction
+        Actions.transactionActions().performGLDebitMiscCreditTransaction(creditTransaction);
+        Actions.transactionActions().performMiscDebitGLCreditTransaction(debitTransaction);
         Actions.loginActions().doLogOut();
     }
 
@@ -72,7 +77,7 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
 
         logInfo("Step 3: Click [Call Statement] button");
         logInfo("Step 4: Look through the CHK Call Statement data and verify it contains correct data");
-        AccountActions.callStatement().verifyChkSavingsIraAccountCallStatementData(chkAccount, client, transaction);
+        AccountActions.callStatement().verifyChkSavingsIraAccountCallStatementData(chkAccount, client, creditTransaction, debitTransaction);
 
         logInfo("Step 5: Go to the WebAdmin -> RulesUI and search for active CHK account,"
                 + "where YTD Interest Paid field is not null.\n"
