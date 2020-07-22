@@ -6,36 +6,26 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.SelenideTools;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
-import org.testng.Assert;
 
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.List;
 
 import static com.codeborne.pdftest.PDF.containsText;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertTrue;
 
 public class CallStatement {
 
     private final String formattedSystemDate = DateTime.getDateWithFormat(WebAdminActions.loginActions().getSystemDate(), "MM/dd/yyyy", "MM/dd/yy");
 
-    public void setAddress(Client client) {
-        Pages.callStatementModalPage().clickAddressSelectorButton();
-        List<String> listOfAddress = Pages.callStatementModalPage().getAddressList();
-        Assert.assertTrue(listOfAddress.size() > 0, "There are no options available");
-        Pages.callStatementModalPage().clickAddressSelectorOption(client.getAddress().getAddress());
-    }
-
-    public void setAddress(IndividualClient client) {
-        Pages.callStatementModalPage().clickAddressSelectorButton();
-        List<String> listOfAddress = Pages.callStatementModalPage().getAddressList();
-        Assert.assertTrue(listOfAddress.size() > 0, "There are no options available");
-        Pages.callStatementModalPage().clickAddressSelectorOption(client.getIndividualType().getAddresses().get(0).getAddress());
-    }
+    /**
+     * Download 'CallStatement' PDF file
+     */
 
     public File downloadCallStatementPdfFile() {
         Pages.transactionsPage().clickTheCallStatementButton();
@@ -44,64 +34,10 @@ public class CallStatement {
         return Pages.accountStatementPage().downloadCallStatementPdf();
     }
 
-    private void verifyDateInPdf(PDF pdf) {
-        Assert.assertTrue(containsText(formattedSystemDate).matches(pdf), "'Current business date' does not match");
-    }
+    /**
+     * Verify CHK, Savings, Savings IRA account call statement PDF file
+     */
 
-    // Client Section
-    private void verifyClientSectionInPdf(PDF pdf, IndividualClient client, Account account) {
-        String accountNumber = account.getAccountNumber();
-        String phoneNumber = client.getIndividualClientDetails().getPhones().get(1).getPhoneNumber().replaceFirst("(\\d{3})(\\d{3})(\\d+)", "$1-$2-$3");
-
-        Assert.assertTrue(containsText(client.getIndividualType().getClientID()).matches(pdf), "'Member number' does not match.");
-        Assert.assertTrue(containsText(accountNumber.substring(accountNumber.length() - 4)).matches(pdf), "'Account number' does not match.");
-        Assert.assertTrue(containsText(account.getBankBranch()).matches(pdf), "'Bank Branch' does not match.");
-        Assert.assertTrue(containsText(client.getFullName()).matches(pdf), "'Client name' does not match");
-        // TODO: Address should be equal to 'Client's Seasonal Address'
-        Assert.assertTrue(containsText(client.getIndividualType().getAddresses().get(0).getAddress()).matches(pdf), "'Client Addres' does not match.");
-        Assert.assertTrue(containsText(phoneNumber).matches(pdf), "'Phone' does not match.");
-    }
-
-    // Transaction Section
-    private void verifyTransactionSectionInPdf(PDF pdf, Transaction transaction) {
-        String transactionCode = String.join(" ", transaction.getTransactionDestination().getTransactionCode().split("\\W+"));
-        String transactionAmount = String.format("%.2f", transaction.getTransactionSource().getAmount());
-
-        Assert.assertTrue(containsText(formattedSystemDate).matches(pdf), "'Transaction Posting Date' does not match.");
-        Assert.assertTrue(containsText(transactionAmount).matches(pdf), "'Balance for committed transaction' and 'Transaction amount of Credit' does not match.");
-        if (transactionCode.contains("109") || transactionCode.contains("209")) {
-            Assert.assertTrue(containsText(transactionCode).matches(pdf), "'Transaction Description' does not match.");
-            Assert.assertTrue(containsText("1 Credits").matches(pdf), "'Calculated # of all transactions' does not match.");
-        }
-        // TODO: verify Overdraft Charged Off (account's Overdraft Charged Off value) - skip this field for account, for which 105-Overdraft Charge Off transaction was not performed.
-    }
-
-    // Common for Checking, Savings and Savings Ira
-    private void verifyChkSavingsIraAccountSectionInPdf(PDF pdf, Account account) {
-        Assert.assertTrue(containsText(getCurrentOfficerInitials(account)).matches(pdf), "'Current Officer' does not match.");
-        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf), "'Date Opened' does not match.");
-        Assert.assertTrue(containsText(account.getInterestRate()).matches(pdf), "'Dividend Rate' does not match.");
-        Assert.assertTrue(containsText(account.getAccruedInterest()).matches(pdf), "'Accrued Interest' does not match");
-    }
-
-    // Common for CD and CD IRA account
-    private void verifyCdIraAccountSectionInPdf(PDF pdf, Account account) {
-        Assert.assertTrue(containsText(account.getDateOpened()).matches(pdf), "'Date Opened' does not match.");
-        Assert.assertTrue(containsText(account.getAccruedInterest()).matches(pdf), "'Accrued Interest' does not match");
-        Assert.assertTrue(containsText(account.getOriginalBalance()).matches(pdf), "'Original Balance' does not match");
-        Assert.assertTrue(containsText(account.getProduct()).matches(pdf), "'Class' does not match");
-        Assert.assertTrue(containsText(account.getInterestFrequency()).matches(pdf), "'Dividend Freq (Interest Frequency value)', does not match");
-        Assert.assertTrue(containsText(account.getInterestRate()).matches(pdf), "'Dividend Rate (Interest Rate)' doe not match");
-        Assert.assertTrue(containsText(account.getInterestType()).matches(pdf), "'Dividend Type (Interest Type)' does not match");
-        Assert.assertTrue(containsText(account.getApplyInterestTo()).matches(pdf), "Apply To (Apply interest to value) does not match");
-        Assert.assertTrue(containsText(account.getTerm()).matches(pdf), "'Term (months)' does not match");
-        Assert.assertTrue(containsText(account.getDateNextInterest()).matches(pdf), "'Next Dividend (Date next interest value)' does not match");
-        Assert.assertTrue(containsText(Functions.capitalize(account.getAutoRenewable().toLowerCase())).matches(pdf), "'Renew - Auto-Renewable' does not match");
-        Assert.assertTrue(containsText(account.getMaturityDate()).matches(pdf), "'Maturity' does not match");
-        Assert.assertTrue(containsText(account.getDailyInterestAccrual()).matches(pdf), "'Daily Interest Accrual' does not match");
-    }
-
-    // Verify CHK, Savings, Savings IRA call statement pdf
     public void verifyChkSavingsIraAccountCallStatementData(Account account, IndividualClient client, Transaction transaction) {
         File callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
         PDF pdf = new PDF(callStatementPdfFile);
@@ -115,7 +51,10 @@ public class CallStatement {
         SelenideTools.switchTo().window(0);
     }
 
-    // Verify CD, CD IRA call statement pdf
+    /**
+     * Verify CD, CD IRA account call statement PDF file
+     */
+
     public void verifyCDIRAAccountCallStatementData(Account account, IndividualClient client, Transaction transaction) {
         File callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
         PDF pdf = new PDF(callStatementPdfFile);
@@ -129,12 +68,103 @@ public class CallStatement {
         SelenideTools.switchTo().window(0);
     }
 
+    /**
+     * Verify date in PDF file
+     */
+
+    private void verifyDateInPdf(PDF pdf) {
+        // Date - current business date
+        assertThat(pdf, containsText(formattedSystemDate));
+    }
+
+    /**
+     * Verify 'Client section' in PDF file
+     */
+
+    private void verifyClientSectionInPdf(PDF pdf, IndividualClient client, Account account) {
+        String accountNumber = account.getAccountNumber();
+        String phoneNumber = client.getIndividualClientDetails().getPhones().get(1).getPhoneNumber().replaceFirst("(\\d{3})(\\d{3})(\\d+)", "$1-$2-$3");
+
+        // PIF Number (or Member number) - Client ID from clients profile
+        assertThat(pdf, containsText(client.getIndividualType().getClientID()));
+
+        // Account number - masked account# (last 4 digits are displayed)
+        assertThat(pdf, containsText(accountNumber.substring(accountNumber.length() - 4)));
+
+        // Branch - Bank Branch Number on account
+        assertThat(pdf, containsText(account.getBankBranch()));
+
+        // Client Name - Client's First Name, Middle Name, Last Name
+        assertThat(pdf, containsText(client.getFullName()));
+
+        // TODO: Address should be equal to 'Client's Seasonal Address'
+        assertThat(pdf, containsText(client.getIndividualType().getAddresses().get(0).getAddress()));
+
+        // Phone - Clients Phone
+        assertThat(pdf, containsText(phoneNumber));
+    }
+
+    /**
+     * Verify 'Transaction section' in PDF file
+     */
+
+    private void verifyTransactionSectionInPdf(PDF pdf, Transaction transaction) {
+        String transactionCode = String.join(" ", transaction.getTransactionDestination().getTransactionCode().split("\\W+"));
+        String transactionAmount = String.format("%.2f", transaction.getTransactionSource().getAmount());
+
+        assertThat(pdf, containsText(formattedSystemDate));
+        assertThat(pdf, containsText(transactionAmount));
+        if (transactionCode.contains("109") || transactionCode.contains("209")) {
+            assertThat(pdf, containsText(transactionCode));
+            assertThat(pdf, containsText("1 Credits"));
+        }
+        // TODO: verify Overdraft Charged Off (account's Overdraft Charged Off value) - skip this field for account, for which 105-Overdraft Charge Off transaction was not performed.
+    }
+
+    /**
+     * Verify 'Account section' in Checking, Savings and Savings Ira accounts in PDF file
+     */
+
+    private void verifyChkSavingsIraAccountSectionInPdf(PDF pdf, Account account) {
+        assertThat(pdf, containsText(getCurrentOfficerInitials(account)));
+        assertThat(pdf, containsText(account.getDateOpened()));
+        assertThat(pdf, containsText(account.getInterestRate()));
+        assertThat(pdf, containsText(account.getAccruedInterest()));
+    }
+
+    /**
+     * Verify 'Account section' in CD and CD IRA accounts in PDF file
+     */
+
+    private void verifyCdIraAccountSectionInPdf(PDF pdf, Account account) {
+        assertThat(pdf, containsText(account.getDateOpened()));
+        assertThat(pdf, containsText(account.getAccruedInterest()));
+        assertThat(pdf, containsText(account.getOriginalBalance()));
+        assertThat(pdf, containsText(account.getProduct()));
+        assertThat(pdf, containsText(account.getInterestFrequency()));
+        assertThat(pdf, containsText(account.getInterestRate()));
+        assertThat(pdf, containsText(account.getInterestType()));
+        assertThat(pdf, containsText(account.getApplyInterestTo()));
+        assertThat(pdf, containsText(account.getTerm()));
+        assertThat(pdf, containsText(account.getDateNextInterest()));
+        assertThat(pdf, containsText(Functions.capitalize(account.getAutoRenewable().toLowerCase())));
+        assertThat(pdf, containsText(account.getMaturityDate()));
+        assertThat(pdf, containsText(account.getDailyInterestAccrual()));
+    }
+
     private String getCurrentOfficerInitials(Account account) {
         StringBuilder initials = new StringBuilder();
         for (String word : account.getCurrentOfficer().split(" ")) {
             initials.append(word.charAt(0));
         }
         return initials.toString();
+    }
+
+    public void setAddress(IndividualClient client) {
+        Pages.callStatementModalPage().clickAddressSelectorButton();
+        List<String> listOfAddress = Pages.callStatementModalPage().getAddressList();
+        assertTrue(listOfAddress.size() > 0, "There are no options available");
+        Pages.callStatementModalPage().clickAddressSelectorOption(client.getIndividualType().getAddresses().get(0).getAddress());
     }
 
     public void setDataForChkSavingsIraAccountCallStatementVerification(Account account) {
@@ -208,7 +238,7 @@ public class CallStatement {
     public void navigateToTransactionsAndVerifyPdfContainsText(String text) {
         Pages.accountNavigationPage().clickTransactionsTab();
         PDF pdf = new PDF(AccountActions.callStatement().downloadCallStatementPdfFile());
-        Assert.assertTrue(containsText(text).matches(pdf), "Given text is not present in PDF document");
+        assertThat(pdf, containsText(text));
     }
 
     public void verifyYtdInterestPaidValue() {
