@@ -179,6 +179,19 @@ public class RetrievingAccountData {
         return transactionData;
     }
 
+    public TransactionData getTransactionDataWithOffset(int offset) {
+        int tempIndex = 1;
+        TransactionData transactionData = new TransactionData();
+
+        transactionData.setPostingDate(Pages.accountTransactionPage().getPostingDateValue(tempIndex, offset));
+        transactionData.setEffectiveDate(Pages.accountTransactionPage().getEffectiveDateValue(tempIndex, offset));
+        transactionData.setAmount(getAmountValue(tempIndex, offset));
+        transactionData.setBalance(getBalanceValue(tempIndex, offset));
+        transactionData.setAmountSymbol(Pages.accountTransactionPage().getAmountSymbol(tempIndex, offset));
+
+        return transactionData;
+    }
+
     public TransactionData getTransactionDataForATM() {
         int tempIndex = 1;
         TransactionData transactionData = new TransactionData();
@@ -198,6 +211,12 @@ public class RetrievingAccountData {
         return amountIntegerPart + amountFractionalPart;
     }
 
+    public double getAmountValue(int index, int offset) {
+        double amountIntegerPart = getAmount(index, offset);
+        double amountFractionalPart = getAmountFractionalPart(index, offset);
+        return amountIntegerPart + amountFractionalPart;
+    }
+
     public double getATMAmountValue(int index) {
         double amountIntegerPart = getATMAmount(index);
         double amountFractionalPart = getATMAmountFractionalPart(index);
@@ -207,6 +226,12 @@ public class RetrievingAccountData {
     public double getBalanceValue(int index) {
         double balanceIntegerPart = getBalance(index);
         double balanceFractionalPart = getBalanceFractional(index);
+        return  balanceIntegerPart + balanceFractionalPart;
+    }
+
+    public double getBalanceValue(int index, int offset) {
+        double balanceIntegerPart = getBalance(index, offset);
+        double balanceFractionalPart = getBalanceFractional(index, offset);
         return  balanceIntegerPart + balanceFractionalPart;
     }
 
@@ -221,6 +246,11 @@ public class RetrievingAccountData {
         return Double.parseDouble(value);
     }
 
+    private double getBalance(int tempIndex, int offset) {
+        String value = Pages.accountTransactionPage().getBalanceValue(tempIndex, offset);
+        return Double.parseDouble(value);
+    }
+
     private double getATMBalance(int tempIndex) {
         String value = Pages.accountTransactionPage().getBalanceValue1(tempIndex);
         return Double.parseDouble(value);
@@ -231,6 +261,11 @@ public class RetrievingAccountData {
         return Double.parseDouble(value);
     }
 
+    public double getAmount(int tempIndex, int offset) {
+        String value = Pages.accountTransactionPage().getAmountValue(tempIndex, offset);
+        return Double.parseDouble(value);
+    }
+
     public double getATMAmount(int tempIndex) {
         String value = Pages.accountTransactionPage().getAmountValue1(tempIndex);
         return Double.parseDouble(value);
@@ -238,6 +273,11 @@ public class RetrievingAccountData {
 
     private double getBalanceFractional(int tempIndex) {
         String value = Pages.accountTransactionPage().getBalanceFractionalValue(tempIndex);
+        return Double.parseDouble(value) / 100;
+    }
+
+    private double getBalanceFractional(int tempIndex, int offset) {
+        String value = Pages.accountTransactionPage().getBalanceFractionalValue(tempIndex, offset);
         return Double.parseDouble(value) / 100;
     }
 
@@ -256,7 +296,23 @@ public class RetrievingAccountData {
         return Double.parseDouble(value) / 100;
     }
 
+    private double getAmountFractionalPart(int tempIndex, int offset) {
+        String value = Pages.accountTransactionPage().getAmountFractionalValue(tempIndex, offset);
+        return Double.parseDouble(value) / 100;
+    }
+
     private String getAccountStatus() {
         return Pages.accountDetailsPage().getAccountStatus();
+    }
+
+    public int getOffset() {
+        int tableHeaders = Pages.accountTransactionPage().getTableHeaderCols();
+        switch (tableHeaders) {
+            default:
+            case 9:
+                return 0;
+            case 10:
+                return 1;
+        }
     }
 }

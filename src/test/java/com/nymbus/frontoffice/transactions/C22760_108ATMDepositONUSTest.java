@@ -130,13 +130,14 @@ public class C22760_108ATMDepositONUSTest extends BaseTest {
 
         chkAccTransactionData.setBalance(expectedBalanceData.getCurrentBalance());
         AccountActions.retrievingAccountData().goToTransactionsTab();
-        TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataForATM();
+        int offset = AccountActions.retrievingAccountData().getOffset();
+        TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset);
         Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
 
         logInfo("Step 7: Verify that there is NO 129-ATM Usage Fee for 124 ATM Withdrawal ONUS transaction");
         Assert.assertEquals(Pages.accountTransactionPage().getTransactionItemsCount(), 1,
                 "Transaction count is incorrect!");
-        Assert.assertFalse(Actions.transactionActions().isATMTransactionCodePresent(TransactionCode.ATM_USAGE_129.getTransCode()),
+        Assert.assertFalse(Actions.transactionActions().isTransactionCodePresent(TransactionCode.ATM_USAGE_129.getTransCode(), offset),
                 "129-ATM Usage Fee presents in transaction list");
 
         logInfo("Step 8: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
