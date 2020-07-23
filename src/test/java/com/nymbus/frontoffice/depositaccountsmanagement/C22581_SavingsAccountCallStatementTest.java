@@ -12,6 +12,7 @@ import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
+import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitGLCreditTransactionBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
@@ -24,9 +25,10 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22581_SavingsAccountCallStatementTest extends BaseTest {
 
-    private Transaction transaction;
     private Account savingsAccount;
     private IndividualClient client;
+    private Transaction creditTransaction;
+    private Transaction debitTransaction;
 
     @BeforeMethod
     public void prepareData() {
@@ -39,8 +41,13 @@ public class C22581_SavingsAccountCallStatementTest extends BaseTest {
         savingsAccount = new Account().setSavingsAccountData();
 
         // Set up transaction with account number
-        transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
-        transaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
+        creditTransaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        creditTransaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
+        creditTransaction.getTransactionDestination().setTransactionCode("209 - Deposit");
+
+        debitTransaction = new TransactionConstructor(new MiscDebitGLCreditTransactionBuilder()).constructTransaction();
+        debitTransaction.getTransactionSource().setAccountNumber(savingsAccount.getAccountNumber());
+        debitTransaction.getTransactionSource().setTransactionCode("216 - Withdrawal");
 
         // Log in and create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -53,8 +60,8 @@ public class C22581_SavingsAccountCallStatementTest extends BaseTest {
         client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
 
         // Create transaction
-        Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
-        // TODO: Add creating the debit transaction
+        Actions.transactionActions().performGLDebitMiscCreditTransaction(creditTransaction);
+        Actions.transactionActions().performMiscDebitGLCreditTransaction(debitTransaction);
         Actions.loginActions().doLogOut();
     }
 
@@ -72,7 +79,7 @@ public class C22581_SavingsAccountCallStatementTest extends BaseTest {
 
         logInfo("Step 3: Click 'Call Statement' button");
         logInfo("Step 4: Look through the Savings Call Statement data and verify it contains correct data");
-        AccountActions.callStatement().verifyChkSavingsIraAccountCallStatementData(savingsAccount, client, transaction);
+        AccountActions.callStatement().verifyChkSavingsIraAccountCallStatementData(savingsAccount, client, creditTransaction, debitTransaction);
 
         logInfo("Step 5: Go to the WebAdmin -> RulesUI and search for active Savings account,"
                 + "where YTD Interest Paid field is not null.\n"

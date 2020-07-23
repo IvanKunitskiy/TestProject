@@ -45,7 +45,7 @@ public class CallStatement {
         verifyDateInPdf(pdf);
         verifyClientSectionInPdf(pdf, client, account);
         verifyChkSavingsIraAccountSectionInPdf(pdf, account);
-        verifyTransactionSectionInPdf(pdf, creditTransaction, debitTransaction);
+        verifyTransactionSectionInPdf(pdf, account, creditTransaction, debitTransaction);
 
         SelenideTools.closeCurrentTab();
         SelenideTools.switchTo().window(0);
@@ -62,7 +62,7 @@ public class CallStatement {
         verifyDateInPdf(pdf);
         verifyClientSectionInPdf(pdf, client, account);
         verifyCdIraAccountSectionInPdf(pdf, account);
-        verifyTransactionSectionInPdf(pdf, creditTransaction, debitTransaction);
+        verifyTransactionSectionInPdf(pdf, account, creditTransaction, debitTransaction);
 
         SelenideTools.closeCurrentTab();
         SelenideTools.switchTo().window(0);
@@ -108,21 +108,23 @@ public class CallStatement {
      * Verify 'Transaction section' in PDF file
      */
 
-    private void verifyTransactionSectionInPdf(PDF pdf, Transaction creditTransaction, Transaction debitTransaction) {
+    private void verifyTransactionSectionInPdf(PDF pdf, Account account, Transaction creditTransaction, Transaction debitTransaction) {
         // Date - Transaction Posting Date for committed transaction from transactions tab
         assertThat(pdf, containsText(formattedSystemDate));
 
         // Transaction Description - Transaction Code for committed transaction from transactions tab
-        String debitTransactionCode = String.join(" ", debitTransaction.getTransactionDestination().getTransactionCode().split("\\W+"));
+        String debitTransactionCode = String.join(" ", debitTransaction.getTransactionSource().getTransactionCode().split("\\W+"));
         assertThat(pdf, containsText(debitTransactionCode));
         String creditTransactionCode = String.join(" ", creditTransaction.getTransactionDestination().getTransactionCode().split("\\W+"));
         assertThat(pdf, containsText(creditTransactionCode));
 
-        // Debits - transaction amount of Debit transaction (Amount is displayed with '-' sign for such transactions)
-        assertThat(pdf, containsText("1 Credits"));
+        if (account.getProductType().equals("CHK Account") || account.getProductType().equals("Savings Account")) {
+            // Debits - transaction amount of Debit transaction (Amount is displayed with '-' sign for such transactions)
+            assertThat(pdf, containsText("1 Credits"));
 
-        // Credits - transaction amount of Credit transaction (Amount is displayed with '+' sign for such transactions)
-        assertThat(pdf, containsText("1 Debits"));
+            // Credits - transaction amount of Credit transaction (Amount is displayed with '+' sign for such transactions)
+            assertThat(pdf, containsText("1 Debits"));
+        }
 
         // Balance - Balance for committed transaction from transactions tab
         String creditTransactionAmount = String.format("%.2f", creditTransaction.getTransactionSource().getAmount());
@@ -132,7 +134,7 @@ public class CallStatement {
 
         // Totals - calculated # of all transactions, total Debits and Total Credits
         double total = debitTransaction.getTransactionSource().getAmount() - creditTransaction.getTransactionSource().getAmount();
-        assertThat(pdf, containsText((String.format(".2f", total))));
+        assertThat(pdf, containsText((String.format("%.2f", total))));
     }
 
     /**
@@ -141,7 +143,9 @@ public class CallStatement {
 
     private void verifyChkSavingsIraAccountSectionInPdf(PDF pdf, Account account) {
         // Account Type - selected account's Account Type
-        assertThat(pdf, containsText(account.getProduct()));
+        if (account.getProductType().equals("CHK Account")) {
+            assertThat(pdf, containsText(account.getProduct()));
+        }
 
         // Officer - selected account's Current Officer
         assertThat(pdf, containsText(getCurrentOfficerInitials(account)));

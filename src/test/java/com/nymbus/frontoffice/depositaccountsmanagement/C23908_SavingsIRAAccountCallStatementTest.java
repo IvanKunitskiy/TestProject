@@ -13,6 +13,7 @@ import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
+import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitGLCreditTransactionBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
@@ -27,7 +28,8 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
 
     private IndividualClient client;
     private Account iraAccount;
-    private Transaction transaction;
+    private Transaction creditTransaction;
+    private Transaction debitTransaction;
 
     @BeforeMethod
     public void preCondition() {
@@ -41,9 +43,13 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
         iraAccount = new Account().setIRAAccountData();
 
         // Set up transaction
-        transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
-        transaction.getTransactionDestination().setAccountNumber(iraAccount.getAccountNumber());
-        transaction.getTransactionDestination().setTransactionCode("2330 - Cur Yr Contrib");
+        creditTransaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        creditTransaction.getTransactionDestination().setAccountNumber(iraAccount.getAccountNumber());
+        creditTransaction.getTransactionDestination().setTransactionCode("2330 - Cur Yr Contrib");
+
+        debitTransaction = new TransactionConstructor(new MiscDebitGLCreditTransactionBuilder()).constructTransaction();
+        debitTransaction.getTransactionSource().setAccountNumber(iraAccount.getAccountNumber());
+        debitTransaction.getTransactionSource().setTransactionCode("2341 - Normal Distrib");
 
         // Create a client
         Selenide.open(Constants.URL);
@@ -57,8 +63,8 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
         client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
 
         // Commit transaction to account
-        Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
-        // TODO: Add creating the debit transaction
+        Actions.transactionActions().performGLDebitMiscCreditTransaction(creditTransaction);
+        Actions.transactionActions().performMiscDebitGLCreditTransaction(debitTransaction);
         Actions.loginActions().doLogOut();
     }
 
@@ -76,7 +82,7 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
 
         logInfo("Step 3: Click [Call Statement] button");
         logInfo("Step 4: Look through the Savings Call Statement data and verify it contains correct data");
-        AccountActions.callStatement().verifyChkSavingsIraAccountCallStatementData(iraAccount, client, transaction);
+        AccountActions.callStatement().verifyChkSavingsIraAccountCallStatementData(iraAccount, client, creditTransaction, debitTransaction);
 
         logInfo("Step 5: Go to the WebAdmin -> RulesUI and search for active CD IRA account,"
                 + "where YTD Interest Paid field is not null.\n"
