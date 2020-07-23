@@ -19,6 +19,7 @@ public class TransactionActions {
 
     public void goToTellerPage() {
         Pages.aSideMenuPage().clickTellerMenuItem();
+        Pages.tellerPage().waitForTransactionSectionVisibility();
     }
 
     public void doLoginTeller() {
@@ -392,6 +393,28 @@ public class TransactionActions {
         int transactionItems = Pages.accountTransactionPage().getTransactionItemsCount();
         for (int i = 1; i <= transactionItems; ++i) {
             if (Pages.accountTransactionPage().getTransactionCodeByIndex(i).contains(transCode)) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    public boolean isTransactionCodePresent(String transCode, int offset) {
+        boolean result = false;
+        int transactionItems = Pages.accountTransactionPage().getTransactionItemsCount();
+        for (int i = 1; i <= transactionItems; ++i) {
+            if (Pages.accountTransactionPage().getTransactionCodeByIndex(i, offset).contains(transCode)) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    public boolean isATMTransactionCodePresent(String transCode) {
+        boolean result = false;
+        int transactionItems = Pages.accountTransactionPage().getTransactionItemsCount();
+        for (int i = 1; i <= transactionItems; ++i) {
+            if (Pages.accountTransactionPage().getTransactionCodeByIndex1(i).contains(transCode)) {
                 result = true;
             }
         }

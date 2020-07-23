@@ -7,6 +7,12 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
 public class AccountTransactionPage extends PageTools {
+    // element positions in table
+    private final int AMOUNT_POSITION = 5;
+    private final int BALANCE_POSITION = 6;
+    private final int POSTING_DATE_POSITION = 1;
+    private final int EFFECTIVE_DATE_POSITION = 2;
+    private final int TRANSACTION_CODE_POSITION =4;
 
     /**
      * Action buttons
@@ -133,6 +139,138 @@ public class AccountTransactionPage extends PageTools {
     @Step("Is image {0} visible")
     public boolean isImageVisible(int index) {
         return isImageLoaded(image, index);
+    }
+
+    /**
+     * Duplicated selectors for atm transactions
+     */
+    private By amountSymbol1 = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-if='showCurrency']/span[1]");
+    private By postingDate1 = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[1]//span");
+    private By effectiveDate1 = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[2]//span");
+    private By amount1 = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-if='showCurrency']/span[2]");
+    private By balance1 = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[2]");
+    private By balanceFractional1 = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[3]");
+    private By amountFractional1 = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-if='showCurrency']/span[3]");
+    private By transactionCode1 = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[4]//span[@ng-switch-when='transactioncode']");
+
+    private By tableHeaders = By.xpath("//section[@ng-if = 'haveTransactions()']//table//thead//th");
+    private By amountSymbolWithOffset = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[%s]//span[@ng-if='showCurrency']/span[1]");
+    private By postingDateWithOffset = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[%s]//span");
+    private By effectiveDateWithOffset = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[%s]//span");
+    private By amountWithOffset = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[%s]//span[@ng-if='showCurrency']/span[2]");
+    private By balanceWithOffset = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[%s]//span[@ng-if='showCurrency']/span[2]");
+    private By balanceFractionalWithOffset = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[%s]//span[@ng-if='showCurrency']/span[3]");
+    private By amountFractionalWithOffset = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[%s]//span[@ng-if='showCurrency']/span[3]");
+    private By transactionCodeWithOffset = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[%s]//span[@ng-switch-when='transactioncode']");
+
+    @Step("Get table header cols count")
+    public int getTableHeaderCols() {
+        waitForElementVisibility(tableHeaders);
+        return getElements(tableHeaders).size();
+    }
+
+    @Step("Get amountSymbol with offset")
+    public String getAmountSymbol(int index, int offset) {
+        int calculatedOffset = AMOUNT_POSITION + offset;
+        waitForElementVisibility(amountSymbolWithOffset, index, calculatedOffset);
+        return getElementText(amountSymbolWithOffset, index, calculatedOffset).trim();
+    }
+
+    @Step("Get 'Posting date' value with offset")
+    public String getPostingDateValue(int index, int offset) {
+        int calculatedOffset = POSTING_DATE_POSITION + offset;
+        waitForElementVisibility(postingDateWithOffset, index, calculatedOffset);
+        return getElementText(postingDateWithOffset, index, calculatedOffset).trim().replaceAll("-", "/");
+    }
+
+    @Step("Get transaction code with offset")
+    public String getTransactionCodeByIndex(int index, int offset) {
+        int calculatedOffset = TRANSACTION_CODE_POSITION + offset;
+        waitForElementVisibility(transactionCodeWithOffset, index, calculatedOffset);
+        return getWebElement(transactionCodeWithOffset, index, calculatedOffset).getAttribute("innerText").trim();
+    }
+
+    @Step("Get 'Effective date' value with offset")
+    public String getEffectiveDateValue(int index, int offset) {
+        int calculatedOffset = EFFECTIVE_DATE_POSITION + offset;
+        waitForElementVisibility(effectiveDateWithOffset, index, calculatedOffset);
+        return getElementText(effectiveDateWithOffset, index, calculatedOffset).trim().replaceAll("-", "/");
+    }
+
+    @Step("Get 'Amount' value with offset")
+    public String getAmountValue(int index, int offset) {
+        int calculatedOffset = AMOUNT_POSITION + offset;
+        waitForElementVisibility(amountWithOffset, index, calculatedOffset);
+        return getElementText(amountWithOffset, index, calculatedOffset).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Amount' fractional value with offset")
+    public String getAmountFractionalValue(int index, int offset) {
+        int calculatedOffset = AMOUNT_POSITION + offset;
+        waitForElementVisibility(amountFractionalWithOffset, index, calculatedOffset);
+        return getElementText(amountFractionalWithOffset, index, calculatedOffset).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Balance' value with offset")
+    public String getBalanceValue(int index, int offset) {
+        int calculatedOffset = BALANCE_POSITION + offset;
+        waitForElementVisibility(balanceWithOffset, index, calculatedOffset);
+        return getElementText(balanceWithOffset, index, calculatedOffset).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Balance' value with offset")
+    public String getBalanceFractionalValue(int index, int offset) {
+        int calculatedOffset = BALANCE_POSITION + offset;
+        waitForElementVisibility(balanceFractionalWithOffset, index, calculatedOffset);
+        return getElementText(balanceFractionalWithOffset, index, calculatedOffset).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get transaction code")
+    public String getTransactionCodeByIndex1(int index) {
+        waitForElementVisibility(transactionCode1, index);
+        return getWebElement(transactionCode1, index).getAttribute("innerText").trim();
+    }
+
+    @Step("Get amountSymbol")
+    public String getAmountSymbol1(int index) {
+        waitForElementVisibility(amountSymbol1, index);
+        return getElementText(amountSymbol1, index).trim();
+    }
+
+    @Step("Get 'Posting date' value")
+    public String getPostingDateValue1(int index) {
+        waitForElementVisibility(postingDate1, index);
+        return getElementText(postingDate1, index).trim().replaceAll("-", "/");
+    }
+
+    @Step("Get 'Effective date' value")
+    public String getEffectiveDateValue1(int index) {
+        waitForElementVisibility(effectiveDate1, index);
+        return getElementText(effectiveDate1, index).trim().replaceAll("-", "/");
+    }
+
+    @Step("Get 'Amount' value")
+    public String getAmountValue1(int index) {
+        waitForElementVisibility(amount1, index);
+        return getElementText(amount1, index).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Amount' fractional value")
+    public String getAmountFractionalValue1(int index) {
+        waitForElementVisibility(amountFractional1, index);
+        return getElementText(amountFractional1, index).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Balance' value")
+    public String getBalanceValue1(int index) {
+        waitForElementVisibility(balance1, index);
+        return getElementText(balance1, index).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Balance' value")
+    public String getBalanceFractionalValue1(int index) {
+        waitForElementVisibility(balanceFractional1, index);
+        return getElementText(balanceFractional1, index).trim().replaceAll("[^0-9.]", "");
     }
 
     /**

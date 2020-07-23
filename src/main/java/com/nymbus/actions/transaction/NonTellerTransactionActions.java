@@ -21,6 +21,11 @@ public class NonTellerTransactionActions {
                 transactionData.getExpirationDate(), transactionData.getAmount(), transactionData.getTerminalId());
     }
 
+    public void performATMWDepositONUSTransaction(NonTellerTransactionData transactionData) {
+        NonTellerTransaction.generateDepositONUSTransaction(transactionData.getCardNumber(),
+                transactionData.getExpirationDate(), transactionData.getAmount(), transactionData.getTerminalId());
+    }
+
     public String getTerminalID(int index) {
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -29,5 +34,15 @@ public class NonTellerTransactionActions {
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
         return result;
+    }
+
+    public double getForeignFee(int index) {
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.webAdminTransactionActions().goToForeignFeeUrl();
+        String result = WebAdminPages.rulesUIQueryAnalyzerPage().getForeignFeeValue(index);
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+
+        return Double.parseDouble(result);
     }
 }
