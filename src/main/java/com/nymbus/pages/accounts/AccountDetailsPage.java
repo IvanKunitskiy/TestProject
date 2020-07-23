@@ -107,7 +107,7 @@ public class AccountDetailsPage extends PageTools {
     private By originalBalance = By.xpath("//*[@data-config-name='originalbalance']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By dateLastInterestPay = By.xpath("//*[@data-config-name='datelastinterestpaid']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By dateNextInterestPay = By.xpath("//*[@data-config-name='datenextinterestpayment']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private By nextInterestPaymentAmount = By.xpath("//*[@data-config-name='nextinterestpaymentamount']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By nextInterestPaymentAmount = By.xpath("//tr[@data-config-name='nextinterestpaymentamount']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By averageBalance = By.xpath("//*[@data-config-name='averagebalance']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By collectedBalance = By.xpath("//*[@data-config-name='collectedbalance']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By accountStatus = By.xpath("//tr[@data-test-id='field-accountstatus']//span[contains(@class, 'ng-binding')]");

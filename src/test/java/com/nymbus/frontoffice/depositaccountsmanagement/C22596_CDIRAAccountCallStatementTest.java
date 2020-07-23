@@ -12,6 +12,7 @@ import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
+import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitGLCreditTransactionBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
@@ -26,7 +27,8 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
 
     private IndividualClient client;
     private Account cdIraAccount;
-    private Transaction transaction;
+    private Transaction creditTransaction;
+    private Transaction debitTransaction;
 
     @BeforeMethod
     public void preCondition() {
@@ -40,9 +42,13 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
         cdIraAccount = new Account().setCDIRAAccountData();
 
         // Set up transaction
-        transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
-        transaction.getTransactionDestination().setAccountNumber(cdIraAccount.getAccountNumber());
-        transaction.getTransactionDestination().setTransactionCode("330 - Cur Yr Contrib");
+        creditTransaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        creditTransaction.getTransactionDestination().setAccountNumber(cdIraAccount.getAccountNumber());
+        creditTransaction.getTransactionDestination().setTransactionCode("330 - Cur Yr Contrib");
+
+        debitTransaction = new TransactionConstructor(new MiscDebitGLCreditTransactionBuilder()).constructTransaction();
+        debitTransaction.getTransactionSource().setAccountNumber(cdIraAccount.getAccountNumber());
+        debitTransaction.getTransactionSource().setTransactionCode("341 - Normal Distrib");
 
         // Create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -55,8 +61,8 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
         client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
 
         // Commit transaction to account and logout
-        Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
-        // TODO: Add creating the debit transaction
+        Actions.transactionActions().performGLDebitMiscCreditTransaction(creditTransaction);
+        Actions.transactionActions().performMiscDebitGLCreditTransaction(debitTransaction);
         Actions.loginActions().doLogOut();
     }
 
@@ -75,7 +81,7 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
         logInfo("Step 3: Click [Call Statement] button");
         logInfo("Step 4: Pay attention to the Certificate Call Statement data");
         logInfo("Step 5: Look through the Call Statement for the selected CD IRA account");
-        AccountActions.callStatement().verifyCDIRAAccountCallStatementData(cdIraAccount, client, transaction);
+        AccountActions.callStatement().verifyCDIRAAccountCallStatementData(cdIraAccount, client, creditTransaction, debitTransaction);
 
         logInfo("Step 6: Go to the WebAdmin -> RulesUI and search for active CD IRA account,"
                 + "where YTD Interest Paid field is not null.\n"

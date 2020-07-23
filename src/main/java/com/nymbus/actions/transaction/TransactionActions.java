@@ -179,6 +179,7 @@ public class TransactionActions {
         int tempIndex = 1 + index;
         Pages.tellerPage().clickMiscDebitButton();
         fillSourceAccountNumber(source.getAccountNumber(), tempIndex);
+        fillSourceAccountCode(source.getTransactionCode(), tempIndex);
         fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
     }
 
