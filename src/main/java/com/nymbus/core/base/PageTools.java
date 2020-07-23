@@ -270,22 +270,4 @@ public class PageTools extends AllureLogger {
         }
         return null;
     }
-
-    protected boolean isAlertPresent() {
-        try {
-            Selenide.switchTo().alert();
-            return true;
-        }
-        catch (NoAlertPresentException Ex) {
-            return false;
-        }
-    }
-
-    protected void acceptAlert() {
-        Selenide.switchTo().alert().accept();
-    }
-
-    protected void dismissAlert() {
-        Selenide.switchTo().alert().dismiss();
-    }
 }
