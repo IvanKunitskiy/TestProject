@@ -57,7 +57,7 @@ public class C22597_ActivateDormantAccountWithNoMonetaryTransactionTest extends 
         Selenide.open(Constants.WEB_ADMIN_URL);
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         WebAdminActions.webAdminUsersActions().setDormantAccount(rootID, chkAccount);
-        WebAdminActions.loginActions().doLogout();
+        WebAdminActions.loginActions().doLogoutProgrammatically();
     }
 
     @Test(description = "C22597, Activate Dormant Account with no monetary transaction")

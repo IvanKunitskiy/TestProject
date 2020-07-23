@@ -20,7 +20,6 @@ public class TransactionActions {
     public void goToTellerPage() {
         Pages.aSideMenuPage().clickTellerMenuItem();
         Pages.tellerPage().waitForTransactionSectionVisibility();
-        Pages.tellerPage().dismissAlertOnTellerPage();
     }
 
     public void doLoginTeller() {

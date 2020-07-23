@@ -20,21 +20,6 @@ public class TellerPage extends PageTools {
         waitForElementVisibility(transactionSection);
     }
 
-    @Step("Is alert present")
-    public boolean isAlertPresentOnTellerPage() {
-        return isAlertPresent();
-    }
-
-    @Step("Accept alert on Teller page")
-    public void acceptAlertOnTellerPage() {
-        acceptAlert();
-    }
-
-    @Step("Dismiss alert on Teller page")
-    public void dismissAlertOnTellerPage() {
-        dismissAlert();
-    }
-
     @Step("Wait 'Proof Date Login' modal window")
     public void waitModalWindow() {
         waitForElementVisibility(modalWindow);
