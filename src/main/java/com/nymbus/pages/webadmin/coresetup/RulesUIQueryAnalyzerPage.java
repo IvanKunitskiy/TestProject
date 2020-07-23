@@ -196,4 +196,16 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         waitForElementVisibility(terminalIdNumber, index);
         return getElementText(terminalIdNumber, index).trim();
     }
+
+    /**
+     *  foreign fee section
+     */
+    private By foreignFeeValue = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]" +
+            "//td[last()]/div");
+
+    @Step ("Get 'terminalId' {0} value")
+    public String getForeignFeeValue(int index) {
+        waitForElementVisibility(foreignFeeValue, index);
+        return getElementText(foreignFeeValue, index).trim();
+    }
 }
