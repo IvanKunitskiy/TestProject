@@ -81,6 +81,7 @@ public class Account {
     private String originalBalance;
     private String term;
     private String dailyInterestAccrual;
+    private String nextInterestPaymentAmount;
 
     public Account setCDAccountData() {
         Account account = new Account();
@@ -821,5 +822,13 @@ public class Account {
 
     public void setDailyInterestAccrual(String dailyInterestAccrual) {
         this.dailyInterestAccrual = dailyInterestAccrual;
+    }
+
+    public String getNextInterestPaymentAmount() {
+        return nextInterestPaymentAmount;
+    }
+
+    public void setNextInterestPaymentAmount(String nextInterestPaymentAmount) {
+        this.nextInterestPaymentAmount = nextInterestPaymentAmount;
     }
 }

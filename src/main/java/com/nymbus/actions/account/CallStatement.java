@@ -175,7 +175,7 @@ public class CallStatement {
         assertThat(pdf, containsText(account.getTerm()));
 
         // Class - selected account's Call Class code value
-        // TODO: Add 'call class code' verification
+        assertThat(pdf, containsText(account.getCallClassCode()));
 
         // Renew - selected account's Auto-Renewable field value
         assertThat(pdf, containsText(Functions.capitalize(account.getAutoRenewable().toLowerCase())));
@@ -199,7 +199,7 @@ public class CallStatement {
         assertThat(pdf, containsText(account.getDateNextInterest()));
 
         // Anticipated - selected account's Next Interest Payment Amount value
-        // TODO: Add 'Anticipated' verification
+        assertThat(pdf, containsText(account.getNextInterestPaymentAmount()));
 
         // Accrued - selected account's Accrued Interest value
         assertThat(pdf, containsText(account.getAccruedInterest()));
@@ -235,6 +235,7 @@ public class CallStatement {
         setDateNextInterest(account);
         setMaturityDate(account);
         setDailyInterestAccrual(account);
+        setNextInterestPaymentAmount(account);
     }
 
     public void setDailyInterestAccrual(Account account) {
@@ -288,6 +289,15 @@ public class CallStatement {
             account.setInterestRate(interestRate);
         } else {
             account.setInterestRate("0.00");
+        }
+    }
+
+    public void setNextInterestPaymentAmount(Account account) {
+        String nextInterestPaymentAmount = Pages.accountDetailsPage().getNextInterestPaymentAmount();
+        if (!nextInterestPaymentAmount.isEmpty()) {
+            account.setNextInterestPaymentAmount(nextInterestPaymentAmount);
+        } else {
+            account.setNextInterestPaymentAmount("0.00");
         }
     }
 
