@@ -4,6 +4,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.apirequest.NonTellerTransaction;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
+import com.nymbus.newmodels.transaction.enums.ATMTransactionType;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.pages.webadmin.WebAdminPages;
 
@@ -21,9 +22,14 @@ public class NonTellerTransactionActions {
                 transactionData.getExpirationDate(), transactionData.getAmount(), transactionData.getTerminalId());
     }
 
+
     public void performATMWDepositONUSTransaction(NonTellerTransactionData transactionData) {
         NonTellerTransaction.generateDepositONUSTransaction(transactionData.getCardNumber(),
                 transactionData.getExpirationDate(), transactionData.getAmount(), transactionData.getTerminalId());
+    }
+
+    public void performATMTransaction(NonTellerTransactionData transactionData, ATMTransactionType type) {
+        NonTellerTransaction.generateATMTransaction(transactionData, type);
     }
 
     public String getTerminalID(int index) {

@@ -1,7 +1,9 @@
 package com.nymbus.apirequest;
 
 import com.nymbus.core.utils.Constants;
+import com.nymbus.newmodels.transaction.enums.ATMTransactionType;
 import com.nymbus.newmodels.transaction.nontellertransactions.CHKAccountData;
+import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import io.restassured.http.ContentType;
 import org.json.JSONObject;
 
@@ -62,8 +64,42 @@ public class NonTellerTransaction {
                 body("data[0].field.39", equalTo("00"));
     }
 
+    public static void generate224WithdrawalONUSTransaction(String cardNumber, String expirationDate, String amount, String onusTerminalID) {
+        JSONObject requestBody = CHKAccountData.get224AtmCreditData(cardNumber, expirationDate, amount, onusTerminalID);
+
+        System.out.println(requestBody.toString());
+
+        given().
+                auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
+                contentType(ContentType.JSON).
+                relaxedHTTPSValidation().
+                body(requestBody.toString()).
+        when().
+                post(GENERIC_PROCESS_URL).
+        then().
+                statusCode(200).
+                body("data[0].field.39", equalTo("00"));
+    }
+
     public static void generateDepositONUSTransaction(String cardNumber, String expirationDate, String amount, String onusTerminalID) {
         JSONObject requestBody = CHKAccountData.getAtmDepositData(cardNumber, expirationDate, amount, onusTerminalID);
+
+        System.out.println(requestBody.toString());
+
+        given().
+                auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
+                contentType(ContentType.JSON).
+                relaxedHTTPSValidation().
+                body(requestBody.toString()).
+        when().
+                post(GENERIC_PROCESS_URL).
+        then().
+                statusCode(200).
+                body("data[0].field.39", equalTo("00"));
+    }
+
+    public static void generateATMTransaction(NonTellerTransactionData transactionData, ATMTransactionType type) {
+        JSONObject requestBody = CHKAccountData.getATMData(transactionData, type);
 
         System.out.println(requestBody.toString());
 
