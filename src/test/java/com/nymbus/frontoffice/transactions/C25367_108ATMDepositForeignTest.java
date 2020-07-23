@@ -6,6 +6,7 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
@@ -16,6 +17,7 @@ import com.nymbus.newmodels.generation.client.builder.type.individual.Individual
 import com.nymbus.newmodels.generation.debitcard.DebitCardConstructor;
 import com.nymbus.newmodels.generation.debitcard.builder.DebitCardBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
+import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
@@ -33,7 +35,6 @@ public class C25367_108ATMDepositForeignTest extends BaseTest {
     private String checkingAccountNumber;
     private double transactionAmount;
     private IndividualClient client;
-    private String foreignTerminalID = "3456453523";
     private double foreignFeeValue;
 
     @BeforeMethod
@@ -44,6 +45,7 @@ public class C25367_108ATMDepositForeignTest extends BaseTest {
         client = individualClientBuilder.buildClient();
         Account checkAccount = new Account().setCHKAccountData();
         transactionAmount = 100.00;
+        String foreignTerminalID = Generator.getRandomStringNumber(10);
 
         // Set up debit card and bin control
         DebitCardConstructor debitCardConstructor = new DebitCardConstructor();
@@ -124,7 +126,7 @@ public class C25367_108ATMDepositForeignTest extends BaseTest {
                 "- available balance \n" +
                 "- Transactions history");
         AccountActions.editAccount().goToDetailsTab();
-        expectedBalanceData.addAmount(transactionAmount);
+        expectedBalanceData.addAmount(transactionAmount - foreignFeeValue);
         BalanceDataForCHKAcc actualBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         Assert.assertEquals(actualBalanceData, expectedBalanceData, "CHKAccount balances is not correct!");
 
@@ -133,5 +135,19 @@ public class C25367_108ATMDepositForeignTest extends BaseTest {
         int offset = AccountActions.retrievingAccountData().getOffset();
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset);
         Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
+
+        logInfo("Step 7: Verify that 129-Usage fee transaction was generated with an amount= ForeignATMFee bcsetting");
+        Assert.assertTrue(Actions.transactionActions().isTransactionCodePresent(TransactionCode.ATM_USAGE_129_FEE.getTransCode(), offset),
+                "129-ATM Usage Fee isn't present in transaction list");
+        Assert.assertEquals(AccountActions.retrievingAccountData().getAmountValue(2, offset), foreignFeeValue, "Fee amount is incorrect!");
+        Assert.assertEquals(Pages.accountTransactionPage().getAmountSymbol(2, offset), "-", "Fee amount symbol is incorrect!");
+
+        logInfo("Step 8: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
+        logInfo("Step 9: Click [View History] link on the Debit Card from the precondition");
+        Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
+        Actions.debitCardModalWindowActions().goToCardHistory(1);
+        double actualAmount = Actions.debitCardModalWindowActions().getTransactionAmount(1);
+        double expectedAmount = transactionAmount + foreignFeeValue;
+        Assert.assertEquals(actualAmount, expectedAmount, "Transaction amount is incorrect!");
     }
 }
