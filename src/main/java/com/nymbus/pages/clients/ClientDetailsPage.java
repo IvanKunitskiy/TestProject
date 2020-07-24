@@ -256,6 +256,7 @@ public class ClientDetailsPage extends PageTools {
     @Step("Click 'Save changes' button")
     public void clickSaveChangesButton() {
         waitForElementVisibility(saveChangesButton);
+        scrollToPlaceElementInCenter(saveChangesButton);
         click(saveChangesButton);
     }
 

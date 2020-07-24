@@ -9,8 +9,10 @@ import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.client.basicinformation.address.Address;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
+import com.nymbus.newmodels.generation.client.factory.basicinformation.AddressFactory;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitGLCreditTransactionBuilder;
@@ -30,6 +32,7 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
     private Account iraAccount;
     private Transaction creditTransaction;
     private Transaction debitTransaction;
+    private Address seasonalAddress;
 
     @BeforeMethod
     public void preCondition() {
@@ -58,6 +61,13 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
 
+        // Add seasonal address
+        seasonalAddress = new AddressFactory().getSeasonalAddress();
+        ClientsActions.clientDetailsActions().clickEditProfile();
+        ClientsActions.clientDetailsActions().addSeasonalAddress(seasonalAddress, client);
+        Pages.clientDetailsPage().clickSaveChangesButton();
+        Pages.clientDetailsPage().waitForProfileNotEditable();
+
         // Create account
         AccountActions.createAccount().createIRAAccount(iraAccount);
         client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
@@ -82,7 +92,7 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
 
         logInfo("Step 3: Click [Call Statement] button");
         logInfo("Step 4: Look through the Savings Call Statement data and verify it contains correct data");
-        AccountActions.callStatement().verifyChkSavingsIraAccountCallStatementData(iraAccount, client, creditTransaction, debitTransaction);
+        AccountActions.callStatement().verifyChkSavingsIraAccountCallStatementData(iraAccount, client, creditTransaction, debitTransaction, seasonalAddress);
 
         logInfo("Step 5: Go to the WebAdmin -> RulesUI and search for active CD IRA account,"
                 + "where YTD Interest Paid field is not null.\n"
