@@ -6,7 +6,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class CHKAccountData {
+public class JSONData {
 
     public static JSONObject getAtmCreditData(String cardNumber, String cardExpiration, String amount) {
         JSONObject json = new JSONObject();
@@ -156,10 +156,10 @@ public class CHKAccountData {
         return beans;
     }
 
-    private static JSONArray getBeansArray(NonTellerTransactionData data, ATMTransactionType type) {
+    private static JSONArray getBeansArray(JSONObject fieldsArr) {
         JSONArray beans = new JSONArray();
         JSONObject json = new JSONObject();
-        json.put("fields", getFieldsArr(data, type));
+        json.put("fields", fieldsArr);
         beans.put(json);
 
         return beans;
@@ -214,7 +214,7 @@ public class CHKAccountData {
        JSONObject json = new JSONObject();
        json.put("actions", getActionsArray());
        json.put("ruleType", "eft");
-       json.put("beans", getBeansArray(nonTellerTransactionData, type));
+       json.put("beans", getBeansArray(getFieldsArr(nonTellerTransactionData, type)));
 
        return json;
    }

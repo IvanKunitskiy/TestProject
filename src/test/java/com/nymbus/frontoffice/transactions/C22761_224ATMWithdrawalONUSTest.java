@@ -53,6 +53,7 @@ public class C22761_224ATMWithdrawalONUSTest extends BaseTest {
         DebitCardBuilder debitCardBuilder = new DebitCardBuilder();
         debitCardConstructor.constructDebitCard(debitCardBuilder);
         DebitCard debitCard = debitCardBuilder.getCard();
+        nonTellerTransactionData = new NonTellerTransactionData();
 
         BinControlConstructor binControlConstructor = new BinControlConstructor();
         BinControlBuilder binControlBuilder = new BinControlBuilder();
@@ -87,10 +88,9 @@ public class C22761_224ATMWithdrawalONUSTest extends BaseTest {
         Pages.clientDetailsPage().clickOnMaintenanceTab();
         Pages.clientDetailsPage().clickOnNewDebitCardButton();
         Actions.debitCardModalWindowActions().fillDebitCard(debitCard);
-        String expirationDate = Actions.debitCardModalWindowActions().getExpirationDate();
         Pages.debitCardModalWindow().clickOnSaveAndFinishButton();
         Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
-        String debitCardNumber = Actions.debitCardModalWindowActions().getCardNumber(1);
+        Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(nonTellerTransactionData, 1);
 
         // Re-login in system for updating teller session
         Actions.loginActions().doLogOut();
@@ -108,10 +108,7 @@ public class C22761_224ATMWithdrawalONUSTest extends BaseTest {
         expectedBalanceData = AccountActions.retrievingAccountData().getBalanceData();
 
         // Set up nonTeller transaction data
-        nonTellerTransactionData = new NonTellerTransactionData();
-        nonTellerTransactionData.setCardNumber(debitCardNumber);
         nonTellerTransactionData.setAmount(glDebitMiscCreditTransaction.getTransactionDestination().getAmount());
-        nonTellerTransactionData.setExpirationDate(expirationDate);
         nonTellerTransactionData.setTerminalId(terminalId);
         savingAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "-", expectedBalanceData.getCurrentBalance(),
