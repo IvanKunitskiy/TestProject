@@ -221,6 +221,11 @@ public class DateTime {
         return resultDate.withDayOfMonth(resultDate.lengthOfMonth()).format(DateTimeFormatter.ofPattern(pattern));
     }
 
+    public static String getExpirationDateOnDebitCard(String date) {
+        LocalDate localDate = LocalDate.parse(date , DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        return localDate.format(DateTimeFormatter.ofPattern("yyMM"));
+    }
+
     public static String getMonthNumberByMonthName(String month) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
         try {

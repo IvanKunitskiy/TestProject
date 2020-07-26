@@ -12,6 +12,7 @@ import com.nymbus.actions.settings.UsersActions;
 import com.nymbus.actions.teller.TellerActions;
 import com.nymbus.actions.transaction.NonTellerTransactionActions;
 import com.nymbus.actions.transaction.TransactionActions;
+import com.nymbus.apirequest.NonTellerTransaction;
 
 public class Actions {
     /**
@@ -30,6 +31,7 @@ public class Actions {
     private static TellerActions tellerActions;
     private static NonTellerTransactionActions nonTellerTransactionActions;
     private static BalanceInquiryActions balanceInquiryActions;
+    private static NonTellerTransaction nonTellerTransaction;
 
     /**
      * Modal Window Actions
@@ -174,5 +176,12 @@ public class Actions {
             balanceInquiryActions = new BalanceInquiryActions();
         }
         return balanceInquiryActions;
+    }
+
+    public static NonTellerTransaction nonTellerTransaction() {
+        if (nonTellerTransaction == null) {
+            nonTellerTransaction = new NonTellerTransaction();
+        }
+        return nonTellerTransaction;
     }
 }
