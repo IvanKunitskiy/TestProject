@@ -1,5 +1,6 @@
 package com.nymbus.newmodels.transaction.verifyingModels;
 
+import com.nymbus.newmodels.transaction.enums.ATMTransactionType;
 import lombok.Data;
 
 @Data

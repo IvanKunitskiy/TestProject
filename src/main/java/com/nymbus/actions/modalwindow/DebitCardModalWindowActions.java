@@ -1,8 +1,10 @@
 package com.nymbus.actions.modalwindow;
 
+import com.nymbus.actions.Actions;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
+import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 
@@ -75,6 +77,14 @@ public class DebitCardModalWindowActions {
         String month = DateTime.getMonthNumberByMonthName(Pages.debitCardModalWindow().getExpirationDateMonth());
 
         return year + month;
+    }
+
+    public void setExpirationDateAndCardNumber(NonTellerTransactionData nonTellerTransactionData, int index) {
+        Pages.clientDetailsPage().clickOnViewAllCardsButton();
+        Pages.cardsManagementPage().clickEditButton(index);
+        nonTellerTransactionData.setCardNumber(Pages.debitCardModalWindow().getCardNumber());
+        nonTellerTransactionData.setExpirationDate(getExpirationDate());
+        Pages.debitCardModalWindow().clickOnCancelButton();
     }
 
     public String getCardNumber(int i) {
