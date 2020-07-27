@@ -1,5 +1,6 @@
 package com.nymbus.actions.client.organisation;
 
+import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.basicinformation.address.Address;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.email.Email;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.phone.Phone;
@@ -87,6 +88,19 @@ public class ClientDetailsActions {
         Pages.addClientPage().setAddressCityValue(offset, address.getCity());
         setAddressStates(address.getState().getState(), offset);
         Pages.addClientPage().setAddressZipCode1Value(offset, address.getZipCode());
+    }
+
+    public void addSeasonalAddress(Address seasonalAddress, IndividualClient client) {
+        int offset = Pages.clientDetailsPage().getAddressRowsCount() + 1;
+        Pages.clientDetailsPage().clickAddAddressButton();
+        setAddressType(seasonalAddress.getType().getAddressType(), offset);
+        setAddressCountry(seasonalAddress.getCountry().getCountry(), offset);
+        Pages.addClientPage().setAddressField1Value(offset, seasonalAddress.getAddress());
+        Pages.addClientPage().setAddressCityValue(offset, seasonalAddress.getCity());
+        setAddressStates(seasonalAddress.getState().getState(), offset);
+        Pages.addClientPage().setAddressZipCode1Value(offset, seasonalAddress.getZipCode());
+        Pages.addClientPage().setSeasonalStartDate(seasonalAddress.getStartDate());
+        Pages.addClientPage().setSeasonalEndDate(seasonalAddress.getEndDate());
     }
 
     private void setAddressStates(String addressStates, int i) {

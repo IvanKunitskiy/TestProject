@@ -8,6 +8,7 @@ import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.client.basicinformation.address.Address;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 
@@ -38,12 +39,12 @@ public class CallStatement {
      * Verify CHK, Savings, Savings IRA account call statement PDF file
      */
 
-    public void verifyChkSavingsIraAccountCallStatementData(Account account, IndividualClient client, Transaction creditTransaction, Transaction debitTransaction) {
+    public void verifyChkSavingsIraAccountCallStatementData(Account account, IndividualClient client, Transaction creditTransaction, Transaction debitTransaction, Address seasonalAddress) {
         File callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
         PDF pdf = new PDF(callStatementPdfFile);
 
         verifyDateInPdf(pdf);
-        verifyClientSectionInPdf(pdf, client, account);
+        verifyClientSectionInPdf(pdf, client, account, seasonalAddress);
         verifyChkSavingsIraAccountSectionInPdf(pdf, account);
         verifyTransactionSectionInPdf(pdf, account, creditTransaction, debitTransaction);
 
@@ -55,12 +56,12 @@ public class CallStatement {
      * Verify CD, CD IRA account call statement PDF file
      */
 
-    public void verifyCDIRAAccountCallStatementData(Account account, IndividualClient client, Transaction creditTransaction, Transaction debitTransaction) {
+    public void verifyCDIRAAccountCallStatementData(Account account, IndividualClient client, Transaction creditTransaction, Transaction debitTransaction, Address seasonalAddress) {
         File callStatementPdfFile = AccountActions.callStatement().downloadCallStatementPdfFile();
         PDF pdf = new PDF(callStatementPdfFile);
 
         verifyDateInPdf(pdf);
-        verifyClientSectionInPdf(pdf, client, account);
+        verifyClientSectionInPdf(pdf, client, account, seasonalAddress);
         verifyCdIraAccountSectionInPdf(pdf, account);
         verifyTransactionSectionInPdf(pdf, account, creditTransaction, debitTransaction);
 
@@ -81,7 +82,7 @@ public class CallStatement {
      * Verify 'Client section' in PDF file
      */
 
-    private void verifyClientSectionInPdf(PDF pdf, IndividualClient client, Account account) {
+    private void verifyClientSectionInPdf(PDF pdf, IndividualClient client, Account account, Address seasonalAddress) {
         // PIF Number (or Member number) - Client ID from clients profile
         assertThat(pdf, containsText(client.getIndividualType().getClientID()));
 
@@ -96,8 +97,7 @@ public class CallStatement {
         assertThat(pdf, containsText(client.getFullName()));
 
         // Client Address - Client's Seasonal Address
-        // TODO: Address should be equal to 'Client's Seasonal Address'
-        assertThat(pdf, containsText(client.getIndividualType().getAddresses().get(0).getAddress()));
+        assertThat(pdf, containsText(seasonalAddress.getAddress()));
 
         // Phone - Clients Phone
         String phoneNumber = client.getIndividualClientDetails().getPhones().get(1).getPhoneNumber().replaceFirst("(\\d{3})(\\d{3})(\\d+)", "$1-$2-$3");

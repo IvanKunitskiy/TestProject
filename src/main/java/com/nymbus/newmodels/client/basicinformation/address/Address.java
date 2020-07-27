@@ -18,4 +18,6 @@ public class Address {
     @NonNull private String districtName; // Shown for countries without states (Ukraine, Russia, etc)
     @NonNull private String zipCode;
     private int yearsInThisAddress;
+    private String startDate;
+    private String endDate;
 }
