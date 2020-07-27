@@ -50,7 +50,7 @@ public class AddressFactory {
         address.setDistrictName(Random.genString(10));
         address.setZipCode(Random.genPostalCode());
         address.setStartDate(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 1));
-        address.setEndDate(DateTime.getDatePlusDays(WebAdminActions.loginActions().getSystemDate(), 1));
+        address.setEndDate(DateTime.getLocalDateWithFormatPlusDays(WebAdminActions.loginActions().getSystemDate(), "MM/dd/yyyy", "MM/dd/yyyy", 1));
         address.setYearsInThisAddress(Random.genInt(1, 10));
 
         return address;

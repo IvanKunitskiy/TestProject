@@ -151,21 +151,6 @@ public class DateTime {
         }
     }
 
-    public static String getDatePlusDays(String startDate, int days) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        Calendar calendar = Calendar.getInstance();
-        try {
-            Date parsedDate = simpleDateFormat.parse(startDate);
-            calendar.setTime(parsedDate);
-            calendar.add(Calendar.DAY_OF_MONTH, days);
-            return simpleDateFormat.format(calendar.getTime());
-        }
-        catch (ParseException e) {
-            e.printStackTrace();
-            return startDate;
-        }
-    }
-
     public static String getDateWithNMonthAdded(String date, String pattern, int monthToAdd) {
         LocalDate d = LocalDate.parse(date, DateTimeFormatter.ofPattern(pattern));
         return DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH).format(d.plusMonths(monthToAdd));
