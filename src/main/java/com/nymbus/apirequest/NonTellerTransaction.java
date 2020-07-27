@@ -8,6 +8,8 @@ import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData
 import io.restassured.http.ContentType;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 
@@ -101,5 +103,25 @@ public class NonTellerTransaction extends AllureLogger {
         then().
                 statusCode(200).
                 body("data[0].field.39", equalTo("00"));
+    }
+
+    public void generateMixDepCashTransaction(Map<String, String> fields) {
+        JSONObject requestBody = JSONData.getATMData(fields);
+
+        logInfo("Request body: " + requestBody.toString());
+        System.out.println(requestBody.toString());
+
+        given().
+                auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
+                contentType(ContentType.JSON).
+                relaxedHTTPSValidation().
+                body(requestBody.toString()).
+        when().
+                post(GENERIC_PROCESS_URL).
+        then().
+                statusCode(200).
+                body("data[0].field.39", equalTo(fields.get("39"))).
+                body("data[0].field.54", equalTo(fields.get("54"))).
+                body("data[0].field.104", equalTo(fields.get("104")));
     }
 }
