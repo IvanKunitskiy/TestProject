@@ -109,7 +109,6 @@ public class NonTellerTransaction extends AllureLogger {
         JSONObject requestBody = JSONData.getATMData(fields);
 
         logInfo("Request body: " + requestBody.toString());
-        System.out.println(requestBody.toString());
 
         given().
                 auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
@@ -120,7 +119,7 @@ public class NonTellerTransaction extends AllureLogger {
                 post(GENERIC_PROCESS_URL).
         then().
                 statusCode(200).
-                body("data[0].field.39", equalTo(fields.get("39"))).
+                body("data[0].field.39", equalTo("00")).
                 body("data[0].field.54", equalTo(fields.get("54"))).
                 body("data[0].field.104", equalTo(fields.get("104")));
     }
