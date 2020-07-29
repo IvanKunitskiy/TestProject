@@ -36,7 +36,6 @@ public class C22614_ViewNewSafeBoxAccountTest extends BaseTest {
         safeDepositBoxAccount = new Account().setSafeDepositBoxData();
         safeDepositBoxAccount.setCurrentOfficer(Constants.FIRST_NAME + " " + Constants.LAST_NAME);
         safeDepositBoxAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
-        safeDepositBoxAccount.setDateOpened(WebAdminActions.loginActions().getSystemDate());
 
         // Set up CHK account (required to point the 'Corresponding Account')
         Account checkingAccount = new Account().setCHKAccountData();
