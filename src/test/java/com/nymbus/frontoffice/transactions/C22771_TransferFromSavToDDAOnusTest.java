@@ -21,6 +21,7 @@ import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
+import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
@@ -33,29 +34,38 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-public class C22761_224ATMWithdrawalONUSTest extends BaseTest {
-    private BalanceData expectedBalanceData;
-    private NonTellerTransactionData nonTellerTransactionData;
+public class C22771_TransferFromSavToDDAOnusTest extends BaseTest {
+    private final String INSTRUCTION_REASON = "Reg CC";
+    private BalanceData expectedBalanceDataForSavingAcc;
+    private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
     private TransactionData savingAccTransactionData;
+    private TransactionData chkAccTransactionData;
+    private NonTellerTransactionData nonTellerTransactionData;
     private String savingsAccountNumber;
+    private String checkingAccountNumber;
     private double transactionAmount;
     private IndividualClient client;
 
     @BeforeMethod
     public void prepareTransactionData() {
-        // Set up Client, Account and Transaction
+        // Set up Client, Account
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         client = individualClientBuilder.buildClient();
         Account savingsAccount = new Account().setSavingsAccountData();
+        Account checkAccount = new Account().setCHKAccountData();
         Transaction glDebitMiscCreditTransaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        glDebitMiscCreditTransaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
+
+        // Init nonTellerTransactionData
+        nonTellerTransactionData = new NonTellerTransactionData();
+        transactionAmount = glDebitMiscCreditTransaction.getTransactionDestination().getAmount();
 
         // Set up debit card and bin control
         DebitCardConstructor debitCardConstructor = new DebitCardConstructor();
         DebitCardBuilder debitCardBuilder = new DebitCardBuilder();
         debitCardConstructor.constructDebitCard(debitCardBuilder);
         DebitCard debitCard = debitCardBuilder.getCard();
-        nonTellerTransactionData = new NonTellerTransactionData();
 
         BinControlConstructor binControlConstructor = new BinControlConstructor();
         BinControlBuilder binControlBuilder = new BinControlBuilder();
@@ -66,32 +76,32 @@ public class C22761_224ATMWithdrawalONUSTest extends BaseTest {
 
         Actions.debitCardModalWindowActions().setDebitCardWithBinControl(debitCard, binControl);
         debitCard.getAccounts().add(savingsAccount.getAccountNumber());
+        debitCard.getAccounts().add(checkAccount.getAccountNumber());
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
-        // Log in and create client
+        // Log in
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
+        // Get terminal ID
         String terminalId = Actions.nonTellerTransactionActions().getTerminalID(1);
 
+        // Create client
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
 
-        // Create CHK account
+        // Create Savings  account
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         AccountActions.createAccount().createSavingAccountForTransactionPurpose(savingsAccount);
         savingsAccountNumber = savingsAccount.getAccountNumber();
 
-        // Set up transaction with account number
-        glDebitMiscCreditTransaction.getTransactionDestination().setAccountNumber(savingsAccountNumber);
-
-        //Create debit card
+        // Create CHK account
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
-        Pages.clientDetailsPage().clickOnMaintenanceTab();
-        Pages.clientDetailsPage().clickOnNewDebitCardButton();
-        Actions.debitCardModalWindowActions().fillDebitCard(debitCard);
-        Pages.debitCardModalWindow().clickOnSaveAndFinishButton();
-        Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
+        AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkAccount);
+        checkingAccountNumber = checkAccount.getAccountNumber();
+
+        // Create debit card for saving acc
+        createDebitCard(client.getInitials(), debitCard);
         Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(nonTellerTransactionData, 1);
 
         // Re-login in system for updating teller session
@@ -104,65 +114,100 @@ public class C22761_224ATMWithdrawalONUSTest extends BaseTest {
         Actions.transactionActions().createGlDebitMiscCreditTransaction(glDebitMiscCreditTransaction);
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
-        transactionAmount = glDebitMiscCreditTransaction.getTransactionDestination().getAmount();
 
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
-        expectedBalanceData = AccountActions.retrievingAccountData().getBalanceData();
+        expectedBalanceDataForSavingAcc = AccountActions.retrievingAccountData().getBalanceData();
+        AccountActions.editAccount().goToInstructionsTab();
+        AccountActions.createInstruction().deleteInstructionByReasonText(INSTRUCTION_REASON);
+
+        Actions.clientPageActions().searchAndOpenClientByName(checkingAccountNumber);
+        expectedBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
 
         // Set up nonTeller transaction data
-        nonTellerTransactionData.setAmount(glDebitMiscCreditTransaction.getTransactionDestination().getAmount());
+        nonTellerTransactionData.setAmount(transactionAmount);
         nonTellerTransactionData.setTerminalId(terminalId);
         savingAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-", expectedBalanceData.getCurrentBalance(),
-                glDebitMiscCreditTransaction.getTransactionDestination().getAmount());
+                "-", expectedBalanceDataForSavingAcc.getCurrentBalance(), transactionAmount);
+        chkAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
+                "+", expectedBalanceDataForCheckingAcc.getCurrentBalance(), transactionAmount);
 
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = " C22761, 224 ATM Withdrawal ONUS")
+    @Test(description = "C22771, Transfer from SAV to DDA ONUS")
     @Severity(SeverityLevel.CRITICAL)
-    public void verify224ATMWithdrawalONUSTransaction() {
+    public void verifyTransferFromSavToDDaTransaction() {
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
-        logInfo("Step 2:Expand widgets-controller/widget._GenericProcess and run the following request with ONUS terminal ID");
+        logInfo("Step 2: Expand widgets-controller->widget._GenericProcess and run the following \n" +
+                "request for the Debit Card assigned to the Savings account from the precondition:");
         Actions.nonTellerTransactionActions().performATMTransaction(getFieldsMap(nonTellerTransactionData));
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-        logInfo("Step 4: Search for CHK account from the precondition and Verify Account's: \n" +
+        logInfo("Step 4: Search for Saving account from the precondition and Verify Account's: \n" +
                 "- current balance \n" +
-                "- available balance");
+                "- available balance \n" +
+                "- Transactions history");
+        expectedBalanceDataForSavingAcc.subtractAmount(transactionAmount);
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
-        expectedBalanceData.subtractAmount(transactionAmount);
-        BalanceData actualBalanceData = AccountActions.retrievingAccountData().getBalanceData();
-        Assert.assertEquals(actualBalanceData, expectedBalanceData, "Saving account balances is not correct!");
+        BalanceData actualBalanceDataForSavingsAcc = AccountActions.retrievingAccountData().getBalanceData();
+        Assert.assertEquals(actualBalanceDataForSavingsAcc, expectedBalanceDataForSavingAcc, "Saving account balance is not correct!");
+        savingAccTransactionData.setBalance(expectedBalanceDataForSavingAcc.getCurrentBalance());
 
-        savingAccTransactionData.setBalance(expectedBalanceData.getCurrentBalance());
         AccountActions.retrievingAccountData().goToTransactionsTab();
         int offset = AccountActions.retrievingAccountData().getOffset();
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset);
         Assert.assertEquals(actualTransactionData, savingAccTransactionData, "Transaction data doesn't match!");
-
-        logInfo("Step 5: Verify that there is NO 129-ATM Usage Fee for 124 ATM Withdrawal ONUS transaction");
         Assert.assertEquals(Pages.accountTransactionPage().getTransactionItemsCount(), 2,
                 "Transaction count is incorrect!");
-        Assert.assertFalse(Actions.transactionActions().isTransactionCodePresent(TransactionCode.ATM_USAGE_229_FEE.getTransCode()),
-                "229-ATM Usage Fee presents in transaction list");
+        Assert.assertFalse(Actions.transactionActions().isTransactionCodePresent(TransactionCode.ATM_USAGE_129.getTransCode(), offset),
+                "129-ATM Usage Fee presents in transaction list");
 
-        logInfo("Step 6: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
-        logInfo("Step 7: Click [View History] link on the Debit Card from the precondition");
+        logInfo("Step 5: Search for the CHK account that is assigned to the Debit Card from the precondition and open it on Instructions tab");
+        logInfo("Step 6: Check the list of instructions for the account (if exist) and delete the Hold with type Reg CC");
+        Actions.clientPageActions().searchAndOpenClientByName(checkingAccountNumber);
+        AccountActions.editAccount().goToInstructionsTab();
+        AccountActions.createInstruction().deleteInstructionByReasonText(INSTRUCTION_REASON);
+
+        logInfo("Step 7: Verify Account's: \n" +
+                "- current balance \n" +
+                "- available balance \n" +
+                "- Transactions history");
+        AccountActions.editAccount().goToDetailsTab();
+        expectedBalanceDataForCheckingAcc.addAmount(transactionAmount);
+        BalanceDataForCHKAcc actualBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
+        Assert.assertEquals(actualBalanceData, expectedBalanceDataForCheckingAcc, "CHKAccount balances is not correct!");
+        chkAccTransactionData.setBalance(expectedBalanceDataForCheckingAcc.getCurrentBalance());
+
+        AccountActions.retrievingAccountData().goToTransactionsTab();
+        offset = AccountActions.retrievingAccountData().getOffset();
+        actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset);
+        Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
+
+        logInfo("Step 8: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
+        logInfo("Step 9: Click [View History] link on the Debit Card from the precondition");
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         Actions.debitCardModalWindowActions().goToCardHistory(1);
         double actualAmount = Actions.debitCardModalWindowActions().getTransactionAmount(1);
-        Assert.assertEquals(actualAmount, savingAccTransactionData.getAmount(), "Transaction amount is incorrect!");
+        Assert.assertEquals(actualAmount, transactionAmount, "Transaction amount is incorrect!");
+    }
+
+    private void createDebitCard(String clientInitials, DebitCard debitCard) {
+        Actions.clientPageActions().searchAndOpenClientByName(clientInitials);
+        Pages.clientDetailsPage().clickOnMaintenanceTab();
+        Pages.clientDetailsPage().clickOnNewDebitCardButton();
+        Actions.debitCardModalWindowActions().fillDebitCard(debitCard);
+        Pages.debitCardModalWindow().clickOnSaveAndFinishButton();
+        Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
     }
 
     private Map<String, String> getFieldsMap(NonTellerTransactionData transactionData) {
         Map<String, String > result = new HashMap<>();
         result.put("0", "0200");
-        result.put("3", "011000");
+        result.put("3", "4010200");
         result.put("4", transactionData.getAmount());
-        result.put("11", "3912280233");
+        result.put("11", "430373");
         result.put("18", "6011");
         result.put("22", "801");
         result.put("35", String.format("%s=%s", transactionData.getCardNumber(), transactionData.getExpirationDate()));

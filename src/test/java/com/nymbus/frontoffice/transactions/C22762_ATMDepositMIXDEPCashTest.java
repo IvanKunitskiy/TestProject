@@ -134,7 +134,7 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
         logInfo("Step 2: Expand widgets-controller->widget._GenericProcess and run the following \n" +
                 "request for the Debit Card assigned to the Savings account from the precondition:");
-        Actions.nonTellerTransactionActions().performATMTransaction(getFieldsMap(mixDepTransactionData, field54MixDep, "MIXDEP"));
+        Actions.nonTellerTransactionActions().performMixDepCashTransaction(getFieldsMap(mixDepTransactionData, field54MixDep, "MIXDEP"));
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -163,7 +163,7 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         Assert.assertEquals(actualTransactionData, savingAccTransactionData, "Transaction data doesn't match!");
 
         logInfo("Step 7: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
-        logInfo("Step 7: Click [View History] link on the Debit Card from the precondition");
+        logInfo("Step 8: Click [View History] link on the Debit Card from the precondition");
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         Actions.debitCardModalWindowActions().goToCardHistory(1);
         double actualAmount = Actions.debitCardModalWindowActions().getTransactionAmount(1);
@@ -171,7 +171,7 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
 
         logInfo("Step 9: Go to the Swagger and run the following request for the Debit Card assigned to the CHK account from the precondition:");
         String field54Cash = "2094840C000000010500";
-        Actions.nonTellerTransactionActions().performATMTransaction(getFieldsMapForCashTransaction(cashTransactionData, field54Cash, "CASH"));
+        Actions.nonTellerTransactionActions().performMixDepCashTransaction(getFieldsMapForCashTransaction(cashTransactionData, field54Cash, "CASH"));
 
         logInfo("Step 10: Search for CHK account from the precondition and open it on Instructions tab");
         Actions.clientPageActions().searchAndOpenClientByName(checkingAccountNumber);
@@ -195,8 +195,8 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset);
         Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
 
-        logInfo("Step 7: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
-        logInfo("Step 7: Click [View History] link on the Debit Card from the precondition");
+        logInfo("Step 13: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
+        logInfo("Step 14: Click [View History] link on the Debit Card from the precondition");
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         Actions.debitCardModalWindowActions().goToCardHistory(2);
         actualAmount = Actions.debitCardModalWindowActions().getTransactionAmount(1);

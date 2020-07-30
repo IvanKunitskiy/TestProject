@@ -30,12 +30,16 @@ public class NonTellerTransactionActions {
                 transactionData.getExpirationDate(), transactionData.getAmount(), transactionData.getTerminalId());
     }
 
-    public void performATMTransaction(NonTellerTransactionData transactionData, ATMTransactionType type) {
+    public void performMixDepCashTransaction(NonTellerTransactionData transactionData, ATMTransactionType type) {
         Actions.nonTellerTransaction().generateATMTransaction(transactionData, type);
     }
 
-    public void performATMTransaction(Map<String, String> fields) {
+    public void performMixDepCashTransaction(Map<String, String> fields) {
         Actions.nonTellerTransaction().generateMixDepCashTransaction(fields);
+    }
+
+    public void performATMTransaction(Map<String, String> fields) {
+        Actions.nonTellerTransaction().generateATMTransaction(fields);
     }
 
     public String getTerminalID(int index) {
