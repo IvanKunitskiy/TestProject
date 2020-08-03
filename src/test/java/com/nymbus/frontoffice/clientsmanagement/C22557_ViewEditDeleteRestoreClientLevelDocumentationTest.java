@@ -1,6 +1,5 @@
 package com.nymbus.frontoffice.clientsmanagement;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -75,7 +74,6 @@ public class C22557_ViewEditDeleteRestoreClientLevelDocumentationTest extends Ba
 
         logInfo("Step 6: Click the document in the documents list");
         Pages.documentsPage().clickDocumentRowByDocumentIDSelector(companyIDDocument.getIdNumber());
-        // TODO: Clarify how to validate that doc image is changed
 
         logInfo("Step 7: Close the preview and verify info displayed in documents list (to see if other changes are applied )");
         Pages.documentOverviewPage().clickCloseButton();
