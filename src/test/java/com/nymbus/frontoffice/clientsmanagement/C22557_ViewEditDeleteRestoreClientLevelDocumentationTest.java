@@ -1,6 +1,5 @@
 package com.nymbus.frontoffice.clientsmanagement;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;

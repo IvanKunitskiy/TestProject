@@ -51,8 +51,6 @@ public class BalanceInquiryActions {
         while (!balanceInquiryImage.exists()) {
             try {
                 Thread.sleep(1000);
-                System.err.println("File does not exist in folder");
-                // TODO: add check if file does not exist after some time
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
