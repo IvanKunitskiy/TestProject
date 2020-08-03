@@ -126,6 +126,5 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
     public void postCondition() {
         logInfo("Deleting the downloaded PDF...");
         Functions.cleanDirectory(System.getProperty("user.dir") + "/screenshots/");
-        Functions.deleteFile(System.getProperty("user.dir") + "/proxy.pdf"); // TODO: Discover reason of duplicating pdf file
     }
 }
