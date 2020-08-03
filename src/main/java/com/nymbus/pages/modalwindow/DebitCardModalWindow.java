@@ -48,10 +48,17 @@ public class DebitCardModalWindow extends PageTools {
     private By saveButton = By.xpath("//button[span[text()='Save']]");
     private By closeDebitCardModalButton = By.xpath("//div[@class='modal-header']//button[contains(@aria-label, 'Close')]");
     private By dateEffective = By.xpath("//input[@data-test-id='field-dateeffective']");
+    private By accountRows = By.xpath("//tr[@ng-repeat='accountField in debitCard.accounts track by $index']");
 
     /**
      * Select 'Bin Control' Modal Window methods
      * */
+    @Step("Get account rows count")
+    public int getAccountRowsCount() {
+        waitForElementVisibility(accountRows);
+        return getElements(accountRows).size();
+    }
+
     @Step("Click on 'Bin Number' input field")
     public void clickOnBinNumberInputField() {
         waitForElementVisibility(binNumberArrowIcon);

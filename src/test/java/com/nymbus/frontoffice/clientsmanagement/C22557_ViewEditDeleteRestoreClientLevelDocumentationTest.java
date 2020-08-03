@@ -64,16 +64,22 @@ public class C22557_ViewEditDeleteRestoreClientLevelDocumentationTest extends Ba
         Pages.accountNavigationPage().clickDocumentsTab();
 
         logInfo("Step 4: Click 3 dots menu and click [Edit] button");
+        Pages.documentsPage().clickDocumentRowByDocumentIDSelector(companyIDDocument.getIdNumber());
+        String imgSrcBeforeEdit = Pages.documentOverviewPage().getImageSrc();
+        Pages.documentOverviewPage().clickCloseButton();
         Pages.documentsPage().clickEditButtonByDocumentID(companyIDDocument.getIdNumber());
 
         logInfo("Step 5: Make any changes in the populated fields, change the attached document and click [Save Changes] button");
         companyIDDocument.setIdNumber(Random.genString(10));
-        Pages.addNewDocumentPage().replaceDocument(Functions.getFilePathByName("clientDocument2.png"));
+        Pages.addNewDocumentPage().replaceDocument(Functions.getFilePathByName("clientDocument3.png"));
         Pages.addNewDocumentPage().typeValueToIDNumberField(companyIDDocument.getIdNumber());
         Pages.addNewDocumentPage().clickSaveChangesButton();
 
         logInfo("Step 6: Click the document in the documents list");
         Pages.documentsPage().clickDocumentRowByDocumentIDSelector(companyIDDocument.getIdNumber());
+        String imgSrcAfterEdit = Pages.documentOverviewPage().getImageSrc();
+        // TODO: Clarify how to validate that doc image is changed
+        Assert.assertNotEquals(imgSrcBeforeEdit, imgSrcAfterEdit, "Document image doesn't changed!");
 
         logInfo("Step 7: Close the preview and verify info displayed in documents list (to see if other changes are applied )");
         Pages.documentOverviewPage().clickCloseButton();

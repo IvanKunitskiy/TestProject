@@ -101,8 +101,6 @@ public class ClientPageActions {
         for (int i = 1; i <= count; i++) {
             Pages.clientDetailsPage().clickCloseNotificationByIndex(i);
 
-            Pages.clientDetailsPage().clickCloseNotificationByIndex(i);
-
             Pages.clientDetailsPage().waitForNotificationInvisibility(i);
         }
     }

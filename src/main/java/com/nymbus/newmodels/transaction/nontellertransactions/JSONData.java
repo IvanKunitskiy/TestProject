@@ -6,6 +6,8 @@ import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 public class JSONData {
 
     public static JSONObject getAtmCreditData(String cardNumber, String cardExpiration, String amount) {
@@ -218,6 +220,19 @@ public class JSONData {
 
        return json;
    }
+
+    public static JSONObject getATMData(Map <String, String> fields) {
+        JSONObject json = new JSONObject();
+        json.put("actions", getActionsArray());
+        json.put("ruleType", "eft");
+        json.put("beans", getBeansArray(getFieldsArr(fields)));
+
+        return json;
+    }
+
+    private static JSONObject getFieldsArr(Map <String, String> fields) {
+        return new JSONObject(fields);
+    }
 
     private static JSONObject getFieldsArr(NonTellerTransactionData nonTellerTransactionData, ATMTransactionType type) {
         switch (type) {

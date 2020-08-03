@@ -31,6 +31,13 @@ public class BalanceInquiryActions {
         return biImage;
     }
 
+    public File saveImageFile(String src) {
+        String imageName = "client-document-image-" + DateTime.getLocalDateTimeByPattern("yyMMddHHmmss");
+        File cdImage = new File(System.getProperty("user.dir") + "/screenshots/" + imageName + ".png");
+        ImageParser.loadImageFromUrl(src, cdImage.getAbsolutePath());
+        return cdImage;
+    }
+
     public String readBalanceInquiryImage(File balanceInquiryImage) {
         BytePointer outText;
         TessBaseAPI api = new TessBaseAPI();
