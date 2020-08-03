@@ -16,7 +16,7 @@ public class CreateDocumentActions {
 
     public void createNewCompanyIDDocument(CompanyID document) {
         Pages.accountNavigationPage().clickDocumentsTab();
-        Pages.documentsPage().clickAddNewDocumentButton();
+        Pages.documentsPage().clickAddNewDocumentButtonWithJs();
         Pages.addNewDocumentPage().uploadNewDocument(Functions.getFilePathByName("clientDocument.png"));
         DocumentActions.createDocumentActions().setIDType(document);
         Pages.addNewDocumentPage().typeValueToIDNumberField(document.getIdNumber());
@@ -29,7 +29,7 @@ public class CreateDocumentActions {
 
     public void createAccountLevelDocument(AccountLevelDocument document) {
         Pages.accountNavigationPage().clickDocumentsTab();
-        Pages.documentsPage().clickAddNewDocumentButton();
+        Pages.documentsPage().clickAddNewDocumentButtonWithJs();
         Pages.addNewDocumentPage().uploadNewAccountDocument(Functions.getFilePathByName(document.getFile().getFileName()));
         DocumentActions.createDocumentActions().setCategory(document);
         DocumentActions.createDocumentActions().setDocType(document);

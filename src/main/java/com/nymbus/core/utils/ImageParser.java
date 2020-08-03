@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Base64;
 
 public class ImageParser {
@@ -31,5 +33,22 @@ public class ImageParser {
 
     public static void loadImage(String imageSource, String filename) {
         writeBufferedImage(getBufferedImage(imageSource), filename);
+    }
+
+    private static BufferedImage getBufferedImageFromUrl(String url) {
+        try {
+           URL urlFromString = new URL(url);
+           System.out.println(urlFromString.getPath());
+           return ImageIO.read(urlFromString);
+        }
+        catch (IOException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return null;
+       }
+    }
+
+    public static void loadImageFromUrl(String url, String filename) {
+        writeBufferedImage(getBufferedImageFromUrl(url), filename);
     }
 }

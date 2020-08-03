@@ -49,6 +49,12 @@ public class DocumentsPage extends PageTools {
         click(addNewDocumentButton);
     }
 
+    @Step("Click 'Add New Document' button with js")
+    public void clickAddNewDocumentButtonWithJs() {
+        waitForElementVisibility(addNewDocumentButton);
+        jsClick(addNewDocumentButton);
+    }
+
     @Step("Click 'Edit' button for document by its 'Document ID'")
     public void clickEditButtonByDocumentID(String documentID) {
         waitForElementVisibility(editButtonByDocumentIDSelector, documentID);
