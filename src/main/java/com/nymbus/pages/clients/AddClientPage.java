@@ -137,6 +137,8 @@ public class AddClientPage extends PageTools {
             "//span[@class='select2-chosen']/span");
     private By addressCountrySelectedSpan = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.country.isShow'][%s]" +
             "//span[@class='select2-chosen']/span");
+    private By seasonalStartDate = By.xpath("//input[@id='seasonstartdate_1']");
+    private By seasonalEndDate = By.xpath("//input[@id='seasonstopdate_1']");
 
     /**
      * Phones and Emails information
@@ -301,6 +303,26 @@ public class AddClientPage extends PageTools {
     public void setAddressZipCode1Value(int i, String text) {
         waitForElementClickable(getAddressZipCodeField1, i);
         type(text, getAddressZipCodeField1, i);
+    }
+
+    @Step("Set 'Seasonal Start Date' value")
+    public void setSeasonalStartDate(String date) {
+        waitForElementVisibility(seasonalStartDate);
+        waitForElementClickable(seasonalStartDate);
+        scrollToPlaceElementInCenter(seasonalStartDate);
+        typeWithoutWipe("", seasonalStartDate);
+        SelenideTools.sleep(1);
+        typeWithoutWipe(date, seasonalStartDate);
+    }
+
+    @Step("Set 'Seasonal End Date' value")
+    public void setSeasonalEndDate(String date) {
+        waitForElementVisibility(seasonalEndDate);
+        waitForElementClickable(seasonalEndDate);
+        scrollToPlaceElementInCenter(seasonalEndDate);
+        typeWithoutWipe("", seasonalEndDate);
+        SelenideTools.sleep(1);
+        typeWithoutWipe(date, seasonalEndDate);
     }
 
     @Step("Set 'Address ZipCode2' value")

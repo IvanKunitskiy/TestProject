@@ -19,6 +19,7 @@ public class TransactionActions {
 
     public void goToTellerPage() {
         Pages.aSideMenuPage().clickTellerMenuItem();
+        Pages.tellerPage().waitForTransactionSectionVisibility();
     }
 
     public void doLoginTeller() {
@@ -178,6 +179,7 @@ public class TransactionActions {
         int tempIndex = 1 + index;
         Pages.tellerPage().clickMiscDebitButton();
         fillSourceAccountNumber(source.getAccountNumber(), tempIndex);
+        fillSourceAccountCode(source.getTransactionCode(), tempIndex);
         fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
     }
 
@@ -384,5 +386,38 @@ public class TransactionActions {
         }
         String availableBalanceValue = Pages.tellerPage().getAvailableBalance();
         return Double.parseDouble(availableBalanceValue);
+    }
+
+    public boolean isTransactionCodePresent(String transCode) {
+        boolean result = false;
+        int transactionItems = Pages.accountTransactionPage().getTransactionItemsCount();
+        for (int i = 1; i <= transactionItems; ++i) {
+            if (Pages.accountTransactionPage().getTransactionCodeByIndex(i).contains(transCode)) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    public boolean isTransactionCodePresent(String transCode, int offset) {
+        boolean result = false;
+        int transactionItems = Pages.accountTransactionPage().getTransactionItemsCount();
+        for (int i = 1; i <= transactionItems; ++i) {
+            if (Pages.accountTransactionPage().getTransactionCodeByIndex(i, offset).contains(transCode)) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    public boolean isATMTransactionCodePresent(String transCode) {
+        boolean result = false;
+        int transactionItems = Pages.accountTransactionPage().getTransactionItemsCount();
+        for (int i = 1; i <= transactionItems; ++i) {
+            if (Pages.accountTransactionPage().getTransactionCodeByIndex1(i).contains(transCode)) {
+                result = true;
+            }
+        }
+        return result;
     }
 }

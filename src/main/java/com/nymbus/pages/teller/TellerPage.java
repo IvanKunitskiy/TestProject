@@ -13,6 +13,12 @@ public class TellerPage extends PageTools {
     private By cashDrawerName = By.xpath("//div[@name='cashDrawerTemplate']/a/span/span");
     private By effectiveDate = By.xpath("//input[@data-test-id='field-']");
     private By drawerNameInFooter = By.xpath("//footer//span[contains(text(), 'Drawer Name')]/span");
+    private By transactionSection = By.xpath("//section[@ui-view='transaction']");
+
+    @Step("Wait for transaction section visibility")
+    public void waitForTransactionSectionVisibility() {
+        waitForElementVisibility(transactionSection);
+    }
 
     @Step("Wait 'Proof Date Login' modal window")
     public void waitModalWindow() {

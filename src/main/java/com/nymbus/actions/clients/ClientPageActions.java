@@ -84,6 +84,13 @@ public class ClientPageActions {
         Pages.clientsSearchResultsPage().clickTheExactlyMatchedAccountInSearchResults(account.getAccountNumber());
     }
 
+    public void searchAndOpenAccountByAccountNumber(String accountNumber) {
+        Pages.clientsSearchPage().typeToClientsSearchInputField(accountNumber);
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), accountNumber));
+        Pages.clientsSearchPage().clickOnSearchButton();
+        Pages.clientsSearchResultsPage().clickTheExactlyMatchedAccountInSearchResults(accountNumber);
+    }
+
     public void closeAllNotifications() {
         int notificationsCount = Pages.clientDetailsPage().getNotificationCount();
 
@@ -92,8 +99,6 @@ public class ClientPageActions {
 
     private void closeNotifications(int count) {
         for (int i = 1; i <= count; i++) {
-            Pages.clientDetailsPage().clickCloseNotificationByIndex(i);
-
             Pages.clientDetailsPage().clickCloseNotificationByIndex(i);
 
             Pages.clientDetailsPage().waitForNotificationInvisibility(i);

@@ -107,7 +107,7 @@ public class AccountDetailsPage extends PageTools {
     private By originalBalance = By.xpath("//*[@data-config-name='originalbalance']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By dateLastInterestPay = By.xpath("//*[@data-config-name='datelastinterestpaid']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By dateNextInterestPay = By.xpath("//*[@data-config-name='datenextinterestpayment']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private By nextInterestPaymentAmount = By.xpath("//*[@data-config-name='nextinterestpaymentamount']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By nextInterestPaymentAmount = By.xpath("//tr[@data-config-name='nextinterestpaymentamount']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By averageBalance = By.xpath("//*[@data-config-name='averagebalance']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By collectedBalance = By.xpath("//*[@data-config-name='collectedbalance']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By accountStatus = By.xpath("//tr[@data-test-id='field-accountstatus']//span[contains(@class, 'ng-binding')]");
@@ -124,6 +124,7 @@ public class AccountDetailsPage extends PageTools {
     private By taxesWithheldYTD = By.xpath("//tr[@data-config-name='taxeswithheldytd']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By termInMonthOrDays = By.xpath("//tr[@data-config-name='terminmonthsordays']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By dailyInterestAccrual = By.xpath("//tr[@data-config-name='dailyinterestaccrual']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By overdraftChargedOff = By.xpath("//tr[@data-config-name='overdraftchargedoff']//span[contains(@class, 'dnTextFixedWidthText')]");
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -374,19 +375,25 @@ public class AccountDetailsPage extends PageTools {
     @Step("Get 'Interest Paid YTD' value")
     public String getInterestPaidYTD() {
         waitForElementVisibility(interestPaidYTD);
-        return getElementText(interestPaidYTD).replaceAll("[^0-9]", "");
+        return getElementText(interestPaidYTD).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Interest Paid Last Year' value")
     public String getInterestPaidLastYear() {
         waitForElementVisibility(interestPaidLastYear);
-        return getElementText(interestPaidLastYear).replaceAll("[^0-9]", "");
+        return getElementText(interestPaidLastYear).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Taxes Withheld YTD' value")
     public String getTaxesWithheldYTD() {
         waitForElementVisibility(taxesWithheldYTD);
-        return getElementText(taxesWithheldYTD).replaceAll("[^0-9]", "");
+        return getElementText(taxesWithheldYTD).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Overdraft Charged Off' value")
+    public String getOverdraftChargedOff() {
+        waitForElementVisibility(overdraftChargedOff);
+        return getElementText(overdraftChargedOff).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Corresponding Account' value")
