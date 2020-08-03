@@ -9,7 +9,6 @@ import org.bytedeco.tesseract.TessBaseAPI;
 import org.testng.Assert;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import static org.bytedeco.leptonica.global.lept.pixDestroy;
 import static org.bytedeco.leptonica.global.lept.pixRead;
@@ -51,18 +50,8 @@ public class BalanceInquiryActions {
 
         while (!balanceInquiryImage.exists()) {
             try {
-                final int TIME_LIMIT = 30000; // 30 seconds
-                final int STEP = 1000; // 1 second
-                int counter = 0;
-
-                counter += STEP;
-
-                if (counter < TIME_LIMIT) {
-                    Thread.sleep(STEP);
-                } else {
-                    throw new FileNotFoundException("Balance inquiry image does not exist.");
-                }
-            } catch (InterruptedException | FileNotFoundException e) {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
