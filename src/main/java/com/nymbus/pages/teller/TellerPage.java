@@ -130,7 +130,7 @@ public class TellerPage extends PageTools {
     private By accountNumberField = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]" +
             "//*[@data-name='accountNumber account']//input[contains(@class, 'ui-select-search')]");
 
-    private By transactionCodeDropdownArrow = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[1]" +
+    private By transactionCodeDropdownArrow = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]" +
             "//*[@data-name='tranCode']//span[contains(@class, 'select2-arrow')]");
     private By transactionCodeField = By.xpath("((//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]" +
             "//*[@data-name='tranCode']//input[contains(@class, 'ui-select-search')])[1]");
