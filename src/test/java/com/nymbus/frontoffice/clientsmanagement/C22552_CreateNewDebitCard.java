@@ -110,13 +110,7 @@ public class C22552_CreateNewDebitCard extends BaseTest {
         logInfo("Step 10: Click [View all cards] button in Cards Management tile and verify the displayed info");
         Pages.clientDetailsPage().clickOnViewAllCardsButton();
         Actions.maintenancePageActions().verifyDebitCardDetails(debitCard);
-
-        // getting required fields for verification
-        Pages.maintenancePage().clickEditButtonInListByNameOnCard(debitCard.getNameOnCard());
-        Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowVisibility();
-        debitCard.setCardNumber(Pages.debitCardModalWindow().getCardNumber());
-        debitCard.setClientNumber(Pages.debitCardModalWindow().getClientNumber());
-        Pages.debitCardModalWindow().clickOnCancelButton();
+        Actions.maintenancePageActions().setDataToDebitCard(debitCard);
 
         logInfo("Step 11: Go to the Accounts tab and search for the account that was assigned to the card. Open account on Maintenance-> Maintenance History page");
         Pages.clientDetailsPage().clickAccountsTab();

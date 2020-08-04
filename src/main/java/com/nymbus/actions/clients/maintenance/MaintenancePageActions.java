@@ -42,6 +42,14 @@ public class MaintenancePageActions {
         );
     }
 
+    public void setDataToDebitCard(DebitCard debitCard) {
+        Pages.maintenancePage().clickEditButtonInListByNameOnCard(debitCard.getNameOnCard());
+        Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowVisibility();
+        debitCard.setCardNumber(Pages.debitCardModalWindow().getCardNumber());
+        debitCard.setClientNumber(Pages.debitCardModalWindow().getClientNumber());
+        Pages.debitCardModalWindow().clickOnCancelButton();
+    }
+
     public void verifyMaintenanceHistoryFields(DebitCard debitCard) {
         
     }

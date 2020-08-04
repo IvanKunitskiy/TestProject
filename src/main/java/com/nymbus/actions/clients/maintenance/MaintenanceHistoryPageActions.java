@@ -36,32 +36,33 @@ public class MaintenanceHistoryPageActions {
                 debitCard.getATMTransactionLimit(),
                 "ATM Daily Limit Number is not equal"
         );
-        /*Assert.assertEquals( // TODO: Weird thing... Instead of number displays Card Description
+        Assert.assertEquals(
                 Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.BIN_NUMBER),
                 debitCard.getBinControl().getBinNumber(),
                 "Bin Number is not equal"
-        );*/
+        );
         String cardNumber = debitCard.getCardNumber();
         Assert.assertEquals(
                 Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.CARD_NUMBER),
                 cardNumber.substring(cardNumber.length() - 4),
                 "Card Number is not equal"
         );
-        /*Assert.assertEquals( // TODO: Need to ask what is this
+        Assert.assertEquals(
                 Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.CARD_TRANSMITTED_TO_PROCESSORS),
-                debitCard.getBinControl().getBinNumber(),
+                "1", // Value should be always "1" for a new card. Shows amount of issued cards
                 "Card Transmitted To Processors is not equal"
-        );*/
+        );
         Assert.assertEquals(
                 Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.CARD_TYPE),
                 "Debit Card",
                 "Card Type is not equal"
         );
-        /*Assert.assertEquals( // TODO: Need to ask what is this
+        String chargeForCard = debitCard.isChargeForCardReplacement() ? "1" : "0";
+        Assert.assertEquals(
                 Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.CHARGE_FOR_CARD_REPLACEMENT),
-                debitCard.getBinControl().getChargeForCardReplacement(),
+                chargeForCard,
                 "Charge for Card Replacement is not equal"
-        );*/
+        );
         Assert.assertEquals(
                  Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.DATE_CREATED),
                 DateTime.parseDate(new Date(), "MM/dd/yyyy"),
@@ -82,19 +83,23 @@ public class MaintenanceHistoryPageActions {
                 DateTime.getLocalDatePlusMonthsWithPatternAndLastDay(debitCard.getDateEffective(), debitCard.getBinControl().getCardLifeInMonths(), "MM/dd/yyyy"),
                 "Expiration Date is not equal"
         );
-        /*Assert.assertEquals( // TODO: Need to ask what is this
+        String cardStatus = debitCard.getCardStatus().getCardStatus();
+        String instantIssue =  cardStatus.equals("Active") ? "1" : "0"; // 1 - if the card status is 'Active' and 0 - for 'Waiting to become active'
+        Assert.assertEquals(
                 Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.INSTANT_ISSUE),
-                debitCard.getInstantIssue(),
+                instantIssue,
                 "Instant Issue is not equal"
-        );*/
+        );
         Assert.assertEquals(
                 Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.NAME_ON_CARD),
                 debitCard.getNameOnCard(),
                 "Name on Card is not equal"
         );
+        String[] clientNumber = debitCard.getClientNumber().split(" ");
+        String debitCardClientNumber = clientNumber[0] + " " + clientNumber[1];
         Assert.assertEquals(
                 Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.CLIENT_NUMBER),
-                debitCard.getClientNumber(),
+                debitCardClientNumber,
                 "Client Number is not equal"
         );
         Assert.assertEquals(
