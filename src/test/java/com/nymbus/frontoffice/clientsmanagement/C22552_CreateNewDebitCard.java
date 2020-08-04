@@ -3,7 +3,6 @@ package com.nymbus.frontoffice.clientsmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
-import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
@@ -111,6 +110,7 @@ public class C22552_CreateNewDebitCard extends BaseTest {
         logInfo("Step 10: Click [View all cards] button in Cards Management tile and verify the displayed info");
         Pages.clientDetailsPage().clickOnViewAllCardsButton();
         Actions.maintenancePageActions().verifyDebitCardDetails(debitCard);
+        Actions.maintenancePageActions().setDataToDebitCard(debitCard);
 
         logInfo("Step 11: Go to the Accounts tab and search for the account that was assigned to the card. Open account on Maintenance-> Maintenance History page");
         Pages.clientDetailsPage().clickAccountsTab();
