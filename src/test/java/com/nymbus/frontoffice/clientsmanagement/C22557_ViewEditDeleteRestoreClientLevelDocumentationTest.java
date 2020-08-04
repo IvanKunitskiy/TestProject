@@ -78,7 +78,6 @@ public class C22557_ViewEditDeleteRestoreClientLevelDocumentationTest extends Ba
         logInfo("Step 6: Click the document in the documents list");
         Pages.documentsPage().clickDocumentRowByDocumentIDSelector(companyIDDocument.getIdNumber());
         String imgSrcAfterEdit = Pages.documentOverviewPage().getImageSrc();
-        // TODO: Clarify how to validate that doc image is changed
         Assert.assertNotEquals(imgSrcBeforeEdit, imgSrcAfterEdit, "Document image doesn't changed!");
 
         logInfo("Step 7: Close the preview and verify info displayed in documents list (to see if other changes are applied )");
