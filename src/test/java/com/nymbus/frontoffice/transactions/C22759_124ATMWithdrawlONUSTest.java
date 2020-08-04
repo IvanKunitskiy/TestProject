@@ -47,6 +47,9 @@ public class C22759_124ATMWithdrawlONUSTest extends BaseTest {
         Account checkAccount = new Account().setCHKAccountData();
         Transaction glDebitMiscCreditTransaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
 
+        // Init nonTellerTransactionData
+        nonTellerTransactionData = new NonTellerTransactionData();
+
         // Set up debit card and bin control
         DebitCardConstructor debitCardConstructor = new DebitCardConstructor();
         DebitCardBuilder debitCardBuilder = new DebitCardBuilder();
@@ -86,10 +89,9 @@ public class C22759_124ATMWithdrawlONUSTest extends BaseTest {
         Pages.clientDetailsPage().clickOnMaintenanceTab();
         Pages.clientDetailsPage().clickOnNewDebitCardButton();
         Actions.debitCardModalWindowActions().fillDebitCard(debitCard);
-        String expirationDate = Actions.debitCardModalWindowActions().getExpirationDate();
         Pages.debitCardModalWindow().clickOnSaveAndFinishButton();
         Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
-        String debitCardNumber = Actions.debitCardModalWindowActions().getCardNumber(1);
+        Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(nonTellerTransactionData, 1);
 
         // Re-login in system for updating teller session
         Actions.loginActions().doLogOut();
@@ -107,10 +109,7 @@ public class C22759_124ATMWithdrawlONUSTest extends BaseTest {
         expectedBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
 
         // Set up nonTeller transaction data
-        nonTellerTransactionData = new NonTellerTransactionData();
-        nonTellerTransactionData.setCardNumber(debitCardNumber);
         nonTellerTransactionData.setAmount(glDebitMiscCreditTransaction.getTransactionDestination().getAmount());
-        nonTellerTransactionData.setExpirationDate(expirationDate);
         nonTellerTransactionData.setTerminalId(terminalId);
         chkAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "-", expectedBalanceData.getCurrentBalance(),
