@@ -342,4 +342,10 @@ public class DebitCardModalWindow extends PageTools {
         waitForElementVisibility(dateEffective);
         return getElementAttributeValue("value", dateEffective).trim();
     }
+
+    @Step("Get 'Client Number' input value")
+    public String getClientNumber() {
+        waitForElementVisibility(clientNumberInputField);
+        return getElementAttributeValue("value", clientNumberInputField).trim();
+    }
 }

@@ -1,7 +1,9 @@
 package com.nymbus.actions.clients.maintenance;
 
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Mapper;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
 import com.nymbus.newmodels.other.MaintenanceHistoryField;
@@ -12,10 +14,7 @@ import java.util.Date;
 
 public class MaintenanceHistoryPageActions {
     public void verifyMaintenanceHistoryFields(DebitCard debitCard, Account account) {
-        Pages.maintenanceHistoryPage().clickOnViewMoreButton();
-        Pages.maintenanceHistoryPage().clickOnViewMoreButton();
-        Pages.maintenanceHistoryPage().clickOnViewMoreButton();
-        Pages.maintenanceHistoryPage().clickOnViewMoreButton();
+        expandAllRows();
 
         Assert.assertEquals(
                 Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.ALLOW_FOREIGN_TRANSACTIONS),
@@ -42,11 +41,12 @@ public class MaintenanceHistoryPageActions {
                 debitCard.getBinControl().getBinNumber(),
                 "Bin Number is not equal"
         );*/
-        /*Assert.assertEquals( // TODO: Need to set before...
+        String cardNumber = debitCard.getCardNumber();
+        Assert.assertEquals(
                 Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.CARD_NUMBER),
-                debitCard.getCardNumber(),
+                cardNumber.substring(cardNumber.length() - 4),
                 "Card Number is not equal"
-        );*/
+        );
         /*Assert.assertEquals( // TODO: Need to ask what is this
                 Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.CARD_TRANSMITTED_TO_PROCESSORS),
                 debitCard.getBinControl().getBinNumber(),
@@ -92,11 +92,11 @@ public class MaintenanceHistoryPageActions {
                 debitCard.getNameOnCard(),
                 "Name on Card is not equal"
         );
-        /*Assert.assertEquals( // TODO: Weird thing... Instead of client number displays fill name
+        Assert.assertEquals(
                 Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.CLIENT_NUMBER),
-                ((CHKAccount) account).getAccountNumber(),
+                debitCard.getClientNumber(),
                 "Client Number is not equal"
-        );*/
+        );
         Assert.assertEquals(
                 Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.PIN_OFFSET),
                 String.valueOf(debitCard.getPinOffset()),
@@ -120,6 +120,10 @@ public class MaintenanceHistoryPageActions {
     }
 
     public void expandAllRows() {
-
+        do {
+            Pages.accountMaintenancePage().clickViewMoreButton();
+            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        }
+        while (Pages.accountMaintenancePage().isMoreButtonVisible());
     }
 }
