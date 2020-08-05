@@ -6,6 +6,7 @@ import com.nymbus.newmodels.client.basicinformation.address.Address;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.documents.Document;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.email.Email;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.phone.Phone;
+import com.nymbus.newmodels.client.clientdetails.contactinformation.phone.PhoneType;
 import com.nymbus.newmodels.client.clientdetails.type.ClientStatus;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
@@ -382,7 +383,20 @@ public class IndividualClientActions {
          * Contact Information
          */
 
-        //TODO add contact information verification
+        if (!Pages.clientDetailsPage().getPhone().equals("")) {
+            asert.assertEquals(Pages.clientDetailsPage().getPhoneType(),
+                    PhoneType.HOME.getPhoneType(), "Client 'Phone Use' isn't as expected.");
+            asert.assertEquals(Pages.clientDetailsPage().getPhoneCountryByIndex(1),
+                    individualClient.getIndividualClientDetails().getPhones().get(0).getCountry().getCountry(), "Client 'Phone Country' isn't as expected.");
+            asert.assertEquals(Pages.clientDetailsPage().getPhoneNumberByIndex(1),
+                    individualClient.getIndividualClientDetails().getPhones().get(1).getPhoneNumber(), "Client 'Phone Number' isn't as expected.");
+        }
+        if (Pages.clientDetailsPage().isEmailVisible()) {
+            asert.assertEquals(Pages.clientDetailsPage().getEmailType(),
+                    individualClient.getIndividualClientDetails().getEmails().get(0).getEmailType().getEmailType(), "Client 'Email Address Use' isn't as expected.");
+            asert.assertEquals(Pages.clientDetailsPage().getEmail(),
+                    individualClient.getIndividualClientDetails().getEmails().get(1).getEmail(), "Client 'Email' isn't as expected.");
+        }
 
         /**
          * Address Information
