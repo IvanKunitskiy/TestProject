@@ -552,6 +552,11 @@ public class ClientDetailsPage extends PageTools {
         return getElementText(emailType).trim();
     }
 
+    @Step("Is 'Email' visible")
+    public boolean isEmailVisible() {
+        return isElementVisible(email);
+    }
+
     @Step("Get 'Email' value")
     public String getEmail() {
 //        waitForElementVisibility(email);
