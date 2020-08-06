@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.transactions;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
@@ -142,6 +143,9 @@ public class C22771_TransferFromSavToDDAOnusTest extends BaseTest {
                 "request for the Debit Card assigned to the Savings account from the precondition:");
         Actions.nonTellerTransactionActions().performATMTransaction(getFieldsMap(nonTellerTransactionData));
 
+        String transcode = TransactionCode.ATM_DEBIT_MEMO_219.getTransCode().split("\\s+")[0];
+        WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(savingAccTransactionData, savingsAccountNumber, transcode);
+
         logInfo("Step 3: Log in to the system as the User from the preconditions");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
@@ -152,7 +156,8 @@ public class C22771_TransferFromSavToDDAOnusTest extends BaseTest {
         expectedBalanceDataForSavingAcc.subtractAmount(transactionAmount);
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
         BalanceData actualBalanceDataForSavingsAcc = AccountActions.retrievingAccountData().getBalanceData();
-        Assert.assertEquals(actualBalanceDataForSavingsAcc, expectedBalanceDataForSavingAcc, "Saving account balance is not correct!");
+        Assert.assertEquals(actualBalanceDataForSavingsAcc.getCurrentBalance(), expectedBalanceDataForSavingAcc.getCurrentBalance(), "Saving account current balance is not correct!");
+        Assert.assertEquals(actualBalanceDataForSavingsAcc.getAvailableBalance(), expectedBalanceDataForSavingAcc.getAvailableBalance(), "Saving account available balance is not correct!");
         savingAccTransactionData.setBalance(expectedBalanceDataForSavingAcc.getCurrentBalance());
 
         AccountActions.retrievingAccountData().goToTransactionsTab();
@@ -163,6 +168,9 @@ public class C22771_TransferFromSavToDDAOnusTest extends BaseTest {
                 "Transaction count is incorrect!");
         Assert.assertFalse(Actions.transactionActions().isTransactionCodePresent(TransactionCode.ATM_USAGE_129.getTransCode(), offset),
                 "129-ATM Usage Fee presents in transaction list");
+
+        transcode = TransactionCode.ATM_CREDIT_MEMO_103.getTransCode().split("\\s+")[0];
+        WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(chkAccTransactionData, checkingAccountNumber, transcode);
 
         logInfo("Step 5: Search for the CHK account that is assigned to the Debit Card from the precondition and open it on Instructions tab");
         logInfo("Step 6: Check the list of instructions for the account (if exist) and delete the Hold with type Reg CC");
@@ -177,7 +185,8 @@ public class C22771_TransferFromSavToDDAOnusTest extends BaseTest {
         AccountActions.editAccount().goToDetailsTab();
         expectedBalanceDataForCheckingAcc.addAmount(transactionAmount);
         BalanceDataForCHKAcc actualBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
-        Assert.assertEquals(actualBalanceData, expectedBalanceDataForCheckingAcc, "CHKAccount balances is not correct!");
+        Assert.assertEquals(actualBalanceData.getCurrentBalance(), expectedBalanceDataForCheckingAcc.getCurrentBalance(), "Checking account current balance is not correct!");
+        Assert.assertEquals(actualBalanceData.getAvailableBalance(), expectedBalanceDataForCheckingAcc.getAvailableBalance(), "Checking account available balance is not correct!");
         chkAccTransactionData.setBalance(expectedBalanceDataForCheckingAcc.getCurrentBalance());
 
         AccountActions.retrievingAccountData().goToTransactionsTab();
