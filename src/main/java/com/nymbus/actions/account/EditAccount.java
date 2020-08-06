@@ -9,28 +9,6 @@ import java.util.Random;
 
 public class EditAccount {
 
-    public void setWhenSurchargesRefunded(Account account) {
-        Pages.editAccountPage().clickWhenSurchargesRefundedSelectorButton();
-        List<String> listOfWhenSurchargesRefunded = Pages.editAccountPage().getWhenSurchargesRefundedList();
-
-        Assert.assertTrue(listOfWhenSurchargesRefunded.size() > 0, "There are no options available.");
-        if (account.getWhenSurchargesRefunded() == null) {
-            account.setWhenSurchargesRefunded(listOfWhenSurchargesRefunded.get(new Random().nextInt(listOfWhenSurchargesRefunded.size())).trim());
-        }
-        Pages.editAccountPage().clickWhenSurchargesRefundedSelectorOption(account.getWhenSurchargesRefunded());
-    }
-
-    public void setReasonAutoOdChgWaived(Account account) {
-        Pages.editAccountPage().clickReasonAutoOdChgWaivedSelectorButton();
-        List<String> listOfReasonAutoOdChgWaived = Pages.editAccountPage().getReasonAutoOdChgWaivedList();
-
-        Assert.assertTrue(listOfReasonAutoOdChgWaived.size() > 0, "There are no options available");
-        if (account.getReasonAutoOdChgWaived() == null) {
-            account.setReasonAutoOdChgWaived(listOfReasonAutoOdChgWaived.get(new Random().nextInt(listOfReasonAutoOdChgWaived.size())).trim());
-        }
-        Pages.editAccountPage().clickReasonAutoOdChgWaivedSelectorOption(account.getReasonAutoOdChgWaived());
-    }
-
     public void setAutomaticOverdraftStatus(Account account) {
         Pages.editAccountPage().clickAutomaticOverdraftStatusSelectorButton();
         List<String> listOfClickAutomaticOverdraftStatus = Pages.editAccountPage().getAutomaticOverdraftStatusList();
@@ -51,28 +29,6 @@ public class EditAccount {
             account.setReasonDebitCardChargeWaived(listOfReasonReasonDebitCardChargeWaived.get(new Random().nextInt(listOfReasonReasonDebitCardChargeWaived.size())).trim());
         }
         Pages.editAccountPage().clickReasonDebitCardChargeWaivedSelectorOption(account.getReasonDebitCardChargeWaived());
-    }
-
-    public void setReasonAutoNSFChgWaived(Account account) {
-        Pages.editAccountPage().clickReasonAutoNSFChgWaivedSelectorButton();
-        List<String> listOfReasonAutoNSFChgWaived = Pages.editAccountPage().getReasonAutoNSFChgWaivedList();
-
-        Assert.assertTrue(listOfReasonAutoNSFChgWaived.size() > 0, "There are no options available");
-        if (account.getReasonAutoNSFChgWaived() == null) {
-            account.setReasonAutoNSFChgWaived(listOfReasonAutoNSFChgWaived.get(new Random().nextInt(listOfReasonAutoNSFChgWaived.size())).trim());
-        }
-        Pages.editAccountPage().clickReasonAutoNSFChgWaivedSelectorOption(account.getReasonAutoNSFChgWaived());
-    }
-
-    public void setOdProtectionAcct(Account account) {
-        Pages.editAccountPage().clickOdProtectionAcctSelectorButton();
-        List<String> listOfOdProtectionAcct = Pages.editAccountPage().getOdProtectionAcctList();
-
-        Assert.assertTrue(listOfOdProtectionAcct.size() > 0, "There are no product types available");
-        if (account.getOdProtectionAcct() == null) {
-            account.setOdProtectionAcct(listOfOdProtectionAcct.get(new Random().nextInt(listOfOdProtectionAcct.size())).trim());
-        }
-        Pages.editAccountPage().clickOdProtectionAcctSelectorOption(account.getOdProtectionAcct().replaceAll("[^0-9]", ""));
     }
 
     public void setFederalWHReason(Account account) {

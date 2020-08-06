@@ -1,5 +1,6 @@
 package com.nymbus.newmodels.generation.debitcard.builder;
 
+import com.nymbus.newmodels.client.other.debitcard.types.CardDesign;
 import com.nymbus.newmodels.client.other.debitcard.types.CardStatus;
 import com.nymbus.newmodels.client.other.debitcard.types.TranslationTypeAllowed;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
@@ -13,7 +14,7 @@ public interface CardBuilder {
     void setNameOnCard(String nameOnCard);
     void setSecondLineEmbossing(String secondLineEmbossing);
     void setAccounts(List<String> accounts);
-    void setCardDesign(String cardDesign);
+    void setCardDesign(CardDesign cardDesign);
     void setCardStatus(CardStatus cardStatus);
     void setPinOffset(int pinOffset);
     void setDateEffective(String dateEffective);

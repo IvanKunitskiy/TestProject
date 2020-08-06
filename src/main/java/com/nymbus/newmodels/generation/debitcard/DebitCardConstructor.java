@@ -1,5 +1,6 @@
 package com.nymbus.newmodels.generation.debitcard;
 
+import com.nymbus.newmodels.client.other.debitcard.types.CardDesign;
 import com.nymbus.newmodels.client.other.debitcard.types.CardStatus;
 import com.nymbus.newmodels.client.other.debitcard.types.TranslationTypeAllowed;
 import com.nymbus.newmodels.generation.debitcard.builder.DebitCardBuilder;
@@ -14,7 +15,7 @@ public class DebitCardConstructor {
         debitCardBuilder.setNameOnCard(Random.genString(10));
         debitCardBuilder.setSecondLineEmbossing(Random.genString(10));
         debitCardBuilder.setAccounts(new ArrayList<>());
-        debitCardBuilder.setCardDesign(Random.genString(10));
+        debitCardBuilder.setCardDesign(CardDesign.CRD);
         debitCardBuilder.setCardStatus(CardStatus.ACTIVE);
         debitCardBuilder.setPinOffset(Random.genInt(1000, 9999));
         debitCardBuilder.setDateEffective("");

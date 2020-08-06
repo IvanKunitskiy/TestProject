@@ -11,13 +11,8 @@ import java.util.Random;
 
 public class CreateAccount {
 
-    public void clickAccountsTab() {
-        // check if page is visible
-        Pages.clientDetailsPage().clickAccountsTab();
-    }
-
     public void createCDAccount(Account account) {
-        clickAccountsTab();
+        Pages.clientDetailsPage().clickAccountsTab();
         Actions.clientPageActions().closeAllNotifications();
         setAddNewOption(account);
         setProductType(account);
@@ -29,7 +24,7 @@ public class CreateAccount {
     }
 
     public void createIRAAccount(Account account) {
-        clickAccountsTab();
+        Pages.clientDetailsPage().clickAccountsTab();
         setAddNewOption(account);
         setProductType(account);
         setProduct(account);
@@ -41,7 +36,7 @@ public class CreateAccount {
     }
 
     public void createSavingsAccount(Account account) {
-        clickAccountsTab();
+        Pages.clientDetailsPage().clickAccountsTab();
         Actions.clientPageActions().closeAllNotifications();
         setAddNewOption(account);
         setProductType(account);
@@ -61,7 +56,7 @@ public class CreateAccount {
     }
 
     public void createSavingAccountForTransactionPurpose(Account account) {
-        clickAccountsTab();
+        Pages.clientDetailsPage().clickAccountsTab();
         Actions.clientPageActions().closeAllNotifications();
         setAddNewOption(account);
         setProductType(account);
@@ -80,7 +75,7 @@ public class CreateAccount {
     }
 
     public void createCDAccountForTransactionPurpose(Account account) {
-        clickAccountsTab();
+        Pages.clientDetailsPage().clickAccountsTab();
         Actions.clientPageActions().closeAllNotifications();
         Pages.clientDetailsPage().clickAddNewButton();
         Pages.clientDetailsPage().clickAddNewValueOption(account.getAddNewOption());
@@ -98,7 +93,7 @@ public class CreateAccount {
     }
 
     public void createCHKAccountForTransactionPurpose(Account account) {
-        clickAccountsTab();
+        Pages.clientDetailsPage().clickAccountsTab();
         Actions.clientPageActions().closeAllNotifications();
         setAddNewOption(account);
         setProductType(account);
@@ -113,7 +108,7 @@ public class CreateAccount {
     }
 
     public void createCHKAccount(Account account) {
-        clickAccountsTab();
+        Pages.clientDetailsPage().clickAccountsTab();
         Actions.clientPageActions().closeAllNotifications();
         setAddNewOption(account);
         setProductType(account);
@@ -126,7 +121,7 @@ public class CreateAccount {
     }
 
     public void createCHKAccountForDormantPurpose(Account account) {
-        clickAccountsTab();
+        Pages.clientDetailsPage().clickAccountsTab();
         Actions.clientPageActions().closeAllNotifications();
         setAddNewOption(account);
         setProductType(account);
@@ -144,7 +139,7 @@ public class CreateAccount {
     }
 
     public void createCHKAccount(CHKAccount account) {
-        clickAccountsTab();
+        Pages.clientDetailsPage().clickAccountsTab();
         setAddNewOption(account);
         setProductType(account);
         setProduct(account);
@@ -164,7 +159,7 @@ public class CreateAccount {
     }
 
     public void createSafeDepositBoxAccount(Account account) {
-        clickAccountsTab();
+        Pages.clientDetailsPage().clickAccountsTab();
         setAddNewOption(account);
         setProductType(account);
         setBoxSize(account);
@@ -569,5 +564,4 @@ public class CreateAccount {
         }
         Pages.addAccountPage().clickMailCodeSelectorOption(account.getMailCode());
     }
-
 }
