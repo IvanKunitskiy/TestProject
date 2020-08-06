@@ -1,6 +1,7 @@
 package com.nymbus.newmodels.generation.debitcard.builder;
 
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
+import com.nymbus.newmodels.client.other.debitcard.types.CardDesign;
 import com.nymbus.newmodels.client.other.debitcard.types.CardStatus;
 import com.nymbus.newmodels.client.other.debitcard.types.TranslationTypeAllowed;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
@@ -46,7 +47,7 @@ public class DebitCardBuilder implements CardBuilder {
     }
 
     @Override
-    public void setCardDesign(String cardDesign) {
+    public void setCardDesign(CardDesign cardDesign) {
         debitCard.setCardDesign(cardDesign);
     }
 

@@ -24,7 +24,7 @@ public class DebitCardModalWindowActions {
         Pages.debitCardModalWindow().typeToNameOnCardInputField(debitCard.getNameOnCard());
         Pages.debitCardModalWindow().typeToSecondLineEmbossingInputField(debitCard.getSecondLineEmbossing());
         selectAccount(debitCard.getAccounts());
-//        Pages.debitCardModalWindow().selectCardDesign(debitCard.getCardDesign()); // TODO: Need for find where I can fill card designs
+        Pages.debitCardModalWindow().selectCardDesign(debitCard.getCardDesign().getCardDesign());
         Pages.debitCardModalWindow().selectCardStatus(debitCard.getCardStatus());
         Pages.debitCardModalWindow().clickOnYesButton();
         Pages.debitCardModalWindow().typeToPinOffsetInputField(debitCard.getPinOffset());

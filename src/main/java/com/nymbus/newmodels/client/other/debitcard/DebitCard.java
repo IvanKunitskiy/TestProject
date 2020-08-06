@@ -1,6 +1,7 @@
 package com.nymbus.newmodels.client.other.debitcard;
 
 import com.nymbus.core.utils.Functions;
+import com.nymbus.newmodels.client.other.debitcard.types.CardDesign;
 import com.nymbus.newmodels.client.other.debitcard.types.CardStatus;
 import com.nymbus.newmodels.client.other.debitcard.types.TranslationTypeAllowed;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
@@ -20,7 +21,7 @@ public class DebitCard {
     @Getter(AccessLevel.NONE) @NonNull private String nameOnCard;
     private String secondLineEmbossing;
     @NonNull private List<String> accounts; // At least one
-    private String cardDesign;
+    private CardDesign cardDesign;
     @NonNull CardStatus cardStatus;
     private int pinOffset;
     private String dateEffective;
