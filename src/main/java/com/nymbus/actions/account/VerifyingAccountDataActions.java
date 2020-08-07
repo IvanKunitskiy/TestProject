@@ -171,9 +171,6 @@ public class VerifyingAccountDataActions {
      */
 
     public void verifyChkAccountFieldsWithUpdatedDataInViewMode(Account account) {
-        if (Pages.accountDetailsPage().isMoreButtonVisible()) {
-            Pages.accountDetailsPage().clickMoreButton();
-        }
         Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), account.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), account.getBankBranch(), "'Bank Branch' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), account.getInterestRate(), "'Interest Rate' value does not match");
@@ -198,9 +195,6 @@ public class VerifyingAccountDataActions {
      */
 
     public void verifySavingsAccountFieldsWithUpdatedDataInViewMode(Account account) {
-        if (Pages.accountDetailsPage().isMoreButtonVisible()) {
-            Pages.accountDetailsPage().clickMoreButton();
-        }
         Assert.assertEquals(Pages.accountDetailsPage().getFederalWHReason(), account.getFederalWHReason(), "'Federal WH Reason' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getReasonDebitCardChargeWaived(), account.getReasonDebitCardChargeWaived(), "'Reason Debit Card Charge Waived' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getPrintStatementNextUpdate(), account.getPrintStatementNextUpdate(), "'Print Statement Next Update' value does not match");
@@ -212,6 +206,24 @@ public class VerifyingAccountDataActions {
         Assert.assertEquals(Pages.accountDetailsPage().getNumberOfDebitCardsIssued(), account.getNumberOfDebitCardsIssued(), "'Number Of Debit Cards Issued' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), account.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), account.getInterestRate(), "'Interest Rate' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), account.getBankBranch(), "'Bank Branch' value does not match");
+        if (account.getCallClassCode() != null) {
+            Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), account.getCallClassCode(), "'Call Class' value does not match");
+        }
+        Assert.assertEquals(Pages.accountDetailsPage().getStatementCycle(), account.getStatementCycle(), "'Statement Cycle' value does not match");
+    }
+
+    public void verifySavingsIraAccountFieldsWithUpdatedDataInEditMode(Account account) {
+        Assert.assertEquals(Pages.accountDetailsPage().getFederalWHReason(), account.getFederalWHReason(), "'Federal WH Reason' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getReasonDebitCardChargeWaived(), account.getReasonDebitCardChargeWaived(), "'Reason Debit Card Charge Waived' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getPrintStatementNextUpdate(), account.getPrintStatementNextUpdate(), "'Print Statement Next Update' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getFederalWHPercent(), account.getFederalWHPercent(), "'Federal WH Percent' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_1(), account.getUserDefinedField_1(), "'User Defined Field 1' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_2(), account.getUserDefinedField_2(), "'User Defined Field 2' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_3(), account.getUserDefinedField_3(), "'User Defined Field 3' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_4(), account.getUserDefinedField_4(), "'User Defined Field 4' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getNumberOfDebitCardsIssued(), account.getNumberOfDebitCardsIssued(), "'Number Of Debit Cards Issued' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), account.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), account.getBankBranch(), "'Bank Branch' value does not match");
         if (account.getCallClassCode() != null) {
             Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), account.getCallClassCode(), "'Call Class' value does not match");
