@@ -67,6 +67,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      */
 
     private By glDateTimePosted = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//div[@key-name='gldatetimeposted']");
+    private By effectiveEntryDate =  By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//div[@key-name='effectiveentrydate']");
     private By glFunctionValue = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//div[@key-name='glfunction']");
     private By transactionHeaderId = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//*[@key-name='transactionheaderid']");
     private By glTransactionItemPostingStatus = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]" +
@@ -76,6 +77,12 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getDatePosted(int index) {
         waitForElementVisibility(glDateTimePosted, index);
         return getElementText(glDateTimePosted, index).trim();
+    }
+
+    @Step("Get effective date {0}")
+    public String getEffectiveDate(int index) {
+        waitForElementVisibility(effectiveEntryDate, index);
+        return getElementText(effectiveEntryDate, index).trim();
     }
 
     @Step("Get glfunction {0} value")

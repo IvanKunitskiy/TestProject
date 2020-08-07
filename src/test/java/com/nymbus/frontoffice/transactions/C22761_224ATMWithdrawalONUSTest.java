@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.transactions;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
@@ -126,6 +127,9 @@ public class C22761_224ATMWithdrawalONUSTest extends BaseTest {
         logInfo("Step 2:Expand widgets-controller/widget._GenericProcess and run the following request with ONUS terminal ID");
         Actions.nonTellerTransactionActions().performATMTransaction(getFieldsMap(nonTellerTransactionData));
 
+        String transcode = TransactionCode.ATM_WITHDRAWAL_224.getTransCode().split("\\s+")[0];
+        WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(savingAccTransactionData, savingsAccountNumber, transcode);
+
         logInfo("Step 3: Log in to the system as the User from the preconditions");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
@@ -135,7 +139,8 @@ public class C22761_224ATMWithdrawalONUSTest extends BaseTest {
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
         expectedBalanceData.subtractAmount(transactionAmount);
         BalanceData actualBalanceData = AccountActions.retrievingAccountData().getBalanceData();
-        Assert.assertEquals(actualBalanceData, expectedBalanceData, "Saving account balances is not correct!");
+        Assert.assertEquals(actualBalanceData.getCurrentBalance(), expectedBalanceData.getCurrentBalance(), "Saving account current balance is not correct!");
+        Assert.assertEquals(actualBalanceData.getAvailableBalance(), expectedBalanceData.getAvailableBalance(), "Saving account available balance is not correct!");
 
         savingAccTransactionData.setBalance(expectedBalanceData.getCurrentBalance());
         AccountActions.retrievingAccountData().goToTransactionsTab();
@@ -143,7 +148,7 @@ public class C22761_224ATMWithdrawalONUSTest extends BaseTest {
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset);
         Assert.assertEquals(actualTransactionData, savingAccTransactionData, "Transaction data doesn't match!");
 
-        logInfo("Step 5: Verify that there is NO 129-ATM Usage Fee for 124 ATM Withdrawal ONUS transaction");
+        logInfo("Step 5: Verify that there is NO 229-ATM Usage Fee for 224 ATM Withdrawal ONUS transaction");
         Assert.assertEquals(Pages.accountTransactionPage().getTransactionItemsCount(), 2,
                 "Transaction count is incorrect!");
         Assert.assertFalse(Actions.transactionActions().isTransactionCodePresent(TransactionCode.ATM_USAGE_229_FEE.getTransCode()),

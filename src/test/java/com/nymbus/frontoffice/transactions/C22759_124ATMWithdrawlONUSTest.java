@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.transactions;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
@@ -29,6 +30,9 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class C22759_124ATMWithdrawlONUSTest extends BaseTest {
     private BalanceDataForCHKAcc expectedBalanceData;
@@ -123,7 +127,10 @@ public class C22759_124ATMWithdrawlONUSTest extends BaseTest {
     public void verify124ATMWithdrawalONUSTransaction() {
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
         logInfo("Step 2:Expand widgets-controller/widget._GenericProcess and run the following request with ONUS terminal ID");
-        Actions.nonTellerTransactionActions().performATMWithdrawalONUSTransaction(nonTellerTransactionData);
+        Actions.nonTellerTransactionActions().performATMTransaction(getFieldsMap(nonTellerTransactionData));
+
+        String transcode = TransactionCode.ATM_WITHDRAWAL_124.getTransCode().split("\\s+")[0];
+        WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(chkAccTransactionData, checkingAccountNumber, transcode);
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -153,5 +160,21 @@ public class C22759_124ATMWithdrawlONUSTest extends BaseTest {
         Actions.debitCardModalWindowActions().goToCardHistory(1);
         double actualAmount = Actions.debitCardModalWindowActions().getTransactionAmount(1);
         Assert.assertEquals(actualAmount, chkAccTransactionData.getAmount(), "Transaction amount is incorrect!");
+    }
+
+    private Map<String, String> getFieldsMap(NonTellerTransactionData transactionData) {
+        Map<String, String > result = new HashMap<>();
+        result.put("0", "0200");
+        result.put("3", "010000");
+        result.put("4", transactionData.getAmount());
+        result.put("11", "398033");
+        result.put("18", "6010");
+        result.put("22", "801");
+        result.put("35", String.format("%s=%s", transactionData.getCardNumber(), transactionData.getExpirationDate()));
+        result.put("41", transactionData.getTerminalId());
+        result.put("43", "Long ave. bld. 34      Nashville      US");
+        result.put("58", "0000000002U");
+
+        return  result;
     }
 }

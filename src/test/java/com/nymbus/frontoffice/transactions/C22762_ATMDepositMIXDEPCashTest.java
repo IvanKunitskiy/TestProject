@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.transactions;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
@@ -16,6 +17,7 @@ import com.nymbus.newmodels.generation.client.builder.type.individual.Individual
 import com.nymbus.newmodels.generation.debitcard.DebitCardConstructor;
 import com.nymbus.newmodels.generation.debitcard.builder.DebitCardBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
+import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.*;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
@@ -136,6 +138,9 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
                 "request for the Debit Card assigned to the Savings account from the precondition:");
         Actions.nonTellerTransactionActions().performMixDepCashTransaction(getFieldsMap(mixDepTransactionData, field54MixDep, "MIXDEP"));
 
+        String transcode = TransactionCode.ATM_DEPOSIT_208.getTransCode().split("\\s+")[0];
+        WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(savingAccTransactionData, savingsAccountNumber, transcode);
+
         logInfo("Step 3: Log in to the system as the User from the preconditions");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
@@ -172,6 +177,9 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         logInfo("Step 9: Go to the Swagger and run the following request for the Debit Card assigned to the CHK account from the precondition:");
         String field54Cash = "2094840C000000010500";
         Actions.nonTellerTransactionActions().performMixDepCashTransaction(getFieldsMapForCashTransaction(cashTransactionData, field54Cash, "CASH"));
+
+        transcode = TransactionCode.ATM_DEPOSIT_108.getTransCode().split("\\s+")[0];
+        WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(chkAccTransactionData, checkingAccountNumber, transcode);
 
         logInfo("Step 10: Search for CHK account from the precondition and open it on Instructions tab");
         Actions.clientPageActions().searchAndOpenClientByName(checkingAccountNumber);

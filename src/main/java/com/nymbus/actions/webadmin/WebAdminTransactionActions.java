@@ -2,6 +2,9 @@ package com.nymbus.actions.webadmin;
 
 import com.codeborne.selenide.Selenide;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.DateTime;
+import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
+import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
@@ -62,6 +65,19 @@ public class WebAdminTransactionActions {
                 + "%0D%0AorderBy%3A+-id%0D%0A&source=";
     }
 
+    private String getTransactionUrl(String accountNumber, String transactionCode) {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev6DS&"
+                + "dqlQuery=count%3A+10%0D%0A"
+                + "from%3A+bank.data.transaction.item%0D%0A"
+                + "where%3A+%0D%0A-+.accountnumber->accountnumber%3A+"
+                + accountNumber
+                + "%0D%0A-+.transactioncode->code%3A+"
+                + transactionCode
+                + "%0D%0AorderBy%3A+-id%0D%0A&source=";
+    }
+
     private String getGLInterfaceUrl(String transactionNumber) {
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?"
@@ -108,6 +124,12 @@ public class WebAdminTransactionActions {
         waitForSearchResults();
     }
 
+    public void goToTransactionUrl(String accountNumber, String transactionCode) {
+        Selenide.open(getTransactionUrl(accountNumber, transactionCode));
+
+        waitForSearchResults();
+    }
+
     public void goToGLInterface(String transactionHeader) {
         Selenide.open(getGLInterfaceUrl(transactionHeader));
 
@@ -138,5 +160,17 @@ public class WebAdminTransactionActions {
                     "Deleted By field is blank!");
         }
         softAssert.assertAll();
+    }
+
+    public void setTransactionPostDateAndEffectiveDate(TransactionData transactionData, String accountNumber, String transactionCode) {
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        goToTransactionUrl(accountNumber, transactionCode);
+        String effectiveDate = DateTime.getLocalDateWithFormatPlusDays(WebAdminPages.rulesUIQueryAnalyzerPage().getEffectiveDate(1), "yyyy-MM-dd", "MM/dd/yyyy", 0);
+        String postingDate = DateTime.getLocalDateWithFormatPlusDays(WebAdminPages.rulesUIQueryAnalyzerPage().getDatePosted(1), "yyyy-MM-dd", "MM/dd/yyyy", 0);
+        transactionData.setEffectiveDate(effectiveDate);
+        transactionData.setPostingDate(postingDate);
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
     }
 }

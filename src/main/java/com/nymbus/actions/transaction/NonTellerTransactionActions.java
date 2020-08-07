@@ -47,6 +47,7 @@ public class NonTellerTransactionActions {
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         WebAdminActions.webAdminTransactionActions().goToTerminalIdUrl();
         String result = WebAdminPages.rulesUIQueryAnalyzerPage().getTerminalIdValue(index);
+        WebAdminActions.loginActions().doLogoutProgrammatically();
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
         return result;
