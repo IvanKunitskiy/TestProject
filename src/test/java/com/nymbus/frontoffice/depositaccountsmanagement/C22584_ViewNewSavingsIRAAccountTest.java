@@ -60,9 +60,7 @@ public class C22584_ViewNewSavingsIRAAccountTest extends BaseTest {
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(savingsIRAAccount);
 
         logInfo("Step 3: Click [Load More] button");
-        if (Pages.accountDetailsPage().isMoreButtonVisible()) {
-            Pages.accountDetailsPage().clickMoreButton();
-        }
+        AccountActions.accountDetailsActions().clickMoreButton();
 
         logInfo("Step 4: Pay attention to the fields that were filled in during account creation");
         Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), savingsIRAAccount.getCurrentOfficer(), "'Current Officer' value does not match");
@@ -84,9 +82,6 @@ public class C22584_ViewNewSavingsIRAAccountTest extends BaseTest {
         Assert.assertEquals(Pages.accountDetailsPage().getDateOfFirstDeposit(), savingsIRAAccount.getDateOfFirstDeposit(), "'Date Of First Deposit' value does not match");
 
         logInfo("Step 5: Click [Less] button");
-        if (Pages.accountDetailsPage().isLessButtonVisible()) {
-            Pages.accountDetailsPage().clickLessButton();
-            Assert.assertTrue(Pages.accountDetailsPage().isMoreButtonVisible(), "More button is not visible");
-        }
+        AccountActions.accountDetailsActions().clickLessButtonAndVerifyMoreIsVisible();
     }
 }

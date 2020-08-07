@@ -55,9 +55,7 @@ public class C22579_ViewNewSavingsAccountTest extends BaseTest {
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(savingsAccount);
 
         logInfo("Step 3: Click [Load More] button");
-        if (Pages.accountDetailsPage().isMoreButtonVisible()) {
-            Pages.accountDetailsPage().clickMoreButton();
-        }
+        AccountActions.accountDetailsActions().clickMoreButton();
 
         logInfo("Step 4: Pay attention to the fields on the page");
         Assert.assertEquals(Pages.accountDetailsPage().getProductValue(), savingsAccount.getProduct(), "'Product' value does not match");
@@ -76,9 +74,6 @@ public class C22579_ViewNewSavingsAccountTest extends BaseTest {
         }
 
         logInfo("Step 5: Click [Less] button");
-        if (Pages.accountDetailsPage().isLessButtonVisible()) {
-            Pages.accountDetailsPage().clickLessButton();
-            Assert.assertTrue(Pages.accountDetailsPage().isMoreButtonVisible(), "More button is not visible");
-        }
+        AccountActions.accountDetailsActions().clickLessButtonAndVerifyMoreIsVisible();
     }
 }
