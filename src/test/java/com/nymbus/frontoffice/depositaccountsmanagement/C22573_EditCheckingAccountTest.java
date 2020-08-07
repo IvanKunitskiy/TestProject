@@ -79,6 +79,7 @@ public class C22573_EditCheckingAccountTest extends BaseTest {
         Pages.accountDetailsPage().waitForFullProfileButton();
 
         logInfo("Step 13: Pay attention to CHK account fields");
+        AccountActions.accountDetailsActions().clickMoreButton();
         AccountActions.verifyingAccountDataActions().verifyChkAccountFieldsWithUpdatedDataInViewMode(checkingAccount);
 
         logInfo("Step 14: Click [Edit] button and pay attention to the fields");

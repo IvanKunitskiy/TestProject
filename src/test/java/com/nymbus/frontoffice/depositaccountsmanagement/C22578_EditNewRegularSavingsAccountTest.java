@@ -86,6 +86,7 @@ public class C22578_EditNewRegularSavingsAccountTest extends BaseTest {
         Pages.accountDetailsPage().waitForFullProfileButton();
 
         logInfo("Step 13: Pay attention to Savings account fields");
+        AccountActions.accountDetailsActions().clickMoreButton();
         AccountActions.verifyingAccountDataActions().verifySavingsAccountFieldsWithUpdatedDataInViewMode(regularSavingsAccount);
 
         logInfo("Step 14: Click [Edit] button and pay attention to the fields");
