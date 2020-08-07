@@ -2,6 +2,7 @@ package com.nymbus.frontoffice.clientsmanagement;
 
 import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
+import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.notes.NotesActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
@@ -18,6 +19,7 @@ import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 @Epic("Frontoffice")
 @Feature("Clients Management")
@@ -113,9 +115,18 @@ public class C22556_EditDeleteNewNoteTest extends BaseTest {
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
-        logInfo("Step 10: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
-        Assert.assertEquals(Pages.accountMaintenancePage().getRowNewValueByRowName(verifyingModel.getRow().getFieldName(), 1),
-                verifyingModel.getRow().getNewValue(),
-                "Due Date new value doesn't match!");
+        logInfo("Step 10: Look through the records on the Maintenance History page and verify \n" +
+                "that records about editing/deleting the Note are present on the Maintenance History page");
+        AccountActions.accountMaintenanceActions().expandAllRows();
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals(Pages.accountMaintenancePage().getRowsCountByFieldName("Due Date"), 2,
+                "Due Date row's count doesn't match!");
+        softAssert.assertEquals(Pages.accountMaintenancePage().getRowsCountByFieldName("Subject"), 2,
+                "Subject row's count doesn't match!");
+        softAssert.assertEquals(Pages.accountMaintenancePage().getRowsCountByFieldName("Initials"), 2,
+                "Initials row's count doesn't match!");
+        softAssert.assertEquals(Pages.accountMaintenancePage().getRowsCountByFieldName("Tellers"), 2,
+                "Tellers row's count doesn't match!");
+        softAssert.assertAll();
     }
 }

@@ -13,6 +13,7 @@ public enum TransactionCode {
     WITHDRAW_AND_CLOSE("127 - Withdraw&Close"),
     WITHDRAW_AND_CLOSE_SAVINGS("227 - Withdraw&Close"),
     INT_DEPOSIT("107 - Int Deposit"),
+    WITHDRAWAL_216("216 - Withdrawal"),
     ATM_DEPOSIT_108("108 - ATM Deposit"),
     ATM_DEPOSIT_208("208 - ATM Deposit"),
     INT_DEPOSIT_SAVINGS("207 - Int Deposit"),

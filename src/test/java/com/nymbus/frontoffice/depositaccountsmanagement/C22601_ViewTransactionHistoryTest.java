@@ -19,6 +19,7 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuil
 import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitGLCreditTransactionBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
@@ -158,6 +159,7 @@ public class C22601_ViewTransactionHistoryTest extends BaseTest {
         for (int i = 0; i < 5; i++) {
             Transaction transaction = constructor.constructTransaction();
             transaction.getTransactionSource().setAccountNumber(accountNumber);
+            transaction.getTransactionSource().setTransactionCode(TransactionCode.WITHDRAWAL_216.getTransCode());
             transactions.add(transaction);
         }
         return transactions;
