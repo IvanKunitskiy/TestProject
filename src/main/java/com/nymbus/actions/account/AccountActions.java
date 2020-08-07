@@ -14,6 +14,7 @@ public class AccountActions {
     private static EditInstructionActions editInstructionActions;
     private static AccountMaintenanceActions accountMaintenanceActions;
     private static VerifyingAccountDataActions verifyingAccountDataActions;
+    private static AccountDetailsActions accountDetailsActions;
 
     /**
      * This function return an instance of `CreateAccount`
@@ -103,5 +104,15 @@ public class AccountActions {
             verifyingAccountDataActions = new VerifyingAccountDataActions();
         }
         return verifyingAccountDataActions;
+    }
+
+    /**
+     * This function return an instance of `VerifyingAccountDataActions`
+     */
+    public static AccountDetailsActions accountDetailsActions() {
+        if (accountDetailsActions == null) {
+            accountDetailsActions = new AccountDetailsActions();
+        }
+        return accountDetailsActions;
     }
 }
