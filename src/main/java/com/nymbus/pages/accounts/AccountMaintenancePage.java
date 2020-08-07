@@ -12,6 +12,7 @@ public class AccountMaintenancePage extends PageTools {
     private By rowsInTable = By.xpath("//table//tr");
     private By rowOldValueByRowName = By.xpath("(//table//tr//td/span[text()='%s']//ancestor::node()[3]/td[4]/span)[%s]");
     private By rowNewValueByRowName = By.xpath("(//table//tr//td/span[text()='%s']//ancestor::node()[3]/td[5]/span)[%s]");
+    private By rowsCountByName = By.xpath("//table//tr//td/span[text()='%s']");
 
     @Step("Is more button visible")
     public boolean isMoreButtonVisible() {
@@ -48,6 +49,12 @@ public class AccountMaintenancePage extends PageTools {
     public int getChangeTypeElementsCount(String text) {
         waitForElementVisibility(changeTypeFields, text);
         return getElements(changeTypeFields, text).size();
+    }
+
+    @Step("Get count of rows in table by field name")
+    public int getRowsCountByFieldName(String fieldName) {
+        waitForElementVisibility(rowsCountByName, fieldName);
+        return getElementsWithZeroOption(rowsCountByName, fieldName).size();
     }
 
     @Step("Wait for more button invisibility")
