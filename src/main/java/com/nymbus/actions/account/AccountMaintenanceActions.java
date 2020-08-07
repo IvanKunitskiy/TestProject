@@ -15,7 +15,7 @@ public class AccountMaintenanceActions {
         while (Pages.accountMaintenancePage().isMoreButtonVisible());
     }
 
-    public void verifyChkAccountRecords(Account account) {
+    public void verifyChkAccountRecordsAfterEditing(Account account) {
         expandAllRows();
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Current Officer") >= 1,
                 "'Current Officer' row count is incorrect!");
@@ -51,7 +51,7 @@ public class AccountMaintenanceActions {
                 "'Bankruptcy/Judgement' row count is incorrect!");
     }
 
-    public void verifySavingsAccountRecords(Account account) {
+    public void verifySavingsAccountRecordsAfterEditing(Account account) {
         expandAllRows();
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Product") >= 1,
                 "'Product' row count is incorrect!");

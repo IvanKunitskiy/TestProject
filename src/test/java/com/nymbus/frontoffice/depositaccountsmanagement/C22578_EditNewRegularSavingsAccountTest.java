@@ -97,6 +97,6 @@ public class C22578_EditNewRegularSavingsAccountTest extends BaseTest {
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 16: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
-        AccountActions.accountMaintenanceActions().verifySavingsAccountRecords(regularSavingsAccount);
+        AccountActions.accountMaintenanceActions().verifySavingsAccountRecordsAfterEditing(regularSavingsAccount);
     }
 }
