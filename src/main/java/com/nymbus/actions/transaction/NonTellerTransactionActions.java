@@ -58,6 +58,7 @@ public class NonTellerTransactionActions {
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         WebAdminActions.webAdminTransactionActions().goToForeignFeeUrl();
         String result = WebAdminPages.rulesUIQueryAnalyzerPage().getForeignFeeValue(index);
+        WebAdminActions.loginActions().doLogoutProgrammatically();
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
         return Double.parseDouble(result);
