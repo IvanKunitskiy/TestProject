@@ -175,7 +175,9 @@ public class CallStatement {
         assertThat(pdf, containsText(account.getTerm()));
 
         // Class - selected account's Call Class code value
-        assertThat(pdf, containsText(account.getCallClassCode()));
+        if (!(account.getCallClassCode() == null)) {
+            assertThat(pdf, containsText(account.getCallClassCode()));
+        }
 
         // Renew - selected account's Auto-Renewable field value
         assertThat(pdf, containsText(Functions.capitalize(account.getAutoRenewable().toLowerCase())));
