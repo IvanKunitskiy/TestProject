@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.transactions;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
@@ -19,18 +20,22 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditCHKAccBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class C25357_TransferFromDDAtoSAVONUSTest extends BaseTest {
-    private final String INSTRUCTION_REASON = "Reg CC";
     private BalanceData expectedBalanceDataForSavingAcc;
     private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
     private TransactionData savingAccTransactionData;
@@ -50,7 +55,7 @@ public class C25357_TransferFromDDAtoSAVONUSTest extends BaseTest {
         Account savingsAccount = new Account().setSavingsAccountData();
         Account checkAccount = new Account().setCHKAccountData();
         Transaction glDebitMiscCreditTransaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
-        glDebitMiscCreditTransaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
+        glDebitMiscCreditTransaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());
 
         // Init nonTellerTransactionData
         nonTellerTransactionData = new NonTellerTransactionData();
@@ -125,6 +130,76 @@ public class C25357_TransferFromDDAtoSAVONUSTest extends BaseTest {
                 "-", expectedBalanceDataForCheckingAcc.getCurrentBalance(), transactionAmount);
 
         Actions.loginActions().doLogOut();
+    }
+
+    @Test(description = "C25357, Transfer from DDA to SAV ONUS")
+    @Severity(SeverityLevel.CRITICAL)
+    public void verifyTransferFromDDaToSavTransaction() {
+        logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
+        logInfo("Step 2: Expand widgets-controller and run the following request  \n" +
+                "with ONUS terminal ID (TermId is listed in 'bank owned atm ocations/bank.data.datmlc')");
+        Actions.nonTellerTransactionActions().performATMTransaction(getFieldsMap(nonTellerTransactionData));
+
+        String transcode = TransactionCode.ATM_DEBIT_MEMO_119.getTransCode().split("\\s+")[0];
+        WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(chkAccTransactionData, checkingAccountNumber, transcode);
+
+        logInfo("Step 3: Log in to the system");
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        logInfo("Step 4: Search for CHK account that is assigned to the Debit Card from the precondition and verify its: \n" +
+                "- current balance \n" +
+                "- available balance \n" +
+                "- Transactions history");
+        expectedBalanceDataForCheckingAcc.reduceAmount(transactionAmount);
+        Actions.clientPageActions().searchAndOpenClientByName(checkingAccountNumber);
+        BalanceDataForCHKAcc actualBalanceDataForCHKAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
+        Assert.assertEquals(actualBalanceDataForCHKAcc.getCurrentBalance(), expectedBalanceDataForCheckingAcc.getCurrentBalance(), "CHK account current balance is not correct!");
+        Assert.assertEquals(actualBalanceDataForCHKAcc.getAvailableBalance(), expectedBalanceDataForCheckingAcc.getAvailableBalance(), "CHK account available balance is not correct!");
+        chkAccTransactionData.setBalance(expectedBalanceDataForCheckingAcc.getCurrentBalance());
+
+        AccountActions.retrievingAccountData().goToTransactionsTab();
+        int offset = AccountActions.retrievingAccountData().getOffset();
+        TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset);
+        Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
+        Assert.assertEquals(Pages.accountTransactionPage().getTransactionItemsCount(), 2,
+                "Transaction count is incorrect!");
+        Assert.assertFalse(Actions.transactionActions().isTransactionCodePresent(TransactionCode.ATM_USAGE_129.getTransCode(), offset),
+                "129-ATM Usage Fee presents in transaction list");
+
+        transcode = TransactionCode.ATM_CREDIT_MEMO_203.getTransCode().split("\\s+")[0];
+        WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(savingAccTransactionData, savingsAccountNumber, transcode);
+
+        logInfo("Step 5: Search for the Savings account that is assigned to the Debit Card from the precondition and open it on Instructions tab");
+        Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
+        AccountActions.editAccount().goToInstructionsTab();
+
+        logInfo("Step 6: Check the list of instructions for the account (if exist) and delete the Hold with type Reg CC");
+        String INSTRUCTION_REASON = "Reg CC";
+        AccountActions.createInstruction().deleteInstructionByReasonText(INSTRUCTION_REASON);
+        AccountActions.editAccount().goToDetailsTab();
+
+        logInfo("Step 7: Verify Savings account's: \n" +
+                "- current balance \n" +
+                "- available balance \n" +
+                "- Transactions history");
+        expectedBalanceDataForSavingAcc.addAmount(transactionAmount);
+        BalanceData actualBalanceDataForeSavingAcc = AccountActions.retrievingAccountData().getBalanceData();
+        Assert.assertEquals(actualBalanceDataForeSavingAcc.getCurrentBalance(), expectedBalanceDataForSavingAcc.getCurrentBalance(), "Saving account current balance is not correct!");
+        Assert.assertEquals(actualBalanceDataForeSavingAcc.getAvailableBalance(), expectedBalanceDataForSavingAcc.getAvailableBalance(), "Saving account available balance is not correct!");
+        savingAccTransactionData.setBalance(expectedBalanceDataForSavingAcc.getCurrentBalance());
+
+        AccountActions.retrievingAccountData().goToTransactionsTab();
+        offset = AccountActions.retrievingAccountData().getOffset();
+        actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset);
+        Assert.assertEquals(actualTransactionData, savingAccTransactionData, "Transaction data doesn't match!");
+
+        logInfo("Step 8: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
+        logInfo("Step 9: Click [View History] link on the Debit Card from the precondition and \n" +
+                "verify that transfer transaction is written to Debit Card History");
+        Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
+        Actions.debitCardModalWindowActions().goToCardHistory(1);
+        double actualAmount = Actions.debitCardModalWindowActions().getTransactionAmount(1);
+        Assert.assertEquals(actualAmount, transactionAmount, "Transaction amount is incorrect!");
     }
 
     private void createDebitCard(String clientInitials, DebitCard debitCard) {
