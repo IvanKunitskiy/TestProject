@@ -53,6 +53,17 @@ public class NonTellerTransactionActions {
         return result;
     }
 
+    public double getForeignFeeAndLogoutFromWebAdmin(int index) {
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.webAdminTransactionActions().goToForeignFeeUrl();
+        String result = WebAdminPages.rulesUIQueryAnalyzerPage().getForeignFeeValue(index);
+        WebAdminActions.loginActions().doLogout();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+
+        return Double.parseDouble(result);
+    }
+
     public double getForeignFee(int index) {
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
