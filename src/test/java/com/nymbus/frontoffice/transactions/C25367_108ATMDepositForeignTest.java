@@ -48,6 +48,9 @@ public class C25367_108ATMDepositForeignTest extends BaseTest {
         transactionAmount = 100.00;
         String foreignTerminalID = Generator.getRandomStringNumber(10);
 
+        // Init nonTellerTransactionData
+        nonTellerTransactionData = new NonTellerTransactionData();
+
         // Set up debit card and bin control
         DebitCardConstructor debitCardConstructor = new DebitCardConstructor();
         DebitCardBuilder debitCardBuilder = new DebitCardBuilder();
@@ -83,19 +86,15 @@ public class C25367_108ATMDepositForeignTest extends BaseTest {
         Pages.clientDetailsPage().clickOnMaintenanceTab();
         Pages.clientDetailsPage().clickOnNewDebitCardButton();
         Actions.debitCardModalWindowActions().fillDebitCard(debitCard);
-        String expirationDate = Actions.debitCardModalWindowActions().getExpirationDate();
         Pages.debitCardModalWindow().clickOnSaveAndFinishButton();
         Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
-        String debitCardNumber = Actions.debitCardModalWindowActions().getCardNumber(1);
+        Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(nonTellerTransactionData, 1);
 
         Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
         expectedBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
 
         // Set up nonTeller transaction data
-        nonTellerTransactionData = new NonTellerTransactionData();
-        nonTellerTransactionData.setCardNumber(debitCardNumber);
         nonTellerTransactionData.setAmount(transactionAmount);
-        nonTellerTransactionData.setExpirationDate(expirationDate);
         nonTellerTransactionData.setTerminalId(foreignTerminalID);
         chkAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "+", expectedBalanceData.getCurrentBalance(),
@@ -151,7 +150,7 @@ public class C25367_108ATMDepositForeignTest extends BaseTest {
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         Actions.debitCardModalWindowActions().goToCardHistory(1);
         double actualAmount = Actions.debitCardModalWindowActions().getTransactionAmount(1);
-        double expectedAmount = transactionAmount + foreignFeeValue;
+        double expectedAmount = transactionAmount - foreignFeeValue;
         Assert.assertEquals(actualAmount, expectedAmount, "Transaction amount is incorrect!");
     }
 }
