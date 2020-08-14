@@ -104,6 +104,16 @@ public class PageTools extends AllureLogger {
         shouldBe(Condition.visible, by, args).append(text);
     }
 
+    protected void jsType(String text, By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + " '" + text);
+        Selenide.executeJavaScript("arguments[0].value = '" + text + "';", shouldBe(Condition.exist, by, args));
+    }
+
+    protected void jsRiseOnchange(By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
+        Selenide.executeJavaScript("arguments[0].dispatchEvent(new Event('change', { 'bubbles': true }))", shouldBe(Condition.exist, by, args));
+    }
+
     protected void typeWithoutLogs(String text, By by, Object... args) {
         logInfo(getPreviousMethodNameAsText());
         wipeText(by, args);
