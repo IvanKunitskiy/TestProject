@@ -37,7 +37,7 @@ import java.util.Map;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Petro")
-public class C25372_TransferFromSavToDdaForeign extends BaseTest {
+public class C25372_TransferFromSavToDdaForeignTest extends BaseTest {
 
     private final String INSTRUCTION_REASON = "Reg CC";
     private final String terminalId = "FNBWT003";
