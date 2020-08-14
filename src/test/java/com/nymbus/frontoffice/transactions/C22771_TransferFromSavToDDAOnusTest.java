@@ -117,9 +117,10 @@ public class C22771_TransferFromSavToDDAOnusTest extends BaseTest {
         Pages.tellerPage().closeModal();
 
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
-        expectedBalanceDataForSavingAcc = AccountActions.retrievingAccountData().getBalanceData();
         AccountActions.editAccount().goToInstructionsTab();
         AccountActions.createInstruction().deleteInstructionByReasonText(INSTRUCTION_REASON);
+        AccountActions.editAccount().goToDetailsTab();
+        expectedBalanceDataForSavingAcc = AccountActions.retrievingAccountData().getBalanceData();
 
         Actions.clientPageActions().searchAndOpenClientByName(checkingAccountNumber);
         expectedBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
