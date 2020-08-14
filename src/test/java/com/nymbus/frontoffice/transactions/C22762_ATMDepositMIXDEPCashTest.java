@@ -103,11 +103,11 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         checkingAccountNumber = checkAccount.getAccountNumber();
 
         // Create debit card for saving acc
-        createDebitCard(client.getInitials(), debitCardForSavingsAcc);
+        createDebitCard(client.getInitials(), debitCardForSavingsAcc, false);
         Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(mixDepTransactionData, 1);
 
         // Create debit card for checking acc
-        createDebitCard(client.getInitials(), debitCardForCheckingAcc);
+        createDebitCard(client.getInitials(), debitCardForCheckingAcc, true);
         Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(cashTransactionData, 2);
 
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
@@ -211,11 +211,11 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         Assert.assertEquals(actualAmount, cashTransactionAmount, "Transaction amount is incorrect!");
     }
 
-    private void createDebitCard(String clientInitials, DebitCard debitCard) {
+    private void createDebitCard(String clientInitials, DebitCard debitCard, boolean typeNameWithJs) {
         Actions.clientPageActions().searchAndOpenClientByName(clientInitials);
         Pages.clientDetailsPage().clickOnMaintenanceTab();
         Pages.clientDetailsPage().clickOnNewDebitCardButton();
-        Actions.debitCardModalWindowActions().fillDebitCard(debitCard);
+        Actions.debitCardModalWindowActions().fillDebitCard(debitCard, typeNameWithJs);
         Pages.debitCardModalWindow().clickOnSaveAndFinishButton();
         Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
     }

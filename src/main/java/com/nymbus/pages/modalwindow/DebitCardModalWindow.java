@@ -133,6 +133,12 @@ public class DebitCardModalWindow extends PageTools {
         type(nameOnCard, nameOnCardInputField);
     }
 
+    @Step("Typing '{nameOnCard}' to 'Name On Card' input field")
+    public void typeToNameOnCardInputFieldWithJs(String nameOnCard) {
+        waitForElementVisibility(nameOnCardInputField);
+        jsType(nameOnCard, nameOnCardInputField);
+    }
+
     @Step("Typing '{secondLineEmbossing}' to 'Second Line Embossing' input field")
     public void typeToSecondLineEmbossingInputField(String secondLineEmbossing) {
         waitForElementVisibility(secondLineEmbossingInputField);

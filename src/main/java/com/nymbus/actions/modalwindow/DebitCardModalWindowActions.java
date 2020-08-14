@@ -37,6 +37,26 @@ public class DebitCardModalWindowActions {
         Pages.debitCardModalWindow().setAllowForeignTransactionsToggle(debitCard.isAllowForeignTransactions());
     }
 
+    public void fillDebitCard(DebitCard debitCard, boolean isNameTypeWithJs) {
+        selectBinControl(debitCard);
+        Pages.debitCardModalWindow().clickOnNextButton();
+        Pages.debitCardModalWindow().typeToCardNumberInputField(debitCard.getCardNumber());
+        if (isNameTypeWithJs) {
+            Pages.debitCardModalWindow().typeToNameOnCardInputFieldWithJs(debitCard.getNameOnCard());
+        } else {
+            Pages.debitCardModalWindow().typeToNameOnCardInputField(debitCard.getNameOnCard());
+        }
+        Pages.debitCardModalWindow().typeToSecondLineEmbossingInputField(debitCard.getSecondLineEmbossing());
+        selectAccount(debitCard.getAccounts());
+        Pages.debitCardModalWindow().selectCardDesign(debitCard.getCardDesign().getCardDesign());
+        Pages.debitCardModalWindow().selectCardStatus(debitCard.getCardStatus());
+        Pages.debitCardModalWindow().clickOnYesButton();
+        Pages.debitCardModalWindow().typeToPinOffsetInputField(debitCard.getPinOffset());
+        Pages.debitCardModalWindow().selectTransactionTypeAllowedSelect(debitCard.getTranslationTypeAllowed());
+        Pages.debitCardModalWindow().setChargeForCardReplacementToggle(debitCard.isChargeForCardReplacement());
+        Pages.debitCardModalWindow().setAllowForeignTransactionsToggle(debitCard.isAllowForeignTransactions());
+    }
+
     private void selectAccount(List<String> accounts) {
         int offset = Pages.debitCardModalWindow().getAccountRowsCount();
         int accountsCount = accounts.size();
