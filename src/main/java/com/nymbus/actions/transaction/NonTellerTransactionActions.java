@@ -5,6 +5,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.transaction.enums.ATMTransactionType;
+import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.pages.webadmin.WebAdminPages;
 
@@ -42,6 +43,20 @@ public class NonTellerTransactionActions {
         Actions.nonTellerTransaction().generateATMTransaction(fields);
     }
 
+    public String getFieldValueFromATMTransaction(Map<String, String> fields, String field) {
+        return Actions.nonTellerTransaction().getFiledValue(fields, field);
+    }
+
+    public BalanceDataForCHKAcc getBalanceDataFromField54(String field54Value) {
+        BalanceDataForCHKAcc balanceDataForCHKAcc = new BalanceDataForCHKAcc();
+        String currentPart = field54Value.substring(0, field54Value.length()/2);
+        String availablePart = field54Value.substring(field54Value.length()/2);
+        balanceDataForCHKAcc.setCurrentBalance(Double.parseDouble(currentPart.replace("100184", ""))/100);
+        balanceDataForCHKAcc.setAvailableBalance(Double.parseDouble(availablePart.replace("100284", ""))/100);
+
+        return balanceDataForCHKAcc;
+    }
+
     public String getTerminalID(int index) {
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -57,6 +72,17 @@ public class NonTellerTransactionActions {
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         WebAdminActions.webAdminTransactionActions().goToForeignFeeUrl();
+        String result = WebAdminPages.rulesUIQueryAnalyzerPage().getForeignFeeValue(index);
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+
+        return Double.parseDouble(result);
+    }
+
+    public double getForeignATMFeeBalanceInquiry(int index) {
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.webAdminTransactionActions().goToForeignATMFeeBalanceInquiryUrl();
         String result = WebAdminPages.rulesUIQueryAnalyzerPage().getForeignFeeValue(index);
         WebAdminActions.loginActions().doLogoutProgrammatically();
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();

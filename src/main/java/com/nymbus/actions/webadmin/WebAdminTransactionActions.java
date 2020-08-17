@@ -26,6 +26,18 @@ public class WebAdminTransactionActions {
                 + "where%3A+%0D%0A-+code%3A+ForeignATMFee%0D%0A&source=";
     }
 
+    private String getForeignATMFeeBalanceInquiryUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbus"
+                + getCurrentEnvironment()
+                + "DS&"
+                + "dqlQuery=count%3A+10%0D%0A"
+                + "select%3A+%28databean%29CODE%2C+double%0D%0A"
+                + "from%3A+bank.data.bcfile%0D%0A"
+                + "where%3A+%0D%0A-+code%3A+ForeignATMFeeBalanceInquiry%0D%0A&source=";
+    }
+
     private String getTerminalIdUrl() {
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?"
@@ -102,6 +114,12 @@ public class WebAdminTransactionActions {
 
     public void goToForeignFeeUrl() {
         Selenide.open(getForeignATMFeeUrl());
+
+        waitForSearchResults();
+    }
+
+    public void goToForeignATMFeeBalanceInquiryUrl() {
+        Selenide.open(getForeignATMFeeBalanceInquiryUrl());
 
         waitForSearchResults();
     }
