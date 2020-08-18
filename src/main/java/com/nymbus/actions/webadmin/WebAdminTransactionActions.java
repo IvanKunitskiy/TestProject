@@ -4,7 +4,6 @@ import com.codeborne.selenide.Selenide;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
-import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
@@ -100,8 +99,24 @@ public class WebAdminTransactionActions {
                 + "%0D%0AdeletedIncluded%3A+true&source=";
     }
 
+    private String getForeignATMFeeBalanceInquiryUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev6DS&"
+                + "dqlQuery=count%3A+10%0D%0A"
+                + "select%3A+%28databean%29CODE%2C+double%0D%0A"
+                + "from%3A+bank.data.bcfile%0D%0Awhere%3A+%0D%0A"
+                + "-+code%3A+ForeignATMFeeBalanceInquiry%0D%0A&source=";
+    }
+
     public void goToForeignFeeUrl() {
         Selenide.open(getForeignATMFeeUrl());
+
+        waitForSearchResults();
+    }
+
+    public void goToForeignFeeBalanceInquiryUrl() {
+        Selenide.open(getForeignATMFeeBalanceInquiryUrl());
 
         waitForSearchResults();
     }

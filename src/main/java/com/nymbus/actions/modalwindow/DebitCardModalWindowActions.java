@@ -150,4 +150,10 @@ public class DebitCardModalWindowActions {
 
         return Double.parseDouble(amount);
     }
+
+    public double getTransactionFeeAmount(int index) {
+        String amount = Pages.cardsManagementPage().getTransactionFeeAmount(index);
+
+        return Double.parseDouble(amount);
+    }
 }

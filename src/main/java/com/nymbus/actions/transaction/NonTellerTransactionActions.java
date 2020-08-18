@@ -42,6 +42,10 @@ public class NonTellerTransactionActions {
         Actions.nonTellerTransaction().generateATMTransaction(fields);
     }
 
+    public void performATMBalanceInquiryTransaction(Map<String, String> fields, double currentBalance) {
+        Actions.nonTellerTransaction().generateATMBalanceInquiryTransaction(fields, currentBalance);
+    }
+
     public String getTerminalID(int index) {
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -57,6 +61,17 @@ public class NonTellerTransactionActions {
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         WebAdminActions.webAdminTransactionActions().goToForeignFeeUrl();
+        String result = WebAdminPages.rulesUIQueryAnalyzerPage().getForeignFeeValue(index);
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+
+        return Double.parseDouble(result);
+    }
+
+    public double getForeignFeeBalanceInquiry(int index) {
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.webAdminTransactionActions().goToForeignFeeBalanceInquiryUrl();
         String result = WebAdminPages.rulesUIQueryAnalyzerPage().getForeignFeeValue(index);
         WebAdminActions.loginActions().doLogoutProgrammatically();
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();

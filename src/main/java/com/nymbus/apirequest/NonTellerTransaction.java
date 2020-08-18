@@ -6,7 +6,9 @@ import com.nymbus.newmodels.transaction.enums.ATMTransactionType;
 import com.nymbus.newmodels.transaction.nontellertransactions.JSONData;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import org.json.JSONObject;
+import org.testng.Assert;
 
 import java.util.Map;
 
@@ -139,5 +141,30 @@ public class NonTellerTransaction extends AllureLogger {
         then().
                 statusCode(200).
                 body("data[0].field.39", equalTo("00"));
+    }
+
+    public void generateATMBalanceInquiryTransaction(Map<String, String> fields, double currentBalance) {
+        JSONObject requestBody = JSONData.getATMData(fields);
+
+        logInfo("Request body: " + requestBody.toString());
+
+        Response response =
+        given().
+                auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
+                contentType(ContentType.JSON).
+                relaxedHTTPSValidation().
+                body(requestBody.toString()).
+        when().
+                post(GENERIC_PROCESS_URL).
+        then().
+                statusCode(200).
+                body("data[0].field.39", equalTo("00")).
+        extract().
+                response();
+
+        String de54FieldValue = response.path("data[0].field.54");
+        String formattedAccountBalance = String.format("%.2f", currentBalance);
+        Assert.assertTrue(de54FieldValue.endsWith(formattedAccountBalance.replaceAll("[^0-9]", "")),
+                "Account available balance in DE54 is not equal to existing.");
     }
 }
