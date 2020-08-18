@@ -70,7 +70,7 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
         // Create transaction and logout
         Actions.transactionActions().performGLDebitMiscCreditTransaction(creditTransaction);
         Actions.transactionActions().performMiscDebitGLCreditTransaction(debitTransaction);
-        Actions.loginActions().doLogOut();
+        Actions.loginActions().doLogOutProgrammatically();
     }
 
     @Test(description = "C22576, Checking account call statement")

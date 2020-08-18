@@ -259,7 +259,6 @@ public class TellerPage extends PageTools {
         waitForElementClickable(transactionDestinationNotesInput, i);
         jsSetValue(note, transactionDestinationNotesInput, i);
         jsRiseOnchange(transactionDestinationNotesInput, i);
-
     }
 
     @Step("Click 'Deposit' button")

@@ -74,6 +74,9 @@ public class C22660_CommitWithdrawAndClose extends BaseTest {
         Assert.assertFalse(Pages.tellerPage().isNotificationsPresent(), "Error message is visible!");
         Pages.tellerPage().closeModal();
 
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
         // Set transaction with amount value
         Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
         accruedInterest = AccountActions.retrievingAccountData().getAccruedInterest();
@@ -118,6 +121,9 @@ public class C22660_CommitWithdrawAndClose extends BaseTest {
         Actions.transactionActions().clickCommitButton();
         Assert.assertFalse(Pages.tellerPage().isNotificationsPresent(), "Error message is visible!");
         Pages.tellerPage().closeModal();
+
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 8: Go to account used in source item and verify its: \n" +
                 "- current balance \n" +

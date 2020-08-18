@@ -60,6 +60,10 @@ public class PageTools extends AllureLogger {
         return $(byLocator(by, args)).should(Condition.matchesText(pattern));
     }
 
+    protected void shouldNotBeEmpty(By by, Object... args) {
+        $(byLocator(by, args)).shouldNotBe(Condition.empty);
+    }
+
     protected void shouldNotHaveClass(String className, By by, Object... args) {
         $(byLocator(by, args)).shouldNotHave(Condition.cssClass(className));
     }
@@ -78,6 +82,7 @@ public class PageTools extends AllureLogger {
 
     protected void jsClick(By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
+        waitForElementClickable(by, args);
         Selenide.executeJavaScript("arguments[0].click();", shouldBe(Condition.exist, by, args));
     }
 
@@ -104,6 +109,7 @@ public class PageTools extends AllureLogger {
 
     protected void jsType(String text, By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + " '" + text);
+        waitForElementClickable(by, args);
         Selenide.executeJavaScript("arguments[0].value = '" + text + "';", shouldBe(Condition.exist, by, args));
     }
 

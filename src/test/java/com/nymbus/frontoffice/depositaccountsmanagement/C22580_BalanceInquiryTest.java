@@ -61,6 +61,8 @@ public class C22580_BalanceInquiryTest extends BaseTest {
 
         // Create transaction
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Navigate to instructions tab
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);

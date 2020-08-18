@@ -159,7 +159,8 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         AccountActions.editAccount().goToDetailsTab();
         expectedBalanceDataForSavingAcc.addAmount(mixDepTransactionAmount);
         BalanceData actualBalanceDataForSavingsAcc = AccountActions.retrievingAccountData().getBalanceData();
-        Assert.assertEquals(actualBalanceDataForSavingsAcc, expectedBalanceDataForSavingAcc, "Saving account balance is not correct!");
+        Assert.assertEquals(actualBalanceDataForSavingsAcc.getCurrentBalance(), expectedBalanceDataForSavingAcc.getCurrentBalance(), "Saving account current balance is not correct!");
+        Assert.assertEquals(actualBalanceDataForSavingsAcc.getAvailableBalance(), expectedBalanceDataForSavingAcc.getAvailableBalance(), "Saving account available balance is not correct!");
 
         savingAccTransactionData.setBalance(expectedBalanceDataForSavingAcc.getCurrentBalance());
         AccountActions.retrievingAccountData().goToTransactionsTab();
@@ -195,7 +196,8 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         AccountActions.editAccount().goToDetailsTab();
         expectedBalanceDataForCheckingAcc.addAmount(cashTransactionAmount);
         BalanceDataForCHKAcc actualBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
-        Assert.assertEquals(actualBalanceDataForCheckingAcc, expectedBalanceDataForCheckingAcc, "Checking account balance is not correct!");
+        Assert.assertEquals(actualBalanceDataForCheckingAcc.getCurrentBalance(), expectedBalanceDataForCheckingAcc.getCurrentBalance(), "Checking account current balance is not correct!");
+        Assert.assertEquals(actualBalanceDataForCheckingAcc.getAvailableBalance(), expectedBalanceDataForCheckingAcc.getAvailableBalance(), "Checking account available balance is not correct!");
 
         chkAccTransactionData.setBalance(expectedBalanceDataForCheckingAcc.getCurrentBalance());
         AccountActions.retrievingAccountData().goToTransactionsTab();

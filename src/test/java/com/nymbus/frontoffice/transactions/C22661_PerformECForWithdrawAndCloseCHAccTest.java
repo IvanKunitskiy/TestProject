@@ -67,6 +67,9 @@ public class C22661_PerformECForWithdrawAndCloseCHAccTest extends BaseTest {
         // perform transaction
         performGLDebitMiscCreditTransaction(transaction, checkAccount.getDateOpened());
 
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
         // Go to account details
         Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
 
@@ -83,7 +86,8 @@ public class C22661_PerformECForWithdrawAndCloseCHAccTest extends BaseTest {
         //  perform withdraw transaction
         performWithdrawAndCloseTransaction(withdrawTransaction);
 
-        Actions.loginActions().doLogOut();
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
     }
 
     @Test(description = "22661, Error correct withdraw&close CHK (balance + IENP)")
