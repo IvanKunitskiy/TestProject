@@ -41,16 +41,14 @@ public class TellerPage extends PageTools {
     @Step("Click on 'Commit Transaction' button")
     public void clickCommitButton() {
         waitForElementClickable(commitButton);
-        click(commitButton);
+        jsClick(commitButton);
     }
 
     @Step("Set effective date")
     public void setEffectiveDate(String date) {
         waitForElementVisibility(effectiveDate);
-        waitForElementClickable(effectiveDate);
-        typeWithoutWipe("", effectiveDate);
-        SelenideTools.sleep(1);
-        typeWithoutWipe(date, effectiveDate);
+        jsType(date, effectiveDate);
+        jsRiseOnchange(effectiveDate);
     }
 
     @Step("Get effective date")
@@ -74,7 +72,7 @@ public class TellerPage extends PageTools {
     @Step("Close modal window")
     public void closeModal() {
         waitForElementVisibility(closeModalButton);
-        click(closeModalButton);
+        jsClick(closeModalButton);
     }
 
     /**
@@ -151,7 +149,7 @@ public class TellerPage extends PageTools {
     @Step("Click 'Misc-Debit' button")
     public void clickMiscDebitButton() {
         waitForElementClickable(miscDebit);
-        click(miscDebit);
+        jsClick(miscDebit);
     }
 
     @Step("Wait for 'Credit transfer' code visible")
@@ -163,61 +161,65 @@ public class TellerPage extends PageTools {
     @Step("Click 'Cash-In' button")
     public void clickCashInButton() {
         waitForElementClickable(cashInButton);
-        click(cashInButton);
+        jsClick(cashInButton);
     }
 
     @Step("Click 'GL Debit' button")
     public void clickGLDebitButton() {
         waitForElementClickable(glDebitButton);
-        click(glDebitButton);
+        jsClick(glDebitButton);
     }
 
     @Step("Click {0} 'Account number' division")
     public void clickAccountNumberDiv(int i) {
         waitForElementClickable(accountNumberDiv, i);
-        click(accountNumberDiv, i);
+        jsClick(accountNumberDiv, i);
     }
 
     @Step("Set {0} 'Account number' value {1}")
     public void typeAccountNumber(int i, String number) {
         waitForElementClickable(accountNumberField, i);
-        type(number, accountNumberField, i);
+        jsType(number, accountNumberField, i);
+        jsRiseOnchange(accountNumberField, i);
     }
 
     @Step("Click on {0} item in dropdown")
     public void clickOnAutocompleteDropDownItem(String item) {
         waitForElementClickable(autocompleteItemInDropDown, item);
-        click(autocompleteItemInDropDown, item);
+        jsClick(autocompleteItemInDropDown, item);
     }
 
     @Step("Click 'Amount' {0} division")
     public void clickAmountDiv(int i) {
         waitForElementClickable(transactionAmountDiv, i);
-        click(transactionAmountDiv, i);
+        jsClick(transactionAmountDiv, i);
     }
 
     @Step("Set {0} 'Amount' value {1}")
     public void typeAmountValue(int i, String amount) {
         waitForElementClickable(transactionAmountField, i);
-        type(amount, transactionAmountField, i);
+        jsType(amount, transactionAmountField, i);
+        jsRiseOnchange(transactionAmountField, i);
     }
 
     @Step("Click transition {0} 'Details' arrow")
     public void clickSourceDetailsArrow(int i) {
         waitForElementClickable(transactionSourceDetailsArrow, i);
-        click(transactionSourceDetailsArrow, i);
+        jsClick(transactionSourceDetailsArrow, i);
     }
 
     @Step("Set 'Notes' {0} value {1}")
     public void typeSourceNotesValue(int i, String note) {
         waitForElementClickable(transactionSourceNotesInput, i);
-        type(note, transactionSourceNotesInput, i);
+        jsSetValue(note, transactionSourceNotesInput, i);
+        jsRiseOnchange(transactionSourceNotesInput, i);
+
     }
 
     @Step("Click transition code {0} dropdown arrow")
     public void clickSourceTransactionCodeArrow(int i) {
         waitForElementClickable(transactionCodeDropdownArrow, i);
-        click(transactionCodeDropdownArrow, i);
+        jsClick(transactionCodeDropdownArrow, i);
     }
     /**
      * Destinations region
@@ -232,6 +234,8 @@ public class TellerPage extends PageTools {
     private By accountNumberDestinationInput = By.xpath("(//*[@id='accordion-operation-destinations-content']//*[@transaction='item'])[%s]" +
             "//*[@data-name='accountNumber account']//input[contains(@class, 'ui-select-search')]");
     private By transactionDestinationCodeField = By.xpath("(//*[@id='accordion-operation-destinations-content']//*[@transaction='item'])[%s]//*[@data-name='tranCode']");
+    private By transactionDestinationCodeDropdownArrow = By.xpath("(//*[@id='accordion-operation-destinations-content']//*[@transaction='item'])[%s]" +
+            "//*[@data-name='tranCode']//span[contains(@class, 'select2-arrow')]");
     private By transactionDestinationAmountDiv = By.xpath("(//*[@id='accordion-operation-destinations-content']//*[@transaction='item'])[%s]//*[@data-name='amount']");
     private By transactionDestinationAmountField = By.xpath("(//*[@id='accordion-operation-destinations-content']//*[@transaction='item'])[%s]" +
             "//*[@data-name='amount']//input");
@@ -247,73 +251,78 @@ public class TellerPage extends PageTools {
     @Step("Click transition {0} 'Details' arrow")
     public void clickDestinationDetailsArrow(int i) {
         waitForElementClickable(transactionDestinationDetailsArrow, i);
-        click(transactionDestinationDetailsArrow, i);
+        jsClick(transactionDestinationDetailsArrow, i);
     }
 
     @Step("Set Destination 'Notes' {0} value {1}")
     public void typeDestinationNotesValue(int i, String note) {
         waitForElementClickable(transactionDestinationNotesInput, i);
-        type(note, transactionDestinationNotesInput, i);
+        jsSetValue(note, transactionDestinationNotesInput, i);
+        jsRiseOnchange(transactionDestinationNotesInput, i);
+
     }
 
     @Step("Click 'Deposit' button")
     public void clickDepositButton() {
         waitForElementClickable(depositButton);
-        click(depositButton);
+        jsClick(depositButton);
     }
 
     @Step("Click 'GL Credit' button")
     public void clickGLCreditButton() {
         waitForElementClickable(glCreditButton);
-        click(glCreditButton);
+        jsClick(glCreditButton);
     }
 
     @Step("Click 'Cash-Out' button")
     public void clickCashOutButton() {
         waitForElementClickable(cashOutButton);
-        click(cashOutButton);
+        jsClick(cashOutButton);
     }
 
     @Step("Click 'Misc Credit' button")
     public void clickMiscCreditButton() {
         waitForElementClickable(miscCreditButton);
-        click(miscCreditButton);
+        jsClick(miscCreditButton);
     }
 
     @Step("Set {0} destination 'Account number' value {1}")
     public void typeDestinationAccountNumber(int i, String number) {
         waitForElementClickable(accountNumberDestinationInput, i);
-        type(number, accountNumberDestinationInput, i);
+        jsSetValue(number, accountNumberDestinationInput, i);
+        jsRiseOnchange(accountNumberDestinationInput, i);
+
     }
 
     @Step("Click destination 'Account number' suggestion option")
     public void clickDestinationAccountSuggestionOption(String accountNumber) {
         waitForElementClickable(accountNumberOptionSelector, accountNumber);
-        click(accountNumberOptionSelector, accountNumber);
+        jsClick(accountNumberOptionSelector, accountNumber);
     }
 
     @Step("Click Destination 'Amount' {0} division")
     public void clickDestinationAmountDiv(int i) {
         waitForElementClickable(transactionDestinationAmountDiv, i);
-        click(transactionDestinationAmountDiv, i);
+        jsClick(transactionDestinationAmountDiv, i);
     }
 
     @Step("Set Destination {0} 'Amount' value {1}")
     public void typeDestinationAmountValue(int i, String amount) {
         waitForElementClickable(transactionDestinationAmountField, i);
-        type(amount, transactionDestinationAmountField, i);
+        jsType(amount, transactionDestinationAmountField, i);
+        jsRiseOnchange(transactionDestinationAmountField, i);
     }
 
     @Step("Click on destination code {0}")
     public void clickOnDestinationCodeField(int i) {
-        waitForElementClickable(transactionDestinationCodeField, i);
-        click(transactionDestinationCodeField, i);
+        waitForElementClickable(transactionDestinationCodeDropdownArrow, i);
+        jsClick(transactionDestinationCodeDropdownArrow, i);
     }
 
     @Step("Click on {0} item in dropdown")
     public void clickOnDropDownItem(String item) {
         waitForElementClickable(itemInDropDown, item);
-        click(itemInDropDown, item);
+        jsClick(itemInDropDown, item);
     }
 
     /**
@@ -332,7 +341,7 @@ public class TellerPage extends PageTools {
     @Step("Click account quick view")
     public void clickAccountQuickViewArrow() {
         waitForElementVisibility(accountQuickViewToggleButton);
-        click(accountQuickViewToggleButton);
+        jsClick(accountQuickViewToggleButton);
     }
 
     @Step("Get 'Available Balance' value")

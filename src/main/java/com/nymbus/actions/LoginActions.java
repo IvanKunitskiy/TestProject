@@ -1,5 +1,7 @@
 package com.nymbus.actions;
 
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 
@@ -24,6 +26,15 @@ public class LoginActions {
         if (!Pages.navigationPage().isSingOutButtonVisible())
             Pages.navigationPage().clickAccountButton();
         Pages.navigationPage().clickSignOut();
+        Pages.loginPage().waitForLoginForm();
+    }
+
+    public void doLogOutProgrammatically() {
+        SelenideTools.clearCookies();
+        SelenideTools.refresh();
+        SelenideTools.openUrlInNewWindow(Constants.URL);
+        SelenideTools.switchToLastTab();
+        SelenideTools.closeAllTabsExceptCurrent();
         Pages.loginPage().waitForLoginForm();
     }
 }

@@ -92,4 +92,16 @@ public class SelenideTools {
         LOG.info("Open url in new window");
         Selenide.executeJavaScript("window.open('" + url + "')");
     }
+
+    public static void closeAllTabsExceptCurrent() {
+        String currentWindow = getDriver().getWindowHandle();
+        ArrayList<String> tabs = getTabsList();
+        for (String tab : tabs) {
+            if (!tab.equals(currentWindow)) {
+                Selenide.switchTo().window(tab);
+                Selenide.closeWindow();
+            }
+        }
+        Selenide.switchTo().window(currentWindow);
+    }
 }
