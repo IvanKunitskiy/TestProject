@@ -26,7 +26,7 @@ public class CardsManagementPage extends PageTools {
      */
     private By transactionAmount = By.xpath("//tr[@ng-repeat ='item in ctrl.cardTransactions track by $index'][%s]" +
             "//td[@amount='item.transactionamount']//span[@ng-if = 'isNeedCurrency']");
-    private By transactionFeeAmount = By.xpath(" //tr[@ng-repeat ='item in ctrl.cardTransactions track by $index'][%s]" +
+    private By transactionFeeAmount = By.xpath("//tr[@ng-repeat ='item in ctrl.cardTransactions track by $index'][%s]" +
             "//td[@amount='item.feeamount']//span[@ng-if = 'isNeedCurrency']");
 
     @Step("Get transaction amount {0}")
