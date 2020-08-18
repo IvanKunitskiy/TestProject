@@ -6,6 +6,9 @@ import org.openqa.selenium.By;
 
 public class CashInModalWindowPage extends PageTools {
 
+    private By modalWindow = By.xpath("//div[@class='modal-content']//div[@name='cashDenominationForm']");
+    private By hundredsDenomination = By.xpath("//td[text()='Hundreds']/following-sibling::td//input");
+    private By fiftiesDenomination = By.xpath("//td[text()='Fifties']/following-sibling::td//input");
     private By inputHundreds = By.xpath("//input[@name='onehundredsloose']");
     private By inputFifties = By.xpath("//input[@name='fiftiesloose']");
     private By inputHundredsInventory = By.xpath("//div[@class='modal-content']//*[@class='cashDenominationTableBody']//tr[1]//td[2]//input");
@@ -16,16 +19,32 @@ public class CashInModalWindowPage extends PageTools {
     private By okButton = By.xpath("//div[@class='modal-content']//button[@ng-click='saveCashDenomination()']");
     private By cancelButton = By.xpath("//div[@class='modal-content']//button[@ng-click='closeWithoutSaving()']");
 
+    @Step("Wait for modal window visibility")
+    public void waitForModalWindowVisibility() {
+        waitForElementVisibility(modalWindow);
+    }
+
+    @Step("Wait for modal window visibility")
+    public void waitForModalWindowInVisibility() {
+        waitForElementInvisibility(modalWindow);
+    }
+
+
+
     @Step("Set {0} in hundreds amount")
     public void typeHundredsAmountValue(String value) {
+        shouldNotBeEmpty(hundredsDenomination);
         waitForElementClickable(inputHundreds);
-        type(value, inputHundreds);
+        jsType(value, inputHundreds);
+        jsRiseOnchange(inputHundreds);
     }
 
     @Step("Set {0} in fifties amount")
     public void typeFiftiesAmountValue(String value) {
+        shouldNotBeEmpty(fiftiesDenomination);
         waitForElementClickable(inputFifties);
-        type(value, inputFifties);
+        jsType(value, inputFifties);
+        jsRiseOnchange(inputFifties);
     }
 
     @Step("Get hundreds inventory value")
@@ -37,12 +56,12 @@ public class CashInModalWindowPage extends PageTools {
     @Step("Click 'Ok' button")
     public void clickOKButton() {
         waitForElementVisibility(okButton);
-        click(okButton);
+        jsClick(okButton);
     }
 
     @Step("Click 'Cancel' button")
     public void clickCancelButton() {
         waitForElementVisibility(cancelButton);
-        click(cancelButton);
+        jsClick(cancelButton);
     }
 }

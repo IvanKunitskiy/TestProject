@@ -107,6 +107,9 @@ public class C22761_224ATMWithdrawalONUSTest extends BaseTest {
         Pages.tellerPage().closeModal();
         transactionAmount = glDebitMiscCreditTransaction.getTransactionDestination().getAmount();
 
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
         expectedBalanceData = AccountActions.retrievingAccountData().getBalanceData();
 

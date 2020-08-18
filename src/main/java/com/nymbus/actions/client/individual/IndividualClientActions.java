@@ -28,9 +28,9 @@ public class IndividualClientActions {
     public void createClientOnVerifyConductorModalPage(IndividualClient client) {
         Pages.verifyConductorModalPage().clickAddNewClientButton();
         Pages.verifyConductorModalPage().waitForFirstNameFieldEnabled();
-        Pages.addClientPage().setFirstNameValue(client.getIndividualType().getFirstName());
-        Pages.addClientPage().setLastNameValue(client.getIndividualType().getLastName());
-        Pages.addClientPage().setTaxIDValue(client.getIndividualType().getTaxID());
+        Pages.verifyConductorModalPage().typeFirstName(client.getIndividualType().getFirstName());
+        Pages.verifyConductorModalPage().typeLastName(client.getIndividualType().getLastName());
+        Pages.verifyConductorModalPage().typeTaxId(client.getIndividualType().getTaxID());
         setBirthDateOnVerifyConductorModal(client.getIndividualType().getBirthDate());
         Pages.verifyConductorModalPage().typeAddressField(client.getIndividualType().getAddresses().get(0).getAddress());
         Pages.verifyConductorModalPage().typeCityField(client.getIndividualType().getAddresses().get(0).getCity());
@@ -74,6 +74,12 @@ public class IndividualClientActions {
         Assert.assertTrue(Pages.addClientPage().isVerificationSuccess(),
                 "Client data verification is not success");
         Pages.addClientPage().clickOkModalButton();
+    }
+
+    public void waitForOFACModalWindowVerificationONVerifyConductorModal() {
+        Assert.assertTrue(Pages.addClientPage().isVerificationSuccess(),
+                "Client data verification is not success");
+        Pages.verifyConductorModalPage().clickOkModalButton();
     }
 
     public void createClient(IndividualClient client) {

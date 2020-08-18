@@ -47,7 +47,7 @@ public class TellerModalPage extends PageTools {
     public void clickEnterButton() {
         waitForElementVisibility(enterButton);
         waitForElementClickable(enterButton);
-        click(enterButton);
+        jsClick(enterButton);
     }
 
     @Step("Is Enter button clickable")

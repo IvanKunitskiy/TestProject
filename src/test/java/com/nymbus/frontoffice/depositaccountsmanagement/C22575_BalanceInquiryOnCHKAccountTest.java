@@ -66,6 +66,8 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
 
         // Create transaction
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Create instruction and logout
         Pages.aSideMenuPage().clickClientMenuItem();

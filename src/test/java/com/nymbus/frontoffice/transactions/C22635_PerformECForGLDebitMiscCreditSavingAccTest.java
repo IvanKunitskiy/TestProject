@@ -62,6 +62,9 @@ public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest 
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
 
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
         // remove REG CC rule instruction
         Actions.clientPageActions().searchAndOpenClientByName(transaction.getTransactionDestination().getAccountNumber());
         AccountActions.editAccount().goToInstructionsTab();

@@ -72,7 +72,7 @@ public class C22581_SavingsAccountCallStatementTest extends BaseTest {
         // Create transaction
         Actions.transactionActions().performGLDebitMiscCreditTransaction(creditTransaction);
         Actions.transactionActions().performMiscDebitGLCreditTransaction(debitTransaction);
-        Actions.loginActions().doLogOut();
+        Actions.loginActions().doLogOutProgrammatically();
     }
 
     @Test(description = "C22581, Client Accounts: Savings account call statement")

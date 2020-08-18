@@ -1,12 +1,10 @@
 package com.nymbus.core.base;
 
 import com.codeborne.selenide.*;
-import com.codeborne.selenide.drivercommands.WebDriverWrapper;
 import com.nymbus.core.allure.AllureLogger;
 import com.nymbus.core.utils.LocatorParser;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
@@ -62,6 +60,10 @@ public class PageTools extends AllureLogger {
         return $(byLocator(by, args)).should(Condition.matchesText(pattern));
     }
 
+    protected void shouldNotBeEmpty(By by, Object... args) {
+        $(byLocator(by, args)).shouldNotBe(Condition.empty);
+    }
+
     protected void shouldNotHaveClass(String className, By by, Object... args) {
         $(byLocator(by, args)).shouldNotHave(Condition.cssClass(className));
     }
@@ -80,6 +82,7 @@ public class PageTools extends AllureLogger {
 
     protected void jsClick(By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
+        waitForElementClickable(by, args);
         Selenide.executeJavaScript("arguments[0].click();", shouldBe(Condition.exist, by, args));
     }
 
@@ -106,12 +109,28 @@ public class PageTools extends AllureLogger {
 
     protected void jsType(String text, By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + " '" + text);
+        waitForElementClickable(by, args);
         Selenide.executeJavaScript("arguments[0].value = '" + text + "';", shouldBe(Condition.exist, by, args));
+    }
+
+    protected void jsSetValue(String text, By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + " '" + text);
+        Selenide.executeJavaScript("arguments[0].setAttribute('value', '" + text + "');", shouldBe(Condition.exist, by, args));
     }
 
     protected void jsRiseOnchange(By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
         Selenide.executeJavaScript("arguments[0].dispatchEvent(new Event('change', { 'bubbles': true }))", shouldBe(Condition.exist, by, args));
+    }
+
+    protected void typeWithActions(String text,  By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
+        WebElement target = getWebElement(by, args);
+        getActions().moveToElement(target).sendKeys(target, text).build().perform();
+    }
+
+    protected void typeWithActions(String text) {
+        getActions().sendKeys(text).build().perform();
     }
 
     protected void typeWithoutLogs(String text, By by, Object... args) {
