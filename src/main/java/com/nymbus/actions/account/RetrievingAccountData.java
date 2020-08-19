@@ -138,7 +138,7 @@ public class RetrievingAccountData {
         return Double.parseDouble(value);
     }
 
-    private double getAvailableBalance() {
+    public double getAvailableBalance() {
         String value = Pages.accountDetailsPage().getAvailableBalance();
         return Double.parseDouble(value);
     }

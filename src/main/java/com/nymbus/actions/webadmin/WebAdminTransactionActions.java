@@ -4,7 +4,6 @@ import com.codeborne.selenide.Selenide;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
-import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
