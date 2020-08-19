@@ -57,7 +57,6 @@ public class C25360_ChkAtmBalanceInquiryForeignTest extends BaseTest {
 
         // Set up CHK account
         Account chkAccount = new Account().setCHKAccountData();
-        System.out.println("Account Number : " + chkAccount.getAccountNumber());
 
         // Set up transaction (transaction is made to assign balance to CHK account)
         Transaction glDebitMiscCreditTransaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
@@ -70,7 +69,6 @@ public class C25360_ChkAtmBalanceInquiryForeignTest extends BaseTest {
 
         // Get the value of ForeignATMFee bank control setting
         foreignFeeBalanceInquiryValue = Actions.nonTellerTransactionActions().getForeignATMFeeBalanceInquiry(1);
-        System.out.println("foreignFeeBalanceInquiryValue : " + foreignFeeBalanceInquiryValue);
 
         // Set up debit card and bin control
         DebitCardConstructor debitCardConstructor = new DebitCardConstructor();
@@ -137,7 +135,9 @@ public class C25360_ChkAtmBalanceInquiryForeignTest extends BaseTest {
                 "(TermId is not listed in 'bank owned atm locations/bank.data.datmlc'):");
         logInfo("Step 3: Check the DE54 in the response.\n" +
                 "Make sure that account's Current Balance and Available Balance were returned in this field");
-        Actions.nonTellerTransactionActions().performATMBalanceInquiryTransaction(getFieldsMap(nonTellerTransactionData), transactionAmount);
+        final String FIELD = "54";
+        String fieldValueFromResponse = Actions.nonTellerTransactionActions().getFieldValueFromATMTransaction(getFieldsMap(nonTellerTransactionData), FIELD);
+        Actions.nonTellerTransactionActions().verifyCurrentAndAvailableBalance(fieldValueFromResponse, transactionAmount);
         expectedBalanceDataForCheckingAcc.reduceAmount(foreignFeeBalanceInquiryValue);
 
         logInfo("Step 4: Search for CHK account from the precondition and go to the Transactions history tab.\n" +
@@ -146,8 +146,10 @@ public class C25360_ChkAtmBalanceInquiryForeignTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Actions.clientPageActions().searchAndOpenClientByName(checkingAccountNumber);
 
-        Assert.assertEquals(AccountActions.retrievingAccountData().getCurrentBalance(), expectedBalanceDataForCheckingAcc.getCurrentBalance(), "CHK account current balance is not correct!");
-        Assert.assertEquals(AccountActions.retrievingAccountData().getAvailableBalance(), expectedBalanceDataForCheckingAcc.getAvailableBalance(), "CHK account available balance is not correct!");
+        Assert.assertEquals(AccountActions.retrievingAccountData().getCurrentBalance(),
+                expectedBalanceDataForCheckingAcc.getCurrentBalance(), "CHK account current balance is not correct!");
+        Assert.assertEquals(AccountActions.retrievingAccountData().getAvailableBalance(),
+                expectedBalanceDataForCheckingAcc.getAvailableBalance(), "CHK account available balance is not correct!");
         chkAccTransactionData.setBalance(expectedBalanceDataForCheckingAcc.getCurrentBalance());
         chkAccTransactionData.setAmount(foreignFeeBalanceInquiryValue);
 
