@@ -8,6 +8,7 @@ import com.nymbus.newmodels.transaction.enums.ATMTransactionType;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.pages.webadmin.WebAdminPages;
+import org.testng.Assert;
 
 import java.util.Map;
 
@@ -88,5 +89,13 @@ public class NonTellerTransactionActions {
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
         return Double.parseDouble(result);
+    }
+
+    public void verifyCurrentAndAvailableBalance(String field54Value, double transactionAmount) {
+        String currentBalancePart = field54Value.substring(0, field54Value.length()/2);
+        String availableBalancePart = field54Value.substring(field54Value.length()/2);
+        String formattedAccountBalance = String.format("%.2f", transactionAmount);
+        Assert.assertTrue(currentBalancePart.endsWith(formattedAccountBalance.replaceAll("[^0-9]", "")), "'Current Balance' is not returned in DE54 field");
+        Assert.assertTrue(availableBalancePart.endsWith(formattedAccountBalance.replaceAll("[^0-9]", "")), "'Available Balance' is not returned in DE54 field");
     }
 }
