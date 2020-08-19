@@ -115,6 +115,9 @@ public class C25357_TransferFromDDAtoSAVONUSTest extends BaseTest {
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
 
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
         expectedBalanceDataForSavingAcc = AccountActions.retrievingAccountData().getBalanceData();
 

@@ -66,6 +66,8 @@ public class C22665_PerformECForWithdrawAndCloseSavingsAccTest extends BaseTest 
 
         // perform transaction
         performGLDebitMiscCreditTransaction(transaction, savingsAcc.getDateOpened());
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Go to account details
         Actions.clientPageActions().searchAndOpenClientByName(savingsAcc.getAccountNumber());
@@ -83,7 +85,8 @@ public class C22665_PerformECForWithdrawAndCloseSavingsAccTest extends BaseTest 
         //  perform withdraw transaction
         performWithdrawAndCloseTransaction(withdrawTransaction);
 
-        Actions.loginActions().doLogOut();
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
     }
 
     @Test(description = "22665, Error correct withdraw&close CHK (balance + IENP)")

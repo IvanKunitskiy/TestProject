@@ -51,7 +51,7 @@ public class C22602_EditTransactionDescriptionTest extends BaseTest {
         // Create CHK account
         AccountActions.createAccount().createCHKAccount(chkAccount);
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
-        Actions.loginActions().doLogOut();
+        Actions.loginActions().doLogOutProgrammatically();
     }
 
     @Test(description = "C22602, Edit Transaction Description")

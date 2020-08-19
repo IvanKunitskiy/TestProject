@@ -154,6 +154,7 @@ public class TransactionActions {
         Pages.tellerPage().clickCashInButton();
         setAmounts(source.getDenominationsHashMap());
         Pages.cashInModalWindowPage().clickOKButton();
+        Pages.cashInModalWindowPage().waitForModalWindowInVisibility();
     }
 
     private void setAmounts(HashMap<Denominations, Double> denominationsHashMap) {

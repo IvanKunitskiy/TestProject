@@ -108,6 +108,9 @@ public class C22765_SavAtmBalanceInquiryForeignTest extends BaseTest {
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
 
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
         AccountActions.editAccount().goToInstructionsTab();
         String INSTRUCTION_REASON = "Reg CC";

@@ -111,7 +111,7 @@ public class C22601_ViewTransactionHistoryTest extends BaseTest {
         // Create transactions
         Actions.transactionActions().loginTeller();
         Actions.transactionActions().performTransactionList(transactions);
-        Actions.loginActions().doLogOut();
+        Actions.loginActions().doLogOutProgrammatically();
     }
 
     @Test(description = "22601, Account Transactions: View transaction history")

@@ -104,6 +104,9 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
         Assert.assertFalse(Pages.tellerPage().isNotificationsPresent(), "Error message is visible!");
         Pages.tellerPage().closeModal();
 
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
         // Set up expected balance data
         Actions.clientPageActions().searchAndOpenClientByName(chkAccount.getAccountNumber());
         chkAccBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();

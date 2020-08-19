@@ -91,7 +91,7 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
         chkAccBalanceData.addAmount(transaction.getTransactionDestination().getAmount());
 
         // Logout and login for update teller session
-        Actions.loginActions().doLogOut();
+        Actions.loginActions().doLogOutProgrammatically();
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         Actions.cashDrawerAction().goToCashDrawerPage();
@@ -130,6 +130,9 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.verifyConductorModalPage().clickVerifyButton();
         Pages.tellerPage().closeModal();
+
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 11: Click [Commit Transaction] button and confirm Verify popup \n" +
                 "(which should be displayed if cash items were selected for transaction)");

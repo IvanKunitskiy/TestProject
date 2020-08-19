@@ -95,6 +95,10 @@ public class C22634_GLDebit_MiscCredit_SavingsAcc_Test extends BaseTest {
                 "Go to the account used in Misc Credit item. \n" +
                 "Open it on Instructions tab");
         Pages.tellerPage().closeModal();
+
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         AccountActions.editAccount().goToInstructionsTab();
 

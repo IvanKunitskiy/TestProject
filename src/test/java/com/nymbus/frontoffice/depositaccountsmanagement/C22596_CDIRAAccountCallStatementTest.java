@@ -73,7 +73,7 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
         // Commit transaction to account and logout
         Actions.transactionActions().performGLDebitMiscCreditTransaction(creditTransaction);
         Actions.transactionActions().performMiscDebitGLCreditTransaction(debitTransaction);
-        Actions.loginActions().doLogOut();
+        Actions.loginActions().doLogOutProgrammatically();
     }
 
     @Test(description = "C22596, CD IRA account call statement")

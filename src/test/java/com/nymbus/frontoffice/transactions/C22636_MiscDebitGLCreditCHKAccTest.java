@@ -59,6 +59,9 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
         // Perform transaction
         Actions.transactionActions().performGLDebitMiscCreditTransaction(glDebitMiscCreditTransaction);
 
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
         // Delete Reg CC instruction if exists
         Actions.clientPageActions().searchAndOpenClientByName(glDebitMiscCreditTransaction.getTransactionDestination().getAccountNumber());
         AccountActions.editAccount().goToInstructionsTab();

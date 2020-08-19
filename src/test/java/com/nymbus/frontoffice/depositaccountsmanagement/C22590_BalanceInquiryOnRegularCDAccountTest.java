@@ -66,6 +66,8 @@ public class C22590_BalanceInquiryOnRegularCDAccountTest extends BaseTest {
 
         // Commit transaction to account
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Navigate to instructions tab
         Actions.clientPageActions().searchAndOpenClientByName(cdAccount.getAccountNumber());

@@ -66,7 +66,8 @@ public class C22595_CDIRABalanceInquiryTest extends BaseTest {
 
         // Commit transaction to account
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
-        Pages.tellerPage().closeModal();
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Create instruction
         Pages.aSideMenuPage().clickClientMenuItem();

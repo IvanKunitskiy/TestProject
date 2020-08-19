@@ -85,6 +85,9 @@ public class C23915_GLDebitMiscCreditCDAccTest extends BaseTest {
         Pages.tellerPage().closeModal();
         balanceData.addAmount(transaction.getTransactionDestination().getAmount());
 
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
         logInfo("Step 7: Close Transaction Receipt popup and" +
                 "Go to the account used in Misc Credit item. Verify such fields: current balance, Original Balance, Total Contributions for Life of Account");
         AccountActions.editAccount().navigateToAccountDetails(transaction.getTransactionDestination().getAccountNumber(), false);
