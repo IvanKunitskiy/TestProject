@@ -70,8 +70,14 @@ public class C22591_CDAccountCallStatementTest extends BaseTest {
         AccountActions.createAccount().createCDAccount(cdAccount);
         client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
 
-        // Commit transaction to account and logout
+        // Commit GLDebitMiscCredit transaction to account
         Actions.transactionActions().performGLDebitMiscCreditTransaction(creditTransaction);
+
+        // Re-login in system for updating teller session
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Commit MiscDebitGLCredit transaction to account
         Actions.transactionActions().performMiscDebitGLCreditTransaction(debitTransaction);
         Actions.loginActions().doLogOutProgrammatically();
     }
