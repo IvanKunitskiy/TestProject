@@ -67,8 +67,14 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
         AccountActions.createAccount().createCHKAccount(chkAccount);
         client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
 
-        // Create transaction and logout
+        // Commit GLDebitMiscCredit transaction to account
         Actions.transactionActions().performGLDebitMiscCreditTransaction(creditTransaction);
+
+        // Re-login in system for updating teller session
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Commit MiscDebitGLCredit transaction to account
         Actions.transactionActions().performMiscDebitGLCreditTransaction(debitTransaction);
         Actions.loginActions().doLogOutProgrammatically();
     }

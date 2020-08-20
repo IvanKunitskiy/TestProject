@@ -72,10 +72,16 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
         AccountActions.createAccount().createIRAAccount(iraAccount);
         client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
 
-        // Commit transaction to account
+        // Commit GLDebitMiscCredit transaction to account
         Actions.transactionActions().performGLDebitMiscCreditTransaction(creditTransaction);
+
+        // Re-login in system for updating teller session
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Commit MiscDebitGLCredit transaction to account
         Actions.transactionActions().performMiscDebitGLCreditTransaction(debitTransaction);
-        Actions.loginActions().doLogOut();
+        Actions.loginActions().doLogOutProgrammatically();
     }
 
     @Test(description = "C23908, Savings IRA account call statement")
