@@ -69,8 +69,14 @@ public class C22581_SavingsAccountCallStatementTest extends BaseTest {
         AccountActions.createAccount().createSavingsAccount(savingsAccount);
         client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
 
-        // Create transaction
+        // Commit GLDebitMiscCredit transaction to account
         Actions.transactionActions().performGLDebitMiscCreditTransaction(creditTransaction);
+
+        // Re-login in system for updating teller session
+        Actions.loginActions().doLogOut();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Commit MiscDebitGLCredit transaction to account
         Actions.transactionActions().performMiscDebitGLCreditTransaction(debitTransaction);
         Actions.loginActions().doLogOutProgrammatically();
     }
