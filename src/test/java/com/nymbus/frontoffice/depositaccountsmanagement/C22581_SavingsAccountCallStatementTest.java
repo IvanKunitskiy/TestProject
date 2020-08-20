@@ -73,7 +73,7 @@ public class C22581_SavingsAccountCallStatementTest extends BaseTest {
         Actions.transactionActions().performGLDebitMiscCreditTransaction(creditTransaction);
 
         // Re-login in system for updating teller session
-        Actions.loginActions().doLogOut();
+        Actions.loginActions().doLogOutProgrammatically();
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Commit MiscDebitGLCredit transaction to account
