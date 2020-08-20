@@ -88,7 +88,7 @@ public class C22668_CommitCDRedemptionTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "22668, Commit CD redemption (balance + IENP)")
+    @Test(description = "C22668, Commit CD redemption (balance + IENP)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyCDRedemptionTransaction() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");
