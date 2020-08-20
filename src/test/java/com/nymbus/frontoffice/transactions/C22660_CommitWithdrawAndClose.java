@@ -88,7 +88,7 @@ public class C22660_CommitWithdrawAndClose extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "22660, Commit withdraw&close CHK (balance + IENP)")
+    @Test(description = "C22660, Commit withdraw&close CHK (balance + IENP)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyWithdrawAndCloseTransaction() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");

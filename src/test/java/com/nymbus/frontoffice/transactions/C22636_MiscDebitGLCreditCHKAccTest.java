@@ -120,6 +120,10 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
                 "- Collected Balance \n" +
                 "- Average Balance");
         Pages.tellerPage().closeModal();
+
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
         Actions.clientPageActions().searchAndOpenClientByName(miscDebitGLCreditTransaction.getTransactionSource().getAccountNumber());
         ExtendedBalanceDataForCHKAcc actualBalanceDate = AccountActions.retrievingAccountData().getExtendedBalanceDataForCHKAcc();
         Assert.assertEquals(actualBalanceDate, balanceData, "Balance data doesn't match!");

@@ -89,7 +89,7 @@ public class C22665_PerformECForWithdrawAndCloseSavingsAccTest extends BaseTest 
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
     }
 
-    @Test(description = "22665, Error correct withdraw&close CHK (balance + IENP)")
+    @Test(description = "C22665, Journal: Perform EC for withdraw&close Savings (balance + IENP)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyECForWithdrawAndCloseTransaction() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");
