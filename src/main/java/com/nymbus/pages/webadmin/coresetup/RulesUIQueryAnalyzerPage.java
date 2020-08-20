@@ -215,4 +215,16 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         waitForElementVisibility(foreignFeeValue, index);
         return getElementText(foreignFeeValue, index).trim();
     }
+
+    /**
+     *  waive AT usage fee acronym
+     */
+    private By waiveATUsageFeeAcronymValue = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]"
+            + "//td[last()]/div");
+
+    @Step ("Get 'Waive AT Usage Fee Acronym' {0} value")
+    public String getWaiveATUsageFeeAcronymValue(int index) {
+        waitForElementVisibility(waiveATUsageFeeAcronymValue, index);
+        return getElementText(waiveATUsageFeeAcronymValue, index).trim();
+    }
 }

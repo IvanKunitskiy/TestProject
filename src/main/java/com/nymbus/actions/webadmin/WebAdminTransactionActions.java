@@ -111,6 +111,23 @@ public class WebAdminTransactionActions {
                 + "%0D%0AdeletedIncluded%3A+true&source=";
     }
 
+    private String getWaiveATUsageFeeAcronymUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+10%0D%0A"
+                + "select%3A+%28databean%29CODE%2C+string%0D%0A"
+                + "from%3A+bank.data.bcfile%0D%0A"
+                + "where%3A+%0D%0A"
+                + "-+code%3A+WaiveATUsageFeeAcronym&source=";
+    }
+
+    public void goToWaiveATUsageFeeAcronymUrl() {
+        Selenide.open(getWaiveATUsageFeeAcronymUrl());
+
+        waitForSearchResults();
+    }
+
     public void goToForeignFeeUrl() {
         Selenide.open(getForeignATMFeeUrl());
 

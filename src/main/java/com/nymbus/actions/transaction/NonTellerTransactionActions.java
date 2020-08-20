@@ -91,11 +91,35 @@ public class NonTellerTransactionActions {
         return Double.parseDouble(result);
     }
 
+    public boolean isATMFeeBalanceInquiryValuePresent() {
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.webAdminTransactionActions().goToForeignATMFeeBalanceInquiryUrl();
+        String foreignFeeValue = WebAdminPages.rulesUIQueryAnalyzerPage().getForeignFeeValue(1);
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+
+        return foreignFeeValue != null && !foreignFeeValue.isEmpty();
+    }
+
+    public boolean isWaiveATUsageFeeAcronymValuePresent() {
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.webAdminTransactionActions().goToWaiveATUsageFeeAcronymUrl();
+        String waiveATUsageFeeAcronymValue = WebAdminPages.rulesUIQueryAnalyzerPage().getWaiveATUsageFeeAcronymValue(1);
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+
+        return waiveATUsageFeeAcronymValue != null && !waiveATUsageFeeAcronymValue.isEmpty();
+    }
+
     public void verifyCurrentAndAvailableBalance(String field54Value, double transactionAmount) {
         String currentBalancePart = field54Value.substring(0, field54Value.length()/2);
         String availableBalancePart = field54Value.substring(field54Value.length()/2);
         String formattedAccountBalance = String.format("%.2f", transactionAmount);
-        Assert.assertTrue(currentBalancePart.endsWith(formattedAccountBalance.replaceAll("[^0-9]", "")), "'Current Balance' is not returned in DE54 field");
-        Assert.assertTrue(availableBalancePart.endsWith(formattedAccountBalance.replaceAll("[^0-9]", "")), "'Available Balance' is not returned in DE54 field");
+        Assert.assertTrue(currentBalancePart.endsWith(formattedAccountBalance.replaceAll("[^0-9]", "")),
+                "'Current Balance' is not returned in DE54 field");
+        Assert.assertTrue(availableBalancePart.endsWith(formattedAccountBalance.replaceAll("[^0-9]", "")),
+                "'Available Balance' is not returned in DE54 field");
     }
 }

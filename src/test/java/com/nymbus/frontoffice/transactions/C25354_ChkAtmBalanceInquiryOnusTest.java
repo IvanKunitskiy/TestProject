@@ -43,7 +43,6 @@ public class C25354_ChkAtmBalanceInquiryOnusTest extends BaseTest {
     private NonTellerTransactionData nonTellerForeignTransactionData;
     private String chkAccountNumber;
     private double transactionAmount;
-    private double foreignFeeBalanceInquiryValue;
 
     @BeforeMethod
     public void preCondition() {
@@ -72,12 +71,13 @@ public class C25354_ChkAtmBalanceInquiryOnusTest extends BaseTest {
         nonTellerForeignTransactionData = new NonTellerTransactionData();
         nonTellerForeignTransactionData.setTerminalId(foreignTerminalId);
 
-        // Get the value of ForeignATMFee bank control setting
-        foreignFeeBalanceInquiryValue = Actions.nonTellerTransactionActions().getForeignATMFeeBalanceInquiry(1);
+        // Get the value of ForeignATMFeeBalanceInquiry bank control setting
+        Assert.assertTrue(Actions.nonTellerTransactionActions().isATMFeeBalanceInquiryValuePresent(),
+                "WaiveATUsageFeeAcronym setting is not filled in 'bank.data.bcfile'");
 
-        // TODO :
-//        3. Make sure that there is at least one record in bank-owned atm locations (bank.data.datmlc) - See Query from Excel doc
-//        5. Make sure that there is filled in bank control setting 'WaiveATUsageFeeAcronym ' (e.g. 'CPN') (on bank.data.bcfile)
+        // Make sure that there is filled in bank control setting 'WaiveATUsageFeeAcronym '
+        Assert.assertTrue(Actions.nonTellerTransactionActions().isWaiveATUsageFeeAcronymValuePresent(),
+                "WaiveATUsageFeeAcronym setting is not filled in 'bank.data.bcfile'");
 
         // Set up debit card and bin control
         DebitCardConstructor debitCardConstructor = new DebitCardConstructor();
