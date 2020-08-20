@@ -5,7 +5,6 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
@@ -21,9 +20,7 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuil
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
-import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
-import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -44,8 +41,6 @@ public class C25354_ChkAtmBalanceInquiryOnusTest extends BaseTest {
     private IndividualClient client;
     private NonTellerTransactionData nonTellerTransactionData;
     private NonTellerTransactionData nonTellerForeignTransactionData;
-    private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
-    private TransactionData chkAccTransactionData;
     private String chkAccountNumber;
     private double transactionAmount;
     private double foreignFeeBalanceInquiryValue;
@@ -128,18 +123,7 @@ public class C25354_ChkAtmBalanceInquiryOnusTest extends BaseTest {
         Actions.transactionActions().createGlDebitMiscCreditTransaction(glDebitMiscCreditTransaction);
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
-
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-
-        Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
-        expectedBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
-
-        // Set up nonTeller transaction data
-        chkAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-", expectedBalanceDataForCheckingAcc.getCurrentBalance(), foreignFeeBalanceInquiryValue);
-
-        Actions.loginActions().doLogOut();
     }
 
     @Test
