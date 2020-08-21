@@ -166,6 +166,7 @@ public class AccountTransactionPage extends PageTools {
     @Step("Get table header cols count")
     public int getTableHeaderCols() {
         waitForElementVisibility(tableHeaders);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         return getElements(tableHeaders).size();
     }
 

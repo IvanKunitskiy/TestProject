@@ -52,7 +52,7 @@ public class IndividualClientActions {
     private void setBirthDateOnVerifyConductorModal(String date) {
         Pages.verifyConductorModalPage().clickBirthDateCalendarIconWithJs();
         Pages.verifyConductorModalPage().clickBirthDateCalendarIconWithJs();
-        Pages.addClientPage().setBirthDateValue(date);
+        Pages.verifyConductorModalPage().setBirthDateValue(date);
     }
 
     private void setAddressStatesOnVerifyConductorModal(String state) {

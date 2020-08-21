@@ -87,7 +87,6 @@ public class C22661_PerformECForWithdrawAndCloseCHAccTest extends BaseTest {
         performWithdrawAndCloseTransaction(withdrawTransaction);
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
     }
 
     @Test(description = "C22661, Error correct withdraw&close CHK (balance + IENP)")

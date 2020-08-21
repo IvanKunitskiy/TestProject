@@ -20,6 +20,7 @@ public class VerifyConductorModalPage extends PageTools {
 
     private By expirationDateCalendarIcon = By.xpath("//div[input[@id='expiration']]/div[span[@class='nyb-icon-calendar']]");
     private By birthDateCalendarIcon = By.xpath("//div[input[@id='birthdate']]/div[span[@class='nyb-icon-calendar']]");
+    private By birthDateField = By.id("birthdate");
 
     private By firstNameField = By.xpath("//*[@id='name2']");
     private By lastNameField = By.id("name1");
@@ -157,6 +158,14 @@ public class VerifyConductorModalPage extends PageTools {
     @Step("Wait for first name to be enabled")
     public void waitForFirstNameFieldEnabled() {
         shouldBe(Condition.enabled, firstNameField);
+    }
+
+    @Step("Set 'Birth Date' value")
+    public void setBirthDateValue(String birthDate) {
+        waitForElementVisibility(birthDateField);
+        waitForElementClickable(birthDateField);
+        jsType(birthDate, birthDateField);
+        jsRiseOnchange(birthDateField);
     }
 
     @Step("Set 'Expiration Date' value")
