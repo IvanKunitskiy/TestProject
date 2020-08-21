@@ -21,6 +21,7 @@ public class CardsManagementPage extends PageTools {
         click(viewCardHistoryButton, index);
     }
 
+
     /**
      * Card history region
      */
@@ -28,6 +29,7 @@ public class CardsManagementPage extends PageTools {
             "//td[@amount='item.transactionamount']//span[@ng-if = 'isNeedCurrency']");
     private By transactionFeeAmount = By.xpath("//tr[@ng-repeat ='item in ctrl.cardTransactions track by $index'][%s]" +
             "//td[@amount='item.feeamount']//span[@ng-if = 'isNeedCurrency']");
+    private By transactionDescription = By.xpath("//tr[@ng-repeat ='item in ctrl.cardTransactions track by $index'][%s]//td[5]");
 
     @Step("Get transaction amount {0}")
     public String getTransactionAmount(int index) {
@@ -39,5 +41,11 @@ public class CardsManagementPage extends PageTools {
     public String getTransactionFeeAmount(int index) {
         waitForElementVisibility(transactionFeeAmount, index);
         return getElementText(transactionFeeAmount, index).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get transaction description {0}")
+    public String getTransactionDescription(int index) {
+        waitForElementVisibility(transactionDescription, index);
+        return getElementText(transactionDescription, index).trim();
     }
 }
