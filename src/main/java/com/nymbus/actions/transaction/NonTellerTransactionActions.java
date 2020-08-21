@@ -116,10 +116,10 @@ public class NonTellerTransactionActions {
     public void verifyCurrentAndAvailableBalance(String field54Value, double transactionAmount) {
         String currentBalancePart = field54Value.substring(0, field54Value.length()/2);
         String availableBalancePart = field54Value.substring(field54Value.length()/2);
-        String formattedAccountBalance = String.format("%.2f", transactionAmount);
-        Assert.assertTrue(currentBalancePart.endsWith(formattedAccountBalance.replaceAll("[^0-9]", "")),
+        String formattedAccountBalance = String.format("%.2f", transactionAmount).replaceAll("[^0-9]", "");
+        Assert.assertTrue(currentBalancePart.endsWith(formattedAccountBalance),
                 "'Current Balance' is not returned in DE54 field");
-        Assert.assertTrue(availableBalancePart.endsWith(formattedAccountBalance.replaceAll("[^0-9]", "")),
+        Assert.assertTrue(availableBalancePart.endsWith(formattedAccountBalance),
                 "'Available Balance' is not returned in DE54 field");
     }
 }

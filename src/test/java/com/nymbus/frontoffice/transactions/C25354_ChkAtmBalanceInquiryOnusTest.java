@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
@@ -35,8 +36,7 @@ import java.util.Map;
 @Owner("Petro")
 public class C25354_ChkAtmBalanceInquiryOnusTest extends BaseTest {
 
-    private final String terminalId = "M408084";
-    private final String foreignTerminalId = "M308084";
+    private final String foreignTerminalId = Generator.getRandomStringNumber(7);
     private final String FIELD = "54";
     private IndividualClient client;
     private NonTellerTransactionData nonTellerTransactionData;
@@ -61,6 +61,9 @@ public class C25354_ChkAtmBalanceInquiryOnusTest extends BaseTest {
         glDebitMiscCreditTransaction.getTransactionDestination().setAccountNumber(chkAccountNumber);
         glDebitMiscCreditTransaction.getTransactionDestination().setTransactionCode("109 - Deposit");
         transactionAmount = glDebitMiscCreditTransaction.getTransactionDestination().getAmount();
+
+        // Get terminal ID
+        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(1);
 
         // Set up nonTeller transaction data
         // Payload to be sent in step 2
@@ -153,7 +156,7 @@ public class C25354_ChkAtmBalanceInquiryOnusTest extends BaseTest {
                 + "(TermId is not listed in 'bank owned atm locations/bank.data.datmlc')"
                 + "BUT with WaiveATUsageFeeAcronym bcsetting value in DE 063 (position 9-11)");
         String fieldValueFromForeignResponse = Actions.nonTellerTransactionActions()
-                .getFieldValueFromATMTransaction(getForeignFieldsMap(nonTellerTransactionData),FIELD);
+                .getFieldValueFromATMTransaction(getForeignFieldsMap(nonTellerForeignTransactionData),FIELD);
 
         logInfo("Step 6: Check the DE54 in the response.\n" +
                 "Make sure that account's Current Balance and Available Balance were returned in this field");
