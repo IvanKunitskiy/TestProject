@@ -65,12 +65,12 @@ public class MaintenanceHistoryPageActions {
         );
         Assert.assertEquals(
                  Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.DATE_CREATED),
-                DateTime.parseDate(new Date(), "MM/dd/yyyy"),
+                 DateTime.getLocalDateWithPattern("MM/dd/yyyy"),
                 "Date Created is not equal"
         );
         Assert.assertEquals(
                 Pages.maintenanceHistoryPage().getNewValueByFieldName(MaintenanceHistoryField.DATE_TRANSMITTED_TO_PROCESSORS),
-                DateTime.parseDate(new Date(), "MM/dd/yyyy"),
+                DateTime.getLocalDateWithPattern("MM/dd/yyyy"),
                 "Date Transmitted To Processors is not equal"
         );
         Assert.assertEquals(

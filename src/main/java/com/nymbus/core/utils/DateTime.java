@@ -89,6 +89,11 @@ public class DateTime {
         return format.format(date);
     }
 
+    public static String getLocalDateWithPattern(String pattern) {
+        LocalDate localDate = LocalDate.now();
+        return DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH).format(localDate);
+    }
+
     public static int getDaysInMonth(int monthNumber) {
         YearMonth yearMonthObject = YearMonth.of(Year.now().getValue(), monthNumber);
         return yearMonthObject.lengthOfMonth();

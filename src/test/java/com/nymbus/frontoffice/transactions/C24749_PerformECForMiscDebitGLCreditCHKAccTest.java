@@ -55,6 +55,8 @@ public class C24749_PerformECForMiscDebitGLCreditCHKAccTest extends BaseTest {
 
         // Perform transaction
         Actions.transactionActions().performGLDebitMiscCreditTransaction(glDebitMiscCreditTransaction);
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // remove REG CC rule instruction
         Actions.clientPageActions().searchAndOpenClientByName(glDebitMiscCreditTransaction.getTransactionDestination().getAccountNumber());
