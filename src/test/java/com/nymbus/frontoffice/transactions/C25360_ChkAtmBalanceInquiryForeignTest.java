@@ -142,6 +142,8 @@ public class C25360_ChkAtmBalanceInquiryForeignTest extends BaseTest {
         final String FIELD = "54";
         String fieldValueFromResponse = Actions.nonTellerTransactionActions().getFieldValueFromATMTransaction(getFieldsMap(nonTellerTransactionData), FIELD);
         Actions.nonTellerTransactionActions().verifyCurrentAndAvailableBalance(fieldValueFromResponse, transactionAmount);
+        String transcode = TransactionCode.ATM_USAGE_129_FEE.getTransCode().split("\\s+")[0];
+        WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(chkAccTransactionData, checkingAccountNumber, transcode);
         expectedBalanceDataForCheckingAcc.reduceAmount(foreignFeeBalanceInquiryValue);
 
         logInfo("Step 4: Search for CHK account from the precondition and go to the Transactions history tab.\n" +
@@ -164,7 +166,7 @@ public class C25360_ChkAtmBalanceInquiryForeignTest extends BaseTest {
         Assert.assertTrue(Actions.transactionActions().isTransactionCodePresent(TransactionCode.ATM_USAGE_129.getTransCode()),
                 "129-ATM Usage Fee presents in transaction list");
 
-        String transcode = TransactionCode.ATM_USAGE_129_FEE.getTransCode().split("\\s+")[0];
+        transcode = TransactionCode.ATM_USAGE_129_FEE.getTransCode().split("\\s+")[0];
         WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(chkAccTransactionData, checkingAccountNumber, transcode);
 
         logInfo("Step 8: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
