@@ -315,7 +315,8 @@ public class CallStatement {
             Pages.aSideMenuPage().clickClientMenuItem();
             Actions.clientPageActions().searchAndOpenAccountByAccountNumber(ytdInterestPaidAccountNumber);
             String interestPaidYTD = Pages.accountDetailsPage().getInterestPaidYTD();
-            AccountActions.callStatement().navigateToTransactionsAndVerifyPdfContainsText(interestPaidYTD);
+            String interestPaidYTDWithLocale = Functions.getNumberWithLocale(Double.parseDouble(interestPaidYTD));
+            AccountActions.callStatement().navigateToTransactionsAndVerifyPdfContainsText(interestPaidYTDWithLocale);
         }
         SelenideTools.closeCurrentTab();
         SelenideTools.switchTo().window(0);
@@ -327,7 +328,8 @@ public class CallStatement {
             Pages.aSideMenuPage().clickClientMenuItem();
             Actions.clientPageActions().searchAndOpenAccountByAccountNumber(interestPaidLastYearAccountNumber);
             String interestPaidLastYear = Pages.accountDetailsPage().getInterestPaidLastYear();
-            AccountActions.callStatement().navigateToTransactionsAndVerifyPdfContainsText(interestPaidLastYear);
+            String interestPaidLastYearWithLocale = Functions.getNumberWithLocale(Double.parseDouble(interestPaidLastYear));
+            AccountActions.callStatement().navigateToTransactionsAndVerifyPdfContainsText(interestPaidLastYearWithLocale);
         }
         SelenideTools.closeCurrentTab();
         SelenideTools.switchTo().window(0);
@@ -339,7 +341,8 @@ public class CallStatement {
             Pages.aSideMenuPage().clickClientMenuItem();
             Actions.clientPageActions().searchAndOpenAccountByAccountNumber(ytdTaxesWithheldAccountNumber);
             String ytdTaxesWithheld = Pages.accountDetailsPage().getTaxesWithheldYTD();
-            AccountActions.callStatement().navigateToTransactionsAndVerifyPdfContainsText(ytdTaxesWithheld);
+            String ytdTaxesWithheldWithLocale = Functions.getNumberWithLocale(Double.parseDouble(ytdTaxesWithheld));
+            AccountActions.callStatement().navigateToTransactionsAndVerifyPdfContainsText(ytdTaxesWithheldWithLocale);
         }
         SelenideTools.closeCurrentTab();
         SelenideTools.switchTo().window(0);
@@ -351,7 +354,8 @@ public class CallStatement {
             Pages.aSideMenuPage().clickClientMenuItem();
             Actions.clientPageActions().searchAndOpenAccountByAccountNumber(overdraftChargedOffAccountNumber);
             String overdraftChargedOff = Pages.accountDetailsPage().getOverdraftChargedOff();
-            AccountActions.callStatement().navigateToTransactionsAndVerifyPdfContainsText(overdraftChargedOff);
+            String overdraftChargedOffWithLocale = Functions.getNumberWithLocale(Double.parseDouble(overdraftChargedOff));
+            AccountActions.callStatement().navigateToTransactionsAndVerifyPdfContainsText(overdraftChargedOffWithLocale);
         }
         SelenideTools.closeCurrentTab();
         SelenideTools.switchTo().window(0);

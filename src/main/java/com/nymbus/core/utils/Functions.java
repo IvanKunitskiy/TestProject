@@ -4,6 +4,8 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class Functions {
 
@@ -50,5 +52,10 @@ public class Functions {
 
     public static String setNameOnDebitCard(String str) {
         return str.substring(0, Math.min(Constants.MAX_CHARACTERS_ON_DEBIT_CARD, str.length()));
+    }
+
+    public static String getNumberWithLocale(double num) {
+        NumberFormat nf = NumberFormat.getInstance(new Locale(Locale.ENGLISH.getLanguage()));
+        return nf.format(num);
     }
 }
