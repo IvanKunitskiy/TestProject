@@ -101,7 +101,6 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         // Assign Amount to CHK account
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Log in -> Create 'One time only' periodic transfer -> Log out
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
