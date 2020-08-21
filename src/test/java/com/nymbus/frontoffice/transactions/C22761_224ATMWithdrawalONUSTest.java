@@ -7,6 +7,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
@@ -170,7 +171,7 @@ public class C22761_224ATMWithdrawalONUSTest extends BaseTest {
         result.put("0", "0200");
         result.put("3", "011000");
         result.put("4", transactionData.getAmount());
-        result.put("11", "3912280233");
+        result.put("11", String.valueOf(Generator.genInt(100000000, 922337203)));
         result.put("18", "6011");
         result.put("22", "801");
         result.put("35", String.format("%s=%s", transactionData.getCardNumber(), transactionData.getExpirationDate()));

@@ -7,6 +7,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
@@ -116,6 +117,9 @@ public class C25360_ChkAtmBalanceInquiryForeignTest extends BaseTest {
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
 
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
         Actions.clientPageActions().searchAndOpenClientByName(checkingAccountNumber);
         expectedBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
 
@@ -184,7 +188,7 @@ public class C25360_ChkAtmBalanceInquiryForeignTest extends BaseTest {
         Map<String, String > result = new HashMap<>();
         result.put("0", "0200");
         result.put("3", "312000");
-        result.put("11", "430392");
+        result.put("11", String.valueOf(Generator.genInt(100000000, 922337203)));
         result.put("18", "4900");
         result.put("22", "012");
         result.put("32", "469212");
