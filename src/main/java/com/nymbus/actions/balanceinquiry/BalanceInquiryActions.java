@@ -79,7 +79,7 @@ public class BalanceInquiryActions {
             System.out.println("Line : " + line);
             System.out.println("_______________");
             if (line.contains(accountBalanceType)) {
-                return line.split("\\$")[1].trim();
+                return line.split("\\)")[1].replaceAll("[^0-9.]", "");
             }
         }
         return null;
