@@ -76,7 +76,7 @@ public class BalanceInquiryActions {
 
         for (String line : lines) {
             if (line.contains(accountBalanceType)) {
-                return line.split("\\$")[1].trim();
+                return line.split("\\s")[4].replaceAll("[^0-9.]", "");
             }
         }
         return null;
