@@ -72,9 +72,12 @@ public class BalanceInquiryActions {
     }
 
     public String getAccountBalanceValueByType(String imageText, String accountBalanceType) {
+        System.out.println("imageText : " + imageText);
         String[] lines = imageText.split("\n");
 
         for (String line : lines) {
+            System.out.println("Line : " + line);
+            System.out.println("_______________");
             if (line.contains(accountBalanceType)) {
                 return line.split("\\$")[1].trim();
             }
