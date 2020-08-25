@@ -86,7 +86,6 @@ public class C22665_PerformECForWithdrawAndCloseSavingsAccTest extends BaseTest 
         performWithdrawAndCloseTransaction(withdrawTransaction);
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
     }
 
     @Test(description = "C22665, Journal: Perform EC for withdraw&close Savings (balance + IENP)")
