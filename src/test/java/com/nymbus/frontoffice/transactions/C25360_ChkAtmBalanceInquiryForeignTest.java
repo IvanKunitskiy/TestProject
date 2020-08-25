@@ -166,9 +166,6 @@ public class C25360_ChkAtmBalanceInquiryForeignTest extends BaseTest {
         Assert.assertTrue(Actions.transactionActions().isTransactionCodePresent(TransactionCode.ATM_USAGE_129.getTransCode()),
                 "129-ATM Usage Fee presents in transaction list");
 
-        transcode = TransactionCode.ATM_USAGE_129_FEE.getTransCode().split("\\s+")[0];
-        WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(chkAccTransactionData, checkingAccountNumber, transcode);
-
         logInfo("Step 8: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
         logInfo("Step 9: Click [View History] link on the Debit Card from the precondition");
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
