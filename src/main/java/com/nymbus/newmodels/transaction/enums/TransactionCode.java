@@ -11,6 +11,7 @@ public enum TransactionCode {
     ATM_DEBIT_MEMO_219("219 - Debit Memo"),
     ATM_DEBIT_MEMO_119("119 - Debit Memo"),
     ATM_DEBIT_PURCHASE_123("123 - Debit Purchase"),
+    ATM_DEBIT_PURCHASE_223("223 - Debit Purchase"),
     ATM_CREDIT_MEMO_103("103 - Credit Memo"),
     ATM_CREDIT_MEMO_203("203 - Credit Memo"),
     WITHDRAW_AND_CLOSE("127 - Withdraw&Close"),
