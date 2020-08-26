@@ -8,6 +8,7 @@ public class CardsManagementPage extends PageTools {
 
     private By editCardButton = By.xpath("//tbody[@ng-if='isHaveDebitCards']//tr[%s]//td[8]//button[1]");
     private By viewCardHistoryButton = By.xpath("//tbody[@ng-if='isHaveDebitCards']//tr[%s]//td[7]//button[1]");
+    private By backToMaintenanceButton = By.xpath("//button[@data-test-id='go-maintenance']");
 
     @Step("Click edit button {0}")
     public void clickEditButton(int index) {
@@ -21,6 +22,11 @@ public class CardsManagementPage extends PageTools {
         click(viewCardHistoryButton, index);
     }
 
+    @Step("Click '<- Maintenance' button button")
+    public void clickBackToMaintenanceButton() {
+        waitForElementVisibility(backToMaintenanceButton);
+        click(backToMaintenanceButton);
+    }
 
     /**
      * Card history region

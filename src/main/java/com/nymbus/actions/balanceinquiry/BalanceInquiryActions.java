@@ -71,22 +71,23 @@ public class BalanceInquiryActions {
         return outText.getString();
     }
 
-    public String getAccountBalanceValueByType(String imageText, String accountBalanceType) {
+    public boolean isBalancePresentByType(String imageText, String balanceAmount, String accountBalanceType) {
         String[] lines = imageText.split("\n");
+        boolean contains = false;
 
         for (String line : lines) {
             if (line.contains(accountBalanceType)) {
-                return line.split("\\s")[4].replaceAll("[^0-9.]", "");
+                contains = line.contains(balanceAmount);
             }
         }
-        return null;
+        return contains;
     }
 
     public void assertAvailableAndCurrentBalanceValuesFromReceipt(File file, String availableBalance, String currentBalance) {
         String balanceInquiryImageData = readBalanceInquiryImage(file);
-        Assert.assertEquals(availableBalance,  getAccountBalanceValueByType(balanceInquiryImageData, "Available Balance"),
+        Assert.assertTrue(isBalancePresentByType(balanceInquiryImageData, availableBalance, "Available Balance"),
                 "'Available balance' values are not equal");
-        Assert.assertEquals(currentBalance, getAccountBalanceValueByType(balanceInquiryImageData, "Current Balance"),
+        Assert.assertTrue(isBalancePresentByType(balanceInquiryImageData, currentBalance, "Current Balance"),
                 "'Current balance' values are not equal");
     }
 }
