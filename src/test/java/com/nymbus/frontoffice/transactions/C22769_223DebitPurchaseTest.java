@@ -28,6 +28,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -83,6 +84,9 @@ public class C22769_223DebitPurchaseTest extends BaseTest {
         AccountActions.createAccount().createSavingAccountForTransactionPurpose(savingsAccount);
         savingAccountNumber = savingsAccount.getAccountNumber();
 
+        // Set up transaction with account number
+        glDebitMiscCreditTransaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
+
         // Create debit card for saving acc
         createDebitCard(client.getInitials(), debitCard);
         Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(nonTellerTransactionData, 1);
@@ -122,6 +126,32 @@ public class C22769_223DebitPurchaseTest extends BaseTest {
 
         String transcode = TransactionCode.ATM_DEBIT_PURCHASE_223.getTransCode().split("\\s+")[0];
         WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(savingAccTransactionData, savingAccountNumber, transcode);
+
+        logInfo("Step 3: Log in to the system");
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        expectedBalanceData.subtractAmount(transactionAmount);
+
+        logInfo("Step 4: Search for Savings account from the precondition and verify its: \n" +
+                "- current balance \n" +
+                "- available balance \n" +
+                "- Transaction history");
+        Actions.clientPageActions().searchAndOpenClientByName(savingAccountNumber);
+        BalanceData actualBalanceData = AccountActions.retrievingAccountData().getBalanceData();
+        Assert.assertEquals(actualBalanceData.getCurrentBalance(), expectedBalanceData.getCurrentBalance(), "Saving account current balance is not correct!");
+        Assert.assertEquals(actualBalanceData.getAvailableBalance(), expectedBalanceData.getAvailableBalance(), "Saving account available balance is not correct!");
+        savingAccTransactionData.setBalance(expectedBalanceData.getCurrentBalance());
+
+        AccountActions.retrievingAccountData().goToTransactionsTab();
+        int offset = AccountActions.retrievingAccountData().getOffset();
+        TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset);
+        Assert.assertEquals(actualTransactionData, savingAccTransactionData, "Transaction data doesn't match!");
+
+        logInfo("Step 5: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
+        logInfo("Step 6: Click [View History] link on the Debit Card from the precondition");
+        Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
+        Actions.debitCardModalWindowActions().goToCardHistory(1);
+        double actualAmount = Actions.debitCardModalWindowActions().getTransactionAmount(1);
+        Assert.assertEquals(actualAmount, transactionAmount, "Transaction amount is incorrect!");
     }
 
     private void createDebitCard(String clientInitials, DebitCard debitCard) {
