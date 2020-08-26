@@ -115,7 +115,7 @@ public class C25354_ChkAtmBalanceInquiryOnusTest extends BaseTest {
         // Create debit card for CHK acc
         createDebitCard(client.getInitials(), debitCard);
         Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(nonTellerTransactionData, 1);
-        Pages.clientDetailsPage().clickOnMaintenanceTab();
+        Pages.cardsManagementPage().clickBackToMaintenanceButton();
         Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(nonTellerForeignTransactionData, 1);
 
         // Re-login in system for updating teller session
