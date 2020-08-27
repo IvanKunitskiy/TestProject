@@ -47,7 +47,7 @@ public class C22678_CommitTransactionOnAClosedAccount extends BaseTest {
         AccountActions.editAccount().closeAccount();
     }
 
-    @Test(description = "22678, Commit transaction on a closed account")
+    @Test(description = "C22678, Commit transaction on a closed account")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyCommittingTransactionOnCloseAcc() {
 

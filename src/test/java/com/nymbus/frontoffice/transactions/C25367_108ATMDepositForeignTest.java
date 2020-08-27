@@ -103,7 +103,7 @@ public class C25367_108ATMDepositForeignTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = " C25367, 108 ATM Deposit FOREIGN")
+    @Test(description = "C25367, 108 ATM Deposit FOREIGN")
     @Severity(SeverityLevel.CRITICAL)
     public void verify108ATMDepositFOREIGNTransaction() {
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");

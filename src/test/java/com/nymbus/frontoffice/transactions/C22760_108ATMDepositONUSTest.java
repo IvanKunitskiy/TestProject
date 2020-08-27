@@ -102,7 +102,7 @@ public class C22760_108ATMDepositONUSTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = " C22760, 108 ATM Deposit ONUS")
+    @Test(description = "C22760, 108 ATM Deposit ONUS")
     @Severity(SeverityLevel.CRITICAL)
     public void verify108ATMDepositONUSTransaction() {
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");

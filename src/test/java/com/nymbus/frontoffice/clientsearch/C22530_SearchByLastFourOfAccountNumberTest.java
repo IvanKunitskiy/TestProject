@@ -43,7 +43,7 @@ public class C22530_SearchByLastFourOfAccountNumberTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test
+    @Test(description = "C22530, Search by last four of account number")
     @Severity(SeverityLevel.CRITICAL)
     public void searchByLastFourOfAccountNumber() {
 

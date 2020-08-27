@@ -126,7 +126,7 @@ public class C22759_124ATMWithdrawlONUSTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = " C22759, 124 ATM Withdrawal ONUS")
+    @Test(description = "C22759, 124 ATM Withdrawal ONUS")
     @Severity(SeverityLevel.CRITICAL)
     public void verify124ATMWithdrawalONUSTransaction() {
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
