@@ -131,7 +131,7 @@ public class C25354_ChkAtmBalanceInquiryOnusTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
-    @Test
+    @Test(description = "C25354, CHK ATM Balance Inquiry ONUS")
     @Severity(SeverityLevel.CRITICAL)
     public void chkAtmBalanceInquiryOnus() {
 

@@ -40,7 +40,7 @@ public class C22532_SearchByTaxIDTest extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test
+    @Test(description = "C22532, Search by Tax ID")
     public void searchByTaxID() {
         logInfo("Step 1: Log in to the system as the User from the precondition");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);

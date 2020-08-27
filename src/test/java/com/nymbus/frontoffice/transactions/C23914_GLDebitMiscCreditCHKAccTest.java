@@ -62,7 +62,7 @@ public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "23914, Commit transaction GL Debit -> Misc Credit(on CHK Account)")
+    @Test(description = "C23914, Commit transaction GL Debit -> Misc Credit(on CHK Account)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyTransactionGLDebitMiscCredit() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");

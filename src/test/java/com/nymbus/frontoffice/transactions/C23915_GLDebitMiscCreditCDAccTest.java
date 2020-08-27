@@ -62,7 +62,7 @@ public class C23915_GLDebitMiscCreditCDAccTest extends BaseTest {
                 transaction.getTransactionDestination().getAmount());
     }
 
-    @Test(description = "23915, Commit transaction GL Debit -> Misc Credit(on CD Account)")
+    @Test(description = "C23915, Commit transaction GL Debit -> Misc Credit(on CD Account)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyTransactionGLDebitMiscCredit() {
         logInfo("Step 2: Go to Teller page and log in to the proof date");
