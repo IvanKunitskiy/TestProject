@@ -150,7 +150,7 @@ public class C25372_TransferFromSavToDdaForeignTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test
+    @Test(description = "C25372, Transfer from SAV to DDA FOREIGN")
     @Severity(SeverityLevel.CRITICAL)
     public void transferFromSavToDdaForeign() {
 

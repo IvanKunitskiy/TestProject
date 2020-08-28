@@ -114,7 +114,7 @@ public class C22601_ViewTransactionHistoryTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
-    @Test(description = "22601, Account Transactions: View transaction history")
+    @Test(description = "C22601, Account Transactions: View transaction history")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyTransactionHistory() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");

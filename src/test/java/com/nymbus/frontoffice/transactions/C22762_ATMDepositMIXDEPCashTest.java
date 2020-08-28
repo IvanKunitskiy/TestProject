@@ -130,7 +130,7 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = " C22762, ATM Deposit")
+    @Test(description = "C22762, ATM Deposit")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyATMDepositTransaction() {
         String field54MixDep = "1093840C0000000100001094840C000000005000";

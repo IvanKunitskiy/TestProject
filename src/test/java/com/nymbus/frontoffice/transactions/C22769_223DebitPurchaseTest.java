@@ -117,7 +117,7 @@ public class C22769_223DebitPurchaseTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = " C22769, 223 - Debit Purchase")
+    @Test(description = "C22769, 223 - Debit Purchase")
     @Severity(SeverityLevel.CRITICAL)
     public void verify223DebitPurchaseTest() {
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
