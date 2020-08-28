@@ -36,6 +36,7 @@ public class CardsManagementPage extends PageTools {
     private By transactionFeeAmount = By.xpath("//tr[@ng-repeat ='item in ctrl.cardTransactions track by $index'][%s]" +
             "//td[@amount='item.feeamount']//span[@ng-if = 'isNeedCurrency']");
     private By transactionDescription = By.xpath("//tr[@ng-repeat ='item in ctrl.cardTransactions track by $index'][%s]//td[5]");
+    private By transactionReasonCode = By.xpath("//tr[@ng-repeat ='item in ctrl.cardTransactions track by $index'][%s]//td[4]");
 
     @Step("Get transaction amount {0}")
     public String getTransactionAmount(int index) {
@@ -53,5 +54,11 @@ public class CardsManagementPage extends PageTools {
     public String getTransactionDescription(int index) {
         waitForElementVisibility(transactionDescription, index);
         return getElementText(transactionDescription, index).trim();
+    }
+
+    @Step("Get transaction reason code {0}")
+    public String getTransactionReasonCode(int index) {
+        waitForElementVisibility(transactionReasonCode, index);
+        return getElementText(transactionReasonCode, index).trim();
     }
 }
