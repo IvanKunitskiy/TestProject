@@ -141,6 +141,23 @@ public class NonTellerTransaction extends AllureLogger {
                 body("data[0].field.39", equalTo("00"));
     }
 
+    public void generateATMTransaction(Map<String, String> fields, String [] actions) {
+        JSONObject requestBody = JSONData.getATMData(fields, actions);
+
+        logInfo("Request body: " + requestBody.toString());
+
+        given().
+                auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
+                contentType(ContentType.JSON).
+                relaxedHTTPSValidation().
+                body(requestBody.toString()).
+        when().
+                post(GENERIC_PROCESS_URL).
+        then().
+                statusCode(200).
+                body("data[0].field.39", equalTo("00"));
+    }
+
     public String getFiledValue(Map<String, String> fields, String field) {
         JSONObject requestBody = JSONData.getATMData(fields);
 

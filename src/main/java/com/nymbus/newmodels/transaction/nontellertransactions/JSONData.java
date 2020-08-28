@@ -201,6 +201,10 @@ public class JSONData {
         return actions;
     }
 
+    private static JSONArray getActionsArray(String [] actions) {
+        return new JSONArray(actions);
+    }
+
     private static JSONArray getDepositActionsArray() {
         JSONArray actions = new JSONArray();
         actions.put("0200");
@@ -230,6 +234,14 @@ public class JSONData {
         return json;
     }
 
+    public static JSONObject getATMData(Map <String, String> fields, String [] actions) {
+        JSONObject json = new JSONObject();
+        json.put("actions", getActionsArray(actions));
+        json.put("ruleType", "eft");
+        json.put("beans", getBeansArray(getFieldsArr(fields)));
+
+        return json;
+    }
     private static JSONObject getFieldsArr(Map <String, String> fields) {
         return new JSONObject(fields);
     }

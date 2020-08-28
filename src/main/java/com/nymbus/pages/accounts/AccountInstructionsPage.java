@@ -38,6 +38,14 @@ public class AccountInstructionsPage extends PageTools {
      * Instruction details region
      */
     private By reasonText = By.xpath("//article[contains(@class, 'itemDetail')]//div[@ng-if='actualConfig.reason.isShow']//div//span");
+    private By amount = By.xpath("//article[contains(@class, 'itemDetail')]//div[@ng-if='actualConfig.amount.isShow']//span[@ng-if='isNeedCurrency']");
+
+    @Step("Get hold amount")
+    public String getHoldAmount() {
+        waitForElementVisibility(amount);
+        String currentBalanceValue = getElementText(amount).trim();
+        return currentBalanceValue.replaceAll("[^0-9.]", "");
+    }
 
     @Step("Wait for alert for created instruction appeared")
     public void waitForAlertVisible(String instructionContent) {

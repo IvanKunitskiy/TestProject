@@ -25,7 +25,8 @@ public enum TransactionCode {
     INT_CD_REDEMPTION("307 - Int Paid Comp"),
     ATM_USAGE_129("129 - ATM Usage"),
     ATM_USAGE_129_FEE("129 - ATM Usage Fee"),
-    ATM_USAGE_229_FEE("229 - ATM Usage Fee");
+    ATM_USAGE_229_FEE("229 - ATM Usage Fee"),
+    DEBIT_PURCHASE_123("123 - Debit Purchase");
 
     private final String transCode;
 }
