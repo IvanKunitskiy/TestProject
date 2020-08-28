@@ -141,7 +141,7 @@ public class NonTellerTransaction extends AllureLogger {
                 body("data[0].field.39", equalTo("00"));
     }
 
-    public void generateBalanceInquiryCrdOnusTransaction(Map<String, String> fields) {
+    public void generateATMTransaction(Map<String, String> fields, String responseCodeOfField39) {
         JSONObject requestBody = JSONData.getATMData(fields);
 
         logInfo("Request body: " + requestBody.toString());
@@ -155,7 +155,7 @@ public class NonTellerTransaction extends AllureLogger {
                 post(GENERIC_PROCESS_URL).
         then().
                 statusCode(200).
-                body("data[0].field.39", equalTo("39"));
+                body("data[0].field.39", equalTo(responseCodeOfField39));
     }
 
     public String getFiledValue(Map<String, String> fields, String field) {

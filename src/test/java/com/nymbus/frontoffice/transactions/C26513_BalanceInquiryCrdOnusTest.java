@@ -94,7 +94,8 @@ public class C26513_BalanceInquiryCrdOnusTest extends BaseTest {
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
         logInfo("Step 2: Expand widgets-controller and run the following request with FOREIGN terminal ID\n" +
                 "(TermId is not listed in 'bank owned atm locations/bank.data.datmlc'):");
-        Actions.nonTellerTransactionActions().performBalanceInquiryCrdOnusTransaction(getFieldsMap(nonTellerTransactionData));
+        final String FIELD_39_EXPECTED_CODE = "39";
+        Actions.nonTellerTransactionActions().performBalanceInquiryCrdOnusTransaction(getFieldsMap(nonTellerTransactionData), FIELD_39_EXPECTED_CODE);
 
         logInfo("Step 3: Log in to the system");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
