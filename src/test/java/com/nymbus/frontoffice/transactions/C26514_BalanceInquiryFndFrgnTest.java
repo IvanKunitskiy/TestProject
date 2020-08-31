@@ -187,7 +187,7 @@ public class C26514_BalanceInquiryFndFrgnTest extends BaseTest {
 
         String transactionReasonCode = Pages.cardsManagementPage().getTransactionReasonCode(1);
         Assert.assertEquals(transactionReasonCode, "00 -- Approved or completed successfully",
-                "'Transaction Reason Code' is not equal to '39 -- No credit account'");
+                "'Transaction Reason Code' is not equal to '00 -- Approved or completed successfully'");
 
         String transactionDescription = Pages.cardsManagementPage().getTransactionDescription(1);
         Assert.assertEquals(transactionDescription, "Balance Inquiry",
