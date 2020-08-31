@@ -44,6 +44,10 @@ public class NonTellerTransactionActions {
         Actions.nonTellerTransaction().generateATMTransaction(fields);
     }
 
+    public void performBalanceInquiryCrdOnusTransaction(Map<String, String> fields, String responseCodeOfField39) {
+        Actions.nonTellerTransaction().generateATMTransaction(fields, responseCodeOfField39);
+    }
+
     public void performATMTransaction(Map<String, String> fields, String [] actions) {
         Actions.nonTellerTransaction().generateATMTransaction(fields, actions);
     }
