@@ -3,8 +3,10 @@ package com.nymbus.frontoffice.transactions;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
@@ -23,6 +25,7 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
+import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -40,6 +43,7 @@ public class C22770_PreAuthHoldTransactionTest extends BaseTest {
     private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
     private double transactionAmount;
     private double holdAmount = 20.00;
+    private TransactionData transactionData;
 
     @BeforeMethod
     public void prepareTransactionData() {
@@ -115,15 +119,20 @@ public class C22770_PreAuthHoldTransactionTest extends BaseTest {
 
         expectedBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         nonTellerTransactionData.setAmount(holdAmount);
+        transactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
+                "-", expectedBalanceDataForCheckingAcc.getCurrentBalance(), holdAmount);
+
         Actions.loginActions().doLogOut();
     }
 
     @Test(description = "C22770, Preauth (Hold) + Transaction")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyPreAuthHoldTransaction() {
+        Map<String, String> fields = getFieldsMap(nonTellerTransactionData);
+
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
         logInfo("Step 2: Expand widgets-controller->widget._GenericProcess and run the following request:");
-        Actions.nonTellerTransactionActions().performATMTransaction(getFieldsMap(nonTellerTransactionData), new String[] {"0100"});
+        Actions.nonTellerTransactionActions().performATMTransaction(fields, new String[] {"0100"});
         expectedBalanceDataForCheckingAcc.reduceAvailableBalance(holdAmount);
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
@@ -152,10 +161,15 @@ public class C22770_PreAuthHoldTransactionTest extends BaseTest {
         double actualHoldAmount = AccountActions.retrievingAccountData().getInstructionAmount();
         Assert.assertEquals(actualHoldAmount, holdAmount, "Hold amount is incorrect!");
         Actions.loginActions().doLogOut();
+        fields.put("0", "200");
 
         logInfo("Step 5: Go to the Swagger and run the same request from Step2");
-        Actions.nonTellerTransactionActions().performATMTransaction(getFieldsMapForDebitPurchase(nonTellerTransactionData), new String[] {"0200"});
+        Actions.nonTellerTransactionActions().performATMTransaction(fields, new String[] {"0200"});
+
+        String transcode = TransactionCode.DEBIT_PURCHASE_123.getTransCode().split("\\s+")[0];
+        WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(transactionData, checkingAccountNumber, transcode);
         expectedBalanceDataForCheckingAcc.reduceCurrentBalance(holdAmount);
+        transactionData.setBalance(expectedBalanceDataForCheckingAcc.getCurrentBalance());
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 6: Search for CHK account from the precondition and verify its: \n" +
@@ -167,29 +181,33 @@ public class C22770_PreAuthHoldTransactionTest extends BaseTest {
         actualBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         Assert.assertEquals(actualBalanceData.getCurrentBalance(), expectedBalanceDataForCheckingAcc.getCurrentBalance(), "CHK account current balance is not correct!");
         Assert.assertEquals(actualBalanceData.getAvailableBalance(), expectedBalanceDataForCheckingAcc.getAvailableBalance(), "CHK account available balance is not correct!");
+
+        AccountActions.retrievingAccountData().goToTransactionsTab();
+        Pages.accountTransactionPage().waitForTransactionSection();
+        offset = AccountActions.retrievingAccountData().getOffset();
+        TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset);
+        Assert.assertEquals(actualTransactionData, transactionData, "Transaction data doesn't match!");
+        Assert.assertTrue(Actions.transactionActions().isTransactionCodePresent(TransactionCode.DEBIT_PURCHASE_123.getTransCode(), offset),
+                "123 - Debit Purchase is not present in transaction list!");
+
+        AccountActions.editAccount().goToInstructionsTab();
+        Pages.accountInstructionsPage().clickViewExpiredAndDeletedHold();
+        Assert.assertEquals(Pages.accountInstructionsPage().getRowsCount(), 1, "Deleted hold rows count is incorrect!");
+        Assert.assertEquals(AccountActions.retrievingAccountData().getDeletedInstructionAmount(1), holdAmount,"Deleted hold amount is incorrect!");
+        Pages.accountInstructionsPage().clickCloseModalButton();
+        Pages.accountInstructionsPage().waitForModalWindowInvisibility();
+
+        logInfo("Step 7: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
+        logInfo("Step 8: Click [View History] link on the Debit Card from the precondition");
+        Actions.clientPageActions().searchAndOpenClientByName(/*client.getInitials()*/"jbmautestthredone, qduautestthredone ifciwsiwep");
+        Actions.debitCardModalWindowActions().goToCardHistory(1);
+        int transactionsCount = Pages.cardsManagementPage().getTransactionRowsCount();
+        Assert.assertEquals(transactionsCount, 2, "Transaction count is incorrect!");
     }
 
     private Map<String, String> getFieldsMap(NonTellerTransactionData transactionData) {
         Map<String, String > result = new HashMap<>();
         result.put("0", "0100");
-        result.put("3", "000000");
-        result.put("4", transactionData.getAmount());
-        result.put("11", String.valueOf(Generator.genInt(100000000, 922337203)));
-        result.put("18", "5541");
-        result.put("22", "022");
-        result.put("35", String.format("%s=%s", transactionData.getCardNumber(), transactionData.getExpirationDate()));
-        result.put("43", "Long ave. bld. 34      Nashville      US");
-        result.put("48", "SHELL");
-        result.put("49", "840");
-        result.put("57", "266");
-        result.put("58", "10000000012");
-
-        return  result;
-    }
-
-    private Map<String, String> getFieldsMapForDebitPurchase(NonTellerTransactionData transactionData) {
-        Map<String, String > result = new HashMap<>();
-        result.put("0", "0200");
         result.put("3", "000000");
         result.put("4", transactionData.getAmount());
         result.put("11", String.valueOf(Generator.genInt(100000000, 922337203)));
