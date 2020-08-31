@@ -31,12 +31,21 @@ public class CardsManagementPage extends PageTools {
     /**
      * Card history region
      */
+    private By tableHead = By.xpath("//section[contains(@class, 'content contentWithSearch')]//section[contains(@class, 'content container-fluid')]//thead");
+    private By rowsIntable = By.xpath("//section[contains(@class, 'content contentWithSearch')]//section[contains(@class, 'content container-fluid')]" +
+            "//table//tbody//tr");
     private By transactionAmount = By.xpath("//tr[@ng-repeat ='item in ctrl.cardTransactions track by $index'][%s]" +
             "//td[@amount='item.transactionamount']//span[@ng-if = 'isNeedCurrency']");
     private By transactionFeeAmount = By.xpath("//tr[@ng-repeat ='item in ctrl.cardTransactions track by $index'][%s]" +
             "//td[@amount='item.feeamount']//span[@ng-if = 'isNeedCurrency']");
     private By transactionDescription = By.xpath("//tr[@ng-repeat ='item in ctrl.cardTransactions track by $index'][%s]//td[5]");
     private By transactionReasonCode = By.xpath("//tr[@ng-repeat ='item in ctrl.cardTransactions track by $index'][%s]//td[4]");
+
+    @Step("Get transaction rows count")
+    public int getTransactionRowsCount() {
+        waitForElementVisibility(tableHead);
+        return getElementsWithZeroOptionWithWait(2, rowsIntable).size();
+    }
 
     @Step("Get transaction amount {0}")
     public String getTransactionAmount(int index) {

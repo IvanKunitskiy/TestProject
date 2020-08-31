@@ -9,6 +9,17 @@ import org.openqa.selenium.By;
 public class AccountInstructionsPage extends PageTools {
 
     private By instructionAlertByContent = By.xpath("//div[contains(@class, 'notifications-item')]//div/span[contains(text(), '%s')]");
+    private By viewExpiredAndDeletedHolds = By.xpath("//*[@id='tab-ca-instructions']//span[text()='View Expired and Deleted Holds']");
+
+    /**
+     * Deleted and expired holds modal window region
+     */
+
+    private By deletedHoldHeader = By.xpath("//div[@class='modal-content']//h4");
+    private By closeModalButton = By.xpath("//div[@class='modal-content']//button[@ng-click='closePopup()']");
+    private By rowsCount = By.xpath("//div[@class='modal-content']//tbody//tr");
+    private By deletedHoldAmount = By.xpath("//div[@class='modal-content']//tbody//tr[%s]//td[2]//span");
+    private By deletedHoldTableheader = By.xpath("//div[@class='modal-content']//table//thead");
 
     /**
      * Instruction form region
@@ -38,6 +49,45 @@ public class AccountInstructionsPage extends PageTools {
      * Instruction details region
      */
     private By reasonText = By.xpath("//article[contains(@class, 'itemDetail')]//div[@ng-if='actualConfig.reason.isShow']//div//span");
+    private By amount = By.xpath("//article[contains(@class, 'itemDetail')]//div[@ng-if='actualConfig.amount.isShow']//span[@ng-if='isNeedCurrency']");
+
+    @Step("wait for modal window invisibility")
+    public void waitForModalWindowInvisibility() {
+       waitForElementInvisibility(deletedHoldHeader);
+    }
+
+    @Step("Get amount value from modal")
+    public String getAmountValueByIndex(int index) {
+        waitForElementVisibility(deletedHoldAmount, index);
+        return getElementText(deletedHoldAmount, index).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get rows count")
+    public int getRowsCount() {
+        waitForElementVisibility(deletedHoldTableheader);
+        return getElementsWithZeroOptionWithWait(2, rowsCount).size();
+    }
+
+    @Step("Click close modal button")
+    public void clickCloseModalButton() {
+        waitForElementVisibility(closeModalButton);
+        waitForElementClickable(closeModalButton);
+        click(closeModalButton);
+    }
+
+    @Step("Click 'View Expired and Deleted Holds' button")
+    public void clickViewExpiredAndDeletedHold() {
+        waitForElementVisibility(viewExpiredAndDeletedHolds);
+        waitForElementClickable(viewExpiredAndDeletedHolds);
+        click(viewExpiredAndDeletedHolds);
+    }
+
+    @Step("Get hold amount")
+    public String getHoldAmount() {
+        waitForElementVisibility(amount);
+        String currentBalanceValue = getElementText(amount).trim();
+        return currentBalanceValue.replaceAll("[^0-9.]", "");
+    }
 
     @Step("Wait for alert for created instruction appeared")
     public void waitForAlertVisible(String instructionContent) {
@@ -121,6 +171,7 @@ public class AccountInstructionsPage extends PageTools {
         waitForElementClickable(deleteInstructionButton);
         click(deleteInstructionButton);
     }
+
     @Step("Get {0} instruction type value")
     public String getCreatedInstructionType(int i) {
         waitForElementVisibility(instructionInListHeaderDiv, i);

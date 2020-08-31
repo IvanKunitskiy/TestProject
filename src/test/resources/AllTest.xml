@@ -217,6 +217,18 @@
         </classes>
     </test>
 
+    <test name = "C26514, Balance Inquiry FND FRGN">
+        <classes>
+            <class name="com.nymbus.frontoffice.transactions.C26514_BalanceInquiryFndFrgnTest"/>
+        </classes>
+    </test>
+
+    <test name = "C22770, Preauth (Hold) + Transaction">
+        <classes>
+            <class name="com.nymbus.frontoffice.transactions.C22770_PreAuthHoldTransactionTest"/>
+        </classes>
+    </test>
+
     <!-- End of Transactions section -->
 
     <!-- User management section -->
