@@ -41,7 +41,6 @@ public class C22770_PreAuthHoldTransactionTest extends BaseTest {
     private IndividualClient client;
     private String checkingAccountNumber;
     private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
-    private double transactionAmount;
     private double holdAmount = 20.00;
     private TransactionData transactionData;
 
@@ -59,7 +58,6 @@ public class C22770_PreAuthHoldTransactionTest extends BaseTest {
         // Set up transaction
         Transaction glDebitMiscCreditTransaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
         glDebitMiscCreditTransaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());
-        transactionAmount = glDebitMiscCreditTransaction.getTransactionDestination().getAmount();
 
         // Set up debit card and bin control
         DebitCardConstructor debitCardConstructor = new DebitCardConstructor();
@@ -199,7 +197,7 @@ public class C22770_PreAuthHoldTransactionTest extends BaseTest {
 
         logInfo("Step 7: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
         logInfo("Step 8: Click [View History] link on the Debit Card from the precondition");
-        Actions.clientPageActions().searchAndOpenClientByName(/*client.getInitials()*/"jbmautestthredone, qduautestthredone ifciwsiwep");
+        Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         Actions.debitCardModalWindowActions().goToCardHistory(1);
         int transactionsCount = Pages.cardsManagementPage().getTransactionRowsCount();
         Assert.assertEquals(transactionsCount, 2, "Transaction count is incorrect!");
