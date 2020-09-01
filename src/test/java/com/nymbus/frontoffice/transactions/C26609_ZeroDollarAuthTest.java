@@ -99,7 +99,7 @@ public class C26609_ZeroDollarAuthTest extends BaseTest {
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
         logInfo("Step 2: Expand widgets-controller->widget._GenericProcess and run the following request");
         String[] actions = {"0100"};
-        Actions.nonTellerTransactionActions().performZeroDollarAtmTransaction(getFieldsMap(nonTellerTransactionData), actions);
+        Actions.nonTellerTransactionActions().performATMTransaction(getFieldsMap(nonTellerTransactionData), actions);
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
         logInfo("Step 4: Search for CHK account from the precondition and verify its current and available balance");
