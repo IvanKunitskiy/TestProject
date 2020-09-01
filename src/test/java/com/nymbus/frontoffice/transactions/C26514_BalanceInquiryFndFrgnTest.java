@@ -141,7 +141,7 @@ public class C26514_BalanceInquiryFndFrgnTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test
+    @Test(description = "C26514, Balance Inquiry FND FRGN")
     @Severity(SeverityLevel.CRITICAL)
     public void balanceInquiryFndFrgn() {
 

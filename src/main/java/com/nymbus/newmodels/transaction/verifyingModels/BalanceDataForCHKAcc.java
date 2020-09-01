@@ -16,4 +16,20 @@ public class BalanceDataForCHKAcc {
         this.availableBalance -= amount;
         this.currentBalance -= amount;
     }
+
+    public void reduceAvailableBalance(double amount) {
+        this.availableBalance -= amount;
+    }
+
+    public void reduceCurrentBalance(double amount) {
+        this.currentBalance -= amount;
+    }
+
+    public void addAvailableBalance(double amount) {
+        this.availableBalance += amount;
+    }
+
+    public void addCurrentBalance(double amount) {
+        this.currentBalance += amount;
+    }
 }

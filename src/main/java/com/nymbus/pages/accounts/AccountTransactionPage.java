@@ -20,6 +20,8 @@ public class AccountTransactionPage extends PageTools {
     private By callStatementButton = By.xpath("//div[contains(@class, 'actions')]/button[1]");
     private By expandAll = By.xpath("//div[contains(@class, 'actions')]/button[2]");
 
+    private By transactionSection = By.xpath("//section[@ng-if='transactionsLoaded()']");
+
     /**
      * Data in table
      */
@@ -35,6 +37,11 @@ public class AccountTransactionPage extends PageTools {
     private By transactionItems = By.xpath("//tr[contains(@class, 'transactionLine')]");
     private By image = By.xpath("//tr[contains(@class, 'detail-view')][1]//img");
     private By transactionCode = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-switch-when='transactioncode']");
+
+    @Step("Wait for transaction section")
+    public void waitForTransactionSection() {
+        waitForElementVisibility(transactionSection);
+    }
 
     @Step("Is 'No results' label visible")
     public boolean isNoResultsVisible() {

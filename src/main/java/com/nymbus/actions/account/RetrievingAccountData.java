@@ -315,4 +315,14 @@ public class RetrievingAccountData {
                 return 1;
         }
     }
+
+    public double getInstructionAmount() {
+        String value = Pages.accountInstructionsPage().getHoldAmount();
+        return Double.parseDouble(value);
+    }
+
+    public double getDeletedInstructionAmount(int index) {
+        String value = Pages.accountInstructionsPage().getAmountValueByIndex(index);
+        return Double.parseDouble(value);
+    }
 }
