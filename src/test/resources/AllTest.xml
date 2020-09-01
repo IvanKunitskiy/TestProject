@@ -229,6 +229,12 @@
         </classes>
     </test>
 
+    <test name = "C26609, Zero Dollar Auth">
+        <classes>
+            <class name="com.nymbus.frontoffice.transactions.C26609_ZeroDollarAuthTest"/>
+        </classes>
+    </test>
+
     <!-- End of Transactions section -->
 
     <!-- User management section -->
