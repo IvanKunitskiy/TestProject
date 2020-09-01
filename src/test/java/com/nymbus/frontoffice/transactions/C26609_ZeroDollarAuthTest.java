@@ -92,7 +92,7 @@ public class C26609_ZeroDollarAuthTest extends BaseTest {
 
     }
 
-    @Test
+    @Test(description = "C26609, Zero Dollar Auth")
     @Severity(SeverityLevel.CRITICAL)
     public void zeroDollarAuthTest() {
 
