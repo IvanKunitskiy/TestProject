@@ -1,5 +1,7 @@
 package com.nymbus.core.utils;
 
+import java.util.Stack;
+
 public class Constants {
     public static String URL = getBaseUrl();
     public static String WEB_ADMIN_URL = getWebAdminUrl();
@@ -21,6 +23,18 @@ public class Constants {
     public static int MAX_CHARACTERS_ON_DEBIT_CARD = 25;
 
     public static String INDIVIDUAL_TYPE_FOR_WEB_ADMIN_QUERY = getIndividualType();
+
+    public static Stack<String> USERS = new Stack<>();
+    static {
+        USERS.push("autotestfirst");
+        USERS.push("autotestsecond");
+        USERS.push("autotestthird");
+        USERS.push("autotestfourth");
+        USERS.push("autotestfifth");
+        USERS.push("autotestsixth");
+        USERS.push("autestthredone");
+        USERS.push("autotest");
+    }
 
     /**
      * Browsers
