@@ -114,7 +114,7 @@ public class C26609_ZeroDollarAuthTest extends BaseTest {
         logInfo("Step 5: Open CHK account on Transactions tab and verify Transactions history.\n" +
                 "Make sure that there is no ATM transaction in Transactions tab");
         AccountActions.retrievingAccountData().goToTransactionsTab();
-        Assert.assertEquals(Pages.transactionsPage().getAmountOfTransactionsInTheList(), 0,
+        Assert.assertEquals(Pages.accountTransactionPage().getTransactionItemsCountWithZeroOption(), 0,
                 "ATM transaction is present in Transactions tab");
 
         logInfo("Step 6: Open CHK account on Instructions tab. Verify that Hold instruction was not created");

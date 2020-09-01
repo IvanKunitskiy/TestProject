@@ -1,7 +1,6 @@
 package com.nymbus.pages.accounts.transactions;
 
 import com.nymbus.core.base.PageTools;
-import com.nymbus.core.utils.Constants;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -12,7 +11,6 @@ public class TransactionsPage extends PageTools {
     private By transactionInListSelector = By.xpath("//dn-context-menu[@data-test-id='contextmenu-transaction-%s']//button[@data-test-id='action-showContextMenu']");
     private By editButton = By.xpath("//*[contains(text(), 'Edit')]");
     private By descriptionInListSelector = By.xpath("//tr[1]//td/span[contains(text(), '%s')]");
-    private By transactionRow = By.xpath("//table/tbody/tr");
 
     @Step("Check that 'Withdraw & Close' transaction is written on the transaction history page")
     public boolean isWithdrawAndCloseTransactionsVisible() {
@@ -42,10 +40,5 @@ public class TransactionsPage extends PageTools {
     public boolean isTransactionWithDescriptionVisibleInList(String description) {
         waitForElementVisibility(descriptionInListSelector, description);
         return isElementVisible(descriptionInListSelector, description);
-    }
-
-    @Step("Get amount of transactions in the list")
-    public int getAmountOfTransactionsInTheList() {
-        return getElementsWithZeroOptionWithWait(Constants.MICRO_TIMEOUT, transactionRow).size();
     }
 }
