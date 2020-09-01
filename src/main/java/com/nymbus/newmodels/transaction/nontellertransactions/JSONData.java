@@ -208,6 +208,15 @@ public class JSONData {
         return actions;
     }
 
+    private static JSONArray getActionsArray(String[] customActions) {
+        JSONArray actions = new JSONArray();
+
+        for (String action : customActions) {
+            actions.put(action);
+        }
+        return actions;
+    }
+
     private static String getCardNumberExpirationString(String cardNumber, String cardExpiration) {
         return cardNumber + "=" + cardExpiration;
     }
@@ -224,6 +233,15 @@ public class JSONData {
     public static JSONObject getATMData(Map <String, String> fields) {
         JSONObject json = new JSONObject();
         json.put("actions", getActionsArray());
+        json.put("ruleType", "eft");
+        json.put("beans", getBeansArray(getFieldsArr(fields)));
+
+        return json;
+    }
+
+    public static JSONObject getATMData(Map <String, String> fields, String[] actions) {
+        JSONObject json = new JSONObject();
+        json.put("actions", getActionsArray(actions));
         json.put("ruleType", "eft");
         json.put("beans", getBeansArray(getFieldsArr(fields)));
 
