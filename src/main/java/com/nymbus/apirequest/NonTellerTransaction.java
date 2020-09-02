@@ -6,7 +6,9 @@ import com.nymbus.newmodels.transaction.enums.ATMTransactionType;
 import com.nymbus.newmodels.transaction.nontellertransactions.JSONData;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import io.restassured.http.ContentType;
+import io.restassured.response.ResponseBodyExtractionOptions;
 import org.json.JSONObject;
+import org.testng.Assert;
 
 import java.util.Map;
 
@@ -191,5 +193,35 @@ public class NonTellerTransaction extends AllureLogger {
                statusCode(200).
                body("data[0].field.39", equalTo("00")).
                extract().path("data[0].field." + field);
+    }
+
+    public void generateATMTransaction(Map<String, String> fields, Map<String, String> fieldsToVerify) {
+        JSONObject requestBody = JSONData.getATMData(fields);
+
+        logInfo("Request body: " + requestBody.toString());
+
+        ResponseBodyExtractionOptions responseBody =
+        given().
+                auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
+                contentType(ContentType.JSON).
+                relaxedHTTPSValidation().
+                body(requestBody.toString()).
+        when().
+                post(GENERIC_PROCESS_URL).
+        then().
+                statusCode(200).extract().body();
+
+        logInfo("Response body: " + responseBody.toString());
+
+        validateBody(responseBody, fieldsToVerify);
+    }
+
+    public void validateBody(ResponseBodyExtractionOptions body, Map<String, String> fieldsToVerify) {
+        for (Map.Entry<String, String> item : fieldsToVerify.entrySet()) {
+            String key = item.getKey();
+            String expectedValue = item.getValue();
+            Assert.assertEquals(body.jsonPath().get(key), expectedValue,
+                    "Response field" + key + "has incorrect value!" );
+        }
     }
 }
