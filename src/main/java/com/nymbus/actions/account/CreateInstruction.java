@@ -14,6 +14,7 @@ public class CreateInstruction {
         setDate(instruction.getExpirationDate());
         setNotes(instruction.getNotes());
         Pages.accountInstructionsPage().clickSaveButton();
+        Pages.accountInstructionsPage().waitForLoadingSpinnerInvisibility();
     }
 
     public void createActivityHoldInstruction(ActivityHoldInstruction instruction) {
@@ -22,6 +23,7 @@ public class CreateInstruction {
         setDate(instruction.getExpirationDate());
         setNotes(instruction.getNotes());
         Pages.accountInstructionsPage().clickSaveButton();
+        Pages.accountInstructionsPage().waitForLoadingSpinnerInvisibility();
     }
 
     public void editHoldInstruction(HoldInstruction instruction) {
