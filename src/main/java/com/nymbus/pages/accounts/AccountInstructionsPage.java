@@ -10,6 +10,7 @@ public class AccountInstructionsPage extends PageTools {
 
     private By instructionAlertByContent = By.xpath("//div[contains(@class, 'notifications-item')]//div/span[contains(text(), '%s')]");
     private By viewExpiredAndDeletedHolds = By.xpath("//*[@id='tab-ca-instructions']//span[text()='View Expired and Deleted Holds']");
+    private By loadingSpinner = By.xpath("//*[name()='svg' and contains(@class, 'fixed-centred-spinner')]");
 
     /**
      * Deleted and expired holds modal window region
@@ -50,6 +51,11 @@ public class AccountInstructionsPage extends PageTools {
      */
     private By reasonText = By.xpath("//article[contains(@class, 'itemDetail')]//div[@ng-if='actualConfig.reason.isShow']//div//span");
     private By amount = By.xpath("//article[contains(@class, 'itemDetail')]//div[@ng-if='actualConfig.amount.isShow']//span[@ng-if='isNeedCurrency']");
+
+    @Step("Wait for loading spinner invisibility")
+    public void waitForLoadingSpinnerInvisibility() {
+        waitForElementInvisibility(loadingSpinner);
+    }
 
     @Step("wait for modal window invisibility")
     public void waitForModalWindowInvisibility() {
@@ -157,7 +163,6 @@ public class AccountInstructionsPage extends PageTools {
     public void clickSaveButton() {
         waitForElementClickable(saveButton);
         click(saveButton);
-        SelenideTools.sleep(5);
     }
 
     @Step("Click 'Edit' button")
