@@ -58,4 +58,8 @@ public class Functions {
         NumberFormat nf = NumberFormat.getInstance(new Locale(Locale.ENGLISH.getLanguage()));
         return nf.format(num);
     }
+
+    public static String getStringValueWithOnlyDigits(double amount) {
+        return  String.format("%.2f", amount).replaceAll("[^0-9]", "");
+    }
 }

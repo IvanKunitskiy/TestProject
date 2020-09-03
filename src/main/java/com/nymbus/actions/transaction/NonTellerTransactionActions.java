@@ -52,6 +52,10 @@ public class NonTellerTransactionActions {
         Actions.nonTellerTransaction().generateATMTransaction(fields, actions);
     }
 
+    public Map<String, String> getDataMap(Map<String, String> fields) {
+       return  Actions.nonTellerTransaction().getDataMap(fields);
+    }
+
     public String getFieldValueFromATMTransaction(Map<String, String> fields, String field) {
         return Actions.nonTellerTransaction().getFiledValue(fields, field);
     }

@@ -8,7 +8,6 @@ import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData
 import io.restassured.http.ContentType;
 import io.restassured.response.ResponseBodyExtractionOptions;
 import org.json.JSONObject;
-import org.testng.Assert;
 
 import java.util.Map;
 
@@ -195,7 +194,7 @@ public class NonTellerTransaction extends AllureLogger {
                extract().path("data[0].field." + field);
     }
 
-    public void generateATMTransaction(Map<String, String> fields, Map<String, String> fieldsToVerify) {
+    public Map<String, String> getDataMap(Map<String, String> fields) {
         JSONObject requestBody = JSONData.getATMData(fields);
 
         logInfo("Request body: " + requestBody.toString());
@@ -211,17 +210,8 @@ public class NonTellerTransaction extends AllureLogger {
         then().
                 statusCode(200).extract().body();
 
-        logInfo("Response body: " + responseBody.toString());
+        logInfo("Response body: " + responseBody.asString());
 
-        validateBody(responseBody, fieldsToVerify);
-    }
-
-    public void validateBody(ResponseBodyExtractionOptions body, Map<String, String> fieldsToVerify) {
-        for (Map.Entry<String, String> item : fieldsToVerify.entrySet()) {
-            String key = item.getKey();
-            String expectedValue = item.getValue();
-            Assert.assertEquals(body.jsonPath().get(key), expectedValue,
-                    "Response field" + key + "has incorrect value!" );
-        }
+        return responseBody.jsonPath().getMap("data[0].field");
     }
 }
