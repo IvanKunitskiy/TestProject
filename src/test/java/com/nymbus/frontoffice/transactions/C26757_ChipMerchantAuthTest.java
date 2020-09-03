@@ -31,13 +31,13 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-public class C26757_EditChipMerchantAuthTest extends BaseTest {
+public class C26757_ChipMerchantAuthTest extends BaseTest {
 
     private IndividualClient client;
     private String chkAccountNumber;
     private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
     private NonTellerTransactionData nonTellerTransactionData;
-    private String nonTellerTransactionAmount = "21.90";
+    private final String nonTellerTransactionAmount = "21.90";
 
     @BeforeMethod
     public void preCondition() {
@@ -113,7 +113,7 @@ public class C26757_EditChipMerchantAuthTest extends BaseTest {
 
     @Test(description = "C26757, Chip Merchant Auth")
     @Severity(SeverityLevel.CRITICAL)
-    public void editChipMerchantAuthTest() {
+    public void chipMerchantAuthTest() {
 
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
         logInfo("Step 2: Expand widgets-controller->widget._GenericProcess and run the following request");
