@@ -35,7 +35,7 @@ public class C26759_ChipFuelPumpAuthTest extends BaseTest {
     private String chkAccountNumber;
     private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
     private NonTellerTransactionData nonTellerTransactionData;
-    private final String nonTellerTransactionAmount = "21.90";
+    private double nonTellerTransactionAmount = 21.90;
 
     @BeforeMethod
     public void preCondition() {
@@ -56,7 +56,7 @@ public class C26759_ChipFuelPumpAuthTest extends BaseTest {
 
         // Set up nonTeller transaction data
         nonTellerTransactionData = new NonTellerTransactionData();
-        nonTellerTransactionData.setAmount(Double.parseDouble(nonTellerTransactionAmount));
+        nonTellerTransactionData.setAmount(nonTellerTransactionAmount);
 
         // Set up debit card and bin control
         DebitCardConstructor debitCardConstructor = new DebitCardConstructor();
@@ -118,8 +118,7 @@ public class C26759_ChipFuelPumpAuthTest extends BaseTest {
         logInfo("Step 2: Expand widgets-controller->widget._GenericProcess and run the following request");
         String[] actions = {"0100"};
         Actions.nonTellerTransactionActions().performATMTransaction(getFieldsMap(nonTellerTransactionData), actions);
-        double requestTransactionAmount = Double.parseDouble(nonTellerTransactionAmount);
-        expectedBalanceDataForCheckingAcc.reduceAvailableBalance(requestTransactionAmount);
+        expectedBalanceDataForCheckingAcc.reduceAvailableBalance(nonTellerTransactionAmount);
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
         logInfo("Step 4: Search for CHK account from the precondition and verify its current and available balance");
@@ -145,7 +144,7 @@ public class C26759_ChipFuelPumpAuthTest extends BaseTest {
                 "Instruction was created");
         Pages.accountInstructionsPage().clickInstructionInListByIndex(1);
         double holdInstructionAmount = AccountActions.retrievingAccountData().getInstructionAmount();
-        Assert.assertEquals(requestTransactionAmount, holdInstructionAmount,
+        Assert.assertEquals(nonTellerTransactionAmount, holdInstructionAmount,
                 "Hold instruction amount is not equal to request transaction amount!");
 
         logInfo("Step 7: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
@@ -162,7 +161,7 @@ public class C26759_ChipFuelPumpAuthTest extends BaseTest {
                 "Transaction description is not equal to 'Pre-Authorization Request'");
 
         String transactionAmount = Pages.cardsManagementPage().getTransactionAmount(1);
-        Assert.assertEquals(transactionAmount, nonTellerTransactionAmount,
+        Assert.assertEquals(Double.parseDouble(transactionAmount), nonTellerTransactionAmount,
                 "Transaction description is not equal to 'Pre-Authorization Request'");
     }
 
