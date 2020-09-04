@@ -36,6 +36,8 @@ public class AddCashDrawerPage extends PageTools {
             "//ul/li/a[contains(text(),'%s')]");
     private By brandField = By.xpath("//div[@id='bank.data.cashdrawer-bankbranchid']" +
             "//input[@type='text']");
+    private By branchHiddenField = By.xpath("//div[@id='bank.data.cashdrawer-bankbranchid']" +
+            "//input[@type='hidden']");
     private By brandSelectorButton = By.xpath("//div[@id='bank.data.cashdrawer-bankbranchid']" +
             "//div[contains(@class, 'action_icon')]");
     private By brandList = By.xpath("//div[@id='bank.data.cashdrawer-bankbranchid']" +
@@ -44,6 +46,8 @@ public class AddCashDrawerPage extends PageTools {
             "//ul/li/a[contains(text(),'%s')]");
     private By locationField = By.xpath("//div[@id='bank.data.cashdrawer-locationid']" +
             "//input[@type='text']");
+    private By locationHiddenField = By.xpath("//div[@id='bank.data.cashdrawer-locationid']" +
+            "//input[@type='hidden']");
     private By locationList = By.xpath("//div[@id='bank.data.cashdrawer-locationid']" +
             "//li[contains(@class, 'xwidget_item')]/a");
     private By locationSelectorButton = By.xpath("//div[@id='bank.data.cashdrawer-locationid']" +
@@ -52,6 +56,8 @@ public class AddCashDrawerPage extends PageTools {
             "//ul/li/a[contains(text(),'%s')]");
     private By glAccountNumberField = By.xpath("//div[@id='bank.data.cashdrawer-glaccountid']" +
             "//input[@type='text']");
+    private By glAccountNumberHiddenField = By.xpath("//div[@id='bank.data.cashdrawer-glaccountid']" +
+            "//input[@type='hidden']");
     private By glAccountNumberList = By.xpath("//div[@id='bank.data.cashdrawer-glaccountid']" +
             "//li[contains(@class, 'xwidget_item')]/a");
     private By glAccountNumberSearchButton = By.xpath("//div[@id='bank.data.cashdrawer-glaccountid']" +
@@ -166,6 +172,11 @@ public class AddCashDrawerPage extends PageTools {
         click(brandSelectorOption, branchOption);
     }
 
+    @Step("Wait for branch hidden field value")
+    public void waitForBranchHiddenValue() {
+        shouldNotBeEmpty(branchHiddenField);
+    }
+
     @Step("Set 'Location' value")
     public void setLocationValue(String locationValue) {
         waitForElementVisibility(locationField);
@@ -193,6 +204,11 @@ public class AddCashDrawerPage extends PageTools {
         click(locationSelectorOption, locationOption);
     }
 
+    @Step("Wait for location hidden field value")
+    public void waitForLocationHiddenValue() {
+        shouldNotBeEmpty(locationHiddenField);
+    }
+
     @Step("Set 'GL Account Number' value")
     public void setGLAccountNumberValue(String glAccountNumberValue) {
         waitForElementVisibility(glAccountNumberField);
@@ -218,6 +234,11 @@ public class AddCashDrawerPage extends PageTools {
         waitForElementVisibility(glAccountNumberOption, glAccountNumber);
         waitForElementClickable(glAccountNumberOption, glAccountNumber);
         click(glAccountNumberOption, glAccountNumber);
+    }
+
+    @Step("Wait for 'GL Account Number' hidden field value")
+    public void waitForGLAccountHiddenValue() {
+        shouldNotBeEmpty(glAccountNumberHiddenField);
     }
 
     @Step("Click 'Floating' toggle")

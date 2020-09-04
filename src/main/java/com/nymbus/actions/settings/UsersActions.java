@@ -160,6 +160,7 @@ public class UsersActions {
             user.setBranch(listOfBranch.get(new Random().nextInt(listOfBranch.size())).trim());
         SettingsPage.addingUsersPage().setBranchValue(user.getBranch());
         SettingsPage.addingUsersPage().clickBranchOption(user.getBranch());
+        SettingsPage.addingUsersPage().waitForBranchHiddenValue();
     }
 
     private void addRandomLocation(User user) {
@@ -172,6 +173,7 @@ public class UsersActions {
             user.setLocation(listOfLocation.get(new Random().nextInt(listOfLocation.size())).trim());
         SettingsPage.addingUsersPage().setLocationValue(user.getLocation());
         SettingsPage.addingUsersPage().clickLocationOption(user.getLocation());
+        SettingsPage.addingUsersPage().waitForLocationHiddenValue();
     }
 
     public void addNewCashDrawer(User user) {

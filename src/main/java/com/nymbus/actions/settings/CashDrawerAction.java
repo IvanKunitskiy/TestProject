@@ -1,5 +1,7 @@
 package com.nymbus.actions.settings;
 
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.data.entity.CashDrawer;
 import com.nymbus.newmodels.transaction.verifyingModels.CashDrawerData;
 import com.nymbus.pages.Pages;
@@ -80,6 +82,7 @@ public class CashDrawerAction {
 
         SettingsPage.addCashDrawerPage().setBranchValue(cashDrawer.getBranch());
         SettingsPage.addCashDrawerPage().clickBranchOption(cashDrawer.getBranch());
+        SettingsPage.addCashDrawerPage().waitForBranchHiddenValue();
     }
 
     private void setRandomLocation(CashDrawer cashDrawer) {
@@ -92,6 +95,7 @@ public class CashDrawerAction {
             cashDrawer.setLocation(listOfLocation.get(new Random().nextInt(listOfLocation.size())).trim());
         SettingsPage.addCashDrawerPage().setLocationValue(cashDrawer.getLocation());
         SettingsPage.addCashDrawerPage().clickLocationOption(cashDrawer.getLocation());
+        SettingsPage.addCashDrawerPage().waitForLocationHiddenValue();
     }
 
     private void setGLAccountNumber(CashDrawer cashDrawer) {
@@ -105,6 +109,7 @@ public class CashDrawerAction {
             cashDrawer.setGlAccountNumber(listOfAccounts.get(new Random().nextInt(listOfAccounts.size())).trim());
         SettingsPage.addCashDrawerPage().setGLAccountNumberValue(cashDrawer.getGlAccountNumber());
         SettingsPage.addCashDrawerPage().clickGLAccountNumberOption(cashDrawer.getGlAccountNumber());
+        SettingsPage.addCashDrawerPage().waitForGLAccountHiddenValue();
     }
 
     private void setFloatingValue(CashDrawer cashDrawer) {
