@@ -73,7 +73,9 @@ public class C22595_CDIRABalanceInquiryTest extends BaseTest {
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(cdIraAccount);
         Pages.accountNavigationPage().clickInstructionsTab();
+        int instructionsCount = AccountActions.createInstruction().getInstructionCount();
         AccountActions.createInstruction().createHoldInstruction(instruction);
+        Pages.accountInstructionsPage().waitForCreatedInstruction(instructionsCount + 1);
         Actions.loginActions().doLogOut();
     }
 
