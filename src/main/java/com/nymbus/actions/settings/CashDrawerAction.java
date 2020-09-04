@@ -1,7 +1,5 @@
 package com.nymbus.actions.settings;
 
-import com.nymbus.core.utils.Constants;
-import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.data.entity.CashDrawer;
 import com.nymbus.newmodels.transaction.verifyingModels.CashDrawerData;
 import com.nymbus.pages.Pages;
