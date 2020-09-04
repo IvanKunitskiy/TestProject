@@ -73,7 +73,11 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
         Pages.accountNavigationPage().clickInstructionsTab();
+
+        int instructionsCount = AccountActions.createInstruction().getInstructionCount();
         AccountActions.createInstruction().createHoldInstruction(instruction);
+        Pages.accountInstructionsPage().waitForCreatedInstruction(instructionsCount + 1);
+
         Actions.loginActions().doLogOut();
     }
 
