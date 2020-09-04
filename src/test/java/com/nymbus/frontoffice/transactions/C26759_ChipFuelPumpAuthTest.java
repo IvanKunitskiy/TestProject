@@ -22,8 +22,6 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -31,13 +29,13 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-public class C26757_ChipMerchantAuthTest extends BaseTest {
+public class C26759_ChipFuelPumpAuthTest extends BaseTest {
 
     private IndividualClient client;
     private String chkAccountNumber;
     private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
     private NonTellerTransactionData nonTellerTransactionData;
-    private final String nonTellerTransactionAmount = "21.90";
+    private double nonTellerTransactionAmount = 21.90;
 
     @BeforeMethod
     public void preCondition() {
@@ -58,7 +56,7 @@ public class C26757_ChipMerchantAuthTest extends BaseTest {
 
         // Set up nonTeller transaction data
         nonTellerTransactionData = new NonTellerTransactionData();
-        nonTellerTransactionData.setAmount(Double.parseDouble(nonTellerTransactionAmount));
+        nonTellerTransactionData.setAmount(nonTellerTransactionAmount);
 
         // Set up debit card and bin control
         DebitCardConstructor debitCardConstructor = new DebitCardConstructor();
@@ -113,16 +111,14 @@ public class C26757_ChipMerchantAuthTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
-    @Test(description = "C26757, Chip Merchant Auth")
-    @Severity(SeverityLevel.CRITICAL)
-    public void chipMerchantAuthTest() {
+    @Test(description = "C26759, Chip Fuel Pump Auth")
+    public void chipFuelPumpAuth() {
 
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
         logInfo("Step 2: Expand widgets-controller->widget._GenericProcess and run the following request");
         String[] actions = {"0100"};
         Actions.nonTellerTransactionActions().performATMTransaction(getFieldsMap(nonTellerTransactionData), actions);
-        double requestTransactionAmount = Double.parseDouble(nonTellerTransactionAmount);
-        expectedBalanceDataForCheckingAcc.reduceAvailableBalance(requestTransactionAmount);
+        expectedBalanceDataForCheckingAcc.reduceAvailableBalance(nonTellerTransactionAmount);
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
         logInfo("Step 4: Search for CHK account from the precondition and verify its current and available balance");
@@ -148,8 +144,8 @@ public class C26757_ChipMerchantAuthTest extends BaseTest {
                 "Instruction was created");
         Pages.accountInstructionsPage().clickInstructionInListByIndex(1);
         double holdInstructionAmount = AccountActions.retrievingAccountData().getInstructionAmount();
-        Assert.assertEquals(requestTransactionAmount, holdInstructionAmount,
-                "Hold instruction amount is not equal to reequest transaction amount!");
+        Assert.assertEquals(nonTellerTransactionAmount, holdInstructionAmount,
+                "Hold instruction amount is not equal to request transaction amount!");
 
         logInfo("Step 7: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
         logInfo("Step 8: Click [View History] link on the Debit Card from the precondition");
@@ -165,7 +161,7 @@ public class C26757_ChipMerchantAuthTest extends BaseTest {
                 "Transaction description is not equal to 'Pre-Authorization Request'");
 
         String transactionAmount = Pages.cardsManagementPage().getTransactionAmount(1);
-        Assert.assertEquals(transactionAmount, nonTellerTransactionAmount,
+        Assert.assertEquals(Double.parseDouble(transactionAmount), nonTellerTransactionAmount,
                 "Transaction description is not equal to 'Pre-Authorization Request'");
     }
 
@@ -182,11 +178,10 @@ public class C26757_ChipMerchantAuthTest extends BaseTest {
         Map<String, String > result = new HashMap<>();
         result.put("0", "0100");
         result.put("3", "000000");
-        result.put("4", transactionData.getAmount());
-        result.put("11", "165444");
-        result.put("18", "0742");
-        result.put("22", "051");
-        result.put("23", "001");
+        result.put("4", transactionData.getAmount().replaceAll("\\.", ""));
+        result.put("11", "165446");
+        result.put("18", "5542");
+        result.put("22", "052");
         result.put("35", String.format("%s=%s", transactionData.getCardNumber(), transactionData.getExpirationDate()));
         result.put("42", "01 sample av.  ");
         result.put("43", "Long ave. bld. 34      Nashville      US");
@@ -194,9 +189,11 @@ public class C26757_ChipMerchantAuthTest extends BaseTest {
         result.put("52", "1234567890ABCDEF");
         result.put("55", "9F34123");
         result.put("57", "130");
-        result.put("58", "01100000015");
+        result.put("58", "10000000075");
         result.put("63", "B0IN9015DSDACQRID");
         result.put("111", "12345678901111122011");
+        result.put("124", "NI02PS00");
+        result.put("127", "001100000000065443");
 
         return  result;
     }
