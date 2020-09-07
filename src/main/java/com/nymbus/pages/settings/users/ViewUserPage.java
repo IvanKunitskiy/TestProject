@@ -202,6 +202,12 @@ public class ViewUserPage extends PageTools {
         return getElementAttributeValue("value", teller).contains("1");
     }
 
+    @Step("Wait for 'Cash Drawer' field value")
+    public void waitForCashDrawerFieldValue() {
+        waitForElementVisibility(cashDrawer);
+        shouldNotBeEmpty(cashDrawer);
+    }
+
     @Step("Get 'Cash Drawer' value")
     public String getCashDrawerValue() {
         waitForElementVisibility(cashDrawer);
