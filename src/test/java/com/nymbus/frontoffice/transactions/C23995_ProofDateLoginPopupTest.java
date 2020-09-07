@@ -75,7 +75,7 @@ public class C23995_ProofDateLoginPopupTest extends BaseTest {
         Assert.assertTrue(Pages.tellerModalPage().isBlankTellerFieldVisible(), "Teller field isn't blank!");
         Assert.assertEquals(Pages.tellerModalPage().getLocation(), userSettings.getLocation(), "Location field is incorrect!");
         Assert.assertEquals(Pages.tellerModalPage().getCashDrawerName(), userSettings.getCashDrawer(), "CashDrawer field is incorrect!");
-        Assert.assertEquals(Pages.tellerModalPage().getProofDateValue(), DateTime.getDateTodayPlusDaysWithFormat(0, "MM/dd/yyyy"), "System date is incorrect!");
+        Assert.assertEquals(Pages.tellerModalPage().getProofDateValue(), WebAdminActions.loginActions().getSystemDate(), "System date is incorrect!");
 
         logInfo("Step 4: Сlick [Enter] button");
         Actions.transactionActions().doLoginTeller();

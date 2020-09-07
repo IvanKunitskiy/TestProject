@@ -416,8 +416,10 @@ public class AddUsersPage extends PageTools {
 
     @Step("Set 'Cash Drawer Type' value")
     public void setCashDrawerTypeValue(String cashDrawerTypeValue) {
-        wipeText(cashDrawerTypeField);
-        type(cashDrawerTypeValue, cashDrawerTypeField);
+	    waitForElementVisibility(cashDrawerTypeField);
+        click(cashDrawerTypeField);
+        jsType(cashDrawerTypeValue, cashDrawerTypeField);
+        jsRiseOnchange(cashDrawerTypeField);
     }
 
     @Step("Click on 'Cash Drawer Type' selector")
