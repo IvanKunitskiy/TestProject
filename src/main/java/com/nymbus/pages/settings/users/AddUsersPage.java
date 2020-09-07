@@ -28,6 +28,8 @@ public class AddUsersPage extends PageTools {
     private By profilePhotoField = By.xpath("//div[@id='usrusers-photo']//input[@type='file']");
     private By brandField = By.xpath("//div[@id='usrusers-branchid']" +
             "//input[@type='text']");
+    private By branchHiddenField = By.xpath("//div[@id='usrusers-branchid']" +
+            "//input[@type='hidden']");
     private By brandSelectorButton = By.xpath("//div[@id='usrusers-branchid']" +
             "//div[contains(@class, 'action_icon')]");
     private By brandList = By.xpath("//div[@id='usrusers-branchid']" +
@@ -36,6 +38,8 @@ public class AddUsersPage extends PageTools {
             "//ul/li/a[contains(text(),'%s')]");
     private By locationField = By.xpath("//div[@id='usrusers-locationid']" +
             "//input[@type='text']");
+    private By locationHiddenField = By.xpath("//div[@id='usrusers-locationid']" +
+            "//input[@type='hidden']");
     private By locationList = By.xpath("//div[@id='usrusers-locationid']" +
             "//li[contains(@class, 'xwidget_item')]/a");
     private By locationSelectorButton = By.xpath("//div[@id='usrusers-locationid']" +
@@ -175,6 +179,11 @@ public class AddUsersPage extends PageTools {
         click(brandSelectorOption, branchOption);
     }
 
+    @Step("Wait for branch hidden field value")
+    public void waitForBranchHiddenValue() {
+        shouldNotBeEmpty(branchHiddenField);
+    }
+
     @Step("Set 'Location' value")
     public void setLocationValue(String locationValue) {
         wipeText(locationField);
@@ -194,6 +203,11 @@ public class AddUsersPage extends PageTools {
     @Step("Click on 'Location' option")
     public void clickLocationOption(String locationOption) {
         click(locationSelectorOption, locationOption);
+    }
+
+    @Step("Wait for location hidden field value")
+    public void waitForLocationHiddenValue() {
+        shouldNotBeEmpty(locationHiddenField);
     }
 
     @Step("Set 'Title' value")
