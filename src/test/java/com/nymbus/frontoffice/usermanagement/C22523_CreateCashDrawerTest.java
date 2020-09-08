@@ -51,6 +51,7 @@ public class C22523_CreateCashDrawerTest extends BaseTest {
         Actions.usersActions().searchUser(user);
         SettingsPage.usersSearchPage().clickCellByUserData(user.getEmail());
 
+        SettingsPage.viewUserPage().waitForCashDrawerFieldValue();
         Assert.assertEquals(SettingsPage.viewUserPage().getCashDrawerValue(),
                 cashDrawer.getName() + " (Default User: " + user.getFirstName() + " " + user.getLastName() + ")",
                 "Cash Drawer value is not correct");
