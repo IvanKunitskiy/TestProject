@@ -139,6 +139,8 @@ public class C26758_ChipMerchantCompletionTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void chipMerchantCompletionTest() {
 
+        logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
+        logInfo("Step 2: Expand widgets-controller and run the following request");
         String[] actions = {"0220"};
         Actions.nonTellerTransactionActions().performATMTransaction(getChipMerchantCompletionFieldsMap(chipMerchantCompletionTransactionData), actions);
         expectedBalanceDataForCheckingAcc.reduceCurrentBalance(requestTransactionAmount);
