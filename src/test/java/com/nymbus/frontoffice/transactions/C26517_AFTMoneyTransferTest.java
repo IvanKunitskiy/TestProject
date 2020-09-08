@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.transactions;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
@@ -93,6 +94,7 @@ public class C26517_AFTMoneyTransferTest extends BaseTest {
         expectedBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
 
         // Set up nonTeller transaction data
+        nonTellerTransactionData.setAmount(transactionAmount);
         chkAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "+", expectedBalanceDataForCheckingAcc.getCurrentBalance(), transactionAmount);
 
@@ -124,7 +126,7 @@ public class C26517_AFTMoneyTransferTest extends BaseTest {
         AccountActions.retrievingAccountData().goToTransactionsTab();
         Pages.accountTransactionPage().waitForTransactionSection();
         Assert.assertEquals(Pages.accountTransactionPage().getTransactionItemsCountWithZeroOption(), 0,
-                "Transactions items count is incorrect!");
+                "Transaction items count is incorrect!");
 
         logInfo("Step 6: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget; \n" +
                 "Click [View History] link on the Debit Card from the precondition and verify that transfer transaction is written to Debit Card History");
@@ -149,6 +151,9 @@ public class C26517_AFTMoneyTransferTest extends BaseTest {
                 "Expand widgets-controller and run the following Completion request :");
         Actions.nonTellerTransactionActions().performATMTransaction(completionFields, new String[] {"0200"});
 
+        String transcode = TransactionCode.ATM_CREDIT_MEMO_103.getTransCode().split("\\s+")[0];
+        WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(chkAccTransactionData, chkAccountNumber, transcode);
+
         logInfo("Step 8: Search for CHK account from the precondition and open it on Instructions tab");
         expectedBalanceDataForCheckingAcc.addAmount(transactionAmount);
         Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
@@ -163,10 +168,10 @@ public class C26517_AFTMoneyTransferTest extends BaseTest {
                 "- Available balance \n" +
                 "- Transactions history \n");
         AccountActions.editAccount().goToDetailsTab();
-        BalanceDataForCHKAcc expectedBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
-        Assert.assertEquals(actualBalanceData.getCurrentBalance(), expectedBalanceData.getCurrentBalance(), "Checking account current balance is not correct!");
-        Assert.assertEquals(actualBalanceData.getAvailableBalance(), expectedBalanceData.getAvailableBalance(), "Checking account available balance is not correct!");
-        chkAccTransactionData.setBalance(expectedBalanceData.getCurrentBalance());
+        actualBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
+        Assert.assertEquals(actualBalanceData.getCurrentBalance(), expectedBalanceDataForCheckingAcc.getCurrentBalance(), "Checking account current balance is not correct!");
+        Assert.assertEquals(actualBalanceData.getAvailableBalance(), expectedBalanceDataForCheckingAcc.getAvailableBalance(), "Checking account available balance is not correct!");
+        chkAccTransactionData.setBalance(expectedBalanceDataForCheckingAcc.getCurrentBalance());
 
         AccountActions.retrievingAccountData().goToTransactionsTab();
         int offset = AccountActions.retrievingAccountData().getOffset();
@@ -180,15 +185,15 @@ public class C26517_AFTMoneyTransferTest extends BaseTest {
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         Actions.debitCardModalWindowActions().goToCardHistory(1);
 
-        transactionReasonCode = Pages.cardsManagementPage().getTransactionReasonCode(2);
+        transactionReasonCode = Pages.cardsManagementPage().getTransactionReasonCode(1);
         Assert.assertEquals(transactionReasonCode, "00 -- Approved or completed successfully",
                 "'Transaction Reason Code' is not equal to '00 -- Approved or completed successfully'");
 
-        transactionDescription = Pages.cardsManagementPage().getTransactionDescription(2);
+        transactionDescription = Pages.cardsManagementPage().getTransactionDescription(1);
         Assert.assertEquals(transactionDescription, "Card to Card Credit",
                 "Transaction description is not equal to 'Card to Card Credit'");
 
-        actualAmount = Actions.debitCardModalWindowActions().getTransactionAmount(2);
+        actualAmount = Actions.debitCardModalWindowActions().getTransactionAmount(1);
         Assert.assertEquals(actualAmount, transactionAmount, "Transaction amount is incorrect!");
     }
 
