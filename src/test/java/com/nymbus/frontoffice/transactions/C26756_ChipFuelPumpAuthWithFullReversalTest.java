@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
@@ -39,6 +40,7 @@ public class C26756_ChipFuelPumpAuthWithFullReversalTest extends BaseTest {
     private NonTellerTransactionData preAuthRequestTransactionData;
     private NonTellerTransactionData fullReversalRequestTransactionData;
     private final double requestTransactionAmount = 19.90;
+    private final String uniqueValueField_11 = Generator.getRandomStringNumber(6);
 
     @BeforeMethod
     public void preCondition() {
@@ -116,7 +118,7 @@ public class C26756_ChipFuelPumpAuthWithFullReversalTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
         expectedBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
-        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogOut();
     }
 
     @Test(description = "C26756, Chip Fuel Pump Auth With Full Reversal")
@@ -218,7 +220,7 @@ public class C26756_ChipFuelPumpAuthWithFullReversalTest extends BaseTest {
         result.put("0", "0100");
         result.put("3", "000000");
         result.put("4", transactionData.getAmount());
-        result.put("11", "165443");
+        result.put("11", uniqueValueField_11);
         result.put("18", "5542");
         result.put("22", "051");
         result.put("35", String.format("%s=%s", transactionData.getCardNumber(), transactionData.getExpirationDate()));
@@ -243,7 +245,7 @@ public class C26756_ChipFuelPumpAuthWithFullReversalTest extends BaseTest {
         result.put("2", transactionData.getCardNumber());
         result.put("3", "000000");
         result.put("4", transactionData.getAmount());
-        result.put("11", "165443");
+        result.put("11", uniqueValueField_11);
         result.put("18", "5542");
         result.put("22", "002");
         result.put("42", "01 sample av.  ");
