@@ -5,6 +5,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.transaction.enums.ATMTransactionType;
+import com.nymbus.newmodels.transaction.verifyingModels.ATMRequiredValueModel;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.pages.webadmin.WebAdminPages;
@@ -79,6 +80,23 @@ public class NonTellerTransactionActions {
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
         return result;
+    }
+
+    public ATMRequiredValueModel getATMRequiredValue(int foreignFeeIndex, int terminalIdIndex, int atmUsageAcronymIndex) {
+        ATMRequiredValueModel atmRequiredValueModel = new ATMRequiredValueModel();
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.webAdminTransactionActions().goToForeignFeeUrl();
+        atmRequiredValueModel.setForeignFeeValue(Double.parseDouble(WebAdminPages.rulesUIQueryAnalyzerPage().getForeignFeeValue(foreignFeeIndex)));
+        WebAdminActions.webAdminTransactionActions().goToTerminalIdUrl();
+        atmRequiredValueModel.setTerminalId(WebAdminPages.rulesUIQueryAnalyzerPage().getTerminalIdValue(terminalIdIndex));
+        WebAdminActions.webAdminTransactionActions().goToWaiveATUsageFeeAcronymUrl();
+        String waiveATUsageFeeAcronymValue = WebAdminPages.rulesUIQueryAnalyzerPage().getWaiveATUsageFeeAcronymValue(atmUsageAcronymIndex);
+        atmRequiredValueModel.setAcronymValue(waiveATUsageFeeAcronymValue);
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+
+        return atmRequiredValueModel;
     }
 
     public double getForeignFee(int index) {
