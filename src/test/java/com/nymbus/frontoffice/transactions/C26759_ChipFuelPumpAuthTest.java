@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
@@ -22,6 +23,9 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.pages.Pages;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Owner;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -29,6 +33,9 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+@Epic("Frontoffice")
+@Feature("Transactions")
+@Owner("Petro")
 public class C26759_ChipFuelPumpAuthTest extends BaseTest {
 
     private IndividualClient client;
@@ -162,7 +169,7 @@ public class C26759_ChipFuelPumpAuthTest extends BaseTest {
 
         String transactionAmount = Pages.cardsManagementPage().getTransactionAmount(1);
         Assert.assertEquals(Double.parseDouble(transactionAmount), nonTellerTransactionAmount,
-                "Transaction description is not equal to 'Pre-Authorization Request'");
+                "Transaction amount is not equal to request amount");
     }
 
     private void createDebitCard(String clientInitials, DebitCard debitCard) {
@@ -179,7 +186,7 @@ public class C26759_ChipFuelPumpAuthTest extends BaseTest {
         result.put("0", "0100");
         result.put("3", "000000");
         result.put("4", transactionData.getAmount().replaceAll("\\.", ""));
-        result.put("11", "165446");
+        result.put("11", Generator.getRandomStringNumber(6));
         result.put("18", "5542");
         result.put("22", "052");
         result.put("35", String.format("%s=%s", transactionData.getCardNumber(), transactionData.getExpirationDate()));
