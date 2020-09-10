@@ -81,6 +81,17 @@ public class NonTellerTransactionActions {
         return result;
     }
 
+    public int getTerminalIdCountInSearchResultsTable() {
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.webAdminTransactionActions().goToTerminalIdUrl();
+        int count = WebAdminPages.rulesUIQueryAnalyzerPage().getTerminalIdValueCount();
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+
+        return count;
+    }
+
     public double getForeignFee(int index) {
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
