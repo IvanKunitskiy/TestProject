@@ -36,19 +36,19 @@ import java.util.Map;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Petro")
-public class C26759_ChipFuelPumpAuthTest extends BaseTest {
+public class C26608_ManualMerchantAuthTest extends BaseTest {
 
     private IndividualClient client;
     private String chkAccountNumber;
     private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
     private NonTellerTransactionData nonTellerTransactionData;
-    private double nonTellerTransactionAmount = 21.90;
+    private final double nonTellerTransactionAmount = 45.89;
 
     @BeforeMethod
     public void preCondition() {
 
         // Set up Client
-        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         client = individualClientBuilder.buildClient();
 
@@ -60,6 +60,10 @@ public class C26759_ChipFuelPumpAuthTest extends BaseTest {
         Transaction glDebitMiscCreditTransaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
         glDebitMiscCreditTransaction.getTransactionDestination().setAccountNumber(chkAccountNumber);
         glDebitMiscCreditTransaction.getTransactionDestination().setTransactionCode("109 - Deposit");
+
+        // Make sure that there is at least one record in bank-owned atm locations (bank.data.datmlc)
+        Assert.assertTrue( Actions.nonTellerTransactionActions().getTerminalIdCountInSearchResultsTable() >= 1,
+                "There are no records in bank-owned atm locations ");
 
         // Set up nonTeller transaction data
         nonTellerTransactionData = new NonTellerTransactionData();
@@ -109,16 +113,15 @@ public class C26759_ChipFuelPumpAuthTest extends BaseTest {
         Actions.transactionActions().createGlDebitMiscCreditTransaction(glDebitMiscCreditTransaction);
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
-
         Actions.loginActions().doLogOutProgrammatically();
+
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
         expectedBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
-
-        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C26759, Chip Fuel Pump Auth")
+    @Test(description = "C26608, Manual Merchant Auth")
     public void chipFuelPumpAuth() {
 
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
@@ -184,23 +187,17 @@ public class C26759_ChipFuelPumpAuthTest extends BaseTest {
     private Map<String, String> getFieldsMap(NonTellerTransactionData transactionData) {
         Map<String, String > result = new HashMap<>();
         result.put("0", "0100");
+        result.put("2", transactionData.getCardNumber());
         result.put("3", "000000");
-        result.put("4", transactionData.getAmount().replaceAll("\\.", ""));
+        result.put("4", transactionData.getAmount());
         result.put("11", Generator.getRandomStringNumber(6));
-        result.put("18", "5542");
-        result.put("22", "052");
-        result.put("35", String.format("%s=%s", transactionData.getCardNumber(), transactionData.getExpirationDate()));
+        result.put("18", "5947");
+        result.put("22", "021");
         result.put("42", "01 sample av.  ");
         result.put("43", "Long ave. bld. 34      Nashville      US");
         result.put("48", "SHELL");
-        result.put("52", "1234567890ABCDEF");
-        result.put("55", "9F34123");
-        result.put("57", "130");
-        result.put("58", "10000000075");
-        result.put("63", "B0IN9015DSDACQRID");
-        result.put("111", "12345678901111122011");
-        result.put("124", "NI02PS00");
-        result.put("127", "001100000000065443");
+        result.put("49", "840");
+        result.put("58", "01000000012");
 
         return  result;
     }
