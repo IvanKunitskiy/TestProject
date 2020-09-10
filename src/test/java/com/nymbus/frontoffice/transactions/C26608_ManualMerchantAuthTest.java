@@ -154,7 +154,7 @@ public class C26608_ManualMerchantAuthTest extends BaseTest {
                 "Instruction was created");
         Pages.accountInstructionsPage().clickInstructionInListByIndex(1);
         double holdInstructionAmount = AccountActions.retrievingAccountData().getInstructionAmount();
-        Assert.assertEquals(nonTellerTransactionAmount, holdInstructionAmount,
+        Assert.assertEquals(holdInstructionAmount, nonTellerTransactionAmount,
                 "Hold instruction amount is not equal to request transaction amount!");
 
         logInfo("Step 7: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
