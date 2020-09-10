@@ -62,6 +62,7 @@ public class C26509_WithdrawalAlternateMediaPurchaseTest extends BaseTest {
         Transaction glDebitMiscCreditTransaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
         glDebitMiscCreditTransaction.getTransactionDestination().setAccountNumber(chkAccountNumber);
         glDebitMiscCreditTransaction.getTransactionDestination().setTransactionCode("109 - Deposit");
+        double transactionBalance = glDebitMiscCreditTransaction.getTransactionDestination().getAmount();
 
         // Set up nonTeller transaction data for pre auth request
         requestTransactionData = new NonTellerTransactionData();
@@ -120,7 +121,7 @@ public class C26509_WithdrawalAlternateMediaPurchaseTest extends BaseTest {
         Actions.loginActions().doLogOut();
 
         chkAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-", requestTransactionAmount, requestTransactionAmount);
+                "-", transactionBalance - requestTransactionAmount, requestTransactionAmount);
     }
 
     @Test(description = "C26509, Withdrawal Alternate Media Purchase")
@@ -147,7 +148,7 @@ public class C26509_WithdrawalAlternateMediaPurchaseTest extends BaseTest {
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset);
         Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
         Pages.accountTransactionPage().waitForTransactionSection();
-        Assert.assertEquals(Pages.accountTransactionPage().getTransactionItemsCount(), 1,
+        Assert.assertEquals(Pages.accountTransactionPage().getTransactionItemsCount(), 2,
                 "Transaction count is incorrect!");
         Assert.assertTrue(Actions.transactionActions().isTransactionCodePresent(TransactionCode.DEBIT_PURCHASE_123.getTransCode(), offset),
                 "'123 - Debit Purchase' presents in transaction list");
@@ -176,12 +177,11 @@ public class C26509_WithdrawalAlternateMediaPurchaseTest extends BaseTest {
     private Map<String, String> getFieldsMap(NonTellerTransactionData transactionData) {
         Map<String, String > result = new HashMap<>();
         result.put("0", "0200");
-        result.put("3", "012000");
+        result.put("3", "002000");
         result.put("4", transactionData.getAmount());
         result.put("11", Generator.getRandomStringNumber(6));
         result.put("18", "6011");
         result.put("22", "021");
-        result.put("28", "D00000150");
         result.put("35", String.format("%s=%s", transactionData.getCardNumber(), transactionData.getExpirationDate()));
         result.put("37", "201206102");
         result.put("43", "Long ave. bld. 34      Nashville      US");
