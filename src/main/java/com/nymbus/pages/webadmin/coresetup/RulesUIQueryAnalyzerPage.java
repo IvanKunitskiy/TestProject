@@ -185,6 +185,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      */
     private By accountNumber = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]" +
             "//td[10]/span[last()]/span");
+    private By terminalId = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow ']//td[@class='fieldsCell']//div");
 
     @Step ("Get 'accountNumber' {0} value")
     public String getAccountNumberWithWarehouseTransaction(int index) {
@@ -202,6 +203,12 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getTerminalIdValue(int index) {
         waitForElementVisibility(terminalIdNumber, index);
         return getElementText(terminalIdNumber, index).trim();
+    }
+
+    @Step ("Get 'terminalId' amount in search results table")
+    public int getTerminalIdValueCount() {
+        waitForElementVisibility(terminalId);
+        return getElementsWithZeroOption(terminalId).size();
     }
 
     /**
