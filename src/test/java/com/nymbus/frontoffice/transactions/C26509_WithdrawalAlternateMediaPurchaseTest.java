@@ -132,7 +132,7 @@ public class C26509_WithdrawalAlternateMediaPurchaseTest extends BaseTest {
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
         logInfo("Step 2: Expand widgets-controller and run the following request");
         Actions.nonTellerTransactionActions().performATMTransaction(getFieldsMap(requestTransactionData));
-        String transcode = TransactionCode.ATM_USAGE_129_FEE.getTransCode().split("\\s+")[0];
+        String transcode = TransactionCode.DEBIT_PURCHASE_123.getTransCode().split("\\s+")[0];
         WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(chkAccTransactionData, chkAccountNumber, transcode);
         expectedBalanceDataForCheckingAcc.reduceAvailableBalance(requestTransactionAmount);
         expectedBalanceDataForCheckingAcc.reduceCurrentBalance(requestTransactionAmount);
