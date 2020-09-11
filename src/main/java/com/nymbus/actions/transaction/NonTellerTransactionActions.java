@@ -3,6 +3,7 @@ package com.nymbus.actions.transaction;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.transaction.enums.ATMTransactionType;
 import com.nymbus.newmodels.transaction.verifyingModels.ATMRequiredValueModel;
@@ -11,6 +12,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData
 import com.nymbus.pages.webadmin.WebAdminPages;
 import org.testng.Assert;
 
+import java.util.Collections;
 import java.util.Map;
 
 public class NonTellerTransactionActions {
@@ -59,6 +61,14 @@ public class NonTellerTransactionActions {
 
     public String getFieldValueFromATMTransaction(Map<String, String> fields, String field) {
         return Actions.nonTellerTransaction().getFiledValue(fields, field);
+    }
+
+    public String getTransaction28FieldValue(String symbol, double amount) {
+        String zeros = "0000";
+        String formattedAmount = Functions.getStringValueWithOnlyDigits(amount);
+        String additionalZeros = getAdditionalZeros(formattedAmount.length(), 4);
+
+        return symbol + zeros + additionalZeros + formattedAmount;
     }
 
     public BalanceDataForCHKAcc getBalanceDataFromField54(String field54Value) {
@@ -162,5 +172,10 @@ public class NonTellerTransactionActions {
                 "'Current Balance' is not returned in DE54 field");
         Assert.assertTrue(availableBalancePart.endsWith(formattedAccountBalance),
                 "'Available Balance' is not returned in DE54 field");
+    }
+
+    private String getAdditionalZeros(int length, int maxLength) {
+        int count = Math.max(maxLength - length, 0);
+        return String.join("", Collections.nCopies(count,"0"));
     }
 }
