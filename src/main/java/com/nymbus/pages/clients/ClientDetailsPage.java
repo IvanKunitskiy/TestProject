@@ -321,9 +321,12 @@ public class ClientDetailsPage extends PageTools {
 
     @Step("Click 'Edit Profile' button")
     public void clickEditProfileButton() {
-        waitForElementVisibility(editProfileButton);
-        waitForElementClickable(editProfileButton);
         click(editProfileButton);
+    }
+
+    @Step("Check if 'Edit Profile' button visible")
+    public boolean isEditProfileButtonVisible() {
+        return isElementVisible(editProfileButton);
     }
 
     /**
