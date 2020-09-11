@@ -7,6 +7,7 @@ import com.nymbus.actions.notes.NotesActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.data.entity.User;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -112,6 +113,7 @@ public class C22555_AssignNoteToAUserTest extends BaseTest {
         Actions.loginActions().doLogin(user2.getLoginID(), user2.getPassword());
 
         logInfo("Step 8: Click the Bell alert icon in the top right corner on header");
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
         Assert.assertTrue(Pages.navigationPage().isNotificationCircleVisible(), "'Notification circle' is not visible");
         Pages.navigationPage().clickAlertNotificationsButton();
         Pages.alerts().waitForAlertsSidePanelVisible();

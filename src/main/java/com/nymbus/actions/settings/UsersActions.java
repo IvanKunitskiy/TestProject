@@ -188,7 +188,7 @@ public class UsersActions {
     }
 
     private void setCashDrawerType(CashDrawer cashDrawer) {
-        SettingsPage.addingUsersPage().setCashDrawerTypeValue(cashDrawer.getType());
+        SettingsPage.addingUsersPage().clickCashDrawerTypeSelectorButton();
         SettingsPage.addingUsersPage().clickCashDrawerTypeOption(cashDrawer.getType());
     }
 
