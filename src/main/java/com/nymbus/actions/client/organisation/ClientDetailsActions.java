@@ -1,5 +1,6 @@
 package com.nymbus.actions.client.organisation;
 
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.basicinformation.address.Address;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.email.Email;
@@ -13,6 +14,9 @@ import java.util.List;
 public class ClientDetailsActions {
 
     public void clickEditProfile() {
+        if (!Pages.clientDetailsPage().isEditProfileButtonVisible()) {
+            SelenideTools.refresh();
+        }
         Pages.clientDetailsPage().clickEditProfileButton();
         Pages.clientDetailsPage().waitForProfileEditable();
     }

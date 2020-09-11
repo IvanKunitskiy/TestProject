@@ -1,6 +1,7 @@
 package com.nymbus.actions.account;
 
 import com.nymbus.actions.Actions;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.other.account.type.CHKAccount;
 import com.nymbus.pages.Pages;
@@ -539,6 +540,7 @@ public class CreateAccount {
             account.setProductType(listOfProductType.get(new Random().nextInt(listOfProductType.size())).trim());
         }
         Pages.addAccountPage().clickProductTypeOption(account.getProductType());
+        SelenideTools.sleep(5);
     }
 
     public void setProductType(CHKAccount account) {
