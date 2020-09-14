@@ -19,12 +19,12 @@ import com.nymbus.newmodels.generation.client.builder.type.individual.Individual
 import com.nymbus.newmodels.generation.debitcard.DebitCardConstructor;
 import com.nymbus.newmodels.generation.debitcard.builder.DebitCardBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
-import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditCHKAccBuilder;
+import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.enums.TransactionSignIndicator;
-import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
+import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
@@ -37,30 +37,30 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-public class C26511_WithdrawalDDASurchargeFRGNTest extends BaseTest {
+public class C26512_WithdrawalSAVSurchargeFRGNTest extends BaseTest {
     private IndividualClient client;
-    private String chkAccountNumber;
+    private String savingsAccountNumber;
     private NonTellerTransactionData nonTellerTransactionData;
-    private BalanceDataForCHKAcc expectedBalanceData;
-    private TransactionData chkAccTransactionData;
-    private double transactionAmount = 100.00;
-    private double surchargeAmount = 1.50;
+    private BalanceData expectedBalanceData;
+    private TransactionData savingAccTransactionData;
+    private double transactionAmount = 60.00;
+    private double surchargeAmount = 3.00;
 
     @BeforeMethod
     public void preCondition() {
-        double glDebitTransactionAmount = 150.00;
+        double glDebitTransactionAmount = 100.00;
 
         // Set up Client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         client = individualClientBuilder.buildClient();
-        Transaction glDebitMiscCreditTransaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
+        Transaction glDebitMiscCreditTransaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
         glDebitMiscCreditTransaction.getTransactionSource().setAmount(glDebitTransactionAmount);
 
-        // Set up CHK account
-        Account chkAccount = new Account().setCHKAccountData();
-        chkAccountNumber = chkAccount.getAccountNumber();
-        glDebitMiscCreditTransaction.getTransactionDestination().setAccountNumber(chkAccountNumber);
+        // Set up savings account
+        Account savingAccount = new Account().setSavingsAccountData();
+        savingsAccountNumber = savingAccount.getAccountNumber();
+        glDebitMiscCreditTransaction.getTransactionDestination().setAccountNumber(savingsAccountNumber);
 
         // Set up nonTeller transaction data
         nonTellerTransactionData = new NonTellerTransactionData();
@@ -81,7 +81,7 @@ public class C26511_WithdrawalDDASurchargeFRGNTest extends BaseTest {
         binControl.setCardDescription("Consumer Debit");
 
         Actions.debitCardModalWindowActions().setDebitCardWithBinControl(debitCard, binControl);
-        debitCard.getAccounts().add(chkAccount.getAccountNumber());
+        debitCard.getAccounts().add(savingAccount.getAccountNumber());
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
         String terminalId = Actions.nonTellerTransactionActions().getTerminalID(1);
@@ -96,7 +96,7 @@ public class C26511_WithdrawalDDASurchargeFRGNTest extends BaseTest {
 
         // Create CHK account
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
-        AccountActions.createAccount().createCHKAccountForTransactionPurpose(chkAccount);
+        AccountActions.createAccount().createCHKAccountForTransactionPurpose(savingAccount);
 
         // Create debit card for checking acc
         createDebitCard(client.getInitials(), debitCard);
@@ -116,24 +116,24 @@ public class C26511_WithdrawalDDASurchargeFRGNTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-        Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
+        Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
         AccountActions.editAccount().goToInstructionsTab();
         String INSTRUCTION_REASON = "Reg CC";
         AccountActions.createInstruction().deleteInstructionByReasonText(INSTRUCTION_REASON);
 
         AccountActions.editAccount().goToDetailsTab();
-        Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
-        expectedBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
+        Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
+        expectedBalanceData = AccountActions.retrievingAccountData().getBalanceData();
         nonTellerTransactionData.setTerminalId(terminalId);
-        chkAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
+        savingAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "-", expectedBalanceData.getCurrentBalance(),
                 transactionAmount + surchargeAmount);
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C26511, Withdrawal - DDA $2500+$1.50 Surcharge FRGN")
+    @Test(description = "C26512, Withdrawal - SAV $60+$3 Surcharge FRGN")
     @Severity(SeverityLevel.CRITICAL)
-    public void verifyWithdrawalDDA() {
+    public void verifyWithdrawalSAV() {
         Map<String, String> fields = getFieldsMap(nonTellerTransactionData);
         fields.put("28", Actions.nonTellerTransactionActions().getTransaction28FieldValue(TransactionSignIndicator.DEBIT.getSignIndicator(), surchargeAmount));
 
@@ -142,29 +142,29 @@ public class C26511_WithdrawalDDASurchargeFRGNTest extends BaseTest {
                 "(TermId is not listed in 'bank owned atm locations/bank.data.datmlc'):");
         Actions.nonTellerTransactionActions().performATMTransaction(fields);
 
-        String transcode = TransactionCode.ATM_WITHDRAWAL_124.getTransCode().split("\\s+")[0];
-        WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(chkAccTransactionData, chkAccountNumber, transcode);
+        String transcode = TransactionCode.ATM_WITHDRAWAL_224.getTransCode().split("\\s+")[0];
+        WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(savingAccTransactionData, savingsAccountNumber, transcode);
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        expectedBalanceData.reduceAmount(transactionAmount + surchargeAmount);
+        expectedBalanceData.subtractAmount(transactionAmount + surchargeAmount);
 
         logInfo("Step 4: Search for CHK account from the precondition and Verify Account's: \n" +
                 "- current balance \n" +
                 "- available balance \n" +
                 "- Transactions history");
-        Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
-        BalanceDataForCHKAcc actualBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
+        Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
+        BalanceData actualBalanceData = AccountActions.retrievingAccountData().getBalanceData();
         Assert.assertEquals(actualBalanceData.getCurrentBalance(), expectedBalanceData.getCurrentBalance(),
                 "CHK account current balance is not correct!");
         Assert.assertEquals(actualBalanceData.getAvailableBalance(), expectedBalanceData.getAvailableBalance(),
                 "CHK account available balance is not correct!");
-        chkAccTransactionData.setBalance(expectedBalanceData.getCurrentBalance());
+        savingAccTransactionData.setBalance(expectedBalanceData.getCurrentBalance());
 
         AccountActions.retrievingAccountData().goToTransactionsTab();
         int offset = AccountActions.retrievingAccountData().getOffset();
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset);
-        Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
+        Assert.assertEquals(actualTransactionData, savingAccTransactionData, "Transaction data doesn't match!");
 
         logInfo("Step 5: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
         logInfo("Step 6: Click [View History] link on the Debit Card from the precondition");
@@ -196,14 +196,13 @@ public class C26511_WithdrawalDDASurchargeFRGNTest extends BaseTest {
     private Map<String, String> getFieldsMap(NonTellerTransactionData transactionData) {
         Map<String, String > result = new HashMap<>();
         result.put("0", "0200");
-        result.put("3", "012000");
+        result.put("3", "011000");
         result.put("4", transactionData.getAmount());
         result.put("11", String.valueOf(Generator.genInt(100000000, 922337203)));
         result.put("18", "6011");
         result.put("22", "021");
         result.put("35", String.format("%s=%s", transactionData.getCardNumber(), transactionData.getExpirationDate()));
         result.put("37", "201206102");
-        result.put("41", transactionData.getTerminalId());
         result.put("43", "Long ave. bld. 34      Nashville      US");
         result.put("48", "SHELL");
         result.put("58", "00000000022");

@@ -94,6 +94,11 @@ public class DateTime {
         return DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH).format(localDate);
     }
 
+    public static String getLocalDateWithPatternWithTimeZone(String pattern, String timeZoneId) {
+        LocalDate localDate = LocalDate.now(ZoneId.of(timeZoneId));
+        return DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH).format(localDate);
+    }
+
     public static int getDaysInMonth(int monthNumber) {
         YearMonth yearMonthObject = YearMonth.of(Year.now().getValue(), monthNumber);
         return yearMonthObject.lengthOfMonth();
