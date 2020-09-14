@@ -22,8 +22,7 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -31,6 +30,9 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+@Epic("Frontoffice")
+@Feature("Transactions")
+@Owner("Petro")
 public class C26757_ChipMerchantAuthTest extends BaseTest {
 
     private IndividualClient client;
