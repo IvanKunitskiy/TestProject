@@ -27,9 +27,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Owner;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -138,6 +136,7 @@ public class C26762_SwipeMerchantCompletionTest extends BaseTest {
     }
 
     @Test(description = "C26762, Swipe Merchant Completion")
+    @Severity(SeverityLevel.CRITICAL)
     public void swipeMerchantCompletion() {
 
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
