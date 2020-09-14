@@ -44,10 +44,9 @@ public class C26762_SwipeMerchantCompletionTest extends BaseTest {
     private String chkAccountNumber;
     private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
     private NonTellerTransactionData swipeMerchantCompletionData;
-    private NonTellerTransactionData swipeMerchantAuthData;
     private TransactionData chkAccTransactionData;
     private final double requestTransactionAmount = 39.45;
-    private String uniqueValueField11 = Generator.getRandomStringNumber(6);
+    private final String uniqueValueField11 = Generator.getRandomStringNumber(6);
 
     @BeforeMethod
     public void preCondition() {
@@ -70,7 +69,7 @@ public class C26762_SwipeMerchantCompletionTest extends BaseTest {
         swipeMerchantCompletionData = new NonTellerTransactionData();
         swipeMerchantCompletionData.setAmount(requestTransactionAmount);
 
-        swipeMerchantAuthData = new NonTellerTransactionData();
+        NonTellerTransactionData swipeMerchantAuthData = new NonTellerTransactionData();
         swipeMerchantAuthData.setAmount(requestTransactionAmount);
 
         // Set up debit card and bin control
