@@ -38,15 +38,16 @@ import java.util.Map;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Petro")
-public class C26762_SwipeMerchantCompletionTest extends BaseTest {
+public class C26510_WithdrawalFndFastCash80FrgnTest extends BaseTest {
 
     private IndividualClient client;
     private String chkAccountNumber;
+    private NonTellerTransactionData fastCashTransactionData;
     private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
-    private NonTellerTransactionData swipeMerchantCompletionData;
-    private TransactionData chkAccTransactionData;
-    private final double requestTransactionAmount = 39.45;
     private final String uniqueValueField11 = Generator.getRandomStringNumber(6);
+    private TransactionData chkAccTransactionData;
+    private double atmFee;
+    private double transactionAmountWithFee;
 
     @BeforeMethod
     public void preCondition() {
@@ -65,12 +66,14 @@ public class C26762_SwipeMerchantCompletionTest extends BaseTest {
         glDebitMiscCreditTransaction.getTransactionDestination().setAccountNumber(chkAccountNumber);
         glDebitMiscCreditTransaction.getTransactionDestination().setTransactionCode("109 - Deposit");
 
-        // Set up nonTeller transaction data
-        swipeMerchantCompletionData = new NonTellerTransactionData();
-        swipeMerchantCompletionData.setAmount(requestTransactionAmount);
+        // Get "Foreign ATM Fee Balance Inquiry" value
+        atmFee = Actions.nonTellerTransactionActions().getForeignFee(1);
+        double requestTransactionAmount = 80.00;
+        transactionAmountWithFee = requestTransactionAmount + atmFee;
 
-        NonTellerTransactionData swipeMerchantAuthData = new NonTellerTransactionData();
-        swipeMerchantAuthData.setAmount(requestTransactionAmount);
+        // Set up nonTeller transaction data
+        fastCashTransactionData = new NonTellerTransactionData();
+        fastCashTransactionData.setAmount(requestTransactionAmount);
 
         // Set up debit card and bin control
         DebitCardConstructor debitCardConstructor = new DebitCardConstructor();
@@ -104,9 +107,7 @@ public class C26762_SwipeMerchantCompletionTest extends BaseTest {
 
         // Create debit card for CHK acc
         createDebitCard(client.getInitials(), debitCard);
-        Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(swipeMerchantCompletionData, 1);
-        Pages.cardsManagementPage().clickBackToMaintenanceButton();
-        Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(swipeMerchantAuthData, 1);
+        Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(fastCashTransactionData, 1);
 
         // Re-login in system for updating teller session and capture account balances
         Actions.loginActions().doLogOut();
@@ -126,52 +127,45 @@ public class C26762_SwipeMerchantCompletionTest extends BaseTest {
         expectedBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         Actions.loginActions().doLogOut();
 
-        // Perform 'Chip Merchant Auth' request
-        String[] merchantAuthActions = {"0100"};
-        Actions.nonTellerTransactionActions().performATMTransaction(getSwipeMerchantAuthFieldsMap(swipeMerchantAuthData), merchantAuthActions);
-        expectedBalanceDataForCheckingAcc.reduceAvailableBalance(requestTransactionAmount);
         chkAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-", expectedBalanceDataForCheckingAcc.getAvailableBalance(), requestTransactionAmount);
+                "-", glDebitMiscCreditTransaction.getTransactionDestination().getAmount() - transactionAmountWithFee, requestTransactionAmount);
     }
 
-    @Test(description = "C26762, Swipe Merchant Completion")
+    @Test(description = "C26510, Withdrawal FND Fast Cash 80$ FRGN")
     @Severity(SeverityLevel.CRITICAL)
-    public void swipeMerchantCompletion() {
+    public void withdrawalFndFastCash80Frgn() {
 
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
         logInfo("Step 2: Expand widgets-controller and run the following request");
-        String[] swipeMerchantCompletionActions = {"0220"};
-        Actions.nonTellerTransactionActions().performATMTransaction(getSwipeMerchantCompletionFieldsMap(swipeMerchantCompletionData), swipeMerchantCompletionActions);
-        expectedBalanceDataForCheckingAcc.reduceCurrentBalance(requestTransactionAmount);
+        Actions.nonTellerTransactionActions().performATMTransaction(getFastCashTransactionFieldsMap(fastCashTransactionData));
+        expectedBalanceDataForCheckingAcc.reduceCurrentBalance(transactionAmountWithFee);
+        expectedBalanceDataForCheckingAcc.reduceAvailableBalance(transactionAmountWithFee);
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
         logInfo("Step 4: Search for CHK account from the precondition and verify its current and available balance");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
+
         Assert.assertEquals(AccountActions.retrievingAccountData().getCurrentBalance(),
                 expectedBalanceDataForCheckingAcc.getCurrentBalance(), "CHK account current balance is not correct!");
         Assert.assertEquals(AccountActions.retrievingAccountData().getAvailableBalance(),
                 expectedBalanceDataForCheckingAcc.getAvailableBalance(), "CHK account available balance is not correct!");
 
-        logInfo("Step 5: Open account on Transactions tab and verify that there is NO ATM transaction.");
-        String transcode = TransactionCode.DEBIT_PURCHASE_123.getTransCode().split("\\s+")[0];
+        String transcode = TransactionCode.ATM_WITHDRAWAL_124.getTransCode().split("\\s+")[0];
         WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(chkAccTransactionData, chkAccountNumber, transcode);
         AccountActions.retrievingAccountData().goToTransactionsTab();
+
         int offset = AccountActions.retrievingAccountData().getOffset();
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset);
+
         Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
-        Assert.assertEquals(Pages.accountTransactionPage().getTransactionItemsCount(), 2,
+        Assert.assertEquals(Pages.accountTransactionPage().getTransactionItemsCount(), 3,
                 "Transaction count is incorrect!");
-        Assert.assertTrue(Actions.transactionActions().isTransactionCodePresent(TransactionCode.DEBIT_PURCHASE_123.getTransCode(), offset),
-                "'123 - Debit Purchase' presents in transaction list");
+        Assert.assertTrue(Actions.transactionActions().isTransactionCodePresent(TransactionCode.ATM_WITHDRAWAL_124.getTransCode(), offset),
+                "'124 - ATM Withdrawal' presents in transaction list");
 
-        logInfo("Step 6: Open account on Instructions tab and verify that Hold was removed");
-        AccountActions.editAccount().goToInstructionsTab();
-        Assert.assertEquals(Pages.accountInstructionsPage().getCreatedInstructionsCount(), 0,
-                "Hold instruction was not created");
-
-        logInfo("Step 7: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
-        logInfo("Step 8: Click [View History] link on the Debit Card from the precondition");
+        logInfo("Step 5: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
+        logInfo("Step 6: Click [View History] link on the Debit Card from the precondition");
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         Actions.debitCardModalWindowActions().goToCardHistory(1);
 
@@ -180,12 +174,16 @@ public class C26762_SwipeMerchantCompletionTest extends BaseTest {
                 "'Transaction Reason Code' is not equal to '00 -- Approved or completed successfully'");
 
         String transactionDescription = Pages.cardsManagementPage().getTransactionDescription(1);
-        Assert.assertEquals(transactionDescription, "Purchase Completion",
-                "Transaction description is not equal to 'Purchase Completion'");
+        Assert.assertEquals(transactionDescription, "Cash Withdrawal",
+                "Transaction description is not equal to 'Cash Withdrawal'");
 
         String transactionAmount = Pages.cardsManagementPage().getTransactionAmount(1);
-        Assert.assertEquals(Double.parseDouble(transactionAmount), requestTransactionAmount,
-                "'Purchase Completion' amount is not equal to transaction amount");
+        Assert.assertEquals(Double.parseDouble(transactionAmount), transactionAmountWithFee,
+                "'Cash Withdrawal' amount is not equal to transaction amount");
+
+        String transactionFeeAmount = Pages.cardsManagementPage().getTransactionFeeAmount(1);
+        Assert.assertEquals(Double.parseDouble(transactionFeeAmount), atmFee,
+                "'Fee Amount' amount is not equal to 'ATM Fee' amount");
     }
 
     private void createDebitCard(String clientInitials, DebitCard debitCard) {
@@ -197,47 +195,23 @@ public class C26762_SwipeMerchantCompletionTest extends BaseTest {
         Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
     }
 
-    private Map<String, String> getSwipeMerchantCompletionFieldsMap(NonTellerTransactionData transactionData) {
+    private Map<String, String> getFastCashTransactionFieldsMap(NonTellerTransactionData transactionData) {
         Map<String, String > result = new HashMap<>();
 
-        result.put("0", "0220");
-        result.put("2", transactionData.getCardNumber());
-        result.put("3", "000000");
+        result.put("0", "0200");
+        result.put("3", "010000");
         result.put("4", transactionData.getAmount());
         result.put("11", uniqueValueField11);
-        result.put("18", "5947");
-        result.put("22", "012");
-        result.put("42", "01 sample av.  ");
+        result.put("18", "6011");
+        result.put("22", "051");
+        result.put("23", "001");
+        result.put("35", String.format("%s=%s", transactionData.getCardNumber(), transactionData.getExpirationDate()));
+        result.put("37", "201206102");
         result.put("43", "Long ave. bld. 34      Nashville      US");
         result.put("48", "SHELL");
-        result.put("58", "01000000012");
-        result.put("63", "B0IN9015DSDACQRID");
-        result.put("111", "12345678901111122011");
-        result.put("124", "NI02PS00");
-        result.put("127", "001100000000065451");
+        result.put("55", "9F34123");
+        result.put("58", "0000000002U");
 
         return  result;
     }
-
-    private Map<String, String> getSwipeMerchantAuthFieldsMap(NonTellerTransactionData transactionData) {
-        Map<String, String > result = new HashMap<>();
-
-        result.put("0", "0100");
-        result.put("2", transactionData.getCardNumber());
-        result.put("3", "000000");
-        result.put("4", transactionData.getAmount());
-        result.put("11", uniqueValueField11);
-        result.put("18", "5947");
-        result.put("22", "012");
-        result.put("42", "01 sample av.  ");
-        result.put("43", "Long ave. bld. 34      Nashville      US");
-        result.put("48", "SHELL");
-        result.put("58", "01000000012");
-        result.put("63", "B0IN9015DSDACQRID");
-        result.put("111", "12345678901111122011");
-        result.put("124", "NI02PS00");
-
-        return  result;
-    }
-
 }
