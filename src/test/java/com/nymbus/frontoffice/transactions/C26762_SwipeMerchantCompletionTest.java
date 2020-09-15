@@ -205,7 +205,7 @@ public class C26762_SwipeMerchantCompletionTest extends BaseTest {
         result.put("3", "000000");
         result.put("4", transactionData.getAmount());
         result.put("11", uniqueValueField11);
-        result.put("18", "5947"); // where to get from
+        result.put("18", "5947");
         result.put("22", "012");
         result.put("42", "01 sample av.  ");
         result.put("43", "Long ave. bld. 34      Nashville      US");
@@ -227,7 +227,7 @@ public class C26762_SwipeMerchantCompletionTest extends BaseTest {
         result.put("3", "000000");
         result.put("4", transactionData.getAmount());
         result.put("11", uniqueValueField11);
-        result.put("18", "5947"); // where to get from
+        result.put("18", "5947");
         result.put("22", "012");
         result.put("42", "01 sample av.  ");
         result.put("43", "Long ave. bld. 34      Nashville      US");
