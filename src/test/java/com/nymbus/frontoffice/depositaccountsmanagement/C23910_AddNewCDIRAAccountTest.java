@@ -168,37 +168,7 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 16: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
-        AccountActions.accountMaintenanceActions().expandAllRows();
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Product") >= 1,
-                "'Product' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("accounttype") >= 1,
-                "'accounttype' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account Title") >= 1,
-                "'Account Title' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Current Officer") >= 1,
-                "'Current Officer' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Bank Branch") >= 1,
-                "'Bank Branch' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date Opened") >= 1,
-                "'Date Opened' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Type") >= 1,
-                "'Interest Type' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Frequency") >= 1,
-                "'Interest Frequency' row count is incorrect!");
-        if (cdIRAAccount.getCallClassCode() != null) {
-            Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Call Class Code") >= 1,
-                    "'Call Class Code' row count is incorrect!");
-        }
-        if (cdIRAAccount.getCorrespondingAccount() != null) {
-            Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Corresponding Account") >= 1,
-                    "'Corresponding Account' row count is incorrect!");
-        }
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("IRA Distribution Frequency") >= 1,
-                "'IRA Distribution Frequency' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("IRA Distribution Code") >= 1,
-                "'IRA Distribution Code' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Apply Interest To") >= 1,
-                "'Apply Interest To' row count is incorrect!");
+        AccountActions.accountMaintenanceActions().verifyCdIraAccountRecords(cdIRAAccount);
     }
 }
 

@@ -135,32 +135,6 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 14: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
-        AccountActions.accountMaintenanceActions().expandAllRows();
-        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Product"), 1,
-                "'Product' row count is incorrect!");
-        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("accounttype"), 1,
-                "'accounttype' row count is incorrect!");
-        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account Title"), 1,
-                "'Account Title' row count is incorrect!");
-        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Current Officer"), 1,
-                "'Current Officer' row count is incorrect!");
-        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Bank Branch"), 1,
-                "'Bank Branch' row count is incorrect!");
-        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date Opened"), 1,
-                "'Date Opened' row count is incorrect!");
-        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Rate"), 1,
-                "'Interest Rate' row count is incorrect!");
-        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Statement Cycle"), 1,
-                "'Statement Cycle' row count is incorrect!");
-        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Mail Code"), 1,
-                "'Mail Code' row count is incorrect!");
-        if (regularSavingsAccount.getCallClassCode() != null) {
-            Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Call Class Code"), 1,
-                    "'Call Class Code' row count is incorrect!");
-        }
-        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Corresponding Account"), 1,
-                "'Corresponding Account' row count is incorrect!");
-        Assert.assertEquals(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Frequency"), 1,
-                "'Interest Frequency' row count is incorrect!");
+        AccountActions.accountMaintenanceActions().verifySavingsAccountRecords(regularSavingsAccount);
     }
 }
