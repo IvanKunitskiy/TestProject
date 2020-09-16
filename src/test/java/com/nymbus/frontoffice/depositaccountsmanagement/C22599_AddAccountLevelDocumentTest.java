@@ -56,7 +56,7 @@ public class C22599_AddAccountLevelDocumentTest extends BaseTest {
 
     @Test(description = "C22599, Add Account Level Document")
     @Severity(SeverityLevel.CRITICAL)
-    public void viewNewSavingsAccount() {
+    public void addAccountLevelDocument() {
 
         logInfo("Step 1: Log in to the system as the user from the precondition");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);

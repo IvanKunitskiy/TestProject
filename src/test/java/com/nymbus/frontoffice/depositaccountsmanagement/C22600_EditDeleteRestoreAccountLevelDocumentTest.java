@@ -59,7 +59,7 @@ public class C22600_EditDeleteRestoreAccountLevelDocumentTest extends BaseTest {
 
     @Test(description = "C22600, Edit / Delete / Restore account level document")
     @Severity(SeverityLevel.CRITICAL)
-    public void viewNewSavingsAccount() {
+    public void editDeleteRestoreAccountLevelDocument() {
 
         logInfo("Step 1: Log in to the system as the user from the precondition");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
