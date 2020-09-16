@@ -7,6 +7,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
@@ -45,6 +46,7 @@ public class C26758_ChipMerchantCompletionTest extends BaseTest {
     private NonTellerTransactionData chipMerchantCompletionTransactionData;
     private TransactionData chkAccTransactionData;
     private final double requestTransactionAmount = 21.90;
+    private final String uniqueValueField11 = Generator.getRandomStringNumber(6);
 
     @BeforeMethod
     public void preCondition() {
@@ -228,7 +230,7 @@ public class C26758_ChipMerchantCompletionTest extends BaseTest {
         result.put("0", "0100");
         result.put("3", "000000");
         result.put("4", transactionData.getAmount());
-        result.put("11", "165444");
+        result.put("11", uniqueValueField11);
         result.put("18", "0742");
         result.put("22", "051");
         result.put("23", "001");

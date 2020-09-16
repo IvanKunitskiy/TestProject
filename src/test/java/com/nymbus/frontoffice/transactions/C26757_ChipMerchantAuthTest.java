@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
@@ -40,6 +41,7 @@ public class C26757_ChipMerchantAuthTest extends BaseTest {
     private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
     private NonTellerTransactionData nonTellerTransactionData;
     private final double nonTellerTransactionAmount = 21.90;
+    private final String uniqueValueField11 = Generator.getRandomStringNumber(6);
 
     @BeforeMethod
     public void preCondition() {
@@ -184,7 +186,7 @@ public class C26757_ChipMerchantAuthTest extends BaseTest {
         result.put("0", "0100");
         result.put("3", "000000");
         result.put("4", transactionData.getAmount());
-        result.put("11", "165444");
+        result.put("11", uniqueValueField11);
         result.put("18", "0742");
         result.put("22", "051");
         result.put("23", "001");

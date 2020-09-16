@@ -7,6 +7,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
@@ -46,6 +47,7 @@ public class C26514_BalanceInquiryFndFrgnTest extends BaseTest {
     private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
     private NonTellerTransactionData nonTellerTransactionData;
     private double foreignFeeBalanceInquiry;
+    private final String uniqueValueField11 = Generator.getRandomStringNumber(6);
 
     @BeforeMethod
     public void preCondition() {
@@ -211,7 +213,7 @@ public class C26514_BalanceInquiryFndFrgnTest extends BaseTest {
         Map<String, String > result = new HashMap<>();
         result.put("0", "0200");
         result.put("3", "310000");
-        result.put("11", "321843");
+        result.put("11", uniqueValueField11);
         result.put("18", "6011");
         result.put("22", "051");
         result.put("35", String.format("%s=%s", transactionData.getCardNumber(), transactionData.getExpirationDate()));
