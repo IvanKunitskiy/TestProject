@@ -21,7 +21,6 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22598_CloseAccountWithNoMonetaryTransactionTest extends BaseTest {
 
-    private IndividualClient client;
     private Account checkingAccount;
 
     @BeforeMethod
@@ -30,7 +29,7 @@ public class C22598_CloseAccountWithNoMonetaryTransactionTest extends BaseTest {
         // Set up client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account
         checkingAccount = new Account().setCHKAccountData();

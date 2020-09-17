@@ -24,7 +24,6 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22609_EditDeleteSpecialInstructionTest extends BaseTest {
 
-    private IndividualClient client;
     private Account chkAccount;
     private ActivityHoldInstruction activityHoldInstruction;
 
@@ -34,7 +33,7 @@ public class C22609_EditDeleteSpecialInstructionTest extends BaseTest {
         // Set up a client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account
         chkAccount = new Account().setCHKAccountData();

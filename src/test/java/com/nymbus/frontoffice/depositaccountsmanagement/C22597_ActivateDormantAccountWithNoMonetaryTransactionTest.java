@@ -23,7 +23,6 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22597_ActivateDormantAccountWithNoMonetaryTransactionTest extends BaseTest {
 
-    private IndividualClient client;
     private Account chkAccount;
     private String systemDate;
 
@@ -33,7 +32,7 @@ public class C22597_ActivateDormantAccountWithNoMonetaryTransactionTest extends 
         // Set up client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account
         chkAccount = new Account().setCHKAccountData();
