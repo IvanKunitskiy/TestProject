@@ -507,6 +507,21 @@ public class EditAccount {
         Assert.assertEquals(Pages.editAccountPage().getStatementCycleValueInEditMode(), account.getStatementCycle(), "'Statement Cycle' value does not match");
     }
 
+    public void verifySavingsAccountFieldsAfterCreationInEditMode(Account account) {
+        Assert.assertEquals(Pages.editAccountPage().getProductValueInEditMode(), account.getProduct(), "'Product' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getAccountTitleValueInEditMode(), account.getAccountTitle(), "'Title' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), account.getBankBranch(), "'Bank Branch' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), account.getCurrentOfficer(), "'Current Officer' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getStatementCycleValueInEditMode(), account.getStatementCycle(), "'Statement Cycle' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getCorrespondingAccount(), account.getCorrespondingAccount(), "'Corresponding Account' value does not match");
+        if (account.getCallClassCode() != null) {
+            Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), account.getCallClassCode(), "'Call Class' value does not match");
+        }
+        Assert.assertEquals(Pages.editAccountPage().getMailCode(), account.getMailCode(), "'Mail Code' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), account.getInterestRate(), "'Interest Rate' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getDateOpenedValueInEditMode(), account.getDateOpened(), "'Date Opened' value does not match");
+    }
+
     /**
      * Savings IRA account verification
      */
@@ -583,6 +598,26 @@ public class EditAccount {
         Assert.assertEquals(Pages.editAccountPage().getStatementCycleValueInEditMode(), account.getStatementCycle(), "'Statement Cycle' value does not match");
     }
 
+    public void verifySavingsIraFieldsAfterCreationInEditMode(Account account) {
+        Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), account.getCurrentOfficer(), "'Current Officer' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), account.getBankBranch(), "'Bank Branch' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getInterestFrequency(), account.getInterestFrequency(), "'Interest Frequency' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getStatementCycleValueInEditMode(), account.getStatementCycle(), "'Statement Cycle' value does not match");
+        if (account.getCorrespondingAccount() != null) {
+            Assert.assertEquals(Pages.editAccountPage().getCorrespondingAccount(), account.getCorrespondingAccount(), "'Corresponding Account' value does not match");
+        }
+        if (account.getCallClassCode() != null) {
+            Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), account.getCallClassCode(), "'Call Class' value does not match");
+        }
+        Assert.assertEquals(Pages.editAccountPage().getIraDistributionFrequencyInEditMode(), account.getIraDistributionFrequency(), "' IRA Distribution Frequency' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getIraDistributionCodeInEditMode(), account.getIraDistributionCode(), "' IRA Distribution Code' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getAccountTitleValueInEditMode(), account.getAccountTitle(), "'Title' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getIraDistributionAmountInEditMode(), account.getIraDistributionAmount(), "'IRA distribution amount' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getDateOpenedValueInEditMode(), account.getDateOpened(), "'Date Opened' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getDateNextIRADistributionInEditMode(), account.getDateNextIRADistribution(), "'Date next IRA distribution' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getDateOfFirstDeposit(), account.getDateOfFirstDeposit(), "'Date Of First Deposit' value does not match");
+    }
+
     /**
      * Regular CD account verification
      */
@@ -630,6 +665,23 @@ public class EditAccount {
         Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), account.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), account.getInterestRate(), "'Interest Rate' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), account.getBankBranch(), "'Bank Branch' value does not match");
+        if (account.getCallClassCode() != null) {
+            Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), account.getCallClassCode(), "'Call Class' value does not match");
+        }
+    }
+
+    public void verifyCdAccountFieldsAfterCreationInEditMode(Account account) {
+        Assert.assertEquals(Pages.editAccountPage().getAccountTitleValueInEditMode(), account.getAccountTitle(), "'Title' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), account.getCurrentOfficer(), "'Current Officer' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), account.getBankBranch(), "'Bank Branch' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getDateOpenedValueInEditMode(), account.getDateOpened(), "'Date Opened' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getInterestFrequencyCode(), account.getInterestFrequency(), "'Interest Frequency' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getApplyInterestTo(), account.getApplyInterestTo(), "'Apply Interest To' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), account.getInterestRate(), "'Interest Rate' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getInterestType(), account.getInterestType(), "'Interest Type' value does not match");
+        if (account.getCorrespondingAccount() != null) {
+            Assert.assertEquals(Pages.editAccountPage().getCorrespondingAccount(), account.getCorrespondingAccount(), "'Corresponding Account' value does not match");
+        }
         if (account.getCallClassCode() != null) {
             Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), account.getCallClassCode(), "'Call Class' value does not match");
         }

@@ -42,16 +42,7 @@ public class CreateAccount {
         setAddNewOption(account);
         setProductType(account);
         setProduct(account);
-        Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
-        Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
-        setCurrentOfficer(account);
-        setBankBranch(account);
-        setMailCode(account);
-        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
-        Pages.addAccountPage().setInterestRate(account.getInterestRate());
-        setStatementCycle(account);
-        setCallClassCode(account);
-        setInterestFrequency(account);
+        setValuesInFieldsRequiredForSavingsAccount(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
@@ -565,5 +556,18 @@ public class CreateAccount {
             account.setMailCode(listOfMailCode.get(new Random().nextInt(listOfMailCode.size())).trim());
         }
         Pages.addAccountPage().clickMailCodeSelectorOption(account.getMailCode());
+    }
+
+    public String getDateOpenedValue(Account account) {
+        String dateOpened = Pages.addAccountPage().getDateOpened();
+
+        while (dateOpened.isEmpty()) {
+            SelenideTools.refresh();
+            AccountActions.createAccount().setProductType(account);
+            AccountActions.createAccount().setProduct(account);
+            dateOpened = Pages.addAccountPage().getDateOpened();
+        }
+
+        return dateOpened;
     }
 }

@@ -9,9 +9,7 @@ import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
-import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -63,24 +61,7 @@ public class C22589_ViewNewCDAccountTest extends BaseTest {
         AccountActions.accountDetailsActions().clickMoreButton();
 
         logInfo("Step 4: Pay attention to the fields on the page");
-        Assert.assertEquals(Pages.accountDetailsPage().getProductValue(), cdAccount.getProduct(), "'Product' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getAccountNumberValue(), cdAccount.getAccountNumber(), "'Account Number' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), cdAccount.getAccountTitle(), "'Title' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), cdAccount.getCurrentOfficer(), "'Current Officer' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), cdAccount.getBankBranch(), "'Bank Branch' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getInterestFrequencyCode(), cdAccount.getInterestFrequency(), "'Interest Frequency' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getApplyInterestTo(), cdAccount.getApplyInterestTo(), "'Apply Interest To' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getInterestType(), cdAccount.getInterestType(), "'Interest Type' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), cdAccount.getInterestRate(), "'Interest Rate' value does not match");
-        if (cdAccount.getCallClassCode() != null) {
-            Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), cdAccount.getCallClassCode(), "'Call Class' value does not match");
-        }
-        Assert.assertEquals(Pages.accountDetailsPage().getFederalWHReason(), cdAccount.getFederalWHReason(), "'Federal WH Reason' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getFederalWHPercent(), cdAccount.getFederalWHPercent(), "'Federal WH Percent' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_1(), cdAccount.getUserDefinedField_1(), "'User Defined Field 1' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_2(), cdAccount.getUserDefinedField_2(), "'User Defined Field 2' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_3(), cdAccount.getUserDefinedField_3(), "'User Defined Field 3' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getUserDefinedField_4(), cdAccount.getUserDefinedField_4(), "'User Defined Field 4' value does not match");
+        AccountActions.accountDetailsActions().verifyEditedCdAccountRecords(cdAccount);
 
         logInfo("Step 5: Click [Less] button");
         AccountActions.accountDetailsActions().clickLessButtonAndVerifyMoreIsVisible();
