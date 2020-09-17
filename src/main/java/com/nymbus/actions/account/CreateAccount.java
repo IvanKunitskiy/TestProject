@@ -561,13 +561,12 @@ public class CreateAccount {
     public String getDateOpenedValue(Account account) {
         String dateOpened = Pages.addAccountPage().getDateOpened();
 
-        while (dateOpened.isEmpty()) {
+        if (dateOpened.isEmpty()) {
             SelenideTools.refresh();
             AccountActions.createAccount().setProductType(account);
             AccountActions.createAccount().setProduct(account);
             dateOpened = Pages.addAccountPage().getDateOpened();
         }
-
         return dateOpened;
     }
 }
