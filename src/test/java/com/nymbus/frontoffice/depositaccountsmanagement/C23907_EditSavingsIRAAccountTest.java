@@ -19,7 +19,6 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C23907_EditSavingsIRAAccountTest extends BaseTest {
 
-    private IndividualClient client;
     private Account savingsIRAAccount;
 
     @BeforeMethod
@@ -28,7 +27,7 @@ public class C23907_EditSavingsIRAAccountTest extends BaseTest {
         // Set up client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up IRA account
         savingsIRAAccount = new Account().setIRAAccountData();

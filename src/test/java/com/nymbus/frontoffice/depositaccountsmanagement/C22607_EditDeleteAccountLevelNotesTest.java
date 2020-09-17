@@ -5,12 +5,10 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.notes.NotesActions;
-import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.SelenideTools;
-import com.nymbus.data.entity.User;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -27,7 +25,6 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
 
-    private IndividualClient client;
     private Account chkAccount;
     private Note note;
 
@@ -37,7 +34,7 @@ public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
         // Set up a client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up a note
         note = new Note().setDefaultNoteData();

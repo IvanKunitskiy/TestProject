@@ -133,7 +133,7 @@ public class AddAccountPage extends PageTools {
 
     private By mailCodeSelectorButton = By.xpath("//div[@id='mailingcode']");
     private By mailCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By mailCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By mailCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
 
     @Step("Wait for account holder name")
     public void waitForAccountHolderName() {
@@ -593,9 +593,6 @@ public class AddAccountPage extends PageTools {
 
     @Step("Returning the 'Date Opened' value")
     public String getDateOpened() {
-        waitForElementVisibility(dateOpened);
-        SelenideTools.sleep(2);
-        waitForElementClickable(dateOpened);
         return getElementAttributeValue("value", dateOpened);
     }
 

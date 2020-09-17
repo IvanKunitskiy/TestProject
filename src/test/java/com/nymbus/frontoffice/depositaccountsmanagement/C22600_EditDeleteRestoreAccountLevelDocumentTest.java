@@ -24,7 +24,6 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22600_EditDeleteRestoreAccountLevelDocumentTest extends BaseTest {
 
-    private IndividualClient client;
     private Account checkingAccount;
     private AccountLevelDocument accountLevelDocument;
 
@@ -34,7 +33,7 @@ public class C22600_EditDeleteRestoreAccountLevelDocumentTest extends BaseTest {
         // Set up Client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account level document factory
         accountLevelDocument = new AccountLevelDocumentFactory().getAccountLevelDocument();

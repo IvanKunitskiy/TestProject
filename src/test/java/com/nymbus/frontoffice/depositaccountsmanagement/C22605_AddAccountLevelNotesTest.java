@@ -22,7 +22,6 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22605_AddAccountLevelNotesTest extends BaseTest {
 
-    private IndividualClient client;
     private Account chkAccount;
     private Note note1;
     private Note note2;
@@ -33,7 +32,7 @@ public class C22605_AddAccountLevelNotesTest extends BaseTest {
         // Set up a client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up a note
         note1 = new Note().setDefaultNoteData();
