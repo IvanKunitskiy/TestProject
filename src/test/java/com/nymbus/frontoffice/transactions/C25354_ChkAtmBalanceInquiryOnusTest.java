@@ -101,7 +101,7 @@ public class C25354_ChkAtmBalanceInquiryOnusTest extends BaseTest {
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -120,7 +120,7 @@ public class C25354_ChkAtmBalanceInquiryOnusTest extends BaseTest {
 
         // Re-login in system for updating teller session
         Actions.loginActions().doLogOut();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Perform transaction
         Actions.transactionActions().loginTeller();
@@ -147,7 +147,7 @@ public class C25354_ChkAtmBalanceInquiryOnusTest extends BaseTest {
 
         logInfo("Step 4: Search for CHK account from the precondition and go to the Transactions history tab.\n" +
                 "Verify that 129-Usage fee transaction was not generated with ON-US Terminal");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
         AccountActions.retrievingAccountData().goToTransactionsTab();
         Assert.assertFalse(Actions.transactionActions().isTransactionCodePresent(TransactionCode.ATM_USAGE_129.getTransCode()),

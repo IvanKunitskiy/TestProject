@@ -41,7 +41,7 @@ public class C22634_GLDebit_MiscCredit_SavingsAcc_Test extends BaseTest {
         IndividualClient client = individualClientBuilder.buildClient();
         savingsAccount = new Account().setSavingsAccountData();
         transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -97,7 +97,7 @@ public class C22634_GLDebit_MiscCredit_SavingsAcc_Test extends BaseTest {
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         AccountActions.editAccount().goToInstructionsTab();
@@ -147,7 +147,7 @@ public class C22634_GLDebit_MiscCredit_SavingsAcc_Test extends BaseTest {
         webAdminTransactionData.setPostingDate(transactionData.getPostingDate());
         webAdminTransactionData.setGlFunctionValue(GLFunctionValue.DEPOSIT_ITEM);
         Selenide.open(Constants.WEB_ADMIN_URL);
-        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         WebAdminActions.webAdminTransactionActions().goToTransactionUrl(savingsAccount.getAccountNumber());
         Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
                 "Transaction items doesn't find !");

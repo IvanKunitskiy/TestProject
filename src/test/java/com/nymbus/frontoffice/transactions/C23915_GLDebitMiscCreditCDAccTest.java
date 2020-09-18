@@ -42,7 +42,7 @@ public class C23915_GLDebitMiscCreditCDAccTest extends BaseTest {
         IndividualClient client = individualClientBuilder.buildClient();
         cdAccount = new Account().setCDAccountData();
         transaction = new TransactionConstructor(new GLDebitMiscCreditCDAccBuilder()).constructTransaction();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -86,7 +86,7 @@ public class C23915_GLDebitMiscCreditCDAccTest extends BaseTest {
         balanceData.addAmount(transaction.getTransactionDestination().getAmount());
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 7: Close Transaction Receipt popup and" +
                 "Go to the account used in Misc Credit item. Verify such fields: current balance, Original Balance, Total Contributions for Life of Account");
@@ -117,7 +117,7 @@ public class C23915_GLDebitMiscCreditCDAccTest extends BaseTest {
         webAdminTransactionData.setPostingDate(transactionData.getPostingDate());
         webAdminTransactionData.setGlFunctionValue(GLFunctionValue.DEPOSIT_ITEM_CD_ACC);
         Selenide.open(Constants.WEB_ADMIN_URL);
-        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         WebAdminActions.webAdminTransactionActions().goToTransactionUrl(cdAccount.getAccountNumber());
         Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
                 "Transaction items doesn't find !");

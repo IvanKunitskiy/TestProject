@@ -5,7 +5,6 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
@@ -83,7 +82,7 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         debitCardForCheckingAcc.setNameOnCard(client.getNameForDebitCard());
 
         // Log in and create client
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Get terminal ID
         String terminalId = Actions.nonTellerTransactionActions().getTerminalID(1);
@@ -143,7 +142,7 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(savingAccTransactionData, savingsAccountNumber, transcode);
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 4: Search for Savings account from the precondition and open it on Instructions tab");
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
