@@ -39,7 +39,7 @@ public class C24749_PerformECForMiscDebitGLCreditCHKAccTest extends BaseTest {
         Account checkAccount = new Account().setCHKAccountData();
         miscDebitGLCreditTransaction = new TransactionConstructor(new MiscDebitGLCreditTransactionBuilder()).constructTransaction();
         Transaction glDebitMiscCreditTransaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -56,7 +56,7 @@ public class C24749_PerformECForMiscDebitGLCreditCHKAccTest extends BaseTest {
         // Perform transaction
         Actions.transactionActions().performGLDebitMiscCreditTransaction(glDebitMiscCreditTransaction);
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // remove REG CC rule instruction
         Actions.clientPageActions().searchAndOpenClientByName(glDebitMiscCreditTransaction.getTransactionDestination().getAccountNumber());
@@ -67,7 +67,7 @@ public class C24749_PerformECForMiscDebitGLCreditCHKAccTest extends BaseTest {
 
         // Logout and login for update teller session
         Actions.loginActions().doLogOut();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // perform misc debit GL credit transaction
         // perform transaction
@@ -80,7 +80,7 @@ public class C24749_PerformECForMiscDebitGLCreditCHKAccTest extends BaseTest {
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         Actions.clientPageActions().searchAndOpenClientByName(miscDebitGLCreditTransaction.getTransactionSource().getAccountNumber());
 
@@ -100,7 +100,7 @@ public class C24749_PerformECForMiscDebitGLCreditCHKAccTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void verifyErrorCorrectForMiscDebitGLCreditTransactionOnCHKAcc() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Go to Journal page and log in to the proof date");
         Actions.journalActions().goToJournalPage();
@@ -140,7 +140,7 @@ public class C24749_PerformECForMiscDebitGLCreditCHKAccTest extends BaseTest {
 
         logInfo("Step 11: Log in to the WebAdmin, go to RulesUI and search for the error corrected transaction items");
         Selenide.open(Constants.WEB_ADMIN_URL);
-        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         WebAdminActions.webAdminTransactionActions().goToTransactionUrl(miscDebitGLCreditTransaction.getTransactionSource().getAccountNumber());
         Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
                 "Transaction items doesn't find !");

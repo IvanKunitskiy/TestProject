@@ -87,7 +87,7 @@ public class C26516_WithdrawalDDAInternationalSurchargeFRGNTest extends BaseTest
         foreignFeeValue = Actions.nonTellerTransactionActions().getForeignFee(1);
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -104,7 +104,7 @@ public class C26516_WithdrawalDDAInternationalSurchargeFRGNTest extends BaseTest
 
         // Re-login in system for updating teller session
         Actions.loginActions().doLogOut();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Perform transaction
         Actions.transactionActions().loginTeller();
@@ -114,7 +114,7 @@ public class C26516_WithdrawalDDAInternationalSurchargeFRGNTest extends BaseTest
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
         AccountActions.editAccount().goToInstructionsTab();
@@ -146,7 +146,7 @@ public class C26516_WithdrawalDDAInternationalSurchargeFRGNTest extends BaseTest
         WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(chkAccTransactionData, chkAccountNumber, transcode);
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         expectedBalanceData.reduceAmount(transactionAmount + surchargeAmount + foreignFeeValue);
 
         logInfo("Step 4: Search for CHK account from the precondition and Verify Account's: \n" +

@@ -73,7 +73,7 @@ public class C26513_BalanceInquiryCrdOnusTest extends BaseTest {
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -100,7 +100,7 @@ public class C26513_BalanceInquiryCrdOnusTest extends BaseTest {
         Actions.nonTellerTransactionActions().performBalanceInquiryCrdOnusTransaction(getFieldsMap(nonTellerTransactionData), FIELD_39_EXPECTED_CODE);
 
         logInfo("Step 3: Log in to the system");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 4: Search for the Client owner of the Debit Card from the precondition#2 and open his profile on Maintenance tab");
         logInfo("Step 5: Click [View all Cards] button in 'Cards Management' widget");

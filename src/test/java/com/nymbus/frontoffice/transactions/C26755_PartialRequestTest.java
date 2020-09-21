@@ -84,7 +84,7 @@ public class C26755_PartialRequestTest extends BaseTest {
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
         // Log in and create client
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
@@ -104,7 +104,7 @@ public class C26755_PartialRequestTest extends BaseTest {
 
         // Re-login in system for updating teller session
         Actions.loginActions().doLogOut();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Perform transaction
         Actions.transactionActions().loginTeller();
@@ -114,7 +114,7 @@ public class C26755_PartialRequestTest extends BaseTest {
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         Actions.clientPageActions().searchAndOpenClientByName(checkingAccountNumber);
         AccountActions.editAccount().goToInstructionsTab();
@@ -154,7 +154,7 @@ public class C26755_PartialRequestTest extends BaseTest {
         Assert.assertTrue(dataMap.get("54").endsWith(expectedTransactionAmount),"Field DE 54 is incorrect!");
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         expectedBalanceData.reduceAmount(transactionAmount - holdAmount);
 
         logInfo("Step 4: Search for CHK account from the precondition and Verify Account's: \n" +
