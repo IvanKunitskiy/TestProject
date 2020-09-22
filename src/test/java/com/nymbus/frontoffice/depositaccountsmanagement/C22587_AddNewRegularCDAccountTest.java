@@ -79,24 +79,7 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         AccountActions.createAccount().setProduct(cdAccount);
 
         logInfo("Step 6: Look through the fields. Check that fields are prefilled by default");
-        Assert.assertEquals(AccountActions.createAccount().getDateOpenedValue(cdAccount), DateTime.getLocalDateTimeByPattern("MM/dd/yyyy"), "'Date' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getAccountType(), client.getIndividualType().getClientType().getClientType(), "'Account type' is prefilled with wrong value");
-        final String accountHolderName = client.getIndividualType().getFirstName() + " " + client.getIndividualType().getLastName() + " (" + client.getIndividualType().getClientID() + ")";
-        Assert.assertEquals(Pages.addAccountPage().getAccountHolderName(), accountHolderName, "'Name' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getAccountHolderRelationship(), cdAccount.getAccountHolder(), "'Relationship' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getAccountHolderClientType(), client.getIndividualType().getClientType().getClientType(), "'Client type' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getAccountHolderTaxID(), client.getIndividualType().getTaxID(), "'Tax ID' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getOriginatingOfficer(), client.getIndividualClientDetails().getSelectOfficer(), "'Originating officer' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getCurrentOfficer(), client.getIndividualClientDetails().getSelectOfficer(), "'Current officer' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getBankBranch(), cdAccount.getBankBranch(), "'Bank branch' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getTermType(), cdAccount.getTermType(), "'Term Type' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getInterestFrequency(), cdAccount.getInterestFrequency(), "'Interest Frequency' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getInterestType(), cdAccount.getInterestType(), "'Interest Type' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getMailCode(), client.getIndividualClientDetails().getMailCode().getMailCode(), "'Mail code' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getApplyInterestTo(), cdAccount.getApplyInterestTo(), "'Apply interes to' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getAutoRenewable(), cdAccount.getAutoRenewable(), "'Auto Renewable' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getTransactionalAccount().toLowerCase(), "no", "'Transactional Account' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' is prefilled with wrong value");
+        AccountActions.createAccount().verifyRegularCdAccountPrefilledFields(cdAccount, client);
 
         logInfo("Step 7: Select values in such drop-down fields:");
         logInfo("Step 8: Fill in such text fields with valid data (except Account Number field):");
