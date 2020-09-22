@@ -29,11 +29,7 @@ import java.io.File;
 @Owner("Petro")
 public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
 
-    private IndividualClient client;
     private Account chkAccount;
-    private HoldInstruction instruction;
-    private Transaction transaction;
-    private File balanceInquiryImageFile;
 
     @BeforeMethod
     public void preCondition() {
@@ -41,18 +37,18 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
         // Set up client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account
         chkAccount = new Account().setCHKAccountData();
 
         // Set up transaction
-        transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
         transaction.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
         transaction.getTransactionDestination().setTransactionCode("109 - Deposit");
 
         // Set up instruction
-        instruction =  new InstructionConstructor(new HoldInstructionBuilder()).constructInstruction(HoldInstruction.class);
+        HoldInstruction instruction = new InstructionConstructor(new HoldInstructionBuilder()).constructInstruction(HoldInstruction.class);
         instruction.setAmount(10);
 
         // Create a client
@@ -99,7 +95,7 @@ public class C22575_BalanceInquiryOnCHKAccountTest extends BaseTest {
         Pages.accountDetailsPage().clickBalanceInquiry();
 
         logInfo("Step 4: Pay attention to the Available Balance and Current Balance values");
-        balanceInquiryImageFile = Actions.balanceInquiryActions().saveBalanceInquiryImage();
+        File balanceInquiryImageFile = Actions.balanceInquiryActions().saveBalanceInquiryImage();
         Actions.balanceInquiryActions().assertAvailableAndCurrentBalanceValuesFromReceipt(balanceInquiryImageFile, accountAvailableBalance, accountCurrentBalance);
 
         logInfo("Step 5: Click [Print] button");

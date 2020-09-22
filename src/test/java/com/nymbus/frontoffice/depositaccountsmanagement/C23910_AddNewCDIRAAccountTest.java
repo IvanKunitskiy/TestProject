@@ -80,26 +80,7 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
         AccountActions.createAccount().setProduct(cdIRAAccount);
 
         logInfo("Step 6: Look through the fields. Check that fields are prefilled by default");
-        Assert.assertEquals(Pages.addAccountPage().getAccountType(), client.getIndividualType().getClientType().getClientType(), "'Account type' is prefilled with wrong value");
-        final String accountHolderName = client.getIndividualType().getFirstName() + " " + client.getIndividualType().getLastName() + " (" + client.getIndividualType().getClientID() + ")";
-        Assert.assertEquals(Pages.addAccountPage().getAccountHolderName(), accountHolderName, "'Name' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getAccountHolderRelationship(), cdIRAAccount.getAccountHolder(), "'Relationship' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getAccountHolderClientType(), client.getIndividualType().getClientType().getClientType(), "'Client type' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getAccountHolderTaxID(), client.getIndividualType().getTaxID(), "'Tax ID' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getDateOpened(), DateTime.getLocalDateTimeByPattern("MM/dd/yyyy"), "'Date' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getOriginatingOfficer(), client.getIndividualClientDetails().getSelectOfficer(), "'Originating officer' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getCurrentOfficer(), client.getIndividualClientDetails().getSelectOfficer(), "'Current officer' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getBankBranch(), cdIRAAccount.getBankBranch(), "'Bank branch' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getTermType(), cdIRAAccount.getTermType(), "'Term Type' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getAutoRenewable(), cdIRAAccount.getAutoRenewable(), "'Auto Renewable' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getInterestFrequency(), cdIRAAccount.getInterestFrequency(), "'Interest Frequency' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getApplyInterestTo(), "Remain in Account", "'Apply interest to' value does not match");
-        Assert.assertEquals(Pages.addAccountPage().getInterestType(), "Simple", "'Interest Type' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getTransactionalAccount().toLowerCase(), "no", "'Transactional Account' value does not match");
-        Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' value does not match");
-        Assert.assertEquals(Pages.addAccountPage().getDateOfBirth(), client.getIndividualType().getBirthDate(), "'Date Of Birth' value does not match");
-        Assert.assertEquals(Pages.addAccountPage().getIRADistributionFrequency(), cdIRAAccount.getIraDistributionFrequency(), "'IRA Distribution Frequency' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getIRADistributionCode(), cdIRAAccount.getIraDistributionCode(), "'IRA Distribution Code' is prefilled with wrong value");
+        AccountActions.createAccount().verifyCdIraAccountPrefilledFields(cdIRAAccount, client);
 
         logInfo("Step 7: Select values in such drop-down fields:");
         logInfo("Step 8: Fill in such text fields with valid data (except Account Number field):");
@@ -117,51 +98,15 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
         Pages.accountDetailsPage().waitForFullProfileButton();
 
         logInfo("Step 12: Pay attention to the fields that were filled in during account creation");
-        if (Pages.accountDetailsPage().isMoreButtonVisible()) {
-            Pages.accountDetailsPage().clickMoreButton();
-        }
-        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), cdIRAAccount.getAccountTitle(), "'Title' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), cdIRAAccount.getCurrentOfficer(), "'Current Officer' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), cdIRAAccount.getBankBranch(), "'Bank Branch' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getInterestFrequencyCode(), cdIRAAccount.getInterestFrequency(), "'Interest Frequency' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getApplyInterestTo(), cdIRAAccount.getApplyInterestTo(), "'Apply Interest To' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getInterestType(), cdIRAAccount.getInterestType(), "'Interest Type' value does not match");
-        if (cdIRAAccount.getCorrespondingAccount() != null) {
-            Assert.assertEquals(Pages.accountDetailsPage().getCorrespondingAccount(), cdIRAAccount.getCorrespondingAccount(), "'Corresponding Account' value does not match");
-        }
-        if (cdIRAAccount.getCallClassCode() != null) {
-            Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), cdIRAAccount.getCallClassCode(), "'Call Class' value does not match");
-        }
-        Assert.assertEquals(Pages.accountDetailsPage().getIraDistributionFrequency(), cdIRAAccount.getIraDistributionFrequency(), "' IRA Distribution Frequency' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getIraDistributionCode(), cdIRAAccount.getIraDistributionCode(), "' IRA Distribution Code' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getIraDistributionAmount(), cdIRAAccount.getIraDistributionAmount(), "'IRA distribution amount' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), cdIRAAccount.getDateOpened(), "'Date Opened' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateNextIRADistribution(), cdIRAAccount.getDateNextIRADistribution(), "'Date next IRA distribution' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateOfFirstDeposit(), cdIRAAccount.getDateOfFirstDeposit(), "'Date Of First Deposit' value does not match");
+        AccountActions.accountDetailsActions().clickMoreButton();
+        AccountActions.accountDetailsActions().verifyCdIraAccountRecords(cdIRAAccount);
 
         logInfo("Step 13: Check the Maturity Date field value (verify that it's calculated based on Date Opened + Term of Account)");
         Assert.assertEquals(Pages.accountDetailsPage().getMaturityDate(), cdIRAAccount.getMaturityDate(), "'Maturity Date' value does not match");
 
         logInfo("Step 14: Click [Edit] button and pay attention to the fields that were filled in during account creation");
         Pages.accountDetailsPage().clickEditButton();
-        Assert.assertEquals(Pages.editAccountPage().getAccountTitleValueInEditMode(), cdIRAAccount.getAccountTitle(), "'Title' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), cdIRAAccount.getCurrentOfficer(), "'Current Officer' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), cdIRAAccount.getBankBranch(), "'Bank Branch' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getInterestFrequencyCode(), cdIRAAccount.getInterestFrequency(), "'Interest Frequency' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getApplyInterestTo(), cdIRAAccount.getApplyInterestTo(), "'Apply Interest To' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getInterestType(), cdIRAAccount.getInterestType(), "'Interest Type' value does not match");
-        if (cdIRAAccount.getCorrespondingAccount() != null) {
-            Assert.assertEquals(Pages.editAccountPage().getCorrespondingAccount(), cdIRAAccount.getCorrespondingAccount(), "'Corresponding Account' value does not match");
-        }
-        if (cdIRAAccount.getCallClassCode() != null) {
-            Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), cdIRAAccount.getCallClassCode(), "'Call Class' value does not match");
-        }
-        Assert.assertEquals(Pages.editAccountPage().getIraDistributionFrequencyInEditMode(), cdIRAAccount.getIraDistributionFrequency(), "' IRA Distribution Frequency' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getIraDistributionCodeInEditMode(), cdIRAAccount.getIraDistributionCode(), "' IRA Distribution Code' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getIraDistributionAmountInEditMode(), cdIRAAccount.getIraDistributionAmount(), "'IRA distribution amount' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getDateOpenedValueInEditMode(), cdIRAAccount.getDateOpened(), "'Date Opened' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getDateNextIRADistributionInEditMode(), cdIRAAccount.getDateNextIRADistribution(), "'Date next IRA distribution' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getDateOfFirstDeposit(), cdIRAAccount.getDateOfFirstDeposit(), "'Date Of First Deposit' value does not match");
+        AccountActions.editAccount().verifyCdIraFieldsAfterCreationInEditMode(cdIRAAccount);
 
         logInfo("Step 15: Do not make any changes and go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();

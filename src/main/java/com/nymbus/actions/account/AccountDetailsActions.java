@@ -112,9 +112,8 @@ public class AccountDetailsActions {
 
     public void verifyChkAccountRecords(Account account) {
         Assert.assertEquals(Pages.accountDetailsPage().getProductValue(), account.getProduct(), "'Product' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), account.getAccountTitle(), "'Title' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), account.getCurrentOfficer(), "'Current Officer' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), account.getInterestRate(), "'Interest Rate' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getStatementCycle(), account.getStatementCycle(), "'Statement Cycle' value does not match");
         if (account.getCallClassCode() != null) {
             Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), account.getCallClassCode(), "'Call Class' value does not match");
         }
@@ -122,5 +121,38 @@ public class AccountDetailsActions {
             Assert.assertEquals(Pages.accountDetailsPage().getChargeOrAnalyze(), account.getChargeOrAnalyze(), "'Charge or Analyze' value does not match");
         }
         Assert.assertEquals(Pages.accountDetailsPage().getAccountAnalysisValue(), account.getAccountAnalysis(), "'Account Analysis' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), account.getAccountTitle(), "'Title' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), account.getInterestRate(), "'Interest Rate' value does not match");
+    }
+
+    /**
+     * CD IRA account verification
+     */
+
+    public void verifyCdIraAccountRecords(Account account) {
+        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), account.getAccountTitle(), "'Title' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), account.getCurrentOfficer(), "'Current Officer' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), account.getBankBranch(), "'Bank Branch' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getInterestFrequencyCode(), account.getInterestFrequency(), "'Interest Frequency' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getApplyInterestTo(), account.getApplyInterestTo(), "'Apply Interest To' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getInterestType(), account.getInterestType(), "'Interest Type' value does not match");
+        if (account.getCorrespondingAccount() != null) {
+            Assert.assertEquals(Pages.accountDetailsPage().getCorrespondingAccount(), account.getCorrespondingAccount(), "'Corresponding Account' value does not match");
+        }
+        if (account.getCallClassCode() != null) {
+            Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), account.getCallClassCode(), "'Call Class' value does not match");
+        }
+        Assert.assertEquals(Pages.accountDetailsPage().getIraDistributionFrequency(), account.getIraDistributionFrequency(), "' IRA Distribution Frequency' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getIraDistributionCode(), account.getIraDistributionCode(), "' IRA Distribution Code' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), account.getDateOpened(), "'Date Opened' value does not match");
+        if (!Pages.accountDetailsPage().getIraDistributionAmount().isEmpty()) {
+            Assert.assertEquals(Pages.accountDetailsPage().getIraDistributionAmount(), account.getIraDistributionAmount(), "'IRA distribution amount' value does not match");
+        }
+        if (!Pages.accountDetailsPage().getDateNextIRADistribution().isEmpty()) {
+            Assert.assertEquals(Pages.accountDetailsPage().getDateNextIRADistribution(), account.getDateNextIRADistribution(), "'Date next IRA distribution' value does not match");
+        }
+        if (!Pages.accountDetailsPage().getDateOfFirstDeposit().isEmpty()) {
+            Assert.assertEquals(Pages.accountDetailsPage().getDateOfFirstDeposit(), account.getDateOfFirstDeposit(), "'Date Of First Deposit' value does not match");
+        }
     }
 }

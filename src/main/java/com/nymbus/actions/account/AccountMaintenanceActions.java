@@ -97,7 +97,6 @@ public class AccountMaintenanceActions {
                 "'Automatic Overdraft Status' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Rate") >= 1,
                 "'Interest Rate' row count is incorrect!");
-
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Number of Debit Cards issued") >= 1,
                 "'Number of Debit Cards issued' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Reason Debit Card Charge Waived") >= 1,
