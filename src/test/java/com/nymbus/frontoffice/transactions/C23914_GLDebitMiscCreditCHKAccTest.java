@@ -40,7 +40,7 @@ public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
         IndividualClient client = individualClientBuilder.buildClient();
         checkAccount = new Account().setCHKAccountData();
         transaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -66,7 +66,7 @@ public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void verifyTransactionGLDebitMiscCredit() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Go to Teller page and log in to the proof date");
         Actions.transactionActions().openProofDateLoginModalWindow();
@@ -99,7 +99,7 @@ public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
                 "Open it on Instructions tab");
         Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
         AccountActions.editAccount().goToInstructionsTab();
@@ -142,7 +142,7 @@ public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
         webAdminTransactionData.setPostingDate(transactionData.getPostingDate());
         webAdminTransactionData.setGlFunctionValue(GLFunctionValue.DEPOSIT_ITEM_CHK_ACC);
         Selenide.open(Constants.WEB_ADMIN_URL);
-        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         WebAdminActions.webAdminTransactionActions().goToTransactionUrl(checkAccount.getAccountNumber());
         Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
                 "Transaction items doesn't find!");

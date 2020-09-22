@@ -41,7 +41,7 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
         Account checkAccount = new Account().setCHKAccountData();
         miscDebitGLCreditTransaction = new TransactionConstructor(new MiscDebitGLCreditTransactionBuilder()).constructTransaction();
         Transaction glDebitMiscCreditTransaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -60,7 +60,7 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
         Actions.transactionActions().performGLDebitMiscCreditTransaction(glDebitMiscCreditTransaction);
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Delete Reg CC instruction if exists
         Actions.clientPageActions().searchAndOpenClientByName(glDebitMiscCreditTransaction.getTransactionDestination().getAccountNumber());
@@ -73,7 +73,7 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void verifyTransactionMiscDebitGLCreditCHKAcc() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenClientByName(miscDebitGLCreditTransaction.getTransactionSource().getAccountNumber());
         ExtendedBalanceDataForCHKAcc balanceData = AccountActions.retrievingAccountData().getExtendedBalanceDataForCHKAcc();
         double averageBalance = balanceData.getAverageBalance();
@@ -122,7 +122,7 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         Actions.clientPageActions().searchAndOpenClientByName(miscDebitGLCreditTransaction.getTransactionSource().getAccountNumber());
         ExtendedBalanceDataForCHKAcc actualBalanceDate = AccountActions.retrievingAccountData().getExtendedBalanceDataForCHKAcc();
@@ -140,7 +140,7 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
         webAdminTransactionData.setPostingDate(transactionData.getPostingDate());
         webAdminTransactionData.setGlFunctionValue(GLFunctionValue.DEPOSIT_ITEM_CHK_ACC);
         Selenide.open(Constants.WEB_ADMIN_URL);
-        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         WebAdminActions.webAdminTransactionActions().goToTransactionUrl(accountNumber);
         Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
                 "Transaction items doesn't find !");

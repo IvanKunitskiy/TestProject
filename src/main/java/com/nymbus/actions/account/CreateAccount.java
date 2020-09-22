@@ -44,7 +44,16 @@ public class CreateAccount {
         setAddNewOption(account);
         setProductType(account);
         setProduct(account);
-        setValuesInFieldsRequiredForSavingsAccount(account);
+        Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        setMailCode(account);
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
+        Pages.addAccountPage().setInterestRate(account.getInterestRate());
+        setStatementCycle(account);
+        setCallClassCode(account);
+        setInterestFrequency(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
     }

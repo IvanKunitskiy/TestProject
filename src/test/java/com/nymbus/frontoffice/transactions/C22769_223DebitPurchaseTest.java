@@ -5,7 +5,6 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
@@ -73,7 +72,7 @@ public class C22769_223DebitPurchaseTest extends BaseTest {
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
         // Log in and create client
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
@@ -93,7 +92,7 @@ public class C22769_223DebitPurchaseTest extends BaseTest {
 
         // Re-login in system for updating teller session
         Actions.loginActions().doLogOut();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Perform transaction
         Actions.transactionActions().loginTeller();
@@ -103,7 +102,7 @@ public class C22769_223DebitPurchaseTest extends BaseTest {
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         transactionAmount = glDebitMiscCreditTransaction.getTransactionDestination().getAmount();
         Actions.clientPageActions().searchAndOpenClientByName(savingAccountNumber);
@@ -128,7 +127,7 @@ public class C22769_223DebitPurchaseTest extends BaseTest {
         WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(savingAccTransactionData, savingAccountNumber, transcode);
 
         logInfo("Step 3: Log in to the system");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         expectedBalanceData.subtractAmount(transactionAmount);
 
         logInfo("Step 4: Search for Savings account from the precondition and verify its: \n" +

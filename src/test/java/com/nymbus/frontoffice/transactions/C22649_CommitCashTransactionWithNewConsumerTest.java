@@ -4,7 +4,6 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -38,7 +37,7 @@ public class C22649_CommitCashTransactionWithNewConsumerTest extends BaseTest {
         Account chkAccount = new Account().setCHKAccountData();
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -64,7 +63,7 @@ public class C22649_CommitCashTransactionWithNewConsumerTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void verifyCashTransactionWithNewConsumer() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Go to Teller page and log in to the proof date");
         Actions.transactionActions().goToTellerPage();
@@ -98,7 +97,7 @@ public class C22649_CommitCashTransactionWithNewConsumerTest extends BaseTest {
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 10: Go to Clients screen and search for created consumer");
         logInfo("Step 11: Open his profile and verify the displayed fields");

@@ -5,7 +5,6 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
@@ -82,7 +81,7 @@ public class C22771_TransferFromSavToDDAOnusTest extends BaseTest {
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Get terminal ID
         String terminalId = Actions.nonTellerTransactionActions().getTerminalID(1);
@@ -108,7 +107,7 @@ public class C22771_TransferFromSavToDDAOnusTest extends BaseTest {
 
         // Re-login in system for updating teller session
         Actions.loginActions().doLogOut();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Perform transaction
         Actions.transactionActions().loginTeller();
@@ -118,7 +117,7 @@ public class C22771_TransferFromSavToDDAOnusTest extends BaseTest {
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
         AccountActions.editAccount().goToInstructionsTab();
@@ -152,7 +151,7 @@ public class C22771_TransferFromSavToDDAOnusTest extends BaseTest {
         WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(savingAccTransactionData, savingsAccountNumber, transcode);
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 4: Search for Saving account from the precondition and Verify Account's: \n" +
                 "- current balance \n" +

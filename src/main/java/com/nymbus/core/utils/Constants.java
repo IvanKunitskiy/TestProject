@@ -1,5 +1,7 @@
 package com.nymbus.core.utils;
 
+import com.nymbus.newmodels.UserCredentials;
+
 import java.util.Stack;
 
 public class Constants {
@@ -24,16 +26,16 @@ public class Constants {
 
     public static String INDIVIDUAL_TYPE_FOR_WEB_ADMIN_QUERY = getIndividualType();
 
-    public static Stack<String> USERS = new Stack<>();
+    public static Stack<UserCredentials> USERS = new Stack<>();
     static {
-        USERS.push("autotestfirst");
-        USERS.push("autotestsecond");
-        USERS.push("autotestthird");
-        USERS.push("autotestfourth");
-        USERS.push("autotestfifth");
-        USERS.push("autotestsixth");
-        USERS.push("autestthredone");
-        USERS.push("autotest");
+        USERS.push(new UserCredentials("autotestfirst", "autotestfirst"));
+        USERS.push(new UserCredentials("autotestsecond", "autotestsecond"));
+        USERS.push(new UserCredentials("autotestthird", "autotestthird"));
+        USERS.push(new UserCredentials("autotestfourth", "autotestfourth"));
+        USERS.push(new UserCredentials("autotestfifth", "autotestfifth"));
+        USERS.push(new UserCredentials("autotestsixth", "autotestsixth"));
+        USERS.push(new UserCredentials("autestthredone", "autestthredone"));
+        USERS.push(new UserCredentials("autotest", "autotest"));
     }
 
     /**

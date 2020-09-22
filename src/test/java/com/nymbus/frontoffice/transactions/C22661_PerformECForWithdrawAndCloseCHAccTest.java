@@ -5,7 +5,6 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.verifyingmodels.ClosedAccountData;
@@ -51,7 +50,7 @@ public class C22661_PerformECForWithdrawAndCloseCHAccTest extends BaseTest {
         withdrawTransaction.getTransactionSource().setTransactionCode(TransactionCode.WITHDRAW_AND_CLOSE.getTransCode());
         withdrawTransaction.getTransactionSource().setAccountNumber(checkAccount.getAccountNumber());
 
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -68,7 +67,7 @@ public class C22661_PerformECForWithdrawAndCloseCHAccTest extends BaseTest {
         performGLDebitMiscCreditTransaction(transaction, checkAccount.getDateOpened());
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Go to account details
         Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
@@ -81,7 +80,7 @@ public class C22661_PerformECForWithdrawAndCloseCHAccTest extends BaseTest {
 
         // Re-login in system for reset teller session
         Actions.loginActions().doLogOut();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         //  perform withdraw transaction
         performWithdrawAndCloseTransaction(withdrawTransaction);
@@ -93,7 +92,7 @@ public class C22661_PerformECForWithdrawAndCloseCHAccTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void verifyECForWithdrawAndCloseTransaction() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Go to Journal page and log in to the proof date");
         Actions.transactionActions().loginTeller();

@@ -90,7 +90,7 @@ public class C25360_ChkAtmBalanceInquiryForeignTest extends BaseTest {
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -108,7 +108,7 @@ public class C25360_ChkAtmBalanceInquiryForeignTest extends BaseTest {
 
         // Re-login in system for updating teller session
         Actions.loginActions().doLogOut();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Perform transaction
         Actions.transactionActions().loginTeller();
@@ -118,7 +118,7 @@ public class C25360_ChkAtmBalanceInquiryForeignTest extends BaseTest {
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         Actions.clientPageActions().searchAndOpenClientByName(checkingAccountNumber);
         expectedBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
@@ -149,7 +149,7 @@ public class C25360_ChkAtmBalanceInquiryForeignTest extends BaseTest {
         logInfo("Step 4: Search for CHK account from the precondition and go to the Transactions history tab.\n" +
                 "Verify that 129-Usage fee transaction was generated with NOT ON-US Terminal with an amount= ForeignATMFeeBalanceInquiry bcsetting");
         logInfo("Step 5: Pay attention to CHK account Current Balance and Available Balance");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenClientByName(checkingAccountNumber);
 
         Assert.assertEquals(AccountActions.retrievingAccountData().getCurrentBalance(),

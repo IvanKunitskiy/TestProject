@@ -83,7 +83,7 @@ public class C26520_ManualMerchantAuthMultiPpeTest extends BaseTest {
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -100,7 +100,7 @@ public class C26520_ManualMerchantAuthMultiPpeTest extends BaseTest {
 
         // Re-login in system for updating teller session and capture account balances
         Actions.loginActions().doLogOut();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Perform transaction
         Actions.transactionActions().loginTeller();
@@ -111,7 +111,7 @@ public class C26520_ManualMerchantAuthMultiPpeTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
 
         // Login, capture current and available balance of the account and logout
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
         expectedBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         Actions.loginActions().doLogOut();
@@ -129,7 +129,7 @@ public class C26520_ManualMerchantAuthMultiPpeTest extends BaseTest {
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
         logInfo("Step 4: Search for CHK account from the precondition and verify its current and available balance");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
         Assert.assertEquals(AccountActions.retrievingAccountData().getCurrentBalance(),
                 expectedBalanceDataForCheckingAcc.getCurrentBalance(), "CHK account current balance is not correct!");

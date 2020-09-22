@@ -76,7 +76,7 @@ public class C22768_SavAtmBalanceInquiryOnusTest extends BaseTest {
                         "WaiveATUsageFeeAcronym is incorrect!");
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -94,7 +94,7 @@ public class C22768_SavAtmBalanceInquiryOnusTest extends BaseTest {
 
         // Re-login in system for updating teller session
         Actions.loginActions().doLogOut();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Perform transaction
         Actions.transactionActions().loginTeller();
@@ -104,7 +104,7 @@ public class C22768_SavAtmBalanceInquiryOnusTest extends BaseTest {
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
         AccountActions.editAccount().goToInstructionsTab();
@@ -138,7 +138,7 @@ public class C22768_SavAtmBalanceInquiryOnusTest extends BaseTest {
 
         logInfo("Step 4: Search for Savings account from the precondition and go to the Transactions history tab. \n" +
                         "Verify that 229-Usage fee transaction was not generated with ON-US Terminal");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
         AccountActions.retrievingAccountData().goToTransactionsTab();
         Pages.accountTransactionPage().waitForTransactionSection();

@@ -5,7 +5,6 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
@@ -81,7 +80,7 @@ public class C22765_SavAtmBalanceInquiryForeignTest extends BaseTest {
         double foreignFeeValue = Actions.nonTellerTransactionActions().getForeignATMFeeBalanceInquiry(1);
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -99,7 +98,7 @@ public class C22765_SavAtmBalanceInquiryForeignTest extends BaseTest {
 
         // Re-login in system for updating teller session
         Actions.loginActions().doLogOut();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Perform transaction
         Actions.transactionActions().loginTeller();
@@ -109,7 +108,7 @@ public class C22765_SavAtmBalanceInquiryForeignTest extends BaseTest {
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
         AccountActions.editAccount().goToInstructionsTab();
@@ -146,7 +145,7 @@ public class C22765_SavAtmBalanceInquiryForeignTest extends BaseTest {
         expectedBalanceDataForSavingAcc.subtractAmount(savingAccTransactionData.getAmount());
         savingAccTransactionData.setBalance(expectedBalanceDataForSavingAcc.getCurrentBalance());
 
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 4: Search for Savings account from the precondition and go to the Transactions history tab. \n" +
                 "Verify that 229-Usage fee transaction was generated with NOT ON-US Terminal with an amount=ForeignATMFeeBalanceInquiry bcsetting");

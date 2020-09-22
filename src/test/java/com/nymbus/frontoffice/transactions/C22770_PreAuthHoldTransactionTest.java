@@ -5,7 +5,6 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
@@ -80,7 +79,7 @@ public class C22770_PreAuthHoldTransactionTest extends BaseTest {
         debitCard.setTranslationTypeAllowed(TranslationTypeAllowed.BOTH_PIN_AND_SIGNATURE);
 
         // Log in and create client
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
@@ -97,7 +96,7 @@ public class C22770_PreAuthHoldTransactionTest extends BaseTest {
 
         // Re-login in system for updating teller session
         Actions.loginActions().doLogOut();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Perform transaction
         Actions.transactionActions().loginTeller();
@@ -107,7 +106,7 @@ public class C22770_PreAuthHoldTransactionTest extends BaseTest {
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         String INSTRUCTION_REASON = "Reg CC";
         Actions.clientPageActions().searchAndOpenClientByName(checkingAccountNumber);
@@ -134,7 +133,7 @@ public class C22770_PreAuthHoldTransactionTest extends BaseTest {
         expectedBalanceDataForCheckingAcc.reduceAvailableBalance(holdAmount);
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 4: Search for CHK account from the precondition and verify its: \n" +
                 "- Current balance \n" +
@@ -168,7 +167,7 @@ public class C22770_PreAuthHoldTransactionTest extends BaseTest {
         WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(transactionData, checkingAccountNumber, transcode);
         expectedBalanceDataForCheckingAcc.reduceCurrentBalance(holdAmount);
         transactionData.setBalance(expectedBalanceDataForCheckingAcc.getCurrentBalance());
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 6: Search for CHK account from the precondition and verify its: \n" +
                 "- Current balance \n" +
