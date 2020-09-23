@@ -162,6 +162,8 @@ public class C26510_WithdrawalFndFastCash80FrgnTest extends BaseTest {
                 "Transaction count is incorrect!");
         Assert.assertTrue(Actions.transactionActions().isTransactionCodePresent(TransactionCode.ATM_WITHDRAWAL_124.getTransCode(), offset),
                 "'124 - ATM Withdrawal' presents in transaction list");
+        Assert.assertTrue(Actions.transactionActions().isTransactionCodePresent(TransactionCode.ATM_USAGE_129_FEE.getTransCode(), offset),
+                "'129 - ATM Usage Fee' presents in transaction list");
 
         logInfo("Step 5: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
         logInfo("Step 6: Click [View History] link on the Debit Card from the precondition");
