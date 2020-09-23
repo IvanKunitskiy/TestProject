@@ -84,8 +84,6 @@ public class C22597_ActivateDormantAccountWithNoMonetaryTransactionTest extends 
         logInfo("Step 6: Go to Account Maintenance-> Maintenance History page and check that there are records about changing Account status to 'Active' and updating the 'Date Last Activity/Contact' field");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
-        AccountActions.accountMaintenanceActions().expandAllRows();
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date Last Activity/Contact") >= 1,
-                "'Date Last Activity/Contact' row count is incorrect!");
+        AccountActions.accountMaintenanceActions().verifyDormantAccountWithNoMonetaryTransactionRecords();
     }
 }

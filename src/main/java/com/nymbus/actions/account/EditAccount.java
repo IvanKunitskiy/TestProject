@@ -395,10 +395,10 @@ public class EditAccount {
     }
 
     /**
-     * Checking account verification
+     * Common account fields verification
      */
 
-    public void verifyChkAccountFieldsAreDisabledForEditing() {
+    private void verifyGeneralFieldsAreDisabledForEditing() {
         Assert.assertTrue(Pages.editAccountPage().isProductTypeFieldDisabledInEditMode(), "'Product Type' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAccountNumberFieldDisabledInEditMode(), "'Account Number' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAccountTypeFieldDisabledInEditMode(), "'Account Type' field is not disabled");
@@ -406,9 +406,30 @@ public class EditAccount {
         Assert.assertTrue(Pages.editAccountPage().isAccountStatusFieldDisabledInEditMode(), "'Account Status' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isDateOpenedFieldDisabledInEditMode(), "'Date Opened' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isDateClosedFieldDisabledInEditMode(), "'Date Closed field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isAnnualPercentageYieldFieldDisabledInEditMode(), "'Annual Percentage Yield' field is not disabled");
+    }
+
+    private void verifyGeneralFieldsWithUpdatedDataInEditMode(Account account) {
+        Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), account.getCurrentOfficer(), "'Current Officer' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), account.getBankBranch(), "'Bank Branch' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getFederalWHReasonInEditMode(), account.getFederalWHReason(), "'Federal WH Reason' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField1(), account.getUserDefinedField_1(), "'User Defined Field 1' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField2(), account.getUserDefinedField_2(), "'User Defined Field 2' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField3(), account.getUserDefinedField_3(), "'User Defined Field 3' value does not match");
+        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField4(), account.getUserDefinedField_4(), "'User Defined Field 4' value does not match");
+        if (account.getCallClassCode() != null) {
+            Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), account.getCallClassCode(), "'Call Class' value does not match");
+        }
+    }
+
+    /**
+     * Checking account verification
+     */
+
+    public void verifyChkAccountFieldsAreDisabledForEditing() {
+        verifyGeneralFieldsAreDisabledForEditing();
         Assert.assertTrue(Pages.editAccountPage().isDateLastDebitDisabledInEditMode(), "'Date Last Debit' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isNumberOfDebitsThisStatementCycleDisabledInEditMode(), "'Date Last Debit' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isAnnualPercentageYieldFieldDisabledInEditMode(), "'Annual Percentage Yield' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isDaysOverdraftFieldDisabledInEditMode(), "'Times Overdrawn-6 Months' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isDaysOverdraftAboveLimitFieldDisabledInEditMode(), "'Times $5000 Overdrawn-6 Months' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isLastDebitAmountFieldDisabledInEditMode(), "'Last Debit Amount' field is not disabled");
@@ -417,20 +438,11 @@ public class EditAccount {
     }
 
     public void verifyChkAccountFieldsWithUpdatedDataInEditMode(Account account) {
-        Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), account.getCurrentOfficer(), "'Current Officer' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), account.getBankBranch(), "'Bank Branch' value does not match");
+        verifyGeneralFieldsWithUpdatedDataInEditMode(account);
         Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), account.getInterestRate(), "'Interest Rate' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getChargeOrAnalyzeInEditMode(), account.getChargeOrAnalyze(), "'Charge or Analyze' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getAutomaticOverdraftStatus(), account.getAutomaticOverdraftStatus(), "'Automatic Overdraft Status' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getFederalWHReasonInEditMode(), account.getFederalWHReason(), "'Federal WH Reason' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getFederalWHPercent(), account.getFederalWHPercent(), "'Federal WH Percent' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField1(), account.getUserDefinedField_1(), "'User Defined Field 1' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField2(), account.getUserDefinedField_2(), "'User Defined Field 2' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField3(), account.getUserDefinedField_3(), "'User Defined Field 3' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField4(), account.getUserDefinedField_4(), "'User Defined Field 4' value does not match");
-        if (account.getCallClassCode() != null) {
-            Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), account.getCallClassCode(), "'Call Class' value does not match");
-        }
         Assert.assertEquals(Pages.editAccountPage().getNumberOfDebitCardsIssued(), account.getNumberOfDebitCardsIssued(), "'Number Of Debit Cards Issued' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getReasonDebitCardChargeWaived(), account.getReasonDebitCardChargeWaived(), "'Reason Debit Card Charge Waived' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getBankruptcyJudgement(), account.getBankruptcyJudgement(), "'Bankruptcy Judgement' value does not match");
@@ -456,13 +468,7 @@ public class EditAccount {
      */
 
     public void verifySavingsAccountFieldsAreDisabledForEditing() {
-        Assert.assertTrue(Pages.editAccountPage().isProductTypeFieldDisabledInEditMode(), "'Product Type' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isAccountNumberFieldDisabledInEditMode(), "'Account Number' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isAccountTypeFieldDisabledInEditMode(), "'Account Type' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isOriginatingOfficerFieldDisabledInEditMode(), "'Originating Officer' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isAccountStatusFieldDisabledInEditMode(), "'Account Status' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isDateOpenedFieldDisabledInEditMode(), "'Date Opened' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isDateClosedFieldDisabledInEditMode(), "'Date Closed field is not disabled");
+        verifyGeneralFieldsAreDisabledForEditing();
         Assert.assertTrue(Pages.editAccountPage().isSpecialMailingInstructionsDisabledInEditMode(), "'Special Mailing Instructions field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAverageBalanceDisabledInEditMode(), "'Average Balance' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isLowBalanceThisStatementCycleDisabledInEditMode(), "'Low Balance This Statement Cycle' field is not disabled");
@@ -470,7 +476,6 @@ public class EditAccount {
         Assert.assertTrue(Pages.editAccountPage().isYtdAverageBalanceDisabledInEditMode(), "'Average Balance' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isDateLastDebitDisabledInEditMode(), "'Date Last Debit' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isDateLastDepositDisabledInEditMode(), "'Date Last Deposit' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isAnnualPercentageYieldFieldDisabledInEditMode(), "'Annual Percentage Yield' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isDateLastStatementDisabledInEditMode(), "'Date Last Statement' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isPreviousStatementDateDisabledInEditMode(), "'Previous Statement Date' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isPreviousStatementBalanceDisabledInEditMode(), "'Previous Statement Balance' field is not disabled");
@@ -504,18 +509,9 @@ public class EditAccount {
     }
 
     public void verifySavingsAccountFieldsWithUpdatedDataInEditMode(Account account) {
-        Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), account.getCurrentOfficer(), "'Current Officer' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), account.getBankBranch(), "'Bank Branch' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), account.getInterestRate(), "'Interest Rate' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getFederalWHReasonInEditMode(), account.getFederalWHReason(), "'Federal WH Reason' value does not match");
+        verifyGeneralFieldsWithUpdatedDataInEditMode(account);
         Assert.assertEquals(Pages.editAccountPage().getFederalWHPercent(), account.getFederalWHPercent(), "'Federal WH Percent' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField1(), account.getUserDefinedField_1(), "'User Defined Field 1' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField2(), account.getUserDefinedField_2(), "'User Defined Field 2' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField3(), account.getUserDefinedField_3(), "'User Defined Field 3' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField4(), account.getUserDefinedField_4(), "'User Defined Field 4' value does not match");
-        if (account.getCallClassCode() != null) {
-            Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), account.getCallClassCode(), "'Call Class' value does not match");
-        }
+        Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), account.getInterestRate(), "'Interest Rate' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getNumberOfDebitCardsIssued(), account.getNumberOfDebitCardsIssued(), "'Number Of Debit Cards Issued' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getReasonDebitCardChargeWaived(), account.getReasonDebitCardChargeWaived(), "'Reason Debit Card Charge Waived' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getPrintStatementNextUpdate(), account.getPrintStatementNextUpdate(), "'Print Statement Next Update' value does not match");
@@ -544,14 +540,8 @@ public class EditAccount {
      */
 
     public void verifySavingsIraAccountFieldsAreDisabledForEditing() {
-        Assert.assertTrue(Pages.editAccountPage().isProductTypeFieldDisabledInEditMode(), "'Product Type' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isAccountNumberFieldDisabledInEditMode(), "'Account Number' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isAccountTypeFieldDisabledInEditMode(), "'Account Type' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isOriginatingOfficerFieldDisabledInEditMode(), "'Originating Officer' field is not disabled");
+        verifyGeneralFieldsAreDisabledForEditing();
         Assert.assertTrue(Pages.editAccountPage().isSpecialMailingInstructionsDisabledInEditMode(), "'Special Mailing Instructions' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isAccountStatusFieldDisabledInEditMode(), "'Account Status' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isDateOpenedFieldDisabledInEditMode(), "'Date Opened' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isDateClosedFieldDisabledInEditMode(), "'Date Closed field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAverageBalanceDisabledInEditMode(), "'Average Balance' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isInterestRateDisabledInEditMode(), "'Interest Rate' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isInterestLastPaidDisabledInEditMode(), "'Interest Last Paid' field is not disabled");
@@ -561,7 +551,6 @@ public class EditAccount {
         Assert.assertTrue(Pages.editAccountPage().isYtdAverageBalanceDisabledInEditMode(), "'Average Balance' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isLastDebitAmountFieldDisabledInEditMode(), "'Last Debit Amount' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isLastDepositAmountDisabledInEditMode(), "'Last Deposit Amount' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isAnnualPercentageYieldFieldDisabledInEditMode(), "'Annual Percentage Yield' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isDateLastStatementDisabledInEditMode(), "'Date Last Statement' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isPreviousStatementDateDisabledInEditMode(), "'Previous Statement Date' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isPreviousStatementBalanceDisabledInEditMode(), "'Previous Statement Balance' field is not disabled");
@@ -598,20 +587,11 @@ public class EditAccount {
     }
 
     public void verifySavingsIraAccountFieldsWithUpdatedDataInEditMode(Account account) {
-        Assert.assertEquals(Pages.editAccountPage().getFederalWHReasonInEditMode(), account.getFederalWHReason(), "'Federal WH Reason' value does not match");
+        verifyGeneralFieldsWithUpdatedDataInEditMode(account);
         Assert.assertEquals(Pages.editAccountPage().getReasonDebitCardChargeWaived(), account.getReasonDebitCardChargeWaived(), "'Reason Debit Card Charge Waived' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getPrintStatementNextUpdate(), account.getPrintStatementNextUpdate(), "'Print Statement Next Update' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getFederalWHPercent(), account.getFederalWHPercent(), "'Federal WH Percent' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField1(), account.getUserDefinedField_1(), "'User Defined Field 1' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField2(), account.getUserDefinedField_2(), "'User Defined Field 2' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField3(), account.getUserDefinedField_3(), "'User Defined Field 3' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField4(), account.getUserDefinedField_4(), "'User Defined Field 4' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getNumberOfDebitCardsIssued(), account.getNumberOfDebitCardsIssued(), "'Number Of Debit Cards Issued' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), account.getCurrentOfficer(), "'Current Officer' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), account.getBankBranch(), "'Bank Branch' value does not match");
-        if (account.getCallClassCode() != null) {
-            Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), account.getCallClassCode(), "'Call Class' value does not match");
-        }
         Assert.assertEquals(Pages.editAccountPage().getStatementCycleValueInEditMode(), account.getStatementCycle(), "'Statement Cycle' value does not match");
     }
 
@@ -640,15 +620,8 @@ public class EditAccount {
      */
 
     public void verifyRegularCdAccountFieldsAreDisabledForEditing() {
-        Assert.assertTrue(Pages.editAccountPage().isProductTypeFieldDisabledInEditMode(), "'Product Type' field is not disabled");
+        verifyGeneralFieldsAreDisabledForEditing();
         Assert.assertTrue(Pages.editAccountPage().isProductFieldDisabledInEditMode(), "'Product' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isAccountNumberFieldDisabledInEditMode(), "'Account Number' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isAccountTypeFieldDisabledInEditMode(), "'Account Type' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isOriginatingOfficerFieldDisabledInEditMode(), "'Originating Officer' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isAccountStatusFieldDisabledInEditMode(), "'Account Status' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isDateOpenedFieldDisabledInEditMode(), "'Date Opened' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isDateClosedFieldDisabledInEditMode(), "'Date Closed field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isAnnualPercentageYieldFieldDisabledInEditMode(), "'Annual Percentage Yield' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAccruedInterestDisabledInEditMode(), "'Accrued Interest' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isDailyInterestAccrualDisabledInEditMode(), "'Daily Interest Accrual' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAmountLastInterestPaidDisabledInEditMode(), "'Amount Last Interest Paid' field is not disabled");
@@ -673,18 +646,9 @@ public class EditAccount {
     }
 
     public void verifyRegularCdAccountFieldsWithUpdatedDataInEditMode(Account account) {
-        Assert.assertEquals(Pages.editAccountPage().getFederalWHReasonInEditMode(), account.getFederalWHReason(), "'Federal WH Reason' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getFederalWHPercent(), account.getFederalWHPercent(), "'Federal WH Percent' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField1(), account.getUserDefinedField_1(), "'User Defined Field 1' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField2(), account.getUserDefinedField_2(), "'User Defined Field 2' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField3(), account.getUserDefinedField_3(), "'User Defined Field 3' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField4(), account.getUserDefinedField_4(), "'User Defined Field 4' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), account.getCurrentOfficer(), "'Current Officer' value does not match");
+        verifyGeneralFieldsWithUpdatedDataInEditMode(account);
         Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), account.getInterestRate(), "'Interest Rate' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), account.getBankBranch(), "'Bank Branch' value does not match");
-        if (account.getCallClassCode() != null) {
-            Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), account.getCallClassCode(), "'Call Class' value does not match");
-        }
+        Assert.assertEquals(Pages.editAccountPage().getFederalWHPercent(), account.getFederalWHPercent(), "'Federal WH Percent' value does not match");
     }
 
     public void verifyCdAccountFieldsAfterCreationInEditMode(Account account) {
@@ -708,16 +672,9 @@ public class EditAccount {
      * Regular CD IRA account verification
      */
     public void verifyCdIraAccountFieldsAreDisabledForEditing() {
-        Assert.assertTrue(Pages.editAccountPage().isProductTypeFieldDisabledInEditMode(), "'Product Type' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isProductFieldDisabledInEditMode(), "'Product' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isAccountNumberFieldDisabledInEditMode(), "'Account Number' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isAccountTypeFieldDisabledInEditMode(), "'Account Type' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isOriginatingOfficerFieldDisabledInEditMode(), "'Originating Officer' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isAccountStatusFieldDisabledInEditMode(), "'Account Status' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isDateOpenedFieldDisabledInEditMode(), "'Date Opened' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isDateClosedFieldDisabledInEditMode(), "'Date Closed field is not disabled");
+        verifyGeneralFieldsAreDisabledForEditing();
         Assert.assertTrue(Pages.editAccountPage().isSpecialMailingInstructionsDisabledInEditMode(), "'Special Mailing Instructions' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isAnnualPercentageYieldFieldDisabledInEditMode(), "'Annual Percentage Yield' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isProductFieldDisabledInEditMode(), "'Product' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAccruedInterestDisabledInEditMode(), "'Accrued Interest' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isDailyInterestAccrualDisabledInEditMode(), "'Daily Interest Accrual' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAmountLastInterestPaidDisabledInEditMode(), "'Amount Last Interest Paid' field is not disabled");
@@ -746,21 +703,12 @@ public class EditAccount {
     }
 
     public void verifyCdIraAccountFieldsWithUpdatedDataInEditMode(Account account) {
-        Assert.assertEquals(Pages.editAccountPage().getFederalWHReasonInEditMode(), account.getFederalWHReason(), "'Federal WH Reason' value does not match");
+        verifyGeneralFieldsWithUpdatedDataInEditMode(account);
         Assert.assertEquals(Pages.editAccountPage().getDateOfFirstDeposit(), account.getDateOfFirstDeposit(), "'Date Of First Deposit' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getBirthDate(), account.getBirthDate(), "'Birth Date' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getDateDeceased(), account.getDateDeceased(), "'Date Deceased' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getBankRoutingNumberInterestOnCD(), account.getBankRoutingNumberInterestOnCD(), "'Bank Routing Number' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField1(), account.getUserDefinedField_1(), "'User Defined Field 1' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField2(), account.getUserDefinedField_2(), "'User Defined Field 2' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField3(), account.getUserDefinedField_3(), "'User Defined Field 3' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getUserDefinedField4(), account.getUserDefinedField_4(), "'User Defined Field 4' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getCurrentOfficerValueInEditMode(), account.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), account.getInterestRate(), "'Interest Rate' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getBankBranchValueInEditMode(), account.getBankBranch(), "'Bank Branch' value does not match");
-        if (account.getCallClassCode() != null) {
-            Assert.assertEquals(Pages.editAccountPage().getCallClassCodeValueInEditMode(), account.getCallClassCode(), "'Call Class' value does not match");
-        }
         Assert.assertEquals(Pages.editAccountPage().getApplyInterestTo(), account.getApplyInterestTo(), "'Apply Interest To' value does not match");
         if (account.getCorrespondingAccount() != null) {
             Assert.assertEquals(Pages.editAccountPage().getCorrespondingAccount(), account.getCorrespondingAccount(), "'Corresponding Account' value does not match");

@@ -241,4 +241,117 @@ public class AccountMaintenanceActions {
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Apply Interest To") >= 1,
                 "'Apply Interest To' row count is incorrect!");
     }
+
+    /**
+     * Dormant Account With No Monetary Transaction verification
+     */
+    public void verifyDormantAccountWithNoMonetaryTransactionRecords() {
+        expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date Last Activity/Contact") >= 1,
+                "'Date Last Activity/Contact' row count is incorrect!");
+    }
+
+    /**
+     * Closed Account With No Monetary Transaction verification
+     */
+
+    public void verifyClosedAccountWithNoMonetaryTransactionRecords() {
+        expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account Status") >= 1,
+                "'Account Status' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date Closed") >= 1,
+                "'Date Closed' row count is incorrect!");
+    }
+
+    /**
+     * Added Account Level Document verification
+     */
+
+    public void verifyAddedAccountLevelDocumentRecords() {
+        expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Drag and Drop Documents here") >= 1,
+                "'Drag and Drop Documents here' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Category") >= 1,
+                "'Category' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Parent Category") >= 1,
+                "'Parent Category' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Notes") >= 1,
+                "'Notes' row count is incorrect!");
+    }
+
+    /**
+     * Edited Deleted Restored Account Level Document verification
+     */
+
+    public void verifyEditedAccountLevelDocumentRecords() {
+        expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Drag and Drop Documents here") >= 3,
+                "'Drag and Drop Documents here' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Category") >= 4,
+                "'Category' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Parent Category") >= 4,
+                "'Parent Category' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Notes") >= 4,
+                "'Notes' row count is incorrect!");
+    }
+
+    /**
+     * Add Account Level Notes verification
+     */
+
+    public void verifyAddedAccountLevelNotesRecords() {
+        expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Due Date") >= 1,
+                "'Due Date' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 1,
+                "'Expiration Date' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Subject") >= 1,
+                "'Subject' row count is incorrect!");
+    }
+
+    /**
+     * Edit Delete Account Level Notes verification
+     */
+
+    public void verifyEditDeleteAccountLevelNotesRecords() {
+        expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Responsible Officer") >= 2,
+                "'Responsible Officer' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Due Date") >= 2,
+                "'Due Date' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 2,
+                "'Expiration Date' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Subject") >= 2,
+                "'Subject' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Severity") >= 2,
+                "'Severity' row count is incorrect!");
+    }
+
+    /**
+     * Added New Instruction verification
+     */
+
+    public void verifyAddedNewInstructionRecords() {
+        expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Instruction Type") >= 1,
+                "'Instruction Type' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Notes") >= 1,
+                "'Notes' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 1,
+                "'Expiration Date' row count is incorrect!");
+    }
+
+    /**
+     * Added New Instruction verification
+     */
+
+    public void verifyEditDeleteSpecialInstructionRecords() {
+        expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Instruction Type") >= 2,
+                "'Instruction Type' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Notes") >= 2,
+                "'Notes' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 2,
+                "'Expiration Date' row count is incorrect!");
+    }
 }
