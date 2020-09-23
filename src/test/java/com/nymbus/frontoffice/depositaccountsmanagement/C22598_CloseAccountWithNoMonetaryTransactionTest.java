@@ -72,10 +72,6 @@ public class C22598_CloseAccountWithNoMonetaryTransactionTest extends BaseTest {
         logInfo("Step 6: Go to Account Maintenance-> Maintenance History page and check that there are records about the changing status to 'Closed' and filling in Date Closed field");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
-        AccountActions.accountMaintenanceActions().expandAllRows();
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account Status") >= 1,
-                "'Account Status' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date Closed") >= 1,
-                "'Date Closed' row count is incorrect!");
+        AccountActions.accountMaintenanceActions().verifyClosedAccountWithNoMonetaryTransactionRecords();
     }
 }
