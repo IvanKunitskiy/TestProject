@@ -62,12 +62,10 @@ public class C22611_EditDeleteHoldTest extends BaseTest {
 
         // Create instruction
         AccountActions.createInstruction().createHoldInstruction(instruction);
-
         Pages.accountInstructionsPage().waitForCreatedInstruction(instructionsCount + 1);
 
         // Set data for edited instruction
         instruction.updateInstructionData();
-
         Actions.loginActions().doLogOut();
     }
 

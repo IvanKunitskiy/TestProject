@@ -342,7 +342,7 @@ public class AccountMaintenanceActions {
     }
 
     /**
-     * Added New Instruction verification
+     * Edit / Delete special instruction verification
      */
 
     public void verifyEditDeleteSpecialInstructionRecords() {
