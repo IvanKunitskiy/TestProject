@@ -23,9 +23,7 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22546_AddNewClientTransferTest extends BaseTest {
 
-    private IndividualClient client;
     private Account chkAccount;
-    private Account savingsAccount;
     private HighBalanceTransfer highBalanceTransfer;
     private String clientID;
 
@@ -35,11 +33,11 @@ public class C22546_AddNewClientTransferTest extends BaseTest {
         // Set up Client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up accounts
         chkAccount = new Account().setCHKAccountData();
-        savingsAccount = new Account().setSavingsAccountData();
+        Account savingsAccount = new Account().setSavingsAccountData();
 
         // Set up transfer
         TransferBuilder transferBuilder = new TransferBuilder();

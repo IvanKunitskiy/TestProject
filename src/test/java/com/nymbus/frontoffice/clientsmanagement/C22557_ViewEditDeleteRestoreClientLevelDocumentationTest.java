@@ -24,7 +24,6 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22557_ViewEditDeleteRestoreClientLevelDocumentationTest extends BaseTest {
 
-    private IndividualClient client;
     private CompanyID companyIDDocument;
     private String clientID;
 
@@ -33,7 +32,7 @@ public class C22557_ViewEditDeleteRestoreClientLevelDocumentationTest extends Ba
         // Set up Client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up the document
         companyIDDocument = new DocumentFactory().getCompanyIDDocument();

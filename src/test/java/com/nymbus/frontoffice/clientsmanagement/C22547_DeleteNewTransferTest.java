@@ -27,15 +27,9 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22547_DeleteNewTransferTest extends BaseTest {
 
-    private IndividualClient client1;
-    private IndividualClient client2;
     private Account chkAccount1;
-    private Account savingsAccount1;
-    private Account chkAccount2;
-    private Account savingsAccount2;
     private HighBalanceTransfer highBalanceTransfer;
     private Transfer transfer;
-    private Transaction transaction;
 
     private String clientID_1;
     private String clientID_2;
@@ -46,17 +40,17 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         // Set up clients
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client1 = individualClientBuilder.buildClient();
+        IndividualClient client1 = individualClientBuilder.buildClient();
 
         // Set up accounts
         chkAccount1 = new Account().setCHKAccountData();
-        savingsAccount1 = new Account().setSavingsAccountData();
+        Account savingsAccount1 = new Account().setSavingsAccountData();
 
-        chkAccount2 = new Account().setCHKAccountData();
-        savingsAccount2 = new Account().setSavingsAccountData();
+        Account chkAccount2 = new Account().setCHKAccountData();
+        Account savingsAccount2 = new Account().setSavingsAccountData();
 
         // Set up transaction
-        transaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
+        Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
         transaction.getTransactionDestination().setAccountNumber(chkAccount2.getAccountNumber());
 
         // Set up transfers
@@ -87,7 +81,7 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
 
         // Create a client with an active CHK / Savings account
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        client2 = individualClientBuilder.buildClient();
+        IndividualClient client2 = individualClientBuilder.buildClient();
         ClientsActions.individualClientActions().createClient(client2);
         ClientsActions.individualClientActions().setClientDetailsData(client2);
         ClientsActions.individualClientActions().setDocumentation(client2);

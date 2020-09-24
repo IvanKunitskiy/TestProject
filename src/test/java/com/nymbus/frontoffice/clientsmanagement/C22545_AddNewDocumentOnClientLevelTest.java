@@ -26,7 +26,6 @@ import org.testng.annotations.Test;
 @Feature("Petro")
 public class C22545_AddNewDocumentOnClientLevelTest extends BaseTest {
 
-    private IndividualClient client;
     private CompanyID companyIDDocument;
     private String clientID;
 
@@ -35,7 +34,7 @@ public class C22545_AddNewDocumentOnClientLevelTest extends BaseTest {
         // Set up the client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up the document
         companyIDDocument = new DocumentFactory().getCompanyIDDocument();
