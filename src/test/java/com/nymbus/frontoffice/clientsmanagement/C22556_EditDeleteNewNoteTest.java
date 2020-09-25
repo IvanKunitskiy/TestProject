@@ -19,7 +19,6 @@ import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 
 @Epic("Frontoffice")
 @Feature("Clients Management")
@@ -117,16 +116,6 @@ public class C22556_EditDeleteNewNoteTest extends BaseTest {
 
         logInfo("Step 10: Look through the records on the Maintenance History page and verify \n" +
                 "that records about editing/deleting the Note are present on the Maintenance History page");
-        AccountActions.accountMaintenanceActions().expandAllRows();
-        SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(Pages.accountMaintenancePage().getRowsCountByFieldName("Due Date"), 2,
-                "Due Date row's count doesn't match!");
-        softAssert.assertEquals(Pages.accountMaintenancePage().getRowsCountByFieldName("Subject"), 2,
-                "Subject row's count doesn't match!");
-        softAssert.assertEquals(Pages.accountMaintenancePage().getRowsCountByFieldName("Initials"), 2,
-                "Initials row's count doesn't match!");
-        softAssert.assertEquals(Pages.accountMaintenancePage().getRowsCountByFieldName("Tellers"), 2,
-                "Tellers row's count doesn't match!");
-        softAssert.assertAll();
+        AccountActions.accountMaintenanceActions().verifyEditDeleteNoteRecords();
     }
 }
