@@ -5,6 +5,7 @@ import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
 public class AccountMaintenanceActions {
     public void expandAllRows() {
@@ -280,6 +281,29 @@ public class AccountMaintenanceActions {
     }
 
     /**
+     * Added Client Level Document verification
+     */
+
+    public void verifyClientLevelDocumentRecords() {
+        expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Drag and Drop Documents here") >= 1,
+                "'Drag and Drop Documents here' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("ID Type") >= 1,
+                "'ID Type' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("ID Number") >= 1,
+                "'ID Number' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Issued by") >= 1,
+                "'Issued by' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Country") >= 1,
+                "'Country' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Issue Date") >= 1,
+                "'Issue Date' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 1,
+                "'Expiration Date' row count is incorrect!");
+    }
+
+
+    /**
      * Edited Deleted Restored Account Level Document verification
      */
 
@@ -354,4 +378,70 @@ public class AccountMaintenanceActions {
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 2,
                 "'Expiration Date' row count is incorrect!");
     }
+
+    /**
+     * Client transfer verification
+     */
+
+    public void verifyClientTransferRecords() {
+        expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Transfer Type") >= 1,
+                "'Transfer Type' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("To Account") >= 1,
+                "'To Account' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("From Account") >= 1,
+                "'From Account' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("To Account Type") >= 1,
+                "'To Account Type' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("From Account Type") >= 1,
+                "'From Account Type' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Effective Date") >= 1,
+                "'Effective Date' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Transfer Threshold") >= 1,
+                "'Transfer Threshold' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Transfer Charge") >= 1,
+                "'Transfer Charge' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Amount to transfer") >= 1,
+                "'Amount to transfer' row count is incorrect!");
+    }
+
+    /**
+     * Edit / Delete note verification
+     */
+
+    public void verifyEditDeleteNoteRecords() {
+        expandAllRows();
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals(Pages.accountMaintenancePage().getRowsCountByFieldName("Due Date"), 2,
+                "Due Date row's count doesn't match!");
+        softAssert.assertEquals(Pages.accountMaintenancePage().getRowsCountByFieldName("Subject"), 2,
+                "Subject row's count doesn't match!");
+        softAssert.assertEquals(Pages.accountMaintenancePage().getRowsCountByFieldName("Initials"), 2,
+                "Initials row's count doesn't match!");
+        softAssert.assertEquals(Pages.accountMaintenancePage().getRowsCountByFieldName("Tellers"), 2,
+                "Tellers row's count doesn't match!");
+        softAssert.assertAll();
+    }
+
+    /**
+     * Edit / Delete / Restore client level documentation verification
+     */
+    public void verifyEditDeleteRestoreClientLevelDocumentation() {
+        AccountActions.accountMaintenanceActions().expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Drag and Drop Documents here") >= 3,
+                "'Drag and Drop Documents here' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("ID Type") >= 2,
+                "'ID Type' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("ID Number") >= 3,
+                "'ID Number' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Issued by") >= 2,
+                "'Issued by' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Country") >= 2,
+                "'Country' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Issue Date") >= 2,
+                "'Issued Date' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 2,
+                "'Expiration Date' row count is incorrect!");
+    }
+
 }

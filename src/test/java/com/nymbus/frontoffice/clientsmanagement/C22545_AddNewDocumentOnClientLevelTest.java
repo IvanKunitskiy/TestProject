@@ -17,7 +17,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -78,20 +77,6 @@ public class C22545_AddNewDocumentOnClientLevelTest extends BaseTest {
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 7: Look through the records on the Maintenance History page and verify that records about newly created Document are present on the Maintenance History page");
-        AccountActions.accountMaintenanceActions().expandAllRows();
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Drag and Drop Documents here") >= 1,
-                "'Drag and Drop Documents here' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("ID Type") >= 1,
-                "'ID Type' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("ID Number") >= 1,
-                "'ID Number' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Issued by") >= 1,
-                "'Issued by' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Country") >= 1,
-                "'Country' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Issue Date") >= 1,
-                "'Issue Date' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 1,
-                "'Expiration Date' row count is incorrect!");
+        AccountActions.accountMaintenanceActions().verifyClientLevelDocumentRecords();
     }
 }
