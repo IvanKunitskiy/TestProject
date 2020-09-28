@@ -14,13 +14,17 @@ import java.util.Random;
 
 public class CreateAccount {
 
-    public void createCDAccount(Account account) {
-        Pages.clientDetailsPage().clickAccountsTab();
-        Actions.clientPageActions().closeAllNotifications();
+    private void setBasicAccountFields(Account account) {
         setAddNewOption(account);
         setProductType(account);
         setProduct(account);
         Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+    }
+
+    public void createCDAccount(Account account) {
+        Pages.clientDetailsPage().clickAccountsTab();
+        Actions.clientPageActions().closeAllNotifications();
+        setBasicAccountFields(account);
         selectValuesInFieldsRequiredForCDAccount(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
@@ -28,10 +32,7 @@ public class CreateAccount {
 
     public void createIRAAccount(Account account) {
         Pages.clientDetailsPage().clickAccountsTab();
-        setAddNewOption(account);
-        setProductType(account);
-        setProduct(account);
-        Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        setBasicAccountFields(account);
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         selectValuesInDropdownFieldsRequiredForSavingsIRAAccount(account);
         Pages.addAccountPage().clickSaveAccountButton();
@@ -41,10 +42,7 @@ public class CreateAccount {
     public void createSavingsAccount(Account account) {
         Pages.clientDetailsPage().clickAccountsTab();
         Actions.clientPageActions().closeAllNotifications();
-        setAddNewOption(account);
-        setProductType(account);
-        setProduct(account);
-        Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        setBasicAccountFields(account);
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
         setBankBranch(account);
@@ -61,10 +59,7 @@ public class CreateAccount {
     public void createSavingAccountForTransactionPurpose(Account account) {
         Pages.clientDetailsPage().clickAccountsTab();
         Actions.clientPageActions().closeAllNotifications();
-        setAddNewOption(account);
-        setProductType(account);
-        setProduct(account);
-        Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        setBasicAccountFields(account);
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
         setBankBranch(account);
@@ -98,10 +93,7 @@ public class CreateAccount {
     public void createCHKAccountForTransactionPurpose(Account account) {
         Pages.clientDetailsPage().clickAccountsTab();
         Actions.clientPageActions().closeAllNotifications();
-        setAddNewOption(account);
-        setProductType(account);
-        setProduct(account);
-        Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        setBasicAccountFields(account);
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
@@ -113,10 +105,7 @@ public class CreateAccount {
     public void createCHKAccount(Account account) {
         Pages.clientDetailsPage().clickAccountsTab();
         Actions.clientPageActions().closeAllNotifications();
-        setAddNewOption(account);
-        setProductType(account);
-        setProduct(account);
-        Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        setBasicAccountFields(account);
         setValuesInFieldsRequiredForCheckingAccount(account);
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().clickSaveAccountButton();
@@ -126,10 +115,7 @@ public class CreateAccount {
     public void createCHKAccountForDormantPurpose(Account account) {
         Pages.clientDetailsPage().clickAccountsTab();
         Actions.clientPageActions().closeAllNotifications();
-        setAddNewOption(account);
-        setProductType(account);
-        setProduct(account);
-        Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        setBasicAccountFields(account);
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
         setBankBranch(account);
@@ -218,7 +204,7 @@ public class CreateAccount {
         Pages.addAccountPage().setIRADistributionAmountValue(account.getIraDistributionAmount());
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setDateNextIRADistributionValue(account.getDateNextIRADistribution());
-        Pages.addAccountPage().setDateOfFirstDeposit(account.getDateOfFirstDeposit());
+        Pages.addAccountPage().setDateOfFirstDepositValue(account.getDateOfFirstDeposit());
         if (Pages.addAccountPage().getTransactionalAccountSwitchValue().equals("no")) {
             Pages.addAccountPage().clickTransactionalAccountSwitch();
         }
