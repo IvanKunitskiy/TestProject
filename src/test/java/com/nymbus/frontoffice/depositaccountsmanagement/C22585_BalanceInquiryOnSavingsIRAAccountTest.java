@@ -30,11 +30,7 @@ import java.io.File;
 @Owner("Petro")
 public class C22585_BalanceInquiryOnSavingsIRAAccountTest extends BaseTest {
 
-    private IndividualClient client;
     private Account iraAccount;
-    private HoldInstruction instruction;
-    private Transaction transaction;
-    private File balanceInquiryImageFile;
 
     @BeforeMethod
     public void preCondition() {
@@ -42,15 +38,15 @@ public class C22585_BalanceInquiryOnSavingsIRAAccountTest extends BaseTest {
         // Set up client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account
         iraAccount = new Account().setIRAAccountData();
 
         // Set up instruction and transaction
-        instruction = new InstructionConstructor(new HoldInstructionBuilder()).constructInstruction(HoldInstruction.class);
+        HoldInstruction instruction = new InstructionConstructor(new HoldInstructionBuilder()).constructInstruction(HoldInstruction.class);
         instruction.setAmount(10);
-        transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
 
         // Create a client
         Selenide.open(Constants.URL);
@@ -99,7 +95,7 @@ public class C22585_BalanceInquiryOnSavingsIRAAccountTest extends BaseTest {
         Pages.accountDetailsPage().clickBalanceInquiry();
 
         logInfo("Step 4: Check Available Balance and Current Balance values");
-        balanceInquiryImageFile = Actions.balanceInquiryActions().saveBalanceInquiryImage();
+        File balanceInquiryImageFile = Actions.balanceInquiryActions().saveBalanceInquiryImage();
         Actions.balanceInquiryActions().assertAvailableAndCurrentBalanceValuesFromReceipt(balanceInquiryImageFile, accountAvailableBalance, accountCurrentBalance);
 
         logInfo("Step 5: Click [Close] button");

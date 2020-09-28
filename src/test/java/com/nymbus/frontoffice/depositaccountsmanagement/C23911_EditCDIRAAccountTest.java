@@ -21,9 +21,7 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C23911_EditCDIRAAccountTest extends BaseTest {
 
-    private IndividualClient client;
     private Account cdIRAAccount;
-    private Account checkingAccount;
 
     @BeforeMethod
     public void preCondition() {
@@ -31,10 +29,10 @@ public class C23911_EditCDIRAAccountTest extends BaseTest {
         // Set up Client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up CHK account (required to point the 'Corresponding Account')
-        checkingAccount = new Account().setCHKAccountData();
+        Account checkingAccount = new Account().setCHKAccountData();
 
         // Set up CD IRA account
         cdIRAAccount = new Account().setCDIRAAccountData();

@@ -22,13 +22,13 @@ public class C26519_ProofDateLoginPopupNoCdButOmTest extends BaseTest {
         user = new User().setDefaultUserData();
 
         // Create user
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.usersActions().createUser(user);
         Actions.loginActions().doLogOut();
 
         // Set password for new user on webAdmin page
         Selenide.open(Constants.WEB_ADMIN_URL);
-        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         WebAdminActions.webAdminUsersActions().setUserPassword(user);
         WebAdminActions.loginActions().doLogoutProgrammatically();
         Selenide.open(Constants.URL);

@@ -5,7 +5,6 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.verifyingmodels.ClosedAccountData;
@@ -52,7 +51,7 @@ public class C22660_CommitWithdrawAndClose extends BaseTest {
         withdrawTransaction.getTransactionSource().setTransactionCode(TransactionCode.WITHDRAW_AND_CLOSE.getTransCode());
         withdrawTransaction.getTransactionSource().setAccountNumber(checkAccount.getAccountNumber());
 
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -75,7 +74,7 @@ public class C22660_CommitWithdrawAndClose extends BaseTest {
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Set transaction with amount value
         Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
@@ -92,7 +91,7 @@ public class C22660_CommitWithdrawAndClose extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void verifyWithdrawAndCloseTransaction() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Go to Journal page and log in to the proof date");
         Actions.transactionActions().goToTellerPage();
@@ -123,7 +122,7 @@ public class C22660_CommitWithdrawAndClose extends BaseTest {
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 8: Go to account used in source item and verify its: \n" +
                 "- current balance \n" +

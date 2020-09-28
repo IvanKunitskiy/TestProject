@@ -24,7 +24,6 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22609_EditDeleteSpecialInstructionTest extends BaseTest {
 
-    private IndividualClient client;
     private Account chkAccount;
     private ActivityHoldInstruction activityHoldInstruction;
 
@@ -34,7 +33,7 @@ public class C22609_EditDeleteSpecialInstructionTest extends BaseTest {
         // Set up a client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account
         chkAccount = new Account().setCHKAccountData();
@@ -103,12 +102,6 @@ public class C22609_EditDeleteSpecialInstructionTest extends BaseTest {
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 9: Look through the records on Maintenance History page and make sure that there is information about editing Instruction and deleting the Instruction");
-        AccountActions.accountMaintenanceActions().expandAllRows();
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Instruction Type") >= 2,
-                "'Instruction Type' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Notes") >= 2,
-                "'Notes' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 2,
-                "'Expiration Date' row count is incorrect!");
+        AccountActions.accountMaintenanceActions().verifyEditDeleteSpecialInstructionRecords();
     }
 }

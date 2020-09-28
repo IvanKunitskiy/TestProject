@@ -24,7 +24,6 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22608_AddNewInstructionTest extends BaseTest {
 
-    private IndividualClient client;
     private Account chkAccount;
     private ActivityHoldInstruction activityHoldInstruction;
 
@@ -34,7 +33,7 @@ public class C22608_AddNewInstructionTest extends BaseTest {
         // Set up a client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account
         chkAccount = new Account().setCHKAccountData();
@@ -83,12 +82,6 @@ public class C22608_AddNewInstructionTest extends BaseTest {
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 7: Look through the Maintenance History records and check that records about the newly created Instruction are present in the list");
-        AccountActions.accountMaintenanceActions().expandAllRows();
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Instruction Type") >= 1,
-                "'Instruction Type' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Notes") >= 1,
-                "'Notes' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 1,
-                "'Expiration Date' row count is incorrect!");
+        AccountActions.accountMaintenanceActions().verifyAddedNewInstructionRecords();
     }
 }

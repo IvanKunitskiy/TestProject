@@ -17,12 +17,14 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuil
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Deposit Accounts Management")
+@Owner("Petro")
 public class C22611_EditDeleteHoldTest extends BaseTest {
     private HoldInstruction instruction;
     private String accountNumber;
@@ -60,12 +62,10 @@ public class C22611_EditDeleteHoldTest extends BaseTest {
 
         // Create instruction
         AccountActions.createInstruction().createHoldInstruction(instruction);
-
         Pages.accountInstructionsPage().waitForCreatedInstruction(instructionsCount + 1);
 
         // Set data for edited instruction
         instruction.updateInstructionData();
-
         Actions.loginActions().doLogOut();
     }
 

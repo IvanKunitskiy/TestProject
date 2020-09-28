@@ -9,9 +9,7 @@ import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
-import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -20,7 +18,6 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22594_ViewNewCDIRAAccountTest extends BaseTest {
 
-    private IndividualClient client;
     private Account cdIRAAccount;
 
     @BeforeMethod
@@ -29,7 +26,7 @@ public class C22594_ViewNewCDIRAAccountTest extends BaseTest {
         // Set up client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up IRA account
         cdIRAAccount = new Account().setCDIRAAccountData();
@@ -63,21 +60,7 @@ public class C22594_ViewNewCDIRAAccountTest extends BaseTest {
         AccountActions.accountDetailsActions().clickMoreButton();
 
         logInfo("Step 4: Pay attention to the fields on the page");
-        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), cdIRAAccount.getAccountTitle(), "'Title' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), cdIRAAccount.getCurrentOfficer(), "'Current Officer' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), cdIRAAccount.getBankBranch(), "'Bank Branch' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getInterestFrequencyCode(), cdIRAAccount.getInterestFrequency(), "'Interest Frequency' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getApplyInterestTo(), cdIRAAccount.getApplyInterestTo(), "'Apply Interest To' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getInterestType(), cdIRAAccount.getInterestType(), "'Interest Type' value does not match");
-        if (cdIRAAccount.getCorrespondingAccount() != null) {
-            Assert.assertEquals(Pages.accountDetailsPage().getCorrespondingAccount(), cdIRAAccount.getCorrespondingAccount(), "'Corresponding Account' value does not match");
-        }
-        if (cdIRAAccount.getCallClassCode() != null) {
-            Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), cdIRAAccount.getCallClassCode(), "'Call Class' value does not match");
-        }
-        Assert.assertEquals(Pages.accountDetailsPage().getIraDistributionFrequency(), cdIRAAccount.getIraDistributionFrequency(), "' IRA Distribution Frequency' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getIraDistributionCode(), cdIRAAccount.getIraDistributionCode(), "' IRA Distribution Code' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), cdIRAAccount.getDateOpened(), "'Date Opened' value does not match");
+        AccountActions.accountDetailsActions().verifyCdIraAccountRecords(cdIRAAccount);
 
         logInfo("Step 5: Click [Less] button");
         AccountActions.accountDetailsActions().clickLessButtonAndVerifyMoreIsVisible();

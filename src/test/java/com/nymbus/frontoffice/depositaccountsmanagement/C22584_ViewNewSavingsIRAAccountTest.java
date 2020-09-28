@@ -10,9 +10,7 @@ import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
-import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -21,7 +19,6 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22584_ViewNewSavingsIRAAccountTest extends BaseTest {
 
-    private IndividualClient client;
     private Account savingsIRAAccount;
 
     @BeforeMethod
@@ -30,7 +27,7 @@ public class C22584_ViewNewSavingsIRAAccountTest extends BaseTest {
         // Set up Client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up IRA account
         savingsIRAAccount = new Account().setIRAAccountData();
@@ -63,23 +60,7 @@ public class C22584_ViewNewSavingsIRAAccountTest extends BaseTest {
         AccountActions.accountDetailsActions().clickMoreButton();
 
         logInfo("Step 4: Pay attention to the fields that were filled in during account creation");
-        Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), savingsIRAAccount.getCurrentOfficer(), "'Current Officer' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), savingsIRAAccount.getBankBranch(), "'Bank Branch' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getInterestFrequency(), savingsIRAAccount.getInterestFrequency(), "'Interest Frequency' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getStatementCycle(), savingsIRAAccount.getStatementCycle(), "'Statement Cycle' value does not match");
-        if (savingsIRAAccount.getCorrespondingAccount() != null) {
-            Assert.assertEquals(Pages.accountDetailsPage().getCorrespondingAccount(), savingsIRAAccount.getCorrespondingAccount(), "'Corresponding Account' value does not match");
-        }
-        if (savingsIRAAccount.getCallClassCode() != null) {
-            Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), savingsIRAAccount.getCallClassCode(), "'Call Class' value does not match");
-        }
-        Assert.assertEquals(Pages.accountDetailsPage().getIraDistributionFrequency(), savingsIRAAccount.getIraDistributionFrequency(), "' IRA Distribution Frequency' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getIraDistributionCode(), savingsIRAAccount.getIraDistributionCode(), "' IRA Distribution Code' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getAccountTitleValue(), savingsIRAAccount.getAccountTitle(), "'Title' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getIraDistributionAmount(), savingsIRAAccount.getIraDistributionAmount(), "'IRA distribution amount' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), savingsIRAAccount.getDateOpened(), "'Date Opened' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateNextIRADistribution(), savingsIRAAccount.getDateNextIRADistribution(), "'Date next IRA distribution' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateOfFirstDeposit(), savingsIRAAccount.getDateOfFirstDeposit(), "'Date Of First Deposit' value does not match");
+        AccountActions.accountDetailsActions().verifySavingsIRAAccountRecords(savingsIRAAccount);
 
         logInfo("Step 5: Click [Less] button");
         AccountActions.accountDetailsActions().clickLessButtonAndVerifyMoreIsVisible();

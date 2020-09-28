@@ -7,6 +7,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
@@ -45,6 +46,7 @@ public class C26758_ChipMerchantCompletionTest extends BaseTest {
     private NonTellerTransactionData chipMerchantCompletionTransactionData;
     private TransactionData chkAccTransactionData;
     private final double requestTransactionAmount = 21.90;
+    private final String uniqueValueField11 = Generator.getRandomStringNumber(6);
 
     @BeforeMethod
     public void preCondition() {
@@ -90,7 +92,7 @@ public class C26758_ChipMerchantCompletionTest extends BaseTest {
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -109,7 +111,7 @@ public class C26758_ChipMerchantCompletionTest extends BaseTest {
 
         // Re-login in system for updating teller session and capture account balances
         Actions.loginActions().doLogOut();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Perform transaction
         Actions.transactionActions().loginTeller();
@@ -120,7 +122,7 @@ public class C26758_ChipMerchantCompletionTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
 
         // Login, capture current and available balance of the account and logout
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
         expectedBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         Actions.loginActions().doLogOutProgrammatically();
@@ -147,7 +149,7 @@ public class C26758_ChipMerchantCompletionTest extends BaseTest {
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
         logInfo("Step 4: Search for CHK account from the precondition and verify its current and available balance");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
 
         Assert.assertEquals(AccountActions.retrievingAccountData().getCurrentBalance(),
@@ -228,7 +230,7 @@ public class C26758_ChipMerchantCompletionTest extends BaseTest {
         result.put("0", "0100");
         result.put("3", "000000");
         result.put("4", transactionData.getAmount());
-        result.put("11", "165444");
+        result.put("11", uniqueValueField11);
         result.put("18", "0742");
         result.put("22", "051");
         result.put("23", "001");

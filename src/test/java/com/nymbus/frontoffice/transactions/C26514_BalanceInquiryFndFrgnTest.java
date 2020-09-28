@@ -7,6 +7,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
@@ -46,6 +47,7 @@ public class C26514_BalanceInquiryFndFrgnTest extends BaseTest {
     private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
     private NonTellerTransactionData nonTellerTransactionData;
     private double foreignFeeBalanceInquiry;
+    private final String uniqueValueField11 = Generator.getRandomStringNumber(6);
 
     @BeforeMethod
     public void preCondition() {
@@ -102,7 +104,7 @@ public class C26514_BalanceInquiryFndFrgnTest extends BaseTest {
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -119,7 +121,7 @@ public class C26514_BalanceInquiryFndFrgnTest extends BaseTest {
 
         // Re-login in system for updating teller session
         Actions.loginActions().doLogOut();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Perform transaction
         Actions.transactionActions().loginTeller();
@@ -129,7 +131,7 @@ public class C26514_BalanceInquiryFndFrgnTest extends BaseTest {
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
         expectedBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
@@ -162,7 +164,7 @@ public class C26514_BalanceInquiryFndFrgnTest extends BaseTest {
         logInfo("Step 4: Search for CHK account from the precondition and go to the Transactions history tab.\n" +
                 "Verify that 129-Usage fee transaction was generated with NOT ON-US Terminal with an amount= ForeignATMFeeBalanceInquiry bcsetting");
         logInfo("Step 5: Pay attention to CHK account Current Balance and Available Balance");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
 
         Assert.assertEquals(AccountActions.retrievingAccountData().getCurrentBalance(),
@@ -211,7 +213,7 @@ public class C26514_BalanceInquiryFndFrgnTest extends BaseTest {
         Map<String, String > result = new HashMap<>();
         result.put("0", "0200");
         result.put("3", "310000");
-        result.put("11", "321843");
+        result.put("11", uniqueValueField11);
         result.put("18", "6011");
         result.put("22", "051");
         result.put("35", String.format("%s=%s", transactionData.getCardNumber(), transactionData.getExpirationDate()));

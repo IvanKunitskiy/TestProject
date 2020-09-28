@@ -74,7 +74,7 @@ public class C26508_DepositToDDAFallbackWithFullReversalOnusTest extends BaseTes
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Get terminal ID
         String terminalId = Actions.nonTellerTransactionActions().getTerminalID(1);
@@ -117,7 +117,7 @@ public class C26508_DepositToDDAFallbackWithFullReversalOnusTest extends BaseTes
         WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(chkAccTransactionData, chkAccountNumber, transcode);
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 4: Search for CHK account from the precondition and open it on Instructions tab");
         String INSTRUCTION_REASON = "Reg CC";
@@ -156,7 +156,7 @@ public class C26508_DepositToDDAFallbackWithFullReversalOnusTest extends BaseTes
                 "- current balance \n" +
                 "- available balance \n" +
                 "- Transactions history");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
         actualBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         Assert.assertEquals(actualBalanceData.getCurrentBalance(), expectedBalanceDataForCheckingAcc.getCurrentBalance(), "CHK account current balance is not correct!");

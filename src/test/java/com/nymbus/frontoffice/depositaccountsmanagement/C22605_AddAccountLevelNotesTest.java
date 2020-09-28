@@ -22,7 +22,6 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22605_AddAccountLevelNotesTest extends BaseTest {
 
-    private IndividualClient client;
     private Account chkAccount;
     private Note note1;
     private Note note2;
@@ -33,7 +32,7 @@ public class C22605_AddAccountLevelNotesTest extends BaseTest {
         // Set up a client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up a note
         note1 = new Note().setDefaultNoteData();
@@ -108,12 +107,6 @@ public class C22605_AddAccountLevelNotesTest extends BaseTest {
 
         logInfo("Step 8: Look through the records on Maintenance History page\n" +
                 "and make sure that there is information about newly created account note");
-        AccountActions.accountMaintenanceActions().expandAllRows();
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Due Date") >= 1,
-                "'Due Date' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 1,
-                "'Expiration Date' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Subject") >= 1,
-                "'Subject' row count is incorrect!");
+        AccountActions.accountMaintenanceActions().verifyAddedAccountLevelNotesRecords();
     }
 }

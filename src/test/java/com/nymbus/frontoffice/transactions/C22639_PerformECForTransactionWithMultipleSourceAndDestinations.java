@@ -57,7 +57,7 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
         multipleTransaction = new MultipleTransactionConstructor(new MiscDebitCashDepositMultipleTransactionBuilder()).constructTransaction();
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -105,7 +105,7 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Set up expected balance data
         Actions.clientPageActions().searchAndOpenClientByName(chkAccount.getAccountNumber());
@@ -134,7 +134,7 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
     @Severity(SeverityLevel.CRITICAL)
     public void verifyErrorCorrectForMultipleTransaction() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Go to Journal page and log in to the proof date");
         Actions.transactionActions().loginTeller();
@@ -193,7 +193,7 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
 
         logInfo("Step 11: Log in to the WebAdmin, go to RulesUI and search for the error corrected transaction items");
         Selenide.open(Constants.WEB_ADMIN_URL);
-        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         WebAdminActions.webAdminTransactionActions().goToTransactionUrl(multipleTransaction.getDestinations().get(2).getAccountNumber());
         Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
                 "Transaction items doesn't find !");

@@ -22,9 +22,7 @@ import org.testng.annotations.Test;
 
 public class C22602_EditTransactionDescriptionTest extends BaseTest {
 
-    private IndividualClient client;
     private Account chkAccount;
-    private Transaction transaction;
 
     @BeforeMethod
     public void preCondition() {
@@ -32,13 +30,13 @@ public class C22602_EditTransactionDescriptionTest extends BaseTest {
         // Set up a client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account
         chkAccount = new Account().setCHKAccountData();
 
         // Set up transaction
-        transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
         transaction.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
         transaction.getTransactionDestination().setTransactionCode("109 - Deposit");
 

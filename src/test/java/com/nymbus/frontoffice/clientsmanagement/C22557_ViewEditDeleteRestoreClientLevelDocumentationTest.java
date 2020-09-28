@@ -24,7 +24,6 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22557_ViewEditDeleteRestoreClientLevelDocumentationTest extends BaseTest {
 
-    private IndividualClient client;
     private CompanyID companyIDDocument;
     private String clientID;
 
@@ -33,7 +32,7 @@ public class C22557_ViewEditDeleteRestoreClientLevelDocumentationTest extends Ba
         // Set up Client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up the document
         companyIDDocument = new DocumentFactory().getCompanyIDDocument();
@@ -97,20 +96,6 @@ public class C22557_ViewEditDeleteRestoreClientLevelDocumentationTest extends Ba
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 11: Look through the records on the Maintenance History page and verify that records about editing, deleting/ restoring the Document are present on the Maintenance History page");
-        AccountActions.accountMaintenanceActions().expandAllRows();
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Drag and Drop Documents here") >= 3,
-                "'Drag and Drop Documents here' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("ID Type") >= 2,
-                "'ID Type' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("ID Number") >= 3,
-                "'ID Number' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Issued by") >= 2,
-                "'Issued by' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Country") >= 2,
-                "'Country' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Issue Date") >= 2,
-                "'Issued Date' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 2,
-                "'Expiration Date' row count is incorrect!");
+        AccountActions.accountMaintenanceActions().verifyEditDeleteRestoreClientLevelDocumentation();
     }
 }

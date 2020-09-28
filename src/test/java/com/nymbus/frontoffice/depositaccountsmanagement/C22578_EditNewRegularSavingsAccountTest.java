@@ -20,9 +20,7 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22578_EditNewRegularSavingsAccountTest extends BaseTest {
 
-    private IndividualClient client;
     private Account regularSavingsAccount;
-    private String clientID;
 
     @BeforeMethod
     public void preCondition() {
@@ -30,7 +28,7 @@ public class C22578_EditNewRegularSavingsAccountTest extends BaseTest {
         // Set up Client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up Savings account
         regularSavingsAccount = new Account().setSavingsAccountData();
@@ -42,7 +40,6 @@ public class C22578_EditNewRegularSavingsAccountTest extends BaseTest {
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
-        clientID = Pages.clientDetailsPage().getClientID();
 
         // Create savings account and logout
         AccountActions.createAccount().createSavingsAccount(regularSavingsAccount);

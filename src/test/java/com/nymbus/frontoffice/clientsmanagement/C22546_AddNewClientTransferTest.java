@@ -23,9 +23,7 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22546_AddNewClientTransferTest extends BaseTest {
 
-    private IndividualClient client;
     private Account chkAccount;
-    private Account savingsAccount;
     private HighBalanceTransfer highBalanceTransfer;
     private String clientID;
 
@@ -35,11 +33,11 @@ public class C22546_AddNewClientTransferTest extends BaseTest {
         // Set up Client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up accounts
         chkAccount = new Account().setCHKAccountData();
-        savingsAccount = new Account().setSavingsAccountData();
+        Account savingsAccount = new Account().setSavingsAccountData();
 
         // Set up transfer
         TransferBuilder transferBuilder = new TransferBuilder();
@@ -103,24 +101,6 @@ public class C22546_AddNewClientTransferTest extends BaseTest {
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 9: Look through the records on the Maintenance History page and verify that records about the newly created transfer are present on the Maintenance History page");
-        AccountActions.accountMaintenanceActions().expandAllRows();
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Transfer Type") >= 1,
-                "'Transfer Type' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("To Account") >= 1,
-                "'To Account' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("From Account") >= 1,
-                "'From Account' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("To Account Type") >= 1,
-                "'To Account Type' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("From Account Type") >= 1,
-                "'From Account Type' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Effective Date") >= 1,
-                "'Effective Date' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Transfer Threshold") >= 1,
-                "'Transfer Threshold' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Transfer Charge") >= 1,
-                "'Transfer Charge' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Amount to transfer") >= 1,
-                "'Amount to transfer' row count is incorrect!");
+        AccountActions.accountMaintenanceActions().verifyClientTransferRecords();
     }
 }

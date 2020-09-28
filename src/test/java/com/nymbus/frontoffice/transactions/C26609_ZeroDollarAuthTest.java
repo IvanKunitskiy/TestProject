@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
@@ -36,6 +37,7 @@ public class C26609_ZeroDollarAuthTest extends BaseTest {
     private String chkAccountNumber;
     private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
     private NonTellerTransactionData nonTellerTransactionData;
+    private final String uniqueValueField11 = Generator.getRandomStringNumber(6);
 
     @BeforeMethod
     public void preCondition() {
@@ -71,7 +73,7 @@ public class C26609_ZeroDollarAuthTest extends BaseTest {
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -103,7 +105,7 @@ public class C26609_ZeroDollarAuthTest extends BaseTest {
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
         logInfo("Step 4: Search for CHK account from the precondition and verify its current and available balance");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
 
         Assert.assertEquals(AccountActions.retrievingAccountData().getCurrentBalance(),
@@ -151,7 +153,7 @@ public class C26609_ZeroDollarAuthTest extends BaseTest {
         result.put("2", transactionData.getCardNumber());
         result.put("3", "180000");
         result.put("4", "0");
-        result.put("11", "115423");
+        result.put("11", uniqueValueField11);
         result.put("18", "4900");
         result.put("22", "022");
         result.put("42", "01 sample av.  ");

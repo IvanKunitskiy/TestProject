@@ -24,7 +24,6 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22600_EditDeleteRestoreAccountLevelDocumentTest extends BaseTest {
 
-    private IndividualClient client;
     private Account checkingAccount;
     private AccountLevelDocument accountLevelDocument;
 
@@ -34,7 +33,7 @@ public class C22600_EditDeleteRestoreAccountLevelDocumentTest extends BaseTest {
         // Set up Client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account level document factory
         accountLevelDocument = new AccountLevelDocumentFactory().getAccountLevelDocument();
@@ -59,7 +58,7 @@ public class C22600_EditDeleteRestoreAccountLevelDocumentTest extends BaseTest {
 
     @Test(description = "C22600, Edit / Delete / Restore account level document")
     @Severity(SeverityLevel.CRITICAL)
-    public void viewNewSavingsAccount() {
+    public void editDeleteRestoreAccountLevelDocument() {
 
         logInfo("Step 1: Log in to the system as the user from the precondition");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -113,15 +112,7 @@ public class C22600_EditDeleteRestoreAccountLevelDocumentTest extends BaseTest {
         logInfo("Step 10: Go to Account Maintenance-> Maintenance History page and check that records about document delete and restore are written to account Maintenance History");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
-        AccountActions.accountMaintenanceActions().expandAllRows();
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Drag and Drop Documents here") >= 3,
-                "'Drag and Drop Documents here' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Category") >= 4,
-                "'Category' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Parent Category") >= 4,
-                "'Parent Category' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Notes") >= 4,
-                "'Notes' row count is incorrect!");
+        AccountActions.accountMaintenanceActions().verifyEditedAccountLevelDocumentRecords();
 
     }
 }

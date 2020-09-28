@@ -24,7 +24,6 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22599_AddAccountLevelDocumentTest extends BaseTest {
 
-    private IndividualClient client;
     private Account checkingAccount;
     private AccountLevelDocument accountLevelDocument;
 
@@ -34,7 +33,7 @@ public class C22599_AddAccountLevelDocumentTest extends BaseTest {
         // Set up Client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account level document factory
         accountLevelDocument = new AccountLevelDocumentFactory().getAccountLevelDocument();
@@ -56,7 +55,7 @@ public class C22599_AddAccountLevelDocumentTest extends BaseTest {
 
     @Test(description = "C22599, Add Account Level Document")
     @Severity(SeverityLevel.CRITICAL)
-    public void viewNewSavingsAccount() {
+    public void addAccountLevelDocument() {
 
         logInfo("Step 1: Log in to the system as the user from the precondition");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -84,15 +83,7 @@ public class C22599_AddAccountLevelDocumentTest extends BaseTest {
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 7: Look through the records on the Maintenance History page and verify that records about newly created Document are present on the Maintenance History page");
-        AccountActions.accountMaintenanceActions().expandAllRows();
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Drag and Drop Documents here") >= 1,
-                "'Drag and Drop Documents here' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Category") >= 1,
-                "'Category' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Parent Category") >= 1,
-                "'Parent Category' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Notes") >= 1,
-                "'Notes' row count is incorrect!");
+        AccountActions.accountMaintenanceActions().verifyAddedAccountLevelDocumentRecords();
     }
 
 }

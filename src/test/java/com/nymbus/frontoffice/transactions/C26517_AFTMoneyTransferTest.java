@@ -75,7 +75,7 @@ public class C26517_AFTMoneyTransferTest extends BaseTest {
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -111,7 +111,7 @@ public class C26517_AFTMoneyTransferTest extends BaseTest {
         Actions.nonTellerTransactionActions().performATMTransaction(fields, new String[] {"0100"});
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 4: Search for CHK account from the precondition and verify its: \n" +
                 "- Current balance \n" +

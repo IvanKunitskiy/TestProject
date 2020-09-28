@@ -19,7 +19,6 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22573_EditCheckingAccountTest extends BaseTest {
 
-    private IndividualClient client;
     private Account checkingAccount;
 
     @BeforeMethod
@@ -28,7 +27,7 @@ public class C22573_EditCheckingAccountTest extends BaseTest {
         // Set up Client and Account
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account
         checkingAccount = new Account().setCHKAccountData();

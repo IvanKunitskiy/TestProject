@@ -34,14 +34,14 @@ import java.util.Map;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Petro")
-public class C26757_ChipMerchantAuthTest extends BaseTest {
+public class C26520_ManualMerchantAuthMultiPpeTest extends BaseTest {
 
     private IndividualClient client;
     private String chkAccountNumber;
+    private NonTellerTransactionData manualMerchantAuthTransactionData;
     private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
-    private NonTellerTransactionData nonTellerTransactionData;
-    private final double nonTellerTransactionAmount = 21.90;
     private final String uniqueValueField11 = Generator.getRandomStringNumber(6);
+    private final double requestTransactionAmount = 12.00;
 
     @BeforeMethod
     public void preCondition() {
@@ -61,8 +61,8 @@ public class C26757_ChipMerchantAuthTest extends BaseTest {
         glDebitMiscCreditTransaction.getTransactionDestination().setTransactionCode("109 - Deposit");
 
         // Set up nonTeller transaction data
-        nonTellerTransactionData = new NonTellerTransactionData();
-        nonTellerTransactionData.setAmount(nonTellerTransactionAmount);
+        manualMerchantAuthTransactionData = new NonTellerTransactionData();
+        manualMerchantAuthTransactionData.setAmount(requestTransactionAmount);
 
         // Set up debit card and bin control
         DebitCardConstructor debitCardConstructor = new DebitCardConstructor();
@@ -96,7 +96,7 @@ public class C26757_ChipMerchantAuthTest extends BaseTest {
 
         // Create debit card for CHK acc
         createDebitCard(client.getInitials(), debitCard);
-        Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(nonTellerTransactionData, 1);
+        Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(manualMerchantAuthTransactionData, 1);
 
         // Re-login in system for updating teller session and capture account balances
         Actions.loginActions().doLogOut();
@@ -108,51 +108,49 @@ public class C26757_ChipMerchantAuthTest extends BaseTest {
         Actions.transactionActions().createGlDebitMiscCreditTransaction(glDebitMiscCreditTransaction);
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
-
         Actions.loginActions().doLogOutProgrammatically();
+
+        // Login, capture current and available balance of the account and logout
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
         expectedBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
-
-        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C26757, Chip Merchant Auth")
+    @Test(description = "C26520, Manual Merchant Auth Multi PPE")
     @Severity(SeverityLevel.CRITICAL)
-    public void chipMerchantAuthTest() {
+    public void manualMerchantAuthMultiPpe() {
 
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
-        logInfo("Step 2: Expand widgets-controller->widget._GenericProcess and run the following request");
+        logInfo("Step 2: Expand widgets-controller and run the following request");
         String[] actions = {"0100"};
-        Actions.nonTellerTransactionActions().performATMTransaction(getFieldsMap(nonTellerTransactionData), actions);
-        expectedBalanceDataForCheckingAcc.reduceAvailableBalance(nonTellerTransactionAmount);
+        Actions.nonTellerTransactionActions().performATMTransaction(getManualMerchantAuthMultiPpeFieldsMap(manualMerchantAuthTransactionData), actions);
+        expectedBalanceDataForCheckingAcc.reduceAvailableBalance(requestTransactionAmount);
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
         logInfo("Step 4: Search for CHK account from the precondition and verify its current and available balance");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
-
         Assert.assertEquals(AccountActions.retrievingAccountData().getCurrentBalance(),
                 expectedBalanceDataForCheckingAcc.getCurrentBalance(), "CHK account current balance is not correct!");
         Assert.assertEquals(AccountActions.retrievingAccountData().getAvailableBalance(),
                 expectedBalanceDataForCheckingAcc.getAvailableBalance(), "CHK account available balance is not correct!");
 
-        logInfo("Step 5: Open CHK account on Transactions tab and verify Transactions history.\n" +
-                "Make sure that there is no ATM transaction in Transactions tab");
+        logInfo("Step 5: Open account on Transactions tab and verify that there is NO ATM transaction");
         AccountActions.retrievingAccountData().goToTransactionsTab();
         Assert.assertEquals(Pages.accountTransactionPage().getTransactionItemsCount(), 1,
-                "Transactions count on 'Transactions' tab is incorrect");
+                "Transaction count is incorrect!");
         Assert.assertTrue(Actions.transactionActions().isTransactionCodePresent("109 - Deposit"),
                 "109 - Deposit transaction is not present in transaction list");
 
-        logInfo("Step 6: Open CHK account on Instructions tab and verify that there is a Hold with amount == transaction amount");
+        logInfo("Step 6: Open account on the Instructions tab and verify that there is a Hold");
         AccountActions.editAccount().goToInstructionsTab();
         Assert.assertEquals(Pages.accountInstructionsPage().getCreatedInstructionsCount(), 1,
                 "Instruction was created");
         Pages.accountInstructionsPage().clickInstructionInListByIndex(1);
         double holdInstructionAmount = AccountActions.retrievingAccountData().getInstructionAmount();
-        Assert.assertEquals(nonTellerTransactionAmount, holdInstructionAmount,
-                "Hold instruction amount is not equal to reequest transaction amount!");
+        Assert.assertEquals(requestTransactionAmount, holdInstructionAmount,
+                "Hold instruction amount is not equal to request transaction amount!");
 
         logInfo("Step 7: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
         logInfo("Step 8: Click [View History] link on the Debit Card from the precondition");
@@ -168,7 +166,7 @@ public class C26757_ChipMerchantAuthTest extends BaseTest {
                 "Transaction description is not equal to 'Pre-Authorization Request'");
 
         String transactionAmount = Pages.cardsManagementPage().getTransactionAmount(1);
-        Assert.assertEquals(Double.parseDouble(transactionAmount), nonTellerTransactionAmount,
+        Assert.assertEquals(Double.parseDouble(transactionAmount), requestTransactionAmount,
                 "Transaction description is not equal to 'Pre-Authorization Request'");
     }
 
@@ -181,25 +179,22 @@ public class C26757_ChipMerchantAuthTest extends BaseTest {
         Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
     }
 
-    private Map<String, String> getFieldsMap(NonTellerTransactionData transactionData) {
+    private Map<String, String> getManualMerchantAuthMultiPpeFieldsMap(NonTellerTransactionData transactionData) {
         Map<String, String > result = new HashMap<>();
+
         result.put("0", "0100");
+        result.put("2", transactionData.getCardNumber());
         result.put("3", "000000");
         result.put("4", transactionData.getAmount());
         result.put("11", uniqueValueField11);
-        result.put("18", "0742");
-        result.put("22", "051");
-        result.put("23", "001");
-        result.put("35", String.format("%s=%s", transactionData.getCardNumber(), transactionData.getExpirationDate()));
+        result.put("18", "5542");
+        result.put("22", "012");
         result.put("42", "01 sample av.  ");
         result.put("43", "Long ave. bld. 34      Nashville      US");
         result.put("48", "SHELL");
-        result.put("52", "1234567890ABCDEF");
-        result.put("55", "9F34123");
-        result.put("57", "130");
-        result.put("58", "01100000015");
-        result.put("63", "B0IN9015DSDACQRID");
-        result.put("111", "12345678901111122011");
+        result.put("49", "840");
+        result.put("58", "01000000012");
+        result.put("63", "B2IN9015PPEACQRID  0  ");
 
         return  result;
     }

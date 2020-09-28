@@ -176,7 +176,8 @@ public class AddUsersPage extends PageTools {
 
     @Step("Click on 'Branch' option")
     public void clickBranchOption(String branchOption) {
-        click(brandSelectorOption, branchOption);
+        waitForElementClickable(brandSelectorOption, branchOption);
+        jsClick(brandSelectorOption, branchOption);
     }
 
     @Step("Wait for branch hidden field value")
@@ -202,7 +203,8 @@ public class AddUsersPage extends PageTools {
 
     @Step("Click on 'Location' option")
     public void clickLocationOption(String locationOption) {
-        click(locationSelectorOption, locationOption);
+        waitForElementClickable(locationSelectorOption, locationOption);
+        jsClick(locationSelectorOption, locationOption);
     }
 
     @Step("Wait for location hidden field value")

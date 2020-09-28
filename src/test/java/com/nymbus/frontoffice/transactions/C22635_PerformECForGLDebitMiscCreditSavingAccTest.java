@@ -39,7 +39,7 @@ public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest 
         IndividualClient client = individualClientBuilder.buildClient();
         Account savingsAccount = new Account().setSavingsAccountData();
         transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -63,7 +63,7 @@ public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest 
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // remove REG CC rule instruction
         Actions.clientPageActions().searchAndOpenClientByName(transaction.getTransactionDestination().getAccountNumber());
@@ -91,7 +91,7 @@ public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest 
     @Severity(SeverityLevel.CRITICAL)
     public void verifyErrorCorrectForGLDebitMiscCreditTransactionOnSavingAcc() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.transactionActions().loginTeller();
 
         logInfo("Step 2: Go to Journal page and log in to the proof date");
@@ -144,7 +144,7 @@ public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest 
 
         logInfo("Step 11: Log in to the WebAdmin, go to RulesUI and search for the error corrected transaction items");
         Selenide.open(Constants.WEB_ADMIN_URL);
-        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         WebAdminActions.webAdminTransactionActions().goToTransactionUrl(transaction.getTransactionDestination().getAccountNumber());
         Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
                 "Transaction items doesn't find !");

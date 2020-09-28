@@ -69,7 +69,7 @@ public class C25367_108ATMDepositForeignTest extends BaseTest {
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
         // Log in and create client
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         foreignFeeValue = Actions.nonTellerTransactionActions().getForeignFee(1);
 
         ClientsActions.individualClientActions().createClient(client);
@@ -114,7 +114,7 @@ public class C25367_108ATMDepositForeignTest extends BaseTest {
         WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(chkAccTransactionData, checkingAccountNumber, transcode);
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 4: Search for CHK account from the precondition and open it on Instructions tab");
         Actions.clientPageActions().searchAndOpenClientByName(checkingAccountNumber);

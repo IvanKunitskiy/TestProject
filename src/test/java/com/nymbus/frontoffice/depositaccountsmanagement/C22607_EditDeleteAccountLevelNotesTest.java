@@ -5,12 +5,10 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.notes.NotesActions;
-import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.SelenideTools;
-import com.nymbus.data.entity.User;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -27,7 +25,6 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
 
-    private IndividualClient client;
     private Account chkAccount;
     private Note note;
 
@@ -37,7 +34,7 @@ public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
         // Set up a client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up a note
         note = new Note().setDefaultNoteData();
@@ -140,16 +137,6 @@ public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
         logInfo("Step 12: Look through the records on Maintenance History page and make sure that there is information about editing note and deleting the note");
-        AccountActions.accountMaintenanceActions().expandAllRows();
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Responsible Officer") >= 2,
-                "'Responsible Officer' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Due Date") >= 2,
-                "'Due Date' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Expiration Date") >= 2,
-                "'Expiration Date' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Subject") >= 2,
-                "'Subject' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Severity") >= 2,
-                "'Severity' row count is incorrect!");
+        AccountActions.accountMaintenanceActions().verifyEditDeleteAccountLevelNotesRecords();
     }
 }

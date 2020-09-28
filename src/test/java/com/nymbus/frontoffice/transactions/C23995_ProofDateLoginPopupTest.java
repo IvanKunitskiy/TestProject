@@ -28,13 +28,13 @@ public class C23995_ProofDateLoginPopupTest extends BaseTest {
         CashDrawer cashDrawer = new CashDrawer().setDefaultTellerValues();
 
         // Create user
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.usersActions().createUser(user);
         Actions.loginActions().doLogOut();
 
         // Set password for new user on webAdmin page
         Selenide.open(Constants.WEB_ADMIN_URL);
-        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         WebAdminActions.webAdminUsersActions().setUserPassword(user);
 
         // Set additional data for cash drawer

@@ -4,7 +4,6 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -49,7 +48,7 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
         multipleTransaction = new MultipleTransactionConstructor(new MiscDebitCashDepositMultipleTransactionBuilder()).constructTransaction();
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -92,7 +91,7 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
 
         // Logout and login for update teller session
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         Actions.cashDrawerAction().goToCashDrawerPage();
         Actions.transactionActions().doLoginTeller();
@@ -105,7 +104,7 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void verifyTransactionWithMultipleSourcesAndDestinations() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Go to Teller screen and log in to proof date");
         Actions.transactionActions().openProofDateLoginModalWindow();
@@ -132,7 +131,7 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 11: Click [Commit Transaction] button and confirm Verify popup \n" +
                 "(which should be displayed if cash items were selected for transaction)");
