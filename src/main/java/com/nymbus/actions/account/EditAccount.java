@@ -9,6 +9,10 @@ import java.util.Random;
 
 public class EditAccount {
 
+    /**
+     * Set data in dropdown fields on edit account page
+     */
+
     public void setAutomaticOverdraftStatus(Account account) {
         Pages.editAccountPage().clickAutomaticOverdraftStatusSelectorButton();
         List<String> listOfClickAutomaticOverdraftStatus = Pages.editAccountPage().getAutomaticOverdraftStatusList();
@@ -209,19 +213,33 @@ public class EditAccount {
         Pages.editAccountPage().clickStatementCycleOption(account.getStatementCycle());
     }
 
-    public void selectValuesInFieldsThatWereNotAvailableDuringCheckingAccountCreation(Account account) {
-        setCurrentOfficer(account);
-        setBankBranch(account);
-        Pages.editAccountPage().setInterestRate(account.getInterestRate());
-        setChargeOrAnalyze(account);
-        setAutomaticOverdraftStatus(account);
-        setFederalWHReason(account);
-        Pages.editAccountPage().setFederalWHPercent(account.getFederalWHPercent());
+    /**
+     * Edit account after it was created and set values that were not available during creation
+     */
+
+    private void setUserDefinedFields(Account account) {
         Pages.editAccountPage().setUserDefinedField_1(account.getUserDefinedField_1());
         Pages.editAccountPage().setUserDefinedField_2(account.getUserDefinedField_2());
         Pages.editAccountPage().setUserDefinedField_3(account.getUserDefinedField_3());
         Pages.editAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
+    }
+
+    private void setFieldsThatWereNotAvailableDuringAccountCreation(Account account) {
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        setFederalWHReason(account);
         setCallClassCode(account);
+        if (!Pages.editAccountPage().isInterestRateDisabledInEditMode()) {
+            Pages.editAccountPage().setInterestRate(account.getInterestRate());
+        }
+    }
+
+    public void selectValuesInFieldsThatWereNotAvailableDuringCheckingAccountCreation(Account account) {
+        setFieldsThatWereNotAvailableDuringAccountCreation(account);
+        setUserDefinedFields(account);
+        setChargeOrAnalyze(account);
+        setAutomaticOverdraftStatus(account);
+        Pages.editAccountPage().setFederalWHPercent(account.getFederalWHPercent());
         Pages.editAccountPage().setNumberOfDebitCardsIssued(account.getNumberOfDebitCardsIssued());
         setReasonDebitCardChargeWaived(account);
         setBankruptcyJudgement(account);
@@ -231,21 +249,12 @@ public class EditAccount {
     }
 
     public void selectValuesInFieldsThatWereNotAvailableDuringSavingsAccountCreation(Account account) {
-        setFederalWHReason(account);
+        setFieldsThatWereNotAvailableDuringAccountCreation(account);
+        setUserDefinedFields(account);
         setReasonDebitCardChargeWaived(account);
         Pages.editAccountPage().setPrintStatementNextUpdate(account.getPrintStatementNextUpdate());
         Pages.editAccountPage().setFederalWHPercent(account.getFederalWHPercent());
-        Pages.editAccountPage().setUserDefinedField_1(account.getUserDefinedField_1());
-        Pages.editAccountPage().setUserDefinedField_2(account.getUserDefinedField_2());
-        Pages.editAccountPage().setUserDefinedField_3(account.getUserDefinedField_3());
-        Pages.editAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
         Pages.editAccountPage().setNumberOfDebitCardsIssued(account.getNumberOfDebitCardsIssued());
-        setCurrentOfficer(account);
-        if (!Pages.editAccountPage().isInterestRateDisabledInEditMode()) {
-            Pages.editAccountPage().setInterestRate(account.getInterestRate());
-        }
-        setBankBranch(account);
-        setCallClassCode(account);
         setStatementCycle(account);
         if (Pages.editAccountPage().getExemptFromRegCCSwitchValue().equals("no")) {
             Pages.editAccountPage().clickExemptFromRegCCSwitch();
@@ -261,54 +270,22 @@ public class EditAccount {
         }
     }
 
-    public void selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccount(Account account) {
-        AccountActions.editAccount().setCurrentOfficer(account);
-        AccountActions.editAccount().setBankBranch(account);
-        AccountActions.editAccount().setMailCode(account);
-        AccountActions.editAccount().setCorrespondingAccount(account);
-      /*  AccountActions.editAccount().setDiscountReason(account);*/
-    }
-
-    public void selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccountWithJs(Account account) {
-        AccountActions.editAccount().setCurrentOfficerWithJs(account);
-        AccountActions.editAccount().setBankBranchWithJs(account);
-        AccountActions.editAccount().setMailCodeWithJs(account);
-        AccountActions.editAccount().setCorrespondingAccountWithJs(account);
-        /*  AccountActions.editAccount().setDiscountReason(account);*/
-    }
-
     public void fillInInputFieldsThatWereNotAvailableDuringCDAccountCreation(Account account) {
-        setFederalWHReason(account);
-        setCurrentOfficer(account);
-        Pages.editAccountPage().setInterestRate(account.getInterestRate());
-        setBankBranch(account);
-        setCallClassCode(account);
+        setFieldsThatWereNotAvailableDuringAccountCreation(account);
+        setUserDefinedFields(account);
         if (!Pages.editAccountPage().getTransactionalAccountInEditMode().equals("NO")) {
             Pages.editAccountPage().clickTransactionalAccountSwitch();
         }
         Pages.editAccountPage().setFederalWHPercent(account.getFederalWHPercent());
-        Pages.editAccountPage().setUserDefinedField_1(account.getUserDefinedField_1());
-        Pages.editAccountPage().setUserDefinedField_2(account.getUserDefinedField_2());
-        Pages.editAccountPage().setUserDefinedField_3(account.getUserDefinedField_3());
-        Pages.editAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
     }
 
     public void fillInInputFieldsThatWereNotAvailableDuringCDIRAAccountCreation(Account account) {
-        AccountActions.editAccount().setFederalWHReason(account);
+        setFieldsThatWereNotAvailableDuringAccountCreation(account);
+        setUserDefinedFields(account);
         Pages.editAccountPage().setDateOfFirstDeposit(account.getDateOfFirstDeposit());
         Pages.editAccountPage().setBirthDate(account.getBirthDate());
         Pages.editAccountPage().setDateDeceased(account.getDateDeceased());
         Pages.editAccountPage().setBankRoutingNumberInterestOnCDValue(account.getBankRoutingNumberInterestOnCD());
-        Pages.editAccountPage().setUserDefinedField_1(account.getUserDefinedField_1());
-        Pages.editAccountPage().setUserDefinedField_2(account.getUserDefinedField_2());
-        Pages.editAccountPage().setUserDefinedField_3(account.getUserDefinedField_3());
-        Pages.editAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
-        setCurrentOfficer(account);
-        if (!Pages.editAccountPage().isInterestRateDisabledInEditMode()) {
-            Pages.editAccountPage().setInterestRate(account.getInterestRate());
-        }
-        setBankBranch(account);
-        setCallClassCode(account);
         account.setApplyInterestTo("CHK Acct");
         setApplyInterestTo(account);
         setCorrespondingAccount(account);
@@ -320,16 +297,32 @@ public class EditAccount {
         }
     }
 
+    public void selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccount(Account account) {
+        setCurrentOfficer(account);
+        setBankBranch(account);
+        setMailCode(account);
+        setCorrespondingAccount(account);
+      /*  setDiscountReason(account);*/
+    }
+
+    public void selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccountWithJs(Account account) {
+        setCurrentOfficerWithJs(account);
+        setBankBranchWithJs(account);
+        setMailCodeWithJs(account);
+        setCorrespondingAccountWithJs(account);
+        /*  setDiscountReason(account);*/
+    }
+
     public void editSavingsAccount(Account account) {
         Pages.accountDetailsPage().clickEditButton();
-        AccountActions.editAccount().selectValuesInFieldsThatWereNotAvailableDuringSavingsAccountCreation(account);
+        selectValuesInFieldsThatWereNotAvailableDuringSavingsAccountCreation(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForEditButton();
     }
 
     public void editCDAccount(Account account) {
         Pages.accountDetailsPage().clickEditButton();
-        AccountActions.editAccount().fillInInputFieldsThatWereNotAvailableDuringCDAccountCreation(account);
+        fillInInputFieldsThatWereNotAvailableDuringCDAccountCreation(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForEditButton();
     }
@@ -337,10 +330,7 @@ public class EditAccount {
     public void editSafeDepositBoxAccount(Account account) {
         Pages.accountDetailsPage().clickEditButton();
         selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccount(account);
-        Pages.editAccountPage().setUserDefinedField_1(account.getUserDefinedField_1());
-        Pages.editAccountPage().setUserDefinedField_2(account.getUserDefinedField_2());
-        Pages.editAccountPage().setUserDefinedField_3(account.getUserDefinedField_3());
-        Pages.editAccountPage().setUserDefinedField_4(account.getUserDefinedField_4());
+        setUserDefinedFields(account);
         Pages.editAccountPage().setDateLastAccess(account.getDateLastAccess());
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForEditButton();
@@ -348,11 +338,8 @@ public class EditAccount {
 
     public void navigateToAccountDetails(String accountNumber, boolean isMoreButtonClick) {
         Pages.aSideMenuPage().clickClientMenuItem();
-
         Pages.clientsSearchPage().typeToClientsSearchInputField(accountNumber);
-
         Pages.clientsSearchPage().clickOnViewAccountButtonByValue(accountNumber);
-
         if (isMoreButtonClick) {
             Pages.accountDetailsPage().clickMoreButton();
         }
@@ -372,13 +359,11 @@ public class EditAccount {
 
     public void goToMaintenanceHistory() {
         Pages.accountDetailsPage().clickMaintenanceTab();
-
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
     }
 
     public void closeAccount() {
         Pages.accountDetailsPage().clickCloseAccountButton();
-
         Pages.accountDetailsPage().waitForReopenButton();
     }
 
