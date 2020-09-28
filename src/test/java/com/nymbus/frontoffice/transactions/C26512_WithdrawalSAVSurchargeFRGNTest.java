@@ -45,6 +45,7 @@ public class C26512_WithdrawalSAVSurchargeFRGNTest extends BaseTest {
     private TransactionData savingAccTransactionData;
     private double transactionAmount = 60.00;
     private double surchargeAmount = 3.00;
+    private double foreignFeeValue;
 
     @BeforeMethod
     public void preCondition() {
@@ -88,6 +89,7 @@ public class C26512_WithdrawalSAVSurchargeFRGNTest extends BaseTest {
 
         // Log in
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        foreignFeeValue = Actions.nonTellerTransactionActions().getForeignFee(1);
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -147,7 +149,7 @@ public class C26512_WithdrawalSAVSurchargeFRGNTest extends BaseTest {
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        expectedBalanceData.subtractAmount(transactionAmount + surchargeAmount);
+        expectedBalanceData.subtractAmount(transactionAmount + surchargeAmount + foreignFeeValue);
 
         logInfo("Step 4: Search for CHK account from the precondition and Verify Account's: \n" +
                 "- current balance \n" +
@@ -166,18 +168,20 @@ public class C26512_WithdrawalSAVSurchargeFRGNTest extends BaseTest {
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset);
         Assert.assertEquals(actualTransactionData, savingAccTransactionData, "Transaction data doesn't match!");
 
-        logInfo("Step 5: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
-        logInfo("Step 6: Click [View History] link on the Debit Card from the precondition");
+        logInfo("Step 5: Verify that 229-Usage fee transaction was generated with an amount= ForeignATMFee bcsetting");
+        Assert.assertTrue(Actions.transactionActions().isTransactionCodePresent(TransactionCode.ATM_USAGE_229_FEE.getTransCode(), offset),
+                "229-ATM Usage Fee isn't present in transaction list");
+        Assert.assertEquals(AccountActions.retrievingAccountData().getAmountValue(2, offset), foreignFeeValue, "Fee amount is incorrect!");
+        Assert.assertEquals(Pages.accountTransactionPage().getAmountSymbol(2, offset), "-", "Fee amount symbol is incorrect!");
+
+        logInfo("Step 6: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
+        logInfo("Step 7: Click [View History] link on the Debit Card from the precondition");
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         Actions.debitCardModalWindowActions().goToCardHistory(1);
 
         String transactionReasonCode = Pages.cardsManagementPage().getTransactionReasonCode(1);
         Assert.assertEquals(transactionReasonCode, "00 -- Approved or completed successfully",
                 "'Transaction Reason Code' is not equal to '00 -- Approved or completed successfully'");
-
-        double expectedAmount = transactionAmount + surchargeAmount;
-        double actualAmount = Actions.debitCardModalWindowActions().getTransactionAmount(1);
-        Assert.assertEquals(actualAmount, expectedAmount, "Transaction amount is incorrect!");
 
         String transactionDescription = Pages.cardsManagementPage().getTransactionDescription(1);
         Assert.assertEquals(transactionDescription, "Cash Withdrawal",
