@@ -56,6 +56,7 @@ public class C26511_WithdrawalDDASurchargeFRGNTest extends BaseTest {
         client = individualClientBuilder.buildClient();
         Transaction glDebitMiscCreditTransaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
         glDebitMiscCreditTransaction.getTransactionSource().setAmount(glDebitTransactionAmount);
+        glDebitMiscCreditTransaction.getTransactionDestination().setAmount(glDebitTransactionAmount);
 
         // Set up CHK account
         Account chkAccount = new Account().setCHKAccountData();
