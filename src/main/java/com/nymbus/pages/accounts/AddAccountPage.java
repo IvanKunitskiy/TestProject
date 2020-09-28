@@ -342,16 +342,6 @@ public class AddAccountPage extends PageTools {
         typeWithoutWipe(dateOpenedValue, dateOpenedField);
     }
 
-    @Step("Set 'Date Opened' value")
-    public void setDateOfFirstDeposit(String date) {
-        waitForElementVisibility(dateOfFirstDeposit);
-        waitForElementClickable(dateOfFirstDeposit);
-        scrollToPlaceElementInCenter(dateOfFirstDeposit);
-        typeWithoutWipe("", dateOfFirstDeposit);
-        SelenideTools.sleep(1);
-        typeWithoutWipe(date, dateOfFirstDeposit);
-    }
-
     @Step("Set 'DBC ODP Opt In/Out Status Date' value")
     public void setOptInOutDateValue(String optInOutDateValue) {
         waitForElementVisibility(optInOutDateInputField);
