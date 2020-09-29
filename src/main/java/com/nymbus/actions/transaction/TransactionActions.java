@@ -395,6 +395,7 @@ public class TransactionActions {
         for (int i = 1; i <= transactionItems; ++i) {
             if (Pages.accountTransactionPage().getTransactionCodeByIndex(i).contains(transCode)) {
                 result = true;
+                break;
             }
         }
         return result;
@@ -406,6 +407,7 @@ public class TransactionActions {
         for (int i = 1; i <= transactionItems; ++i) {
             if (Pages.accountTransactionPage().getTransactionCodeByIndex(i, offset).contains(transCode)) {
                 result = true;
+                break;
             }
         }
         return result;
