@@ -29,6 +29,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class C25367_108ATMDepositForeignTest extends BaseTest {
     private BalanceDataForCHKAcc expectedBalanceData;
     private NonTellerTransactionData nonTellerTransactionData;
@@ -108,7 +111,7 @@ public class C25367_108ATMDepositForeignTest extends BaseTest {
     public void verify108ATMDepositFOREIGNTransaction() {
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
         logInfo("Step 2:Expand widgets-controller/widget._GenericProcess and run the following request with ONUS terminal ID");
-        Actions.nonTellerTransactionActions().performATMWDepositONUSTransaction(nonTellerTransactionData);
+        Actions.nonTellerTransactionActions().performATMTransaction(getFieldsMap(nonTellerTransactionData));
 
         String transcode = TransactionCode.ATM_DEPOSIT_108.getTransCode().split("\\s+")[0];
         WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(chkAccTransactionData, checkingAccountNumber, transcode);
@@ -152,5 +155,24 @@ public class C25367_108ATMDepositForeignTest extends BaseTest {
         double actualAmount = Actions.debitCardModalWindowActions().getTransactionAmount(1);
         double expectedAmount = transactionAmount - foreignFeeValue;
         Assert.assertEquals(actualAmount, expectedAmount, "Transaction amount is incorrect!");
+    }
+
+    private Map<String, String> getFieldsMap(NonTellerTransactionData transactionData) {
+        Map<String, String > result = new HashMap<>();
+        result.put("0", "0200");
+        result.put("3", "210000");
+        result.put("4", transactionData.getAmount());
+        result.put("11", String.valueOf(Generator.genInt(100000000, 922337203)));
+        result.put("18", "5542");
+        result.put("22","022");
+        result.put("35", String.format("%s=%s", transactionData.getCardNumber(), transactionData.getExpirationDate()));
+        result.put("41", transactionData.getTerminalId());
+        result.put("42","01 sample av.");
+        result.put("43","Long ave. bld. 34      Nashville      US");
+        result.put("48","SHELL");
+        result.put("49","840");
+        result.put("58","10000000612");
+
+        return  result;
     }
 }
