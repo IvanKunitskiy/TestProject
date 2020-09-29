@@ -41,6 +41,7 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
     private double mixDepTransactionAmount;
     private double cashTransactionAmount;
     private IndividualClient client;
+    private String clientRootId;
 
     @BeforeMethod
     public void prepareTransactionData() {

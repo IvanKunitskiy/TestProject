@@ -104,4 +104,10 @@ public class SelenideTools {
         }
         Selenide.switchTo().window(currentWindow);
     }
+
+    @Step("Get current url")
+    public static String getCurrentUrl() {
+        LOG.info("Get current url");
+        return WebDriverRunner.url();
+    }
 }
