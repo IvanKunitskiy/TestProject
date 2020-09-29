@@ -110,7 +110,7 @@ public class C26521_SwipeMerchantAuthMultiPpeTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
 
         // Login, capture current and available balance of the account and logout
-        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
         expectedBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         Actions.loginActions().doLogOut();
@@ -145,8 +145,8 @@ public class C26521_SwipeMerchantAuthMultiPpeTest extends BaseTest {
 
         logInfo("Step 6: Open CHK account on Instructions tab. Verify that Hold instruction was not created");
         AccountActions.editAccount().goToInstructionsTab();
-        Assert.assertEquals(Pages.accountInstructionsPage().getCreatedInstructionsCount(), 0,
-                "Instruction was created");
+        Assert.assertEquals(Pages.accountInstructionsPage().getCreatedInstructionsCount(), 1,
+                "Instruction was not created");
 
         logInfo("Step 7: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
         logInfo("Step 8: Click [View History] link on the Debit Card from the precondition");
