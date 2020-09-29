@@ -4,7 +4,6 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
@@ -120,6 +119,7 @@ public class C26609_ZeroDollarAuthTest extends BaseTest {
                 "ATM transaction is present in Transactions tab");
 
         logInfo("Step 6: Open CHK account on Instructions tab. Verify that Hold instruction was not created");
+        AccountActions.editAccount().goToInstructionsTab();
         Assert.assertEquals(Pages.accountInstructionsPage().getCreatedInstructionsCount(), 0,
                 "Instruction was created");
 
