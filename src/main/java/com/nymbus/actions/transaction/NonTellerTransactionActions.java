@@ -5,7 +5,6 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.SelenideTools;
-import com.nymbus.newmodels.transaction.enums.ATMTransactionType;
 import com.nymbus.newmodels.transaction.verifyingModels.ATMRequiredValueModel;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
@@ -22,21 +21,6 @@ public class NonTellerTransactionActions {
                     transactionData.getExpirationDate(), transactionData.getAmount());
             SelenideTools.sleep(1);
         }
-    }
-
-    public void performATMWithdrawalONUSTransaction(NonTellerTransactionData transactionData) {
-        Actions.nonTellerTransaction().generateWithdrawalONUSTransaction(transactionData.getCardNumber(),
-                transactionData.getExpirationDate(), transactionData.getAmount(), transactionData.getTerminalId());
-    }
-
-
-    public void performATMWDepositONUSTransaction(NonTellerTransactionData transactionData) {
-        Actions.nonTellerTransaction().generateDepositONUSTransaction(transactionData.getCardNumber(),
-                transactionData.getExpirationDate(), transactionData.getAmount(), transactionData.getTerminalId());
-    }
-
-    public void performMixDepCashTransaction(NonTellerTransactionData transactionData, ATMTransactionType type) {
-        Actions.nonTellerTransaction().generateATMTransaction(transactionData, type);
     }
 
     public void performMixDepCashTransaction(Map<String, String> fields) {

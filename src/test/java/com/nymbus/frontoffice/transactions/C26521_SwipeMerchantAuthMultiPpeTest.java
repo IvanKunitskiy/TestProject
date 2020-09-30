@@ -33,14 +33,14 @@ import java.util.Map;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Petro")
-public class C26520_ManualMerchantAuthMultiPpeTest extends BaseTest {
+public class C26521_SwipeMerchantAuthMultiPpeTest extends BaseTest {
 
     private IndividualClient client;
     private String chkAccountNumber;
-    private NonTellerTransactionData manualMerchantAuthTransactionData;
+    private NonTellerTransactionData swipeMerchantAuthTransactionData;
     private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
+    private final double requestTransactionAmount = 70.00;
     private final String uniqueValueField11 = Generator.getRandomStringNumber(6);
-    private final double requestTransactionAmount = 12.00;
 
     @BeforeMethod
     public void preCondition() {
@@ -60,8 +60,8 @@ public class C26520_ManualMerchantAuthMultiPpeTest extends BaseTest {
         glDebitMiscCreditTransaction.getTransactionDestination().setTransactionCode("109 - Deposit");
 
         // Set up nonTeller transaction data
-        manualMerchantAuthTransactionData = new NonTellerTransactionData();
-        manualMerchantAuthTransactionData.setAmount(requestTransactionAmount);
+        swipeMerchantAuthTransactionData = new NonTellerTransactionData();
+        swipeMerchantAuthTransactionData.setAmount(requestTransactionAmount);
 
         // Set up debit card and bin control
         DebitCardConstructor debitCardConstructor = new DebitCardConstructor();
@@ -95,7 +95,7 @@ public class C26520_ManualMerchantAuthMultiPpeTest extends BaseTest {
 
         // Create debit card for CHK acc
         createDebitCard(client.getInitials(), debitCard);
-        Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(manualMerchantAuthTransactionData, 1);
+        Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(swipeMerchantAuthTransactionData, 1);
 
         // Re-login in system for updating teller session and capture account balances
         Actions.loginActions().doLogOut();
@@ -116,14 +116,14 @@ public class C26520_ManualMerchantAuthMultiPpeTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C26520, Manual Merchant Auth Multi PPE")
+    @Test(description = "C26521, Swipe Merchant Auth Multi PPE")
     @Severity(SeverityLevel.CRITICAL)
-    public void manualMerchantAuthMultiPpe() {
+    public void swipeMerchantAuthMultiPpe() {
 
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
         logInfo("Step 2: Expand widgets-controller and run the following request");
         String[] actions = {"0100"};
-        Actions.nonTellerTransactionActions().performATMTransaction(getManualMerchantAuthMultiPpeFieldsMap(manualMerchantAuthTransactionData), actions);
+        Actions.nonTellerTransactionActions().performATMTransaction(getSwipeMerchantAuthMultiPpeFieldsMap(swipeMerchantAuthTransactionData), actions);
         expectedBalanceDataForCheckingAcc.reduceAvailableBalance(requestTransactionAmount);
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
@@ -135,21 +135,18 @@ public class C26520_ManualMerchantAuthMultiPpeTest extends BaseTest {
         Assert.assertEquals(AccountActions.retrievingAccountData().getAvailableBalance(),
                 expectedBalanceDataForCheckingAcc.getAvailableBalance(), "CHK account available balance is not correct!");
 
-        logInfo("Step 5: Open account on Transactions tab and verify that there is NO ATM transaction");
+        logInfo("Step 5:Open CHK account on Transactions tab and verify Transactions history.\n" +
+                "Make sure that there is no ATM transaction in Transactions tab");
         AccountActions.retrievingAccountData().goToTransactionsTab();
         Assert.assertEquals(Pages.accountTransactionPage().getTransactionItemsCount(), 1,
                 "Transaction count is incorrect!");
         Assert.assertTrue(Actions.transactionActions().isTransactionCodePresent("109 - Deposit"),
                 "109 - Deposit transaction is not present in transaction list");
 
-        logInfo("Step 6: Open account on the Instructions tab and verify that there is a Hold");
+        logInfo("Step 6: Open CHK account on Instructions tab. Verify that Hold instruction was not created");
         AccountActions.editAccount().goToInstructionsTab();
         Assert.assertEquals(Pages.accountInstructionsPage().getCreatedInstructionsCount(), 1,
-                "Instruction was created");
-        Pages.accountInstructionsPage().clickInstructionInListByIndex(1);
-        double holdInstructionAmount = AccountActions.retrievingAccountData().getInstructionAmount();
-        Assert.assertEquals(requestTransactionAmount, holdInstructionAmount,
-                "Hold instruction amount is not equal to request transaction amount!");
+                "Instruction was not created");
 
         logInfo("Step 7: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
         logInfo("Step 8: Click [View History] link on the Debit Card from the precondition");
@@ -178,7 +175,7 @@ public class C26520_ManualMerchantAuthMultiPpeTest extends BaseTest {
         Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
     }
 
-    private Map<String, String> getManualMerchantAuthMultiPpeFieldsMap(NonTellerTransactionData transactionData) {
+    private Map<String, String> getSwipeMerchantAuthMultiPpeFieldsMap(NonTellerTransactionData transactionData) {
         Map<String, String > result = new HashMap<>();
 
         result.put("0", "0100");
@@ -187,7 +184,7 @@ public class C26520_ManualMerchantAuthMultiPpeTest extends BaseTest {
         result.put("4", transactionData.getAmount());
         result.put("11", uniqueValueField11);
         result.put("18", "5542");
-        result.put("22", "012");
+        result.put("22", "021");
         result.put("42", "01 sample av.  ");
         result.put("43", "Long ave. bld. 34      Nashville      US");
         result.put("48", "SHELL");
