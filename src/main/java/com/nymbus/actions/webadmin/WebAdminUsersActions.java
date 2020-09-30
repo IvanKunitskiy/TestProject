@@ -8,8 +8,10 @@ import com.nymbus.data.entity.verifyingmodels.TellerSessionVerifyingModel;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.basicinformation.type.ClientType;
 import com.nymbus.newmodels.client.verifyingmodels.FirstNameAndLastNameModel;
+import com.nymbus.newmodels.transaction.nontellertransactions.JSONData;
 import com.nymbus.pages.webadmin.WebAdminPages;
 
+import java.util.Map;
 import java.util.Random;
 
 public class WebAdminUsersActions {
@@ -192,5 +194,24 @@ public class WebAdminUsersActions {
         WebAdminPages.accountsPage().clickRootIDLink(account.getAccountNumber());
         WebAdminPages.accountsPage().setAccountStatus("D");
         WebAdminPages.accountsPage().clickSaveChangesButton();
+    }
+
+    public void goToDRLCaches() {
+        WebAdminPages.navigationPage().waitForPageLoaded();
+        WebAdminPages.navigationPage().clickAssetsItem();
+        WebAdminPages.navigationPage().clickDRLCachesItem();
+        WebAdminPages.drlCachesPage().waitForPageLoaded();
+    }
+
+
+    public void goToCashValues(int modalWindow, String clientRootId) {
+        WebAdminPages.drlCachesPage().typeToSearchInput(modalWindow, clientRootId);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        WebAdminPages.drlCachesPage().clickValueItemByModalAndClientRootId(modalWindow, clientRootId);
+    }
+
+    public void setFieldsMapWithValues(int modal, Map<String, String> fieldsMap) {
+        String data = WebAdminPages.drlCachesPage().getCashValuesData(modal);
+        JSONData.setFieldsMap(data, fieldsMap);
     }
 }

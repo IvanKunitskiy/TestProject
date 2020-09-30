@@ -10,8 +10,13 @@ public class DRLCachesPage extends PageTools {
     private By bankingCoreRadioButton = By.xpath("//div[@id='DRLCache-ruletypefull']//ul//input[@title='bankingcore']");
     private By keysItem = By.xpath("//div[@id='DRLCache-caches']" +
             "//tr//td[text()='%s']/following-sibling::td/a[text()='Keys']");
-    private By searchField = By.xpath("//div[contains(@class, 'ui-dialog') and" +
+    private By searchField = By.xpath("//div[contains(@class, 'ui-dialog') and " +
             "contains(@style, 'display: flex')][%s]//input[@placeholder='Filter']");
+    private By keysValueLink = By.xpath("//div[contains(@class, 'ui-dialog') and contains(@style, 'display: flex')][%s]" +
+            "//div[@class='keys']//pre[contains(text(), '%s')]/following-sibling::a[contains(text(), 'value')]");
+    private By cashValuesData = By.xpath("//div[contains(@class, 'ui-dialog') and contains(@style, 'display: flex')][%s]" +
+            "//div[@class='ui-dialog-content ui-widget-content']//pre[1]");
+
 
     @Step("Wait for 'Rule Type' region")
     public void waitForPageLoaded() {
@@ -37,5 +42,19 @@ public class DRLCachesPage extends PageTools {
         waitForElementVisibility(searchField, count);
         waitForElementClickable(searchField, count);
         type(value, searchField, count);
+    }
+
+    @Step("Click on 'value' [1] item on [0] modal")
+    public void clickValueItemByModalAndClientRootId(int modalNumber, String rootId) {
+        waitForElementVisibility(keysValueLink, modalNumber, rootId);
+        waitForElementClickable(keysValueLink,  modalNumber, rootId);
+        click(keysValueLink,  modalNumber, rootId);
+    }
+
+    @Step("Get cach values data [0]")
+    public String getCashValuesData(int modalNumber) {
+        waitForElementVisibility(cashValuesData, modalNumber);
+        waitForElementClickable(cashValuesData,  modalNumber);
+        return getElementText(cashValuesData,  modalNumber);
     }
 }

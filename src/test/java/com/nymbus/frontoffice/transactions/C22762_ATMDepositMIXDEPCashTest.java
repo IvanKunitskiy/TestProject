@@ -1,10 +1,12 @@
 package com.nymbus.frontoffice.transactions;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
@@ -17,9 +19,11 @@ import com.nymbus.newmodels.generation.client.builder.type.individual.Individual
 import com.nymbus.newmodels.generation.debitcard.DebitCardConstructor;
 import com.nymbus.newmodels.generation.debitcard.builder.DebitCardBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
+import com.nymbus.newmodels.transaction.apifieldsmodels.Field54Model;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.*;
 import com.nymbus.pages.Pages;
+import com.nymbus.pages.webadmin.WebAdminPages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
@@ -39,9 +43,12 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
     private String savingsAccountNumber;
     private String checkingAccountNumber;
     private double mixDepTransactionAmount;
-    private double cashTransactionAmount;
     private IndividualClient client;
     private String clientRootId;
+
+    private final double cashTransactionAmount = 105.00;
+    private final double cashAmountForMixDepTransaction = 100.00;
+    private final double checkAmountForMixDepTransaction = 50.00;
 
     @BeforeMethod
     public void prepareTransactionData() {
@@ -55,8 +62,7 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         // Init nonTellerTransactionData
         mixDepTransactionData = new NonTellerTransactionData();
         cashTransactionData = new NonTellerTransactionData();
-        mixDepTransactionAmount = 100.00;
-        cashTransactionAmount = 100.00;
+        mixDepTransactionAmount = cashAmountForMixDepTransaction + checkAmountForMixDepTransaction;
 
         // Set up debit card and bin control
         DebitCardConstructor debitCardConstructor = new DebitCardConstructor();
@@ -92,6 +98,7 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+        clientRootId = ClientsActions.createClient().getClientIdFromUrl();
 
         // Create Savings  account
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
@@ -133,7 +140,9 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
     @Test(description = "C22762, ATM Deposit")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyATMDepositTransaction() {
-        String field54MixDep = "1093840C0000000100001094840C000000005000";
+        Field54Model field54ModelCash = new Field54Model("10", "93", "840", "C", cashAmountForMixDepTransaction);
+        Field54Model field54ModelCheck = new Field54Model("10", "94", "840", "C", checkAmountForMixDepTransaction);
+        String field54MixDep = field54ModelCash.getData() + field54ModelCheck.getData();
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
         logInfo("Step 2: Expand widgets-controller->widget._GenericProcess and run the following \n" +
                 "request for the Debit Card assigned to the Savings account from the precondition:");
@@ -177,7 +186,7 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         Assert.assertEquals(actualAmount, mixDepTransactionAmount, "Transaction amount is incorrect!");
 
         logInfo("Step 9: Go to the Swagger and run the following request for the Debit Card assigned to the CHK account from the precondition:");
-        String field54Cash = "2094840C000000010500";
+        String field54Cash = new Field54Model("20", "93", "840", "C", cashTransactionAmount).getData();
         Actions.nonTellerTransactionActions().performMixDepCashTransaction(getFieldsMapForCashTransaction(cashTransactionData, field54Cash, "CASH"));
 
         transcode = TransactionCode.ATM_DEPOSIT_108.getTransCode().split("\\s+")[0];
@@ -212,6 +221,24 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         Actions.debitCardModalWindowActions().goToCardHistory(2);
         actualAmount = Actions.debitCardModalWindowActions().getTransactionAmount(1);
         Assert.assertEquals(actualAmount, cashTransactionAmount, "Transaction amount is incorrect!");
+        Actions.loginActions().doLogOut();
+
+        logInfo("Step 15: Go to the WebAdmin and log in as the User from the preconditions");
+        Selenide.open(Constants.WEB_ADMIN_URL);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        logInfo("Step 16:Go to: DRL Caches->bankingcore and search for CUSTOMER_CASH click [Keys]");
+        WebAdminActions.webAdminUsersActions().goToDRLCaches();
+        WebAdminPages.drlCachesPage().clickBankingCoreRadio();
+        WebAdminPages.drlCachesPage().clickKeysItemByValue("CUSTOMER_CASH");
+
+        logInfo("Step 17: Search for the Client from the preconditions by Client Rootid and click [Value]");
+        WebAdminActions.webAdminUsersActions().goToCashValues(1, clientRootId);
+
+        logInfo("Step 18: Verify that totalCashInAsBeneficiary and totalCashInAsConductor values were increased \n" +
+                "by Cash Amount from DE054 from Step2+Step9");
+        Map<String, String> totalCashValues = getBeneficiaryConductorMap();
+        WebAdminActions.webAdminUsersActions().setFieldsMapWithValues(2, totalCashValues);
     }
 
     private void createDebitCard(String clientInitials, DebitCard debitCard, boolean typeNameWithJs) {
@@ -256,6 +283,13 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         result.put("96", "89379174");
         result.put("104", field104);
 
+        return  result;
+    }
+
+    private Map<String, String> getBeneficiaryConductorMap() {
+        Map<String, String > result = new HashMap<>();
+        result.put("totalCashInAsBeneficiary", "");
+        result.put("totalCashInAsConductor", "");
         return  result;
     }
 }

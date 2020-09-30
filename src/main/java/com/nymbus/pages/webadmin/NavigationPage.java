@@ -8,9 +8,11 @@ public class NavigationPage extends PageTools {
 
     private By navigatorRegion = By.id("navigatorContainer");
     private By usersAndSecurityItem = By.xpath("//li[span[contains(@data-code, 'usersAndSecurity')]]/div");
+    private By assetsItem = By.xpath("//li[span[contains(@data-code, 'assets')]]/div");
     private By accountsTransactionsItem = By.xpath("//li[span[contains(@data-code, 'Accounts/Transactions')]]/div");
     private By accountsItem = By.xpath("//ul/li[@data-name='actmst (Accounts)']/a[@class='navigatorItem']");
     private By usersItem = By.xpath("//ul/li[@data-name='Users']/a[@class='navigatorItem']");
+    private By drlCaches = By.xpath("//ul/li[@data-name='DRL Caches']/a[@class='navigatorItem']");
     private By logoutMenu = By.xpath("//div[@id='logoutMenu']/div/p");
     private By signOutOption = By.xpath("//div[@id='logoutMenu' and contains(@class, 'jDropDown')]/ul/li[2]");
     private By optionsUl = By.xpath("//div[@id='logoutMenu']/ul");
@@ -43,11 +45,25 @@ public class NavigationPage extends PageTools {
         click(usersAndSecurityItem);
     }
 
+    @Step("Click 'Assets' item")
+    public void clickAssetsItem() {
+        waitForElementVisibility(assetsItem);
+        waitForElementClickable(assetsItem);
+        click(assetsItem);
+    }
+
     @Step("Click 'Users' item")
     public void clickUsersItem() {
         waitForElementVisibility(usersItem);
         waitForElementClickable(usersItem);
         click(usersItem);
+    }
+
+    @Step("Click 'DRL Caches' item")
+    public void clickDRLCachesItem() {
+        waitForElementVisibility(drlCaches);
+        waitForElementClickable(drlCaches);
+        click(drlCaches);
     }
 
     @Step("Click 'Accounts/Transactions' item")
