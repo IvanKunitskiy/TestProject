@@ -7,11 +7,14 @@ import com.nymbus.newmodels.client.other.debitcard.types.TranslationTypeAllowed;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
+import java.util.List;
+
 public class DebitCardModalWindow extends PageTools {
     /**
      * Select 'Bin Control' Modal Window Bys
      * */
     private By binNumberArrowIcon = By.xpath("//div[@id='binnumber']//b");
+    private By binValues = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By binNumberDropdownValue = By.xpath("//div/span[text()='%s']");
     private By descriptionInputField = By.id("description");
     private By nextButton = By.xpath("//button[span[text()='Next']]");
@@ -64,6 +67,13 @@ public class DebitCardModalWindow extends PageTools {
         waitForElementVisibility(binNumberArrowIcon);
         waitForElementClickable(binNumberArrowIcon);
         click(binNumberArrowIcon);
+    }
+
+    @Step("Returning list of 'Bin' options")
+    public List<String> getBinList() {
+        waitForElementVisibility(binValues);
+        waitForElementClickable(binValues);
+        return getElementsText(binValues);
     }
 
     @Step("Click on 'Bin Number' drop down value '{binNumber}'")

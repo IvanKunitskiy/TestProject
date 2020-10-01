@@ -88,7 +88,7 @@ public class Account {
 
         account.setAddNewOption("Account");
         account.setProductType("CD Account");
-        account.setProduct("3 Month Regular Certificate");
+        account.setProduct(getProduct(account.getProductType()));
         account.setAutoRenewable("YES");
         account.setInterestFrequency("Quarterly");
         account.setInterestType("Simple");
@@ -181,7 +181,7 @@ public class Account {
         account.setProductType("Savings Account");
         account.setAccountTitle(Generator.genString(5));
         account.setAccountNumber(/*String.valueOf(Generator.genLong(10000000000L, 922337203685L))*/Generator.genAccountNumber());
-        account.setProduct("Regular Savings Account");
+        account.setProduct(getProduct(account.getProductType()));
         account.setAccountTitle(Generator.genString(5));
         account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
@@ -206,7 +206,7 @@ public class Account {
         account.setProductType("CHK Account");
         account.setAccountTitle(Generator.genString(5));
         account.setAccountNumber(Generator.genAccountNumber());
-        account.setProduct("Basic Business Checking");
+        account.setProduct(getProduct(account.getProductType()));
         account.setOptInOutDate("01/01/2020");
         account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
@@ -830,5 +830,44 @@ public class Account {
 
     public void setNextInterestPaymentAmount(String nextInterestPaymentAmount) {
         this.nextInterestPaymentAmount = nextInterestPaymentAmount;
+    }
+
+    public String getProduct(String productType) {
+        String environment = System.getProperty("domain", "dev6");
+
+        switch (productType) {
+            default:
+            case "Savings Account":
+                switch (environment) {
+                    case "dev6":
+                    case "dev12":
+                    default:
+                        return "Regular Savings Account";
+                    case "dev21":
+                    case "dev4":
+                        return "Business Savings";
+                }
+            case "CHK Account":
+                switch (environment) {
+                    case "dev6":
+                    case "dev12":
+                    default:
+                        return "Basic Business Checking";
+                    case "dev21":
+                    case "dev4":
+                        return "BUSINESS DDA";
+                }
+            case "CD Account":
+                switch (environment) {
+                    case "dev6":
+                    case "dev12":
+                    default:
+                        return "3 Month Regular Certificate";
+                    case "dev21":
+                    case "dev4":
+                        return "6 MO  < 250,000";
+                }
+        }
+
     }
 }

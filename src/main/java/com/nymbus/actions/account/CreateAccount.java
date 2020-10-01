@@ -48,7 +48,7 @@ public class CreateAccount {
         setBankBranch(account);
         setMailCode(account);
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
-        Pages.addAccountPage().setInterestRate(account.getInterestRate());
+        // Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
         setCallClassCode(account);
         setInterestFrequency(account);
@@ -64,7 +64,7 @@ public class CreateAccount {
         setCurrentOfficer(account);
         setBankBranch(account);
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
-        Pages.addAccountPage().setInterestRate(account.getInterestRate());
+        // Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
         setCallClassCode(account);
         Pages.addAccountPage().waitForAccountHolderName();
