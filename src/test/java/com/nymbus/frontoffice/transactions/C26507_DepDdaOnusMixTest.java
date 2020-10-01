@@ -3,7 +3,9 @@ package com.nymbus.frontoffice.transactions;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
@@ -19,8 +21,10 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
+import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -33,14 +37,15 @@ import java.util.Map;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Petro")
-public class C26520_ManualMerchantAuthMultiPpeTest extends BaseTest {
+public class C26507_DepDdaOnusMixTest extends BaseTest {
 
     private IndividualClient client;
-    private String chkAccountNumber;
-    private NonTellerTransactionData manualMerchantAuthTransactionData;
-    private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
+    private NonTellerTransactionData depDdaOnusMixTransactionData;
+    private String checkingAccountNumber;
+    private final double depDdaOnusMixTransactionAmount = 15.00;
     private final String uniqueValueField11 = Generator.getRandomStringNumber(6);
-    private final double requestTransactionAmount = 12.00;
+    private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
+    private TransactionData chkAccTransactionData;
 
     @BeforeMethod
     public void preCondition() {
@@ -52,16 +57,21 @@ public class C26520_ManualMerchantAuthMultiPpeTest extends BaseTest {
 
         // Set up CHK and Savings accounts
         Account chkAccount = new Account().setCHKAccountData();
-        chkAccountNumber = chkAccount.getAccountNumber();
+        checkingAccountNumber = chkAccount.getAccountNumber();
 
         // Set up transaction
         Transaction glDebitMiscCreditTransaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
-        glDebitMiscCreditTransaction.getTransactionDestination().setAccountNumber(chkAccountNumber);
+        glDebitMiscCreditTransaction.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
         glDebitMiscCreditTransaction.getTransactionDestination().setTransactionCode("109 - Deposit");
+        double transactionAmount = glDebitMiscCreditTransaction.getTransactionDestination().getAmount();
+
+        // Get terminal ID
+        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(1);
 
         // Set up nonTeller transaction data
-        manualMerchantAuthTransactionData = new NonTellerTransactionData();
-        manualMerchantAuthTransactionData.setAmount(requestTransactionAmount);
+        depDdaOnusMixTransactionData = new NonTellerTransactionData();
+        depDdaOnusMixTransactionData.setAmount(depDdaOnusMixTransactionAmount);
+        depDdaOnusMixTransactionData.setTerminalId(terminalId);
 
         // Set up debit card and bin control
         DebitCardConstructor debitCardConstructor = new DebitCardConstructor();
@@ -93,11 +103,11 @@ public class C26520_ManualMerchantAuthMultiPpeTest extends BaseTest {
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(chkAccount);
 
-        // Create debit card for CHK acc
+        // Create debit card for saving acc
         createDebitCard(client.getInitials(), debitCard);
-        Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(manualMerchantAuthTransactionData, 1);
+        Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(depDdaOnusMixTransactionData, 1);
 
-        // Re-login in system for updating teller session and capture account balances
+        // Re-login in system for updating teller session
         Actions.loginActions().doLogOut();
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
@@ -111,48 +121,58 @@ public class C26520_ManualMerchantAuthMultiPpeTest extends BaseTest {
 
         // Login, capture current and available balance of the account and logout
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
+        Actions.clientPageActions().searchAndOpenClientByName(checkingAccountNumber);
         expectedBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
+
+        chkAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
+                "+", transactionAmount + depDdaOnusMixTransactionAmount, depDdaOnusMixTransactionAmount);
+
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C26520, Manual Merchant Auth Multi PPE")
+    @Test(description = "C26507, DEP DDA ONUS MIX")
     @Severity(SeverityLevel.CRITICAL)
-    public void manualMerchantAuthMultiPpe() {
+    public void depDdaOnusMix() {
 
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
         logInfo("Step 2: Expand widgets-controller and run the following request");
-        String[] actions = {"0100"};
-        Actions.nonTellerTransactionActions().performATMTransaction(getManualMerchantAuthMultiPpeFieldsMap(manualMerchantAuthTransactionData), actions);
-        expectedBalanceDataForCheckingAcc.reduceAvailableBalance(requestTransactionAmount);
+        Actions.nonTellerTransactionActions().performATMTransaction(getFieldsMap(depDdaOnusMixTransactionData));
+        expectedBalanceDataForCheckingAcc.addAvailableBalance(depDdaOnusMixTransactionAmount);
+        expectedBalanceDataForCheckingAcc.addCurrentBalance(depDdaOnusMixTransactionAmount);
+
+        String transcode = TransactionCode.ATM_DEPOSIT_108.getTransCode().split("\\s+")[0];
+        WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(chkAccTransactionData,
+                checkingAccountNumber, transcode);
 
         logInfo("Step 3: Log in to the system as the User from the preconditions");
-        logInfo("Step 4: Search for CHK account from the precondition and verify its current and available balance");
+        logInfo("Step 4: Search for CHK account from the precondition and open it on Instructions tab");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
+        Actions.clientPageActions().searchAndOpenClientByName(checkingAccountNumber);
+        AccountActions.editAccount().goToInstructionsTab();
+
+        logInfo("Step 5: Check the list of instructions for the account (if exist) and delete the Hold with type Reg CC\n" +
+                "Skip this step if HOLD WAS NOT created during commit of the transaction");
+        if (Pages.accountInstructionsPage().getCreatedInstructionsCount() == 1) {
+            AccountActions.createInstruction().deleteInstruction(1);
+        }
+
+        logInfo("Step 6: Search for CHK account from the precondition and verify its current and available balance");
+        Actions.clientPageActions().searchAndOpenClientByName(checkingAccountNumber);
         Assert.assertEquals(AccountActions.retrievingAccountData().getCurrentBalance(),
                 expectedBalanceDataForCheckingAcc.getCurrentBalance(), "CHK account current balance is not correct!");
         Assert.assertEquals(AccountActions.retrievingAccountData().getAvailableBalance(),
                 expectedBalanceDataForCheckingAcc.getAvailableBalance(), "CHK account available balance is not correct!");
 
-        logInfo("Step 5: Open account on Transactions tab and verify that there is NO ATM transaction");
+        logInfo("Step 7: Open account on Transactions tab and verify that there is NO ATM transaction");
         AccountActions.retrievingAccountData().goToTransactionsTab();
-        Assert.assertEquals(Pages.accountTransactionPage().getTransactionItemsCount(), 1,
-                "Transaction count is incorrect!");
-        Assert.assertTrue(Actions.transactionActions().isTransactionCodePresent("109 - Deposit"),
-                "109 - Deposit transaction is not present in transaction list");
+        int offset = AccountActions.retrievingAccountData().getOffset();
+        TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset);
+        Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
+        Assert.assertTrue(Actions.transactionActions().isTransactionCodePresent(TransactionCode.ATM_DEPOSIT_108.getTransCode()),
+                "'108 - ATM Deposit' is present in transaction list");
 
-        logInfo("Step 6: Open account on the Instructions tab and verify that there is a Hold");
-        AccountActions.editAccount().goToInstructionsTab();
-        Assert.assertEquals(Pages.accountInstructionsPage().getCreatedInstructionsCount(), 1,
-                "Instruction was created");
-        Pages.accountInstructionsPage().clickInstructionInListByIndex(1);
-        double holdInstructionAmount = AccountActions.retrievingAccountData().getInstructionAmount();
-        Assert.assertEquals(requestTransactionAmount, holdInstructionAmount,
-                "Hold instruction amount is not equal to request transaction amount!");
-
-        logInfo("Step 7: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
-        logInfo("Step 8: Click [View History] link on the Debit Card from the precondition");
+        logInfo("Step 8: Go to Client Maintenance and click [View all Cards] button in 'Cards Management' widget");
+        logInfo("Step 9: Click [View History] link on the Debit Card from the precondition");
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         Actions.debitCardModalWindowActions().goToCardHistory(1);
 
@@ -161,11 +181,11 @@ public class C26520_ManualMerchantAuthMultiPpeTest extends BaseTest {
                 "'Transaction Reason Code' is not equal to '00 -- Approved or completed successfully'");
 
         String transactionDescription = Pages.cardsManagementPage().getTransactionDescription(1);
-        Assert.assertEquals(transactionDescription, "Pre-Authorization Request",
-                "Transaction description is not equal to 'Pre-Authorization Request'");
+        Assert.assertEquals(transactionDescription, "Deposit",
+                "Transaction description is not equal to 'Deposit'");
 
         String transactionAmount = Pages.cardsManagementPage().getTransactionAmount(1);
-        Assert.assertEquals(Double.parseDouble(transactionAmount), requestTransactionAmount,
+        Assert.assertEquals(Double.parseDouble(transactionAmount), depDdaOnusMixTransactionAmount,
                 "Transaction description is not equal to 'Pre-Authorization Request'");
     }
 
@@ -178,23 +198,25 @@ public class C26520_ManualMerchantAuthMultiPpeTest extends BaseTest {
         Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
     }
 
-    private Map<String, String> getManualMerchantAuthMultiPpeFieldsMap(NonTellerTransactionData transactionData) {
+    private Map<String, String> getFieldsMap(NonTellerTransactionData transactionData) {
         Map<String, String > result = new HashMap<>();
-
-        result.put("0", "0100");
-        result.put("2", transactionData.getCardNumber());
-        result.put("3", "000000");
+        result.put("0", "0200");
+        result.put("3", "210020");
         result.put("4", transactionData.getAmount());
         result.put("11", uniqueValueField11);
         result.put("18", "5542");
-        result.put("22", "012");
+        result.put("22", "022");
+        result.put("35", String.format("%s=%s", transactionData.getCardNumber(), transactionData.getExpirationDate()));
+        result.put("41", transactionData.getTerminalId());
         result.put("42", "01 sample av.  ");
         result.put("43", "Long ave. bld. 34      Nashville      US");
         result.put("48", "SHELL");
         result.put("49", "840");
-        result.put("58", "01000000012");
-        result.put("63", "B2IN9015PPEACQRID  0  ");
+        result.put("54", "2093840C0000000010002094840C000000000500");
+        result.put("58", "10000000612");
+        result.put("104", "MIXDEP");
 
         return  result;
     }
+
 }

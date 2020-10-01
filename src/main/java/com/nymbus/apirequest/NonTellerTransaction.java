@@ -17,79 +17,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 public class NonTellerTransaction extends AllureLogger {
     private static final String GENERIC_PROCESS_URL = Constants.API_URL + "widget._GenericProcess/";
 
-    public void generateCreditPurchaseTransaction(String cardNumber, String expirationDate, String amount) {
-        JSONObject requestBody = JSONData.getAtmCreditData(cardNumber, expirationDate, amount);
-
-        System.out.println(requestBody.toString());
-
-        given().
-                auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
-                contentType(ContentType.JSON).
-                relaxedHTTPSValidation().
-                body(requestBody.toString()).
-        when().
-                post(GENERIC_PROCESS_URL).
-        then().
-                statusCode(200).
-                body("data[0].field.39", equalTo("00"));
-    }
-
     public void generateDebitPurchaseTransaction(String cardNumber, String expirationDate, String amount) {
         JSONObject requestBody = JSONData.getAtmDepositData(cardNumber, expirationDate, amount);
-
-        logInfo("Request body: " + requestBody.toString());
-        System.out.println(requestBody.toString());
-
-        given().
-                auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
-                contentType(ContentType.JSON).
-                relaxedHTTPSValidation().
-                body(requestBody.toString()).
-        when().
-                post(GENERIC_PROCESS_URL).
-        then().
-                statusCode(200).
-                body("data[0].field.39", equalTo("00"));
-    }
-
-    public void generateWithdrawalONUSTransaction(String cardNumber, String expirationDate, String amount, String onusTerminalID) {
-        JSONObject requestBody = JSONData.getAtmCreditData(cardNumber, expirationDate, amount, onusTerminalID);
-
-        logInfo("Request body: " + requestBody.toString());
-        System.out.println(requestBody.toString());
-
-        given().
-                auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
-                contentType(ContentType.JSON).
-                relaxedHTTPSValidation().
-                body(requestBody.toString()).
-        when().
-                post(GENERIC_PROCESS_URL).
-        then().
-                statusCode(200).
-                body("data[0].field.39", equalTo("00"));
-    }
-
-    public void generateDepositONUSTransaction(String cardNumber, String expirationDate, String amount, String onusTerminalID) {
-        JSONObject requestBody = JSONData.getAtmDepositData(cardNumber, expirationDate, amount, onusTerminalID);
-
-        logInfo("Request body: " + requestBody.toString());
-        System.out.println(requestBody.toString());
-
-        given().
-                auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
-                contentType(ContentType.JSON).
-                relaxedHTTPSValidation().
-                body(requestBody.toString()).
-        when().
-                post(GENERIC_PROCESS_URL).
-        then().
-                statusCode(200).
-                body("data[0].field.39", equalTo("00"));
-    }
-
-    public void generateATMTransaction(NonTellerTransactionData transactionData, ATMTransactionType type) {
-        JSONObject requestBody = JSONData.getATMData(transactionData, type);
 
         logInfo("Request body: " + requestBody.toString());
         System.out.println(requestBody.toString());
