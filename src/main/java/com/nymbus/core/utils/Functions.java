@@ -5,6 +5,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.Collections;
 import java.util.Locale;
 
 public class Functions {
@@ -61,5 +62,10 @@ public class Functions {
 
     public static String getStringValueWithOnlyDigits(double amount) {
         return  String.format("%.2f", amount).replaceAll("[^0-9]", "");
+    }
+
+    public static String getAdditionalSymbols(int length, int maxLength, String symbol) {
+        int count = Math.max(maxLength - length, 0);
+        return String.join("", Collections.nCopies(count,symbol));
     }
 }

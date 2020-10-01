@@ -4,8 +4,10 @@ import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.transaction.enums.ATMTransactionType;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class JSONData {
@@ -289,5 +291,14 @@ public class JSONData {
         fields.put("58", "10000000612");
 
         return fields;
+    }
+
+    public static void setFieldsMap(String fields, Map<String, String> fieldsMap) {
+        try {
+            JSONObject fieldsJson = new JSONObject(fields);
+            fieldsMap.replaceAll((k, v) -> fieldsJson.get(k).toString());
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+        }
     }
 }

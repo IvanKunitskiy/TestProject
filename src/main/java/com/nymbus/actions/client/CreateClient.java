@@ -1,6 +1,7 @@
 package com.nymbus.actions.client;
 
 import com.nymbus.core.utils.Functions;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.models.client.Client;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
@@ -358,5 +359,13 @@ public class CreateClient {
             client.getIdentityDocument().get(1).setCountry(listOfCountry.get(new Random().nextInt(listOfCountry.size())).trim());
         Pages.addClientPage().setDocumentCountryValue(client.getIdentityDocument().get(1).getCountry());
         Pages.addClientPage().clickDocumentCountryOption(client.getIdentityDocument().get(1).getCountry());
+    }
+
+    public String getClientIdFromUrl() {
+        String url = SelenideTools.getCurrentUrl();
+        String[] arr = url.split("/");
+        int position = arr.length - 2;
+
+        return  arr[position];
     }
 }

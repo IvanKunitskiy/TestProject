@@ -14,6 +14,7 @@ public class WebAdminPages {
     private static UsersPage usersPage;
     private static RulesUIQueryAnalyzerPage rulesUIQueryAnalyzerPage;
     private static AccountsPage accountsPage;
+    private static DRLCachesPage drlCachesPage;
 
     /**
      * This function return an instance of `LoginPage`
@@ -63,5 +64,15 @@ public class WebAdminPages {
             accountsPage = new AccountsPage();
         }
         return accountsPage;
+    }
+
+    /**
+     * This function return an instance of `DRLCachesPage`
+     */
+    public static DRLCachesPage drlCachesPage() {
+        if (drlCachesPage == null) {
+            drlCachesPage = new DRLCachesPage();
+        }
+        return drlCachesPage;
     }
 }
