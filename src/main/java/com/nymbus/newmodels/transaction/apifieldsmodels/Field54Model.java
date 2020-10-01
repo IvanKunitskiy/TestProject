@@ -1,8 +1,10 @@
 package com.nymbus.newmodels.transaction.apifieldsmodels;
 
 import com.nymbus.core.utils.Functions;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 @AllArgsConstructor
@@ -13,8 +15,8 @@ public class Field54Model {
     private String signIndicator;
     private double amount;
 
-    private final int MAX_LENGTH = 12;
-    private final String ZERO_SYMBOL = "0";
+    @Getter(AccessLevel.NONE) private final int MAX_LENGTH = 12;
+    @Getter(AccessLevel.NONE) private final String ZERO_SYMBOL = "0";
 
     public String getData() {
         String formattedAmount = Functions.getStringValueWithOnlyDigits(amount);

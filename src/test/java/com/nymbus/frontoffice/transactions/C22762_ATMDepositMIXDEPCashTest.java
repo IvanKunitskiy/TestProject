@@ -9,6 +9,7 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
@@ -46,9 +47,14 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
     private IndividualClient client;
     private String clientRootId;
 
+    // Amounts
     private final double cashTransactionAmount = 105.00;
     private final double cashAmountForMixDepTransaction = 100.00;
     private final double checkAmountForMixDepTransaction = 50.00;
+
+    // Fields to verify on web-admin page
+    private final String TOTAL_CASH_IN_AS_BENEFICIARY = "totalCashInAsBeneficiary";
+    private final String TOTAL_CASH_IN_AS_CONDUCTOR = "totalCashInAsConductor";
 
     @BeforeMethod
     public void prepareTransactionData() {
@@ -197,7 +203,9 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
 
         logInfo("Step 11: Check the list of instructions for the account (if exist) and delete the Hold with type Reg CC");
         AccountActions.editAccount().goToInstructionsTab();
-        AccountActions.createInstruction().deleteInstructionByReasonText(INSTRUCTION_REASON);
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        int instructionsCount = AccountActions.createInstruction().getInstructionCount();
+        Assert.assertEquals(instructionsCount, 0, "Instructions count is incorrect!");
 
         logInfo("Step 12: Verify CHK account's:: \n" +
                 "- current balance \n" +
@@ -239,6 +247,12 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
                 "by Cash Amount from DE054 from Step2+Step9");
         Map<String, String> totalCashValues = getBeneficiaryConductorMap();
         WebAdminActions.webAdminUsersActions().setFieldsMapWithValues(2, totalCashValues);
+        double expectedResult = cashTransactionAmount + cashAmountForMixDepTransaction;
+        double actualBeneficiaryValue = Double.parseDouble(totalCashValues.get(TOTAL_CASH_IN_AS_BENEFICIARY));
+        double actualConductorValue = Double.parseDouble(totalCashValues.get(TOTAL_CASH_IN_AS_CONDUCTOR));
+
+        Assert.assertEquals(actualBeneficiaryValue, expectedResult, "totalCashInAsBeneficiary value is incorrect!");
+        Assert.assertEquals(actualConductorValue, expectedResult, "totalCashInAsConductor value is incorrect!");
     }
 
     private void createDebitCard(String clientInitials, DebitCard debitCard, boolean typeNameWithJs) {
@@ -288,8 +302,8 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
 
     private Map<String, String> getBeneficiaryConductorMap() {
         Map<String, String > result = new HashMap<>();
-        result.put("totalCashInAsBeneficiary", "");
-        result.put("totalCashInAsConductor", "");
+        result.put(TOTAL_CASH_IN_AS_BENEFICIARY, "0");
+        result.put(TOTAL_CASH_IN_AS_CONDUCTOR, "0");
         return  result;
     }
 }
