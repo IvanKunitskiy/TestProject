@@ -45,7 +45,7 @@ public class Constants {
     public static String FIREFOX = "firefox";
 
     private static String getBaseUrl() {
-        switch (System.getProperty("domain", "dev6")) {
+        switch (getEnvironment()) {
             case "dev6":
             default:
                 return "https://dev6.nymbus.com/";
@@ -57,7 +57,7 @@ public class Constants {
     }
 
     private static String getWebAdminUrl() {
-        switch (System.getProperty("domain", "dev6")) {
+        switch (getEnvironment()) {
             case "dev6":
             default:
                 return "https://nymbus-u-was-07.nj1.nymbus.com:9445/webadmin/";
@@ -69,7 +69,7 @@ public class Constants {
     }
 
     private static String getApiUrl() {
-        switch (System.getProperty("domain", "dev6")) {
+        switch (getEnvironment()) {
             case "dev6":
             default:
                 return "https://nymbus-u-was-07.nj1.nymbus.com:9443/coreweb/controller/";
@@ -81,7 +81,7 @@ public class Constants {
     }
 
     private static String getBinNumber() {
-        switch (System.getProperty("domain", "dev6")) {
+        switch (getEnvironment()) {
             case "dev6":
             case "dev12":
             default:
@@ -95,7 +95,7 @@ public class Constants {
      * Individual type
      */
     private static String getIndividualType() {
-        switch (System.getProperty("domain", "dev6")) {
+        switch (getEnvironment()) {
             case "dev6":
             default:
                 return "IndividualType";
@@ -106,7 +106,7 @@ public class Constants {
     }
 
     private static FinancialInstitutionType getInstitutionType() {
-        switch (System.getProperty("domain", "dev6")) {
+        switch (getEnvironment()) {
             case "dev6":
             case "dev12":
             default:
@@ -114,6 +114,10 @@ public class Constants {
             case "dev21":
                 return FinancialInstitutionType.BANK;
         }
+    }
+
+    public static String getEnvironment() {
+        return System.getProperty("domain", "dev6");
     }
 
     /**

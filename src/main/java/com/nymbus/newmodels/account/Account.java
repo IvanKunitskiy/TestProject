@@ -113,7 +113,7 @@ public class Account {
 
         account.setAddNewOption("Account");
         account.setProductType("CD");
-        account.setProduct("6 Month Roth IRA Certificate");
+        account.setProduct(getCDIRAProduct(Constants.getEnvironment()));
         account.setAccountTitle(Generator.genString(5));
         account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setAccountNumber(Generator.genAccountNumber());
@@ -122,7 +122,7 @@ public class Account {
         account.setTransactionalAccount("NO");
         account.setAutoRenewable("YES");
         account.setAccountHolder("Owner");
-        account.setTermType("6");
+        account.setTermType(getCDIRATerms(Constants.getEnvironment()));
         account.setInterestRate(String.valueOf(Generator.genFloat(0.001, 99.999, 1)));
         account.setInterestFrequency("Quarterly");
         account.setApplyInterestTo("Remain in Account");
@@ -833,41 +833,76 @@ public class Account {
     }
 
     public String getProduct(String productType) {
-        String environment = System.getProperty("domain", "dev6");
+        String environment = Constants.getEnvironment();
 
         switch (productType) {
             default:
             case "Savings Account":
-                switch (environment) {
-                    case "dev6":
-                    case "dev12":
-                    default:
-                        return "Regular Savings Account";
-                    case "dev21":
-                    case "dev4":
-                        return "Business Savings";
-                }
+                return getSavingsProduct(environment);
             case "CHK Account":
-                switch (environment) {
-                    case "dev6":
-                    case "dev12":
-                    default:
-                        return "Basic Business Checking";
-                    case "dev21":
-                    case "dev4":
-                        return "BUSINESS DDA";
-                }
+               return getCHKProduct(environment);
             case "CD Account":
-                switch (environment) {
-                    case "dev6":
-                    case "dev12":
-                    default:
-                        return "3 Month Regular Certificate";
-                    case "dev21":
-                    case "dev4":
-                        return "6 MO  < 250,000";
-                }
+                return getCDProduct(environment);
         }
+    }
 
+    private String getSavingsProduct(String environment) {
+        switch (environment) {
+            case "dev6":
+            case "dev12":
+            default:
+                return "Regular Savings Account";
+            case "dev21":
+            case "dev4":
+                return "Business Savings";
+        }
+    }
+
+    private String getCHKProduct(String environment) {
+        switch (environment) {
+            case "dev6":
+            case "dev12":
+            default:
+                return "Basic Business Checking";
+            case "dev21":
+            case "dev4":
+                return "BUSINESS DDA";
+        }
+    }
+
+    private String getCDProduct(String environment) {
+        switch (environment) {
+            case "dev6":
+            case "dev12":
+            default:
+                return "3 Month Regular Certificate";
+            case "dev21":
+            case "dev4":
+                return "6 MO  < 250,000";
+        }
+    }
+
+    private String getCDIRAProduct(String environment) {
+        switch (environment) {
+            case "dev6":
+            case "dev12":
+            default:
+                return "6 Month Roth IRA Certificate";
+            case "dev21":
+            case "dev4":
+                return " 12 Month Traditional IRA Cert";
+        }
+    }
+
+    private String getCDIRATerms(String environment) {
+        switch (environment) {
+            case "dev6":
+            case "dev12":
+            default:
+                return "6";
+            case "dev21":
+            case "dev4":
+                return "12";
+        }
     }
 }
