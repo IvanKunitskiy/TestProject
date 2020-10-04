@@ -50,7 +50,7 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
 
         chkAccount = new Account().setCHKAccountData();
         saveAccount = new Account().setSavingsAccountData();
-        cdAccount = new Account().setCDAccountData();
+        cdAccount = new Account().setCdAccountData();
 
         // Set up  transactions
         Transaction transaction = new TransactionConstructor(new CashInMiscCreditCHKAccBuilder()).constructTransaction();

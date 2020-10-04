@@ -36,7 +36,7 @@ public class C22668_CommitCDRedemptionTest extends BaseTest {
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         IndividualClient client = individualClientBuilder.buildClient();
 
-        Account cdAccount = new Account().setCDAccountData();
+        Account cdAccount = new Account().setCdAccountData();
         cdAccount.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 10));
 
         TransactionConstructor constructor = new TransactionConstructor(new GLDebitMiscCreditCDAccBuilder());

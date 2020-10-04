@@ -40,7 +40,7 @@ public class C23915_GLDebitMiscCreditCDAccTest extends BaseTest {
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         IndividualClient client = individualClientBuilder.buildClient();
-        cdAccount = new Account().setCDAccountData();
+        cdAccount = new Account().setCdAccountData();
         transaction = new TransactionConstructor(new GLDebitMiscCreditCDAccBuilder()).constructTransaction();
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 

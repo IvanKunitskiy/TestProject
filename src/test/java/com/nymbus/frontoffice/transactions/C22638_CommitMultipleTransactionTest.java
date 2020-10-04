@@ -41,7 +41,7 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
 
         chkAccount = new Account().setCHKAccountData();
         saveAccount = new Account().setSavingsAccountData();
-        cdAccount = new Account().setCDAccountData();
+        cdAccount = new Account().setCdAccountData();
 
         // Set up  transactions
         Transaction transaction = new TransactionConstructor(new CashInMiscCreditCHKAccBuilder()).constructTransaction();
