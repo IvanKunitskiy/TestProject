@@ -5,7 +5,6 @@ import com.nymbus.core.base.PageTools;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.client.other.account.ProductType;
-import com.nymbus.newmodels.settings.product.Product;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -14,126 +13,126 @@ import java.util.stream.Collectors;
 
 public class AddAccountPage extends PageTools {
 
-    private By productTypeSelectorButton = By.id("accounttype");
-    private By productTypeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private By productTypeList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By productSelectorButton = By.xpath("//div[@id='accountclasstype']");
-    private By productList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By productTypeInputField = By.xpath("//div[@data-test-id='field-accounttype']//input[contains(@class, 'nb-select-search')]");
-    private By accountNumberField = By.xpath("//input[@data-test-id='field-accountnumber']");
-    private By accountTitleField = By.xpath("//input[@data-test-id='field-accounttitlemailinginstructions']");
-    private By bankBranchSelectorButton = By.xpath("//div[@id='bankbranch']");
-    private By bankBranchSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private By saveAccountButton = By.xpath("//button[@data-test-id='action-save']");
-    private By bankBranchList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By accountType = By.xpath("//div[@data-test-id='field-customertype']/a/span/span");
-    private By dateOpened = By.xpath("//input[@data-test-id='field-dateopened']");
-    private By productSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private By statementCycleSelectorButton = By.xpath("//div[@id='statementcycle']");
-    private By statementCycleList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By bankBranch = By.xpath("//div[@data-test-id='field-bankbranch']/a/span/span[contains(@class, 'ng-binding')]");
-    private By interestRateInput = By.xpath("//input[@data-test-id='field-interestrate']");
-    private By earningCreditRateInput = By.xpath("//input[@data-test-id='field-earningscreditrate']");
-    private By optInOutDateCalendarIcon = By.xpath("//div[input[@id='dbcodpstatusdate']]/div[span[@class='nyb-icon-calendar']]");
-    private By optInOutDateInputField = By.xpath("//input[@id='dbcodpstatusdate']");
-    private By dateOpenedField = By.xpath("//input[@id='dateopened']");
-    private By dateOfBirth = By.xpath("//input[@id='dateofbirth']");
-    private By iraDistributionCode = By.xpath("//div[@id='iradistributioncode']//a//span/span");
-    private By iraDistributionFrequency = By.xpath("//div[@id='iradistributionfrequency']//a//span/span");
-    private By iraDistributionAmountField = By.xpath("//input[@id='iradistributionamount']");
-    private By dateNextIRADistribution = By.xpath("//input[@id='datenextiradistribution']");
-    private By termType = By.xpath("//input[@id='terminmonthsordays']");
-    private By autoRenewable = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span[contains(@class, 'ng-scope')]");
-    private By interestFrequency = By.xpath("//div[@id='interestfrequencycode']/a/span/span[contains(@class, 'ng-scope')]");
-    private By interestRate = By.xpath("//input[@id='interestrate']");
-    private By interestType = By.xpath("//div[@id='interesttype']/a/span/span[contains(@class, 'ng-scope')]");
-    private By transactionalAccountSwitch = By.xpath("//dn-switch[@id='transactionalaccount']");
-    private By transactionalAccount = By.xpath("//dn-switch[@id='transactionalaccount']/div/div/span[contains(@class, 'ng-scope')]");
-    private By applyInterestTo = By.xpath("//div[@id='codetoapplyinterestto']/a/span/span[contains(@class, 'ng-scope')]");
-    private By mailCode = By.xpath("//div[@id='mailingcode']/a/span/span[contains(@class, 'ng-scope')]");
-    private By rentalAmount = By.xpath("//input[@id='rentalamount']");
-    private By userDefinedFieldInput_1 = By.xpath("//input[@id='userdefinedfield1']");
-    private By userDefinedFieldInput_2 = By.xpath("//input[@id='userdefinedfield2']");
-    private By userDefinedFieldInput_3 = By.xpath("//input[@id='userdefinedfield3']");
-    private By userDefinedFieldInput_4 = By.xpath("//input[@id='userdefinedfield4']");
-    private By discountPeriods = By.xpath("//input[@id='discountperiods']");
-    private By applySeasonalAddress = By.xpath("//dn-switch[@id='useseasonaladdress']//span[@ng-if='model']");
-    private By applySeasonalAddressSwitch = By.xpath("//dn-switch[@id='useseasonaladdress']");
-    private By applySeasonalAddressValue = By.xpath("//dn-switch[@id='useseasonaladdress']/div/div/span");
-    private By dateOfFirstDeposit = By.xpath("//input[@id='datefirstdeposit']");
-    private By autoRenewableSwitch = By.xpath("//dn-switch[@id='autorenewablecode']");
-    private By autoRenewableSwitchValue = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span");
+    private final By productTypeSelectorButton = By.id("accounttype");
+    private final By productTypeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private final By productTypeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By productSelectorButton = By.xpath("//div[@id='accountclasstype']");
+    private final By productList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By productTypeInputField = By.xpath("//div[@data-test-id='field-accounttype']//input[contains(@class, 'nb-select-search')]");
+    private final By accountNumberField = By.xpath("//input[@data-test-id='field-accountnumber']");
+    private final By accountTitleField = By.xpath("//input[@data-test-id='field-accounttitlemailinginstructions']");
+    private final By bankBranchSelectorButton = By.xpath("//div[@id='bankbranch']");
+    private final By bankBranchSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private final By saveAccountButton = By.xpath("//button[@data-test-id='action-save']");
+    private final By bankBranchList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By accountType = By.xpath("//div[@data-test-id='field-customertype']/a/span/span");
+    private final By dateOpened = By.xpath("//input[@data-test-id='field-dateopened']");
+    private final By productSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private final By statementCycleSelectorButton = By.xpath("//div[@id='statementcycle']");
+    private final By statementCycleList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By bankBranch = By.xpath("//div[@data-test-id='field-bankbranch']/a/span/span[contains(@class, 'ng-binding')]");
+    private final By interestRateInput = By.xpath("//input[@data-test-id='field-interestrate']");
+    private final By earningCreditRateInput = By.xpath("//input[@data-test-id='field-earningscreditrate']");
+    private final By optInOutDateCalendarIcon = By.xpath("//div[input[@id='dbcodpstatusdate']]/div[span[@class='nyb-icon-calendar']]");
+    private final By optInOutDateInputField = By.xpath("//input[@id='dbcodpstatusdate']");
+    private final By dateOpenedField = By.xpath("//input[@id='dateopened']");
+    private final By dateOfBirth = By.xpath("//input[@id='dateofbirth']");
+    private final By iraDistributionCode = By.xpath("//div[@id='iradistributioncode']//a//span/span");
+    private final By iraDistributionFrequency = By.xpath("//div[@id='iradistributionfrequency']//a//span/span");
+    private final By iraDistributionAmountField = By.xpath("//input[@id='iradistributionamount']");
+    private final By dateNextIRADistribution = By.xpath("//input[@id='datenextiradistribution']");
+    private final By termType = By.xpath("//input[@id='terminmonthsordays']");
+    private final By autoRenewable = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span[contains(@class, 'ng-scope')]");
+    private final By interestFrequency = By.xpath("//div[@id='interestfrequencycode']/a/span/span[contains(@class, 'ng-scope')]");
+    private final By interestRate = By.xpath("//input[@id='interestrate']");
+    private final By interestType = By.xpath("//div[@id='interesttype']/a/span/span[contains(@class, 'ng-scope')]");
+    private final By transactionalAccountSwitch = By.xpath("//dn-switch[@id='transactionalaccount']");
+    private final By transactionalAccount = By.xpath("//dn-switch[@id='transactionalaccount']/div/div/span[contains(@class, 'ng-scope')]");
+    private final By applyInterestTo = By.xpath("//div[@id='codetoapplyinterestto']/a/span/span[contains(@class, 'ng-scope')]");
+    private final By mailCode = By.xpath("//div[@id='mailingcode']/a/span/span[contains(@class, 'ng-scope')]");
+    private final By rentalAmount = By.xpath("//input[@id='rentalamount']");
+    private final By userDefinedFieldInput_1 = By.xpath("//input[@id='userdefinedfield1']");
+    private final By userDefinedFieldInput_2 = By.xpath("//input[@id='userdefinedfield2']");
+    private final By userDefinedFieldInput_3 = By.xpath("//input[@id='userdefinedfield3']");
+    private final By userDefinedFieldInput_4 = By.xpath("//input[@id='userdefinedfield4']");
+    private final By discountPeriods = By.xpath("//input[@id='discountperiods']");
+    private final By applySeasonalAddress = By.xpath("//dn-switch[@id='useseasonaladdress']//span[@ng-if='model']");
+    private final By applySeasonalAddressSwitch = By.xpath("//dn-switch[@id='useseasonaladdress']");
+    private final By applySeasonalAddressValue = By.xpath("//dn-switch[@id='useseasonaladdress']/div/div/span");
+    private final By dateOfFirstDeposit = By.xpath("//input[@id='datefirstdeposit']");
+    private final By autoRenewableSwitch = By.xpath("//dn-switch[@id='autorenewablecode']");
+    private final By autoRenewableSwitchValue = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span");
 
     /**
      * Account holders and signers
      */
 
-    private By accountHolderName = By.xpath("//a[@data-test-id='action-goCustomerProfile']");
-    private By accountHolderRelationship = By.xpath("//div[@data-test-id='field-relationshiptype_0']//a//span//span");
-    private By accountHolderClientType = By.xpath("//input[@data-test-id='field-typeid_0']");
-    private By accountHolderTaxID = By.xpath("//input[@data-test-id='field-taxIdNumber']");
-    private By statementCycleSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private By accountHolderAddress = By.xpath("//div[@data-test-id='field-addressid_0']/a/span/span");
+    private final By accountHolderName = By.xpath("//a[@data-test-id='action-goCustomerProfile']");
+    private final By accountHolderRelationship = By.xpath("//div[@data-test-id='field-relationshiptype_0']//a//span//span");
+    private final By accountHolderClientType = By.xpath("//input[@data-test-id='field-typeid_0']");
+    private final By accountHolderTaxID = By.xpath("//input[@data-test-id='field-taxIdNumber']");
+    private final By statementCycleSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private final By accountHolderAddress = By.xpath("//div[@data-test-id='field-addressid_0']/a/span/span");
 
-    private By originatingOfficer = By.xpath("//div[@data-test-id='field-originatingOfficer']/a/span/span");
-    private By currentOfficer = By.xpath("//div[@data-test-id='field-officer']/a/span/span");
-    private By optInOutStatus = By.xpath("//div[@data-test-id='field-dbcodpstatus']/a/span/span");
+    private final By originatingOfficer = By.xpath("//div[@data-test-id='field-originatingOfficer']/a/span/span");
+    private final By currentOfficer = By.xpath("//div[@data-test-id='field-officer']/a/span/span");
+    private final By optInOutStatus = By.xpath("//div[@data-test-id='field-dbcodpstatus']/a/span/span");
 
-    private By currentOfficerSelectorButton = By.xpath("//div[@data-test-id='field-officer']");
-    private By currentOfficerList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By currentOfficerSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private final By currentOfficerSelectorButton = By.xpath("//div[@data-test-id='field-officer']");
+    private final By currentOfficerList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By currentOfficerSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By callClassCodeSelectorButton = By.xpath("//div[@data-test-id='field-callclasscode']");
-    private By callClassCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By callClassCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private final By callClassCodeSelectorButton = By.xpath("//div[@data-test-id='field-callclasscode']");
+    private final By callClassCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By callClassCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By accountAnalysisSelectorButton = By.xpath("//div[@id='accountanalysis']");
-    private By accountAnalysisList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By accountAnalysisSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private final By accountAnalysisSelectorButton = By.xpath("//div[@id='accountanalysis']");
+    private final By accountAnalysisList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By accountAnalysisSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By chargeOrAnalyzeSelectorButton = By.xpath("//div[@id='chargeoranalyze']");
-    private By chargeOrAnalyzeList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By chargeOrAnalyzeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private final By chargeOrAnalyzeSelectorButton = By.xpath("//div[@id='chargeoranalyze']");
+    private final By chargeOrAnalyzeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By chargeOrAnalyzeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By interestFrequencySelectorButton = By.xpath("//div[@id='interestfrequency']//span[contains(@class, 'select2-arrow')]");
-    private By interestFrequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By interestFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private final By interestFrequencySelectorButton = By.xpath("//div[@id='interestfrequency']//span[contains(@class, 'select2-arrow')]");
+    private final By interestFrequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By interestFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By interestFrequencyCodeSelectorButton = By.xpath("//div[@id='interestfrequencycode']//span[contains(@class, 'select2-arrow')]");
-    private By interestFrequencyCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By interestFrequencyCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private final By interestFrequencyCodeSelectorButton = By.xpath("//div[@id='interestfrequencycode']//span[contains(@class, 'select2-arrow')]");
+    private final By interestFrequencyCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By interestFrequencyCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By correspondingAccountSelectorButton = By.xpath("//div[@id='correspondingaccountid']");
-    private By correspondingAccountList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By correspondingAccountSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private final By correspondingAccountSelectorButton = By.xpath("//div[@id='correspondingaccountid']");
+    private final By correspondingAccountList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By correspondingAccountSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By iraDistributionFrequencySelectorButton = By.xpath("//div[@id='iradistributionfrequency']");
-    private By iraDistributionFrequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By iraDistributionFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private final By iraDistributionFrequencySelectorButton = By.xpath("//div[@id='iradistributionfrequency']");
+    private final By iraDistributionFrequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By iraDistributionFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By iraDistributionCodeSelectorButton = By.xpath("//div[@id='iradistributioncode']");
-    private By iraDistributionCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By iraDistributionCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private final By iraDistributionCodeSelectorButton = By.xpath("//div[@id='iradistributioncode']");
+    private final By iraDistributionCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By iraDistributionCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By applyInterestToSelectorButton = By.xpath("//div[@id='codetoapplyinterestto']");
-    private By applyInterestToList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By applyInterestToSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private final By applyInterestToSelectorButton = By.xpath("//div[@id='codetoapplyinterestto']");
+    private final By applyInterestToList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By applyInterestToSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By interestTypeSelectorButton = By.xpath("//div[@id='interesttype']");
-    private By interestTypeList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By interestTypeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private final By interestTypeSelectorButton = By.xpath("//div[@id='interesttype']");
+    private final By interestTypeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By interestTypeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By discountReasonSelectorButton = By.xpath("//div[@id='discountreason']");
-    private By discountReasonList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By discountReasonSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private final By discountReasonSelectorButton = By.xpath("//div[@id='discountreason']");
+    private final By discountReasonList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By discountReasonSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By boxSizeSelectorButton = By.xpath("//div[@id='boxsize']");
-    private By boxSizeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private By boxSizeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By boxSizeSelectorButton = By.xpath("//div[@id='boxsize']");
+    private final By boxSizeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private final By boxSizeList = By.xpath("//li[contains(@role, 'option')]/div/span");
 
-    private By mailCodeSelectorButton = By.xpath("//div[@id='mailingcode']");
-    private By mailCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private By mailCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
+    private final By mailCodeSelectorButton = By.xpath("//div[@id='mailingcode']");
+    private final By mailCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By mailCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
 
     @Step("Wait for account holder name")
     public void waitForAccountHolderName() {
@@ -546,17 +545,7 @@ public class AddAccountPage extends PageTools {
 
     @Step("Click the 'Product' option")
     public void clickProductOption(String productOption) {
-        waitForElementVisibility(productSelectorOption, productOption);
-        waitForElementClickable(productSelectorOption, productOption);
-        click(productSelectorOption, productOption);
-        SelenideTools.sleep(2);
-    }
-
-    @Step("Click the 'Product' option")
-    public void clickProductOption(Product productOption) {
-        waitForElementVisibility(productSelectorOption, productOption.getProduct());
-        waitForElementClickable(productSelectorOption, productOption.getProduct());
-        click(productSelectorOption, productOption.getProduct());
+        clickIfExist(productSelectorOption, productOption);
         SelenideTools.sleep(2);
     }
 
