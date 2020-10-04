@@ -42,7 +42,7 @@ public class C22591_CDAccountCallStatementTest extends BaseTest {
         client = individualClientBuilder.buildClient();
 
         // Set up account
-        cdAccount = new Account().setCDAccountData();
+        cdAccount = new Account().setCdAccountData();
 
         // Set up transaction
         creditTransaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();

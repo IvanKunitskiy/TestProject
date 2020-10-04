@@ -42,7 +42,7 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
         client = individualClientBuilder.buildClient();
 
         // Set up account
-        cdIraAccount = new Account().setCDIRAAccountData();
+        cdIraAccount = new Account().setCdIraAccountData();
 
         // Set up transaction
         creditTransaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();

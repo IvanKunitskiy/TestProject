@@ -40,7 +40,7 @@ public class C22590_BalanceInquiryOnRegularCDAccountTest extends BaseTest {
         IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account
-        cdAccount = new Account().setCDAccountData();
+        cdAccount = new Account().setCdAccountData();
 
         // Set up transaction with account number
         Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();

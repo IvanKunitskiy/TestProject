@@ -31,7 +31,7 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
         client = individualClientBuilder.buildClient();
 
         // Set up IRA account
-        savingsIRAAccount = new Account().setIRAAccountData();
+        savingsIRAAccount = new Account().setSavingsIraAccountData();
 
         // Login to the system
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);

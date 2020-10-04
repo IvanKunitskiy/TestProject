@@ -35,14 +35,18 @@ public class C23911_EditCDIRAAccountTest extends BaseTest {
         Account checkingAccount = new Account().setCHKAccountData();
 
         // Set up CD IRA account
-        cdIRAAccount = new Account().setCDIRAAccountData();
-        cdIRAAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
+        cdIRAAccount = new Account().setCdIraAccountData();
         cdIRAAccount.setMaturityDate(DateTime.getDateWithNMonthAdded(cdIRAAccount.getDateOpened(), "MM/dd/yyyy", Integer.parseInt(cdIRAAccount.getTermType())));
         cdIRAAccount.setDateNextInterest(DateTime.getDateWithNMonthAdded(cdIRAAccount.getDateOpened(), "MM/dd/yyyy", 3)); // 3 month added as 'Interest Frequency' is set to 'Quarterly'
 
-        // Login to the system and create a client
+        // Login to the system
         Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Set the bank branch of the user to account
+        cdIRAAccount.setBankBranch(Actions.usersActions().getBankBranch());
+
+        // Create a client
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);

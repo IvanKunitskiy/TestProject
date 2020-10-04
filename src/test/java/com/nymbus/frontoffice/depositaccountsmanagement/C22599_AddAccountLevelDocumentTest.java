@@ -42,10 +42,14 @@ public class C22599_AddAccountLevelDocumentTest extends BaseTest {
 
         // Set up checking account
         checkingAccount = new Account().setCHKAccountData();
-        checkingAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
 
-        // Login to the system and create a client with checking account
+        // Login to the system
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Set the bank branch of the user to account
+        checkingAccount.setBankBranch(Actions.usersActions().getBankBranch());
+
+        // Create a client with checking account
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);

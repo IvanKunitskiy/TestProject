@@ -30,12 +30,16 @@ public class C22584_ViewNewSavingsIRAAccountTest extends BaseTest {
         IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up IRA account
-        savingsIRAAccount = new Account().setIRAAccountData();
-        savingsIRAAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
+        savingsIRAAccount = new Account().setSavingsIraAccountData();
 
-        // Login to the system and create a client
+        // Login to the system
         Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Set the bank branch of the user to account
+        savingsIRAAccount.setBankBranch(Actions.usersActions().getBankBranch());
+
+        // Create a client
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);

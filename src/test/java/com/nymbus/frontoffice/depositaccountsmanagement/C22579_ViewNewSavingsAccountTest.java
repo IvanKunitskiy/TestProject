@@ -31,10 +31,14 @@ public class C22579_ViewNewSavingsAccountTest extends BaseTest {
 
         // Set up savings account
         savingsAccount = new Account().setSavingsAccountData();
-        savingsAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
 
-        // Login to the system and create a client with savings account
+        // Login to the system
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Set the bank branch of the user to account
+        savingsAccount.setBankBranch(Actions.usersActions().getBankBranch());
+
+        // Create a client with savings account
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);

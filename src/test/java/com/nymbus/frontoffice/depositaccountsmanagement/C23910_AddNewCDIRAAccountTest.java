@@ -33,12 +33,12 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
         client = individualClientBuilder.buildClient();
 
         // Set up CD IRA account
-        cdIRAAccount = new Account().setCDIRAAccountData();
+        cdIRAAccount = new Account().setCdIraAccountData();
         cdIRAAccount.setApplyInterestTo("CHK Acct");
         cdIRAAccount.setMaturityDate(DateTime.getDateWithNMonthAdded(cdIRAAccount.getDateOpened(), "MM/dd/yyyy", Integer.parseInt(cdIRAAccount.getTermType())));
         cdIRAAccount.setDateNextInterest(DateTime.getDateWithNMonthAdded(cdIRAAccount.getDateOpened(), "MM/dd/yyyy", 3)); // 3 month added as 'Interest Frequency' is set to 'Quarterly'
 
-        // Set up CHK account (required to point the 'Corresponding Account')
+        // Set up CHK account
         Account checkingAccount = new Account().setCHKAccountData();
 
         // Login to the system

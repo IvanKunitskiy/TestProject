@@ -29,11 +29,15 @@ public class C22594_ViewNewCDIRAAccountTest extends BaseTest {
         IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up IRA account
-        cdIRAAccount = new Account().setCDIRAAccountData();
-        cdIRAAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
+        cdIRAAccount = new Account().setCdIraAccountData();
 
-        // Login to the system and create a client with IRA account
+        // Login to the system
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Set the bank branch of the user to account
+        cdIRAAccount.setBankBranch(Actions.usersActions().getBankBranch());
+
+        // Create a client with IRA account
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);

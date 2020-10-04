@@ -40,7 +40,7 @@ public class C22595_CDIRABalanceInquiryTest extends BaseTest {
         IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account
-        cdIraAccount = new Account().setCDIRAAccountData();
+        cdIraAccount = new Account().setCdIraAccountData();
 
         // Set up instruction and transaction
         HoldInstruction instruction = new InstructionConstructor(new HoldInstructionBuilder()).constructInstruction(HoldInstruction.class);

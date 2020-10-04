@@ -41,7 +41,7 @@ public class C22585_BalanceInquiryOnSavingsIRAAccountTest extends BaseTest {
         IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account
-        iraAccount = new Account().setIRAAccountData();
+        iraAccount = new Account().setSavingsIraAccountData();
 
         // Set up instruction and transaction
         HoldInstruction instruction = new InstructionConstructor(new HoldInstructionBuilder()).constructInstruction(HoldInstruction.class);

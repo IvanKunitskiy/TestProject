@@ -33,11 +33,15 @@ public class C22598_CloseAccountWithNoMonetaryTransactionTest extends BaseTest {
 
         // Set up account
         checkingAccount = new Account().setCHKAccountData();
-        checkingAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
 
         // Login to the system and create a client
         Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Set the bank branch of the user to account
+        checkingAccount.setBankBranch(Actions.usersActions().getBankBranch());
+
+        // Create a client
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
