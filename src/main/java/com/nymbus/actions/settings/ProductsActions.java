@@ -1,6 +1,5 @@
 package com.nymbus.actions.settings;
 
-import com.nymbus.actions.Actions;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -25,7 +24,6 @@ public class ProductsActions {
         String aType = accountType.getAccountType();
         String rType = rateType.getRateType();
 
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Pages.aSideMenuPage().clickSettingsMenuItem();
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().clickViewAllProducts();
@@ -34,9 +32,7 @@ public class ProductsActions {
         SettingsPage.productsOverviewPage().waitForResultsIsVisible();
         expandAllRows();
         List<String> productTypeList = SettingsPage.productsOverviewPage().getAccountDescriptionsByAccountType(aType, rType);
-        String randomProductValueOfAccountType = productTypeList.get(new Random().nextInt(productTypeList.size())).trim();
-        Actions.loginActions().doLogOut();
 
-        return randomProductValueOfAccountType;
+        return productTypeList.get(new Random().nextInt(productTypeList.size())).trim();
     }
 }

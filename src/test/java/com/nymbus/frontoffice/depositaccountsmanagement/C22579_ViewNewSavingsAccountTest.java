@@ -6,6 +6,9 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
@@ -18,7 +21,6 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22579_ViewNewSavingsAccountTest extends BaseTest {
 
-    private IndividualClient client;
     private Account savingsAccount;
 
     @BeforeMethod
@@ -27,7 +29,7 @@ public class C22579_ViewNewSavingsAccountTest extends BaseTest {
         // Set up Client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up savings account
         savingsAccount = new Account().setSavingsAccountData();
@@ -37,6 +39,9 @@ public class C22579_ViewNewSavingsAccountTest extends BaseTest {
 
         // Set the bank branch of the user to account
         savingsAccount.setBankBranch(Actions.usersActions().getBankBranch());
+
+        // Set the product of the user to account
+        savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
 
         // Create a client with savings account
         ClientsActions.individualClientActions().createClient(client);

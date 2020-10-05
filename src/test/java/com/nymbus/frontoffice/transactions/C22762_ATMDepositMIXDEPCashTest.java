@@ -11,6 +11,9 @@ import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
 import com.nymbus.newmodels.generation.bincontrol.BinControlConstructor;
@@ -22,7 +25,10 @@ import com.nymbus.newmodels.generation.debitcard.builder.DebitCardBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.apifieldsmodels.Field54Model;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
-import com.nymbus.newmodels.transaction.verifyingModels.*;
+import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
+import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
+import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
+import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
 import io.qameta.allure.Severity;
@@ -99,6 +105,10 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
 
         // Get terminal ID
         String terminalId = Actions.nonTellerTransactionActions().getTerminalID(1);
+
+        // Set products
+        checkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
+        savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);

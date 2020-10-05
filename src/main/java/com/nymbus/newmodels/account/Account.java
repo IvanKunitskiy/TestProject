@@ -1,14 +1,10 @@
 package com.nymbus.newmodels.account;
 
-import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
-import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.ProductType;
-import com.nymbus.newmodels.account.product.Products;
-import com.nymbus.newmodels.account.product.RateType;
 
 import java.sql.Timestamp;
 
@@ -93,7 +89,6 @@ public class Account {
 
         account.setAddNewOption("Account");
         account.setProductType(ProductType.CD_ACCOUNT.getProductType());
-        account.setProduct(Actions.productsActions().getProduct(Products.CD_PRODUCTS, AccountType.CD, RateType.FIXED));
         account.setAutoRenewable("YES");
         account.setInterestFrequency("Quarterly");
         account.setInterestType("Simple");
@@ -118,7 +113,6 @@ public class Account {
 
         account.setAddNewOption("Account");
         account.setProductType(ProductType.CD_ACCOUNT.getProductType());
-        account.setProduct(Actions.productsActions().getProduct(Products.CD_PRODUCTS, AccountType.IRA, RateType.FIXED));
         account.setAccountTitle(Generator.genString(5));
         account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setAccountNumber(Generator.genAccountNumber());
@@ -157,7 +151,6 @@ public class Account {
 
         account.setAddNewOption("Account");
         account.setProductType(ProductType.SAVINGS_ACCOUNT.getProductType());
-        account.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.IRA, RateType.TIER));
         account.setAccountTitle(Generator.genString(5));
         account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setAccountNumber(Generator.genAccountNumber());
@@ -184,7 +177,6 @@ public class Account {
 
         account.setAddNewOption("Account");
         account.setProductType(ProductType.SAVINGS_ACCOUNT.getProductType());
-        account.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
         account.setAccountTitle(Generator.genString(5));
         account.setAccountNumber(/*String.valueOf(Generator.genLong(10000000000L, 922337203685L))*/Generator.genAccountNumber());
         account.setAccountTitle(Generator.genString(5));
@@ -209,7 +201,6 @@ public class Account {
 
         account.setAddNewOption("Account");
         account.setProductType(ProductType.CHK_ACCOUNT.getProductType());
-        account.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
         account.setAccountTitle(Generator.genString(5));
         account.setAccountNumber(Generator.genAccountNumber());
         account.setOptInOutDate("01/01/2020");
