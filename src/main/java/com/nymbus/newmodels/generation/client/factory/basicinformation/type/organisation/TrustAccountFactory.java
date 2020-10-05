@@ -1,9 +1,6 @@
 package com.nymbus.newmodels.generation.client.factory.basicinformation.type.organisation;
 
-import com.nymbus.core.utils.Constants;
-import com.nymbus.core.utils.FinancialInstitutionType;
 import com.nymbus.newmodels.client.basicinformation.type.TaxPayerIDType;
-import com.nymbus.newmodels.client.basicinformation.type.individual.Individual;
 import com.nymbus.newmodels.client.basicinformation.type.organisation.OrganisationType;
 import com.nymbus.newmodels.client.basicinformation.type.organisation.TrustAccount;
 import com.nymbus.newmodels.client.clientdetails.type.ClientStatus;
