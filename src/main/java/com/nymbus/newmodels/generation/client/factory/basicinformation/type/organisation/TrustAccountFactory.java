@@ -15,20 +15,11 @@ public class TrustAccountFactory implements OrganisationTypeFactory {
     @Override
     public OrganisationType getOrganisationType() {
         TrustAccount trustAccount = new TrustAccount();
-        setTrustAccountStatus(trustAccount);
+        trustAccount.setClientStatus(ClientStatus.MEMBER);
         trustAccount.setName(Random.genString(10));
         trustAccount.setTaxPayerIDType(TaxPayerIDType.BUSINESS_TIN);
         trustAccount.setTaxID(String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()).substring(4));
 
         return trustAccount;
-    }
-
-    private void setTrustAccountStatus(TrustAccount client) {
-        if (Constants.INSTITUTION_TYPE.equals(FinancialInstitutionType.BANK)) {
-            client.setClientStatus(ClientStatus.CUSTOMER);
-        }
-        else {
-            client.setClientStatus(ClientStatus.MEMBER);
-        }
     }
 }
