@@ -8,6 +8,9 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
@@ -50,7 +53,7 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
 
         chkAccount = new Account().setCHKAccountData();
         saveAccount = new Account().setSavingsAccountData();
-        cdAccount = new Account().setCDAccountData();
+        cdAccount = new Account().setCdAccountData();
 
         // Set up  transactions
         Transaction transaction = new TransactionConstructor(new CashInMiscCreditCHKAccBuilder()).constructTransaction();
@@ -58,6 +61,11 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
 
         // Log in
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        // Set products
+        chkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
+        saveAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
+        cdAccount.setProduct(Actions.productsActions().getProduct(Products.CD_PRODUCTS, AccountType.CD, RateType.FIXED));
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);

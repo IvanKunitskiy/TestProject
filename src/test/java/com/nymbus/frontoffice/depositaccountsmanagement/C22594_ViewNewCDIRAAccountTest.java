@@ -6,6 +6,9 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
@@ -29,11 +32,16 @@ public class C22594_ViewNewCDIRAAccountTest extends BaseTest {
         IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up IRA account
-        cdIRAAccount = new Account().setCDIRAAccountData();
-        cdIRAAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
+        cdIRAAccount = new Account().setCdIraAccountData();
 
-        // Login to the system and create a client with IRA account
+        // Login to the system
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Set the bank branch of the user to account
+        cdIRAAccount.setBankBranch(Actions.usersActions().getBankBranch());
+        cdIRAAccount.setProduct(Actions.productsActions().getProduct(Products.CD_PRODUCTS, AccountType.IRA, RateType.FIXED));
+
+        // Create a client with IRA account
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);

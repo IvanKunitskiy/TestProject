@@ -7,6 +7,9 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.account.verifyingmodels.ClosedAccountData;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -36,7 +39,7 @@ public class C22668_CommitCDRedemptionTest extends BaseTest {
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         IndividualClient client = individualClientBuilder.buildClient();
 
-        Account cdAccount = new Account().setCDAccountData();
+        Account cdAccount = new Account().setCdAccountData();
         cdAccount.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 10));
 
         TransactionConstructor constructor = new TransactionConstructor(new GLDebitMiscCreditCDAccBuilder());
@@ -52,6 +55,9 @@ public class C22668_CommitCDRedemptionTest extends BaseTest {
         withdrawTransaction.getTransactionSource().setAccountNumber(cdAccount.getAccountNumber());
 
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        // Set products
+        cdAccount.setProduct(Actions.productsActions().getProduct(Products.CD_PRODUCTS, AccountType.CD, RateType.FIXED));
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);

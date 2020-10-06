@@ -7,6 +7,9 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.accountinstructions.HoldInstruction;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.accountinstructions.InstructionConstructor;
@@ -40,15 +43,20 @@ public class C22595_CDIRABalanceInquiryTest extends BaseTest {
         IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account
-        cdIraAccount = new Account().setCDIRAAccountData();
+        cdIraAccount = new Account().setCdIraAccountData();
 
         // Set up instruction and transaction
         HoldInstruction instruction = new InstructionConstructor(new HoldInstructionBuilder()).constructInstruction(HoldInstruction.class);
         instruction.setAmount(10);
         Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
 
-        // Create a client
+        // Log in
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Set the product
+        cdIraAccount.setProduct(Actions.productsActions().getProduct(Products.CD_PRODUCTS, AccountType.IRA, RateType.FIXED));
+
+        // Create a client
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);

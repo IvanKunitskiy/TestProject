@@ -4,6 +4,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
+import com.nymbus.newmodels.account.product.ProductType;
 
 import java.sql.Timestamp;
 
@@ -83,12 +84,11 @@ public class Account {
     private String dailyInterestAccrual;
     private String nextInterestPaymentAmount;
 
-    public Account setCDAccountData() {
+    public Account setCdAccountData() {
         Account account = new Account();
 
         account.setAddNewOption("Account");
-        account.setProductType("CD Account");
-        account.setProduct("3 Month Regular Certificate");
+        account.setProductType(ProductType.CD_ACCOUNT.getProductType());
         account.setAutoRenewable("YES");
         account.setInterestFrequency("Quarterly");
         account.setInterestType("Simple");
@@ -108,12 +108,11 @@ public class Account {
         return account;
     }
 
-    public Account setCDIRAAccountData() {
+    public Account setCdIraAccountData() {
         Account account = new Account();
 
         account.setAddNewOption("Account");
-        account.setProductType("CD");
-        account.setProduct("6 Month Roth IRA Certificate");
+        account.setProductType(ProductType.CD_ACCOUNT.getProductType());
         account.setAccountTitle(Generator.genString(5));
         account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setAccountNumber(Generator.genAccountNumber());
@@ -147,12 +146,11 @@ public class Account {
         return account;
     }
 
-    public Account setIRAAccountData() {
+    public Account setSavingsIraAccountData() {
         Account account = new Account();
 
         account.setAddNewOption("Account");
-        account.setProductType("Savings Account");
-        account.setProduct("Traditional IRA Accumulation Acct");
+        account.setProductType(ProductType.SAVINGS_ACCOUNT.getProductType());
         account.setAccountTitle(Generator.genString(5));
         account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setAccountNumber(Generator.genAccountNumber());
@@ -178,10 +176,9 @@ public class Account {
         Account account = new Account();
 
         account.setAddNewOption("Account");
-        account.setProductType("Savings Account");
+        account.setProductType(ProductType.SAVINGS_ACCOUNT.getProductType());
         account.setAccountTitle(Generator.genString(5));
         account.setAccountNumber(/*String.valueOf(Generator.genLong(10000000000L, 922337203685L))*/Generator.genAccountNumber());
-        account.setProduct("Regular Savings Account");
         account.setAccountTitle(Generator.genString(5));
         account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
@@ -203,10 +200,9 @@ public class Account {
         Account account = new Account();
 
         account.setAddNewOption("Account");
-        account.setProductType("CHK Account");
+        account.setProductType(ProductType.CHK_ACCOUNT.getProductType());
         account.setAccountTitle(Generator.genString(5));
         account.setAccountNumber(Generator.genAccountNumber());
-        account.setProduct("Basic Business Checking");
         account.setOptInOutDate("01/01/2020");
         account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
@@ -233,7 +229,7 @@ public class Account {
         Account account = new Account();
 
         account.setAddNewOption("Account");
-        account.setProductType("Safe Deposit Box");
+        account.setProductType(ProductType.SAFE_DEPOSIT_BOX.getProductType());
         account.setAccountHolder("Owner");
         account.setAccountNumber(Generator.genAccountNumber());
         account.setAccountTitle(Generator.genString(5));

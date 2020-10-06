@@ -7,6 +7,9 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
@@ -32,7 +35,7 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         client = individualClientBuilder.buildClient();
 
         // Set up IRA account
-        cdAccount = new Account().setCDAccountData();
+        cdAccount = new Account().setCdAccountData();
         cdAccount.setTermType("3");
         cdAccount.setMaturityDate(DateTime.getDateWithNMonthAdded(cdAccount.getDateOpened(), "MM/dd/yyyy", Integer.parseInt(cdAccount.getTermType())));
         cdAccount.setDateNextInterest(DateTime.getDateWithNMonthAdded(cdAccount.getDateOpened(), "MM/dd/yyyy", 3)); // 3 month added as 'Interest Frequency' is set to 'Quarterly'
@@ -45,6 +48,7 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
 
         // Set the bank branch of the user to account
         cdAccount.setBankBranch(Actions.usersActions().getBankBranch());
+        cdAccount.setProduct(Actions.productsActions().getProduct(Products.CD_PRODUCTS, AccountType.CD, RateType.FIXED));
 
         // Create a client
         ClientsActions.individualClientActions().createClient(client);
