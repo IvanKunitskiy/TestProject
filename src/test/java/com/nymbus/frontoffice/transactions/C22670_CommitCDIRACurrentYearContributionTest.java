@@ -123,13 +123,13 @@ public class C22670_CommitCDIRACurrentYearContributionTest extends BaseTest {
         String actualPaymentAmount = Pages.accountDetailsPage().getNextInterestPaymentAmount();
         Assert.assertEquals(actualPaymentAmount, expectedPaymentAmount, "Payment amount doesn't match!");
 
-        logInfo("Step 9: Open account on Transactions tab and verify that transaction is written on transactions history page");
+        logInfo("Step 10: Open account on Transactions tab and verify that transaction is written on transactions history page");
         transactionData.setBalance(balanceData.getCurrentBalance());
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionData();
         Assert.assertEquals(actualTransactionData, transactionData, "Transaction data doesn't match!");
 
-        logInfo("Step 10: Log in to the WebAdmin, go to RulesUI and search for the committed transaction items using its bank.data.transaction.header rootid value");
+        logInfo("Step 11: Log in to the WebAdmin, go to RulesUI and search for the committed transaction items using its bank.data.transaction.header rootid value");
         WebAdminTransactionData webAdminTransactionData = new WebAdminTransactionData();
         webAdminTransactionData.setPostingDate(transactionData.getPostingDate());
         webAdminTransactionData.setGlFunctionValue(GLFunctionValue.DEPOSIT_ITEM_CD_ACC);
@@ -139,16 +139,16 @@ public class C22670_CommitCDIRACurrentYearContributionTest extends BaseTest {
         Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
                 "Transaction items doesn't find !");
 
-        logInfo("Step 11: Check gldatetimeposted value for Deposit (Misc Credit) item");
+        logInfo("Step 12: Check gldatetimeposted value for Deposit (Misc Credit) item");
         Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDatePosted(1), webAdminTransactionData.getPostingDate(),
                 "Posted date doesn't match!");
 
-        logInfo("Step 12: Check glfunction value for Deposit item");
+        logInfo("Step 13: Check glfunction value for Deposit item");
         Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getGLFunctionValue(1),
                 webAdminTransactionData.getGlFunctionValue().getGlFunctionValue(),
                 "Function value  doesn't match!");
 
-        logInfo("Step 13: Go to bank.data.gl.interface and verify that there is a record for Deposit (Misc Credit) transaction item");
+        logInfo("Step 14: Go to bank.data.gl.interface and verify that there is a record for Deposit (Misc Credit) transaction item");
         String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(1);
         webAdminTransactionData.setAmount(WebAdminPages.rulesUIQueryAnalyzerPage().getAmount(1));
         WebAdminActions.webAdminTransactionActions().goToGLInterface(transactionHeader);
@@ -158,12 +158,12 @@ public class C22670_CommitCDIRACurrentYearContributionTest extends BaseTest {
                 webAdminTransactionData.getGlFunctionValue().getGlFunctionValue(),
                 "Function value doesn't match!");
 
-        logInfo("Step 14: Verify that amount and glfunction values are the same as on b.d.transaction.item level");
+        logInfo("Step 15: Verify that amount and glfunction values are the same as on b.d.transaction.item level");
         Assert.assertEquals( WebAdminPages.rulesUIQueryAnalyzerPage().getAmount(1),
                 webAdminTransactionData.getAmount(),
                 "Amount value doesn't match!");
 
-        logInfo("Step 15: Verify that transactionheaderid from b.d.transaction.item is written to parenttransaction field on bank.data.gl.interface");
+        logInfo("Step 16: Verify that transactionheaderid from b.d.transaction.item is written to parenttransaction field on bank.data.gl.interface");
         Assert.assertEquals( WebAdminPages.rulesUIQueryAnalyzerPage().getGLInterfaceTransactionHeaderIdValue(1),
                 transactionHeader,
                 "HeaderId value doesn't match!");
