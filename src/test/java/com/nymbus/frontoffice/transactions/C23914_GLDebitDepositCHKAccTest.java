@@ -12,9 +12,10 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
-import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditCHKAccBuilder;
+import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.GLFunctionValue;
+import com.nymbus.newmodels.transaction.verifyingModels.AccountDates;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.WebAdminTransactionData;
@@ -26,11 +27,11 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
+public class C23914_GLDebitDepositCHKAccTest extends BaseTest {
     private Transaction transaction;
     private BalanceDataForCHKAcc balanceData;
     private TransactionData transactionData;
-    private  Account checkAccount;
+    private Account checkAccount;
 
     @BeforeMethod
     public void prepareTransactionData() {
@@ -39,7 +40,8 @@ public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         IndividualClient client = individualClientBuilder.buildClient();
         checkAccount = new Account().setCHKAccountData();
-        transaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
+        transaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
+
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create client
@@ -62,9 +64,9 @@ public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C23914, Commit transaction GL Debit -> Misc Credit(on CHK Account)")
+    @Test(description = "Commit transaction GL Debit -> Deposit (on CHK Account)")
     @Severity(SeverityLevel.CRITICAL)
-    public void verifyTransactionGLDebitMiscCredit() {
+    public void verifyTransactionGLDebitDeposit() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
@@ -76,16 +78,16 @@ public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
 
         logInfo("Step 3: Select the following fund types: \n" +
                 "- Source: GL Debit \n" +
-                "- Destination: Misc Credit");
+                "- Destination: Deposit");
         logInfo("Step 4: Fill in fields for source line item: \n" +
                 "- search for any GL account (use and select any value) \n" +
                 "- specify some amount (e.g. $100) \n" +
                 "- expand line item and specify Note");
         logInfo("Step 5: Fill in fields for destination line item: \n" +
-                "- select Savings account from preconditions \n" +
-                "- specify trancode (e.g. 209 - Deposit) \n" +
+                "-select CHK account from preconditions \n" +
+                "- specify trancode (e.g. 109 - Deposit) \n" +
                 "- specify the same amount (e.g. $100)");
-        Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
+        Actions.transactionActions().createTransaction(transaction);
         transactionData.setEffectiveDate(Pages.tellerPage().getEffectiveDate());
 
         logInfo("Step 6: Do not change the Effective Date and click [Commit Transaction] button");
@@ -123,17 +125,24 @@ public class C23914_GLDebitMiscCreditCHKAccTest extends BaseTest {
         logInfo("Step 12: Verify Number Of Deposits This Statement Cycle");
         logInfo("Step 13: Verify Last Deposit Amount field");
         Assert.assertEquals(actualBalanceData, balanceData, "Balance data doesn't match!");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateLastDepositValue(), transactionData.getPostingDate(),
+
+        AccountDates dates = AccountActions.retrievingAccountData().getAccountDates();
+        Assert.assertEquals(dates.getLastDepositDate(), transactionData.getPostingDate(),
                 "Date Last deposit  doesn't match!");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateLastActivityValue(), transactionData.getPostingDate(),
+        Assert.assertEquals(dates.getLastActivityDate(), transactionData.getPostingDate(),
                 "Date Last activity  doesn't match!");
 
+        logInfo("Step 12: Verify Number Of Deposits This Statement Cycle");
+        Assert.assertEquals(dates.getNumberOfDeposits(), 1, "Number Of Deposits This Statement Cycle is incorrect!");
+
+        logInfo("Step 13: Verify Last Deposit Amount field");
+        Assert.assertEquals(dates.getLastDepositAmount(), transaction.getTransactionDestination().getAmount(),
+                    "Last Deposit Amount field is incorrect!");
         transactionData.setBalance(balanceData.getCurrentBalance());
 
+        logInfo("Step 14: Open account on Transactions history and verify that transaction is written on transactions history page");
         AccountActions.retrievingAccountData().goToTransactionsTab();
-
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionData();
-
         Assert.assertEquals(actualTransactionData, transactionData, "Transaction data doesn't match!");
 
         logInfo("Step 15: Log in to the WebAdmin, go to RulesUI and search for the committed transaction items using its bank.data.transaction.header rootid value");
