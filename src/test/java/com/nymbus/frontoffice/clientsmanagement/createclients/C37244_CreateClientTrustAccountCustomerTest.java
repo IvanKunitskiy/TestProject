@@ -10,6 +10,7 @@ import com.nymbus.newmodels.client.OrganisationClient;
 import com.nymbus.newmodels.client.basicinformation.address.AddressType;
 import com.nymbus.newmodels.client.basicinformation.address.Country;
 import com.nymbus.newmodels.client.basicinformation.type.TaxPayerIDType;
+import com.nymbus.newmodels.client.clientdetails.type.ClientStatus;
 import com.nymbus.newmodels.client.verifyingmodels.TrustAccountPredefinedField;
 import com.nymbus.newmodels.generation.client.builder.OrganisationClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.organisation.TrustAccountBuilder;
@@ -19,24 +20,25 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class C24986_CreateClientTrustAccountTest extends BaseTest {
+public class C37244_CreateClientTrustAccountCustomerTest extends BaseTest {
     private OrganisationClient organisationClient;
     private TrustAccountPredefinedField trustAccountPredefinedField;
 
     @BeforeMethod
     public void prepareClientData() {
         String currentFinancialType = WebAdminActions.loginActions().getFinancialType();
-        Assert.assertEquals(currentFinancialType, FinancialInstitutionType.FEDERAL_CREDIT_UNION.getFinancialInstitutionType(),
+        Assert.assertEquals(currentFinancialType, FinancialInstitutionType.BANK.getFinancialInstitutionType(),
                 "Financial Institution Type is incorrect!");
 
         OrganisationClientBuilder organisationClientBuilder = new  OrganisationClientBuilder();
         organisationClientBuilder.setOrganisationTypeBuilder(new TrustAccountBuilder());
         organisationClient = organisationClientBuilder.buildClient();
+        organisationClient.getOrganisationType().setClientStatus(ClientStatus.CUSTOMER);
 
         trustAccountPredefinedField = getTrustAccountPredefinedField();
     }
 
-    @Test(description = "C24986, Create Client - Trust account(for FI type = Credit Union)")
+    @Test(description = "C37244, Create Client - Trust account (for FI type = Bank)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyIndividualClientCreation() {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);

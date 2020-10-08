@@ -3,11 +3,14 @@ package com.nymbus.frontoffice.clientsmanagement.createclients;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.FinancialInstitutionType;
 import com.nymbus.newmodels.client.OrganisationClient;
 import com.nymbus.newmodels.client.basicinformation.address.Address;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.phone.Phone;
+import com.nymbus.newmodels.client.clientdetails.type.ClientStatus;
 import com.nymbus.newmodels.client.verifyingmodels.TrustAccountUpdateModel;
 import com.nymbus.newmodels.generation.client.builder.OrganisationClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.organisation.TrustAccountBuilder;
@@ -27,9 +30,12 @@ public class C24987_ViewEditNewTrustAccountTest extends BaseTest {
 
     @BeforeMethod
     public void prepareClientData() {
+        String currentFinancialType = WebAdminActions.loginActions().getFinancialType();
+
         OrganisationClientBuilder organisationClientBuilder = new  OrganisationClientBuilder();
         organisationClientBuilder.setOrganisationTypeBuilder(new TrustAccountBuilder());
         OrganisationClient organisationClient = organisationClientBuilder.buildClient();
+        setClientType(currentFinancialType, organisationClient);
 
         // Login
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -112,5 +118,14 @@ public class C24987_ViewEditNewTrustAccountTest extends BaseTest {
 
     private Address getAdditionalAddress() {
         return new AddressFactory().getAdditionalAddress();
+    }
+
+    private void setClientType(String institutionType, OrganisationClient organisationClient) {
+        if(institutionType.equals(FinancialInstitutionType.BANK.getFinancialInstitutionType())) {
+            organisationClient.getOrganisationType().setClientStatus(ClientStatus.CUSTOMER);
+        }
+        if(institutionType.equals(FinancialInstitutionType.FEDERAL_CREDIT_UNION.getFinancialInstitutionType())) {
+            organisationClient.getOrganisationType().setClientStatus(ClientStatus.MEMBER);
+        }
     }
 }
