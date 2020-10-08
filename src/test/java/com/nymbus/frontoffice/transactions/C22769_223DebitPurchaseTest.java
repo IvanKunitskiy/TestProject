@@ -8,6 +8,9 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
 import com.nymbus.newmodels.generation.bincontrol.BinControlConstructor;
@@ -71,9 +74,13 @@ public class C22769_223DebitPurchaseTest extends BaseTest {
         debitCard.getAccounts().add(savingsAccount.getAccountNumber());
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
-        // Log in and create client
+        // Log in
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
+        // Set product
+        savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
+
+        // Create client
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);

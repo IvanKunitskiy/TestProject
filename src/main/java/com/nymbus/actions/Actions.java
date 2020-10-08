@@ -8,6 +8,7 @@ import com.nymbus.actions.clients.maintenance.MaintenancePageActions;
 import com.nymbus.actions.journal.JournalActions;
 import com.nymbus.actions.modalwindow.DebitCardModalWindowActions;
 import com.nymbus.actions.settings.CashDrawerAction;
+import com.nymbus.actions.settings.ProductsActions;
 import com.nymbus.actions.settings.UsersActions;
 import com.nymbus.actions.teller.TellerActions;
 import com.nymbus.actions.transaction.NonTellerTransactionActions;
@@ -32,6 +33,7 @@ public class Actions {
     private static NonTellerTransactionActions nonTellerTransactionActions;
     private static BalanceInquiryActions balanceInquiryActions;
     private static NonTellerTransaction nonTellerTransaction;
+    private static ProductsActions productsActions;
 
     /**
      * Modal Window Actions
@@ -183,5 +185,15 @@ public class Actions {
             nonTellerTransaction = new NonTellerTransaction();
         }
         return nonTellerTransaction;
+    }
+
+    /**
+     * This function returns an instance of `ProductsActions`
+     */
+    public static ProductsActions productsActions() {
+        if (productsActions == null) {
+            productsActions = new ProductsActions();
+        }
+        return productsActions;
     }
 }

@@ -8,6 +8,9 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.basicinformation.address.Address;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -43,7 +46,7 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
         client = individualClientBuilder.buildClient();
 
         // Set up account
-        iraAccount = new Account().setIRAAccountData();
+        iraAccount = new Account().setSavingsIraAccountData();
 
         // Set up transaction
         creditTransaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
@@ -57,6 +60,10 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
         // Create a client
         Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Set product
+        iraAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.IRA, RateType.TIER));
+
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);

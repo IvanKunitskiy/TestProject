@@ -3,6 +3,7 @@ package com.nymbus.pages.settings;
 import com.nymbus.pages.settings.cashdrawer.AddCashDrawerPage;
 import com.nymbus.pages.settings.cashdrawer.CashDrawerSearchPage;
 import com.nymbus.pages.settings.cashdrawer.ViewCashDrawerPage;
+import com.nymbus.pages.settings.products.ProductsOverviewPage;
 import com.nymbus.pages.settings.safedepositboxsizes.SafeDepositBoxSizesPage;
 import com.nymbus.pages.settings.users.AddUsersPage;
 import com.nymbus.pages.settings.users.UsersSearchPage;
@@ -21,6 +22,7 @@ public class SettingsPage {
     private static ViewCashDrawerPage viewCashDrawerPage;
     private static CashDrawerSearchPage cashDrawerSearchPage;
     private static SafeDepositBoxSizesPage safeDepositBoxSizesPage;
+    private static ProductsOverviewPage productsOverviewPage;
 
     /**
      * This function return an instance of `MainPage`
@@ -100,5 +102,15 @@ public class SettingsPage {
             safeDepositBoxSizesPage = new SafeDepositBoxSizesPage();
         }
         return safeDepositBoxSizesPage;
+    }
+
+    /**
+     * This function return an instance of `ProductsOverview`
+     */
+    public static ProductsOverviewPage productsOverviewPage() {
+        if (productsOverviewPage == null) {
+            productsOverviewPage = new ProductsOverviewPage();
+        }
+        return productsOverviewPage;
     }
 }

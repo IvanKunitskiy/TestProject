@@ -6,6 +6,9 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
@@ -31,13 +34,16 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
         client = individualClientBuilder.buildClient();
 
         // Set up IRA account
-        savingsIRAAccount = new Account().setIRAAccountData();
+        savingsIRAAccount = new Account().setSavingsIraAccountData();
 
         // Login to the system
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Set the bank branch of the user to account
         savingsIRAAccount.setBankBranch(Actions.usersActions().getBankBranch());
+
+        // Set the product of the user to account
+        savingsIRAAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.IRA, RateType.TIER));
 
         // Create a client and logout
         ClientsActions.individualClientActions().createClient(client);
