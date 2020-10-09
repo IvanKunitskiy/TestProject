@@ -40,8 +40,8 @@ public class C22599_AddAccountLevelDocumentTest extends BaseTest {
 
         // Set up account level document factory
         accountLevelDocument = new AccountLevelDocumentFactory().getAccountLevelDocument();
-        accountLevelDocument.setCategory("ACH Forms");
-        accountLevelDocument.setDocType("Direct Deposit Forms");
+        accountLevelDocument.setCategory(DocumentActions.createDocumentActions().getCategory(Constants.getEnvironment()));
+        accountLevelDocument.setDocType(DocumentActions.createDocumentActions().getDocType(Constants.getEnvironment()));
 
         // Set up checking account
         checkingAccount = new Account().setCHKAccountData();
@@ -95,5 +95,4 @@ public class C22599_AddAccountLevelDocumentTest extends BaseTest {
         logInfo("Step 7: Look through the records on the Maintenance History page and verify that records about newly created Document are present on the Maintenance History page");
         AccountActions.accountMaintenanceActions().verifyAddedAccountLevelDocumentRecords();
     }
-
 }

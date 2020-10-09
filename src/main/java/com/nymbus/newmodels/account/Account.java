@@ -204,7 +204,7 @@ public class Account {
         account.setAccountTitle(Generator.genString(5));
         account.setAccountNumber(Generator.genAccountNumber());
         account.setOptInOutDate("01/01/2020");
-        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
+        account.setDateOpened(WebAdminActions.loginActions().getSystemDate());
         account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
         account.setEarningCreditRate(Generator.getRandomStringNumber(3));
         account.setAutomaticOverdraftStatus("Active");
