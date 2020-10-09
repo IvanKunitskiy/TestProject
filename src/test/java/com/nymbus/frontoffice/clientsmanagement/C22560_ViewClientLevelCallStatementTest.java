@@ -6,6 +6,9 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
@@ -24,8 +27,6 @@ public class C22560_ViewClientLevelCallStatementTest extends BaseTest {
 
     private IndividualClient client;
     private Account chkAccount;
-    private String clientID;
-    private Transaction transaction;
 
     @BeforeMethod
     public void preCondition() {
@@ -39,15 +40,18 @@ public class C22560_ViewClientLevelCallStatementTest extends BaseTest {
         chkAccount = new Account().setCHKAccountData();
 
         // Set up transaction
-        transaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
+        Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
         transaction.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
 
         // Create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Set product
+        chkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
+
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
-        clientID = Pages.clientDetailsPage().getClientID();
         AccountActions.createAccount().createCHKAccount(chkAccount);
 
         // Create transaction

@@ -31,6 +31,9 @@ public class MainPage extends PageTools {
     private By binControlRegion = By.xpath("//div[div[h2[text()='Bin Control']]]");
     private By viewAllBinControlsLink = By.xpath("//div[div[h2[text()='Bin Control']]]/div[@class='footer']//a");
 
+    // Products
+    private By viewAllProducts = By.xpath("//a[text()='View all Products']");
+
     @Step("Waiting 'Cash Drawer' region")
     public void waitForCashDrawerRegion() {
         waitForElementVisibility(cashDrawerRegion);
@@ -94,6 +97,12 @@ public class MainPage extends PageTools {
     public void clickViewProfile() {
         waitForElementClickable(viewProfileLink);
         click(viewProfileLink);
+    }
+
+    @Step("Click 'View All Products' link")
+    public void clickViewAllProducts() {
+        waitForElementClickable(viewAllProducts);
+        click(viewAllProducts);
     }
 
     // Safe Deposit Box Sizes

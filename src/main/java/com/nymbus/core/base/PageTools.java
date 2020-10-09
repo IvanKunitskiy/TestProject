@@ -80,6 +80,11 @@ public class PageTools extends AllureLogger {
         shouldBe(Condition.visible, by, args).click();
     }
 
+    protected void clickIfExist(By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
+        shouldBe(Condition.exist, by, args).click();
+    }
+
     protected void jsClick(By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
         waitForElementClickable(by, args);

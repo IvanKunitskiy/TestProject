@@ -8,6 +8,9 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.document.AccountLevelDocument;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -37,15 +40,22 @@ public class C22599_AddAccountLevelDocumentTest extends BaseTest {
 
         // Set up account level document factory
         accountLevelDocument = new AccountLevelDocumentFactory().getAccountLevelDocument();
-        accountLevelDocument.setCategory("ACH Forms");
-        accountLevelDocument.setDocType("Direct Deposit Forms");
+        accountLevelDocument.setCategory(DocumentActions.createDocumentActions().getCategory(Constants.getEnvironment()));
+        accountLevelDocument.setDocType(DocumentActions.createDocumentActions().getDocType(Constants.getEnvironment()));
 
         // Set up checking account
         checkingAccount = new Account().setCHKAccountData();
-        checkingAccount.setBankBranch("Inspire - Langhorne"); // Branch of the 'autotest autotest' user
 
-        // Login to the system and create a client with checking account
+        // Login to the system
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Set the bank branch of the user to account
+        checkingAccount.setBankBranch(Actions.usersActions().getBankBranch());
+
+        // Set the product
+        checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
+
+        // Create a client with checking account
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
@@ -85,5 +95,4 @@ public class C22599_AddAccountLevelDocumentTest extends BaseTest {
         logInfo("Step 7: Look through the records on the Maintenance History page and verify that records about newly created Document are present on the Maintenance History page");
         AccountActions.accountMaintenanceActions().verifyAddedAccountLevelDocumentRecords();
     }
-
 }

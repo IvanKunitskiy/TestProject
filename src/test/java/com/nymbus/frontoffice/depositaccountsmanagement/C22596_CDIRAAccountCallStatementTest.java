@@ -7,6 +7,9 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.basicinformation.address.Address;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -42,7 +45,7 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
         client = individualClientBuilder.buildClient();
 
         // Set up account
-        cdIraAccount = new Account().setCDIRAAccountData();
+        cdIraAccount = new Account().setCdIraAccountData();
 
         // Set up transaction
         creditTransaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
@@ -53,8 +56,13 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
         debitTransaction.getTransactionSource().setAccountNumber(cdIraAccount.getAccountNumber());
         debitTransaction.getTransactionSource().setTransactionCode("341 - Normal Distrib");
 
-        // Create a client
+        // Log in
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Set the product
+        cdIraAccount.setProduct(Actions.productsActions().getProduct(Products.CD_PRODUCTS, AccountType.IRA, RateType.FIXED));
+
+        // Create a client
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
