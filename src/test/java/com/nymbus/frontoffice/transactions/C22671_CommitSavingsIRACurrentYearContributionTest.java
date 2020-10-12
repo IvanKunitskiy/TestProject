@@ -15,11 +15,11 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
-import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditCDAccBuilder;
+import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.GLFunctionValue;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
-import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCDAcc;
+import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.WebAdminTransactionData;
 import com.nymbus.pages.Pages;
@@ -32,9 +32,9 @@ import org.testng.annotations.Test;
 
 public class C22671_CommitSavingsIRACurrentYearContributionTest extends BaseTest {
     private Transaction transaction;
-    private BalanceDataForCDAcc balanceData;
+    private BalanceDataForCHKAcc balanceData;
     private TransactionData transactionData;
-    private Account savingsAccount;
+    private Account savingsIRAAccount;
 
     @BeforeMethod
     public void prepareTransactionData() {
@@ -42,14 +42,15 @@ public class C22671_CommitSavingsIRACurrentYearContributionTest extends BaseTest
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         IndividualClient client = individualClientBuilder.buildClient();
-        savingsAccount = new Account().setSavingsIraAccountData();
-        transaction = new TransactionConstructor(new GLDebitMiscCreditCDAccBuilder()).constructTransaction();
+        savingsIRAAccount = new Account().setSavingsIraAccountData();
+        transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
         transaction.getTransactionDestination().setTransactionCode(TransactionCode.CUR_Yr_Contribution_2330.getTransCode());
 
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        // Set products
-        savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.IRA, RateType.TIER));
+        // Set product
+        savingsIRAAccount.setBankBranch(Actions.usersActions().getBankBranch());
+        savingsIRAAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.IRA, RateType.TIER));
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -57,13 +58,13 @@ public class C22671_CommitSavingsIRACurrentYearContributionTest extends BaseTest
         ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create account
-        AccountActions.createAccount().createSavingsAccount(savingsAccount);
+        AccountActions.createAccount().createIRAAccount(savingsIRAAccount);
 
         // Set up transaction with account number
-        transaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
+        transaction.getTransactionDestination().setAccountNumber(savingsIRAAccount.getAccountNumber());
 
-        Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
-        balanceData = AccountActions.retrievingAccountData().getBalanceDataForCDAcc();
+        Actions.clientPageActions().searchAndOpenClientByName(savingsIRAAccount.getAccountNumber());
+        balanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
 
         transactionData = new TransactionData(transaction.getTransactionDate(), transaction.getTransactionDate(), "+", balanceData.getCurrentBalance(),
                 transaction.getTransactionDestination().getAmount());
@@ -101,16 +102,16 @@ public class C22671_CommitSavingsIRACurrentYearContributionTest extends BaseTest
 
         logInfo("Step 7: Close Transaction Receipt popup and" +
                 "Go to the account used in Misc Credit item. Verify such fields: current balance, Original Balance, Total Contributions for Life of Account");
-        Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
-        BalanceDataForCDAcc actualBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCDAcc();
+        Actions.clientPageActions().searchAndOpenClientByName(savingsIRAAccount.getAccountNumber());
+        BalanceDataForCHKAcc actualBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         Assert.assertEquals(actualBalanceData.getCurrentBalance(), balanceData.getCurrentBalance(),
                 "Current balance doesn't match!");
-        Assert.assertEquals(actualBalanceData.getOriginalBalance(), balanceData.getOriginalBalance(),
-                "Original balance doesn't match!");
+        Assert.assertEquals(actualBalanceData.getAvailableBalance(), balanceData.getAvailableBalance(),
+                "Available balance doesn't match!");
 
         logInfo("Step 8: Verify 'Date Of First Deposit' field value if this transaction was the first transaction for account");
         String actualDateOfFirstDeposit = Pages.accountDetailsPage().getDateOfFirstDeposit();
-        Assert.assertEquals(actualDateOfFirstDeposit, transactionData.getPostingDate(), "Payment amount doesn't match!");
+        Assert.assertEquals(actualDateOfFirstDeposit, transactionData.getPostingDate(), "'Date Of First Deposit' field doesn't match!");
 
         logInfo("Step 9: Open account on Transactions tab and verify that transaction is written on transactions history page");
         transactionData.setBalance(balanceData.getCurrentBalance());
@@ -121,10 +122,10 @@ public class C22671_CommitSavingsIRACurrentYearContributionTest extends BaseTest
         logInfo("Step 10: Log in to the WebAdmin, go to RulesUI and search for the committed transaction items using its bank.data.transaction.header rootid value");
         WebAdminTransactionData webAdminTransactionData = new WebAdminTransactionData();
         webAdminTransactionData.setPostingDate(transactionData.getPostingDate());
-        webAdminTransactionData.setGlFunctionValue(GLFunctionValue.DEPOSIT_ITEM_CD_ACC);
+        webAdminTransactionData.setGlFunctionValue(GLFunctionValue.DEPOSIT_ITEM);
         Selenide.open(Constants.WEB_ADMIN_URL);
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        WebAdminActions.webAdminTransactionActions().goToTransactionUrl(savingsAccount.getAccountNumber());
+        WebAdminActions.webAdminTransactionActions().goToTransactionUrl(savingsIRAAccount.getAccountNumber());
         Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
                 "Transaction items doesn't find !");
 
