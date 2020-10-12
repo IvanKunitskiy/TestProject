@@ -48,6 +48,7 @@ public class C26510_WithdrawalFndFastCash80FrgnTest extends BaseTest {
     private BalanceDataForCHKAcc expectedBalanceDataForCheckingAcc;
     private final String uniqueValueField11 = Generator.getRandomStringNumber(6);
     private TransactionData chkAccTransactionData;
+    private TransactionData transactionFeeData;
     private double atmFee;
     private double transactionAmountWithFee;
 
@@ -134,6 +135,8 @@ public class C26510_WithdrawalFndFastCash80FrgnTest extends BaseTest {
 
         chkAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "-", glDebitMiscCreditTransaction.getTransactionDestination().getAmount() - transactionAmountWithFee, requestTransactionAmount);
+        transactionFeeData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
+                "-", glDebitMiscCreditTransaction.getTransactionDestination().getAmount() - atmFee, atmFee);
     }
 
     @Test(description = "C26510, Withdrawal FND Fast Cash 80$ FRGN")
@@ -156,14 +159,19 @@ public class C26510_WithdrawalFndFastCash80FrgnTest extends BaseTest {
         Assert.assertEquals(AccountActions.retrievingAccountData().getAvailableBalance(),
                 expectedBalanceDataForCheckingAcc.getAvailableBalance(), "CHK account available balance is not correct!");
 
-        String transcode = TransactionCode.ATM_WITHDRAWAL_124.getTransCode().split("\\s+")[0];
-        WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(chkAccTransactionData, chkAccountNumber, transcode);
+        String transcode_124 = TransactionCode.ATM_WITHDRAWAL_124.getTransCode().split("\\s+")[0];
+        String transcode_129 = TransactionCode.ATM_USAGE_129_FEE.getTransCode().split("\\s+")[0];
+        WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(chkAccTransactionData, chkAccountNumber, transcode_124);
+        WebAdminActions.webAdminTransactionActions().setTransactionPostDateAndEffectiveDate(transactionFeeData, chkAccountNumber, transcode_129);
         AccountActions.retrievingAccountData().goToTransactionsTab();
 
         int offset = AccountActions.retrievingAccountData().getOffset();
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset);
+        TransactionData actualFeeTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset, 2);
 
         Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
+        Assert.assertEquals(actualFeeTransactionData, transactionFeeData, "Transaction Fee data doesn't match!");
+
         Assert.assertEquals(Pages.accountTransactionPage().getTransactionItemsCount(), 3,
                 "Transaction count is incorrect!");
         Assert.assertTrue(Actions.transactionActions().isTransactionCodePresent(TransactionCode.ATM_WITHDRAWAL_124.getTransCode(), offset),
