@@ -15,6 +15,7 @@ public class ProductsOverviewPage extends PageTools {
     private final By searchResultsTableRow = By.xpath("//table/tbody/tr");
     private final By accountDescriptionsByType = By.xpath("//table/tbody/tr[(td[3]='%s') and (td[4]='%s')]/td[1]");
     private final By loadMoreResults = By.xpath("//a[@title='Next Page']");
+    private final By rowByDescriptionSelector = By.xpath("//table/tbody/tr[td[contains(text(), '%s')][1]]");
 
     @Step("Wait for results table is visible")
     public void waitForResultsIsVisible() {
@@ -51,5 +52,10 @@ public class ProductsOverviewPage extends PageTools {
     @Step("Returning list of 'Account Descriptions' values")
     public List<String> getAccountDescriptionsByAccountType(String accountType, String rateType) {
         return getElementsText(accountDescriptionsByType, accountType, rateType);
+    }
+
+    @Step("Click the product row by description")
+    public void clickRowByDescription(String productDescription) {
+        clickIfExist(rowByDescriptionSelector, productDescription);
     }
 }

@@ -5,12 +5,12 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
 import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.client.other.account.InterestFrequency;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
@@ -29,6 +29,7 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
 
     @BeforeMethod
     public void preConditions() {
+
         // Set up client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
@@ -36,19 +37,21 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
 
         // Set up IRA account
         cdAccount = new Account().setCdAccountData();
-        cdAccount.setTermType("3");
-        cdAccount.setMaturityDate(DateTime.getDateWithNMonthAdded(cdAccount.getDateOpened(), "MM/dd/yyyy", Integer.parseInt(cdAccount.getTermType())));
-        cdAccount.setDateNextInterest(DateTime.getDateWithNMonthAdded(cdAccount.getDateOpened(), "MM/dd/yyyy", 3)); // 3 month added as 'Interest Frequency' is set to 'Quarterly'
 
-        // Set up CHK account (required to point the 'Corresponding Account')
+        // Set up CHK account
         Account checkingAccount = new Account().setCHKAccountData();
 
         // Login to the system
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-        // Set the bank branch of the user to account
+        // Set accounts data
         cdAccount.setBankBranch(Actions.usersActions().getBankBranch());
+        checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
         cdAccount.setProduct(Actions.productsActions().getProduct(Products.CD_PRODUCTS, AccountType.CD, RateType.FIXED));
+        cdAccount.setTermType(Actions.productsActions().getTermType(Products.CD_PRODUCTS, cdAccount));
+        cdAccount.setMinTerm(Actions.productsActions().getMinTerm(Products.CD_PRODUCTS, cdAccount));
+        cdAccount.setInterestFrequency(Actions.productsActions().getInterestFrequency(Products.CD_PRODUCTS, cdAccount));
+        cdAccount.setInterestType(Actions.productsActions().getInterestType(Products.CD_PRODUCTS, cdAccount));
 
         // Create a client
         ClientsActions.individualClientActions().createClient(client);
@@ -89,7 +92,7 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         logInfo("Step 8: Fill in such text fields with valid data (except Account Number field):");
         logInfo("Step 9: Set 'Transactional Account' switcher to YES):");
         logInfo("Step 10: Select Date Opened as any date < Current Date");
-        cdAccount.setApplyInterestTo("CHK Acct");
+        cdAccount.setInterestFrequency(InterestFrequency.ONE_TIME_PAY.getInterestFrequency());
         AccountActions.createAccount().selectValuesInFieldsRequiredForCDAccount(cdAccount);
 
         logInfo("Step 11: Submit the account creation by clicking [Save] button");
@@ -101,9 +104,14 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         AccountActions.accountDetailsActions().verifyCDAccountRecords(cdAccount);
 
         logInfo("Step 13: Check the Maturity Date field value (verify that it's calculated based on Date Opened + Term of Account)");
+        int minTerm = Integer.parseInt(cdAccount.getMinTerm());
+        String maturityDate =  Actions.productsActions().getMaturityDateValue(cdAccount, minTerm);
+        cdAccount.setMaturityDate(maturityDate);
         Assert.assertEquals(Pages.accountDetailsPage().getMaturityDate(), cdAccount.getMaturityDate(), "'Maturity Date' value does not match");
 
         logInfo("Step 14: Check the Date next interest field value (verify that it's calculated based on Date Opened + Interest Frequency)");
+        String dateNextInterest =  Actions.productsActions().getDateNextInterestValue(cdAccount);
+        cdAccount.setDateNextInterest(dateNextInterest);
         Assert.assertEquals(Pages.accountDetailsPage().getDateNextInterest(), cdAccount.getDateNextInterest(), "'Maturity Date' value does not match");
 
         logInfo("Step 15: Click [Edit] button and pay attention to the fields that were filled in during account creation");

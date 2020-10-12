@@ -270,4 +270,11 @@ public class DateTime {
 
         return actual.isAfter(expected);
     }
+
+    public static String getDatePlusYearsWithFormat(int years, String pattern) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.ENGLISH);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, years);
+        return simpleDateFormat.format(calendar.getTime());
+    }
 }

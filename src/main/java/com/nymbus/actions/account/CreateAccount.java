@@ -590,7 +590,7 @@ public class CreateAccount {
      */
 
     public void verifyCdAccountPrefilledFields(Account account) {
-        Assert.assertEquals(Pages.addAccountPage().getTermType(), account.getTermType(), "'Term Type' is prefilled with wrong value");
+        Assert.assertEquals(Pages.addAccountPage().getTermType(), account.getMinTerm(), "'Term Type' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getInterestFrequency(), account.getInterestFrequency(), "'Interest Frequency' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getInterestType(), "Simple", "'Interest Type' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getApplyInterestTo(), "Remain in Account", "'Apply interest to' is prefilled with wrong value");
