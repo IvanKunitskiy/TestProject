@@ -192,6 +192,18 @@ public class RetrievingAccountData {
         return transactionData;
     }
 
+    public TransactionData getTransactionDataWithOffset(int offset, int tempIndex) {
+        TransactionData transactionData = new TransactionData();
+
+        transactionData.setPostingDate(Pages.accountTransactionPage().getPostingDateValue(tempIndex, offset));
+        transactionData.setEffectiveDate(Pages.accountTransactionPage().getEffectiveDateValue(tempIndex, offset));
+        transactionData.setAmount(getAmountValue(tempIndex, offset));
+        transactionData.setBalance(getBalanceValue(tempIndex, offset));
+        transactionData.setAmountSymbol(Pages.accountTransactionPage().getAmountSymbol(tempIndex, offset));
+
+        return transactionData;
+    }
+
     public TransactionData getTransactionDataForATM() {
         int tempIndex = 1;
         TransactionData transactionData = new TransactionData();
