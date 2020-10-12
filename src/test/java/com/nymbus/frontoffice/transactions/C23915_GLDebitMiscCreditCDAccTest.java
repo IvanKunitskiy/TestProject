@@ -29,8 +29,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static com.nymbus.core.utils.Functions.getCalculatedInterestAmount;
-
 public class C23915_GLDebitMiscCreditCDAccTest extends BaseTest {
     private Transaction transaction;
     private BalanceDataForCDAcc balanceData;
@@ -44,6 +42,7 @@ public class C23915_GLDebitMiscCreditCDAccTest extends BaseTest {
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         IndividualClient client = individualClientBuilder.buildClient();
         cdAccount = new Account().setCdAccountData();
+        cdAccount.setInterestType("Compound");
         transaction = new TransactionConstructor(new GLDebitMiscCreditCDAccBuilder()).constructTransaction();
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
@@ -56,7 +55,7 @@ public class C23915_GLDebitMiscCreditCDAccTest extends BaseTest {
         ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create account
-        AccountActions.createAccount().createCDAccountForTransactionPurpose(cdAccount);
+        AccountActions.createAccount().createCDAccount(cdAccount);
 
         // Set up transaction with account number
         transaction.getTransactionDestination().setAccountNumber(cdAccount.getAccountNumber());
@@ -104,11 +103,11 @@ public class C23915_GLDebitMiscCreditCDAccTest extends BaseTest {
                         "Original balance doesn't match!");
 
         logInfo("Step 8: Verify Next Interest Payment Amount field value");
-        String expectedPaymentAmount = getCalculatedInterestAmount(balanceData.getCurrentBalance(),
-                                                                    Double.parseDouble(cdAccount.getInterestRate()),
-                                                                    transactionData.getEffectiveDate(),
-                                                                    Pages.accountDetailsPage().getDateNextInterest(),
-                                                                    true);
+        String expectedPaymentAmount = AccountActions.retrievingAccountData()
+                .calculateNextInterestAmount(balanceData.getCurrentBalance(),
+                                         cdAccount.getInterestRate(), transactionData.getEffectiveDate(),
+                                         Pages.accountDetailsPage().getDateNextInterest(),
+                                        false, cdAccount.getInterestType());
         String actualPaymentAmount = Pages.accountDetailsPage().getNextInterestPaymentAmount();
         Assert.assertEquals(actualPaymentAmount, expectedPaymentAmount, "Payment amount doesn't match!");
 
