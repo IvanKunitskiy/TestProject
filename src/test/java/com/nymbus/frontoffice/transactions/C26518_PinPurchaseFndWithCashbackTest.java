@@ -205,8 +205,8 @@ public class C26518_PinPurchaseFndWithCashbackTest extends BaseTest {
         double actualBeneficiaryValue = Double.parseDouble(totalCashValues.get(TOTAL_CASH_OUT_AS_BENEFICIARY));
         double actualConductorValue = Double.parseDouble(totalCashValues.get(TOTAL_CASH_OUT_AS_CONDUCTOR));
 
-        Assert.assertEquals(actualBeneficiaryValue, cashbackAmount, "totalCashInAsBeneficiary value is incorrect!");
-        Assert.assertEquals(actualConductorValue, cashbackAmount, "totalCashInAsConductor value is incorrect!");
+        Assert.assertEquals(actualBeneficiaryValue, cashbackAmount, "totalCashOutAsBeneficiary value is incorrect!");
+        Assert.assertEquals(actualConductorValue, cashbackAmount, "totalCashOutAsConductor value is incorrect!");
     }
 
     private void createDebitCard(String clientInitials, DebitCard debitCard) {
