@@ -23,6 +23,7 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.newmodels.transaction.apifieldsmodels.Field54Model;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
@@ -49,7 +50,8 @@ public class C26518_PinPurchaseFndWithCashbackTest extends BaseTest {
     private TransactionData chkAccTransactionData;
     private String clientRootId;
     private final double requestTransactionAmount = 60.00;
-    private final String field_54 = "2040840C000000002000";
+    private final double cashbackAmount = 20.00;
+    private final Field54Model field_54 = new Field54Model("20", "40", "840", "C", cashbackAmount);
 
     // Fields to verify on web-admin page
     private final String TOTAL_CASH_OUT_AS_BENEFICIARY = "totalCashOutAsBeneficiary";
@@ -200,15 +202,11 @@ public class C26518_PinPurchaseFndWithCashbackTest extends BaseTest {
                 "by Cash Amount from DE054(e.g. 20.00) from Step2");
         Map<String, String> totalCashValues = getBeneficiaryConductorMap();
         WebAdminActions.webAdminUsersActions().setFieldsMapWithValues(2, totalCashValues);
-        String lastFourCharAmount = field_54.substring(field_54.length() - 4);
-        double expectedResult = Double.parseDouble(lastFourCharAmount) / 100;
-        System.out.println(totalCashValues.get(TOTAL_CASH_OUT_AS_BENEFICIARY));
-        System.out.println(totalCashValues.get(TOTAL_CASH_OUT_AS_CONDUCTOR));
         double actualBeneficiaryValue = Double.parseDouble(totalCashValues.get(TOTAL_CASH_OUT_AS_BENEFICIARY));
         double actualConductorValue = Double.parseDouble(totalCashValues.get(TOTAL_CASH_OUT_AS_CONDUCTOR));
 
-        Assert.assertEquals(actualBeneficiaryValue, expectedResult, "totalCashInAsBeneficiary value is incorrect!");
-        Assert.assertEquals(actualConductorValue, expectedResult, "totalCashInAsConductor value is incorrect!");
+        Assert.assertEquals(actualBeneficiaryValue, cashbackAmount, "totalCashInAsBeneficiary value is incorrect!");
+        Assert.assertEquals(actualConductorValue, cashbackAmount, "totalCashInAsConductor value is incorrect!");
     }
 
     private void createDebitCard(String clientInitials, DebitCard debitCard) {
@@ -232,7 +230,7 @@ public class C26518_PinPurchaseFndWithCashbackTest extends BaseTest {
         result.put("37", "201206102");
         result.put("43", "Long ave. bld. 34      Nashville      US");
         result.put("48", "SHELL");
-        result.put("54", field_54);
+        result.put("54", field_54.getData());
         result.put("58", "01000000012");
 
         return  result;
