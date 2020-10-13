@@ -5,6 +5,7 @@ import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.product.ProductType;
+import com.nymbus.newmodels.client.other.account.InterestFrequency;
 
 import java.sql.Timestamp;
 
@@ -83,6 +84,7 @@ public class Account {
     private String term;
     private String dailyInterestAccrual;
     private String nextInterestPaymentAmount;
+    private String minTerm;
 
     public Account setCdAccountData() {
         Account account = new Account();
@@ -90,7 +92,7 @@ public class Account {
         account.setAddNewOption("Account");
         account.setProductType(ProductType.CD_ACCOUNT.getProductType());
         account.setAutoRenewable("YES");
-        account.setInterestFrequency("Quarterly");
+        account.setInterestFrequency(InterestFrequency.QUARTERLY.getInterestFrequency());
         account.setInterestType("Simple");
         account.setApplyInterestTo("Remain in Account");
         account.setAccountHolder("Owner");
@@ -826,5 +828,13 @@ public class Account {
 
     public void setNextInterestPaymentAmount(String nextInterestPaymentAmount) {
         this.nextInterestPaymentAmount = nextInterestPaymentAmount;
+    }
+
+    public String getMinTerm() {
+        return minTerm;
+    }
+
+    public void setMinTerm(String minTerm) {
+        this.minTerm = minTerm;
     }
 }
