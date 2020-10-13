@@ -1,0 +1,89 @@
+package com.nymbus.frontoffice.transactions;
+
+import com.nymbus.actions.Actions;
+import com.nymbus.actions.account.AccountActions;
+import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.core.base.BaseTest;
+import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
+import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
+import com.nymbus.newmodels.generation.tansactions.builder.CashInMiscCreditCHKAccBuilder;
+import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.pages.Pages;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+public class C24991_CommitCashTransactionWithAccountOwnerTest extends BaseTest {
+    private IndividualClient client;
+    private Account chkAccount;
+    private Transaction transaction;
+
+    @BeforeMethod
+    public void prepareTransactionData() {
+        // Set up Client and Accounts
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        client = individualClientBuilder.buildClient();
+
+        chkAccount = new Account().setCHKAccountData();
+
+        // Set up  transaction
+        transaction = new TransactionConstructor(new CashInMiscCreditCHKAccBuilder()).constructTransaction();
+
+        // Set up transaction with account number
+        transaction.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
+
+        // Log in
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        // Set products
+        chkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
+
+        // Create client
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+        client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
+
+        // Create CHK account
+        AccountActions.createAccount().createCHKAccountForTransactionPurpose(chkAccount);
+        Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
+
+        Actions.loginActions().doLogOut();
+    }
+
+    @Test(description = "C24991, Verify: Commit Cash transaction with account owner")
+    @Severity(SeverityLevel.CRITICAL)
+    public void verifyCashTransactionWithAccountOwner() {
+        logInfo("Step 1: Log in to the system as the user from the preconditions");
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        logInfo("Step 2: Go to Teller screen and log in to proof date");
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginProofDate();
+
+        logInfo("Step 3: Select Cash In in the Source");
+        logInfo("Step 4: Set some amount in the opened Denominations popup and click [Ok] button");
+        logInfo("Step 5: Select Misc Credit (or Deposit) in the Destination");
+        logInfo("Step 6: Fill in an account number field in Destination using number of the account from precondition. \n" +
+                "Select some credit transaction in Transaction Code drop-down (e.g. 109 for CHK / 209 for Savings)");
+        Actions.transactionActions().createTransaction(transaction);
+        Actions.transactionActions().clickCommitButton();
+
+        logInfo("Step 7: Set Destination amount equal to Source amount. \n" +
+                "Click [Commit Transaction] button");
+        Actions.transactionActions().clickCommitButton();
+        Actions.transactionActions().verifyPreSelectedClientFields(client);
+
+        logInfo("Step 8: Сlick [Verify] button in “Verify Conductor” popup");
+        Pages.verifyConductorModalPage().clickVerifyButton();
+
+    }
+}
