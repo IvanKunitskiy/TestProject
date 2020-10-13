@@ -1,5 +1,6 @@
 package com.nymbus.actions.account;
 
+import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.verifyingmodels.ClosedAccountData;
 import com.nymbus.newmodels.accountinstructions.verifyingModels.InstructionBalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.*;
@@ -192,6 +193,18 @@ public class RetrievingAccountData {
         return transactionData;
     }
 
+    public TransactionData getTransactionDataWithOffset(int offset, int tempIndex) {
+        TransactionData transactionData = new TransactionData();
+
+        transactionData.setPostingDate(Pages.accountTransactionPage().getPostingDateValue(tempIndex, offset));
+        transactionData.setEffectiveDate(Pages.accountTransactionPage().getEffectiveDateValue(tempIndex, offset));
+        transactionData.setAmount(getAmountValue(tempIndex, offset));
+        transactionData.setBalance(getBalanceValue(tempIndex, offset));
+        transactionData.setAmountSymbol(Pages.accountTransactionPage().getAmountSymbol(tempIndex, offset));
+
+        return transactionData;
+    }
+
     public TransactionData getTransactionDataForATM() {
         int tempIndex = 1;
         TransactionData transactionData = new TransactionData();
@@ -324,5 +337,15 @@ public class RetrievingAccountData {
     public double getDeletedInstructionAmount(int index) {
         String value = Pages.accountInstructionsPage().getAmountValueByIndex(index);
         return Double.parseDouble(value);
+    }
+
+    public String calculateNextInterestAmount(double currentBalance, String rate, String fromDate, String toDate, boolean includeToDate, String interestType) {
+        double parsedRate = Double.parseDouble(rate);
+        if (interestType.equals("Compound")) {
+            return Functions.getCompoundCalculatedInterestAmount(currentBalance, parsedRate, fromDate, toDate, includeToDate);
+        }
+        else {
+            return Functions.getCalculatedInterestAmount(currentBalance, parsedRate, fromDate, toDate, includeToDate);
+        }
     }
 }

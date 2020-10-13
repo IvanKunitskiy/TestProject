@@ -7,6 +7,9 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.accountinstructions.HoldInstruction;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.accountinstructions.InstructionConstructor;
@@ -30,7 +33,6 @@ import java.io.File;
 public class C22580_BalanceInquiryTest extends BaseTest {
 
     private String savingsAccountNumber = "";
-    private File balanceInquiryImageFile;
 
     @BeforeMethod
     public void prepareTransactionData() {
@@ -48,6 +50,11 @@ public class C22580_BalanceInquiryTest extends BaseTest {
 
         // Log in and create a client
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Set the product of the user to account
+        savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
+
+        // Create a client
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
@@ -93,7 +100,7 @@ public class C22580_BalanceInquiryTest extends BaseTest {
         Pages.accountDetailsPage().clickBalanceInquiry();
 
         logInfo("Step 4: Check Available Balance and Current Balance values");
-        balanceInquiryImageFile = Actions.balanceInquiryActions().saveBalanceInquiryImage();
+        File balanceInquiryImageFile = Actions.balanceInquiryActions().saveBalanceInquiryImage();
         Actions.balanceInquiryActions().assertAvailableAndCurrentBalanceValuesFromReceipt(balanceInquiryImageFile, accountAvailableBalance, accountCurrentBalance);
 
         logInfo("Step 5: Click [Close] button");

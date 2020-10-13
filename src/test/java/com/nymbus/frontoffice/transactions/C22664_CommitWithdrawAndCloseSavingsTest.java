@@ -7,6 +7,9 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.account.verifyingmodels.ClosedAccountData;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -52,6 +55,9 @@ public class C22664_CommitWithdrawAndCloseSavingsTest extends BaseTest {
         withdrawTransaction.getTransactionSource().setAccountNumber(savingsAcc.getAccountNumber());
 
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        // Set products
+        savingsAcc.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);

@@ -26,7 +26,9 @@ public enum TransactionCode {
     ATM_USAGE_129("129 - ATM Usage"),
     ATM_USAGE_129_FEE("129 - ATM Usage Fee"),
     ATM_USAGE_229_FEE("229 - ATM Usage Fee"),
-    DEBIT_PURCHASE_123("123 - Debit Purchase");
+    DEBIT_PURCHASE_123("123 - Debit Purchase"),
+    CUR_Yr_Contribution_330("330 - Cur Yr Contrib"),
+    CUR_Yr_Contribution_2330("2330 - Cur Yr Contrib");
 
     private final String transCode;
 }

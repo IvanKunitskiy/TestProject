@@ -7,6 +7,9 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
@@ -33,12 +36,12 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
         client = individualClientBuilder.buildClient();
 
         // Set up CD IRA account
-        cdIRAAccount = new Account().setCDIRAAccountData();
+        cdIRAAccount = new Account().setCdIraAccountData();
         cdIRAAccount.setApplyInterestTo("CHK Acct");
         cdIRAAccount.setMaturityDate(DateTime.getDateWithNMonthAdded(cdIRAAccount.getDateOpened(), "MM/dd/yyyy", Integer.parseInt(cdIRAAccount.getTermType())));
         cdIRAAccount.setDateNextInterest(DateTime.getDateWithNMonthAdded(cdIRAAccount.getDateOpened(), "MM/dd/yyyy", 3)); // 3 month added as 'Interest Frequency' is set to 'Quarterly'
 
-        // Set up CHK account (required to point the 'Corresponding Account')
+        // Set up CHK account
         Account checkingAccount = new Account().setCHKAccountData();
 
         // Login to the system
@@ -46,6 +49,8 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
 
         // Set the bank branch of the user to account
         cdIRAAccount.setBankBranch(Actions.usersActions().getBankBranch());
+        cdIRAAccount.setProduct(Actions.productsActions().getProduct(Products.CD_PRODUCTS, AccountType.IRA, RateType.FIXED));
+        checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
 
         // Create a client
         ClientsActions.individualClientActions().createClient(client);

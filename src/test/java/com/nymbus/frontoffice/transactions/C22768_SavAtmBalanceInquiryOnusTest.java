@@ -7,6 +7,9 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.debitcard.DebitCard;
 import com.nymbus.newmodels.client.other.debitcard.types.TranslationTypeAllowed;
@@ -21,7 +24,9 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuil
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
-import com.nymbus.newmodels.transaction.verifyingModels.*;
+import com.nymbus.newmodels.transaction.verifyingModels.ATMRequiredValueModel;
+import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
+import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -77,6 +82,9 @@ public class C22768_SavAtmBalanceInquiryOnusTest extends BaseTest {
 
         // Log in
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        // Set product
+        savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);

@@ -6,6 +6,9 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.accountinstructions.HoldInstruction;
 import com.nymbus.newmodels.accountinstructions.verifyingModels.InstructionBalanceData;
 import com.nymbus.newmodels.client.IndividualClient;
@@ -33,14 +36,26 @@ public class C22610_AddHoldToAccountTest extends BaseTest {
 
     @BeforeMethod
     public void prepareTransactionData() {
-        // Set up Client, Account, Transaction and Instruction
+
+        // Set up Client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         IndividualClient client = individualClientBuilder.buildClient();
+
+        // Set up account
         savingsAccount = new Account().setSavingsAccountData();
+
+        // Set up transaction
         Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+
+         // Set up Instruction
         instruction =  new InstructionConstructor(new HoldInstructionBuilder()).constructInstruction(HoldInstruction.class);
+
+        // Log in
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Set up product
+        savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);

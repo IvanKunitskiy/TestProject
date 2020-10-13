@@ -7,6 +7,9 @@ import com.nymbus.actions.transfers.TransfersActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.transfer.HighBalanceTransfer;
 import com.nymbus.newmodels.client.other.transfer.Transfer;
@@ -64,8 +67,16 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         transfer.setFromAccount(chkAccount2);
         transfer.setToAccount(savingsAccount2);
 
-        // Create a client with an active CHK / Savings account and a High Balance transfer
+        // Log in
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        // Set products
+        chkAccount1.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
+        chkAccount2.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
+        savingsAccount1.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
+        savingsAccount2.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
+
+        // Create a client with an active CHK / Savings account and a High Balance transfer
         ClientsActions.individualClientActions().createClient(client1);
         ClientsActions.individualClientActions().setClientDetailsData(client1);
         ClientsActions.individualClientActions().setDocumentation(client1);
