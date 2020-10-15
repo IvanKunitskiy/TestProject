@@ -50,43 +50,43 @@ public class VerifyConductorModalPage extends PageTools {
     @Step("Get 'First Name' value")
     public String getFirstNameValue() {
         waitForElementVisibility(firstNameField);
-        return getElementText(firstNameField);
+        return getElementAttributeValue("value", firstNameField);
     }
 
     @Step("Get 'Last Name' value")
     public String getLastNameValue() {
         waitForElementVisibility(lastNameField);
-        return getElementText(lastNameField);
+        return getElementAttributeValue("value", lastNameField);
     }
 
     @Step("Get 'Tax ID' value")
     public String getTaxIDValue() {
         waitForElementVisibility(taxIDField);
-        return getElementText(taxIDField);
+        return getElementAttributeValue("value", taxIDField).trim().replaceAll("[\\W_&&[^°]]+", "");
     }
 
     @Step("Get 'Occupation' value")
     public String getOccupationValue() {
         waitForElementVisibility(occupationField);
-        return getElementText(occupationField);
+        return getElementAttributeValue("value", occupationField);
     }
 
     @Step("Get 'Birth date' value")
     public String getBirthDateValue() {
         waitForElementVisibility(birthDateField);
-        return getElementText(birthDateField);
+        return getElementAttributeValue("value", birthDateField);
     }
 
     @Step("Get 'Address' value")
     public String getAddressValue() {
         waitForElementVisibility(addressField);
-        return getElementText(addressField);
+        return getElementAttributeValue("value", addressField);
     }
 
     @Step("Get 'City' value")
     public String getCityValue() {
         waitForElementVisibility(cityField);
-        return getElementText(cityField);
+        return getElementAttributeValue("value", cityField);
     }
 
     @Step("Get 'State' value")
@@ -98,13 +98,13 @@ public class VerifyConductorModalPage extends PageTools {
     @Step("Get 'Zip Code' value")
     public String getZipCodeValue() {
         waitForElementVisibility(zipCodeField);
-        return getElementText(zipCodeField);
+        return getElementAttributeValue("value", zipCodeField);
     }
 
     @Step("Get 'Phone' value")
     public String getPhoneValue() {
         waitForElementVisibility(phoneField);
-        return getElementText(phoneField);
+        return getElementAttributeValue("value", phoneField).trim().replaceAll("[\\W_&&[^°]]+", "");
     }
 
     @Step("Get 'Id Type' value")
@@ -116,7 +116,7 @@ public class VerifyConductorModalPage extends PageTools {
     @Step("Get 'Id Number' value")
     public String getIDNumberValue() {
         waitForElementVisibility(idNumberField);
-        return getElementText(idNumberField);
+        return getElementAttributeValue("value", idNumberField);
     }
 
     @Step("Get 'Issued By' value")
@@ -134,7 +134,7 @@ public class VerifyConductorModalPage extends PageTools {
     @Step("Get 'Expiration Date' value")
     public String getExpirationDateValue() {
         waitForElementVisibility(expirationDateField);
-        return getElementText(expirationDateField);
+        return getElementAttributeValue("value", expirationDateField);
     }
 
     /**

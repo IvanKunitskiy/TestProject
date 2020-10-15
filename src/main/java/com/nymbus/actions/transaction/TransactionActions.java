@@ -443,12 +443,17 @@ public class TransactionActions {
                 "Client's Address is incorrect !");
         asert.assertEquals(Pages.verifyConductorModalPage().getCityValue(), client.getIndividualType().getAddresses().get(0).getCity(),
                 "Client's City is incorrect !");
-        asert.assertEquals(Pages.verifyConductorModalPage().getStateValue(), client.getIndividualType().getAddresses().get(0).getState(),
-                "Client's State is incorrect !");
         asert.assertEquals(Pages.verifyConductorModalPage().getZipCodeValue(), client.getIndividualType().getAddresses().get(0).getZipCode(),
                 "Client's Zip Code is incorrect !");
         asert.assertEquals(Pages.verifyConductorModalPage().getPhoneValue(), client.getIndividualClientDetails().getPhones().get(1).getPhoneNumber(),
                 "Client's Phone value is incorrect!");
         asert.assertAll();
+    }
+
+    public String getImageSrcFromPopup() {
+        Pages.tellerPage().waitForPrintReceipt();
+        Pages.tellerPage().waitForPopupSpinnerInvisibility();
+
+        return Pages.tellerPage().getPopupImg();
     }
 }

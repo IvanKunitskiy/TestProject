@@ -1,9 +1,13 @@
 package com.nymbus.frontoffice.transactions;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -15,15 +19,22 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.CashInMiscCreditCHKAccBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
+import com.nymbus.pages.webadmin.WebAdminPages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.io.File;
+import java.util.Arrays;
 
 public class C24991_CommitCashTransactionWithAccountOwnerTest extends BaseTest {
     private IndividualClient client;
     private Account chkAccount;
     private Transaction transaction;
+    private String clientRootId;
 
     @BeforeMethod
     public void prepareTransactionData() {
@@ -51,6 +62,7 @@ public class C24991_CommitCashTransactionWithAccountOwnerTest extends BaseTest {
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
         client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
+        clientRootId = ClientsActions.createClient().getClientIdFromUrl();
 
         // Create CHK account
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(chkAccount);
@@ -84,6 +96,33 @@ public class C24991_CommitCashTransactionWithAccountOwnerTest extends BaseTest {
 
         logInfo("Step 8: Сlick [Verify] button in “Verify Conductor” popup");
         Pages.verifyConductorModalPage().clickVerifyButton();
+        String imgSrc = Actions.transactionActions().getImageSrcFromPopup();
+        String[] lines = Actions.balanceInquiryActions().getReceiptLines(imgSrc);
 
+        logInfo("Recognized transaction receipt: \n" +
+                Arrays.toString(lines));
+
+        String expectedClientName = "Client: " + client.getNameForDebitCard();
+        String clientIdStartLine = "Client #";
+        Assert.assertTrue(Arrays.asList(lines).contains(expectedClientName), "Client name is incorrect!");
+        Assert.assertTrue(Actions.balanceInquiryActions().isLineEndsWithChars(lines, clientIdStartLine, client.getIndividualType().getClientID()),
+                "Client ID is incorrect!");
+        Pages.tellerPage().closeModal();
+        Actions.loginActions().doLogOutProgrammatically();
+
+        logInfo("Step 9: Go to the WebAdmin and log in");
+        Selenide.open(Constants.WEB_ADMIN_URL);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        WebAdminActions.webAdminTransactionActions().goToTransactionUrl(chkAccount.getAccountNumber());
+        String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(1);
+        WebAdminActions.webAdminTransactionActions().goToTransactionHeaderUrl(transactionHeader);
+        Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getCustomerIdValue(1), clientRootId,
+                "Customer Id doesn't match!");
+    }
+
+    @AfterMethod(description = "Delete the downloaded image.")
+    public void postCondition() {
+        logInfo("Deleting the downloaded image...");
+        Functions.cleanDirectory(System.getProperty("user.dir") + File.separator + Constants.RECEIPTS + File.separator);
     }
 }
