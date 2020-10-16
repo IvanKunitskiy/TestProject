@@ -234,4 +234,16 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         waitForElementVisibility(waiveATUsageFeeAcronymValue, index);
         return getElementText(waiveATUsageFeeAcronymValue, index).trim();
     }
+
+    /**
+     *  transaction header section
+     */
+    private By customerId = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]"
+            + "//td//span[@key-name='transactioncustomerid']");
+
+    @Step ("Get 'terminalId' {0} value")
+    public String getCustomerIdValue(int index) {
+        waitForElementVisibility(customerId, index);
+        return getElementText(customerId, index).trim();
+    }
 }

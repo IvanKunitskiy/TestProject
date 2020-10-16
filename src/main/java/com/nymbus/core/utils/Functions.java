@@ -40,6 +40,13 @@ public class Functions {
         }
     }
 
+    public static void verifyPath(String filePath) {
+        File dir = new File(filePath);
+        if (!dir.exists())  {
+            dir.mkdirs();
+        }
+    }
+
     public static void deleteFile(String path) {
         new File(path).delete();
     }
