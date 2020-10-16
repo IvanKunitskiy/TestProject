@@ -4,9 +4,12 @@ import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
+import com.nymbus.newmodels.transaction.enums.Denominations;
 import com.nymbus.newmodels.transaction.enums.DestinationType;
 import com.nymbus.newmodels.transaction.enums.SourceType;
 import com.nymbus.util.Random;
+
+import java.util.HashMap;
 
 public class CashInMiscCreditCHKAccBuilder implements TransactionBuilder {
     private Transaction transaction;
@@ -27,6 +30,8 @@ public class CashInMiscCreditCHKAccBuilder implements TransactionBuilder {
         transaction.getTransactionSource().setAccountNumber("0-0-Dummy");
         transaction.getTransactionSource().setAmount(100.00);
         transaction.getTransactionSource().setNotes(Random.genString(20));
+        transaction.getTransactionSource().setDenominationsHashMap(new HashMap<>());
+        transaction.getTransactionSource().getDenominationsHashMap().put(Denominations.HUNDREDS, 100.00);
     }
 
     @Override

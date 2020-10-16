@@ -2,7 +2,6 @@ package com.nymbus.pages.teller;
 
 import com.codeborne.selenide.Condition;
 import com.nymbus.core.base.PageTools;
-import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -62,6 +61,9 @@ public class TellerPage extends PageTools {
     private By successModalWindow = By.xpath("//*[@class='modal-dialog']");
     private By modalHeaderText = By.xpath("//*[@class='modal-dialog']//h4//span");
     private By closeModalButton = By.xpath("(//*[@class='modal-dialog']//button[@ng-click='close()'])[1]");
+    private By printReceipt = By.xpath("//*[@id='printReceipt']");
+    private By popupLoadingSpinner = By.xpath("//*[@id='printReceipt']/dn-loading-spinner");
+    private By popupImg = By.xpath("//*[@id='printReceipt']//img[@id='receiptTemplate'][contains(@src, 'base64')]");
 
     @Step("Get modal header text")
     public String getModalText() {
@@ -73,6 +75,22 @@ public class TellerPage extends PageTools {
     public void closeModal() {
         waitForElementVisibility(closeModalButton);
         jsClick(closeModalButton);
+    }
+
+    @Step("Wait for print receipt region")
+    public void waitForPrintReceipt() {
+        waitForElementVisibility(printReceipt);
+    }
+
+    @Step("Wait for popup spinner invisibility")
+    public void waitForPopupSpinnerInvisibility() {
+        waitForElementInvisibility(popupLoadingSpinner);
+    }
+
+    @Step("Get 'src' attribute of popup img")
+    public String getPopupImg() {
+        waitForElementVisibility(popupImg);
+        return getElementAttributeValue("src", popupImg);
     }
 
     /**

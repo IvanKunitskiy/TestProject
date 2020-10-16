@@ -2,7 +2,6 @@ package com.nymbus.pages.modalwindow;
 
 import com.codeborne.selenide.Condition;
 import com.nymbus.core.base.PageTools;
-import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -25,11 +24,16 @@ public class VerifyConductorModalPage extends PageTools {
     private By firstNameField = By.xpath("//*[@id='name2']");
     private By lastNameField = By.id("name1");
     private By taxIDField = By.id("taxidnumber");
+    private By occupationField = By.xpath("//*[@id='_occupation']");
     private By addressField = By.xpath("//input[@name='addressline1']");
     private By cityField = By.xpath("//input[@name='cityname']");
+    private By stateField = By.xpath("//*[@id='states']//span[@class='select2-chosen']/span");
     private By zipCodeField =  By.xpath("//input[@name='zipcode']");
     private By phoneField = By.xpath("//input[@name='fullphonenumber']");
+    private By idTypeField = By.xpath("//*[@id='type']//span[@class='select2-chosen']/span");
     private By idNumberField = By.xpath("//input[@name='id']");
+    private By issuedByField = By.xpath("//*[@id='state']//span[@class='select2-chosen']/span");
+    private By countryField = By.xpath("//*[@id='country']//span[@class='select2-chosen']/span");
 
     private By idTypeDropdownButton = By.xpath("//div[@name='type']//span[contains(@class, 'select2-arrow')]");
     private By stateDropdownButton = By.xpath("//div[@name='states']//span[contains(@class, 'select2-arrow')]");
@@ -38,6 +42,104 @@ public class VerifyConductorModalPage extends PageTools {
     private By expirationDateField = By.id("expiration");
 
     private By itemInDropdown = By.xpath("//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    /**
+     * Get client data in view mode region
+     */
+
+    @Step("Get 'First Name' value")
+    public String getFirstNameValue() {
+        waitForElementVisibility(firstNameField);
+        return getElementAttributeValue("value", firstNameField);
+    }
+
+    @Step("Get 'Last Name' value")
+    public String getLastNameValue() {
+        waitForElementVisibility(lastNameField);
+        return getElementAttributeValue("value", lastNameField);
+    }
+
+    @Step("Get 'Tax ID' value")
+    public String getTaxIDValue() {
+        waitForElementVisibility(taxIDField);
+        return getElementAttributeValue("value", taxIDField).trim().replaceAll("[\\W_&&[^°]]+", "");
+    }
+
+    @Step("Get 'Occupation' value")
+    public String getOccupationValue() {
+        waitForElementVisibility(occupationField);
+        return getElementAttributeValue("value", occupationField);
+    }
+
+    @Step("Get 'Birth date' value")
+    public String getBirthDateValue() {
+        waitForElementVisibility(birthDateField);
+        return getElementAttributeValue("value", birthDateField);
+    }
+
+    @Step("Get 'Address' value")
+    public String getAddressValue() {
+        waitForElementVisibility(addressField);
+        return getElementAttributeValue("value", addressField);
+    }
+
+    @Step("Get 'City' value")
+    public String getCityValue() {
+        waitForElementVisibility(cityField);
+        return getElementAttributeValue("value", cityField);
+    }
+
+    @Step("Get 'State' value")
+    public String getStateValue() {
+        waitForElementVisibility(stateField);
+        return getElementText(stateField);
+    }
+
+    @Step("Get 'Zip Code' value")
+    public String getZipCodeValue() {
+        waitForElementVisibility(zipCodeField);
+        return getElementAttributeValue("value", zipCodeField);
+    }
+
+    @Step("Get 'Phone' value")
+    public String getPhoneValue() {
+        waitForElementVisibility(phoneField);
+        return getElementAttributeValue("value", phoneField).trim().replaceAll("[\\W_&&[^°]]+", "");
+    }
+
+    @Step("Get 'Id Type' value")
+    public String getIDTypeValue() {
+        waitForElementVisibility(idTypeField);
+        return getElementText(idTypeField);
+    }
+
+    @Step("Get 'Id Number' value")
+    public String getIDNumberValue() {
+        waitForElementVisibility(idNumberField);
+        return getElementAttributeValue("value", idNumberField);
+    }
+
+    @Step("Get 'Issued By' value")
+    public String getIssuedByValue() {
+        waitForElementVisibility(issuedByField);
+        return getElementText(issuedByField);
+    }
+
+    @Step("Get 'Country' value")
+    public String getCountryValue() {
+        waitForElementVisibility(countryField);
+        return getElementText(countryField);
+    }
+
+    @Step("Get 'Expiration Date' value")
+    public String getExpirationDateValue() {
+        waitForElementVisibility(expirationDateField);
+        return getElementAttributeValue("value", expirationDateField);
+    }
+
+    /**
+     * End of region
+     */
 
     @Step("Wait for modal window visibility")
     public void waitForModalWindowVisibility() {

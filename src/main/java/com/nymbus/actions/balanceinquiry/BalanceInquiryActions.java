@@ -1,6 +1,8 @@
 package com.nymbus.actions.balanceinquiry;
 
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.ImageParser;
 import com.nymbus.pages.Pages;
 import org.bytedeco.javacpp.BytePointer;
@@ -35,6 +37,18 @@ public class BalanceInquiryActions {
         File cdImage = new File(System.getProperty("user.dir") + "/screenshots/" + imageName + ".png");
         ImageParser.loadImageFromUrl(src, cdImage.getAbsolutePath());
         return cdImage;
+    }
+
+    public File saveTransactionReceipt(String imgSrc) {
+        String imageName = "transactionReceipt-" + DateTime.getLocalDateTimeByPattern("yyMMddHHmmss");
+        String directory = System.getProperty("user.dir") + File.separator + Constants.RECEIPTS + File.separator;
+        Functions.verifyPath(directory);
+
+        // Save the image
+        File transactionReceipt = new File(directory + imageName + ".tif");
+        ImageParser.loadImage(imgSrc,"TIFF", transactionReceipt.getAbsolutePath());
+
+        return transactionReceipt;
     }
 
     public String readBalanceInquiryImage(File balanceInquiryImage) {
@@ -89,5 +103,24 @@ public class BalanceInquiryActions {
                 "'Available balance' values are not equal");
         Assert.assertTrue(isBalancePresentByType(balanceInquiryImageData, currentBalance, "Current Balance"),
                 "'Current balance' values are not equal");
+    }
+
+    public String[] getReceiptLines(String src) {
+        File transactionReceipt = saveTransactionReceipt(src);
+        String data = readBalanceInquiryImage(transactionReceipt);
+
+        return data.split("\n");
+    }
+
+    public boolean isLineEndsWithChars(String[] lines, String lineStartsWith, String lineEndsWith) {
+        boolean contains = false;
+
+        for (String line : lines) {
+            if (line.startsWith(lineStartsWith)) {
+                contains = line.endsWith(lineEndsWith);
+                break;
+            }
+        }
+        return contains;
     }
 }
