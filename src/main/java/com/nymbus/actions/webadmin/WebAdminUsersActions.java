@@ -98,6 +98,22 @@ public class WebAdminUsersActions {
                 + "orderBy%3A+-id&source=";
     }
 
+    private String getAccountsWithDormantStatusUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev6DS&"
+                + "dqlQuery=count%3A+10%0D%0Aselect%3A+accountnumber%2C+accountstatus%2C+currentbalance%0D%0A"
+                + "from%3A+bank.data.actmst%0D%0A"
+                + "where%3A+%0D%0A"
+                + "-+accountstatus%3A+D%0D%0A"
+                + "-+.accounttype-%3Ecode%3A+%5Btatyp1.1%2C+tatyp1.2%5D%0D%0A%0D%0"
+                + "AorderBy%3A+-id&source=";
+    }
+
+    public String getAccountWithDormantStatus(int index) {
+        return getDormantAccountByIndexFromQueryByUrl(getAccountsWithDormantStatusUrl(), index);
+    }
+
     public String getAccountsWithOverdraftChargedOffMoreThanZeroNull() {
         return getAccountFromQueryByUrl(getAccountsWithOverdraftChargedOffMoreThanZeroUrl());
     }
@@ -128,6 +144,29 @@ public class WebAdminUsersActions {
             WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
             int index = (new Random().nextInt(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult())) + 1;
             accountNumber = WebAdminPages.rulesUIQueryAnalyzerPage().getAccountNumberByIndex(index);
+        }
+
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+
+        return accountNumber;
+    }
+
+
+    private String getDormantAccountByIndexFromQueryByUrl(String url, int index) {
+        SelenideTools.openUrlInNewWindow(url);
+
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+
+        int amountOfRecordsFound = WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfFoundRecords();
+        String accountNumber = "";
+
+        if (amountOfRecordsFound > 0) {
+            WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+            accountNumber = WebAdminPages.rulesUIQueryAnalyzerPage().getDormantAccountNumberByIndex(index);
         }
 
         WebAdminActions.loginActions().doLogoutProgrammatically();

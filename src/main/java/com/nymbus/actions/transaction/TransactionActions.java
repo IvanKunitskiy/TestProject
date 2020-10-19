@@ -277,25 +277,25 @@ public class TransactionActions {
         fillDestinationAmount(String.format("%.2f", transactionDestination.getAmount()), tempIndex);
     }
 
-    private void fillDestinationAccountCode(String transactionCode, int tempIndex) {
+    public void fillDestinationAccountCode(String transactionCode, int tempIndex) {
         Pages.tellerPage().clickOnDestinationCodeField(tempIndex);
 
         Pages.tellerPage().clickOnDropDownItem(transactionCode);
     }
 
-    private void fillDestinationAmount(String amount, int tempIndex) {
+    public void fillDestinationAmount(String amount, int tempIndex) {
         Pages.tellerPage().clickDestinationAmountDiv(tempIndex);
 
         Pages.tellerPage().typeDestinationAmountValue(tempIndex, amount);
     }
 
-    private void fillDestinationAccountNumber(String accountNumber, int tempIndex) {
+    public void fillDestinationAccountNumber(String accountNumber, int tempIndex) {
         Pages.tellerPage().typeDestinationAccountNumber(tempIndex, accountNumber);
 
         Pages.tellerPage().clickOnAutocompleteDropDownItem(accountNumber);
     }
 
-    private void fillSourceInformation(TransactionSource transactionSource) {
+    public void fillSourceInformation(TransactionSource transactionSource) {
         int tempIndex = 1;
         fillSourceAccountNumber(transactionSource.getAccountNumber(), tempIndex);
         fillSourceAmount(String.format("%.2f", transactionSource.getAmount()), tempIndex);

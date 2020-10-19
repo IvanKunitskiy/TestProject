@@ -1,6 +1,8 @@
 package com.nymbus.pages.modalwindow;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -32,5 +34,11 @@ public class SupervisorModalPage extends PageTools {
     @Step("Wait for modal window invisibility")
     public void waitForModalWindowInvisibility() {
         waitForElementInvisibility(modalWindow);
+    }
+
+    @Step("Is modal window visible")
+    public boolean isModalWindowVisible() {
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        return isElementVisible(modalWindow);
     }
 }
