@@ -5,7 +5,6 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -37,29 +36,23 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
 
         // Set up CD IRA account
         cdIRAAccount = new Account().setCdIraAccountData();
-        cdIRAAccount.setApplyInterestTo("CHK Acct");
-        cdIRAAccount.setMaturityDate(DateTime.getDateWithNMonthAdded(cdIRAAccount.getDateOpened(), "MM/dd/yyyy", Integer.parseInt(cdIRAAccount.getTermType())));
-        cdIRAAccount.setDateNextInterest(DateTime.getDateWithNMonthAdded(cdIRAAccount.getDateOpened(), "MM/dd/yyyy", 3)); // 3 month added as 'Interest Frequency' is set to 'Quarterly'
-
-        // Set up CHK account
-        Account checkingAccount = new Account().setCHKAccountData();
 
         // Login to the system
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-        // Set the bank branch of the user to account
+        // Set account data
         cdIRAAccount.setBankBranch(Actions.usersActions().getBankBranch());
         cdIRAAccount.setProduct(Actions.productsActions().getProduct(Products.CD_PRODUCTS, AccountType.IRA, RateType.FIXED));
-        checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
+        cdIRAAccount.setInterestType(Actions.productsActions().getInterestType(Products.CD_PRODUCTS, cdIRAAccount));
+        cdIRAAccount.setTermType(Actions.productsActions().getTermType(Products.CD_PRODUCTS, cdIRAAccount));
+        cdIRAAccount.setMinTerm(Actions.productsActions().getMinTerm(Products.CD_PRODUCTS, cdIRAAccount));
+        cdIRAAccount.setMaturityDate(Actions.productsActions().getMaturityDateValue(cdIRAAccount, Integer.parseInt(cdIRAAccount.getMinTerm())));
 
-        // Create a client
+        // Create a client and logout
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
         client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
-
-        // Create CHK account and logout
-        AccountActions.createAccount().createCHKAccount(checkingAccount);
         Actions.loginActions().doLogOut();
     }
 
