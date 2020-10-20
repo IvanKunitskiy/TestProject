@@ -67,7 +67,7 @@ public class CreateInstruction {
         return -1;
     }
 
-    private void fillingSupervisorModal() {
+    public void fillingSupervisorModal() {
         Pages.supervisorModalPage().inputLogin(Constants.USERNAME);
 
         Pages.supervisorModalPage().inputPassword(Constants.PASSWORD);
