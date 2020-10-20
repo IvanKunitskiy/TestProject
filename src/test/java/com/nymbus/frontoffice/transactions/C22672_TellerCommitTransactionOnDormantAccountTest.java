@@ -63,10 +63,8 @@ public class C22672_TellerCommitTransactionOnDormantAccountTest extends BaseTest
         Actions.clientPageActions().searchAndOpenClientByName(accountNumberWithDormantStatus);
         actualBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
 
-        // Set transaction code
-        if (Pages.accountDetailsPage().getProductTypeValue().equals("CHK Account")) {
-            transaction.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
-        }
+        // Set transaction code and logout
+        Actions.transactionActions().setTransactionCode(transaction);
         Actions.loginActions().doLogOut();
 
         double balance = actualBalanceDataForCheckingAcc.getCurrentBalance() + transaction.getTransactionDestination().getAmount();
@@ -100,7 +98,7 @@ public class C22672_TellerCommitTransactionOnDormantAccountTest extends BaseTest
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
 
         logInfo("Step 7: Specify credentials of the user with supervisor override permissions from preconditions in the popup and submit it");
-        AccountActions.createInstruction().fillingSupervisorModal();
+        Actions.transactionActions().fillingSupervisorModal(userCredentials);
         Pages.tellerPage().closeModal();
 
         logInfo("Step 8: Go to dormant account used in transaction and verify its:\n" +
