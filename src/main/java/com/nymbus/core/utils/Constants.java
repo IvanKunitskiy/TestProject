@@ -135,4 +135,9 @@ public class Constants {
     public static final int MICRO_TIMEOUT = 2;
     public static final int MINI_TIMEOUT = 5;
     public static final int SMALL_TIMEOUT = 10;
+
+    /**
+     * Directories
+     */
+    public static final String RECEIPTS = "receipts";
 }

@@ -122,6 +122,17 @@ public class WebAdminTransactionActions {
                 + "-+code%3A+WaiveATUsageFeeAcronym&source=";
     }
 
+    private String getTransactionHeaderUrl(String transactionHeader) {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+10%0D%0A"
+                + "from%3A+bank.data.transaction.header%0D%0A"
+                + "where%3A+%0D%0A-+%28databean%29rootId%3A+"
+                + transactionHeader
+                + "&source=";
+    }
+
     public void goToWaiveATUsageFeeAcronymUrl() {
         Selenide.open(getWaiveATUsageFeeAcronymUrl());
 
@@ -154,6 +165,12 @@ public class WebAdminTransactionActions {
 
     public void goToTransactionUrl(String accountNumber) {
         Selenide.open(getTransactionUrl(accountNumber));
+
+        waitForSearchResults();
+    }
+
+    public void goToTransactionHeaderUrl(String transactionHeader) {
+        Selenide.open(getTransactionHeaderUrl(transactionHeader));
 
         waitForSearchResults();
     }

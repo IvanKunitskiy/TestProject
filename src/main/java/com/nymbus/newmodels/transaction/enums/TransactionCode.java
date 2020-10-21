@@ -14,11 +14,13 @@ public enum TransactionCode {
     ATM_DEBIT_PURCHASE_223("223 - Debit Purchase"),
     ATM_CREDIT_MEMO_103("103 - Credit Memo"),
     ATM_CREDIT_MEMO_203("203 - Credit Memo"),
+    ATM_DEPOSIT_209("209 - Deposit"),
     WITHDRAW_AND_CLOSE("127 - Withdraw&Close"),
     WITHDRAW_AND_CLOSE_SAVINGS("227 - Withdraw&Close"),
     INT_DEPOSIT("107 - Int Deposit"),
     WITHDRAWAL_216("216 - Withdrawal"),
     ATM_DEPOSIT_108("108 - ATM Deposit"),
+    ATM_DEPOSIT_109("109 - Deposit"),
     ATM_DEPOSIT_208("208 - ATM Deposit"),
     INT_DEPOSIT_SAVINGS("207 - Int Deposit"),
     CD_REDEMPTION("315 - Redeemed CD"),
@@ -27,7 +29,8 @@ public enum TransactionCode {
     ATM_USAGE_129_FEE("129 - ATM Usage Fee"),
     ATM_USAGE_229_FEE("229 - ATM Usage Fee"),
     DEBIT_PURCHASE_123("123 - Debit Purchase"),
-    CUR_Yr_Contribution_330("330 - Cur Yr Contrib");
+    CUR_Yr_Contribution_330("330 - Cur Yr Contrib"),
+    CUR_Yr_Contribution_2330("2330 - Cur Yr Contrib");
 
     private final String transCode;
 }

@@ -20,7 +20,15 @@ public class Functions {
 
     public static String getCalculatedInterestAmount(double currentBalance, double rate, String fromDate, String toDate, boolean includeToDate) {
         int days = DateTime.getDaysBetweenTwoDates(fromDate, toDate, includeToDate);
-        double result = (currentBalance * (rate/ 365) * days)/100;
+        double result = (currentBalance * (rate/365) * days)/100;
+        return String.format("%.2f", result);
+    }
+
+    public static String getCompoundCalculatedInterestAmount(double currentBalance, double rate, String fromDate, String toDate, boolean includeToDate) {
+        int days = DateTime.getDaysBetweenTwoDates(fromDate, toDate, includeToDate);
+        double dailyInterestRate = (rate/365)/100;
+        double result = currentBalance * (Math.pow((1 + dailyInterestRate), days) - 1);
+
         return String.format("%.2f", result);
     }
 
@@ -29,6 +37,13 @@ public class Functions {
             FileUtils.cleanDirectory(new File(path));
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void verifyPath(String filePath) {
+        File dir = new File(filePath);
+        if (!dir.exists())  {
+            dir.mkdirs();
         }
     }
 

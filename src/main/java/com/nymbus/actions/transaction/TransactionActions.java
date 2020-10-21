@@ -2,6 +2,9 @@ package com.nymbus.actions.transaction;
 
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
+import com.nymbus.newmodels.UserCredentials;
+import com.nymbus.newmodels.account.product.ProductType;
+import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.transaction.MultipleTransaction;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.TransactionDestination;
@@ -9,7 +12,9 @@ import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.Denominations;
 import com.nymbus.newmodels.transaction.enums.DestinationType;
 import com.nymbus.newmodels.transaction.enums.SourceType;
+import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import org.testng.asserts.SoftAssert;
 
 import java.util.HashMap;
 import java.util.List;
@@ -422,5 +427,49 @@ public class TransactionActions {
             }
         }
         return result;
+    }
+
+    public void verifyPreSelectedClientFields(IndividualClient client) {
+        SoftAssert asert = new SoftAssert();
+
+        asert.assertEquals(Pages.verifyConductorModalPage().getFirstNameValue(), client.getIndividualType().getFirstName(),
+                "Client's First name is incorrect !");
+        asert.assertEquals(Pages.verifyConductorModalPage().getLastNameValue(), client.getIndividualType().getLastName(),
+                "Client's Last name is incorrect !");
+        asert.assertEquals(Pages.verifyConductorModalPage().getTaxIDValue(), client.getIndividualType().getTaxID(),
+                "Client's TAX Id is incorrect !");
+        asert.assertEquals(Pages.verifyConductorModalPage().getOccupationValue(), client.getIndividualClientDetails().getOccupation(),
+                "Client's occupation is incorrect !");
+        asert.assertEquals(Pages.verifyConductorModalPage().getBirthDateValue(), client.getIndividualType().getBirthDate(),
+                "Client's Birth Date is incorrect !");
+        asert.assertEquals(Pages.verifyConductorModalPage().getAddressValue(), client.getIndividualType().getAddresses().get(0).getAddress(),
+                "Client's Address is incorrect !");
+        asert.assertEquals(Pages.verifyConductorModalPage().getCityValue(), client.getIndividualType().getAddresses().get(0).getCity(),
+                "Client's City is incorrect !");
+        asert.assertEquals(Pages.verifyConductorModalPage().getZipCodeValue(), client.getIndividualType().getAddresses().get(0).getZipCode(),
+                "Client's Zip Code is incorrect !");
+        asert.assertEquals(Pages.verifyConductorModalPage().getPhoneValue(), client.getIndividualClientDetails().getPhones().get(1).getPhoneNumber(),
+                "Client's Phone value is incorrect!");
+        asert.assertAll();
+    }
+
+    public String getImageSrcFromPopup() {
+        Pages.tellerPage().waitForPrintReceipt();
+        Pages.tellerPage().waitForPopupSpinnerInvisibility();
+
+        return Pages.tellerPage().getPopupImg();
+    }
+
+    public void setTransactionCode(Transaction transaction) {
+        if (Pages.accountDetailsPage().getProductTypeValue().equals(ProductType.CHK_ACCOUNT.getProductType())) {
+            transaction.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
+        }
+    }
+
+    public void fillingSupervisorModal(UserCredentials userCredentials) {
+        Pages.supervisorModalPage().inputLogin(userCredentials.getUserName());
+        Pages.supervisorModalPage().inputPassword(userCredentials.getPassword());
+        Pages.supervisorModalPage().clickEnter();
+        Pages.supervisorModalPage().waitForModalWindowInvisibility();
     }
 }

@@ -14,6 +14,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private By firstNameByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[11]/div");
     private By lastNameByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[12]/div");
     private By accountNumberByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[2]/span/span");
+    private By dormantAccountNumberByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[2]/div");
     private By foundNumberOfRecords = By.xpath("//div[@class='panelContent']/div[@id='dqlSearch']/div/span[contains(text(), 'Found')]");
 
     @Step("Wait for 'Rules UI Query Analyzer' page loaded")
@@ -55,6 +56,12 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getAccountNumberByIndex(int index) {
         waitForElementVisibility(accountNumberByIndex, index);
         return getElementText(accountNumberByIndex, index);
+    }
+
+    @Step("Get dormant account number value")
+    public String getDormantAccountNumberByIndex(int index) {
+        waitForElementVisibility(dormantAccountNumberByIndex, index);
+        return getElementText(dormantAccountNumberByIndex, index);
     }
 
     @Step("Is search results table exist")
@@ -233,5 +240,17 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getWaiveATUsageFeeAcronymValue(int index) {
         waitForElementVisibility(waiveATUsageFeeAcronymValue, index);
         return getElementText(waiveATUsageFeeAcronymValue, index).trim();
+    }
+
+    /**
+     *  transaction header section
+     */
+    private By customerId = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]"
+            + "//td//span[@key-name='transactioncustomerid']");
+
+    @Step ("Get 'terminalId' {0} value")
+    public String getCustomerIdValue(int index) {
+        waitForElementVisibility(customerId, index);
+        return getElementText(customerId, index).trim();
     }
 }
