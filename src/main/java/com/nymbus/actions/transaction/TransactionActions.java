@@ -2,6 +2,8 @@ package com.nymbus.actions.transaction;
 
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
+import com.nymbus.newmodels.UserCredentials;
+import com.nymbus.newmodels.account.product.ProductType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.transaction.MultipleTransaction;
 import com.nymbus.newmodels.transaction.Transaction;
@@ -10,6 +12,7 @@ import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.Denominations;
 import com.nymbus.newmodels.transaction.enums.DestinationType;
 import com.nymbus.newmodels.transaction.enums.SourceType;
+import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
 import org.testng.asserts.SoftAssert;
 
@@ -465,9 +468,16 @@ public class TransactionActions {
         return Pages.tellerPage().getPopupImg();
     }
 
-    public void specifyCredsAndSubmit(String userName, String password) {
-        Pages.supervisorModalPage().inputJsLogin(userName);
-        Pages.supervisorModalPage().inputJsPassword(password);
-        Pages.supervisorModalPage().clickJsEnter();
+    public void setTransactionCode(Transaction transaction) {
+        if (Pages.accountDetailsPage().getProductTypeValue().equals(ProductType.CHK_ACCOUNT.getProductType())) {
+            transaction.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
+        }
+    }
+
+    public void fillingSupervisorModal(UserCredentials userCredentials) {
+        Pages.supervisorModalPage().inputLogin(userCredentials.getUserName());
+        Pages.supervisorModalPage().inputPassword(userCredentials.getPassword());
+        Pages.supervisorModalPage().clickEnter();
+        Pages.supervisorModalPage().waitForModalWindowInvisibility();
     }
 }

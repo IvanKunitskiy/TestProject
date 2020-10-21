@@ -1,8 +1,6 @@
 package com.nymbus.pages.clients.transfers;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.core.base.PageTools;
-import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -31,6 +29,8 @@ public class NewTransferPage extends PageTools {
     private By frequencySelectorButton = By.xpath("//div[@data-test-id='field-frequencytransfer']");
     private By frequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By frequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private By toAccountInputField = By.xpath("//div[@data-test-id='field-accountid2']/div/input");
 
     @Step("Type value to the 'Max Amount To Transfer' field")
     public void setMaxAmount(String value) {
@@ -113,7 +113,13 @@ public class NewTransferPage extends PageTools {
     public void clickToAccountSelectorOption(String transferTypeOption) {
         waitForElementVisibility(toAccountSelectorOption, transferTypeOption);
         waitForElementClickable(toAccountSelectorOption, transferTypeOption);
-        click(toAccountSelectorOption, transferTypeOption);
+        clickIfExist(toAccountSelectorOption, transferTypeOption);
+    }
+
+    @Step("Type value to the 'Max Amount To Transfer' field")
+    public void setToAccountValue(String value) {
+        waitForElementClickable(toAccountInputField);
+        type(value, toAccountInputField);
     }
 
     @Step("Returning list of 'To Account' options")

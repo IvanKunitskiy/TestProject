@@ -3,7 +3,6 @@ package com.nymbus.actions.transfers;
 import com.nymbus.newmodels.client.other.transfer.HighBalanceTransfer;
 import com.nymbus.newmodels.client.other.transfer.Transfer;
 import com.nymbus.newmodels.client.other.transfer.TransferType;
-import com.nymbus.newmodels.client.other.transfer.Transfers;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 
@@ -57,9 +56,7 @@ public class AddNewTransferActions {
 
     public void setHighBalanceToAccount(HighBalanceTransfer transfer) {
         Pages.newTransferPage().clickToAccountSelectorButton();
-        List<String> listOfToAccount = Pages.newTransferPage().getToAccountList();
-
-        Assert.assertTrue(listOfToAccount.size() > 0, "There are no options available");
+        Pages.newTransferPage().setToAccountValue(transfer.getToAccount().getAccountNumber());
         Pages.newTransferPage().clickToAccountSelectorOption(transfer.getToAccount().getAccountNumber());
     }
 
