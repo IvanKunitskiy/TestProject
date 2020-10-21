@@ -3,14 +3,10 @@ package com.nymbus.frontoffice.transactions;
 import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
-import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
-import com.nymbus.newmodels.client.IndividualClient;
-import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
-import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditCHKAccBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
@@ -37,11 +33,6 @@ public class C22672_TellerCommitTransactionOnDormantAccountTest extends BaseTest
     @BeforeMethod
     public void preCondition() {
 
-        // Set up client
-        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
-        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        IndividualClient client = individualClientBuilder.buildClient();
-
         // Set up transaction
         transaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
         transaction.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_209.getTransCode());
@@ -53,13 +44,8 @@ public class C22672_TellerCommitTransactionOnDormantAccountTest extends BaseTest
         transaction.getTransactionDestination().setAccountNumber(accountNumberWithDormantStatus);
         transactionAmount = transaction.getTransactionDestination().getAmount();
 
-        // Log in and create client
+        // Log in and get the current and available balance of retrieved Dormant account
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        ClientsActions.individualClientActions().createClient(client);
-        ClientsActions.individualClientActions().setClientDetailsData(client);
-        ClientsActions.individualClientActions().setDocumentation(client);
-
-        // Get the current and available balance of retrieved Dormant account
         Actions.clientPageActions().searchAndOpenClientByName(accountNumberWithDormantStatus);
         actualBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
 
