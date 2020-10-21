@@ -475,9 +475,9 @@ public class TransactionActions {
     }
 
     public void fillingSupervisorModal(UserCredentials userCredentials) {
-        Pages.supervisorModalPage().inputLogin(userCredentials.getUserName());
-        Pages.supervisorModalPage().inputPassword(userCredentials.getPassword());
-        Pages.supervisorModalPage().clickEnter();
+        Pages.supervisorModalPage().inputJsLogin(userCredentials.getUserName());
+        Pages.supervisorModalPage().inputJsPassword(userCredentials.getPassword());
+        Pages.supervisorModalPage().clickJsEnter();
         Pages.supervisorModalPage().waitForModalWindowInvisibility();
     }
 }

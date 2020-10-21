@@ -5,7 +5,6 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
-import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -20,13 +19,11 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
-import com.nymbus.pages.modalwindow.SupervisorModalPage;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import sun.jvm.hotspot.debugger.Page;
 
 public class C22674_CommitNSFTransactionWithSupervisorOverrideTest extends BaseTest {
     private Transaction transaction;
@@ -110,8 +107,7 @@ public class C22674_CommitNSFTransactionWithSupervisorOverrideTest extends BaseT
 
         logInfo("Step 7: Specify credentials of the user with supervisor override permissions  \n" +
                 "(User with all ACLs from the preconditions) and submit the form");
-        Actions.transactionActions().specifyCredsAndSubmit(userCredentials.getUserName(),
-                userCredentials.getPassword());
+        Actions.transactionActions().fillingSupervisorModal(userCredentials);
         Assert.assertEquals(Pages.tellerPage().getModalText(),
                 "Transaction was successfully completed.",
                 "Transaction doesn't commit");
