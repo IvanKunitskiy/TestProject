@@ -33,4 +33,26 @@ public class SupervisorModalPage extends PageTools {
     public void waitForModalWindowInvisibility() {
         waitForElementInvisibility(modalWindow);
     }
+
+    /**
+     * Js actions on supervisor modal page
+     */
+    @Step("Type password input {0}")
+    public void inputJsPassword(String text) {
+        waitForElementClickable(passwordInput);
+        jsSetValue(text, passwordInput);
+        jsRiseOnchange(passwordInput);
+    }
+    @Step("Type login input {0}")
+    public void inputJsLogin(String text) {
+        waitForElementClickable(loginInput);
+        jsSetValue(text, loginInput);
+        jsRiseOnchange(loginInput);
+    }
+
+    @Step("Click 'Enter' button")
+    public void clickJsEnter() {
+        waitForElementClickable(enterButton);
+        jsClick(enterButton);
+    }
 }

@@ -26,6 +26,7 @@ public class WithdrawalGLDebitCHKAccBuilder implements TransactionBuilder {
         transaction.getTransactionSource().setSourceType(SourceType.WITHDRAWL);
         transaction.getTransactionSource().setAccountNumber("83460855747");
         transaction.getTransactionSource().setAmount(100.00);
+        //transaction.getTransactionSource().setTransactionCode("104 - Deposit Corr");
     }
 
     @Override

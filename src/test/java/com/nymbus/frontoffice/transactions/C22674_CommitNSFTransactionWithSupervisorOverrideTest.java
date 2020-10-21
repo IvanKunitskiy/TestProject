@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -19,10 +20,13 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.pages.modalwindow.SupervisorModalPage;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import sun.jvm.hotspot.debugger.Page;
 
 public class C22674_CommitNSFTransactionWithSupervisorOverrideTest extends BaseTest {
     private Transaction transaction;
@@ -75,7 +79,8 @@ public class C22674_CommitNSFTransactionWithSupervisorOverrideTest extends BaseT
         Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
         expectedBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         chkAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-", expectedBalanceData.getCurrentBalance(), expectedBalanceData.getCurrentBalance());
+                "-", expectedBalanceData.getCurrentBalance(), transactionAmount);
+        Actions.loginActions().doLogOut();
     }
 
     @Test(description = "C22674, Commit NSF transaction with supervisor override")
@@ -89,12 +94,12 @@ public class C22674_CommitNSFTransactionWithSupervisorOverrideTest extends BaseT
         chkAccTransactionData.setPostingDate(Pages.tellerModalPage().getProofDateValue());
         Actions.transactionActions().doLoginTeller();
 
-        logInfo("Step 3: Select the following fund types: \n" +
+        logInfo("Step 3: Select the folowing fund types: \n" +
                 "- Source: Withdrawal \n" +
                 "- Destination: any (e.g. Gl/Credit)");
         logInfo("Step 4: Select account from preconditions in source item and specify amount > available balance of the account from preconditions");
         int currentIndex = 0;
-        Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction.getTransactionSource(), currentIndex);
+        Actions.transactionActions().setWithDrawalSource(transaction.getTransactionSource(),currentIndex);
 
         logInfo("Step 5: Specify the same amount for destination item, set valid GL account# and fill in Notes field with any data");
         Actions.transactionActions().setGLCreditDestination(transaction.getTransactionDestination(), currentIndex);
@@ -103,8 +108,36 @@ public class C22674_CommitNSFTransactionWithSupervisorOverrideTest extends BaseT
         logInfo("Step 6: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
 
-        logInfo("Step 6: Specify credentials of the user with supervisor override permissions  \n" +
+        logInfo("Step 7: Specify credentials of the user with supervisor override permissions  \n" +
                 "(User with all ACLs from the preconditions) and submit the form");
+        Actions.transactionActions().specifyCredsAndSubmit(userCredentials.getUserName(),
+                userCredentials.getPassword());
+        Assert.assertEquals(Pages.tellerPage().getModalText(),
+                "Transaction was successfully completed.",
+                "Transaction doesn't commit");
+        Pages.tellerPage().closeModal();
+        expectedBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
+
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        logInfo("Step 8: Go to account used in source item and verify its:" +
+                "- current balance" +
+                "- available balance");
+        Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
+        BalanceDataForCHKAcc actualBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
+
+        Assert.assertEquals(actualBalanceData.getCurrentBalance(), expectedBalanceData.getCurrentBalance(),
+                "Current balance doesn't match!");
+        Assert.assertEquals(actualBalanceData.getAvailableBalance(), expectedBalanceData.getAvailableBalance(),
+                "Available balance doesn't match!");
+
+        logInfo("Step 9: Open account on the Transactions tab and verify the committed transaction and Balance");
+        Pages.accountDetailsPage().clickTransactionsTab();
+        chkAccTransactionData.setBalance(expectedBalanceData.getCurrentBalance());
+        AccountActions.retrievingAccountData().goToTransactionsTab();
+        TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
+        Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
 
     }
 }
