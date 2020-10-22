@@ -16,19 +16,19 @@ public class SupervisorModalPage extends PageTools {
     @Step("Type login input {0}")
     public void inputLogin(String text) {
         waitForElementClickable(loginInput);
-        jsType(text, loginInput);
+        type(text, loginInput);
     }
 
     @Step("Type password input {0}")
     public void inputPassword(String text) {
         waitForElementClickable(passwordInput);
-        jsType(text, passwordInput);
+        type(text, passwordInput);
     }
 
     @Step("Click 'Enter' button")
     public void clickEnter() {
         waitForElementClickable(enterButton);
-        jsClick(enterButton);
+        click(enterButton);
     }
 
     @Step("Wait for modal window invisibility")
@@ -40,5 +40,28 @@ public class SupervisorModalPage extends PageTools {
     public boolean isModalWindowVisible() {
         SelenideTools.sleep(Constants.MINI_TIMEOUT);
         return isElementVisible(modalWindow);
+    }
+
+    /**
+     * Js actions on supervisor modal page
+     */
+
+    @Step("Type password input {0}")
+    public void inputJsPassword(String text) {
+        waitForElementClickable(passwordInput);
+        jsSetValue(text, passwordInput);
+        jsRiseOnchange(passwordInput);
+    }
+    @Step("Type login input {0}")
+    public void inputJsLogin(String text) {
+        waitForElementClickable(loginInput);
+        jsSetValue(text, loginInput);
+        jsRiseOnchange(loginInput);
+    }
+
+    @Step("Click 'Enter' button")
+    public void clickJsEnter() {
+        waitForElementClickable(enterButton);
+        jsClick(enterButton);
     }
 }
