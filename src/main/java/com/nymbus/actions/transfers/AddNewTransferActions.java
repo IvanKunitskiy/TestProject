@@ -81,9 +81,7 @@ public class AddNewTransferActions {
 
     public void setTransferToAccount(Transfer transfer) {
         Pages.newTransferPage().clickToAccountSelectorButton();
-        List<String> listOfToAccount = Pages.newTransferPage().getToAccountList();
-
-        Assert.assertTrue(listOfToAccount.size() > 0, "There are no options available");
+        Pages.newTransferPage().setToAccountValue(transfer.getToAccount().getAccountNumber());
         Pages.newTransferPage().clickToAccountSelectorOption(transfer.getToAccount().getAccountNumber());
     }
 
