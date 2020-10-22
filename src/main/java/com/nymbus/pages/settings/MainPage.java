@@ -110,7 +110,6 @@ public class MainPage extends PageTools {
     @Step("Click 'ViewAllSafeDepositBoxSizes' link")
     public void clickViewAllSafeDepositBoxSizes() {
         waitForElementClickable(viewAllSafeDepositBoxSizesLink);
-        //type();
         click(viewAllSafeDepositBoxSizesLink);
     }
 }
