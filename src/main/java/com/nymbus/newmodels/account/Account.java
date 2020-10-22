@@ -123,7 +123,7 @@ public class Account {
         account.setTransactionalAccount("NO");
         account.setAutoRenewable("YES");
         account.setAccountHolder("Owner");
-        account.setTermType("6");
+        account.setTermType(getCDIRATerms(Constants.getEnvironment()));
         account.setInterestRate(String.valueOf(Generator.genFloat(0.001, 99.999, 1)));
         account.setInterestFrequency("Quarterly");
         account.setApplyInterestTo("Remain in Account");
@@ -836,5 +836,17 @@ public class Account {
 
     public void setMinTerm(String minTerm) {
         this.minTerm = minTerm;
+    }
+
+    private String getCDIRATerms(String environment) {
+        switch (environment) {
+            case "dev6":
+            case "dev12":
+            default:
+                return "6";
+            case "dev21":
+            case "dev4":
+                return "12";
+        }
     }
 }

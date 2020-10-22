@@ -236,6 +236,13 @@ public class UsersActions {
         SettingsPage.safeDepositBoxSizesPage().waitForPageLoaded();
     }
 
+    public void openBinControlPage() {
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        Pages.settings().waitForSettingsPageLoaded();
+        SettingsPage.mainPage().waitViewAllBinControls();
+        SettingsPage.mainPage().clickViewAllBinControls();
+    }
+
     public List<SafeDepositKeyValues> getSafeDepositBoxValues() {
 
         List<SafeDepositKeyValues> safeDepositKeyValues = new ArrayList<>();
