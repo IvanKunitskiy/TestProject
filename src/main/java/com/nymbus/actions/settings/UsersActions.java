@@ -229,6 +229,7 @@ public class UsersActions {
     }
 
     public void openSafeDepositBoxSizesPage() {
+        Pages.aSideMenuPage().clickClientMenuItem();
         Pages.aSideMenuPage().clickSettingsMenuItem();
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().waitViewAllSafeDepositBoxSizes();
