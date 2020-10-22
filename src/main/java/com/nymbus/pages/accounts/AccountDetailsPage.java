@@ -156,19 +156,19 @@ public class AccountDetailsPage extends PageTools {
     @Step("Get 'Average Balance' value")
     public String getAverageBalanceValue() {
         waitForElementVisibility(averageBalance);
-        return getElementText(averageBalance).replaceAll("[^0-9.]", "");
+        return getElementText(averageBalance).replaceAll("[^0-9.-]", "");
     }
 
     @Step("Get 'Collected Balance' value")
     public String getCollectedBalanceValue() {
         waitForElementVisibility(collectedBalance);
-        return getElementText(collectedBalance).replaceAll("[^0-9.]", "");
+        return getElementText(collectedBalance).replaceAll("[^0-9.-]", "");
     }
 
     @Step("Get 'Next Interest Payment amount' value")
     public String getNextInterestPaymentAmount() {
         waitForElementVisibility(nextInterestPaymentAmount);
-        return getElementText(nextInterestPaymentAmount).replaceAll("[^0-9.]", "");
+        return getElementText(nextInterestPaymentAmount).replaceAll("[^0-9.-]", "");
     }
 
     @Step("Get 'Date Next Interest Paid'")
@@ -186,7 +186,7 @@ public class AccountDetailsPage extends PageTools {
     @Step("Get 'Original balance' value")
     public String getOriginalBalanceValue() {
         waitForElementVisibility(originalBalance);
-        return getElementText(originalBalance).replaceAll("[^0-9.]", "");
+        return getElementText(originalBalance).replaceAll("[^0-9.-]", "");
     }
 
     @Step("Get 'Term In Month Or Days' value")
@@ -198,13 +198,13 @@ public class AccountDetailsPage extends PageTools {
     @Step("Get 'Daily Interest Accrual' value")
     public String getDailyInterestAccrual() {
         waitForElementVisibility(dailyInterestAccrual);
-        return getElementText(dailyInterestAccrual).replaceAll("[^0-9.]", "");
+        return getElementText(dailyInterestAccrual).replaceAll("[^0-9.-]", "");
     }
 
     @Step("Get 'Last Deposit Amount' value")
     public String getLastDepositAmountValue() {
         waitForElementVisibility(lastDepositAmount);
-        return getElementText(lastDepositAmount).replaceAll("[^0-9.]", "");
+        return getElementText(lastDepositAmount).replaceAll("[^0-9.-]", "");
     }
 
     @Step("Get 'Number Of Deposits This Statement Cycle' value")
@@ -229,35 +229,35 @@ public class AccountDetailsPage extends PageTools {
     public String getCurrentBalance() {
         waitForElementVisibility(currentBalance);
         String currentBalanceValue = getElementText(currentBalance).trim();
-        return currentBalanceValue.replaceAll("[^0-9.]", "");
+        return currentBalanceValue.replaceAll("[^0-9.-]", "");
     }
 
     @Step("Get 'CurrentBalance' value from header menu")
     public String getCurrentBalanceFromHeaderMenu() {
         waitForElementVisibility(currentBalance1);
         String currentBalanceValue = getElementText(currentBalance1).trim();
-        return currentBalanceValue.replaceAll("[^0-9.]", "");
+        return currentBalanceValue.replaceAll("[^0-9.-]", "");
     }
 
     @Step("Get 'Accrued Interest' value")
     public String getAccruedInterest() {
         waitForElementVisibility(accruedInterest);
         String accruedInterestValue = getElementText(accruedInterest).trim();
-        return accruedInterestValue.replaceAll("[^0-9.]", "");
+        return accruedInterestValue.replaceAll("[^0-9.-]", "");
     }
 
     @Step("Get 'AvailableBalance' value")
     public String getAvailableBalance() {
         waitForElementVisibility(availableBalance);
         String availableBalanceValue = getElementText(availableBalance).trim();
-        return availableBalanceValue.replaceAll("[^0-9.]", "");
+        return availableBalanceValue.replaceAll("[^0-9.-]", "");
     }
 
     @Step("Get 'AvailableBalance' value from header menu")
     public String getAvailableBalanceFromHeaderMenu() {
         waitForElementVisibility(availableBalance1);
         String availableBalanceValue = getElementText(availableBalance1).trim();
-        return availableBalanceValue.replaceAll("[^0-9.]", "");
+        return availableBalanceValue.replaceAll("[^0-9.-]", "");
     }
 
     @Step("Get 'AggregateBalanceYearToDate' value")
@@ -265,7 +265,7 @@ public class AccountDetailsPage extends PageTools {
         scrollToElement(aggregateBalanceYearToDate);
         waitForElementVisibility(aggregateBalanceYearToDate);
         String aggregateBalanceYearToDateValue = getElementText(aggregateBalanceYearToDate).trim();
-        return aggregateBalanceYearToDateValue.replaceAll("[^0-9.]", "");
+        return aggregateBalanceYearToDateValue.replaceAll("[^0-9.-]", "");
     }
 
     @Step("Get 'TotalContributionsForLifeOfAccount' value")
@@ -273,7 +273,7 @@ public class AccountDetailsPage extends PageTools {
         scrollToElement(totalContributionsForLifeOfAccount);
         waitForElementVisibility(totalContributionsForLifeOfAccount);
         String totalContributionsForLifeOfAccountValue = getElementText(totalContributionsForLifeOfAccount).trim();
-        return totalContributionsForLifeOfAccountValue.replaceAll("[^0-9.]", "");
+        return totalContributionsForLifeOfAccountValue.replaceAll("[^0-9.-]", "");
     }
 
     @Step("Check if 'Account Closed' notification visible")

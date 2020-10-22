@@ -170,6 +170,12 @@ public class TellerPage extends PageTools {
         jsClick(miscDebit);
     }
 
+    @Step("Click 'Withdrawal' button")
+    public void clickWithdrawalButton() {
+        waitForElementClickable(withDrawAlButton);
+        jsClick(withDrawAlButton);
+    }
+
     @Step("Wait for 'Credit transfer' code visible")
     public void waitForCreditTransferCodeVisible() {
         waitForElementVisibility(creditTransferCodeSelector);

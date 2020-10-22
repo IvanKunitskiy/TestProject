@@ -32,6 +32,7 @@ public class AccountTransactionPage extends PageTools {
     private By effectiveDateWithSourceFilter = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[2]//span");
     private By amount = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[2]");
     private By balance = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[2]");
+    private By balanceSymbol = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[1]");
     private By balanceFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[3]");
     private By amountFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[3]");
     private By transactionItems = By.xpath("//tr[contains(@class, 'transactionLine')]");
@@ -107,10 +108,24 @@ public class AccountTransactionPage extends PageTools {
         return getElementText(balance, index).trim().replaceAll("[^0-9.]", "");
     }
 
+    @Step("Get 'Balance' value with symbol")
+    public String getBalanceValueWithSymbol(int index) {
+        waitForElementVisibility(balance, index);
+        String symbol = getElementText(balanceSymbol,index).trim();
+        return symbol + getElementText(balance, index).trim().replaceAll("[^0-9.]", "");
+    }
+
     @Step("Get 'Balance' value")
     public String getBalanceFractionalValue(int index) {
         waitForElementVisibility(balanceFractional, index);
         return getElementText(balanceFractional, index).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Balance' value with symbol")
+    public String getBalanceFractionalValueWithSymbol(int index) {
+        waitForElementVisibility(balanceFractional, index);
+        String symbol = getElementText(balanceSymbol,index).trim();
+        return symbol + getElementText(balanceFractional, index).trim().replaceAll("[^0-9.]", "");
     }
 
     @Step("Wait for 'Call Statement' button")
