@@ -197,6 +197,14 @@ public class TransactionActions {
         fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
     }
 
+    public void setWithDrawalSource(TransactionSource source, int index) {
+        int tempIndex = 1 + index;
+        Pages.tellerPage().clickWithdrawalButton();
+        fillSourceAccountNumber(source.getAccountNumber(), tempIndex);
+        fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
+    }
+
+
     private void setCashOutDestination(TransactionDestination transactionDestination) {
         Pages.tellerPage().clickCashOutButton();
         setAmounts(transactionDestination.getDenominationsHashMap());
@@ -467,9 +475,9 @@ public class TransactionActions {
     }
 
     public void fillingSupervisorModal(UserCredentials userCredentials) {
-        Pages.supervisorModalPage().inputLogin(userCredentials.getUserName());
-        Pages.supervisorModalPage().inputPassword(userCredentials.getPassword());
-        Pages.supervisorModalPage().clickEnter();
+        Pages.supervisorModalPage().inputJsLogin(userCredentials.getUserName());
+        Pages.supervisorModalPage().inputJsPassword(userCredentials.getPassword());
+        Pages.supervisorModalPage().clickJsEnter();
         Pages.supervisorModalPage().waitForModalWindowInvisibility();
     }
 }

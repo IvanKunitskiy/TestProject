@@ -180,6 +180,19 @@ public class RetrievingAccountData {
         return transactionData;
     }
 
+    public TransactionData getTransactionDataWithBalanceSymbol() {
+        int tempIndex = 1;
+        TransactionData transactionData = new TransactionData();
+
+        transactionData.setPostingDate(Pages.accountTransactionPage().getPostingDateValue(tempIndex));
+        transactionData.setEffectiveDate(Pages.accountTransactionPage().getEffectiveDateValue(tempIndex));
+        transactionData.setAmount(getAmountValue(tempIndex));
+        transactionData.setBalance(getBalanceValueWithSymbol(tempIndex));
+        transactionData.setAmountSymbol(Pages.accountTransactionPage().getAmountSymbol(tempIndex));
+
+        return transactionData;
+    }
+
     public TransactionData getTransactionDataWithOffset(int offset) {
         int tempIndex = 1;
         TransactionData transactionData = new TransactionData();
@@ -242,6 +255,12 @@ public class RetrievingAccountData {
         return  balanceIntegerPart + balanceFractionalPart;
     }
 
+    public double getBalanceValueWithSymbol(int index) {
+        double balanceIntegerPart = getBalanceWithSymbol(index);
+        double balanceFractionalPart = getBalanceFractionalWithSymbol(index);
+        return  balanceIntegerPart + balanceFractionalPart;
+    }
+
     public double getBalanceValue(int index, int offset) {
         double balanceIntegerPart = getBalance(index, offset);
         double balanceFractionalPart = getBalanceFractional(index, offset);
@@ -256,6 +275,11 @@ public class RetrievingAccountData {
 
     private double getBalance(int tempIndex) {
         String value = Pages.accountTransactionPage().getBalanceValue(tempIndex);
+        return Double.parseDouble(value);
+    }
+
+    private double getBalanceWithSymbol(int tempIndex) {
+        String value = Pages.accountTransactionPage().getBalanceValueWithSymbol(tempIndex);
         return Double.parseDouble(value);
     }
 
@@ -286,6 +310,11 @@ public class RetrievingAccountData {
 
     private double getBalanceFractional(int tempIndex) {
         String value = Pages.accountTransactionPage().getBalanceFractionalValue(tempIndex);
+        return Double.parseDouble(value) / 100;
+    }
+
+    private double getBalanceFractionalWithSymbol(int tempIndex) {
+        String value = Pages.accountTransactionPage().getBalanceFractionalValueWithSymbol(tempIndex);
         return Double.parseDouble(value) / 100;
     }
 
