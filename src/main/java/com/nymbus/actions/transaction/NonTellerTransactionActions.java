@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.Map;
 
 public class NonTellerTransactionActions {
-    public void performDepositTransactions(int count, NonTellerTransactionData transactionData) {
+    public void  performDepositTransactions(int count, NonTellerTransactionData transactionData) {
         for (int i = 0; i < count; i++) {
             Actions.nonTellerTransaction().generateDebitPurchaseTransaction(transactionData.getCardNumber(),
                     transactionData.getExpirationDate(), transactionData.getAmount());
