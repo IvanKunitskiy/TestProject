@@ -40,10 +40,13 @@ public class C22527_SearchByNumberTest extends BaseTest {
         IndividualClient client = individualClientBuilder.buildClient();
         savingsAccount = new Account().setSavingsAccountData();
 
-        // Login to the system and create a client
+        // Login to the system
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
         // Set product
         savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
+
+        //Create a client
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
