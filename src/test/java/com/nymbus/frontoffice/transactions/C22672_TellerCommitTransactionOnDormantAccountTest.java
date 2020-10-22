@@ -86,12 +86,13 @@ public class C22672_TellerCommitTransactionOnDormantAccountTest extends BaseTest
         logInfo("Step 7: Specify credentials of the user with supervisor override permissions from preconditions in the popup and submit it");
         Actions.transactionActions().fillingSupervisorModal(userCredentials);
         Pages.tellerPage().closeModal();
+        Actions.loginActions().doLogOutProgrammatically();
 
         logInfo("Step 8: Go to dormant account used in transaction and verify its:\n" +
                 "- current balance\n" +
                 "- available balance\n" +
                 "- account status");
-        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(accountNumberWithDormantStatus);
         Assert.assertEquals(AccountActions.retrievingAccountData().getCurrentBalance(),
                 actualBalanceDataForCheckingAcc.getCurrentBalance() + transactionAmount, "CHK account current balance is not correct!");
