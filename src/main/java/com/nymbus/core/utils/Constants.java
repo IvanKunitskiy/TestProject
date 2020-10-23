@@ -45,7 +45,7 @@ public class Constants {
     public static String FIREFOX = "firefox";
 
     private static String getBaseUrl() {
-        switch (System.getProperty("domain", "dev6")) {
+        switch (getEnvironment()) {
             case "dev6":
             default:
                 return "https://dev6.nymbus.com/";
@@ -53,11 +53,13 @@ public class Constants {
                 return "https://dev12.nymbus.com/frontoffice";
             case "dev21":
                 return "https://dev21.nj1.nymbus.com/frontoffice/";
+            case "dev4":
+                return "https://frontoffice.nj1.nymbus.com/frontoffice/#/crm/login";
         }
     }
 
     private static String getWebAdminUrl() {
-        switch (System.getProperty("domain", "dev6")) {
+        switch (getEnvironment()) {
             case "dev6":
             default:
                 return "https://nymbus-u-was-07.nj1.nymbus.com:9445/webadmin/";
@@ -65,11 +67,13 @@ public class Constants {
                 return "https://nymbus-d-was-12.nj1.nymbus.com:9445/webadmin/";
             case "dev21":
                 return "https://was-21.nj1.nymbus.com:9445/webadmin/";
+            case "dev4":
+                return "https://nymbus-q-was-05.nj1.nymbus.com:9445/webadmin/";
         }
     }
 
     private static String getApiUrl() {
-        switch (System.getProperty("domain", "dev6")) {
+        switch (getEnvironment()) {
             case "dev6":
             default:
                 return "https://nymbus-u-was-07.nj1.nymbus.com:9443/coreweb/controller/";
@@ -77,17 +81,20 @@ public class Constants {
                 return "https://nymbus-d-was-12.nj1.nymbus.com:9443/coreweb/controller/";
             case "dev21":
                 return "https://was-21.nj1.nymbus.com:9445/coreweb/controller/";
+            case "dev4":
+                return "https://nymbus-q-was-05.nj1.nymbus.com:9445/coreweb/controller/";
         }
     }
 
     private static String getBinNumber() {
-        switch (System.getProperty("domain", "dev6")) {
+        switch (getEnvironment()) {
             case "dev6":
             case "dev12":
             default:
                 return "510986";
             case "dev21":
-                return "408079";
+            case "dev4":
+                return "408078";
         }
     }
 
@@ -95,25 +102,31 @@ public class Constants {
      * Individual type
      */
     private static String getIndividualType() {
-        switch (System.getProperty("domain", "dev6")) {
+        switch (getEnvironment()) {
             case "dev6":
             default:
                 return "IndividualType";
             case "dev12":
             case "dev21":
+            case "dev4":
                 return "Individual";
         }
     }
 
     private static FinancialInstitutionType getInstitutionType() {
-        switch (System.getProperty("domain", "dev6")) {
+        switch (getEnvironment()) {
             case "dev6":
             case "dev12":
             default:
                 return FinancialInstitutionType.FEDERAL_CREDIT_UNION;
             case "dev21":
+            case "dev4":
                 return FinancialInstitutionType.BANK;
         }
+    }
+
+    public static String getEnvironment() {
+        return System.getProperty("domain", "dev6");
     }
 
     /**

@@ -8,10 +8,14 @@ import com.nymbus.pages.Pages;
 import org.testng.Assert;
 
 import java.util.List;
+import java.util.Random;
 
 public class DebitCardModalWindowActions {
     public void selectBinControl(DebitCard debitCard) {
         Pages.debitCardModalWindow().clickOnBinNumberInputField();
+        List<String> binValues =  Pages.debitCardModalWindow().getBinList();
+        Assert.assertTrue(binValues.size() > 0, "There are no 'Bin' options available");
+        debitCard.getBinControl().setBinNumber(binValues.get(new Random().nextInt(binValues.size())).trim());
         Pages.debitCardModalWindow().clickOnBinNumberDropdownValue(debitCard.getBinControl().getBinNumber());
         Assert.assertFalse(Pages.debitCardModalWindow().getDescriptionInputFieldValue().isEmpty());
     }
@@ -24,7 +28,7 @@ public class DebitCardModalWindowActions {
         Pages.debitCardModalWindow().typeToNameOnCardInputField(debitCard.getNameOnCard());
         Pages.debitCardModalWindow().typeToSecondLineEmbossingInputField(debitCard.getSecondLineEmbossing());
         selectAccount(debitCard.getAccounts());
-        Pages.debitCardModalWindow().selectCardDesign(debitCard.getCardDesign().getCardDesign());
+        setCardDesign(debitCard.getCardDesign().getCardDesign());
         Pages.debitCardModalWindow().selectCardStatus(debitCard.getCardStatus());
         Pages.debitCardModalWindow().clickOnYesButton();
         Pages.debitCardModalWindow().typeToPinOffsetInputField(debitCard.getPinOffset());
@@ -48,13 +52,20 @@ public class DebitCardModalWindowActions {
         }
         Pages.debitCardModalWindow().typeToSecondLineEmbossingInputField(debitCard.getSecondLineEmbossing());
         selectAccount(debitCard.getAccounts());
-        Pages.debitCardModalWindow().selectCardDesign(debitCard.getCardDesign().getCardDesign());
+        setCardDesign(debitCard.getCardDesign().getCardDesign());
         Pages.debitCardModalWindow().selectCardStatus(debitCard.getCardStatus());
         Pages.debitCardModalWindow().clickOnYesButton();
         Pages.debitCardModalWindow().typeToPinOffsetInputField(debitCard.getPinOffset());
         Pages.debitCardModalWindow().selectTransactionTypeAllowedSelect(debitCard.getTranslationTypeAllowed());
         Pages.debitCardModalWindow().setChargeForCardReplacementToggle(debitCard.isChargeForCardReplacement());
         Pages.debitCardModalWindow().setAllowForeignTransactionsToggle(debitCard.isAllowForeignTransactions());
+    }
+
+    private void setCardDesign(String design) {
+        String environment = System.getProperty("domain", "dev6");
+        if (environment.equals("dev6") || environment.equals("dev12")) {
+            Pages.debitCardModalWindow().selectCardDesign(design);
+        }
     }
 
     private void selectAccount(List<String> accounts) {

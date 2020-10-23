@@ -1,6 +1,7 @@
 package com.nymbus.pages.settings.users;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -426,6 +427,7 @@ public class AddUsersPage extends PageTools {
 
     @Step("Click on 'Cash Drawer Type' selector")
     public void clickCashDrawerTypeSelectorButton() {
+	    SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         click(cashDrawerTypeSelectorButton);
     }
 
@@ -436,6 +438,8 @@ public class AddUsersPage extends PageTools {
 
     @Step("Click on 'Cash Drawer Type' option")
     public void clickCashDrawerTypeOption(String cashDrawerTypeOption) {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        waitForElementClickable(cashDrawerTypeSelectorOption, cashDrawerTypeOption);
         click(cashDrawerTypeSelectorOption, cashDrawerTypeOption);
     }
 

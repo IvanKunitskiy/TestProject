@@ -123,7 +123,7 @@ public class Account {
         account.setTransactionalAccount("NO");
         account.setAutoRenewable("YES");
         account.setAccountHolder("Owner");
-        account.setTermType("6");
+        account.setTermType(getCDIRATerms(Constants.getEnvironment()));
         account.setInterestRate(String.valueOf(Generator.genFloat(0.001, 99.999, 1)));
         account.setInterestFrequency("Quarterly");
         account.setApplyInterestTo("Remain in Account");
@@ -206,7 +206,7 @@ public class Account {
         account.setAccountTitle(Generator.genString(5));
         account.setAccountNumber(Generator.genAccountNumber());
         account.setOptInOutDate("01/01/2020");
-        account.setDateOpened(WebAdminActions.loginActions().getSystemDate());
+        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setInterestRate(Generator.getRandomFormattedDecimalStringValue("###.####"));
         account.setEarningCreditRate(Generator.getRandomStringNumber(3));
         account.setAutomaticOverdraftStatus("Active");
@@ -836,5 +836,17 @@ public class Account {
 
     public void setMinTerm(String minTerm) {
         this.minTerm = minTerm;
+    }
+
+    private String getCDIRATerms(String environment) {
+        switch (environment) {
+            case "dev6":
+            case "dev12":
+            default:
+                return "6";
+            case "dev21":
+            case "dev4":
+                return "12";
+        }
     }
 }

@@ -91,4 +91,40 @@ public class CreateDocumentActions {
         }
         Pages.addNewDocumentPage().clickDocTypeOption(document.getDocType());
     }
+
+    public String getCategory(String environment) {
+        switch (environment) {
+            case "dev6":
+            case "dev12":
+            default:
+                return "ACH Forms";
+            case "dev21":
+            case "dev4":
+                return "Account Opening";
+        }
+    }
+
+    public String getDocType(String environment) {
+        switch (environment) {
+            case "dev6":
+            case "dev12":
+            default:
+                return "Direct Deposit Forms";
+            case "dev21":
+            case "dev4":
+                return "Application";
+        }
+    }
+
+    public String getEditedDocType(String environment) {
+        switch (environment) {
+            case "dev6":
+            case "dev12":
+            default:
+                return "Unauthorized ACH Forms";
+            case "dev21":
+            case "dev4":
+                return "Birth Certificate";
+        }
+    }
 }

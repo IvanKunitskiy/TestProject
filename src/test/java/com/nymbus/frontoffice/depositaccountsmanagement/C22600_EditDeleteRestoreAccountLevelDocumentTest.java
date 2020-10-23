@@ -40,8 +40,8 @@ public class C22600_EditDeleteRestoreAccountLevelDocumentTest extends BaseTest {
 
         // Set up account level document factory
         accountLevelDocument = new AccountLevelDocumentFactory().getAccountLevelDocument();
-        accountLevelDocument.setCategory("ACH Forms");
-        accountLevelDocument.setDocType("Direct Deposit Forms");
+        accountLevelDocument.setCategory(DocumentActions.createDocumentActions().getCategory(Constants.getEnvironment()));
+        accountLevelDocument.setDocType(DocumentActions.createDocumentActions().getDocType(Constants.getEnvironment()));
 
         // Set up checking account
         checkingAccount = new Account().setCHKAccountData();
@@ -89,7 +89,7 @@ public class C22600_EditDeleteRestoreAccountLevelDocumentTest extends BaseTest {
 
         logInfo("Step 5: Make changes within the form");
         Pages.addNewDocumentPage().replaceDocument(Functions.getFilePathByName(accountLevelDocument.getFile().getFileName()));
-        accountLevelDocument.setDocType("Unauthorized ACH Forms");
+        accountLevelDocument.setDocType(DocumentActions.createDocumentActions().getEditedDocType(Constants.getEnvironment()));
         DocumentActions.createDocumentActions().setDocType(accountLevelDocument);
         accountLevelDocument.setNote("Note changed");
         Pages.addNewDocumentPage().typeValueToNotesField(accountLevelDocument.getNote());

@@ -229,11 +229,19 @@ public class UsersActions {
     }
 
     public void openSafeDepositBoxSizesPage() {
+        Pages.aSideMenuPage().clickClientMenuItem();
         Pages.aSideMenuPage().clickSettingsMenuItem();
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().waitViewAllSafeDepositBoxSizes();
         SettingsPage.mainPage().clickViewAllSafeDepositBoxSizes();
         SettingsPage.safeDepositBoxSizesPage().waitForPageLoaded();
+    }
+
+    public void openBinControlPage() {
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        Pages.settings().waitForSettingsPageLoaded();
+        SettingsPage.mainPage().waitViewAllBinControls();
+        SettingsPage.mainPage().clickViewAllBinControls();
     }
 
     public List<SafeDepositKeyValues> getSafeDepositBoxValues() {
