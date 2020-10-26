@@ -74,12 +74,12 @@ public class C22651_JournalPerformEcForNsfTransactionTest extends BaseTest {
 
         // Perform transaction to assign the money to CHK account
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
+        Actions.loginActions().doLogOutProgrammatically();
 
         // Retrieve the current and available balance from account after transaction is performed
-        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(checkingAccount);
         chkAccBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
-        Actions.loginActions().doLogOutProgrammatically();
 
         // Perform NSF transaction with supervisor override
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
