@@ -143,6 +143,10 @@ public class AddClientPage extends PageTools {
     /**
      * Phones and Emails information
      */
+    private By selectedPhoneTypeByIndex = By.xpath("(//tr[@ng-repeat='phone in basicInformation.phones']//div[@field-config='phone.pageConfig.phoneuse']" +
+            "//span[@class='select2-chosen']//span)[%s]");
+    private By selectedPhoneCountryByIndex = By.xpath("(//tr[@ng-repeat='phone in basicInformation.phones']//div[@field-config='phone.pageConfig.country']" +
+            "//span[@class='select2-chosen']//span)[%s]");
     private By phoneTypeSelectorButton = By.xpath("(//tr[@class='ng-scope' and @ng-if='isNotHidden(phoneSubformConfig)'][%s]" +
             "//span[contains(@class, 'select2-arrow')])[1]");
     private By phoneCountrySelectorButton =By.xpath("(//tr[@class='ng-scope' and @ng-if='isNotHidden(phoneSubformConfig)'][%s]" +
@@ -155,6 +159,7 @@ public class AddClientPage extends PageTools {
             "//div[@ng-if='email.pageConfig.email.isShow']//input");
     private By addPhoneNumberButton = By.xpath("//button[contains(text(), 'Additional Phone Number')]");
     private By addEmailButton = By.xpath("//button[contains(text(), 'Additional Email Address')]");
+    private By phoneRows = By.xpath("//tr[@ng-repeat='phone in basicInformation.phones']");
 
     /**
      * Client Details Organisation info
@@ -394,6 +399,8 @@ public class AddClientPage extends PageTools {
             "//li[contains(@role, 'option')]/div/span");
     private By ownOrRentSelectorOption = By.xpath("//div[@id='ownrent']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By selectedMailCodeSpan = By.xpath("//div[@id='mailingcode']" +
+            "//span[@class='select2-chosen']//span");
     private By mailCodeField = By.xpath("//div[@id='mailingcode']" +
             "//input[contains(@class, 'nb-select-search')]");
     private By mailCodeSelectorButton = By.xpath("//div[@id='mailingcode']" +
@@ -402,6 +409,8 @@ public class AddClientPage extends PageTools {
             "//li[contains(@role, 'option')]/div/span");
     private By mailCodeSelectorOption = By.xpath("//div[@id='mailingcode']" +
             "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By selectOfficerSpan = By.xpath("//div[@id='officerid']" +
+            "//span[@class='select2-chosen']//span");
     private By selectOfficerField = By.xpath("//div[@id='officerid']" +
             "//input[contains(@class, 'nb-select-search')]");
     private By selectOfficerSelectorButton = By.xpath("//div[@id='officerid']" +
@@ -840,6 +849,40 @@ public class AddClientPage extends PageTools {
     /**
      * Client detailed information
      */
+    @Step("Get 'Phone' row count")
+    public int getPhoneRowCount() {
+        waitForElementVisibility(phoneRows);
+        waitForElementClickable(phoneRows);
+        return getElementsWithZeroOption(phoneRows).size();
+    }
+
+    @Step("Get selected 'Mail code' value")
+    public String getSelectedMailCodeValue() {
+        waitForElementVisibility(selectedMailCodeSpan);
+        waitForElementClickable(selectedMailCodeSpan);
+       return getElementText(selectedMailCodeSpan);
+    }
+
+    @Step("Get selected 'Select officer' value")
+    public String getSelectedOfficerValue() {
+        waitForElementVisibility(selectOfficerSpan);
+        waitForElementClickable(selectOfficerSpan);
+        return getElementText(selectOfficerSpan);
+    }
+
+    @Step("Get selected 'Phone Type' value by {0} index")
+    public String getSelectedPhoneTypeByIndex(int index) {
+        waitForElementVisibility(selectedPhoneTypeByIndex, index);
+        waitForElementClickable(selectedPhoneTypeByIndex, index);
+        return getElementText(selectedPhoneTypeByIndex, index);
+    }
+
+    @Step("Get selected 'Phone Country' value by {0} index")
+    public String getSelectedPhoneCountryByIndex(int index) {
+        waitForElementVisibility(selectedPhoneCountryByIndex, index);
+        waitForElementClickable(selectedPhoneCountryByIndex, index);
+        return getElementText(selectedPhoneCountryByIndex, index);
+    }
 
     @Step("Set 'Suffix' Value")
     public void setSuffixField(String suffixValue) {
