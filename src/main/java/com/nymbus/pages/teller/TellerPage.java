@@ -354,6 +354,8 @@ public class TellerPage extends PageTools {
     private By accountQuickViewToggleButton = By.xpath("//a[@ng-click='toggleAccountQuick()']//i");
     private By availableBalance = By.xpath("//*[@id='accordion-operation-aqv-content']" +
             "//span[text()='Available Balance']//ancestor::node()[1]//span[2]");
+    private By automaticOverdraftLimit = By.xpath("//*[@id='accordion-operation-aqv-content']" +
+            "//span[text()='Automatic Overdraft Limit']//ancestor::node()[1]//span[2]");
 
     @Step("Is account quick view visible")
     public boolean isAccountQuickViewVisible() {
@@ -371,5 +373,12 @@ public class TellerPage extends PageTools {
     public String getAvailableBalance() {
         waitForElementVisibility(availableBalance);
         return getElementText(availableBalance).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Automatic Overdraft Limit' value")
+    public String getAutomaticOverdraftLimit() {
+        waitForElementVisibility(automaticOverdraftLimit);
+        String limit = getElementText(automaticOverdraftLimit).trim();
+        return limit.substring(limit.indexOf("/")).trim().replaceAll("[^0-9.]", "");
     }
 }
