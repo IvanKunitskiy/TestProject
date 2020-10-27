@@ -7,6 +7,7 @@ import com.nymbus.newmodels.client.clientdetails.contactinformation.documents.Do
 import com.nymbus.newmodels.client.clientdetails.contactinformation.email.Email;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.phone.Phone;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.phone.PhoneType;
+import com.nymbus.newmodels.client.verifyingmodels.ClientDetailsPredefinedFields;
 import com.nymbus.newmodels.client.verifyingmodels.TrustAccountPredefinedField;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
@@ -343,6 +344,28 @@ public class OrganisationClientActions {
         softAssert.assertEquals(Pages.addClientPage().getAddressCountrySelectedSpan(1),
                 predefinedField.getCountry().getCountry(),
                 "Address country is not correct!");
+        softAssert.assertAll();
+    }
+
+    public void verifyClientDetailsPredefinedFields(ClientDetailsPredefinedFields clientDetailsPredefinedFields) {
+
+        SoftAssert softAssert = new SoftAssert();
+
+        softAssert.assertEquals(Pages.addClientPage().getSelectedMailCodeValue(),
+                clientDetailsPredefinedFields.getMailCode().getMailCode(),
+                "Mail Code is not correct!");
+        softAssert.assertEquals(Pages.addClientPage().getSelectedOfficerValue(),
+                clientDetailsPredefinedFields.getSelectOfficer(),
+                "Select Officer is not correct!");
+        int phoneCount = Pages.addClientPage().getPhoneRowCount();
+        for (int i = 1; i <= phoneCount; i++) {
+            softAssert.assertEquals(Pages.addClientPage().getSelectedPhoneTypeByIndex(i),
+                    clientDetailsPredefinedFields.getPhone().getPhoneType().getPhoneType(),
+                    "Phone type " + i + " is incorrect!");
+            softAssert.assertEquals(Pages.addClientPage().getSelectedPhoneCountryByIndex(i),
+                    clientDetailsPredefinedFields.getPhone().getCountry().getCountry(),
+                    "Address country is not correct!");
+        }
         softAssert.assertAll();
     }
 }

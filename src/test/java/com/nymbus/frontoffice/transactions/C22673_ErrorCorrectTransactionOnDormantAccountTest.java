@@ -87,7 +87,7 @@ public class C22673_ErrorCorrectTransactionOnDormantAccountTest extends BaseTest
         Assert.assertEquals(Actions.journalActions().getTransactionState(), "Void",
                 "Transaction state hasn't changed");
 
-        logInfo("Step 8: Go to dormant account used in transaction and verify its:\n" +
+        logInfo("Step 5: Go to dormant account used in transaction and verify its:\n" +
                 "- current balance\n" +
                 "- available balance\n" +
                 "- account status");
@@ -100,13 +100,13 @@ public class C22673_ErrorCorrectTransactionOnDormantAccountTest extends BaseTest
         Assert.assertEquals(Pages.accountDetailsPage().getAccountStatus(), "Dormant",
                 "Account status is not 'Dormant'");
 
-        logInfo("Step 9: Open Account on the Transactions History tab");
+        logInfo("Step 6: Open Account on the Transactions History tab");
         AccountActions.retrievingAccountData().goToTransactionsTab();
         int offset = AccountActions.retrievingAccountData().getOffset();
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset, 1);
         Assert.assertEquals(actualTransactionData, transactionData, "Transaction data doesn't match!");
 
-        logInfo("Step 10: Go to Account Maintenance-> Maintenance History page.\n" +
+        logInfo("Step 7: Go to Account Maintenance-> Maintenance History page.\n" +
                 " Check that there is record about changing Account status from 'Active' to 'Dormant'");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();

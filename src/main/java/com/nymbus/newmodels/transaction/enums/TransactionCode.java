@@ -19,6 +19,7 @@ public enum TransactionCode {
     WITHDRAW_AND_CLOSE_SAVINGS("227 - Withdraw&Close"),
     INT_DEPOSIT("107 - Int Deposit"),
     WITHDRAWAL_216("216 - Withdrawal"),
+    WITHDRAWAL_116("116 - Withdrawal"),
     ATM_DEPOSIT_108("108 - ATM Deposit"),
     ATM_DEPOSIT_109("109 - Deposit"),
     ATM_DEPOSIT_208("208 - ATM Deposit"),
@@ -30,7 +31,8 @@ public enum TransactionCode {
     ATM_USAGE_229_FEE("229 - ATM Usage Fee"),
     DEBIT_PURCHASE_123("123 - Debit Purchase"),
     CUR_Yr_Contribution_330("330 - Cur Yr Contrib"),
-    CUR_Yr_Contribution_2330("2330 - Cur Yr Contrib");
+    CUR_Yr_Contribution_2330("2330 - Cur Yr Contrib"),
+    GL_CREDIT_865("865 - G/L Credit");
 
     private final String transCode;
 }

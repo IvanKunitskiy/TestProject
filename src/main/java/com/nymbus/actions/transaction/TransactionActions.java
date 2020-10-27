@@ -268,6 +268,12 @@ public class TransactionActions {
         setGLCreditDestination(transaction.getTransactionDestination(), currentIndex);
     }
 
+    public void createWithdrawalGlCreditTransaction(Transaction transaction) {
+        int currentIndex = 0;
+        setWithDrawalSource(transaction.getTransactionSource(), currentIndex);
+        setGLCreditDestination(transaction.getTransactionDestination(), currentIndex);
+    }
+
     public void clickCommitButton() {
         Pages.tellerPage().clickCommitButton();
     }
