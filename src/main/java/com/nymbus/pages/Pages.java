@@ -84,6 +84,7 @@ public class Pages extends AllureLogger {
     private static AttentionModalPage attentionModalPage;
     private static EditAccountTransactionModal editAccountTransactionModal;
     private static CashDrawerBalancePage cashDrawerBalancePage;
+    private static ConfirmModalPage confirmModalPage;
 
     /**
      * Modal Windows
@@ -589,5 +590,12 @@ public class Pages extends AllureLogger {
             cashDrawerBalancePage = new CashDrawerBalancePage();
         }
         return cashDrawerBalancePage;
+    }
+
+    public static ConfirmModalPage confirmModalPage() {
+        if (confirmModalPage == null){
+         confirmModalPage = new ConfirmModalPage();
+        }
+        return confirmModalPage;
     }
 }

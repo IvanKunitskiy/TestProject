@@ -661,4 +661,13 @@ public class EditAccount {
         verifyGeneralCdAccountFieldsAfterCreationInEditMode(account);
         verifyGeneralIraAccountFieldsAreDisabledForEditing(account);
     }
+
+    public void editOverdraftStatusAndLimit(String overdraftLimit) {
+        Pages.accountDetailsPage().clickEditButton();
+        Pages.editAccountPage().clickAutomaticOverdraftStatusSelectorButton();
+        Pages.editAccountPage().clickAutomaticOverdraftStatusSelectorOption("Active");
+        Pages.editAccountPage().setAutomaticOverdraftLimit(overdraftLimit);
+        Pages.addAccountPage().clickSaveAccountButton();
+        Pages.accountDetailsPage().waitForEditButton();
+    }
 }

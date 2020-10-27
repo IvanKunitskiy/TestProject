@@ -408,6 +408,13 @@ public class TransactionActions {
         return Double.parseDouble(availableBalanceValue);
     }
 
+    public String getAutomaticOverdraftLimit() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getAutomaticOverdraftLimit().trim();
+    }
+
     public boolean isTransactionCodePresent(String transCode) {
         boolean result = false;
         int transactionItems = Pages.accountTransactionPage().getTransactionItemsCount();
@@ -485,5 +492,9 @@ public class TransactionActions {
         Pages.supervisorModalPage().inputJsPassword(userCredentials.getPassword());
         Pages.supervisorModalPage().clickJsEnter();
         Pages.supervisorModalPage().waitForModalWindowInvisibility();
+    }
+
+    public void confirmTransaction(){
+        Pages.confirmModalPage().clickYes();
     }
 }
