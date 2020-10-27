@@ -211,7 +211,7 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         logInfo("Step 10: Search for CHK account from the precondition and open it on Instructions tab");
         Actions.clientPageActions().searchAndOpenClientByName(checkingAccountNumber);
 
-        logInfo("Step 11: Check the list of instructions for the account (if exist) and delete the Hold with type Reg CC");
+        logInfo("Step 11: Verify that there is NO RegCC hold as ONLY Cash Amount was included in the transaction");
         AccountActions.editAccount().goToInstructionsTab();
         SelenideTools.sleep(Constants.MINI_TIMEOUT);
         int instructionsCount = AccountActions.createInstruction().getInstructionCount();
