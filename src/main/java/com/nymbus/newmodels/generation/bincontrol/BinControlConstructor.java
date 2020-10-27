@@ -20,9 +20,11 @@ public class BinControlConstructor {
             case "dev12":
             default:
                setDev6EnvironmentData(binControlBuilder);
+               break;
             case "dev21":
             case "dev4":
                setDev21EnvironmentData(binControlBuilder);
+               break;
         }
     }
 
