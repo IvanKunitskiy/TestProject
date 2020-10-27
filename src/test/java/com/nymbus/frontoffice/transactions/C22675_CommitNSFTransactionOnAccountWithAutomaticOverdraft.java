@@ -152,6 +152,5 @@ public class C22675_CommitNSFTransactionOnAccountWithAutomaticOverdraft extends 
         double automaticOverdraftLimit = Double.parseDouble(Actions.transactionActions().getAutomaticOverdraftLimit());
         Assert.assertEquals(automaticOverdraftLimit, overdraftLimitSum,
                 "Overdraft limit doesn't match!");
-
     }
 }
