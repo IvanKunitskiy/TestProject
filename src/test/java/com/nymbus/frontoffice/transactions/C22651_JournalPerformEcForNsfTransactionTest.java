@@ -82,7 +82,6 @@ public class C22651_JournalPerformEcForNsfTransactionTest extends BaseTest {
         chkAccBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
 
         // Perform NSF transaction with supervisor override
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         performWithdrawalGlCreditTransaction(withdrawalTransaction, userCredentials);
         Actions.loginActions().doLogOutProgrammatically();
 
