@@ -62,9 +62,11 @@ public class BalanceInquiryActions {
             System.exit(1);
         }
 
-        while (!balanceInquiryImage.exists()) {
+        int i = 0;
+        while (!balanceInquiryImage.exists() && i < 3) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(Constants.MINI_TIMEOUT);
+                i++;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
