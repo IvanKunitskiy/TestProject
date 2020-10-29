@@ -23,7 +23,7 @@ public class NavigationPage extends PageTools {
         return Integer.parseInt(count);
     }
 
-    @Step("Wait for user menu")
+    @Step("Wait for notification circle is visible")
     public void waitNotificationCircleVisible() {
         SelenideTools.sleep(10);
         waitForElementVisibility(notificationCircle);
