@@ -89,7 +89,7 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
-    @Test(description = "C22576, Checking account call statement")
+    @Test(description = "C22576, Checking account call statement", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void viewClientLevelCallStatement() {
 

@@ -89,7 +89,7 @@ public class C22581_SavingsAccountCallStatementTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
-    @Test(description = "C22581, Client Accounts: Savings account call statement")
+    @Test(description = "C22581, Client Accounts: Savings account call statement", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void verifyCallStatementOnSavingsAccount() {
 

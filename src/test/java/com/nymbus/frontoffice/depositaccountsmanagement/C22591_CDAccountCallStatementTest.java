@@ -89,7 +89,7 @@ public class C22591_CDAccountCallStatementTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
-    @Test(description = "C22591, Edit CD account call statement")
+    @Test(description = "C22591, Edit CD account call statement", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void viewClientLevelCallStatement() {
 
