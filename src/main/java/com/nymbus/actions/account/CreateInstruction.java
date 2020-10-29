@@ -2,6 +2,7 @@ package com.nymbus.actions.account;
 
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.accountinstructions.ActivityHoldInstruction;
+import com.nymbus.newmodels.accountinstructions.CreditHoldInstruction;
 import com.nymbus.newmodels.accountinstructions.DebitHoldInstruction;
 import com.nymbus.newmodels.accountinstructions.HoldInstruction;
 import com.nymbus.pages.Pages;
@@ -18,6 +19,14 @@ public class CreateInstruction {
     }
 
     public void createDebitHoldInstruction(DebitHoldInstruction instruction) {
+        Pages.accountInstructionsPage().clickNewInstructionButton();
+        setInstructionType(instruction.getType());
+        setDate(instruction.getExpirationDate());
+        setNotes(instruction.getNotes());
+        Pages.accountInstructionsPage().clickSaveButton();
+    }
+
+    public void createCreditHoldInstruction(CreditHoldInstruction instruction) {
         Pages.accountInstructionsPage().clickNewInstructionButton();
         setInstructionType(instruction.getType());
         setDate(instruction.getExpirationDate());
