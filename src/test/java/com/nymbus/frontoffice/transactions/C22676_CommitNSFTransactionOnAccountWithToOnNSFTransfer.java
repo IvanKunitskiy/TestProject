@@ -137,7 +137,7 @@ public class C22676_CommitNSFTransactionOnAccountWithToOnNSFTransfer extends Bas
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C22674, Commit NSF transaction with supervisor override")
+    @Test(description = "C22676, Commit NSF transaction on account with To On NSF transfer")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyNSFTransaction() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");

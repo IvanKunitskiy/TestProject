@@ -88,7 +88,7 @@ public class C22675_CommitNSFTransactionOnAccountWithAutomaticOverdraft extends 
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C22674, Commit NSF transaction with supervisor override")
+    @Test(description = "C22675, Commit NSF transaction on account with automatic overdraft")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyNSFTransaction() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");
