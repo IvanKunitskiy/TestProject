@@ -2,12 +2,7 @@ package com.nymbus.newmodels.generation.transfers;
 
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
-import com.nymbus.newmodels.account.Account;
-import com.nymbus.newmodels.client.other.transfer.Frequency;
-import com.nymbus.newmodels.client.other.transfer.HighBalanceTransfer;
-import com.nymbus.newmodels.client.other.transfer.Transfer;
-import com.nymbus.newmodels.client.other.transfer.TransferType;
-import lombok.NonNull;
+import com.nymbus.newmodels.client.other.transfer.*;
 
 public class TransferBuilder {
     public HighBalanceTransfer getHighBalanceTransfer() {
@@ -31,6 +26,17 @@ public class TransferBuilder {
         transfer.setAmount("2000");
         transfer.setEftChargeCode("Account Analysis");
         transfer.setTransferCharge(String.valueOf(Generator.genInt(100, 900)));
+
+        return transfer;
+    }
+
+    public InsufficientFundsTransfer getInsufficientFundsTransfer() {
+        InsufficientFundsTransfer transfer = new InsufficientFundsTransfer();
+
+        transfer.setTransferType(TransferType.INSUFFICIENT_FUNDS_TRANSFER);
+        transfer.setAmountToTransfer("50.99");
+        transfer.setNearestAmount("0.10");
+        transfer.setTransferCharge("1.99");
 
         return transfer;
     }
