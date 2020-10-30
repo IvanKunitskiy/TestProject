@@ -91,6 +91,19 @@ public class ProductsActions {
         return SettingsPage.productOverviewPage().getInterestFrequency();
     }
 
+    public String getInterestRate(Products products, Account account) {
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        Pages.settings().waitForSettingsPageLoaded();
+        SettingsPage.mainPage().clickViewAllProducts();
+        SettingsPage.productsOverviewPage().clickProductTypeSelectorButton();
+        SettingsPage.productsOverviewPage().clickProductTypeOption(products.getProduct());
+        SettingsPage.productsOverviewPage().waitForResultsIsVisible();
+
+        expandAllRows();
+        SettingsPage.productsOverviewPage().clickRowByDescription(account.getProduct());
+        return SettingsPage.productOverviewPage().getInterestRate();
+    }
+
     public String getMaturityDateValue(Account account, int minTerm) {
         String maturityDate = "";
 

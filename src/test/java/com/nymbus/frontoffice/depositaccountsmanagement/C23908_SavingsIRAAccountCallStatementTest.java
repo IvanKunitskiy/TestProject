@@ -91,7 +91,7 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
-    @Test(description = "C23908, Savings IRA account call statement")
+    @Test(description = "C23908, Savings IRA account call statement", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void savingsIRAAccountCallStatement() {
 

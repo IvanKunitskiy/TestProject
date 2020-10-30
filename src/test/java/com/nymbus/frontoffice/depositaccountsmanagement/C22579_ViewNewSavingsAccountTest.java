@@ -42,6 +42,7 @@ public class C22579_ViewNewSavingsAccountTest extends BaseTest {
 
         // Set the product of the user to account
         savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
+        savingsAccount.setInterestRate(Actions.productsActions().getInterestRate(Products.SAVINGS_PRODUCTS, savingsAccount));
 
         // Create a client with savings account
         ClientsActions.individualClientActions().createClient(client);

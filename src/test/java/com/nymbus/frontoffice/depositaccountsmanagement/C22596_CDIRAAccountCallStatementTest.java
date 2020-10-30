@@ -90,7 +90,7 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
-    @Test(description = "C22596, CD IRA account call statement")
+    @Test(description = "C22596, CD IRA account call statement", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void cdIraBalanceInquiryTest() {
 

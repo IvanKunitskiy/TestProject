@@ -109,6 +109,7 @@ public class C22607_EditDeleteAccountLevelNotesTest extends BaseTest {
                 " | " + note.getNewNote()), "Note alert not appeared on the page");
 
         logInfo("Step 5: Click bell icon in the top right of the header and pay attention to the Alerts panel");
+        Pages.navigationPage().waitNotificationCircleVisible();
         Pages.navigationPage().clickAlertNotificationsButton();
         Pages.alerts().waitForAlertsSidePanelVisible();
         Assert.assertTrue(Pages.alerts().isNoteAlertVisible(chkAccount.getAccountNumber() + " - CHK Account", note.getNewNote()));

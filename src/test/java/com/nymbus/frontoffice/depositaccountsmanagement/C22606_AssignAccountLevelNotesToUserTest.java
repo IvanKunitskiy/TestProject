@@ -119,6 +119,7 @@ public class C22606_AssignAccountLevelNotesToUserTest extends BaseTest {
         Assert.assertTrue(Pages.notesPage().isNotePresentInList(note3.getNewNote()), "Created note is not visible in the list");
 
         logInfo("Step 7: Click bell icon in the top right of the header and pay attention to the Alerts panel");
+        Pages.navigationPage().waitNotificationCircleVisible();
         Pages.navigationPage().clickAlertNotificationsButton();
         Pages.alerts().waitForAlertsSidePanelVisible();
         Assert.assertTrue(Pages.alerts().isNoteAlertVisible(chkAccount.getAccountNumber() + " - CHK Account", note1.getNewNote()));

@@ -4,18 +4,21 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
-import com.nymbus.newmodels.UserCredentials;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
 import com.nymbus.newmodels.account.product.RateType;
+import com.nymbus.newmodels.accountinstructions.DebitHoldInstruction;
 import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.accountinstructions.InstructionConstructor;
+import com.nymbus.newmodels.generation.accountinstructions.builder.DebitHoldInstructionBuilder;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditCHKAccBuilder;
-import com.nymbus.newmodels.generation.tansactions.builder.WithdrawalGLCreditCHKAccBuilder;
+import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitGLCreditTransactionBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
@@ -28,11 +31,11 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Petro")
-public class C22651_JournalPerformEcForNsfTransactionTest extends BaseTest {
+public class C22679_CommitTransactionWithDebitHoldTest extends BaseTest {
 
-    private Transaction transaction;
-    private BalanceDataForCHKAcc chkAccBalanceData;
     private Account checkingAccount;
+    private Transaction withdrawalTransaction;
+    private BalanceDataForCHKAcc chkAccBalanceData;
     private TransactionData transactionData;
 
     @BeforeMethod
@@ -47,11 +50,19 @@ public class C22651_JournalPerformEcForNsfTransactionTest extends BaseTest {
         checkingAccount = new Account().setCHKAccountData();
 
         // Set up transaction for increasing the CHK account balance
-        transaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
+        Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
+        double transactionAmount = transaction.getTransactionSource().getAmount();
 
         // Set up withdrawal transaction
-        Transaction withdrawalTransaction = new TransactionConstructor(new WithdrawalGLCreditCHKAccBuilder()).constructTransaction();
+        withdrawalTransaction = new TransactionConstructor(new MiscDebitGLCreditTransactionBuilder()).constructTransaction();
         withdrawalTransaction.getTransactionSource().setAccountNumber(checkingAccount.getAccountNumber());
+        double withdrawalTransactionAmount = 80.00;
+        withdrawalTransaction.getTransactionSource().setAmount(withdrawalTransactionAmount);
+        withdrawalTransaction.getTransactionDestination().setAmount(withdrawalTransactionAmount);
+
+        // Set up instruction
+        InstructionConstructor instructionConstructor = new InstructionConstructor(new DebitHoldInstructionBuilder());
+        DebitHoldInstruction debitHoldInstruction = instructionConstructor.constructInstruction(DebitHoldInstruction.class);
 
         // Login to the system
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -76,47 +87,60 @@ public class C22651_JournalPerformEcForNsfTransactionTest extends BaseTest {
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
         Actions.loginActions().doLogOutProgrammatically();
 
-        // Retrieve the current and available balance from account after transaction is performed
+        // Create instruction and logout
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(checkingAccount);
-        chkAccBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
+        Pages.accountNavigationPage().clickInstructionsTab();
+        int instructionsCount = AccountActions.createInstruction().getInstructionCount();
+        AccountActions.createInstruction().createDebitHoldInstruction(debitHoldInstruction);
+        Pages.accountInstructionsPage().waitForCreatedInstruction(instructionsCount + 1);
 
-        // Perform NSF transaction with supervisor override
-        performWithdrawalGlCreditTransaction(withdrawalTransaction, userCredentials);
-        Actions.loginActions().doLogOutProgrammatically();
+        // Retrieve the current and available balance from account after transaction is performed
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(checkingAccount);
+        chkAccBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
+        Actions.loginActions().doLogOut();
 
         // Set transaction data
         transactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "+",
-                transaction.getTransactionDestination().getAmount(),
+                "-",
+                transactionAmount - withdrawalTransactionAmount,
                 withdrawalTransaction.getTransactionDestination().getAmount());
     }
 
-    @Test(description = "C22651, Journal: Perform EC for NSF transaction")
+    @Test(description = "C22679, Commit transaction with debit hold")
     @Severity(SeverityLevel.CRITICAL)
-    public void journalPerformEcForNsfTransaction() {
+    public void commitTransactionWithDebitHold() {
 
-        logInfo("Step 1: Log in to the system as the user from the precondition");
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        logInfo("Step 1: Log in to the system as User from the preconditions");
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-        logInfo("Step 2: Go to Journal page and log in to the proof date");
-        Actions.transactionActions().loginTeller();
-        Actions.journalActions().goToJournalPage();
+        logInfo("Step 2: Go to Teller screen and log in to proof date");
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
 
-        logInfo("Step 3: Search for the transaction from preconditions and open its details");
-        Actions.journalActions().applyFilterByAccountNumber(transaction.getTransactionDestination().getAccountNumber());
-        Actions.journalActions().clickLastTransaction();
+        logInfo("Step 3: Select any source related to regular account (e.g. Misc Debit);\n" +
+                "select any opposite line item (e.g. GL/Credit)");
+        logInfo("Step 4: Select account from preconditions in source line item and set any amount which is less than account's available balance,"+
+                "select 116- Withdrawal/ 216-Withdrawal trancode");
+        logInfo("Step 5: Specify fields for opposite line item with correct values " +
+                "(any GL account#, any notes, amount - same as for the Misc Debit item)");
+        Actions.transactionActions().createMiscDebitGLCreditTransaction(withdrawalTransaction);
 
-        logInfo("Step 4: Click [Error Correct] button");
-        Pages.journalDetailsPage().clickErrorCorrectButton();
-        Pages.journalDetailsPage().waitForErrorCorrectButtonInvisibility();
-        Assert.assertEquals(Actions.journalActions().getTransactionState(), "Void",
-                "Transaction state hasn't changed");
+        logInfo("Step 6: Click [Commit Transaction] button");
+        Actions.transactionActions().clickCommitButton();
 
-        logInfo("Step 5: Go to account used in transaction from preconditions and verify its:\n" +
+        logInfo("Step 7: Specify credentials of the user from preconditions in the popup and submit it");
+        Actions.transactionActions().fillingSupervisorModal(userCredentials);
+        chkAccBalanceData.reduceAvailableBalance(withdrawalTransaction.getTransactionDestination().getAmount());
+        chkAccBalanceData.reduceCurrentBalance(withdrawalTransaction.getTransactionDestination().getAmount());
+        Actions.loginActions().doLogOutProgrammatically();
+
+        logInfo("Step 8: Go to account with debit hold instruction used in transaction and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(checkingAccount);
         Assert.assertEquals(AccountActions.retrievingAccountData().getCurrentBalance(),
@@ -124,19 +148,10 @@ public class C22651_JournalPerformEcForNsfTransactionTest extends BaseTest {
         Assert.assertEquals(AccountActions.retrievingAccountData().getAvailableBalance(),
                 chkAccBalanceData.getAvailableBalance(), "CHK account available balance is not correct!");
 
-        logInfo("Step 6: Open account on the Transactions tab and verify the Error corrected transaction");
+        logInfo("Step 9: Open account on the Transactions tab and verify the committed transaction");
         AccountActions.retrievingAccountData().goToTransactionsTab();
         int offset = AccountActions.retrievingAccountData().getOffset();
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset, 1);
         Assert.assertEquals(actualTransactionData, transactionData, "Transaction data doesn't match!");
-    }
-
-    public void performWithdrawalGlCreditTransaction(Transaction transaction, UserCredentials userCredentials) {
-        Actions.transactionActions().goToTellerPage();
-        Actions.transactionActions().doLoginTeller();
-        Actions.transactionActions().createWithdrawalGlCreditTransaction(transaction);
-        Actions.transactionActions().clickCommitButton();
-        Actions.transactionActions().fillingSupervisorModal(userCredentials);
-        Pages.tellerPage().closeModal();
     }
 }
