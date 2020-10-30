@@ -30,15 +30,20 @@ public class AccountInstructionsPage extends PageTools {
     private By editInstructionButton = By.xpath("//*[@class = 'actions']//button[1]");
     private By deleteInstructionButton = By.xpath("//*[@class = 'actions']//button[2]");
     private By instructionDropdownSelectButton = By.xpath("//*[@id='recordcode']//span[contains(@class, 'select2-arrow')]");
+    private By stopTypeDropdownButton = By.xpath("//*[@name='stopwatchtype']//span[contains(@class, 'select2-arrow')]");
     private By itemInDropDown = By.xpath("//div[contains(@class, 'select2-drop-active') and not(contains(@class, 'select2-display-none'))]" +
             "//li[contains(@role, 'option')]/div/span[text()='%s']");
     private By amountInput = By.id("amount");
+    private By beginCheckInput = By.id("beginningchecknumber");
+    private By endCheckInput = By.id("endingchecknumber");
+    private By lowDollarAmountInput = By.id("lowamountstoppayment");
+    private By highDollarAmountInput = By.id("highamountstoppayment");
     private By expirationDateInput = By.id("expirationdate");
     private By notesInput = By.id("notes");
     private By saveButton = By.xpath("//button[text()='Save']");
 
     /**
-     *  List with created instructions region
+     * List with created instructions region
      */
     private By createdInstructionList = By.xpath("//ul[contains(@class, 'instructionsList')]/li");
     private By createdInstructionListItem = By.xpath("//ul[contains(@class, 'instructionsList')]/li[%s]");
@@ -59,7 +64,7 @@ public class AccountInstructionsPage extends PageTools {
 
     @Step("wait for modal window invisibility")
     public void waitForModalWindowInvisibility() {
-       waitForElementInvisibility(deletedHoldHeader);
+        waitForElementInvisibility(deletedHoldHeader);
     }
 
     @Step("Get amount value from modal")
@@ -129,6 +134,12 @@ public class AccountInstructionsPage extends PageTools {
         click(instructionDropdownSelectButton);
     }
 
+    @Step("Click Stop Type DropDown selector arrow")
+    public void clickStopTypeDropdownSelectButton() {
+        waitForElementClickable(stopTypeDropdownButton);
+        click(stopTypeDropdownButton);
+    }
+
     @Step("Click on {0} item in dropdown")
     public void clickDropDownItem(String item) {
         waitForElementClickable(itemInDropDown, item);
@@ -139,6 +150,30 @@ public class AccountInstructionsPage extends PageTools {
     public void typeAmountValue(String amount) {
         waitForElementClickable(amountInput);
         type(amount, amountInput);
+    }
+
+    @Step("Set 'Begining check' value {0}")
+    public void typeBeginCheckValue(String amount) {
+        waitForElementClickable(beginCheckInput);
+        type(amount, beginCheckInput);
+    }
+
+    @Step("Set 'Endining check' value {0}")
+    public void typeEndCheckValue(String amount) {
+        waitForElementClickable(endCheckInput);
+        type(amount, endCheckInput);
+    }
+
+    @Step("Set 'Low Dollar Amount' value {0}")
+    public void typeLowDollarValue(String amount) {
+        waitForElementClickable(lowDollarAmountInput);
+        type(amount, lowDollarAmountInput);
+    }
+
+    @Step("Set 'High Dollar Amount' value {0}")
+    public void typeHighDollarValue(String amount) {
+        waitForElementClickable(highDollarAmountInput);
+        type(amount, highDollarAmountInput);
     }
 
     @Step("Set 'Expiration Date' value {0}")
