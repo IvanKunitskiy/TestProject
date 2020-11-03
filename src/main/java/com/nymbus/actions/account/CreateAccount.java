@@ -465,9 +465,14 @@ public class CreateAccount {
 
         Assert.assertTrue(listOfProduct.size() > 0, "There are no 'Product' options available");
         if (account.getProduct() == null) {
-            account.setProduct(listOfProduct.get(new Random().nextInt(listOfProduct.size())).trim());
+            account.setProduct(listOfProduct.get(new Random().nextInt(listOfProduct.size())));
         }
-        Pages.addAccountPage().clickProductOption(account.getProduct());
+
+        for (String s : listOfProduct) {
+            if (s.trim().equals(account.getProduct())) {
+                Pages.addAccountPage().clickProductOption(s);
+            }
+        }
     }
 
     public void setProduct(CHKAccount account) {
