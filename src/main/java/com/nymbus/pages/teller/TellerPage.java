@@ -164,10 +164,17 @@ public class TellerPage extends PageTools {
 
     private By creditTransferCodeSelector = By.xpath("//span[contains(text(), '101 - Credit Transfr')]");
 
+    private By deleteTransactionItem = By.xpath("//div[@id='accordion-operation-sources-content']//div[@transaction='item'][%s]//button[@data-test-id='delete-transaction-item']");
+
     @Step("Click 'Misc-Debit' button")
     public void clickMiscDebitButton() {
         waitForElementClickable(miscDebit);
         jsClick(miscDebit);
+    }
+
+    @Step("Click {0} 'Delete transaction' button")
+    public void clickDeleteTransactionButton(int index) {
+        jsClick(deleteTransactionItem, index);
     }
 
     @Step("Click 'Withdrawal' button")

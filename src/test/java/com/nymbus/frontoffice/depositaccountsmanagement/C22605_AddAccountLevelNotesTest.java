@@ -97,8 +97,8 @@ public class C22605_AddAccountLevelNotesTest extends BaseTest {
 
         logInfo("Step 6: Open Teller page in the new tab\n" +
                 "and search for the Account from the precondition in the Source or Destination");
-        Pages.aSideMenuPage().clickTellerMenuItem();
-        Pages.tellerModalPage().clickEnterButton();
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
         Pages.tellerPage().clickMiscDebitButton();
         Pages.tellerPage().clickAccountNumberDiv(1);
         Pages.tellerPage().typeAccountNumber(1, chkAccount.getAccountNumber());
@@ -106,8 +106,8 @@ public class C22605_AddAccountLevelNotesTest extends BaseTest {
         Assert.assertTrue(Pages.tellerPage().isAlertWithTextVisible("Account | " + chkAccount.getAccountNumber() + " | " + note2.getNewNote()), "Alert for second note is not visible");
 
         logInfo("Step 7: Open Account from the precondition on Maintenance -> Maintenance History page");
+        Pages.tellerPage().clickDeleteTransactionButton(1);
         Pages.aSideMenuPage().clickClientMenuItem();
-        Pages.attentionModalPage().clickYesButton();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
