@@ -1,6 +1,7 @@
 package com.nymbus.actions.transfers;
 
 import com.nymbus.newmodels.client.other.transfer.HighBalanceTransfer;
+import com.nymbus.newmodels.client.other.transfer.InsufficientFundsTransfer;
 import com.nymbus.newmodels.client.other.transfer.Transfer;
 import com.nymbus.newmodels.client.other.transfer.TransferType;
 import com.nymbus.pages.Pages;
@@ -46,6 +47,18 @@ public class AddNewTransferActions {
         Pages.newTransferPage().clickTransferTypeSelectorOption(transfer.getTransferType().getTransferType());
     }
 
+    public void setInsufficientFundsTransferType(InsufficientFundsTransfer transfer) {
+        Pages.newTransferPage().clickTransferTypeSelectorButton();
+        List<String> listOfTransferType = Pages.newTransferPage().getTransferTypeList();
+
+        Assert.assertTrue(listOfTransferType.size() > 0, "There are no options available");
+        if (transfer.getTransferType() == null) {
+            transfer.setTransferType(TransferType.valueOf(listOfTransferType.get(new Random().nextInt(listOfTransferType.size())).trim()));
+        }
+        Pages.newTransferPage().clickTransferTypeSelectorOption(transfer.getTransferType().getTransferType());
+    }
+
+
     public void setHighBalanceFromAccount(HighBalanceTransfer transfer) {
         Pages.newTransferPage().clickFromAccountSelectorButton();
         List<String> listOfFromAccount = Pages.newTransferPage().getFromAccountList();
@@ -54,7 +67,21 @@ public class AddNewTransferActions {
         Pages.newTransferPage().clickFromAccountSelectorOption(transfer.getFromAccount().getAccountNumber());
     }
 
+    public void setInsufficientFundsFromAccount(InsufficientFundsTransfer transfer) {
+        Pages.newTransferPage().clickFromAccountSelectorButton();
+        List<String> listOfFromAccount = Pages.newTransferPage().getFromAccountList();
+
+        Assert.assertTrue(listOfFromAccount.size() > 0, "There are no options available");
+        Pages.newTransferPage().clickFromAccountSelectorOption(transfer.getFromAccount().getAccountNumber());
+    }
+
     public void setHighBalanceToAccount(HighBalanceTransfer transfer) {
+        Pages.newTransferPage().clickToAccountSelectorButton();
+        Pages.newTransferPage().setToAccountValue(transfer.getToAccount().getAccountNumber());
+        Pages.newTransferPage().clickToAccountSelectorOption(transfer.getToAccount().getAccountNumber());
+    }
+
+    public void setInsufficientFundsToAccount(InsufficientFundsTransfer transfer) {
         Pages.newTransferPage().clickToAccountSelectorButton();
         Pages.newTransferPage().setToAccountValue(transfer.getToAccount().getAccountNumber());
         Pages.newTransferPage().clickToAccountSelectorOption(transfer.getToAccount().getAccountNumber());

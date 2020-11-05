@@ -22,6 +22,7 @@ public class NewTransferPage extends PageTools {
     private By toAccountList = By.xpath("//div[contains(@class, 'ui-select-choices-row ng-scope')]/div/div[contains(@class, 'ng-scope')]");
     private By toAccountSelectorOption = By.xpath("//div[contains(@class, 'ui-select-choices-row ng-scope')]/div/div[contains(text(), '%s')]");
     private By highBalance = By.xpath("//input[@id='transferthreshold']");
+    private By nearestAmount = By.xpath("//input[@id='roundtransfer']");
     private By maxAmountToTransfer = By.xpath("//input[@id='transferamount']");
     private By amount = By.xpath("//input[@id='transferamount']");
     private By transferCharge = By.xpath("//input[@id='transfercharge']");
@@ -54,6 +55,12 @@ public class NewTransferPage extends PageTools {
     public void setHighBalance(String value) {
         waitForElementClickable(highBalance, value);
         type(value, highBalance);
+    }
+
+    @Step("Type value to the 'Nearest Amount' field")
+    public void setNearestAmount(String value) {
+        waitForElementClickable(nearestAmount, value);
+        type(value, nearestAmount);
     }
 
     @Step("Wait for 'Save' button invisibility")

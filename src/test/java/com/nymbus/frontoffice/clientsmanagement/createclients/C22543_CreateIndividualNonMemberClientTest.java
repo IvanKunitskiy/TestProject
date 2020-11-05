@@ -2,9 +2,10 @@ package com.nymbus.frontoffice.clientsmanagement.createclients;
 
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
+import com.nymbus.core.utils.FinancialInstitutionType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.clientdetails.type.ClientStatus;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -23,6 +24,10 @@ public class C22543_CreateIndividualNonMemberClientTest extends BaseTest {
 
     @BeforeMethod
     public void prepareClientData(){
+        String currentFinancialType = WebAdminActions.loginActions().getFinancialType();
+        Assert.assertEquals(currentFinancialType, FinancialInstitutionType.FEDERAL_CREDIT_UNION.getFinancialInstitutionType(),
+                "Financial Institution Type is incorrect!");
+
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
 

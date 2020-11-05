@@ -51,6 +51,7 @@ public class AccountInstructionsPage extends PageTools {
      */
     private By reasonText = By.xpath("//article[contains(@class, 'itemDetail')]//div[@ng-if='actualConfig.reason.isShow']//div//span");
     private By amount = By.xpath("//article[contains(@class, 'itemDetail')]//div[@ng-if='actualConfig.amount.isShow']//span[@ng-if='isNeedCurrency']");
+    private By notes = By.xpath("//p[@class='ng-binding']");
 
     @Step("Wait for loading spinner invisibility")
     public void waitForLoadingSpinnerInvisibility() {
@@ -93,6 +94,12 @@ public class AccountInstructionsPage extends PageTools {
         waitForElementVisibility(amount);
         String currentBalanceValue = getElementText(amount).trim();
         return currentBalanceValue.replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get notes")
+    public String getNotes() {
+        waitForElementVisibility(notes);
+        return getElementText(notes).trim();
     }
 
     @Step("Wait for alert for created instruction appeared")
