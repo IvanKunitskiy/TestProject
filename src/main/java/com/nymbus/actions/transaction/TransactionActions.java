@@ -204,6 +204,15 @@ public class TransactionActions {
         fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
     }
 
+    public void setCheckSource(TransactionSource source, int index) {
+        int tempIndex = 1 + index;
+        Pages.tellerPage().clickCheckButton();
+
+        fillRoutingNumber(source.getRoutingNumber(),tempIndex);
+        fillSourceCheckAccountNumber(source.getAccountNumber(), tempIndex);
+        fillCheckNumber(source.getCheckNumber(), tempIndex);
+        fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
+    }
 
     private void setCashOutDestination(TransactionDestination transactionDestination) {
         Pages.tellerPage().clickCashOutButton();
@@ -325,6 +334,18 @@ public class TransactionActions {
         Pages.tellerPage().typeSourceNotesValue(tempIndex, notes);
     }
 
+    private void fillRoutingNumber(String number, int tempIndex) {
+        Pages.tellerPage().clickRoutingNumberDiv(tempIndex);
+
+        Pages.tellerPage().typeRoutingNumber(tempIndex, number);
+    }
+
+    private void fillCheckNumber(String number, int tempIndex) {
+        Pages.tellerPage().clickCheckNumberDiv(tempIndex);
+
+        Pages.tellerPage().typeCheckNumber(tempIndex, number);
+    }
+
     private void fillSourceAmount(String amount, int tempIndex) {
         Pages.tellerPage().clickAmountDiv(tempIndex);
 
@@ -343,6 +364,12 @@ public class TransactionActions {
         Pages.tellerPage().typeAccountNumber(tempIndex, accountNumber);
 
         Pages.tellerPage().clickOnAutocompleteDropDownItem(accountNumber);
+    }
+
+    private void fillSourceCheckAccountNumber(String accountNumber, int tempIndex) {
+        Pages.tellerPage().clickAccountNumberDiv(tempIndex);
+
+        Pages.tellerPage().typeCheckAccountNumber(tempIndex, accountNumber);
     }
 
     public void waitForLoadSpinnerInvisibility() {

@@ -32,6 +32,7 @@ public enum TransactionCode {
     DEBIT_PURCHASE_123("123 - Debit Purchase"),
     CUR_Yr_Contribution_330("330 - Cur Yr Contrib"),
     CUR_Yr_Contribution_2330("2330 - Cur Yr Contrib"),
+    CHECK("128 - Check"),
     GL_CREDIT_865("865 - G/L Credit");
 
     private final String transCode;

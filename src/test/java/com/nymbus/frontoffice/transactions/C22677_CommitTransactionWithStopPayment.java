@@ -15,8 +15,8 @@ import com.nymbus.newmodels.generation.accountinstructions.builder.StopPaymentIn
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
+import com.nymbus.newmodels.generation.tansactions.builder.CheckGLCreditCHKAccBuilder;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
-import com.nymbus.newmodels.generation.tansactions.builder.WithdrawalGLDebitCHKAccBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
@@ -43,7 +43,7 @@ public class C22677_CommitTransactionWithStopPayment extends BaseTest {
         IndividualClient client = individualClientBuilder.buildClient();
         checkAccount = new Account().setCHKAccountData();
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
-        transaction = new TransactionConstructor(new WithdrawalGLDebitCHKAccBuilder()).constructTransaction();
+        transaction = new TransactionConstructor(new CheckGLCreditCHKAccBuilder()).constructTransaction();
 
         // Log in
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -71,13 +71,33 @@ public class C22677_CommitTransactionWithStopPayment extends BaseTest {
         int instructionsCount = AccountActions.createInstruction().getInstructionCount();
         AccountActions.createInstruction().createStopPaymentInstruction(instruction);
         Pages.accountInstructionsPage().waitForCreatedInstruction(instructionsCount + 1);
-
+        Actions.loginActions().doLogOut();
     }
 
 
     @Test(description = "C22677, Commit transaction with stop payment")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyNSFTransaction() {
+        logInfo("Step 1: Log in to the system as the user from the preconditions");
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        logInfo("Step 2: Go to Teller page and log in to the proof date");
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
+
+        logInfo("Step 3: Select Source - Check\n" +
+                "Select Destination - GL/Credit");
+        logInfo("Step 4: Select account from preconditions in the Source and specify its details which are " +
+                "covered by stop payment instruction (e.g. check number == #5555, amount == $101.00) --- Amount should " +
+                "be < Account's Available Balance");
+        int currentIndex = 0;
+        Actions.transactionActions().setCheckSource(transaction.getTransactionSource(), currentIndex);
+
+        logInfo("Step 5: Specify fields for opposite line item with correct values (any GL account#, any notes)");
+        Actions.transactionActions().setGLCreditDestination(transaction.getTransactionDestination(), currentIndex);
+
+        logInfo("Step 6: Click [Commit Transaction] button");
+        Actions.transactionActions().clickCommitButton();
 
     }
 
