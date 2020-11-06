@@ -27,7 +27,7 @@ public class AddAccountPage extends PageTools {
     private final By bankBranchList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private final By accountType = By.xpath("//div[@data-test-id='field-customertype']/a/span/span");
     private final By dateOpened = By.xpath("//input[@data-test-id='field-dateopened']");
-    private final By productSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
+    private final By productSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[normalize-space(text())='%s']]");
     private final By statementCycleSelectorButton = By.xpath("//div[@id='statementcycle']");
     private final By statementCycleList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private final By bankBranch = By.xpath("//div[@data-test-id='field-bankbranch']/a/span/span[contains(@class, 'ng-binding')]");
