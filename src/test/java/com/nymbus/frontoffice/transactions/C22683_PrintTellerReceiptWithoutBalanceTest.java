@@ -28,7 +28,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.File;
-import java.util.stream.Stream;
 
 @Epic("Frontoffice")
 @Feature("Transactions")
@@ -77,6 +76,7 @@ public class C22683_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
         double cashInAmount = cashInDepositTransaction.getTransactionSource().getAmount();
 
         cashInDepositTransaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
+        cashInDepositTransaction.getTransactionDestination().setTransactionCode("211 - Normal Deposit");
         cashInDepositTransaction.getTransactionDestination().setAmount(miscDebitAmount + cashInAmount);
 
         // Get 'Print Balance On Receipt' value
@@ -151,35 +151,44 @@ public class C22683_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
         Actions.balanceInquiryActions().uncheckPrintBalanceOnReceipt(printBalanceOnReceiptValue);
 
         logInfo("Step 10: Look at generated transaction receipt");
-        Assert.assertTrue(Pages.balanceInquiryModalPage().isTransactionWasSuccessfullyCompletedLabelVisible(),
-                "The 'Transaction was successfully completed.' label is not visible");
-
         File balanceInquiryImageFile = Actions.balanceInquiryActions().saveBalanceInquiryImage();
         String balanceInquiryImageData = Actions.balanceInquiryActions().readBalanceInquiryImage(balanceInquiryImageFile);
 
+        Assert.assertTrue(Pages.balanceInquiryModalPage().isTransactionWasSuccessfullyCompletedLabelVisible(),
+                "The 'Transaction was successfully completed.' label is not visible");
+
         // General info:
         // TODO: Bank label and bank address (from Settings->Bank Control Settings->Basic Info)
-        Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, "Client #:"), client.getIndividualType().getClientID());
-        Assert.assertEquals(getClientValueFromReceipt(balanceInquiryImageData), client.getNameForDebitCard());
-        // TODO: Current / posting date
+        Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, "Client #:"), client.getIndividualType().getClientID(),
+                "'Client #' used in transaction does not match");
+        Assert.assertEquals(getClientValueFromReceipt(balanceInquiryImageData).trim(), client.getNameForDebitCard().trim(),
+                "'Client name' used in transaction does not match");
+        String systemDate = WebAdminActions.loginActions().getSystemDate();
+        Assert.assertTrue(getLineContainingValue(balanceInquiryImageData, "Current date").contains(systemDate),
+                "'Current date' used in transaction does not match");
+        Assert.assertTrue(getLineContainingValue(balanceInquiryImageData, "Posting date").contains(systemDate),
+                "'Posting date' used in transaction does not match");
         Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, "Teller ID:"), userId,
                 "Teller # (UserID) is not valid");
         // TODO: Transaction # (bank.data.transaction.header -> name)
 
         // Fund details
         Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, "Cash In"),
-                Functions.getStringValueWithOnlyDigits(cashInDepositTransaction.getTransactionSource().getAmount()), "'Cash In' Values not equal");
+                Functions.getStringValueWithOnlyDigits(cashInDepositTransaction.getTransactionSource().getAmount()),
+                "'Cash In' Values not equal");
         Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, "Checks"),
                 Functions.getStringValueWithOnlyDigits(0.00), "'Checks' Values not equal");
         Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, "Cash Out"),
                 Functions.getStringValueWithOnlyDigits(0.00), "'Cash Out' Values not equal");
         Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, "Net Amount"),
-                Functions.getStringValueWithOnlyDigits(cashInDepositTransaction.getTransactionSource().getAmount()), "'Net Amount' Values not equal");
+                Functions.getStringValueWithOnlyDigits(cashInDepositTransaction.getTransactionSource().getAmount()),
+                "'Net Amount' Values not equal");
 
         // Additional section for each transaction item with regular account used and the following formatting:
         String lastFourOfChkAcc = checkingAccount.getAccountNumber().substring(checkingAccount.getAccountNumber().length() - 4);
-        Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, checkingAccount.getProductType().split(" ")[0]),
-                lastFourOfChkAcc, "CHK Account number is not valid");
+        String chkProductType = checkingAccount.getProductType().split(" ")[0].toUpperCase();
+        Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, chkProductType), lastFourOfChkAcc,
+                "CHK Account number is not valid");
 
         String chkFundTypeName = getFundTypeName(miscDebitGLCreditTransaction.getTransactionSource().getTransactionCode());
         double chkAmount = miscDebitGLCreditTransaction.getTransactionSource().getAmount();
@@ -187,20 +196,22 @@ public class C22683_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
                 Functions.getStringValueWithOnlyDigits(chkAmount), "CHK transaction amount is not valid");
 
         String lastFourOfSavingsAcc = savingsAccount.getAccountNumber().substring(savingsAccount.getAccountNumber().length() - 4);
-        Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, savingsAccount.getProductType().split(" ")[0]),
-                lastFourOfSavingsAcc, "CHK Savings number is not valid");
+        String savingsProductType = savingsAccount.getProductType().split(" ")[0].toUpperCase();
+        Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, savingsProductType), lastFourOfSavingsAcc,
+                "CHK Savings number is not valid");
 
         String savingsFundTypeName = getFundTypeName(cashInDepositTransaction.getTransactionDestination().getTransactionCode());
         double savingsAmount = cashInDepositTransaction.getTransactionDestination().getAmount();
         Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, savingsFundTypeName),
                 Functions.getStringValueWithOnlyDigits(savingsAmount), "Savings transaction amount is not valid");
 
-        // TODO: Bank's slogan, e.g. "Bank healthy, be happy!" label
+        // Bank's slogan, e.g. "Bank healthy, be happy!" label
+        Assert.assertTrue(balanceInquiryImageData.contains("Bank healthy, be happy!"),
+                "Receipt does not contain 'Bank healthy, be happy!' slogan");
     }
 
-
-    private String getFundTypeName(String transactionCode) {
-        return Stream.of(transactionCode.split(" ")).reduce((first, second) -> second).orElse(null);
+    public static String getFundTypeName(String transactionCode) {
+        return transactionCode.replaceAll("[^a-zA-z ]", "").trim();
     }
 
     private String getValueFromReceiptStringByName(String data, String name) {
@@ -217,6 +228,15 @@ public class C22683_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
         for (String line : data.split("\n")) {
             if (line.contains("Client:")) {
                 return line.replaceAll("Client: ", "");
+            }
+        }
+        return null;
+    }
+
+    private String getLineContainingValue(String data, String value) {
+        for (String line : data.split("\n")) {
+            if (line.contains(value)) {
+                return line;
             }
         }
         return null;
