@@ -19,6 +19,7 @@ public class ClientsSearchPage extends PageTools {
     private By loadMoreResultsButton = By.xpath("//div[text()='Load More Results']");
     private By clearSearchInputFieldButton = By.xpath("//button[@class='btn btn-link btnIcon']");
     private By viewAccountButtonByValue = By.xpath("//div[contains(text(),'%s')]/parent::div");
+    private By viewAccountByValue = By.xpath("//div[contains(text(),'%s')]");
     private By lookupResultOptions = By.xpath("//div[contains(@class, 'ui-select-choices-content selectize-dropdown-content bgWhite')]//div[@role='option']");
 
     @Step("Wait for a side menu")
@@ -97,6 +98,13 @@ public class ClientsSearchPage extends PageTools {
         waitForElementVisibility(viewAccountButtonByValue, value);
         waitForElementClickable(viewAccountButtonByValue, value);
         click(viewAccountButtonByValue, value);
+    }
+
+    @Step("Click on 'View Account' button by value {value}")
+    public void clickOnViewAccountByValue(String value) {
+        waitForElementVisibility(viewAccountByValue, value);
+        waitForElementClickable(viewAccountByValue, value);
+        click(viewAccountByValue, value);
     }
 
     @Step("Check that all results in search list are relevant")
