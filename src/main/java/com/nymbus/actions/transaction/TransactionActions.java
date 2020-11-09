@@ -274,6 +274,13 @@ public class TransactionActions {
         setGLCreditDestination(transaction.getTransactionDestination(), currentIndex);
     }
 
+    public void createMiscDebitCashInToDepositTransaction(Transaction cashInDeposit, Transaction miscDebitTransaction) {
+        int currentIndex = 0;
+        setMiscDebitSource(miscDebitTransaction.getTransactionSource(), currentIndex);
+        setCashInSource(cashInDeposit.getTransactionSource());
+        setDepositDestination(cashInDeposit.getTransactionDestination(), currentIndex);
+    }
+
     public void clickCommitButton() {
         Pages.tellerPage().clickCommitButton();
     }

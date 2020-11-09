@@ -125,4 +125,10 @@ public class BalanceInquiryActions {
         }
         return contains;
     }
+
+    public void uncheckPrintBalanceOnReceipt(int printBalanceOnReceiptValue) {
+        if (printBalanceOnReceiptValue == 1) {
+            Pages.balanceInquiryModalPage().clickPrintBalancesOnReceiptCheckbox();
+        }
+    }
 }

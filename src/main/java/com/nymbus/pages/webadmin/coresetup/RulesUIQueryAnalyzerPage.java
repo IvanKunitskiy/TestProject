@@ -16,6 +16,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private By accountNumberByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[2]/span/span");
     private By dormantAccountNumberByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[2]/div");
     private By foundNumberOfRecords = By.xpath("//div[@class='panelContent']/div[@id='dqlSearch']/div/span[contains(text(), 'Found')]");
+    private By printBalanceOnReceiptValue = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[10]/div[@key-name='long']");
 
     @Step("Wait for 'Rules UI Query Analyzer' page loaded")
     public void waitForPageLoad() {
@@ -56,6 +57,12 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getAccountNumberByIndex(int index) {
         waitForElementVisibility(accountNumberByIndex, index);
         return getElementText(accountNumberByIndex, index);
+    }
+
+    @Step("Get Print Balance On Receipt value")
+    public String getPrintBalanceOnReceiptByIndex(int index) {
+        waitForElementVisibility(printBalanceOnReceiptValue, index);
+        return getElementText(printBalanceOnReceiptValue, index);
     }
 
     @Step("Get dormant account number value")
