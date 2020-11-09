@@ -4,6 +4,7 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -23,6 +24,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -32,15 +34,14 @@ public class C22677_CommitTransactionWithStopPayment extends BaseTest {
     private TransactionData chkAccTransactionData;
     private Account checkAccount;
     private double transactionAmount = 150.00;
-    private String overdraftLimit;
-    private double overdraftLimitSum;
+    private IndividualClient client;
 
     @BeforeMethod
     public void prepareTransactionData() {
         // Set up Client and Account
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        IndividualClient client = individualClientBuilder.buildClient();
+        client = individualClientBuilder.buildClient();
         checkAccount = new Account().setCHKAccountData();
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
         transaction = new TransactionConstructor(new CheckGLCreditCHKAccBuilder()).constructTransaction();
@@ -58,6 +59,7 @@ public class C22677_CommitTransactionWithStopPayment extends BaseTest {
 
         // Create account
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkAccount);
+        transaction.getTransactionSource().setAccountNumber(checkAccount.getAccountNumber());
 
         // Set up instruction
         StopPaymentInstruction instruction = new InstructionConstructor(new StopPaymentInstructionBuilder())
@@ -71,6 +73,14 @@ public class C22677_CommitTransactionWithStopPayment extends BaseTest {
         int instructionsCount = AccountActions.createInstruction().getInstructionCount();
         AccountActions.createInstruction().createStopPaymentInstruction(instruction);
         Pages.accountInstructionsPage().waitForCreatedInstruction(instructionsCount + 1);
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        // Set transaction with amount value
+        Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
+        expectedBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
+        chkAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
+                "-", expectedBalanceData.getCurrentBalance(), transactionAmount);
         Actions.loginActions().doLogOut();
     }
 
@@ -98,6 +108,38 @@ public class C22677_CommitTransactionWithStopPayment extends BaseTest {
 
         logInfo("Step 6: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
+        expectedBalanceData.reduceAmount(transaction.getTransactionSource().getAmount());
+        Actions.transactionActions().verifyPreSelectedClientFields(client);
+        Pages.verifyConductorModalPage().clickVerifyButton();
+
+        logInfo("Step 7: Specify credentials of the user with supervisor override permissions  \n" +
+                "(User with all ACLs from the preconditions) and submit the form");
+        Actions.transactionActions().fillingSupervisorModal(userCredentials);
+        Assert.assertEquals(Pages.tellerPage().getModalText(),
+                "Transaction was successfully completed.",
+                "Transaction doesn't commit");
+        Pages.tellerPage().closeModal();
+
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        logInfo("Step 8: Go to account used in source item and verify its:" +
+                "- current balance" +
+                "- available balance");
+        Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
+        BalanceDataForCHKAcc actualBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
+
+        Assert.assertEquals(actualBalanceData.getCurrentBalance(), expectedBalanceData.getCurrentBalance(),
+                "Current balance doesn't match!");
+        Assert.assertEquals(actualBalanceData.getAvailableBalance(), expectedBalanceData.getAvailableBalance(),
+                "Available balance doesn't match!");
+
+        logInfo("Step 9: Open account on the Transactions tab and verify the committed transaction and Balance");
+        Pages.accountDetailsPage().clickTransactionsTab();
+        chkAccTransactionData.setBalance(expectedBalanceData.getCurrentBalance());
+        AccountActions.retrievingAccountData().goToTransactionsTab();
+        TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
+        Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
 
     }
 

@@ -154,6 +154,8 @@ public class TellerPage extends PageTools {
             "//*[@data-name='tranCode']//span[contains(@class, 'select2-arrow')]");
     private By transactionCodeField = By.xpath("((//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]" +
             "//*[@data-name='tranCode']//input[contains(@class, 'ui-select-search')])[1]");
+    private By transactionCodeDiv = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]" +
+            "//*[@data-name='tranCode']/div");
 
     private By checkNumberDiv = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='checkNumber']");
     private By checkNumberInput = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='checkNumber']/input");
@@ -297,6 +299,12 @@ public class TellerPage extends PageTools {
     public void clickSourceTransactionCodeArrow(int i) {
         waitForElementClickable(transactionCodeDropdownArrow, i);
         jsClick(transactionCodeDropdownArrow, i);
+    }
+
+    @Step("Click transition code {0} div")
+    public void clickSourceTransactionCode(int i) {
+        waitForElementClickable(transactionCodeDiv, i);
+        jsClick(transactionCodeDiv, i);
     }
     /**
      * Destinations region

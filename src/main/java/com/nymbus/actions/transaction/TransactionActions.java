@@ -208,8 +208,8 @@ public class TransactionActions {
         int tempIndex = 1 + index;
         Pages.tellerPage().clickCheckButton();
 
-        fillRoutingNumber(source.getRoutingNumber(),tempIndex);
-        fillSourceCheckAccountNumber(source.getAccountNumber(), tempIndex);
+        fillCheckSourceAccountCode(source.getTransactionCode(),tempIndex);
+        fillSourceAccountNumber(source.getAccountNumber(), tempIndex);
         fillCheckNumber(source.getCheckNumber(), tempIndex);
         fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
     }
@@ -354,6 +354,12 @@ public class TransactionActions {
 
     private void fillSourceAccountCode(String transactionCode, int tempIndex) {
         Pages.tellerPage().clickSourceTransactionCodeArrow(tempIndex);
+
+        Pages.tellerPage().clickOnDropDownItem(transactionCode);
+    }
+
+    private void fillCheckSourceAccountCode(String transactionCode, int tempIndex) {
+        Pages.tellerPage().clickSourceTransactionCode(tempIndex);
 
         Pages.tellerPage().clickOnDropDownItem(transactionCode);
     }
