@@ -21,7 +21,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class C22685_SearchForClientOnTellerHeader extends BaseTest {
+public class C22687_SearchForAccountInTransactionItemByAccountNumber extends BaseTest {
     private Account checkAccount;
 
     @BeforeMethod
@@ -50,7 +50,7 @@ public class C22685_SearchForClientOnTellerHeader extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
-    @Test(description = "C22685, Search for client on Teller header")
+    @Test(description = "C22687, Search for Account in Transaction item by account number")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyNSFTransaction() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");
@@ -60,22 +60,16 @@ public class C22685_SearchForClientOnTellerHeader extends BaseTest {
         Actions.transactionActions().goToTellerPage();
         Actions.transactionActions().doLoginTeller();
 
-        logInfo("Step 3: Search for a client from preconditions (e.g. using first name + last name) via quick " +
-                "search or clicking [Search] button");
-        Pages.clientsSearchPage().typeToClientsSearchInputField(checkAccount.getAccountNumber());
-        Pages.clientsSearchPage().clickOnViewAccountByValue(checkAccount.getAccountNumber());
-        Pages.accountDetailsPage().waitForFullProfileButton();
-
-        logInfo("Step 4: Select Misc Debit/ Misc Credit line item");
+        logInfo("Step 3: Select any fund type related to regular account (e.g. Misc Debit)");
         Pages.tellerPage().clickMiscDebitButton();
 
-        logInfo("Step 5: Expand Account Number field of the added line item and look at the available accounts");
-        int tempIndex = 1;
-        Pages.tellerPage().clickAmountDiv(tempIndex);
-        Pages.tellerPage().typeAmountValue(tempIndex, "150");
-        Pages.tellerPage().clickAccountNumberInput(tempIndex);
+        logInfo("Step 4: Search for account by its full account number");
+        Pages.tellerPage().clickAccountNumberDiv(1);
+        Pages.tellerPage().typeAccountNumber(1,checkAccount.getAccountNumber());
 
-        boolean visible = Pages.tellerPage().elementVisibleOnAutocompleteDropDownItem(checkAccount.getAccountNumber());
+        //SelenideTools.sleep(290);
+        boolean visible = Pages.tellerPage().elementVisibleOnAutocompleteDropDownItem(checkAccount.getProduct() + " " +
+                checkAccount.getAccountNumber());
         Assert.assertTrue(visible, "Element don't visible!");
     }
 }
