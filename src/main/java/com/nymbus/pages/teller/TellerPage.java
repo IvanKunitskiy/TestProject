@@ -55,6 +55,7 @@ public class TellerPage extends PageTools {
         waitForElementClickable(effectiveDate);
         return getElementAttributeValue("value", effectiveDate);
     }
+
     /**
      * Success transaction Modal dialog region
      */
@@ -220,6 +221,11 @@ public class TellerPage extends PageTools {
         jsClick(autocompleteItemInDropDown, item);
     }
 
+    @Step("Check on {0} item in dropdown")
+    public boolean elementVisibleOnAutocompleteDropDownItem(String item) {
+        return isElementVisible(autocompleteItemInDropDown, item);
+    }
+
     @Step("Click 'Amount' {0} division")
     public void clickAmountDiv(int i) {
         waitForElementClickable(transactionAmountDiv, i);
@@ -252,6 +258,7 @@ public class TellerPage extends PageTools {
         waitForElementClickable(transactionCodeDropdownArrow, i);
         jsClick(transactionCodeDropdownArrow, i);
     }
+
     /**
      * Destinations region
      */
