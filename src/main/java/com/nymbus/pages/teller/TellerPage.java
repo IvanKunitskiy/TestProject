@@ -145,6 +145,7 @@ public class TellerPage extends PageTools {
 
     private By accountNumberDiv = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='accountNumber account']");
     private By checkAccountNumberField = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='accountNumber account']/input");
+    private By accountNumberInput = By.xpath("(//input[@type='search'])[2]");
     private By accountNumberField = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]" +
             "//*[@data-name='accountNumber account']//input[contains(@class, 'ui-select-search')]");
 
@@ -249,6 +250,12 @@ public class TellerPage extends PageTools {
         jsRiseOnchange(checkNumberInput, i);
     }
 
+    @Step("Click {0} 'Account number' input")
+    public void clickAccountNumberInput(int i) {
+        waitForElementClickable(accountNumberInput, i);
+        click(accountNumberInput, i);
+    }
+
     @Step("Set {0} 'Account number' value {1}")
     public void typeAccountNumber(int i, String number) {
         waitForElementClickable(accountNumberField, i);
@@ -271,7 +278,8 @@ public class TellerPage extends PageTools {
 
     @Step("Check on {0} item in dropdown")
     public boolean elementVisibleOnAutocompleteDropDownItem(String item) {
-        return isElementVisible(autocompleteItemInDropDown, item);
+        waitForElementVisibility(autocompleteItemInDropDown, item);
+        return isElementClickable(autocompleteItemInDropDown, item);
     }
 
     @Step("Click 'Amount' {0} division")
