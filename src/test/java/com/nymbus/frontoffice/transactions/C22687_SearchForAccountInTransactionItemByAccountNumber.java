@@ -67,7 +67,6 @@ public class C22687_SearchForAccountInTransactionItemByAccountNumber extends Bas
         Pages.tellerPage().clickAccountNumberDiv(1);
         Pages.tellerPage().typeAccountNumber(1,checkAccount.getAccountNumber());
 
-        //SelenideTools.sleep(290);
         boolean visible = Pages.tellerPage().elementVisibleOnAutocompleteDropDownItem(checkAccount.getProduct() + " " +
                 checkAccount.getAccountNumber());
         Assert.assertTrue(visible, "Element don't visible!");
