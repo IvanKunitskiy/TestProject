@@ -143,13 +143,22 @@ public class TellerPage extends PageTools {
     private By checkButton = By.xpath("(//*[@id='tellerPanelHeaderSource']//button)[6]");
 
     private By accountNumberDiv = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='accountNumber account']");
+    private By checkAccountNumberField = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='accountNumber account']/input");
     private By accountNumberField = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]" +
             "//*[@data-name='accountNumber account']//input[contains(@class, 'ui-select-search')]");
+
+    private By routingNumberDiv = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='routingTransitNumber']");
+    private By routingNumberInput = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='routingTransitNumber']/input");
 
     private By transactionCodeDropdownArrow = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]" +
             "//*[@data-name='tranCode']//span[contains(@class, 'select2-arrow')]");
     private By transactionCodeField = By.xpath("((//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]" +
             "//*[@data-name='tranCode']//input[contains(@class, 'ui-select-search')])[1]");
+    private By transactionCodeDiv = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]" +
+            "//*[@data-name='tranCode']/div");
+
+    private By checkNumberDiv = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='checkNumber']");
+    private By checkNumberInput = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='checkNumber']/input");
 
     private By transactionAmountDiv = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='amount']");
     private By transactionAmountField = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]" +
@@ -183,6 +192,12 @@ public class TellerPage extends PageTools {
         jsClick(withDrawAlButton);
     }
 
+    @Step("Click 'Check' button")
+    public void clickCheckButton() {
+        waitForElementClickable(checkButton);
+        jsClick(checkButton);
+    }
+
     @Step("Wait for 'Credit transfer' code visible")
     public void waitForCreditTransferCodeVisible() {
         waitForElementVisibility(creditTransferCodeSelector);
@@ -207,11 +222,44 @@ public class TellerPage extends PageTools {
         jsClick(accountNumberDiv, i);
     }
 
+    @Step("Click {0} 'Routing number' division")
+    public void clickRoutingNumberDiv(int i) {
+        waitForElementClickable(routingNumberDiv, i);
+        jsClick(routingNumberDiv, i);
+    }
+
+    @Step("Click {0} 'Check number' division")
+    public void clickCheckNumberDiv(int i) {
+        waitForElementClickable(checkNumberDiv, i);
+        jsClick(checkNumberDiv, i);
+    }
+
+    @Step("Set {0} 'Routing number' value {1}")
+    public void typeRoutingNumber(int i, String number) {
+        waitForElementClickable(routingNumberInput, i);
+        jsType(number, routingNumberInput, i);
+        jsRiseOnchange(routingNumberInput, i);
+    }
+
+    @Step("Set {0} 'Check number' value {1}")
+    public void typeCheckNumber(int i, String number) {
+        waitForElementClickable(checkNumberInput, i);
+        jsType(number, checkNumberInput, i);
+        jsRiseOnchange(checkNumberInput, i);
+    }
+
     @Step("Set {0} 'Account number' value {1}")
     public void typeAccountNumber(int i, String number) {
         waitForElementClickable(accountNumberField, i);
         jsType(number, accountNumberField, i);
         jsRiseOnchange(accountNumberField, i);
+    }
+
+    @Step("Set {0} 'Check Account number' value {1}")
+    public void typeCheckAccountNumber(int i, String number) {
+        waitForElementClickable(checkAccountNumberField, i);
+        jsType(number, checkAccountNumberField, i);
+        jsRiseOnchange(checkAccountNumberField, i);
     }
 
     @Step("Click on {0} item in dropdown")
@@ -251,6 +299,12 @@ public class TellerPage extends PageTools {
     public void clickSourceTransactionCodeArrow(int i) {
         waitForElementClickable(transactionCodeDropdownArrow, i);
         jsClick(transactionCodeDropdownArrow, i);
+    }
+
+    @Step("Click transition code {0} div")
+    public void clickSourceTransactionCode(int i) {
+        waitForElementClickable(transactionCodeDiv, i);
+        jsClick(transactionCodeDiv, i);
     }
     /**
      * Destinations region
