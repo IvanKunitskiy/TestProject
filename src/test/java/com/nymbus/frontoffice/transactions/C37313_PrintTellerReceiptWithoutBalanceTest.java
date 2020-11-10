@@ -25,6 +25,7 @@ import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
 import io.qameta.allure.*;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -181,6 +182,12 @@ public class C37313_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
                 "'Ending Balance' of Savings account does not match");
         Assert.assertEquals(Functions.getStringValueWithOnlyDigits(miscCreditAmount), availableBalance[1],
                 "'Available Balance' of Savings account does not match");
+    }
+
+    @AfterMethod(description = "Delete the downloaded image.")
+    public void postCondition() {
+        logInfo("Deleting the downloaded image...");
+        Functions.cleanDirectory(System.getProperty("user.dir") + "/screenshots/");
     }
 
     private String[] getBalance(String data, String balanceType) {
