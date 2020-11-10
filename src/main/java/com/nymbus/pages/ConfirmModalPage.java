@@ -10,6 +10,6 @@ public class ConfirmModalPage extends PageTools {
 
     public void clickYes() {
         waitForElementClickable(yesButton);
-        click(yesButton);
+        jsClick(yesButton);
     }
 }
