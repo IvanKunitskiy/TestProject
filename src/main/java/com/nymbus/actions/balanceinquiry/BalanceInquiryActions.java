@@ -131,4 +131,10 @@ public class BalanceInquiryActions {
             Pages.balanceInquiryModalPage().clickPrintBalancesOnReceiptCheckbox();
         }
     }
+
+    public void checkPrintBalanceOnReceipt(int printBalanceOnReceiptValue) {
+        if (printBalanceOnReceiptValue == 0) {
+            Pages.balanceInquiryModalPage().clickPrintBalancesOnReceiptCheckbox();
+        }
+    }
 }
