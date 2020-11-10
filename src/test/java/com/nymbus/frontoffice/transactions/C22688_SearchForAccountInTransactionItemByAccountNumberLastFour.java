@@ -63,7 +63,6 @@ public class C22688_SearchForAccountInTransactionItemByAccountNumberLastFour ext
         Pages.tellerPage().clickAccountNumberDiv(1);
         Pages.tellerPage().typeAccountNumber(1, checkAccount.getAccountNumber().substring(checkAccount.getAccountNumber().length() - 4));
 
-
         boolean visible = Pages.tellerPage().elementVisibleOnAutocompleteDropDownItem(checkAccount.getProduct() + " " +
                 checkAccount.getAccountNumber());
         Assert.assertTrue(visible, "Element don't visible!");
