@@ -14,6 +14,7 @@ import com.nymbus.newmodels.generation.client.builder.type.individual.Individual
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -63,9 +64,9 @@ public class C22688_SearchForAccountInTransactionItemByAccountNumberLastFour ext
         Pages.tellerPage().typeAccountNumber(1, checkAccount.getAccountNumber().substring(checkAccount.getAccountNumber().length() - 4));
 
 
-//        boolean visible = Pages.tellerPage().elementVisibleOnAutocompleteDropDownItem(checkAccount.getProduct() + " " +
-//                checkAccount.getAccountNumber());
-//        Assert.assertTrue(visible, "Element don't visible!");
+        boolean visible = Pages.tellerPage().elementVisibleOnAutocompleteDropDownItem(checkAccount.getProduct() + " " +
+                checkAccount.getAccountNumber());
+        Assert.assertTrue(visible, "Element don't visible!");
     }
 
 
