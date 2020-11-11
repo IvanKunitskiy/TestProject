@@ -55,6 +55,7 @@ public class TellerPage extends PageTools {
         waitForElementClickable(effectiveDate);
         return getElementAttributeValue("value", effectiveDate);
     }
+
     /**
      * Success transaction Modal dialog region
      */
@@ -144,6 +145,7 @@ public class TellerPage extends PageTools {
 
     private By accountNumberDiv = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='accountNumber account']");
     private By checkAccountNumberField = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='accountNumber account']/input");
+    private By accountNumberInput = By.xpath("(//input[@type='search'])[2]");
     private By accountNumberField = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]" +
             "//*[@data-name='accountNumber account']//input[contains(@class, 'ui-select-search')]");
 
@@ -222,6 +224,12 @@ public class TellerPage extends PageTools {
         jsClick(accountNumberDiv, i);
     }
 
+    @Step("Click {0} 'Account number' input")
+    public void clickAccountNumberInput(int i) {
+        waitForElementClickable(accountNumberInput, i);
+        click(accountNumberInput, i);
+    }
+
     @Step("Click {0} 'Routing number' division")
     public void clickRoutingNumberDiv(int i) {
         waitForElementClickable(routingNumberDiv, i);
@@ -268,6 +276,12 @@ public class TellerPage extends PageTools {
         jsClick(autocompleteItemInDropDown, item);
     }
 
+    @Step("Check on {0} item in dropdown")
+    public boolean elementVisibleOnAutocompleteDropDownItem(String item) {
+        waitForElementVisibility(autocompleteItemInDropDown, item);
+        return isElementClickable(autocompleteItemInDropDown, item);
+    }
+
     @Step("Click 'Amount' {0} division")
     public void clickAmountDiv(int i) {
         waitForElementClickable(transactionAmountDiv, i);
@@ -306,6 +320,7 @@ public class TellerPage extends PageTools {
         waitForElementClickable(transactionCodeDiv, i);
         jsClick(transactionCodeDiv, i);
     }
+
     /**
      * Destinations region
      */
