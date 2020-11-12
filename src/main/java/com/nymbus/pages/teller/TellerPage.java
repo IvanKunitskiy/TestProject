@@ -224,6 +224,12 @@ public class TellerPage extends PageTools {
         jsClick(accountNumberDiv, i);
     }
 
+    @Step("Click {0} 'Account number' input")
+    public void clickAccountNumberInput(int i) {
+        waitForElementClickable(accountNumberInput, i);
+        click(accountNumberInput, i);
+    }
+
     @Step("Click {0} 'Routing number' division")
     public void clickRoutingNumberDiv(int i) {
         waitForElementClickable(routingNumberDiv, i);

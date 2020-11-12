@@ -262,4 +262,11 @@ public class UsersActions {
 
         return SettingsPage.viewUserPage().getBankBranch();
     }
+
+    public String getUserId() {
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        SettingsPage.mainPage().clickViewProfile();
+
+        return SettingsPage.viewUserPage().getUSERIDValue();
+    }
 }

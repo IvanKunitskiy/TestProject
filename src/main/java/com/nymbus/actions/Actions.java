@@ -9,6 +9,7 @@ import com.nymbus.actions.journal.JournalActions;
 import com.nymbus.actions.modalwindow.DebitCardModalWindowActions;
 import com.nymbus.actions.settings.CashDrawerAction;
 import com.nymbus.actions.settings.ProductsActions;
+import com.nymbus.actions.settings.TellerBankBranchOverviewActions;
 import com.nymbus.actions.settings.UsersActions;
 import com.nymbus.actions.teller.TellerActions;
 import com.nymbus.actions.transaction.NonTellerTransactionActions;
@@ -34,6 +35,7 @@ public class Actions {
     private static BalanceInquiryActions balanceInquiryActions;
     private static NonTellerTransaction nonTellerTransaction;
     private static ProductsActions productsActions;
+    private static TellerBankBranchOverviewActions tellerBankBranchOverviewActions;
 
     /**
      * Modal Window Actions
@@ -197,4 +199,13 @@ public class Actions {
         return productsActions;
     }
 
+    /**
+     * This function returns an instance of `TellerBankBranchOverviewActions`
+     */
+    public static TellerBankBranchOverviewActions tellerBankBranchOverviewActions() {
+        if (tellerBankBranchOverviewActions == null) {
+            tellerBankBranchOverviewActions = new TellerBankBranchOverviewActions();
+        }
+        return tellerBankBranchOverviewActions;
+    }
 }

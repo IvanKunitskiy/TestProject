@@ -110,6 +110,16 @@ public class WebAdminUsersActions {
                 + "AorderBy%3A+-id&source=";
     }
 
+    private String getPrintBalanceOnReceiptUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev6DS&"
+                + "dqlQuery=count%3A+10%0D%0A"
+                + "from%3A+bank.data.bcfile%0D%0A"
+                + "where%3A+%0D%0A"
+                + "-+code%3A+PrintBalanceOnReceipt%0D%0A&source=";
+    }
+
     public String getAccountWithDormantStatus(int index) {
         return getDormantAccountByIndexFromQueryByUrl(getAccountsWithDormantStatusUrl(), index);
     }
@@ -128,6 +138,27 @@ public class WebAdminUsersActions {
 
     public String getAccountWithYtdInterestPaidNotNull() {
         return getAccountFromQueryByUrl(getAccountsWithYtdInterestPaidNotNullUrl());
+    }
+
+    public int getPrintBalanceOnReceiptValue() {
+        return getPrintBalanceOnReceiptValueFromQueryByUrl(getPrintBalanceOnReceiptUrl());
+    }
+
+    private int getPrintBalanceOnReceiptValueFromQueryByUrl(String url) {
+        SelenideTools.openUrlInNewWindow(url);
+
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+        String printBalanceOnReceiptCode = WebAdminPages.rulesUIQueryAnalyzerPage().getPrintBalanceOnReceiptByIndex(1);
+
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+
+        return Integer.parseInt(printBalanceOnReceiptCode);
     }
 
     private String getAccountFromQueryByUrl(String url) {
