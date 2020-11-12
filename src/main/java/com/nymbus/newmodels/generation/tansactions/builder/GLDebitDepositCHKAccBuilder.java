@@ -26,7 +26,7 @@ public class GLDebitDepositCHKAccBuilder implements TransactionBuilder {
         transaction.setTransactionSource(new TransactionSource());
         transaction.getTransactionSource().setSourceType(SourceType.GL_DEBIT);
         transaction.getTransactionSource().setAccountNumber("0-0-Dummy");
-        transaction.getTransactionSource().setAmount(100.00);
+        transaction.getTransactionSource().setAmount(200.00);
         transaction.getTransactionSource().setNotes(Random.genString(20));
     }
 
@@ -35,7 +35,7 @@ public class GLDebitDepositCHKAccBuilder implements TransactionBuilder {
         transaction.setTransactionDestination(new TransactionDestination());
         transaction.getTransactionDestination().setSourceType(DestinationType.DEPOSIT);
         transaction.getTransactionDestination().setAccountNumber("83460855747");
-        transaction.getTransactionDestination().setAmount(100.00);
+        transaction.getTransactionDestination().setAmount(200.00);
         transaction.getTransactionDestination().setTransactionCode("109 - Deposit");
     }
 

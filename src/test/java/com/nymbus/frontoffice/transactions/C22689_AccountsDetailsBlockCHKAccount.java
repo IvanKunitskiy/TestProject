@@ -7,7 +7,6 @@ import com.nymbus.actions.transfers.TransfersActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
-import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -26,6 +25,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -42,13 +42,15 @@ public class C22689_AccountsDetailsBlockCHKAccount extends BaseTest {
     private double overdraftLimitSum;
     private InsufficientFundsTransfer insufficientFundsTransfer;
     private double savingsTransactionAmount = 2000.00;
+    private IndividualClient client;
+    private String accruedInterest;
 
     @BeforeMethod
     public void prepareTransactionData() {
         // Set up Client and Account
-        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        IndividualClient client = individualClientBuilder.buildClient();
+        client = individualClientBuilder.buildClient();
         checkAccount = new Account().setCHKAccountData();
         savingsAccount = new Account().setSavingsAccountData();
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
@@ -66,6 +68,7 @@ public class C22689_AccountsDetailsBlockCHKAccount extends BaseTest {
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+        client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
 
         overdraftLimit = "$ 500.00";
 
@@ -106,6 +109,7 @@ public class C22689_AccountsDetailsBlockCHKAccount extends BaseTest {
         expectedBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         chkAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "-", expectedBalanceData.getCurrentBalance(), transactionAmount);
+        accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
 
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         expectedSavingsBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
@@ -134,16 +138,43 @@ public class C22689_AccountsDetailsBlockCHKAccount extends BaseTest {
         Pages.transfersPage().clickTransferInTheListByType(insufficientFundsTransfer.getTransferType().getTransferType());
         Pages.accountNavigationPage().clickAccountsTab();
         Pages.clientDetailsPage().openAccountByNumber(checkAccount.getAccountNumber());
-        SelenideTools.sleep(200);
         Actions.loginActions().doLogOut();
     }
 
     @Test(description = "C22689, Accounts Details block - CHK Account")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyNSFTransaction() {
+        logInfo("Step 1: Log in to the system as the user from the preconditions");
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
+        logInfo("Step 2: Go to Teller page and log in to the proof date");
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
 
+        logInfo("Step 3: Select any fund type related to regular account (e.g. Misc Debit)");
+        Pages.tellerPage().clickMiscDebitButton();
 
+        logInfo("Step 4: Search for account by its full account number");
+        Actions.transactionActions().inputAccountNumber(checkAccount.getAccountNumber());
 
+        logInfo("Step 5: Look at the information displayed for CHK account in \"Account Quick View\" section");
+        String pifNumber = Actions.transactionActions().getPIFNumber();
+        Assert.assertEquals(pifNumber, client.getIndividualType().getClientID(), "Client ID doesn't match");
+        String accountType = Actions.transactionActions().getAccountType();
+        Assert.assertEquals(accountType, checkAccount.getProductType(), "Account Type doesn't match");
+        double currentBalance = Actions.transactionActions().getCurrentBalance();
+        Assert.assertEquals(currentBalance, expectedBalanceData.getCurrentBalance(),
+                "Current balance not correct");
+        double accruedInterest = Actions.transactionActions().getAccruedInterest();
+        Assert.assertEquals(accruedInterest, Double.parseDouble(this.accruedInterest),
+                "Accrued interest doesn't match");
+        double availableBalance = Actions.transactionActions().getAvailableBalance();
+        Assert.assertEquals(availableBalance, expectedBalanceData.getAvailableBalance(),
+                "Available balance not correct.");
+        String automaticOverdraftLimit = Actions.transactionActions().getFirstAutomaticOverdraftLimit();
+        Assert.assertEquals(automaticOverdraftLimit, overdraftLimit, "Overdraft limit doesn't match");
+        String dateOpened = Actions.transactionActions().getDateOpened();
+        String date = DateTime.getDateWithFormat(dateOpened, "MMMMMMM dd,yyyy", "MM/dd/yyyy");
+        Assert.assertEquals(date, checkAccount.getDateOpened(), "Date opened doesn't match");
     }
 }
