@@ -7,10 +7,6 @@ public class TellerBankBranchOverviewActions {
 
     public TellerLocation getTellerLocation(String bankBranch) {
         TellerLocation tellerLocation = new TellerLocation();
-
-        SettingsPage.mainPage().clickViewAllTellerLocationsLink();
-        SettingsPage.tellerLocationOverviewPage().clickRowByBranchName(bankBranch);
-
         tellerLocation.setBranchName(SettingsPage.branchOverviewPage().getBranchName());
         tellerLocation.setBankName(SettingsPage.branchOverviewPage().getBankName());
         tellerLocation.setAddressLine1(SettingsPage.branchOverviewPage().getAddressLine1());

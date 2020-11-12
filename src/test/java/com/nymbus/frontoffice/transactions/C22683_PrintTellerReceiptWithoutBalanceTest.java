@@ -108,6 +108,8 @@ public class C22683_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
         // Get bank info
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Pages.aSideMenuPage().clickSettingsMenuItem();
+        SettingsPage.mainPage().clickViewAllTellerLocationsLink();
+        SettingsPage.tellerLocationOverviewPage().clickRowByBranchName(bankBranch);
         tellerLocation = Actions.tellerBankBranchOverviewActions().getTellerLocation(bankBranch);
         Pages.aSideMenuPage().clickClientMenuItem();
 
