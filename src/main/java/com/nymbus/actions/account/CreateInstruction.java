@@ -1,10 +1,7 @@
 package com.nymbus.actions.account;
 
 import com.nymbus.core.utils.Constants;
-import com.nymbus.newmodels.accountinstructions.ActivityHoldInstruction;
-import com.nymbus.newmodels.accountinstructions.CreditHoldInstruction;
-import com.nymbus.newmodels.accountinstructions.DebitHoldInstruction;
-import com.nymbus.newmodels.accountinstructions.HoldInstruction;
+import com.nymbus.newmodels.accountinstructions.*;
 import com.nymbus.pages.Pages;
 
 public class CreateInstruction {
@@ -33,6 +30,20 @@ public class CreateInstruction {
         setNotes(instruction.getNotes());
         Pages.accountInstructionsPage().clickSaveButton();
     }
+
+    public void createStopPaymentInstruction(StopPaymentInstruction instruction) {
+        Pages.accountInstructionsPage().clickNewInstructionButton();
+        setInstructionType(instruction.getType());
+        setStopType(instruction.getStopType().getStopType());
+        setDate(instruction.getExpirationDate());
+        setBeginCheck(instruction.getBeginCheck());
+        setEndCheck(instruction.getEndCheck());
+        setLowDollar(String.valueOf(instruction.getLowAmount()));
+        setHighDollar(String.valueOf(instruction.getHighAmount()));
+        setNotes(instruction.getNotes());
+        Pages.accountInstructionsPage().clickSaveButton();
+    }
+
 
     public void createActivityHoldInstruction(ActivityHoldInstruction instruction) {
         Pages.accountInstructionsPage().clickNewInstructionButton();
@@ -107,8 +118,30 @@ public class CreateInstruction {
         Pages.accountInstructionsPage().typeAmountValue(amount);
     }
 
+    private void setBeginCheck(String beginCheck) {
+        Pages.accountInstructionsPage().typeBeginCheckValue(beginCheck);
+    }
+
+    private void setEndCheck(String endCheck) {
+        Pages.accountInstructionsPage().typeEndCheckValue(endCheck);
+    }
+
+    private void setLowDollar(String lowDollar) {
+        Pages.accountInstructionsPage().typeLowDollarValue(lowDollar);
+    }
+
+    private void setHighDollar(String highDollar) {
+        Pages.accountInstructionsPage().typeHighDollarValue(highDollar);
+    }
+
     private void setInstructionType(String type) {
         Pages.accountInstructionsPage().clickInstructionDropdownSelectButton();
+
+        Pages.accountInstructionsPage().clickDropDownItem(type);
+    }
+
+    private void setStopType(String type) {
+        Pages.accountInstructionsPage().clickStopTypeDropdownSelectButton();
 
         Pages.accountInstructionsPage().clickDropDownItem(type);
     }
