@@ -34,6 +34,12 @@ public class MainPage extends PageTools {
     // Products
     private By viewAllProducts = By.xpath("//a[text()='View all Products']");
 
+    // Bank Control Settings
+    private By viewSettingsLink = By.xpath("//a[span[text()='View Settings']]");
+
+    // Teller Locations
+    private By viewAllTellerLocationsLink = By.xpath("//a[text()='View all Teller Locations']");
+
     @Step("Waiting 'Cash Drawer' region")
     public void waitForCashDrawerRegion() {
         waitForElementVisibility(cashDrawerRegion);
@@ -127,5 +133,19 @@ public class MainPage extends PageTools {
     public void clickViewAllBinControls() {
         waitForElementClickable(viewAllBinControlsLink);
         click(viewAllBinControlsLink);
+    }
+
+    // Bank Control Settings
+    @Step("Click 'View Settings' link")
+    public void clickViewSettingsLink() {
+        waitForElementClickable(viewSettingsLink);
+        click(viewSettingsLink);
+    }
+
+    // Teller locations
+    @Step("Click 'View all Teller Locations' link")
+    public void clickViewAllTellerLocationsLink() {
+        scrollToPlaceElementInCenter(viewAllTellerLocationsLink);
+        click(viewAllTellerLocationsLink);
     }
 }

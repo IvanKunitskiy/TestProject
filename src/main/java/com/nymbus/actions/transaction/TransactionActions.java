@@ -155,7 +155,7 @@ public class TransactionActions {
         }
     }
 
-    private void setCashInSource(TransactionSource source) {
+    public void setCashInSource(TransactionSource source) {
         Pages.tellerPage().clickCashInButton();
         setAmounts(source.getDenominationsHashMap());
         Pages.cashInModalWindowPage().clickOKButton();
@@ -181,7 +181,7 @@ public class TransactionActions {
         }
     }
 
-    private void setMiscDebitSource(TransactionSource source, int index) {
+    public void setMiscDebitSource(TransactionSource source, int index) {
         int tempIndex = 1 + index;
         Pages.tellerPage().clickMiscDebitButton();
         fillSourceAccountNumber(source.getAccountNumber(), tempIndex);
@@ -220,7 +220,7 @@ public class TransactionActions {
         Pages.cashInModalWindowPage().clickOKButton();
     }
 
-    private void setDepositDestination(TransactionDestination transactionDestination, int index) {
+    public void setDepositDestination(TransactionDestination transactionDestination, int index) {
         int tempIndex= 1 + index;
         Pages.tellerPage().clickDepositButton();
         fillDestinationAccountNumber(transactionDestination.getAccountNumber(), tempIndex);
@@ -228,7 +228,7 @@ public class TransactionActions {
         fillDestinationAmount(String.format("%.2f", transactionDestination.getAmount()), tempIndex);
     }
 
-    private void setMiscCreditDestination(TransactionDestination transactionDestination, int index) {
+    public void setMiscCreditDestination(TransactionDestination transactionDestination, int index) {
         int tempIndex= 1 + index;
         Pages.tellerPage().clickMiscCreditButton();
         fillDestinationAccountNumber(transactionDestination.getAccountNumber(), tempIndex);

@@ -3,6 +3,8 @@ package com.nymbus.actions.webadmin;
 import com.codeborne.selenide.Selenide;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.newmodels.UserCredentials;
+import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.webadmin.WebAdminPages;
 import org.testng.Assert;
@@ -223,5 +225,19 @@ public class WebAdminTransactionActions {
         transactionData.setPostingDate(postingDate);
         WebAdminActions.loginActions().doLogoutProgrammatically();
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+    }
+
+    public String getTransactionNumber(UserCredentials userCredentials, Account account) {
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        goToTransactionUrl(account.getAccountNumber());
+        String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(1);
+        goToTransactionHeaderUrl(transactionHeader);
+        String transactionNumber = WebAdminPages.rulesUIQueryAnalyzerPage().getNameValue(1);
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+
+        return transactionNumber;
     }
 }
