@@ -176,5 +176,9 @@ public class C22689_AccountsDetailsBlockCHKAccount extends BaseTest {
         String dateOpened = Actions.transactionActions().getDateOpened();
         String date = DateTime.getDateWithFormat(dateOpened, "MMMMMMM dd,yyyy", "MM/dd/yyyy");
         Assert.assertEquals(date, checkAccount.getDateOpened(), "Date opened doesn't match");
+
+        logInfo("Step 5: Click [Details] button");
+        Pages.tellerPage().clickDetailsButton();
+        Pages.accountDetailsPage().waitForFullProfileButton();
     }
 }

@@ -224,12 +224,6 @@ public class TellerPage extends PageTools {
         jsClick(accountNumberDiv, i);
     }
 
-    @Step("Click {0} 'Account number' input")
-    public void clickAccountNumberInput(int i) {
-        waitForElementClickable(accountNumberInput, i);
-        click(accountNumberInput, i);
-    }
-
     @Step("Click {0} 'Routing number' division")
     public void clickRoutingNumberDiv(int i) {
         waitForElementClickable(routingNumberDiv, i);
@@ -448,6 +442,7 @@ public class TellerPage extends PageTools {
             "//span[text()='Account Type']//ancestor::node()[1]//span[2]");
     private By dateOpened = By.xpath("//*[@id='accordion-operation-aqv-content']" +
             "//span[text()='Date Opened']//ancestor::node()[1]//span[2]");
+    private By detaulsButton = By.xpath("//button[contains(string(), 'Details')]");
 
     @Step("Is account quick view visible")
     public boolean isAccountQuickViewVisible() {
@@ -459,6 +454,12 @@ public class TellerPage extends PageTools {
     public void clickAccountQuickViewArrow() {
         waitForElementVisibility(accountQuickViewToggleButton);
         jsClick(accountQuickViewToggleButton);
+    }
+
+    @Step("Click details button")
+    public void clickDetailsButton() {
+        waitForElementVisibility(detaulsButton);
+        jsClick(detaulsButton);
     }
 
     @Step("Get 'Available Balance' value")
