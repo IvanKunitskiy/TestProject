@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -14,10 +15,13 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
-import com.nymbus.newmodels.generation.tansactions.builder.CashInDepositCHKAccBuilder;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditCHKAccBuilder;
-import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitGLCreditTransactionBuilder;
+import com.nymbus.newmodels.generation.tansactions.factory.DestinationFactory;
+import com.nymbus.newmodels.generation.tansactions.factory.SourceFactory;
+import com.nymbus.newmodels.settings.teller.TellerLocation;
 import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.newmodels.transaction.TransactionDestination;
+import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
@@ -37,11 +41,12 @@ public class C22683_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
     private IndividualClient client;
     private Account checkingAccount;
     private Account savingsAccount;
-
-    private Transaction cashInDepositTransaction;
-    private Transaction miscDebitGLCreditTransaction;
-    private int printBalanceOnReceiptValue;
+    private TellerLocation tellerLocation;
     private String userId;
+    private int printBalanceOnReceiptValue;
+    private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
+    private final TransactionSource cashInSource = SourceFactory.getCashInSource();
+    private final TransactionDestination depositDestination = DestinationFactory.getDepositDestination();
 
     @BeforeMethod
     public void preCondition() {
@@ -62,22 +67,24 @@ public class C22683_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
         // Set up transaction for increasing the Savings account balance
         Transaction savingsTransaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
         savingsTransaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
+        savingsTransaction.getTransactionSource().setAmount(200);
+        savingsTransaction.getTransactionDestination().setAmount(200);
 
-        // Set up GL Debit
-        miscDebitGLCreditTransaction = new TransactionConstructor(new MiscDebitGLCreditTransactionBuilder()).constructTransaction();
-        miscDebitGLCreditTransaction.getTransactionSource().setAccountNumber(checkingAccount.getAccountNumber());
-        miscDebitGLCreditTransaction.getTransactionSource().setTransactionCode(TransactionCode.DEPOSIT_CORR_104.getTransCode());
-        double miscDebitAmount = miscDebitGLCreditTransaction.getTransactionSource().getAmount();
+        // Set up Misc Debit source
+        miscDebitSource.setAccountNumber(checkingAccount.getAccountNumber());
+        miscDebitSource.setTransactionCode(TransactionCode.DEPOSIT_CORR_104.getTransCode());
+        miscDebitSource.setAmount(25.00);
+        double miscDebitAmount = miscDebitSource.getAmount();
 
-        // Set up Cash In / Deposit transaction
-        cashInDepositTransaction = new TransactionConstructor(new CashInDepositCHKAccBuilder()).constructTransaction();
-        cashInDepositTransaction.getTransactionSource().setAccountNumber("0-0-Dummy");
-        cashInDepositTransaction.getTransactionSource().setTransactionCode(TransactionCode.CASH_IN_850.getTransCode());
-        double cashInAmount = cashInDepositTransaction.getTransactionSource().getAmount();
+        // Set up Cash In source
+        cashInSource.setAccountNumber("0-0-Dummy");
+        cashInSource.setTransactionCode(TransactionCode.CASH_IN_850.getTransCode());
+        double cashInAmount = cashInSource.getAmount();
 
-        cashInDepositTransaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
-        cashInDepositTransaction.getTransactionDestination().setTransactionCode("211 - Normal Deposit");
-        cashInDepositTransaction.getTransactionDestination().setAmount(miscDebitAmount + cashInAmount);
+        // Set up Deposit destination
+        depositDestination.setAccountNumber(savingsAccount.getAccountNumber());
+        depositDestination.setTransactionCode(TransactionCode.NORMAL_DEPOSIT_211.getTransCode());
+        depositDestination.setAmount(miscDebitAmount + cashInAmount);
 
         // Get 'Print Balance On Receipt' value
         printBalanceOnReceiptValue = WebAdminActions.webAdminUsersActions().getPrintBalanceOnReceiptValue();
@@ -88,12 +95,21 @@ public class C22683_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
         // Set the account data
         Pages.aSideMenuPage().clickSettingsMenuItem();
         SettingsPage.mainPage().clickViewProfile();
+
         userId = SettingsPage.viewUserPage().getUSERIDValue();
         String bankBranch = SettingsPage.viewUserPage().getBankBranch();
+
         checkingAccount.setBankBranch(bankBranch);
         savingsAccount.setBankBranch(bankBranch);
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
         savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
+        Actions.loginActions().doLogOut();
+
+        // Get bank info
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        tellerLocation = Actions.tellerBankBranchOverviewActions().getTellerLocation(bankBranch);
+        Pages.aSideMenuPage().clickClientMenuItem();
 
         // Create a client
         ClientsActions.individualClientActions().createClient(client);
@@ -138,7 +154,9 @@ public class C22683_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
                 "- cash in == $10\n" +
                 "- check == $25\n" +
                 "- deposit == $35");
-        Actions.transactionActions().createMiscDebitCashInToDepositTransaction(cashInDepositTransaction, miscDebitGLCreditTransaction);
+        Actions.transactionActions().setMiscDebitSource(miscDebitSource, 0);
+        Actions.transactionActions().setCashInSource(cashInSource);
+        Actions.transactionActions().setDepositDestination(depositDestination, 0);
 
         logInfo("Step 7: Click [Commit Transaction] button and confirm verify screen");
         Actions.transactionActions().clickCommitButton();
@@ -158,51 +176,66 @@ public class C22683_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
                 "The 'Transaction was successfully completed.' label is not visible");
 
         // General info:
-        // TODO: Bank label and bank address (from Settings->Bank Control Settings->Basic Info)
-        Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, "Client #:"), client.getIndividualType().getClientID(),
-                "'Client #' used in transaction does not match");
-        Assert.assertEquals(getClientValueFromReceipt(balanceInquiryImageData).trim(), client.getNameForDebitCard().trim(),
-                "'Client name' used in transaction does not match");
-        String systemDate = WebAdminActions.loginActions().getSystemDate();
-        Assert.assertTrue(getLineContainingValue(balanceInquiryImageData, "Current date").contains(systemDate),
+        Assert.assertTrue(balanceInquiryImageData.contains(tellerLocation.getBranchName()),
+                "'Branch name' does not match");
+        Assert.assertTrue(balanceInquiryImageData.contains(tellerLocation.getBankName()),
+                "'Bank name' does not match");
+        Assert.assertTrue(balanceInquiryImageData.contains(tellerLocation.getCity()),
+                "'City' does not match");
+        Assert.assertTrue(balanceInquiryImageData.contains(tellerLocation.getState()),
+                "'State' does not match");
+        Assert.assertTrue(balanceInquiryImageData.contains(tellerLocation.getZipCode()),
+                "'Zip code' does not match");
+        Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, "Client #:"),
+                client.getIndividualType().getClientID(), "'Client #' used in transaction does not match");
+        String clientLine = getLineContainingValue(balanceInquiryImageData, "Client:");
+        Assert.assertTrue(clientLine.contains(client.getNameForDebitCard().split(" ")[1]),
+                "'Client last name' is not present in transaction");
+        Assert.assertTrue(clientLine.contains(client.getNameForDebitCard().split(" ")[0]),
+                "'Client first name' is not present in transaction");
+        String currentDate = DateTime.getLocalDateOfPattern("MM/dd/yyyy");
+        Assert.assertTrue(getLineContainingValue(balanceInquiryImageData, "Current date").contains(currentDate),
                 "'Current date' used in transaction does not match");
-        Assert.assertTrue(getLineContainingValue(balanceInquiryImageData, "Posting date").contains(systemDate),
+        String postingDate = DateTime.getLocalDateWithFormatPlusDays(currentDate, "MM/dd/yyyy", "MM/dd/yyyy", 1);
+        Assert.assertTrue(getLineContainingValue(balanceInquiryImageData, "Posting date").contains(postingDate),
                 "'Posting date' used in transaction does not match");
-        Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, "Teller ID:"), userId,
+        Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, "Teller ID:"), userId,
                 "Teller # (UserID) is not valid");
-        // TODO: Transaction # (bank.data.transaction.header -> name)
+        String transactionNumber = WebAdminActions.webAdminTransactionActions().getTransactionNumber(userCredentials, checkingAccount);
+        Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, "Transaction"),
+                transactionNumber.replaceAll("[^0-9]", ""), "Transaction number is not equal");
 
         // Fund details
-        Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, "Cash In"),
-                Functions.getStringValueWithOnlyDigits(cashInDepositTransaction.getTransactionSource().getAmount()),
+        Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, "Cash In"),
+                Functions.getStringValueWithOnlyDigits(cashInSource.getAmount()),
                 "'Cash In' Values not equal");
-        Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, "Checks"),
+        Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, "Checks"),
                 Functions.getStringValueWithOnlyDigits(0.00), "'Checks' Values not equal");
-        Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, "Cash Out"),
+        Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, "Cash Out"),
                 Functions.getStringValueWithOnlyDigits(0.00), "'Cash Out' Values not equal");
-        Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, "Net Amount"),
-                Functions.getStringValueWithOnlyDigits(cashInDepositTransaction.getTransactionSource().getAmount()),
+        Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, "Net Amount"),
+                Functions.getStringValueWithOnlyDigits(cashInSource.getAmount()),
                 "'Net Amount' Values not equal");
 
         // Additional section for each transaction item with regular account used and the following formatting:
         String lastFourOfChkAcc = checkingAccount.getAccountNumber().substring(checkingAccount.getAccountNumber().length() - 4);
         String chkProductType = checkingAccount.getProductType().split(" ")[0].toUpperCase();
-        Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, chkProductType), lastFourOfChkAcc,
+        Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, chkProductType), lastFourOfChkAcc,
                 "CHK Account number is not valid");
 
-        String chkFundTypeName = getFundTypeName(miscDebitGLCreditTransaction.getTransactionSource().getTransactionCode());
-        double chkAmount = miscDebitGLCreditTransaction.getTransactionSource().getAmount();
-        Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, chkFundTypeName),
+        String chkFundTypeName = getFundTypeName(miscDebitSource.getTransactionCode());
+        double chkAmount = miscDebitSource.getAmount();
+        Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, chkFundTypeName),
                 Functions.getStringValueWithOnlyDigits(chkAmount), "CHK transaction amount is not valid");
 
         String lastFourOfSavingsAcc = savingsAccount.getAccountNumber().substring(savingsAccount.getAccountNumber().length() - 4);
         String savingsProductType = savingsAccount.getProductType().split(" ")[0].toUpperCase();
-        Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, savingsProductType), lastFourOfSavingsAcc,
+        Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, savingsProductType), lastFourOfSavingsAcc,
                 "CHK Savings number is not valid");
 
-        String savingsFundTypeName = getFundTypeName(cashInDepositTransaction.getTransactionDestination().getTransactionCode());
-        double savingsAmount = cashInDepositTransaction.getTransactionDestination().getAmount();
-        Assert.assertEquals(getValueFromReceiptStringByName(balanceInquiryImageData, savingsFundTypeName),
+        String savingsFundTypeName = getFundTypeName(depositDestination.getTransactionCode());
+        double savingsAmount = depositDestination.getAmount();
+        Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, savingsFundTypeName),
                 Functions.getStringValueWithOnlyDigits(savingsAmount), "Savings transaction amount is not valid");
 
         // Bank's slogan, e.g. "Bank healthy, be happy!" label
@@ -210,24 +243,15 @@ public class C22683_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
                 "Receipt does not contain 'Bank healthy, be happy!' slogan");
     }
 
-    public static String getFundTypeName(String transactionCode) {
+    private String getFundTypeName(String transactionCode) {
         return transactionCode.replaceAll("[^a-zA-z ]", "").trim();
     }
 
-    private String getValueFromReceiptStringByName(String data, String name) {
+    private String getNumericValueFromReceiptStringByName(String data, String propName) {
         for (String line : data.split("\n")) {
-            if (line.contains(name)) {
+            if (line.contains(propName)) {
                 String[] l = line.split(" ");
                 return l[l.length - 1].replaceAll("[^0-9]", "");
-            }
-        }
-        return null;
-    }
-
-    private String getClientValueFromReceipt(String data) {
-        for (String line : data.split("\n")) {
-            if (line.contains("Client:")) {
-                return line.replaceAll("Client: ", "");
             }
         }
         return null;

@@ -6,6 +6,8 @@ import com.nymbus.pages.settings.cashdrawer.ViewCashDrawerPage;
 import com.nymbus.pages.settings.products.ProductOverviewPage;
 import com.nymbus.pages.settings.products.ProductsOverviewPage;
 import com.nymbus.pages.settings.safedepositboxsizes.SafeDepositBoxSizesPage;
+import com.nymbus.pages.settings.tellerlocation.BranchOverviewPage;
+import com.nymbus.pages.settings.tellerlocation.TellerLocationOverviewPage;
 import com.nymbus.pages.settings.users.AddUsersPage;
 import com.nymbus.pages.settings.users.UsersSearchPage;
 import com.nymbus.pages.settings.users.ViewUserPage;
@@ -25,6 +27,8 @@ public class SettingsPage {
     private static SafeDepositBoxSizesPage safeDepositBoxSizesPage;
     private static ProductsOverviewPage productsOverviewPage;
     private static ProductOverviewPage productOverviewPage;
+    private static TellerLocationOverviewPage tellerLocationOverviewPage;
+    private static BranchOverviewPage branchOverviewPage;
 
     /**
      * This function return an instance of `MainPage`
@@ -124,5 +128,25 @@ public class SettingsPage {
             productOverviewPage = new ProductOverviewPage();
         }
         return productOverviewPage;
+    }
+
+    /**
+     * This function return an instance of `TellerLocationOverviewPage`
+     */
+    public static TellerLocationOverviewPage tellerLocationOverviewPage() {
+        if (tellerLocationOverviewPage == null) {
+            tellerLocationOverviewPage = new TellerLocationOverviewPage();
+        }
+        return tellerLocationOverviewPage;
+    }
+
+    /**
+     * This function return an instance of `BranchOverviewPage`
+     */
+    public static BranchOverviewPage branchOverviewPage() {
+        if (branchOverviewPage == null) {
+            branchOverviewPage = new BranchOverviewPage();
+        }
+        return branchOverviewPage;
     }
 }

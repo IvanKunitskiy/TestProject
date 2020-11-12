@@ -37,6 +37,9 @@ public class MainPage extends PageTools {
     // Bank Control Settings
     private By viewSettingsLink = By.xpath("//a[span[text()='View Settings']]");
 
+    // Teller Locations
+    private By viewAllTellerLocationsLink = By.xpath("//a[text()='View all Teller Locations']");
+
     @Step("Waiting 'Cash Drawer' region")
     public void waitForCashDrawerRegion() {
         waitForElementVisibility(cashDrawerRegion);
@@ -137,5 +140,12 @@ public class MainPage extends PageTools {
     public void clickViewSettingsLink() {
         waitForElementClickable(viewSettingsLink);
         click(viewSettingsLink);
+    }
+
+    // Teller locations
+    @Step("Click 'View all Teller Locations' link")
+    public void clickViewAllTellerLocationsLink() {
+        scrollToPlaceElementInCenter(viewAllTellerLocationsLink);
+        click(viewAllTellerLocationsLink);
     }
 }

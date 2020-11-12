@@ -254,10 +254,18 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      */
     private By customerId = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]"
             + "//td//span[@key-name='transactioncustomerid']");
+    private By name = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]"
+            + "//td/div[@key-name='(databean)name']");
 
     @Step ("Get 'terminalId' {0} value")
     public String getCustomerIdValue(int index) {
         waitForElementVisibility(customerId, index);
         return getElementText(customerId, index).trim();
+    }
+
+    @Step ("Get 'Name' {0} value")
+    public String getNameValue(int index) {
+        waitForElementVisibility(name, index);
+        return getElementText(name, index).trim();
     }
 }

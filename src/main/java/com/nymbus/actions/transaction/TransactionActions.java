@@ -155,7 +155,7 @@ public class TransactionActions {
         }
     }
 
-    private void setCashInSource(TransactionSource source) {
+    public void setCashInSource(TransactionSource source) {
         Pages.tellerPage().clickCashInButton();
         setAmounts(source.getDenominationsHashMap());
         Pages.cashInModalWindowPage().clickOKButton();
