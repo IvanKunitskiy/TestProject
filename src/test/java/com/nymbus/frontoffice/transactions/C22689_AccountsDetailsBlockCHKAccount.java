@@ -7,6 +7,7 @@ import com.nymbus.actions.transfers.TransfersActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -179,6 +180,7 @@ public class C22689_AccountsDetailsBlockCHKAccount extends BaseTest {
 
         logInfo("Step 5: Click [Details] button");
         Pages.tellerPage().clickDetailsButton();
+        SelenideTools.switchToLastTab();
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
 }
