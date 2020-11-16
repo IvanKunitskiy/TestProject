@@ -1,8 +1,10 @@
 package com.nymbus.newmodels.generation.tansactions.factory;
 
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.Denominations;
 import com.nymbus.newmodels.transaction.enums.SourceType;
+import com.nymbus.newmodels.transaction.enums.TransactionCode;
 
 import java.util.HashMap;
 
@@ -21,7 +23,27 @@ public class SourceFactory {
         TransactionSource source = new TransactionSource();
         source.setSourceType(SourceType.MISC_DEBIT);
         source.setAccountNumber("12400589946");
-        source.setTransactionCode("116 - Withdrawal");
+        source.setTransactionCode(TransactionCode.WITHDRAWAL_116.getTransCode());
+        source.setAmount(100);
+        return source;
+    }
+
+    public static TransactionSource getWithdrawalSource() {
+        TransactionSource source = new TransactionSource();
+        source.setSourceType(SourceType.WITHDRAWL);
+        source.setAccountNumber("12400589946");
+        source.setTransactionCode(TransactionCode.WITHDRAWAL_216.getTransCode());
+        source.setAmount(100);
+        return source;
+    }
+
+    public static TransactionSource getCheckSource() {
+        TransactionSource source = new TransactionSource();
+        source.setSourceType(SourceType.CHECK);
+        source.setRoutingNumber("122105155");
+        source.setAccountNumber("12400589946");
+        source.setCheckNumber(Generator.getRandomStringNumber(6));
+        source.setTransactionCode(TransactionCode.CHECK.getTransCode());
         source.setAmount(100);
         return source;
     }

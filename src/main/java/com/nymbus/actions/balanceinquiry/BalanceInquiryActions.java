@@ -137,4 +137,14 @@ public class BalanceInquiryActions {
             Pages.balanceInquiryModalPage().clickPrintBalancesOnReceiptCheckbox();
         }
     }
+
+    public String getNumericValueFromReceiptStringByName(String data, String propName) {
+        for (String line : data.split("\n")) {
+            if (line.contains(propName)) {
+                String[] l = line.split(" ");
+                return l[l.length - 1].replaceAll("[^0-9]", "");
+            }
+        }
+        return null;
+    }
 }
