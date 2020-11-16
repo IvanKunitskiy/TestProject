@@ -32,7 +32,6 @@ import org.testng.annotations.Test;
 public class C22690_AccountsDetailsBlockSavingsAccount extends BaseTest {
     private BalanceDataForCHKAcc expectedSavingsBalanceData;
     private TransactionData savingsAccTransactionData;
-    private Account checkAccount;
     private Account savingsAccount;
     private double savingsTransactionAmount = 200.00;
     private IndividualClient client;
@@ -45,7 +44,6 @@ public class C22690_AccountsDetailsBlockSavingsAccount extends BaseTest {
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         client = individualClientBuilder.buildClient();
-        checkAccount = new Account().setCHKAccountData();
         savingsAccount = new Account().setSavingsAccountData();
         Transaction depositSavingsTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
 
@@ -117,13 +115,13 @@ public class C22690_AccountsDetailsBlockSavingsAccount extends BaseTest {
         Pages.tellerPage().clickMiscDebitButton();
 
         logInfo("Step 4: Search for account by its full account number");
-        Actions.transactionActions().inputAccountNumber(checkAccount.getAccountNumber());
+        Actions.transactionActions().inputAccountNumber(savingsAccount.getAccountNumber());
 
         logInfo("Step 5: Look at the information displayed for CHK account in \"Account Quick View\" section");
         String pifNumber = Actions.transactionActions().getPIFNumber();
         Assert.assertEquals(pifNumber, client.getIndividualType().getClientID(), "Client ID doesn't match");
         String accountType = Actions.transactionActions().getAccountType();
-        Assert.assertEquals(accountType, checkAccount.getProductType(), "Account Type doesn't match");
+        Assert.assertEquals(accountType, savingsAccount.getProductType(), "Account Type doesn't match");
         double currentBalance = Actions.transactionActions().getCurrentBalance();
         Assert.assertEquals(currentBalance, expectedSavingsBalanceData.getCurrentBalance(),
                 "Current balance not correct");
@@ -137,7 +135,7 @@ public class C22690_AccountsDetailsBlockSavingsAccount extends BaseTest {
         Assert.assertEquals(automaticOverdraftLimit, "", "Overdraft limit doesn't match");
         String dateOpened = Actions.transactionActions().getDateOpened();
         String date = DateTime.getDateWithFormat(dateOpened, "MMMMMMM dd,yyyy", "MM/dd/yyyy");
-        Assert.assertEquals(date, checkAccount.getDateOpened(), "Date opened doesn't match");
+        Assert.assertEquals(date, savingsAccount.getDateOpened(), "Date opened doesn't match");
 
         logInfo("Step 5: Click [Details] button");
         Pages.tellerPage().clickDetailsButton();

@@ -491,6 +491,9 @@ public class TellerPage extends PageTools {
     public String getFirstAutomaticOverdraftLimit() {
         waitForElementVisibility(automaticOverdraftLimit);
         String limit = getElementText(automaticOverdraftLimit).trim();
+        if (!limit.contains("/")){
+            return limit;
+        }
         return limit.substring(0, limit.indexOf("/")).trim();
     }
 
