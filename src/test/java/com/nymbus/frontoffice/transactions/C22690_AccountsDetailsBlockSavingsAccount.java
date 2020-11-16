@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.transactions;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
@@ -68,11 +69,13 @@ public class C22690_AccountsDetailsBlockSavingsAccount extends BaseTest {
         depositSavingsTransaction.getTransactionDestination().setTransactionCode("209 - Deposit");
         depositSavingsTransaction.getTransactionDestination().setAmount(savingsTransactionAmount);
         depositSavingsTransaction.getTransactionSource().setAmount(savingsTransactionAmount);
+        depositSavingsTransaction.setTransactionDate(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 3));
 
         // Perform deposit transaction
         Actions.transactionActions().goToTellerPage();
         Actions.transactionActions().doLoginTeller();
         Actions.transactionActions().createTransaction(depositSavingsTransaction);
+        Pages.tellerPage().setEffectiveDate(depositSavingsTransaction.getTransactionDate());
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
 
