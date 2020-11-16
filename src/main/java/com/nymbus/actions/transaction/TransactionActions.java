@@ -441,11 +441,55 @@ public class TransactionActions {
         return Double.parseDouble(availableBalanceValue);
     }
 
+    public double getCurrentBalance() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        String currentBalance = Pages.tellerPage().getCurrentBalance();
+        return Double.parseDouble(currentBalance);
+    }
+
+    public double getAccruedInterest() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        String accruedInterest = Pages.tellerPage().getAccruedInterest();
+        return Double.parseDouble(accruedInterest);
+    }
+
+    public String getPIFNumber() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getPIFNumber();
+    }
+
+    public String getDateOpened() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getDateOpened();
+    }
+
+    public String getAccountType() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getAccountType();
+    }
+
     public String getAutomaticOverdraftLimit() {
         if(!Pages.tellerPage().isAccountQuickViewVisible()) {
             Pages.tellerPage().clickAccountQuickViewArrow();
         }
         return Pages.tellerPage().getAutomaticOverdraftLimit().trim();
+    }
+
+    public String getFirstAutomaticOverdraftLimit() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getFirstAutomaticOverdraftLimit().trim();
     }
 
     public boolean isTransactionCodePresent(String transCode) {
@@ -529,5 +573,11 @@ public class TransactionActions {
 
     public void confirmTransaction(){
         Pages.confirmModalPage().clickYes();
+    }
+
+    public void inputAccountNumber(String accountNumber) {
+        Pages.tellerPage().clickAccountNumberDiv(1);
+        Pages.tellerPage().typeAccountNumber(1,accountNumber);
+        Pages.tellerPage().clickOnAutocompleteDropDownItem(accountNumber);
     }
 }

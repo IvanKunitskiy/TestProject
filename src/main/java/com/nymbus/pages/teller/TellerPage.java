@@ -224,12 +224,6 @@ public class TellerPage extends PageTools {
         jsClick(accountNumberDiv, i);
     }
 
-    @Step("Click {0} 'Account number' input")
-    public void clickAccountNumberInput(int i) {
-        waitForElementClickable(accountNumberInput, i);
-        click(accountNumberInput, i);
-    }
-
     @Step("Click {0} 'Routing number' division")
     public void clickRoutingNumberDiv(int i) {
         waitForElementClickable(routingNumberDiv, i);
@@ -254,6 +248,12 @@ public class TellerPage extends PageTools {
         waitForElementClickable(checkNumberInput, i);
         jsType(number, checkNumberInput, i);
         jsRiseOnchange(checkNumberInput, i);
+    }
+
+    @Step("Click {0} 'Account number' input")
+    public void clickAccountNumberInput(int i) {
+        waitForElementClickable(accountNumberInput, i);
+        click(accountNumberInput, i);
     }
 
     @Step("Set {0} 'Account number' value {1}")
@@ -430,8 +430,19 @@ public class TellerPage extends PageTools {
     private By accountQuickViewToggleButton = By.xpath("//a[@ng-click='toggleAccountQuick()']//i");
     private By availableBalance = By.xpath("//*[@id='accordion-operation-aqv-content']" +
             "//span[text()='Available Balance']//ancestor::node()[1]//span[2]");
+    private By currentBalance = By.xpath("//*[@id='accordion-operation-aqv-content']" +
+            "//span[text()='Current Balance']//ancestor::node()[1]//span[2]");
+    private By accruedInterest = By.xpath("//*[@id='accordion-operation-aqv-content']" +
+            "//span[text()='Accrued Interest']//ancestor::node()[1]//span[2]");
     private By automaticOverdraftLimit = By.xpath("//*[@id='accordion-operation-aqv-content']" +
             "//span[text()='Automatic Overdraft Limit']//ancestor::node()[1]//span[2]");
+    private By pIFNumber = By.xpath("//*[@id='accordion-operation-aqv-content']" +
+            "//span[text()='PIF Number']//ancestor::node()[1]//span[2]");
+    private By accountType = By.xpath("//*[@id='accordion-operation-aqv-content']" +
+            "//span[text()='Account Type']//ancestor::node()[1]//span[2]");
+    private By dateOpened = By.xpath("//*[@id='accordion-operation-aqv-content']" +
+            "//span[text()='Date Opened']//ancestor::node()[1]//span[2]");
+    private By detaulsButton = By.xpath("//button[contains(string(), 'Details')]");
 
     @Step("Is account quick view visible")
     public boolean isAccountQuickViewVisible() {
@@ -445,10 +456,28 @@ public class TellerPage extends PageTools {
         jsClick(accountQuickViewToggleButton);
     }
 
+    @Step("Click details button")
+    public void clickDetailsButton() {
+        waitForElementVisibility(detaulsButton);
+        jsClick(detaulsButton);
+    }
+
     @Step("Get 'Available Balance' value")
     public String getAvailableBalance() {
         waitForElementVisibility(availableBalance);
         return getElementText(availableBalance).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Current Balance' value")
+    public String getCurrentBalance() {
+        waitForElementVisibility(currentBalance);
+        return getElementText(currentBalance).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Accrued Interest' value")
+    public String getAccruedInterest() {
+        waitForElementVisibility(accruedInterest);
+        return getElementText(accruedInterest).trim().replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Automatic Overdraft Limit' value")
@@ -456,5 +485,30 @@ public class TellerPage extends PageTools {
         waitForElementVisibility(automaticOverdraftLimit);
         String limit = getElementText(automaticOverdraftLimit).trim();
         return limit.substring(limit.indexOf("/")).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Automatic Overdraft Limit' value")
+    public String getFirstAutomaticOverdraftLimit() {
+        waitForElementVisibility(automaticOverdraftLimit);
+        String limit = getElementText(automaticOverdraftLimit).trim();
+        return limit.substring(0, limit.indexOf("/")).trim();
+    }
+
+    @Step("Get 'PIF Number' value")
+    public String getPIFNumber() {
+        waitForElementVisibility(pIFNumber);
+        return getElementText(pIFNumber).trim();
+    }
+
+    @Step("Get 'Date opened' value")
+    public String getDateOpened() {
+        waitForElementVisibility(dateOpened);
+        return getElementText(dateOpened).trim();
+    }
+
+    @Step("Get 'Account Type' value")
+    public String getAccountType() {
+        waitForElementVisibility(accountType);
+        return getElementText(accountType).trim();
     }
 }
