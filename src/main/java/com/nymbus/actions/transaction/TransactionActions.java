@@ -441,6 +441,14 @@ public class TransactionActions {
         return Double.parseDouble(availableBalanceValue);
     }
 
+    public double getOriginalBalance() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        String originalBalance = Pages.tellerPage().getOriginalBalance();
+        return Double.parseDouble(originalBalance);
+    }
+
     public double getCurrentBalance() {
         if(!Pages.tellerPage().isAccountQuickViewVisible()) {
             Pages.tellerPage().clickAccountQuickViewArrow();
@@ -476,6 +484,13 @@ public class TransactionActions {
             Pages.tellerPage().clickAccountQuickViewArrow();
         }
         return Pages.tellerPage().getAccountType();
+    }
+
+    public String getProductType() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getProductType();
     }
 
     public String getAutomaticOverdraftLimit() {

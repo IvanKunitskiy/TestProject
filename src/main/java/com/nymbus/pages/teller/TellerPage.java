@@ -430,6 +430,8 @@ public class TellerPage extends PageTools {
     private By accountQuickViewToggleButton = By.xpath("//a[@ng-click='toggleAccountQuick()']//i");
     private By availableBalance = By.xpath("//*[@id='accordion-operation-aqv-content']" +
             "//span[text()='Available Balance']//ancestor::node()[1]//span[2]");
+    private By originalBalance = By.xpath("//*[@id='accordion-operation-aqv-content']" +
+            "//span[text()='Original Balance']//ancestor::node()[1]//span[2]");
     private By currentBalance = By.xpath("//*[@id='accordion-operation-aqv-content']" +
             "//span[text()='Current Balance']//ancestor::node()[1]//span[2]");
     private By accruedInterest = By.xpath("//*[@id='accordion-operation-aqv-content']" +
@@ -440,6 +442,8 @@ public class TellerPage extends PageTools {
             "//span[text()='PIF Number']//ancestor::node()[1]//span[2]");
     private By accountType = By.xpath("//*[@id='accordion-operation-aqv-content']" +
             "//span[text()='Account Type']//ancestor::node()[1]//span[2]");
+    private By productType = By.xpath("//*[@id='accordion-operation-aqv-content']" +
+            "//span[text()='Product Type']//ancestor::node()[1]//span[2]");
     private By dateOpened = By.xpath("//*[@id='accordion-operation-aqv-content']" +
             "//span[text()='Date Opened']//ancestor::node()[1]//span[2]");
     private By detaulsButton = By.xpath("//button[contains(string(), 'Details')]");
@@ -466,6 +470,12 @@ public class TellerPage extends PageTools {
     public String getAvailableBalance() {
         waitForElementVisibility(availableBalance);
         return getElementText(availableBalance).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Original Balance' value")
+    public String getOriginalBalance() {
+        waitForElementVisibility(originalBalance);
+        return getElementText(originalBalance).trim().replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Current Balance' value")
@@ -513,5 +523,11 @@ public class TellerPage extends PageTools {
     public String getAccountType() {
         waitForElementVisibility(accountType);
         return getElementText(accountType).trim();
+    }
+
+    @Step("Get 'Product Type' value")
+    public String getProductType() {
+        waitForElementVisibility(productType);
+        return getElementText(productType).trim();
     }
 }
