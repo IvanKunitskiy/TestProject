@@ -126,7 +126,7 @@ public class C22691_AccountsDetailsBlockCDAccount extends BaseTest {
         String accountType = Actions.transactionActions().getAccountType();
         Assert.assertEquals(accountType, cdAccount.getProductType(), "Account Type doesn't match");
         String productType = Actions.transactionActions().getProductType();
-        Assert.assertEquals(productType, cdAccount.getProductType().substring(0,2), "Product Type doesn't match");
+        Assert.assertEquals(productType, AccountType.CD.getAccountType(), "Product Type doesn't match");
         double currentBalance = Actions.transactionActions().getCurrentBalance();
         Assert.assertEquals(currentBalance, expectedBalanceData.getCurrentBalance(),
                 "Current balance not correct");
