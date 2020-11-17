@@ -87,7 +87,6 @@ public class C22691_AccountsDetailsBlockCDAccount extends BaseTest {
         accTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "-", expectedBalanceData.getCurrentBalance(), transactionAmount);
         accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
-        //cdAccount.setAccountType(Pages.accountDetailsPage().getAcc);
         Actions.loginActions().doLogOut();
 
         // Set up instruction
