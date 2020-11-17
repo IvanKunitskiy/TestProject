@@ -446,6 +446,10 @@ public class TellerPage extends PageTools {
             "//span[text()='Product Type']//ancestor::node()[1]//span[2]");
     private By dateOpened = By.xpath("//*[@id='accordion-operation-aqv-content']" +
             "//span[text()='Date Opened']//ancestor::node()[1]//span[2]");
+    private By boxSize = By.xpath("//*[@id='accordion-operation-aqv-content']" +
+            "//span[text()='Box Size']//ancestor::node()[1]//span[2]");
+    private By rentalAmount = By.xpath("//*[@id='accordion-operation-aqv-content']" +
+            "//span[text()='Rental Amount']//ancestor::node()[1]//span[2]");
     private By detaulsButton = By.xpath("//button[contains(string(), 'Details')]");
 
     @Step("Is account quick view visible")
@@ -517,6 +521,18 @@ public class TellerPage extends PageTools {
     public String getDateOpened() {
         waitForElementVisibility(dateOpened);
         return getElementText(dateOpened).trim();
+    }
+
+    @Step("Get 'Box Size' value")
+    public String getBoxSize() {
+        waitForElementVisibility(boxSize);
+        return getElementText(boxSize).trim();
+    }
+
+    @Step("Get 'Rental Amount' value")
+    public String getRentalAmount() {
+        waitForElementVisibility(rentalAmount);
+        return getElementText(rentalAmount).trim().replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Account Type' value")
