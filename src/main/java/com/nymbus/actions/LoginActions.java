@@ -29,6 +29,15 @@ public class LoginActions {
         Pages.loginPage().waitForLoginForm();
     }
 
+    public void doLogOutWithSubmit() {
+        Pages.navigationPage().waitForUserMenuVisible();
+        if (!Pages.navigationPage().isSingOutButtonVisible())
+            Pages.navigationPage().clickAccountButton();
+        Pages.navigationPage().clickSignOut();
+        Actions.transactionActions().confirmTransaction();
+        Pages.loginPage().waitForLoginForm();
+    }
+
     public void doLogOutProgrammatically() {
         SelenideTools.clearCookies();
         SelenideTools.refresh();
