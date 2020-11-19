@@ -98,6 +98,9 @@ public class C24991_CommitCashTransactionWithAccountOwnerTest extends BaseTest {
         Pages.verifyConductorModalPage().clickVerifyButton();
         String imgSrc = Actions.transactionActions().getImageSrcFromPopup();
         String[] lines = Actions.balanceInquiryActions().getReceiptLines(imgSrc);
+        for (String line : lines) {
+            System.out.println(line);
+        }
 
         logInfo("Recognized transaction receipt: \n" +
                 Arrays.toString(lines));
