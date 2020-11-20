@@ -124,6 +124,9 @@ public class BalanceInquiryActions {
         boolean contains = false;
 
         for (String line : lines) {
+            if(line.contains("Client 1?")){
+                line = line.replace("Client 1?", "Client #");
+            }
             if (line.startsWith(lineStartsWith)) {
                 contains = line.endsWith(lineEndsWith);
                 break;
