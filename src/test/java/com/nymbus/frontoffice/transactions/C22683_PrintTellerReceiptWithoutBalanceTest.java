@@ -178,6 +178,8 @@ public class C22683_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
                 "The 'Transaction was successfully completed.' label is not visible");
 
         // General info:
+        Assert.assertTrue(balanceInquiryImageData.contains(tellerLocation.getBranchName()),
+                "'Branch name' does not match");
         Assert.assertTrue(balanceInquiryImageData.contains(tellerLocation.getBankName()),
                 "'Bank name' does not match");
         Assert.assertTrue(balanceInquiryImageData.contains(tellerLocation.getCity()),
