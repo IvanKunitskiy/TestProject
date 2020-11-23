@@ -84,7 +84,13 @@ public class BalanceInquiryActions {
         outText.deallocate();
         pixDestroy(image);
 
-        return outText.getString();
+        String text = outText.getString();
+
+        if (text.contains("Beglnning")){
+            text = text.replace("Beglnning", "Beginning");
+        }
+
+        return text;
     }
 
     public boolean isBalancePresentByType(String imageText, String balanceAmount, String accountBalanceType) {
@@ -118,6 +124,9 @@ public class BalanceInquiryActions {
         boolean contains = false;
 
         for (String line : lines) {
+            if(line.contains("Client 1?")){
+                line = line.replace("Client 1?", "Client #");
+            }
             if (line.startsWith(lineStartsWith)) {
                 contains = line.endsWith(lineEndsWith);
                 break;
@@ -141,6 +150,9 @@ public class BalanceInquiryActions {
     public String getNumericValueFromReceiptStringByName(String data, String propName) {
         for (String line : data.split("\n")) {
             if (line.contains(propName)) {
+                if (!line.contains("$")){
+                    line = line.replace(" 5"," $ ");
+                }
                 String[] l = line.split(" ");
                 return l[l.length - 1].replaceAll("[^0-9]", "");
             }

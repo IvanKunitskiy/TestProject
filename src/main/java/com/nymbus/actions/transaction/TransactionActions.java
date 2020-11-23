@@ -479,6 +479,20 @@ public class TransactionActions {
         return Pages.tellerPage().getDateOpened();
     }
 
+    public String getBoxSize() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getBoxSize();
+    }
+
+    public String getRentalAmount() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getRentalAmount();
+    }
+
     public String getAccountType() {
         if(!Pages.tellerPage().isAccountQuickViewVisible()) {
             Pages.tellerPage().clickAccountQuickViewArrow();
