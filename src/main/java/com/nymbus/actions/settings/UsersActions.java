@@ -24,11 +24,11 @@ public class UsersActions {
         UserSettings userSettings = new UserSettings();
         userSettings.setCashDrawer(getCashDrawerWithoutUserName());
         userSettings.setLocation(SettingsPage.viewUserPage().getLocationValue());
-        return  userSettings;
+        return userSettings;
     }
 
     private String getCashDrawerWithoutUserName() {
-        String [] cashDrawerFullValue = SettingsPage.viewUserPage().getCashDrawerValue().split(" ");
+        String[] cashDrawerFullValue = SettingsPage.viewUserPage().getCashDrawerValue().split(" ");
         return String.format("%s", cashDrawerFullValue[0]);
     }
 
@@ -249,8 +249,8 @@ public class UsersActions {
         List<SafeDepositKeyValues> safeDepositKeyValues = new ArrayList<>();
         int rowsCount = SettingsPage.safeDepositBoxSizesPage().getBoxSizeRowsCount();
         for (int i = 0; i < rowsCount; i++) {
-            String boxSize = SettingsPage.safeDepositBoxSizesPage().getBoxSizeValueByIndex(i+1);
-            String rentalAmount = SettingsPage.safeDepositBoxSizesPage().getRentalAmountByIndex(i+1);
+            String boxSize = SettingsPage.safeDepositBoxSizesPage().getBoxSizeValueByIndex(i + 1);
+            String rentalAmount = SettingsPage.safeDepositBoxSizesPage().getRentalAmountByIndex(i + 1);
             safeDepositKeyValues.add(new SafeDepositKeyValues(boxSize, Double.parseDouble(rentalAmount)));
         }
         return safeDepositKeyValues;
@@ -269,4 +269,40 @@ public class UsersActions {
 
         return SettingsPage.viewUserPage().getUSERIDValue();
     }
+
+    public boolean setCTROnlineAlert(String ctrLimit) {
+        boolean isChanged = false;
+        Pages.aSideMenuPage().waitForASideMenu();
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        Pages.settings().waitForSettingsPageLoaded();
+        SettingsPage.mainPage().clickViewSettingsLink();
+        SettingsPage.bankControlPage().clickMiscellaneousButton();
+        if (SettingsPage.bankControlPage().getOnlineSTRAlert().equals("0")) {
+            isChanged = true;
+            SettingsPage.bankControlPage().clickEditButton();
+            SettingsPage.bankControlPage().clickOnlineSTRAlert();
+        } else {
+            SettingsPage.bankControlPage().clickEditButton();
+        }
+        if (!(Integer.parseInt(SettingsPage.bankControlPage().getCTRLimitValue()) > 0)) {
+            SettingsPage.bankControlPage().setCTRLimitValue(ctrLimit);
+        }
+        //SettingsPage.bankControlPage().clickSaveButton();
+        return isChanged;
+    }
+
+    public void offCTROnlineAlert() {
+        Pages.aSideMenuPage().waitForASideMenu();
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        Pages.settings().waitForSettingsPageLoaded();
+        SettingsPage.mainPage().clickViewSettingsLink();
+        SettingsPage.bankControlPage().clickMiscellaneousButton();
+        if (SettingsPage.bankControlPage().getOnlineSTRAlert().equals("1")) {
+            SettingsPage.bankControlPage().clickEditButton();
+            SettingsPage.bankControlPage().clickOnlineSTRAlert();
+            //SettingsPage.bankControlPage().clickSaveButton();
+        }
+    }
+
+
 }

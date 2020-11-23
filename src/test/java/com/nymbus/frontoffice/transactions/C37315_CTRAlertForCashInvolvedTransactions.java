@@ -17,12 +17,16 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.CashInDepositCHKAccBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
-import com.nymbus.pages.settings.SettingsPage;
 import com.nymbus.pages.webadmin.WebAdminPages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class C37315_CTRAlertForCashInvolvedTransactions extends BaseTest {
     private Account savingsAccount;
@@ -30,6 +34,12 @@ public class C37315_CTRAlertForCashInvolvedTransactions extends BaseTest {
     private Transaction transaction;
     private Transaction transactionWithMoreLimit;
     private String clientRootId;
+    private int amount = 100;
+    private int moreLimitAmount = 11000;
+    private String ctrLimit = "10000";
+    private final String TOTAL_CASH_IN_AS_BENEFICIARY = "totalCashInAsBeneficiary";
+    private final String TOTAL_CASH_IN_AS_CONDUCTOR = "totalCashInAsConductor";
+    private boolean limitIsChanged = false;
 
     @BeforeMethod
     public void preCondition() {
@@ -57,32 +67,18 @@ public class C37315_CTRAlertForCashInvolvedTransactions extends BaseTest {
 
         //Create transactions
         transaction = new TransactionConstructor(new CashInDepositCHKAccBuilder()).constructTransaction();
-        transaction.getTransactionDestination().setAmount(100);
+        transaction.getTransactionDestination().setAmount(amount);
         transaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
         transaction.getTransactionDestination().setTransactionCode("209 - Deposit");
-        transaction.getTransactionSource().setAmount(100);
+        transaction.getTransactionSource().setAmount(amount);
         transactionWithMoreLimit = new TransactionConstructor(new CashInDepositCHKAccBuilder()).constructTransaction();
-        transactionWithMoreLimit.getTransactionDestination().setAmount(11000);
+        transactionWithMoreLimit.getTransactionDestination().setAmount(moreLimitAmount);
         transactionWithMoreLimit.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
         transactionWithMoreLimit.getTransactionDestination().setTransactionCode("209 - Deposit");
-        transactionWithMoreLimit.getTransactionSource().setAmount(11000);
+        transactionWithMoreLimit.getTransactionSource().setAmount(moreLimitAmount);
 
         //Set CTR Online Alert
-        Pages.aSideMenuPage().waitForASideMenu();
-        Pages.aSideMenuPage().clickSettingsMenuItem();
-        Pages.settings().waitForSettingsPageLoaded();
-        SettingsPage.mainPage().clickViewSettingsLink();
-        SettingsPage.bankControlPage().clickMiscellaneousButton();
-        if (SettingsPage.bankControlPage().getOnlineSTRAlert().equals("0")) {
-            SettingsPage.bankControlPage().clickEditButton();
-            SettingsPage.bankControlPage().clickOnlineSTRAlert();
-        } else {
-            SettingsPage.bankControlPage().clickEditButton();
-        }
-        if (!(Integer.parseInt(SettingsPage.bankControlPage().getOnlineSTRAlert()) > 0)) {
-            System.out.println("NNOOOO");
-        }
-        //SettingsPage.bankControlPage().clickSaveButton();
+        limitIsChanged = Actions.usersActions().setCTROnlineAlert(ctrLimit);
         Actions.loginActions().doLogOutProgrammatically();
     }
 
@@ -110,24 +106,78 @@ public class C37315_CTRAlertForCashInvolvedTransactions extends BaseTest {
         logInfo("Step 6: In another tab go to the WebAdmin and log in");
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        logInfo("Step 7: Go to DRL Caches (bankingcore) > CUSTOMER_CASH (REDIS) > " +
+                "\"Keys\" and search for Customer cash for selected Client by Customer ID");
         WebAdminActions.webAdminUsersActions().goToDRLCaches();
         WebAdminPages.drlCachesPage().clickBankingCoreRadio();
         WebAdminPages.drlCachesPage().clickKeysItemByValue("CUSTOMER_CASH");
+        WebAdminActions.webAdminUsersActions().goToCashValues(1, clientRootId);
+        Map<String, String> totalCashValues = getBeneficiaryConductorMap();
+        WebAdminActions.webAdminUsersActions().setFieldsMapWithValues(2, totalCashValues);
+        double expectedResult = amount + moreLimitAmount;
+        double actualBeneficiaryValue = Double.parseDouble(totalCashValues.get(TOTAL_CASH_IN_AS_BENEFICIARY));
+        double actualConductorValue = Double.parseDouble(totalCashValues.get(TOTAL_CASH_IN_AS_CONDUCTOR));
 
-
-
-
-
-
-
-
-
-
-
+        Assert.assertEquals(actualBeneficiaryValue, expectedResult, "totalCashInAsBeneficiary value is incorrect!");
+        Assert.assertEquals(actualConductorValue, expectedResult, "totalCashInAsConductor value is incorrect!");
 
         WebAdminActions.loginActions().doLogoutProgrammatically();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+
+        logInfo("Step 8: On Teller screen perform one more cash In transaction on selected account:\n" +
+                "- source: Cash In\n" +
+                "- destination: Deposit and CHK/Savings account from the precondition, select 109/209 - Deposit Trancode");
+        logInfo("Step 9: Set Transaction Amount so that CTR limit will be exceeded\n" +
+                "(e.g. if CTR Limit = $10000.00, and totalCashInAsConductor/totalCashInAsBeneficiary = " +
+                "$ 6000.00, then Transaction Amount can be $4000.01");
+        Actions.transactionActions().loginTeller();
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().createTransaction(transactionWithMoreLimit);
+
+        logInfo("Step 10: Click [Commit transaction] button and click [Verify] in Verify Client popup");
+        Actions.transactionActions().clickCommitButton();
+        Pages.verifyConductorModalPage().clickVerifyButton();
+
+        logInfo("Step 11: Click [OK] button");
+
+
+        logInfo("Step 12: In Webadmin refresh DRL Caches (bankingcore) page and verify Customer Cash" +
+                " again for the Client from the precondition");
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.webAdminUsersActions().goToDRLCaches();
+        WebAdminPages.drlCachesPage().clickBankingCoreRadio();
+        WebAdminPages.drlCachesPage().clickKeysItemByValue("CUSTOMER_CASH");
+        WebAdminActions.webAdminUsersActions().goToCashValues(1, clientRootId);
+        Map<String, String> totalCashValuesAfterMoreLimit = getBeneficiaryConductorMap();
+        WebAdminActions.webAdminUsersActions().setFieldsMapWithValues(2, totalCashValuesAfterMoreLimit);
+        double expectedResultAfterMoreLimit = amount + moreLimitAmount;
+        double actualBeneficiaryValueAfterMoreLimit = Double.parseDouble(totalCashValues.get(TOTAL_CASH_IN_AS_BENEFICIARY));
+        double actualConductorValueAfterMoreLimit = Double.parseDouble(totalCashValues.get(TOTAL_CASH_IN_AS_CONDUCTOR));
+
+        Assert.assertEquals(actualBeneficiaryValueAfterMoreLimit, expectedResultAfterMoreLimit, "totalCashInAsBeneficiary value is incorrect!");
+        Assert.assertEquals(actualConductorValueAfterMoreLimit, expectedResultAfterMoreLimit, "totalCashInAsConductor value is incorrect!");
+
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+
 
     }
 
+    @AfterMethod(description = "Return CTR Limit.")
+    public void postCondition() {
+        if (limitIsChanged) {
+            logInfo("Return CTR Limit");
+            Actions.usersActions().offCTROnlineAlert();
+        }
+    }
+
+    private Map<String, String> getBeneficiaryConductorMap() {
+        Map<String, String> result = new HashMap<>();
+        result.put(TOTAL_CASH_IN_AS_BENEFICIARY, "0");
+        result.put(TOTAL_CASH_IN_AS_CONDUCTOR, "0");
+        return result;
+    }
 
 }

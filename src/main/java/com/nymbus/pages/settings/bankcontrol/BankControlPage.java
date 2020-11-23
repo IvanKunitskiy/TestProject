@@ -11,7 +11,7 @@ public class BankControlPage extends PageTools {
     private final By applyCTROnlineAlert = By.xpath("//div[@data-field-id='CTROnlineAlert']//span");
     private final By applyCtrOnlineAlertButton = By.xpath("//div[@data-field-id='CTROnlineAlert']//input//..");
     private final By applyCtrOnlineAlertText = By.xpath("(//div[@data-field-id='CTROnlineAlert']//input)[2]");
-    private final By CTRLimit = By.xpath("//div[@data-field-id='CTRLimit']//span");
+    private final By CTRLimit = By.xpath("//div[@data-field-id='CTRLimit']//input");
 
     @Step("Click the 'Miscellaneous' button")
     public void clickMiscellaneousButton() {
@@ -46,9 +46,15 @@ public class BankControlPage extends PageTools {
     }
 
     @Step("Get 'CTR Limit' value")
-    public String getCTRLimitValue(){
+    public String getCTRLimitValue() {
         waitForElementPresent(CTRLimit);
-        return  getElementText(CTRLimit);
+        return getElementText(CTRLimit);
+    }
+
+    @Step("Input 'CTR Limit' value")
+    public void setCTRLimitValue(String limit) {
+        waitForElementPresent(CTRLimit);
+        type(limit, CTRLimit);
     }
 
 }
