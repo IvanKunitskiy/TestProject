@@ -110,7 +110,7 @@ public class C22698_CDTTellerSessionCommitSimpleCDTWithFee extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C22697, CDT+Teller Session - Commit simple CDT transfer with no fee")
+    @Test(description = "C22698, CDT+Teller Session - Commit simple CDT with fee")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
