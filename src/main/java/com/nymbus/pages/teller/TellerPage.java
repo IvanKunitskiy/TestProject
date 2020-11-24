@@ -13,6 +13,8 @@ public class TellerPage extends PageTools {
     private By effectiveDate = By.xpath("//input[@data-test-id='field-']");
     private By drawerNameInFooter = By.xpath("//footer//span[contains(text(), 'Drawer Name')]/span");
     private By transactionSection = By.xpath("//section[@ui-view='transaction']");
+    private By tellerOperation =By.xpath("//span[contains(string(),'Select Operation')]");
+    private By operationSelector = By.xpath("//span[contains(string(),'%s')]");
 
     @Step("Wait for transaction section visibility")
     public void waitForTransactionSectionVisibility() {
@@ -54,6 +56,18 @@ public class TellerPage extends PageTools {
     public String getEffectiveDate() {
         waitForElementClickable(effectiveDate);
         return getElementAttributeValue("value", effectiveDate);
+    }
+
+    @Step("Click 'Select Operation' popup")
+    public void clickSelectOperation(){
+        waitForElementVisibility(tellerOperation);
+        jsClick(tellerOperation);
+    }
+
+    @Step("Select operation")
+    public void selectOperation(String type){
+        waitForElementVisibility(operationSelector,type);
+        jsClick(operationSelector, type);
     }
 
     /**
