@@ -1,5 +1,6 @@
 package com.nymbus.actions.cashierdefined;
 
+import com.nymbus.newmodels.cashier.CashierDefinedTransactions;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
@@ -7,9 +8,9 @@ import com.nymbus.pages.Pages;
 
 public class CashierDefinedActions {
 
-    public void createTransaction(String type, Transaction transaction, boolean waiveFee){
+    public void createTransaction(CashierDefinedTransactions type, Transaction transaction, boolean waiveFee){
         int tempIndex = 0;
-        setTellerOperation(type);
+        setTellerOperation(type.getProduct());
         setWaiveFee(waiveFee);
         setTransactionSource(transaction.getTransactionSource(), tempIndex);
         setTransactionDestination(transaction.getTransactionDestination(), tempIndex);

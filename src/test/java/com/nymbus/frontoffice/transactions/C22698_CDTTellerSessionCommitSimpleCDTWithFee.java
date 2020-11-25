@@ -9,6 +9,7 @@ import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
 import com.nymbus.newmodels.account.product.RateType;
+import com.nymbus.newmodels.cashier.CashierDefinedTransactions;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
@@ -125,7 +126,8 @@ public class C22698_CDTTellerSessionCommitSimpleCDTWithFee extends BaseTest {
         logInfo("Step 4: Specify accounts from preconditions in source and destination line items;\n" +
                 "set transaction amount less than Debit Account's Available Balance\n" +
                 "Enter any value to the 'Notes' field;");
-        Actions.cashierDefinedActions().createTransaction("TRANSFER FROM SAVINGS TO CHECKING WITH FEE", transaction, false);
+        Actions.cashierDefinedActions().createTransaction(CashierDefinedTransactions.TRANSFER_FROM_SAVINGS_TO_CHECKING_WITH_FEE,
+                transaction, false);
         expectedBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount() + fee);
         expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount());
 

@@ -9,6 +9,7 @@ import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
 import com.nymbus.newmodels.account.product.RateType;
+import com.nymbus.newmodels.cashier.CashierDefinedTransactions;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
@@ -123,7 +124,7 @@ public class C22697_CDTTellerSessionCommitSimpleCDTTransferWithNoFee extends Bas
         logInfo("Step 3: Search for template from preconditions and select it");
         logInfo("Step 4: Specify accounts from preconditions in the source and destination line items;\n" +
                 "set transaction amount less than Debit Account's Available Balance");
-        Actions.cashierDefinedActions().createTransaction("TRANSFER FROM SAV TO CHK", transaction, false);
+        Actions.cashierDefinedActions().createTransaction(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK, transaction, false);
         expectedBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
         expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount());
 
