@@ -123,7 +123,7 @@ public class C22697_CDTTellerSessionCommitSimpleCDTTransferWithNoFee extends Bas
         logInfo("Step 3: Search for template from preconditions and select it");
         logInfo("Step 4: Specify accounts from preconditions in the source and destination line items;\n" +
                 "set transaction amount less than Debit Account's Available Balance");
-        Actions.cashierDefinedActions().createTransaction("TRANSFER FROM SAV TO CHK", transaction);
+        Actions.cashierDefinedActions().createTransaction("TRANSFER FROM SAV TO CHK", transaction, false);
         expectedBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
         expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount());
 

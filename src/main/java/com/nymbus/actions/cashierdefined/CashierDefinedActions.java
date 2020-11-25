@@ -7,12 +7,19 @@ import com.nymbus.pages.Pages;
 
 public class CashierDefinedActions {
 
-    public void createTransaction(String type, Transaction transaction){
+    public void createTransaction(String type, Transaction transaction, boolean waiveFee){
         int tempIndex = 0;
         setTellerOperation(type);
+        setWaiveFee(waiveFee);
         setTransactionSource(transaction.getTransactionSource(), tempIndex);
         setTransactionDestination(transaction.getTransactionDestination(), tempIndex);
 
+    }
+
+    private void setWaiveFee(boolean waiveFee) {
+        if (waiveFee){
+            Pages.tellerPage().clickWaiveFee();
+        }
     }
 
     private void setTellerOperation(String type) {

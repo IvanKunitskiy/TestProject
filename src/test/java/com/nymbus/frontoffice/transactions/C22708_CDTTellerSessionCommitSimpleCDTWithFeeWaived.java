@@ -21,6 +21,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -115,6 +116,62 @@ public class C22708_CDTTellerSessionCommitSimpleCDTWithFeeWaived extends BaseTes
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        logInfo("Step 2: Go to Cashier Defined Transactions screen and log in to proof date");
+        Actions.transactionActions().loginTeller();
+        Pages.aSideMenuPage().waitForASideMenu();
+        Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
+
+
+        logInfo("Step 3: Search for template from preconditions and select it");
+        logInfo("Step 4: Click on [Waive Fee] toggle button");
+        logInfo("Step 5: Specify accounts from preconditions in source and destination line items;\n" +
+                "set transaction amount less than Debit Account's Available Balance\n" +
+                "Enter any value to the 'Notes' field;");
+        Actions.cashierDefinedActions().createTransaction("TRANSFER FROM SAVINGS TO CHECKING WITH FEE", transaction, true);
+        expectedBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
+        expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount());
+
+        logInfo("Step 6: Click [Commit Transaction] button");
+        Actions.transactionActions().clickCommitButton();
+
+        logInfo("Step 7: Go to account used in DEBIT item and verify its:\n" +
+                "- current balance\n" +
+                "- available balance");
+        Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
+        BalanceDataForCHKAcc actualBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
+
+        Assert.assertEquals(actualBalanceData.getCurrentBalance(), expectedBalanceData.getCurrentBalance(),
+                "Current balance doesn't match!");
+        Assert.assertEquals(actualBalanceData.getAvailableBalance(), expectedBalanceData.getAvailableBalance(),
+                "Available balance doesn't match!");
+
+        logInfo("Step 8: Open account on the Transactions tab and verify the committed transaction");
+        Pages.accountDetailsPage().clickTransactionsTab();
+        chkAccTransactionData.setBalance(expectedBalanceData.getCurrentBalance());
+        AccountActions.retrievingAccountData().goToTransactionsTab();
+        TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
+        Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
+
+        logInfo("Step 9: Go to account used in CREDIT item and verify its:\n" +
+                "- current balance\n" +
+                "- available balance");
+        Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
+        BalanceDataForCHKAcc actualSavBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
+
+        Assert.assertEquals(actualSavBalanceData.getCurrentBalance(), expectedSavingsBalanceData.getCurrentBalance(),
+                "Current balance doesn't match!");
+        Assert.assertEquals(actualSavBalanceData.getAvailableBalance(), expectedSavingsBalanceData.getAvailableBalance(),
+                "Available balance doesn't match!");
+
+        logInfo("Step 10: Open account on the Transactions tab and verify the committed transaction");
+        Pages.accountDetailsPage().clickTransactionsTab();
+        savingsAccTransactionData.setBalance(expectedSavingsBalanceData.getCurrentBalance());
+        AccountActions.retrievingAccountData().goToTransactionsTab();
+        TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
+        Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
+
+
 
 
     }

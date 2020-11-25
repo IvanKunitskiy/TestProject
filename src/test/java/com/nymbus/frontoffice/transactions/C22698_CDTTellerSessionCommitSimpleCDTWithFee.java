@@ -125,7 +125,7 @@ public class C22698_CDTTellerSessionCommitSimpleCDTWithFee extends BaseTest {
         logInfo("Step 4: Specify accounts from preconditions in source and destination line items;\n" +
                 "set transaction amount less than Debit Account's Available Balance\n" +
                 "Enter any value to the 'Notes' field;");
-        Actions.cashierDefinedActions().createTransaction("TRANSFER FROM SAV TO CHK", transaction);
+        Actions.cashierDefinedActions().createTransaction("TRANSFER FROM SAVINGS TO CHECKING WITH FEE", transaction, false);
         expectedBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount() + fee);
         expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount());
 

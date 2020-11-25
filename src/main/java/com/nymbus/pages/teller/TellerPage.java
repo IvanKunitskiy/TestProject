@@ -362,6 +362,14 @@ public class TellerPage extends PageTools {
 
     private By transactionDestinationNotesInput = By.xpath("(//*[@id='accordion-operation-destinations-content']//*[@transaction='item'])[%s]//input[@ng-model='transaction.notes']");
 
+    private By waiveFeeButton = By.xpath("//dn-switch[contains(string(),'No')]");
+
+    @Step("Click 'Waive Fee' popup")
+    public void clickWaiveFee(){
+        waitForElementVisibility(waiveFeeButton);
+        jsClick(waiveFeeButton);
+    }
+
     @Step("Click transition {0} 'Details' arrow")
     public void clickDestinationDetailsArrow(int i) {
         waitForElementClickable(transactionDestinationDetailsArrow, i);
