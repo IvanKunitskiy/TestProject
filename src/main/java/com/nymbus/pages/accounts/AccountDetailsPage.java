@@ -112,7 +112,7 @@ public class AccountDetailsPage extends PageTools {
     private By collectedBalance = By.xpath("//*[@data-config-name='collectedbalance']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By accountStatus = By.xpath("//tr[@data-test-id='field-accountstatus']//span[contains(@class, 'ng-binding')]");
     private By activeStatus = By.xpath("//tr[@data-test-id='field-accountstatus']//span[contains(text(), 'Active')]");
-    private By accruedInterest = By.xpath("//*[contains(@data-config-name, 'accruedinterest')]" +
+    private By accruedInterest = By.xpath("//tr[@data-config-name='accruedinterest']" +
             "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By dateClosed = By.xpath("//*[@data-config-name='dateclosed']" +
             "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
@@ -244,6 +244,12 @@ public class AccountDetailsPage extends PageTools {
         waitForElementVisibility(accruedInterest);
         String accruedInterestValue = getElementText(accruedInterest).trim();
         return accruedInterestValue.replaceAll("[^0-9.-]", "");
+    }
+
+    @Step("Get 'Accrued Interest' value with period")
+    public String getAccruedInterestWithPeriod() {
+        waitForElementVisibility(accruedInterest);
+        return getElementText(accruedInterest).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'AvailableBalance' value")

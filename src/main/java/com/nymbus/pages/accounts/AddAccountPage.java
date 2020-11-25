@@ -430,10 +430,8 @@ public class AddAccountPage extends PageTools {
 
     @Step("Click the 'Call Class Code' selector button")
     public void clickCallClassCodeSelectorButton() {
-        waitForElementVisibility(callClassCodeSelectorButton);
         scrollToPlaceElementInCenter(callClassCodeSelectorButton);
-        waitForElementClickable(callClassCodeSelectorButton);
-        click(callClassCodeSelectorButton);
+        jsClick(callClassCodeSelectorButton);
     }
 
     @Step("Click the 'Current Officer' option")
@@ -633,10 +631,8 @@ public class AddAccountPage extends PageTools {
 
     @Step("Click 'Transactional Account' switch")
     public void clickTransactionalAccountSwitch() {
-        waitForElementVisibility(transactionalAccountSwitch);
-        waitForElementClickable(transactionalAccountSwitch);
         scrollToPlaceElementInCenter(transactionalAccountSwitch);
-        click(transactionalAccountSwitch);
+        jsClick(transactionalAccountSwitch);
     }
 
     @Step("Get 'Transactional Account' switch value")
