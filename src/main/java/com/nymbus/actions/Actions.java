@@ -2,6 +2,7 @@ package com.nymbus.actions;
 
 import com.nymbus.actions.balanceinquiry.BalanceInquiryActions;
 import com.nymbus.actions.cashierdefined.CashierDefinedActions;
+import com.nymbus.actions.cashierdefined.NoticeActions;
 import com.nymbus.actions.clients.ClientPageActions;
 import com.nymbus.actions.clients.ClientsSearchResultsPageActions;
 import com.nymbus.actions.clients.maintenance.MaintenanceHistoryPageActions;
@@ -38,6 +39,7 @@ public class Actions {
     private static ProductsActions productsActions;
     private static TellerBankBranchOverviewActions tellerBankBranchOverviewActions;
     private static CashierDefinedActions cashierDefinedActions;
+    private static NoticeActions noticeActions;
 
     /**
      * Modal Window Actions
@@ -219,5 +221,12 @@ public class Actions {
             cashierDefinedActions = new CashierDefinedActions();
         }
         return cashierDefinedActions;
+    }
+
+    public static NoticeActions noticeActions() {
+        if (noticeActions == null){
+            noticeActions = new NoticeActions();
+        }
+        return noticeActions;
     }
 }

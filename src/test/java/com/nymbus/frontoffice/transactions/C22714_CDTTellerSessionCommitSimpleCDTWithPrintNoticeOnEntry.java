@@ -16,14 +16,19 @@ import com.nymbus.newmodels.generation.client.builder.type.individual.Individual
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
 import com.nymbus.newmodels.generation.tansactions.builder.WithdrawalGLDebitCHKAccBuilder;
+import com.nymbus.newmodels.settings.teller.TellerLocation;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.pages.settings.SettingsPage;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.io.File;
 
 public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extends BaseTest {
     private Transaction transaction;
@@ -38,6 +43,9 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
     private double savingsTransactionAmount = 200.00;
     private double returnTransactionAmount = 100.00;
     private double fee = 3.00;
+    private TellerLocation tellerLocation;
+    private String userId;
+    private IndividualClient client;
 
 
     @BeforeMethod
@@ -45,7 +53,7 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
         // Set up Client and Accounts
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        IndividualClient client = individualClientBuilder.buildClient();
+        client = individualClientBuilder.buildClient();
         checkAccount = new Account().setCHKAccountData();
         savingsAccount = new Account().setSavingsAccountData();
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
@@ -57,8 +65,26 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Set products
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        SettingsPage.mainPage().clickViewProfile();
+
+        userId = SettingsPage.viewUserPage().getUSERIDValue();
+        String bankBranch = SettingsPage.viewUserPage().getBankBranch();
+
+        checkAccount.setBankBranch(bankBranch);
+        savingsAccount.setBankBranch(bankBranch);
         checkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
         savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
+        Actions.loginActions().doLogOut();
+
+
+        // Get bank info
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        SettingsPage.mainPage().clickViewAllTellerLocationsLink();
+        SettingsPage.tellerLocationOverviewPage().clickRowByBranchName(bankBranch);
+        tellerLocation = Actions.tellerBankBranchOverviewActions().getTellerLocation(bankBranch);
+        Pages.aSideMenuPage().clickClientMenuItem();
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
@@ -141,7 +167,29 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
                 "- Account number - below the Bank Info\n" +
                 "- Transaction details to the right in the header\n" +
                 "- Name and Address of the Owner of Debit account at the bottom of the body");
+        File file = Actions.noticeActions().saveNoticeImage();
+        String noticeData = Actions.balanceInquiryActions().readBalanceInquiryImage(file);
 
+        Assert.assertTrue(noticeData.contains(tellerLocation.getBankName()),"'Bank name' does not match");
+        Assert.assertTrue(noticeData.contains(tellerLocation.getCity()),
+                "'City' does not match");
+        Assert.assertTrue(noticeData.contains(tellerLocation.getState()),
+                "'State' does not match");
+        Assert.assertTrue(noticeData.contains(tellerLocation.getZipCode()),
+                "'Zip code' does not match");
+        Assert.assertTrue(noticeData.contains(tellerLocation.getPhoneNumber()),
+                "'Zip code' does not match");
+        Assert.assertTrue(noticeData.contains(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry.getProduct()),
+                "'CDT Template' doesn't match");
+        Actions.transactionActions().openProofDateLoginModalWindow();
+        Assert.assertTrue(noticeData.contains(Pages.tellerModalPage().getProofDateValue()),
+                "'Proof date' doesn't match");
+        Assert.assertTrue(noticeData.contains(savingsAccount.getAccountNumber()), "'Debit card number' doesn't" +
+                " match");
+        Assert.assertTrue(noticeData.contains(client.getIndividualType().getFirstName()), "'Name' doesn't" +
+                " match");
+        Assert.assertTrue(noticeData.contains(client.getIndividualType().getAddresses().stream().findFirst().get().getAddress()),
+                "'Debit card number' doesn't match");
 
 
 

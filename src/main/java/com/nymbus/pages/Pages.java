@@ -5,6 +5,7 @@ import com.nymbus.pages.accounts.*;
 import com.nymbus.pages.accounts.transactions.EditAccountTransactionModal;
 import com.nymbus.pages.accounts.transactions.TransactionsPage;
 import com.nymbus.pages.cashdrawer.CashDrawerBalancePage;
+import com.nymbus.pages.cashier.NoticePage;
 import com.nymbus.pages.clients.AddClientPage;
 import com.nymbus.pages.clients.ClientDetailsPage;
 import com.nymbus.pages.clients.ClientsSearchPage;
@@ -85,6 +86,7 @@ public class Pages extends AllureLogger {
     private static EditAccountTransactionModal editAccountTransactionModal;
     private static CashDrawerBalancePage cashDrawerBalancePage;
     private static ConfirmModalPage confirmModalPage;
+    private static NoticePage noticePage;
 
     /**
      * Modal Windows
@@ -592,10 +594,24 @@ public class Pages extends AllureLogger {
         return cashDrawerBalancePage;
     }
 
+    /**
+     * This function return an instance of `ConfirmModalPage`
+     */
     public static ConfirmModalPage confirmModalPage() {
         if (confirmModalPage == null){
          confirmModalPage = new ConfirmModalPage();
         }
         return confirmModalPage;
     }
+
+    /**
+     * This function return an instance of `NoticePage`
+     */
+    public static NoticePage noticePage(){
+        if (noticePage == null){
+            noticePage = new NoticePage();
+        }
+        return noticePage;
+    }
+
 }
