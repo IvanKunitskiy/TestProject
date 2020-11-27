@@ -38,6 +38,7 @@ public class AccountTransactionPage extends PageTools {
     private By transactionItems = By.xpath("//tr[contains(@class, 'transactionLine')]");
     private By image = By.xpath("//tr[contains(@class, 'detail-view')][1]//img");
     private By transactionCode = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-switch-when='transactioncode']");
+    private By amountByTransactionCode = By.xpath("(//tr//td[span[contains(text(), '%s')]]/following-sibling::td[1])[%s]");
 
     @Step("Wait for transaction section")
     public void waitForTransactionSection() {
@@ -94,6 +95,12 @@ public class AccountTransactionPage extends PageTools {
     public String getAmountValue(int index) {
         waitForElementVisibility(amount, index);
         return getElementText(amount, index).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get full 'Amount' value")
+    public String getFullAmountValue(int index, String transactionCode) {
+        waitForElementVisibility(amountByTransactionCode, transactionCode, index);
+        return getWebElement(amountByTransactionCode, transactionCode, index).getAttribute("innerText").replaceAll("\\s", "");
     }
 
     @Step("Get 'Amount' fractional value")

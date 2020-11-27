@@ -39,7 +39,9 @@ public enum TransactionCode {
     NORMAL_DEPOSIT_211("211 - Normal Deposit"),
     DEBIT_MEM0_319("319 - Debit Memo"),
     TAXES_WH_CRED_302("302 - Taxes W/H Cred"),
-    NEW_CD_311("311 - New CD");
+    NEW_CD_311("311 - New CD"),
+    REDEEMED_CD_315("315 - Redeemed CD"),
+    INT_PAID_COMP_307("307 - Int Paid Comp");
 
     private final String transCode;
 }
