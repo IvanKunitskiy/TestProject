@@ -10,7 +10,7 @@ public class NoticePage extends PageTools {
 
     private By noticeReceipt = By.xpath("//pdf-viewer");
     private By embedPDF = By.xpath("//embed");
-
+    private By nextButton = By.xpath("//button[contains(string(),'Next')]");
 
     @Step("Check pdf visible")
     public void checkPDFVisible() {
@@ -22,6 +22,12 @@ public class NoticePage extends PageTools {
         WebElement shadowRoot = Selenide.executeJavaScript("arguments[0].shadowRoot", noticeReceipt);
         String link = shadowRoot.findElement(embedPDF).getAttribute("src");
         return link;
+    }
+
+    @Step("Click 'Next' button")
+    public void clickNextButton(){
+        waitForElementClickable(nextButton);
+        jsClick(nextButton);
     }
 
 }

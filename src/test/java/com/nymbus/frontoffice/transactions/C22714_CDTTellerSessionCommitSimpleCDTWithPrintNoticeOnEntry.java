@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.transactions;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
@@ -149,18 +150,19 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
 
         logInfo("Step 3: Search for template from preconditions and select it");
-        logInfo("Step 4: Click on [Waive Fee] toggle button");
-        logInfo("Step 5: Specify accounts from preconditions in source and destination line items;\n" +
+        logInfo("Step 4: Specify accounts from preconditions in source and destination line items;\n" +
                 "set transaction amount less than Debit Account's Available Balance");
         Actions.cashierDefinedActions().createTransaction(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry,
                 transaction, false);
         expectedBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
         expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount());
+        Actions.transactionActions().openProofDateLoginModalWindow();
+        String proofDateValue = Pages.tellerModalPage().getProofDateValue();
 
-        logInfo("Step 6: Click [Commit Transaction] button");
+        logInfo("Step 5: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
 
-        logInfo("Step 7: Verify the following fields are printed on the Notice 1st Page:\n" +
+        logInfo("Step 6: Verify the following fields are printed on the Notice 1st Page:\n" +
                 "- Bank information to the left in the header\n" +
                 "- CDT Template name\n" +
                 "- Proof Date\n" +
@@ -181,8 +183,7 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
                 "'Zip code' does not match");
         Assert.assertTrue(noticeData.contains(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry.getProduct()),
                 "'CDT Template' doesn't match");
-        Actions.transactionActions().openProofDateLoginModalWindow();
-        Assert.assertTrue(noticeData.contains(Pages.tellerModalPage().getProofDateValue()),
+        Assert.assertTrue(noticeData.contains(proofDateValue),
                 "'Proof date' doesn't match");
         Assert.assertTrue(noticeData.contains(savingsAccount.getAccountNumber()), "'Debit card number' doesn't" +
                 " match");
@@ -191,6 +192,74 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
         Assert.assertTrue(noticeData.contains(client.getIndividualType().getAddresses().stream().findFirst().get().getAddress()),
                 "'Debit card number' doesn't match");
 
+        logInfo("Step 7: Verify the following fields are printed on the Notice 2nd Page:\n" +
+                "- Bank information to the left in the header\n" +
+                "- CDT Template name\n" +
+                "- Proof Date\n" +
+                "- Account number - below the Bank Info\n" +
+                "- Transaction details to the right in the header\n" +
+                "- Name and Address of the Owner of Debit account at the bottom of the body");
+        Pages.noticePage().clickNextButton();
+        File fileSecondPage = Actions.noticeActions().saveNoticeImage();
+        String noticeDataSecondPage = Actions.balanceInquiryActions().readBalanceInquiryImage(fileSecondPage);
+
+        Assert.assertTrue(noticeDataSecondPage.contains(tellerLocation.getBankName()),"'Bank name' does not match");
+        Assert.assertTrue(noticeDataSecondPage.contains(tellerLocation.getCity()),
+                "'City' does not match");
+        Assert.assertTrue(noticeDataSecondPage.contains(tellerLocation.getState()),
+                "'State' does not match");
+        Assert.assertTrue(noticeDataSecondPage.contains(tellerLocation.getZipCode()),
+                "'Zip code' does not match");
+        Assert.assertTrue(noticeDataSecondPage.contains(tellerLocation.getPhoneNumber()),
+                "'Zip code' does not match");
+        Assert.assertTrue(noticeDataSecondPage.contains(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry.getProduct()),
+                "'CDT Template' doesn't match");
+        Assert.assertTrue(noticeDataSecondPage.contains(proofDateValue),
+                "'Proof date' doesn't match");
+        Assert.assertTrue(noticeDataSecondPage.contains(savingsAccount.getAccountNumber()), "'Debit card number' doesn't" +
+                " match");
+        Assert.assertTrue(noticeDataSecondPage.contains(client.getIndividualType().getFirstName()), "'Name' doesn't" +
+                " match");
+        Assert.assertTrue(noticeDataSecondPage.contains(client.getIndividualType().getAddresses().stream().findFirst().get().getAddress()),
+                "'Debit card number' doesn't match");
+
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+
+        logInfo("Step 8: Go to account used in DEBIT item and verify its:\n" +
+                "- current balance\n" +
+                "- available balance");
+        Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
+        BalanceDataForCHKAcc actualBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
+
+        Assert.assertEquals(actualBalanceData.getCurrentBalance(), expectedBalanceData.getCurrentBalance(),
+                "Current balance doesn't match!");
+        Assert.assertEquals(actualBalanceData.getAvailableBalance(), expectedBalanceData.getAvailableBalance(),
+                "Available balance doesn't match!");
+
+        logInfo("Step 9: Open account on the Transactions tab and verify the committed transaction");
+        Pages.accountDetailsPage().clickTransactionsTab();
+        chkAccTransactionData.setBalance(expectedBalanceData.getCurrentBalance());
+        AccountActions.retrievingAccountData().goToTransactionsTab();
+        TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
+        Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
+
+        logInfo("Step 10: Go to account used in CREDIT item and verify its:\n" +
+                "- current balance\n" +
+                "- available balance");
+        Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
+        BalanceDataForCHKAcc actualSavBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
+
+        Assert.assertEquals(actualSavBalanceData.getCurrentBalance(), expectedSavingsBalanceData.getCurrentBalance(),
+                "Current balance doesn't match!");
+        Assert.assertEquals(actualSavBalanceData.getAvailableBalance(), expectedSavingsBalanceData.getAvailableBalance(),
+                "Available balance doesn't match!");
+
+        logInfo("Step 11: Open account on the Transactions tab and verify the committed transaction");
+        Pages.accountDetailsPage().clickTransactionsTab();
+        savingsAccTransactionData.setBalance(expectedSavingsBalanceData.getCurrentBalance());
+        AccountActions.retrievingAccountData().goToTransactionsTab();
+        TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
+        Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
 
 
 
