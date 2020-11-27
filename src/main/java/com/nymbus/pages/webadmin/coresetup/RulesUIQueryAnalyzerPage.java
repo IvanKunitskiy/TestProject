@@ -88,6 +88,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private By transactionHeaderId = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//*[@key-name='transactionheaderid']");
     private By glTransactionItemPostingStatus = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]" +
             "//*[@key-name='gltransactionitempostingstatus']//..//span[5]/span");
+    private By glTransactionItemPostingStatusByTrancode = By.xpath("//td[span[span[contains(text(), '%s')]]]/preceding-sibling::td[6]/span[contains(@class, 'high_title')]/span");
 
     @Step("Get date posted  {0}")
     public String getDatePosted(int index) {
@@ -119,6 +120,12 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         return getElementText(glTransactionItemPostingStatus, index).trim();
     }
 
+    @Step("Get gltransactionitempostingstatus {transactioncode} value")
+    public String getGLTransactionItemPostingStatusByTranCode(String trancode) {
+        waitForElementVisibility(glTransactionItemPostingStatusByTrancode, trancode);
+        return getElementText(glTransactionItemPostingStatusByTrancode, trancode).trim();
+    }
+
     /**
      * GL interface region
      */
@@ -127,6 +134,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private By deletedWhen = By.xpath("//*[@id='searchResultTable']//tr[contains(@class, 'searchResultRow restore')][%s]//td[8]//div");
     private By deletedBy = By.xpath("//*[@id='searchResultTable']//tr[contains(@class, 'searchResultRow restore')][%s]//td[9]//div");
     private By listOfSearchResultInterfaceTable = By.xpath("//table[@id='searchResultTable']//tr[contains(@class, 'searchResultRow restore')]");
+    private By transactionDeletedStatus = By.xpath("//table[@id='searchResultTable']//tr[contains(@class, 'searchResultRow restore')][%s]//td[2]/span[contains(@class, 'hint')]");
 
     @Step("Get number of search result")
     public int getNumberOfSearchResultInterfaceTable() {
@@ -157,6 +165,12 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getDeletedBy(int index) {
         waitForElementVisibility(deletedBy, index);
         return getElementText(deletedBy, index).trim();
+    }
+
+    @Step("Get deletedBy {0} value")
+    public String getDeletedStatusByIndex(int index) {
+        waitForElementVisibility(transactionDeletedStatus, index);
+        return getElementText(transactionDeletedStatus, index).trim();
     }
 
     /**
