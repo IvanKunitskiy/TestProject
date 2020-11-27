@@ -10,9 +10,11 @@ public class CashierDefinedActions {
 
     public void createTransaction(CashierDefinedTransactions type, Transaction transaction, boolean waiveFee){
         int tempIndex = 0;
-        setTellerOperation(type.getProduct());
+        setTellerOperation(type.getOperation());
         setWaiveFee(waiveFee);
-        setTransactionSource(transaction.getTransactionSource(), tempIndex);
+        if (!type.equals(CashierDefinedTransactions.TRANSFER_INCOMING_WIRE_TO_SAV_WITH_WIRE_FEE)){
+            setTransactionSource(transaction.getTransactionSource(), tempIndex);
+        }
         setTransactionDestination(transaction.getTransactionDestination(), tempIndex);
 
     }

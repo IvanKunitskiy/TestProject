@@ -181,7 +181,7 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
                 "'Zip code' does not match");
         Assert.assertTrue(noticeData.contains(tellerLocation.getPhoneNumber()),
                 "'Zip code' does not match");
-        Assert.assertTrue(noticeData.contains(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry.getProduct()),
+        Assert.assertTrue(noticeData.contains(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry.getOperation()),
                 "'CDT Template' doesn't match");
         Assert.assertTrue(noticeData.contains(proofDateValue),
                 "'Proof date' doesn't match");
@@ -212,7 +212,7 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
                 "'Zip code' does not match");
         Assert.assertTrue(noticeDataSecondPage.contains(tellerLocation.getPhoneNumber()),
                 "'Zip code' does not match");
-        Assert.assertTrue(noticeDataSecondPage.contains(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry.getProduct()),
+        Assert.assertTrue(noticeDataSecondPage.contains(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry.getOperation()),
                 "'CDT Template' doesn't match");
         Assert.assertTrue(noticeDataSecondPage.contains(proofDateValue),
                 "'Proof date' doesn't match");
