@@ -76,9 +76,10 @@ public class C22708_CDTTellerSessionCommitSimpleCDTWithFeeWaived extends BaseTes
         depositTransaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());
         depositTransaction.getTransactionDestination().setAmount(transactionAmount);
         depositTransaction.getTransactionSource().setAmount(transactionAmount);
-        transaction.getTransactionSource().setAccountNumber(checkAccount.getAccountNumber());
+        transaction.getTransactionSource().setAccountNumber(savingsAccount.getAccountNumber());
         transaction.getTransactionSource().setAmount(returnTransactionAmount);
         transaction.getTransactionDestination().setAmount(returnTransactionAmount);
+        transaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());
         depositSavingsTransaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
         depositSavingsTransaction.getTransactionDestination().setTransactionCode("209 - Deposit");
         depositSavingsTransaction.getTransactionDestination().setAmount(savingsTransactionAmount);
@@ -102,12 +103,12 @@ public class C22708_CDTTellerSessionCommitSimpleCDTWithFeeWaived extends BaseTes
         Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
         expectedBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         chkAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-", expectedBalanceData.getCurrentBalance(), returnTransactionAmount);
+                "+", expectedBalanceData.getCurrentBalance(), returnTransactionAmount);
 
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         expectedSavingsBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-", expectedSavingsBalanceData.getCurrentBalance(), savingsTransactionAmount);
+                "-", expectedSavingsBalanceData.getCurrentBalance(), returnTransactionAmount);
         Actions.loginActions().doLogOut();
     }
 
@@ -130,11 +131,12 @@ public class C22708_CDTTellerSessionCommitSimpleCDTWithFeeWaived extends BaseTes
                 "set transaction amount less than Debit Account's Available Balance");
         Actions.cashierDefinedActions().createTransaction(CashierDefinedTransactions.TRANSFER_FROM_SAVINGS_TO_CHECKING_WITH_FEE,
                 transaction, true);
-        expectedBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
-        expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount());
+        expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
+        expectedBalanceData.addAmount(transaction.getTransactionDestination().getAmount());
 
         logInfo("Step 6: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
+        Pages.confirmModalPage().clickOk();
 
         logInfo("Step 7: Go to account used in DEBIT item and verify its:\n" +
                 "- current balance\n" +

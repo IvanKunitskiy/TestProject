@@ -2,6 +2,8 @@ package com.nymbus.pages.teller;
 
 import com.codeborne.selenide.Condition;
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -362,10 +364,11 @@ public class TellerPage extends PageTools {
 
     private By transactionDestinationNotesInput = By.xpath("(//*[@id='accordion-operation-destinations-content']//*[@transaction='item'])[%s]//input[@ng-model='transaction.notes']");
 
-    private By waiveFeeButton = By.xpath("//dn-switch[contains(string(),'No')]");
+    private By waiveFeeButton = By.xpath("//dn-switch[contains(string(),'No')]//div//div//span");
 
     @Step("Click 'Waive Fee' popup")
     public void clickWaiveFee(){
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         waitForElementVisibility(waiveFeeButton);
         jsClick(waiveFeeButton);
     }
