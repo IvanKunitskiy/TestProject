@@ -50,7 +50,8 @@ public class CreateAccount {
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         // Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
-        setCallClassCode(account);
+        //TODO ucom
+        //setCallClassCode(account);
         setInterestFrequency(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
@@ -220,7 +221,7 @@ public class CreateAccount {
         setCurrentOfficer(account);
         setBankBranch(account);
         setCorrespondingAccount(account);
-         /*setDiscountReason(account);*/
+        /*setDiscountReason(account);*/
     }
 
     public void setValuesInFieldsRequiredForCheckingAccount(Account account) {

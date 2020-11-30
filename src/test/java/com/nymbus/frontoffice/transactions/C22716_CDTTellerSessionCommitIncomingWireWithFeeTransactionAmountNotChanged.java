@@ -9,7 +9,6 @@ import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
 import com.nymbus.newmodels.account.product.RateType;
-import com.nymbus.newmodels.cashier.CashierDefinedTransactions;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
@@ -20,13 +19,9 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
-public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountChanged extends BaseTest {
+public class C22716_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountNotChanged extends BaseTest {
     private Transaction transaction;
     private Transaction savingsTransaction;
     private BalanceDataForCHKAcc expectedSavingsBalanceData;
@@ -90,52 +85,5 @@ public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountCh
     }
 
 
-    @Test(description = "C226708, CDT+Teller Session - Commit simple CDT with fee waived")
-    @Severity(SeverityLevel.CRITICAL)
-    public void printTellerReceiptWithoutBalance() {
-        logInfo("Step 1: Log in to the system as User from the preconditions");
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-
-        logInfo("Step 2: Go to Cashier Defined Transactions screen and log in to proof date");
-        Actions.transactionActions().loginTeller();
-        Pages.aSideMenuPage().waitForASideMenu();
-        Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
-
-        logInfo("Step 3: Search for template from preconditions and select it");
-        logInfo("Step 4: Specify account from precondition in destination line account number field;\n" +
-                "Set transaction amount > fee amount");
-        //fill notes
-        Actions.cashierDefinedActions().createTransaction(CashierDefinedTransactions.TRANSFER_INCOMING_WIRE_TO_SAV_WITH_WIRE_FEE,
-                transaction, true);
-        expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount());
-
-        logInfo("Step 5: Click [Commit Transaction] button");
-        Actions.transactionActions().clickCommitButton();
-
-        logInfo("Step 6: Click [Yes] button");
-        Pages.confirmModalPage().clickYes();
-
-        logInfo("Step 7: Go to account used in CREDIT item and verify its:\n" +
-                "- current balance\n" +
-                "- available balance");
-        Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
-        BalanceDataForCHKAcc actualSavBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
-
-        Assert.assertEquals(actualSavBalanceData.getCurrentBalance(), expectedSavingsBalanceData.getCurrentBalance(),
-                "Current balance doesn't match!");
-        Assert.assertEquals(actualSavBalanceData.getAvailableBalance(), expectedSavingsBalanceData.getAvailableBalance(),
-                "Available balance doesn't match!");
-
-        logInfo("Step 8: Open account on the Transactions tab and verify the committed transaction");
-        Pages.accountDetailsPage().clickTransactionsTab();
-        savingsAccTransactionData.setBalance(expectedSavingsBalanceData.getCurrentBalance());
-        AccountActions.retrievingAccountData().goToTransactionsTab();
-        TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
-        Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
-
-
-
-
-    }
 
 }
