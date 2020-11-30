@@ -33,6 +33,7 @@ public class C22698_CDTTellerSessionCommitSimpleCDTWithFee extends BaseTest {
     private BalanceDataForCHKAcc expectedSavingsBalanceData;
     private TransactionData chkAccTransactionData;
     private TransactionData savingsAccTransactionData;
+    private TransactionData savingsAccFeeTransactionData;
     private Account checkAccount;
     private Account savingsAccount;
     private double transactionAmount = 200.00;
@@ -76,9 +77,10 @@ public class C22698_CDTTellerSessionCommitSimpleCDTWithFee extends BaseTest {
         depositTransaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());
         depositTransaction.getTransactionDestination().setAmount(transactionAmount);
         depositTransaction.getTransactionSource().setAmount(transactionAmount);
-        transaction.getTransactionSource().setAccountNumber(checkAccount.getAccountNumber());
+        transaction.getTransactionSource().setAccountNumber(savingsAccount.getAccountNumber());
         transaction.getTransactionSource().setAmount(returnTransactionAmount);
         transaction.getTransactionDestination().setAmount(returnTransactionAmount);
+        transaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());
         depositSavingsTransaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
         depositSavingsTransaction.getTransactionDestination().setTransactionCode("209 - Deposit");
         depositSavingsTransaction.getTransactionDestination().setAmount(savingsTransactionAmount);
@@ -102,12 +104,14 @@ public class C22698_CDTTellerSessionCommitSimpleCDTWithFee extends BaseTest {
         Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
         expectedBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         chkAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-", expectedBalanceData.getCurrentBalance(), returnTransactionAmount);
+                "+", expectedBalanceData.getCurrentBalance(), returnTransactionAmount);
 
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         expectedSavingsBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-", expectedSavingsBalanceData.getCurrentBalance(), savingsTransactionAmount);
+                "-", expectedSavingsBalanceData.getCurrentBalance(), returnTransactionAmount);
+        savingsAccFeeTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
+                "-", expectedSavingsBalanceData.getCurrentBalance(), fee);
         Actions.loginActions().doLogOut();
     }
 
@@ -128,11 +132,12 @@ public class C22698_CDTTellerSessionCommitSimpleCDTWithFee extends BaseTest {
                 "Enter any value to the 'Notes' field;");
         Actions.cashierDefinedActions().createTransaction(CashierDefinedTransactions.TRANSFER_FROM_SAVINGS_TO_CHECKING_WITH_FEE,
                 transaction, false);
-        expectedBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount() + fee);
-        expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount());
+        expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount() + fee);
+        expectedBalanceData.addAmount(transaction.getTransactionDestination().getAmount());
 
         logInfo("Step 5: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
+        Pages.confirmModalPage().clickOk();
 
         logInfo("Step 6: Go to account used in DEBIT item and verify its:\n" +
                 "- current balance\n" +
@@ -165,9 +170,12 @@ public class C22698_CDTTellerSessionCommitSimpleCDTWithFee extends BaseTest {
 
         logInfo("Step 9: Open account on the Transactions tab and verify the committed transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
-        savingsAccTransactionData.setBalance(expectedSavingsBalanceData.getCurrentBalance());
+        savingsAccTransactionData.setBalance(expectedSavingsBalanceData.getCurrentBalance() + fee);
+        savingsAccFeeTransactionData.setBalance(expectedSavingsBalanceData.getCurrentBalance());
         AccountActions.retrievingAccountData().goToTransactionsTab();
-        TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
+        TransactionData actualSavFeeTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
+        Assert.assertEquals(actualSavFeeTransactionData, savingsAccFeeTransactionData, "Transaction data doesn't match!");
+        TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getSecondTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
     }
 }
