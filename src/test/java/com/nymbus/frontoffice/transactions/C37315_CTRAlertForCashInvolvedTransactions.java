@@ -6,6 +6,7 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -16,6 +17,7 @@ import com.nymbus.newmodels.generation.client.builder.type.individual.Individual
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.CashInDepositCHKAccBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.newmodels.transaction.enums.Denominations;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
 import io.qameta.allure.Severity;
@@ -76,6 +78,8 @@ public class C37315_CTRAlertForCashInvolvedTransactions extends BaseTest {
         transactionWithMoreLimit.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
         transactionWithMoreLimit.getTransactionDestination().setTransactionCode("209 - Deposit");
         transactionWithMoreLimit.getTransactionSource().setAmount(moreLimitAmount);
+        transactionWithMoreLimit.getTransactionSource().setDenominationsHashMap(new HashMap<>());
+        transactionWithMoreLimit.getTransactionSource().getDenominationsHashMap().put(Denominations.HUNDREDS, 11000.00);
 
         //Set CTR Online Alert
         limitIsChanged = Actions.usersActions().setCTROnlineAlert(ctrLimit);
@@ -102,6 +106,7 @@ public class C37315_CTRAlertForCashInvolvedTransactions extends BaseTest {
         logInfo("Step 5: Click [Commit Transaction] button and confirm verify screen");
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
+        Pages.tellerPage().closeModal();
 
         logInfo("Step 6: In another tab go to the WebAdmin and log in");
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
@@ -115,7 +120,7 @@ public class C37315_CTRAlertForCashInvolvedTransactions extends BaseTest {
         WebAdminActions.webAdminUsersActions().goToCashValues(1, clientRootId);
         Map<String, String> totalCashValues = getBeneficiaryConductorMap();
         WebAdminActions.webAdminUsersActions().setFieldsMapWithValues(2, totalCashValues);
-        double expectedResult = amount + moreLimitAmount;
+        double expectedResult = amount;
         double actualBeneficiaryValue = Double.parseDouble(totalCashValues.get(TOTAL_CASH_IN_AS_BENEFICIARY));
         double actualConductorValue = Double.parseDouble(totalCashValues.get(TOTAL_CASH_IN_AS_CONDUCTOR));
 
@@ -136,11 +141,12 @@ public class C37315_CTRAlertForCashInvolvedTransactions extends BaseTest {
         Actions.transactionActions().createTransaction(transactionWithMoreLimit);
 
         logInfo("Step 10: Click [Commit transaction] button and click [Verify] in Verify Client popup");
-        Actions.transactionActions().clickCommitButton();
+        Actions.transactionActions(). clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
 
         logInfo("Step 11: Click [OK] button");
-
+        Pages.confirmModalPage().clickOk();
+        Pages.tellerPage().closeModal();
 
         logInfo("Step 12: In Webadmin refresh DRL Caches (bankingcore) page and verify Customer Cash" +
                 " again for the Client from the precondition");
@@ -153,15 +159,15 @@ public class C37315_CTRAlertForCashInvolvedTransactions extends BaseTest {
         Map<String, String> totalCashValuesAfterMoreLimit = getBeneficiaryConductorMap();
         WebAdminActions.webAdminUsersActions().setFieldsMapWithValues(2, totalCashValuesAfterMoreLimit);
         double expectedResultAfterMoreLimit = amount + moreLimitAmount;
-        double actualBeneficiaryValueAfterMoreLimit = Double.parseDouble(totalCashValues.get(TOTAL_CASH_IN_AS_BENEFICIARY));
-        double actualConductorValueAfterMoreLimit = Double.parseDouble(totalCashValues.get(TOTAL_CASH_IN_AS_CONDUCTOR));
+        double actualBeneficiaryValueAfterMoreLimit = Double.parseDouble(totalCashValuesAfterMoreLimit.get(TOTAL_CASH_IN_AS_BENEFICIARY));
+        double actualConductorValueAfterMoreLimit = Double.parseDouble(totalCashValuesAfterMoreLimit.get(TOTAL_CASH_IN_AS_CONDUCTOR));
 
         Assert.assertEquals(actualBeneficiaryValueAfterMoreLimit, expectedResultAfterMoreLimit, "totalCashInAsBeneficiary value is incorrect!");
         Assert.assertEquals(actualConductorValueAfterMoreLimit, expectedResultAfterMoreLimit, "totalCashInAsConductor value is incorrect!");
 
         WebAdminActions.loginActions().doLogoutProgrammatically();
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
-
+        SelenideTools.sleep(30);
 
     }
 
