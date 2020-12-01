@@ -277,6 +277,7 @@ public class UsersActions {
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().clickViewSettingsLink();
         SettingsPage.bankControlPage().clickMiscellaneousButton();
+        //String ctrLimitValue = SettingsPage.bankControlPage().getCTRLimitValue();
         if (SettingsPage.bankControlPage().getOnlineSTRAlert().equals("0")) {
             isChanged = true;
             SettingsPage.bankControlPage().clickEditButton();
@@ -284,10 +285,11 @@ public class UsersActions {
         } else {
             SettingsPage.bankControlPage().clickEditButton();
         }
-        if (!(Integer.parseInt(SettingsPage.bankControlPage().getCTRLimitValue()) > 0)) {
-            SettingsPage.bankControlPage().setCTRLimitValue(ctrLimit);
-        }
-        //SettingsPage.bankControlPage().clickSaveButton();
+//        if (!(Integer.parseInt(ctrLimitValue) > 0)) {
+//            SettingsPage.bankControlPage().setCTRLimitValue(ctrLimit);
+//        }
+        SettingsPage.bankControlPage().setCTRLimitValue(ctrLimit);
+        SettingsPage.bankControlPage().clickSaveButton();
         return isChanged;
     }
 
@@ -300,7 +302,7 @@ public class UsersActions {
         if (SettingsPage.bankControlPage().getOnlineSTRAlert().equals("1")) {
             SettingsPage.bankControlPage().clickEditButton();
             SettingsPage.bankControlPage().clickOnlineSTRAlert();
-            //SettingsPage.bankControlPage().clickSaveButton();
+            SettingsPage.bankControlPage().clickSaveButton();
         }
     }
 
