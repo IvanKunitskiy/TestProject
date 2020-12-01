@@ -12,7 +12,7 @@ public class CashierDefinedActions {
         int tempIndex = 0;
         setTellerOperation(type.getOperation());
         setWaiveFee(waiveFee);
-        if (!type.equals(CashierDefinedTransactions.TRANSFER_INCOMING_WIRE_TO_SAV_WITH_WIRE_FEE)){
+        if (!type.equals(CashierDefinedTransactions.INCOMING_WIRE_TO_SAVINGS)){
             setTransactionSource(transaction.getTransactionSource(), tempIndex);
         }
         setTransactionDestination(transaction.getTransactionDestination(), tempIndex);

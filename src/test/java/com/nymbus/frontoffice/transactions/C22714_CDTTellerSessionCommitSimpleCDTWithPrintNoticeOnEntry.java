@@ -6,6 +6,7 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -102,9 +103,10 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
         depositTransaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());
         depositTransaction.getTransactionDestination().setAmount(transactionAmount);
         depositTransaction.getTransactionSource().setAmount(transactionAmount);
-        transaction.getTransactionSource().setAccountNumber(checkAccount.getAccountNumber());
+        transaction.getTransactionSource().setAccountNumber(savingsAccount.getAccountNumber());
         transaction.getTransactionSource().setAmount(returnTransactionAmount);
         transaction.getTransactionDestination().setAmount(returnTransactionAmount);
+        transaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());
         depositSavingsTransaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
         depositSavingsTransaction.getTransactionDestination().setTransactionCode("209 - Deposit");
         depositSavingsTransaction.getTransactionDestination().setAmount(savingsTransactionAmount);
@@ -169,6 +171,7 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
                 "- Account number - below the Bank Info\n" +
                 "- Transaction details to the right in the header\n" +
                 "- Name and Address of the Owner of Debit account at the bottom of the body");
+        SelenideTools.sleep(200);
         File file = Actions.noticeActions().saveNoticeImage();
         String noticeData = Actions.balanceInquiryActions().readBalanceInquiryImage(file);
 

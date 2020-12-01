@@ -35,7 +35,7 @@ public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountCh
     private double transactionAmount = 200.00;
     private double savingsTransactionAmount = 200.00;
     private double returnTransactionAmount = 100.00;
-    private double fee = 5.00;
+    private double fee = 1.00;
 
 
     @BeforeMethod
@@ -66,6 +66,7 @@ public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountCh
         // Set up transactions with account number
         transaction.getTransactionSource().setAmount(returnTransactionAmount);
         transaction.getTransactionDestination().setAmount(returnTransactionAmount);
+        transaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
         depositSavingsTransaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
         depositSavingsTransaction.getTransactionDestination().setTransactionCode("209 - Deposit");
         depositSavingsTransaction.getTransactionDestination().setAmount(savingsTransactionAmount);
@@ -85,7 +86,7 @@ public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountCh
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         expectedSavingsBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-", expectedSavingsBalanceData.getCurrentBalance(), savingsTransactionAmount);
+                "+", expectedSavingsBalanceData.getCurrentBalance(), returnTransactionAmount - fee);
         Actions.loginActions().doLogOut();
     }
 
@@ -105,15 +106,16 @@ public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountCh
         logInfo("Step 4: Specify account from precondition in destination line account number field;\n" +
                 "Set transaction amount > fee amount");
         //fill notes
-        Actions.cashierDefinedActions().createTransaction(CashierDefinedTransactions.TRANSFER_INCOMING_WIRE_TO_SAV_WITH_WIRE_FEE,
-                transaction, true);
-        expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount());
+        Actions.cashierDefinedActions().createTransaction(CashierDefinedTransactions.INCOMING_WIRE_TO_SAVINGS,
+                transaction, false);
+        expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount()- fee);
 
         logInfo("Step 5: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
 
         logInfo("Step 6: Click [Yes] button");
         Pages.confirmModalPage().clickYes();
+        Pages.confirmModalPage().clickOk();
 
         logInfo("Step 7: Go to account used in CREDIT item and verify its:\n" +
                 "- current balance\n" +
