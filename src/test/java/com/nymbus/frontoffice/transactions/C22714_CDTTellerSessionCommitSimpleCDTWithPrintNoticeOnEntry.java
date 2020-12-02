@@ -6,7 +6,6 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
-import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -171,7 +170,7 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
                 "- Account number - below the Bank Info\n" +
                 "- Transaction details to the right in the header\n" +
                 "- Name and Address of the Owner of Debit account at the bottom of the body");
-        SelenideTools.sleep(200);
+        //SelenideTools.sleep(100);
         File file = Actions.noticeActions().saveNoticeImage();
         String noticeData = Actions.balanceInquiryActions().readBalanceInquiryImage(file);
 

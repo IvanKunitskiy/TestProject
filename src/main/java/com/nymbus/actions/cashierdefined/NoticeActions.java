@@ -18,6 +18,7 @@ public class NoticeActions {
         String imageName = "bi-image-" + DateTime.getLocalDateTimeByPattern("yyMMddHHmmss");
         File biImage = new File(System.getProperty("user.dir") + "/screenshots/" + imageName + ".pdf");
 
+        System.out.println(src);
         // Save the image
         ImageParser.loadImage(src, biImage.getAbsolutePath());
         return biImage;
