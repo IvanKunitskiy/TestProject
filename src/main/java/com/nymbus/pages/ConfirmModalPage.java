@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 public class ConfirmModalPage extends PageTools {
 
     private final By yesButton = By.xpath("//button[span[text()='Yes']]");
+    private final By noButton = By.xpath("//button[span[text()='No']]");
     private final By okButton = By.xpath("//button[contains(string(),'OK')]");
 
 
@@ -14,6 +15,12 @@ public class ConfirmModalPage extends PageTools {
     public void clickYes() {
         waitForElementClickable(yesButton);
         jsClick(yesButton);
+    }
+
+    @Step("Click on 'No' button")
+    public void clickNo() {
+        waitForElementClickable(noButton);
+        jsClick(noButton);
     }
 
     @Step("Click on 'OK' button")
