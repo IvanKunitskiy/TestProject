@@ -108,12 +108,12 @@ public class C22716_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountNo
         //fill notes
         Actions.cashierDefinedActions().createTransaction(CashierDefinedTransactions.INCOMING_WIRE_TO_SAVINGS,
                 transaction, false);
-        expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount()- fee);
+        expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount() - fee);
 
         logInfo("Step 5: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
 
-        logInfo("Step 6: Click [Yes] button");
+        logInfo("Step 6: Click [No] button");
         Pages.confirmModalPage().clickNo();
         Pages.confirmModalPage().clickOk();
 
@@ -134,8 +134,6 @@ public class C22716_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountNo
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
-
-
 
 
     }

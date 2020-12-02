@@ -366,6 +366,12 @@ public class TellerPage extends PageTools {
 
     private By waiveFeeButton = By.xpath("//dn-switch[contains(string(),'No')]//div//div//span");
 
+
+    @Step("Input 'Bank routing'")
+    public void inputBankRouting(String routing){
+
+    }
+
     @Step("Click 'Waive Fee' popup")
     public void clickWaiveFee(){
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
