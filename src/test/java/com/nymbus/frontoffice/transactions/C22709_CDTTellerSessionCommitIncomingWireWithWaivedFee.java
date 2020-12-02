@@ -26,7 +26,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountChanged extends BaseTest {
+public class C22709_CDTTellerSessionCommitIncomingWireWithWaivedFee extends BaseTest {
     private Transaction transaction;
     private Transaction savingsTransaction;
     private BalanceDataForCHKAcc expectedSavingsBalanceData;
@@ -86,12 +86,12 @@ public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountCh
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         expectedSavingsBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "+", expectedSavingsBalanceData.getCurrentBalance(), returnTransactionAmount - fee);
+                "+", expectedSavingsBalanceData.getCurrentBalance(), returnTransactionAmount);
         Actions.loginActions().doLogOut();
     }
 
 
-    @Test(description = "C226715, CDT+Teller Session - Commit incoming wire with fee, transaction amount changed")
+    @Test(description = "C226708, CDT+Teller Session - Commit simple CDT with fee waived")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
@@ -103,18 +103,16 @@ public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountCh
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
 
         logInfo("Step 3: Search for template from preconditions and select it");
-        logInfo("Step 4: Specify account from precondition in destination line account number field;\n" +
+        logInfo("Step 4: Click on [Waive Fee] toggle button");
+        logInfo("Step 5: Specify account from precondition in destination line account number field;\n" +
                 "Set transaction amount > fee amount");
         //fill notes
         Actions.cashierDefinedActions().createTransaction(CashierDefinedTransactions.INCOMING_WIRE_TO_SAVINGS,
-                transaction, false);
-        expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount()- fee);
+                transaction, true);
+        expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount());
 
-        logInfo("Step 5: Click [Commit Transaction] button");
+        logInfo("Step 6: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
-
-        logInfo("Step 6: Click [Yes] button");
-        Pages.confirmModalPage().clickYes();
         Pages.confirmModalPage().clickOk();
 
         logInfo("Step 7: Go to account used in CREDIT item and verify its:\n" +
@@ -135,9 +133,7 @@ public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountCh
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
 
-
-
-
     }
+
 
 }
