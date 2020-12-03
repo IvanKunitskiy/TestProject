@@ -22,12 +22,14 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Transactions")
+@Owner("Dmytro")
 public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest {
     private Transaction transaction;
     private BalanceData balanceData;

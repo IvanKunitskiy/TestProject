@@ -28,8 +28,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -37,6 +36,9 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+@Epic("Frontoffice")
+@Feature("Transactions")
+@Owner("Dmytro")
 public class C22769_223DebitPurchaseTest extends BaseTest {
     private BalanceData expectedBalanceData;
     private TransactionData savingAccTransactionData;

@@ -76,6 +76,7 @@ public class BalanceInquiryActions {
         PIX image = pixRead(balanceInquiryImage.getAbsolutePath());
         api.SetImage(image);
 
+
         // Get OCR result
         outText = api.GetUTF8Text();
 

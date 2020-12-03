@@ -24,14 +24,16 @@ import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.WebAdminTransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static com.nymbus.core.utils.Functions.getCalculatedInterestAmount;
 
+@Epic("Frontoffice")
+@Feature("Transactions")
+@Owner("Dmytro")
 public class C22670_CommitCDIRACurrentYearContributionTest extends BaseTest {
     private Transaction transaction;
     private BalanceDataForCDAcc balanceData;

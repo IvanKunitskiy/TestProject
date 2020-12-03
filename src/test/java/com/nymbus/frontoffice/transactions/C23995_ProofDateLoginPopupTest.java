@@ -5,19 +5,20 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.core.utils.DateTime;
 import com.nymbus.data.entity.CashDrawer;
 import com.nymbus.data.entity.User;
 import com.nymbus.data.entity.verifyingmodels.TellerSessionVerifyingModel;
 import com.nymbus.newmodels.settings.UserSettings;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Transactions")
+@Owner("Dmytro")
 public class C23995_ProofDateLoginPopupTest extends BaseTest {
     private User user;
 

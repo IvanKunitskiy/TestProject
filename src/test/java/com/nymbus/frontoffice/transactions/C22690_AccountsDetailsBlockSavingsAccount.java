@@ -24,12 +24,14 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Transactions")
+@Owner("Dmytro")
 public class C22690_AccountsDetailsBlockSavingsAccount extends BaseTest {
     private BalanceDataForCHKAcc expectedSavingsBalanceData;
     private TransactionData savingsAccTransactionData;

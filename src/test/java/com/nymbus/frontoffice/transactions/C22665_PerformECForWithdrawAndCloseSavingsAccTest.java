@@ -20,12 +20,14 @@ import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitGLCreditTran
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Transactions")
+@Owner("Dmytro")
 public class C22665_PerformECForWithdrawAndCloseSavingsAccTest extends BaseTest {
     private double accruedInterest;
     private double balanceBeforeClose;
@@ -68,6 +70,8 @@ public class C22665_PerformECForWithdrawAndCloseSavingsAccTest extends BaseTest 
 
         // Set up transaction with account number
         transaction.getTransactionDestination().setAccountNumber(savingsAcc.getAccountNumber());
+        transaction.getTransactionDestination().setAmount(200);
+        transaction.getTransactionSource().setAmount(200);
 
         // perform transaction
         performGLDebitMiscCreditTransaction(transaction, savingsAcc.getDateOpened());

@@ -7,6 +7,7 @@ import com.nymbus.pages.accounts.transactions.TransactionsPage;
 import com.nymbus.pages.backoffice.BackOfficePage;
 import com.nymbus.pages.backoffice.documentsearch.DocumentTransactionsPage;
 import com.nymbus.pages.cashdrawer.CashDrawerBalancePage;
+import com.nymbus.pages.cashier.NoticePage;
 import com.nymbus.pages.clients.AddClientPage;
 import com.nymbus.pages.clients.ClientDetailsPage;
 import com.nymbus.pages.clients.ClientsSearchPage;
@@ -87,6 +88,7 @@ public class Pages extends AllureLogger {
     private static EditAccountTransactionModal editAccountTransactionModal;
     private static CashDrawerBalancePage cashDrawerBalancePage;
     private static ConfirmModalPage confirmModalPage;
+    private static NoticePage noticePage;
     private static BackOfficePage backOfficePage;
     private static DocumentTransactionsPage documentTransactionsPage;
 
@@ -625,4 +627,15 @@ public class Pages extends AllureLogger {
         }
         return documentTransactionsPage;
     }
+
+    /**
+     * This function return an instance of `NoticePage`
+     */
+    public static NoticePage noticePage(){
+        if (noticePage == null){
+            noticePage = new NoticePage();
+        }
+        return noticePage;
+    }
+
 }
