@@ -20,15 +20,13 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.*;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-@Epic("Frontoffice")
-@Feature("Transactions")
-@Owner("Dmytro")
-public class C22717_CDTTellerSessionCommitOutgoingWireWithFee extends BaseTest {
+public class C22718_CDTTellerSessionCommitOutgoingWireWithWaivedFee extends BaseTest {
     private Transaction transaction;
     private Transaction savingsTransaction;
     private BalanceDataForCHKAcc expectedSavingsBalanceData;
@@ -92,8 +90,7 @@ public class C22717_CDTTellerSessionCommitOutgoingWireWithFee extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-
-    @Test(description = "C226717, CDT+Teller Session - Commit outgoing wire with fee")
+    @Test(description = "C226718, CDT+Teller Session - Commit outgoing wire with waived fee")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
@@ -105,16 +102,17 @@ public class C22717_CDTTellerSessionCommitOutgoingWireWithFee extends BaseTest {
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
 
         logInfo("Step 3: Search for template from preconditions and select it");
-        logInfo("Step 4: Specify account from precondition in destination line account number field;\n" +
+        logInfo("Step 4: Click on [Waive Fee] toggle button");
+        logInfo("Step 5: Specify account from precondition in destination line account number field;\n" +
                 "Set transaction amount > fee amount");
         Actions.cashierDefinedActions().createOutgoingTransaction(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS,
-                transaction, false);
+                transaction, true);
         expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount() + fee);
 
-        logInfo("Step 5: Click [Commit Transaction] button");
+        logInfo("Step 6: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
 
-        logInfo("Step 6: Go to account used in CREDIT item and verify its:\n" +
+        logInfo("Step 7: Go to account used in CREDIT item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
         Actions.transactionActions().goToTellerPage();
@@ -126,15 +124,13 @@ public class C22717_CDTTellerSessionCommitOutgoingWireWithFee extends BaseTest {
         Assert.assertEquals(actualSavBalanceData.getAvailableBalance(), expectedSavingsBalanceData.getAvailableBalance(),
                 "Available balance doesn't match!");
 
-        logInfo("Step 7: Open account on the Transactions tab and verify the committed transaction");
+        logInfo("Step 8: Open account on the Transactions tab and verify the committed transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
         savingsAccTransactionData.setBalance(expectedSavingsBalanceData.getCurrentBalance());
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
 
-
     }
-
 
 }
