@@ -4,6 +4,8 @@ import com.nymbus.core.allure.AllureLogger;
 import com.nymbus.pages.accounts.*;
 import com.nymbus.pages.accounts.transactions.EditAccountTransactionModal;
 import com.nymbus.pages.accounts.transactions.TransactionsPage;
+import com.nymbus.pages.backoffice.BackOfficePage;
+import com.nymbus.pages.backoffice.documentsearch.DocumentTransactionsPage;
 import com.nymbus.pages.cashdrawer.CashDrawerBalancePage;
 import com.nymbus.pages.clients.AddClientPage;
 import com.nymbus.pages.clients.ClientDetailsPage;
@@ -85,6 +87,8 @@ public class Pages extends AllureLogger {
     private static EditAccountTransactionModal editAccountTransactionModal;
     private static CashDrawerBalancePage cashDrawerBalancePage;
     private static ConfirmModalPage confirmModalPage;
+    private static BackOfficePage backOfficePage;
+    private static DocumentTransactionsPage documentTransactionsPage;
 
     /**
      * Modal Windows
@@ -592,10 +596,33 @@ public class Pages extends AllureLogger {
         return cashDrawerBalancePage;
     }
 
+    /**
+     * This function return an instance of `ConfirmModalPage`
+     */
     public static ConfirmModalPage confirmModalPage() {
         if (confirmModalPage == null){
          confirmModalPage = new ConfirmModalPage();
         }
         return confirmModalPage;
+    }
+
+    /**
+     * This function return an instance of `BackOfficePage`
+     */
+    public static BackOfficePage backOfficePage() {
+        if (backOfficePage == null){
+            backOfficePage = new BackOfficePage();
+        }
+        return backOfficePage;
+    }
+
+    /**
+     * This function return an instance of `DocumentTransactionsPage`
+     */
+    public static DocumentTransactionsPage documentTransactionsPage() {
+        if (documentTransactionsPage == null){
+            documentTransactionsPage = new DocumentTransactionsPage();
+        }
+        return documentTransactionsPage;
     }
 }
