@@ -8,6 +8,7 @@ import com.nymbus.data.entity.verifyingmodels.TellerSessionVerifyingModel;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.basicinformation.type.ClientType;
 import com.nymbus.newmodels.client.verifyingmodels.FirstNameAndLastNameModel;
+import com.nymbus.newmodels.notice.Notice;
 import com.nymbus.newmodels.transaction.nontellertransactions.JSONData;
 import com.nymbus.pages.webadmin.WebAdminPages;
 
@@ -118,6 +119,19 @@ public class WebAdminUsersActions {
                 + "from%3A+bank.data.bcfile%0D%0A"
                 + "where%3A+%0D%0A"
                 + "-+code%3A+PrintBalanceOnReceipt%0D%0A&source=";
+    }
+
+    private String getNoticesWithDifferentTypes() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+200%0D%0A"
+                + "select%3A+accountid%2C+accounttype%2C+bcdate%2C+templateid%0D%0A"
+                + "from%3A+bank.data.cifext%0D%0A"
+                + "where%3A+%0D%0A-+accountid%3A+%7Bnot+null%7D%0D%0AorderBy%3A+-id%0D%0A%0D%0A"
+                + "formats%3A+%0D%0A-+-%3Ebank.data.notice%3A+%24%7Bdescription%7D%0D%0A-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A"
+                + "extra%3A+%0D%0A-+%24bankbranch%3A+.accountid-%3Ebankbranch%0D%0A"
+                + "orderBy%3A+-id&source=";
     }
 
     public String getAccountWithDormantStatus(int index) {
@@ -239,6 +253,30 @@ public class WebAdminUsersActions {
     public void goToTellerSessionUrl(String userId) {
         SelenideTools.openUrl(getTellerSessionUrl(userId));
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+    }
+
+    public Notice getRandomNoticeData() {
+        Notice notice = new Notice();
+
+        SelenideTools.openUrl(getNoticesWithDifferentTypes());
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        int numberOfSearchResult = WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult();
+        int showCount = 200;
+        int bound = Math.min(numberOfSearchResult, showCount);
+        int bankBranchAndDateRandomIndex = getRandomIndex(bound);
+
+        notice.setBankBranch(WebAdminPages.rulesUIQueryAnalyzerPage().getNoticeBankBranchValue(bankBranchAndDateRandomIndex));
+        notice.setDate(WebAdminPages.rulesUIQueryAnalyzerPage().getNoticeDateValue(bankBranchAndDateRandomIndex));
+        notice.setAccountNumber(WebAdminPages.rulesUIQueryAnalyzerPage().getNoticeAccountIdValue(bound));
+        notice.setSubType(WebAdminPages.rulesUIQueryAnalyzerPage().getNoticeAccountTypeValue(bound));
+
+        return notice;
+    }
+
+    private int getRandomIndex(int bound) {
+        return new Random().nextInt(bound) + 1;
     }
 
     public void setUserPassword(User user) {

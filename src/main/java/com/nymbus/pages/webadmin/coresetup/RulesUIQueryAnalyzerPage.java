@@ -282,4 +282,37 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         waitForElementVisibility(name, index);
         return getElementText(name, index).trim();
     }
+
+    /**
+     * notices section
+     */
+
+    private By noticeBankBranch = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[2]/span[5]/span");
+    private By noticeAccountId = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[3]/span[5]/span");
+    private By noticeAccountType = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[4]/span[5]/span");
+    private By noticeDate = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[5]/div");
+
+    @Step ("Get 'Bank Branch' {0} value")
+    public String getNoticeBankBranchValue(int index) {
+        waitForElementVisibility(noticeBankBranch, index);
+        return getElementText(noticeBankBranch, index).trim();
+    }
+
+    @Step ("Get 'Account Id' {0} value")
+    public String getNoticeAccountIdValue(int index) {
+        waitForElementVisibility(noticeAccountId, index);
+        return getElementText(noticeAccountId, index).trim();
+    }
+
+    @Step ("Get 'Account type' {0} value")
+    public String getNoticeAccountTypeValue(int index) {
+        waitForElementVisibility(noticeAccountType, index);
+        return getElementText(noticeAccountType, index).trim();
+    }
+
+    @Step ("Get 'Date' {0} value")
+    public String getNoticeDateValue(int index) {
+        waitForElementVisibility(noticeDate, index);
+        return getElementText(noticeDate, index).trim();
+    }
 }
