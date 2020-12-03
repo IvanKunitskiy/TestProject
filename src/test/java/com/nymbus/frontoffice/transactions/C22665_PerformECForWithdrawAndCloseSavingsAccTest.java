@@ -68,6 +68,8 @@ public class C22665_PerformECForWithdrawAndCloseSavingsAccTest extends BaseTest 
 
         // Set up transaction with account number
         transaction.getTransactionDestination().setAccountNumber(savingsAcc.getAccountNumber());
+        transaction.getTransactionDestination().setAmount(200);
+        transaction.getTransactionSource().setAmount(200);
 
         // perform transaction
         performGLDebitMiscCreditTransaction(transaction, savingsAcc.getDateOpened());

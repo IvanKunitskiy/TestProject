@@ -14,6 +14,7 @@ public class ASideMenuPage extends PageTools {
     private By reportGeneratorMenuItem = By.xpath("//li[a[@id='menu-adhocReport']]");
     private By backOfficeMenuItem = By.xpath("//li[a[@id='menu-backoffice']]");
     private By settingsMenuItem = By.xpath("//li[a[@id='menu-settings']]");
+    private By cashierDefinedMenuItem = By.xpath("//li[a[@id='menu-cashierdefinedtrans']]");
     private By journalMenuItem = By.xpath("//li[a[@id='menu-tellerJournal']]");
     private By cashDrawerMenuItem = By.xpath("//li[a[@id='menu-cashDrawer']]");
 
@@ -110,6 +111,12 @@ public class ASideMenuPage extends PageTools {
     public void clickSettingsMenuItem(){
         waitForElementVisibility(settingsMenuItem);
         click(settingsMenuItem);
+    }
+
+    @Step("Click 'Cashier Defined Transactions' menu item")
+    public void clickCashierDefinedTransactionsMenuItem(){
+        waitForElementVisibility(cashierDefinedMenuItem);
+        click(cashierDefinedMenuItem);
     }
 
     @Step("Check is Settings page opened")

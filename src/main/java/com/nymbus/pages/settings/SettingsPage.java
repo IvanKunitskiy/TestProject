@@ -1,5 +1,6 @@
 package com.nymbus.pages.settings;
 
+import com.nymbus.pages.settings.bankcontrol.BankControlPage;
 import com.nymbus.pages.settings.cashdrawer.AddCashDrawerPage;
 import com.nymbus.pages.settings.cashdrawer.CashDrawerSearchPage;
 import com.nymbus.pages.settings.cashdrawer.ViewCashDrawerPage;
@@ -29,6 +30,7 @@ public class SettingsPage {
     private static ProductOverviewPage productOverviewPage;
     private static TellerLocationOverviewPage tellerLocationOverviewPage;
     private static BranchOverviewPage branchOverviewPage;
+    private static BankControlPage bankControlPage;
 
     /**
      * This function return an instance of `MainPage`
@@ -148,5 +150,15 @@ public class SettingsPage {
             branchOverviewPage = new BranchOverviewPage();
         }
         return branchOverviewPage;
+    }
+
+    /**
+     * This function return an instance of `BranchOverviewPage`
+     */
+    public static BankControlPage bankControlPage() {
+        if (bankControlPage == null) {
+            bankControlPage = new BankControlPage();
+        }
+        return bankControlPage;
     }
 }

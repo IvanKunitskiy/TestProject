@@ -69,6 +69,8 @@ public class C22664_CommitWithdrawAndCloseSavingsTest extends BaseTest {
 
         // Set up transaction with account number
         transaction.getTransactionDestination().setAccountNumber(savingsAcc.getAccountNumber());
+        transaction.getTransactionDestination().setAmount(200);
+        transaction.getTransactionSource().setAmount(200);
 
         // perform transaction
         Actions.transactionActions().goToTellerPage();
