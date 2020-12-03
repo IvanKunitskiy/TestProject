@@ -23,14 +23,16 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.File;
 
+@Epic("Frontoffice")
+@Feature("Transactions")
+@Owner("Dmytro")
 public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extends BaseTest {
     private Transaction transaction;
     private Transaction savingsTransaction;
@@ -174,7 +176,7 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
         File file = Actions.noticeActions().saveNoticeImage();
         String noticeData = Actions.balanceInquiryActions().readBalanceInquiryImage(file);
 
-        Assert.assertTrue(noticeData.contains(tellerLocation.getBankName()),"'Bank name' does not match");
+        Assert.assertTrue(noticeData.contains(tellerLocation.getBankName()), "'Bank name' does not match");
         Assert.assertTrue(noticeData.contains(tellerLocation.getCity()),
                 "'City' does not match");
         Assert.assertTrue(noticeData.contains(tellerLocation.getState()),
@@ -205,7 +207,7 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
         File fileSecondPage = Actions.noticeActions().saveNoticeImage();
         String noticeDataSecondPage = Actions.balanceInquiryActions().readBalanceInquiryImage(fileSecondPage);
 
-        Assert.assertTrue(noticeDataSecondPage.contains(tellerLocation.getBankName()),"'Bank name' does not match");
+        Assert.assertTrue(noticeDataSecondPage.contains(tellerLocation.getBankName()), "'Bank name' does not match");
         Assert.assertTrue(noticeDataSecondPage.contains(tellerLocation.getCity()),
                 "'City' does not match");
         Assert.assertTrue(noticeDataSecondPage.contains(tellerLocation.getState()),
@@ -262,7 +264,6 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
-
 
 
     }

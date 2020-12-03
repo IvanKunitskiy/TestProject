@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Dmytro")
-public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountChanged extends BaseTest {
+public class C22717_CDTTellerSessionCommitOutgoingWireWithFee extends BaseTest {
     private Transaction transaction;
     private Transaction savingsTransaction;
     private BalanceDataForCHKAcc expectedSavingsBalanceData;
@@ -37,7 +37,7 @@ public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountCh
     private double transactionAmount = 200.00;
     private double savingsTransactionAmount = 200.00;
     private double returnTransactionAmount = 100.00;
-    private double fee = 1.00;
+    private double fee = 30.00;
 
 
     @BeforeMethod
@@ -68,7 +68,7 @@ public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountCh
         // Set up transactions with account number
         transaction.getTransactionSource().setAmount(returnTransactionAmount);
         transaction.getTransactionDestination().setAmount(returnTransactionAmount);
-        transaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
+        transaction.getTransactionSource().setAccountNumber(savingsAccount.getAccountNumber());
         depositSavingsTransaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
         depositSavingsTransaction.getTransactionDestination().setTransactionCode("209 - Deposit");
         depositSavingsTransaction.getTransactionDestination().setAmount(savingsTransactionAmount);
@@ -88,12 +88,12 @@ public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountCh
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         expectedSavingsBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "+", expectedSavingsBalanceData.getCurrentBalance(), returnTransactionAmount - fee);
+                "-", expectedSavingsBalanceData.getCurrentBalance(), fee);
         Actions.loginActions().doLogOut();
     }
 
 
-    @Test(description = "C226715, CDT+Teller Session - Commit incoming wire with fee, transaction amount changed")
+    @Test(description = "C226717, CDT+Teller Session - Commit outgoing wire with fee")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
@@ -108,20 +108,17 @@ public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountCh
         logInfo("Step 4: Specify account from precondition in destination line account number field;\n" +
                 "Set transaction amount > fee amount");
         //fill notes
-        Actions.cashierDefinedActions().createTransaction(CashierDefinedTransactions.INCOMING_WIRE_TO_SAVINGS,
+        Actions.cashierDefinedActions().createOutgoingTransaction(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS,
                 transaction, false);
-        expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount() - fee);
+        expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount() + fee);
 
         logInfo("Step 5: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
 
-        logInfo("Step 6: Click [Yes] button");
-        Pages.confirmModalPage().clickYes();
-        Pages.confirmModalPage().clickOk();
-
-        logInfo("Step 7: Go to account used in CREDIT item and verify its:\n" +
+        logInfo("Step 6: Go to account used in CREDIT item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
+        Actions.transactionActions().goToTellerPage();
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         BalanceDataForCHKAcc actualSavBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
 
@@ -130,7 +127,7 @@ public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountCh
         Assert.assertEquals(actualSavBalanceData.getAvailableBalance(), expectedSavingsBalanceData.getAvailableBalance(),
                 "Available balance doesn't match!");
 
-        logInfo("Step 8: Open account on the Transactions tab and verify the committed transaction");
+        logInfo("Step 7: Open account on the Transactions tab and verify the committed transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
         savingsAccTransactionData.setBalance(expectedSavingsBalanceData.getCurrentBalance());
         AccountActions.retrievingAccountData().goToTransactionsTab();
@@ -139,5 +136,6 @@ public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountCh
 
 
     }
+
 
 }

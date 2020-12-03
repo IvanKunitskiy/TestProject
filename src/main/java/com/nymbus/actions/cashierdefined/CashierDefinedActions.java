@@ -15,8 +15,17 @@ public class CashierDefinedActions {
         if (!type.equals(CashierDefinedTransactions.INCOMING_WIRE_TO_SAVINGS)){
             setTransactionSource(transaction.getTransactionSource(), tempIndex);
         }
-        setTransactionDestination(transaction.getTransactionDestination(), tempIndex);
+        if (!type.equals(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS)){
+            setTransactionDestination(transaction.getTransactionDestination(), tempIndex);
+        }
+    }
 
+    public void createOutgoingTransaction(CashierDefinedTransactions type, Transaction transaction, boolean waiveFee){
+        int tempIndex = 0;
+        setTellerOperation(type.getOperation());
+        setWaiveFee(waiveFee);
+        setTransactionSource(transaction.getTransactionSource(), tempIndex);
+        Pages.tellerPage().inputBankRouting("122105155");
     }
 
     private void setWaiveFee(boolean waiveFee) {

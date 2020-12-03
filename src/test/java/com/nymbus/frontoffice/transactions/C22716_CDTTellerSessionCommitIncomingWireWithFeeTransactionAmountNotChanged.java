@@ -20,12 +20,14 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Transactions")
+@Owner("Dmytro")
 public class C22716_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountNotChanged extends BaseTest {
     private Transaction transaction;
     private Transaction savingsTransaction;
@@ -91,7 +93,7 @@ public class C22716_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountNo
     }
 
 
-    @Test(description = "C226708, CDT+Teller Session - Commit simple CDT with fee waived")
+    @Test(description = "C226716, CDT+Teller Session - Commit incoming wire with fee, transaction amount not changed")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
@@ -108,12 +110,12 @@ public class C22716_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountNo
         //fill notes
         Actions.cashierDefinedActions().createTransaction(CashierDefinedTransactions.INCOMING_WIRE_TO_SAVINGS,
                 transaction, false);
-        expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount()- fee);
+        expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount() - fee);
 
         logInfo("Step 5: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
 
-        logInfo("Step 6: Click [Yes] button");
+        logInfo("Step 6: Click [No] button");
         Pages.confirmModalPage().clickNo();
         Pages.confirmModalPage().clickOk();
 
@@ -134,8 +136,6 @@ public class C22716_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountNo
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
-
-
 
 
     }
