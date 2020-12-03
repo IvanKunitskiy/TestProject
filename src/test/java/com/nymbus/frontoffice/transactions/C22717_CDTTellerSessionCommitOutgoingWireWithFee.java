@@ -35,7 +35,7 @@ public class C22717_CDTTellerSessionCommitOutgoingWireWithFee extends BaseTest {
     private double transactionAmount = 200.00;
     private double savingsTransactionAmount = 200.00;
     private double returnTransactionAmount = 100.00;
-    private double fee = 20.00;
+    private double fee = 30.00;
 
 
     @BeforeMethod
@@ -106,17 +106,17 @@ public class C22717_CDTTellerSessionCommitOutgoingWireWithFee extends BaseTest {
         logInfo("Step 4: Specify account from precondition in destination line account number field;\n" +
                 "Set transaction amount > fee amount");
         //fill notes
-        Actions.cashierDefinedActions().createTransaction(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS,
+        Actions.cashierDefinedActions().createOutgoingTransaction(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS,
                 transaction, false);
-        expectedSavingsBalanceData.addAmount(transaction.getTransactionDestination().getAmount() - fee);
+        expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount() + fee);
 
         logInfo("Step 5: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
-        Pages.confirmModalPage().clickOk();
 
         logInfo("Step 6: Go to account used in CREDIT item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
+        Actions.transactionActions().goToTellerPage();
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         BalanceDataForCHKAcc actualSavBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
 
