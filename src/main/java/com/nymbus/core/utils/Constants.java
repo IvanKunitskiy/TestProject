@@ -21,6 +21,9 @@ public class Constants {
     //    public static String LAST_NAME = "autotest";
     public static String LAST_NAME = "autestthredone";
 
+    public static String NOT_TELLER_USERNAME ="autotesttell";
+    public static String NOT_TELLER_PASSWORD ="autotesttell";
+
     public static int DAYS_BEFORE_SYSTEM_DATE = 3;
     public static int MAX_CHARACTERS_ON_DEBIT_CARD = 25;
 

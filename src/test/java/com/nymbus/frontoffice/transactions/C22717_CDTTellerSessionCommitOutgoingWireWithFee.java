@@ -107,7 +107,6 @@ public class C22717_CDTTellerSessionCommitOutgoingWireWithFee extends BaseTest {
         logInfo("Step 3: Search for template from preconditions and select it");
         logInfo("Step 4: Specify account from precondition in destination line account number field;\n" +
                 "Set transaction amount > fee amount");
-        //fill notes
         Actions.cashierDefinedActions().createOutgoingTransaction(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS,
                 transaction, false);
         expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount() + fee);

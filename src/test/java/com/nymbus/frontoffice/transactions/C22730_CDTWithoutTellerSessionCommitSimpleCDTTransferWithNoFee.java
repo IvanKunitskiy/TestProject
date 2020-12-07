@@ -4,6 +4,7 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -28,7 +29,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Dmytro")
-public class C22697_CDTTellerSessionCommitSimpleCDTTransferWithNoFee extends BaseTest {
+public class C22730_CDTWithoutTellerSessionCommitSimpleCDTTransferWithNoFee extends BaseTest {
     private Transaction transaction;
     private Transaction savingsTransaction;
     private BalanceDataForCHKAcc expectedBalanceData;
@@ -38,8 +39,8 @@ public class C22697_CDTTellerSessionCommitSimpleCDTTransferWithNoFee extends Bas
     private Account checkAccount;
     private Account savingsAccount;
     private double transactionAmount = 100.00;
-    private double savingsTransactionAmount = 2000.00;
-    private double returnTransactionAmount = 1500.00;
+    private double savingsTransactionAmount = 200.00;
+    private double returnTransactionAmount = 200.00;
 
 
     @BeforeMethod
@@ -56,7 +57,7 @@ public class C22697_CDTTellerSessionCommitSimpleCDTTransferWithNoFee extends Bas
         savingsTransaction = new TransactionConstructor(new WithdrawalGLDebitCHKAccBuilder()).constructTransaction();
 
         // Log in
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
 
         // Set products
         checkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
@@ -87,6 +88,8 @@ public class C22697_CDTTellerSessionCommitSimpleCDTTransferWithNoFee extends Bas
         depositSavingsTransaction.getTransactionSource().setAmount(savingsTransactionAmount);
 
         // Perform deposit transactions
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.transactionActions().goToTellerPage();
         Actions.transactionActions().doLoginTeller();
         Actions.transactionActions().createTransaction(depositTransaction);
@@ -98,7 +101,7 @@ public class C22697_CDTTellerSessionCommitSimpleCDTTransferWithNoFee extends Bas
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
 
         // Set transaction with amount value
         Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
@@ -113,22 +116,21 @@ public class C22697_CDTTellerSessionCommitSimpleCDTTransferWithNoFee extends Bas
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C22697, CDT+Teller Session - Commit simple CDT transfer with no fee")
+    @Test(description = "C226730,CDT without Teller Session - Commit simple CDT transfer with no fee")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
 
-        logInfo("Step 2: Go to Cashier Defined Transactions screen and log in to proof date");
-        Actions.transactionActions().loginTeller();
+        logInfo("Step 2: Go to Cashier Defined Transactions page");
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
 
         logInfo("Step 3: Search for template from preconditions and select it");
-        logInfo("Step 4: Specify accounts from preconditions in the source and destination line items;\n" +
-                "set transaction amount less than Debit Account's Available Balance");
-        Actions.cashierDefinedActions().createTransaction(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK, transaction,
-                false);
+        logInfo("Step 4: Specify accounts from preconditions in source and destination line items;\n" +
+                "Set transaction amount less than the balance of debit account.");
+        Actions.cashierDefinedActions().createTransaction(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK,
+                transaction, false);
         expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
         expectedBalanceData.addAmount(transaction.getTransactionDestination().getAmount());
 
@@ -147,16 +149,10 @@ public class C22697_CDTTellerSessionCommitSimpleCDTTransferWithNoFee extends Bas
         Assert.assertEquals(actualBalanceData.getAvailableBalance(), expectedBalanceData.getAvailableBalance(),
                 "Available balance doesn't match!");
 
-        logInfo("Step 7: Open account on the Transactions tab and verify the committed transaction");
-        Pages.accountDetailsPage().clickTransactionsTab();
-        chkAccTransactionData.setBalance(expectedBalanceData.getCurrentBalance());
-        AccountActions.retrievingAccountData().goToTransactionsTab();
-        TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
-        Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
-
         logInfo("Step 8: Go to account used in CREDIT item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
+        Actions.transactionActions().goToTellerPage();
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         BalanceDataForCHKAcc actualSavBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
 
@@ -171,6 +167,8 @@ public class C22697_CDTTellerSessionCommitSimpleCDTTransferWithNoFee extends Bas
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
+
     }
+
 
 }
