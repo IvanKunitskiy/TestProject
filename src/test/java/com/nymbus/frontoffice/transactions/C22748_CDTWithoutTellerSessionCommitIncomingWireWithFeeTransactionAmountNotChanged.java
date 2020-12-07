@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Dmytro")
-public class C22747_CDTwithoutTellerSessionCommitIncomingWireWithFeeTransactionAmountChanged extends BaseTest {
+public class C22748_CDTWithoutTellerSessionCommitIncomingWireWithFeeTransactionAmountNotChanged extends BaseTest {
     private Transaction transaction;
     private Transaction savingsTransaction;
     private BalanceDataForCHKAcc expectedBalanceData;
@@ -92,11 +92,11 @@ public class C22747_CDTwithoutTellerSessionCommitIncomingWireWithFeeTransactionA
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         expectedSavingsBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "+", expectedSavingsBalanceData.getCurrentBalance(), returnTransactionAmount - fee);
+                "-", expectedSavingsBalanceData.getCurrentBalance(), fee);
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C226747,CDT without Teller Session - Commit incoming wire with fee, transaction amount changed")
+    @Test(description = "C226748,CDT without Teller Session - Commit incoming wire with fee, transaction amount not changed")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
@@ -116,8 +116,8 @@ public class C22747_CDTwithoutTellerSessionCommitIncomingWireWithFeeTransactionA
         logInfo("Step 5: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
 
-        logInfo("Step 6: Click [Yes] button");
-        Pages.confirmModalPage().clickYes();
+        logInfo("Step 6: Click [No] button");
+        Pages.confirmModalPage().clickNo();
         Pages.confirmModalPage().clickOk();
 
         logInfo("Step 7: Go to account used in CREDIT item and verify its:\n" +
@@ -140,4 +140,6 @@ public class C22747_CDTwithoutTellerSessionCommitIncomingWireWithFeeTransactionA
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
 
     }
+
+
 }
