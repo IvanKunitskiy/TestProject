@@ -7,6 +7,7 @@ import com.nymbus.pages.accounts.transactions.TransactionsPage;
 import com.nymbus.pages.backoffice.BackOfficePage;
 import com.nymbus.pages.backoffice.documentsearch.DocumentTransactionsPage;
 import com.nymbus.pages.cashdrawer.CashDrawerBalancePage;
+import com.nymbus.pages.cashier.CashierPage;
 import com.nymbus.pages.cashier.NoticePage;
 import com.nymbus.pages.clients.AddClientPage;
 import com.nymbus.pages.clients.ClientDetailsPage;
@@ -44,6 +45,7 @@ public class Pages extends AllureLogger {
     private static AddClientPage addClientPage;
     private static ClientDetailsPage clientDetailsPage;
     private static TellerPage tellerPage;
+    private static CashierPage cashierPage;
     private static LoansPage loansPage;
     private static ReportGeneratorPage reportGeneratorPage;
     private static TellerToTellerPage tellerToTellerPage;
@@ -165,6 +167,16 @@ public class Pages extends AllureLogger {
             tellerPage = new TellerPage();
         }
         return tellerPage;
+    }
+
+    /**
+     * This function return an instance of `CashierPage`
+     */
+    public static CashierPage cashierPage() {
+        if (cashierPage == null) {
+            cashierPage = new CashierPage();
+        }
+        return cashierPage;
     }
 
     /**
