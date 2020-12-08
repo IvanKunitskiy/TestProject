@@ -11,6 +11,7 @@ import com.nymbus.newmodels.client.verifyingmodels.FirstNameAndLastNameModel;
 import com.nymbus.newmodels.notice.Notice;
 import com.nymbus.newmodels.transaction.nontellertransactions.JSONData;
 import com.nymbus.pages.webadmin.WebAdminPages;
+import org.testng.Assert;
 
 import java.util.Map;
 import java.util.Random;
@@ -132,6 +133,27 @@ public class WebAdminUsersActions {
                 + "formats%3A+%0D%0A-+-%3Ebank.data.notice%3A+%24%7Bdescription%7D%0D%0A-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A"
                 + "extra%3A+%0D%0A-+%24bankbranch%3A+.accountid-%3Ebankbranch%0D%0A"
                 + "orderBy%3A+-id&source=";
+    }
+
+    private String getInterestChecks() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+200%0D%0A"
+                + "select%3A+accountid%2C+accounttype%2C+bcdate%2C+templateid%0D%0A"
+                + "from%3A+bank.data.cifext%0D%0A"
+                + "where%3A+%0D%0A-+.templateid-%3Ecode%3A+form35%0D%0A%0D%0A"
+                + "-+accountid%3A+%7Bnot+null%7D%0D%0A"
+                + "orderBy%3A+-id%0D%0A%0D%0A"
+                + "formats%3A+%0D%0A"
+                + "-+-%3Ebank.data.notice%3A+%24%7Bdescription%7D%0D%0A"
+                + "-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A"
+                + "extra%3A+%0D%0A-+%24bankbranch%3A+.accountid-%3Ebankbranch%0D%0A"
+                + "orderBy%3A+-id&source=";
+    }
+
+    public String getAccountNumberWithInterestCheck(int index) {
+        return getAccountWithCheckByIndexFromQueryByUrl(getInterestChecks(), 1);
     }
 
     public String getAccountWithDormantStatus(int index) {
@@ -273,6 +295,18 @@ public class WebAdminUsersActions {
         notice.setSubType(WebAdminPages.rulesUIQueryAnalyzerPage().getNoticeAccountTypeValue(bound));
 
         return notice;
+    }
+
+    public String getAccountWithCheckByIndexFromQueryByUrl(String url, int index) {
+
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
+                "There are no search results found on query");
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getAccountNumberWithCheckValueByIndex(index);
     }
 
     private int getRandomIndex(int bound) {

@@ -38,7 +38,7 @@ public class C22849_DocumentsSearchViewPrintNoticesTest extends BaseTest {
 
         logInfo("Step 2: Go to Backoffice > Document Search > Notices tab");
         Pages.aSideMenuPage().clickBackOfficeMenuItem();
-        Pages.backOfficePage().clickTheDocumentSearchSeeMoreLink();
+        Pages.backOfficePage().clickDocumentSearchSeeMoreLink();
         Pages.documentTransactionsPage().clickNoticesTab();
         Pages.documentTransactionsPage().waitForTabContent();
 

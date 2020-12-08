@@ -315,4 +315,17 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         waitForElementVisibility(noticeDate, index);
         return getElementText(noticeDate, index).trim();
     }
+
+    /**
+     * Print Checks
+     */
+
+    private By accountNumberWithCheckByIndex = By.xpath("//table[@id='searchResultTable']/tbody/tr[contains(@class, 'searchResultRow') "
+            + "and not(contains(@class, 'searchResultRowHeader'))][%s]/td[3]//span[contains(@class, 'high_title')]/span");
+
+    @Step ("Get 'Account number' {0} value")
+    public String getAccountNumberWithCheckValueByIndex(int index) {
+        waitForElementVisibility(accountNumberWithCheckByIndex, index);
+        return getElementText(accountNumberWithCheckByIndex, index).trim();
+    }
 }
