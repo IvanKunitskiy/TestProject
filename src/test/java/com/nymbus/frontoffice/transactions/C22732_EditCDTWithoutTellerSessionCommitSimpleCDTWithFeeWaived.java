@@ -117,7 +117,7 @@ public class C22732_EditCDTWithoutTellerSessionCommitSimpleCDTWithFeeWaived exte
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C226732,CDT without Teller Session - Commit simple CDT with fee waived")
+    @Test(description = "C22732,CDT without Teller Session - Commit simple CDT with fee waived")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");

@@ -92,7 +92,7 @@ public class C22718_CDTTellerSessionCommitOutgoingWireWithWaivedFee extends Base
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C226718, CDT+Teller Session - Commit outgoing wire with waived fee")
+    @Test(description = "C22718, CDT+Teller Session - Commit outgoing wire with waived fee")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");

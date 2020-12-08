@@ -93,7 +93,7 @@ public class C22716_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountNo
     }
 
 
-    @Test(description = "C226716, CDT+Teller Session - Commit incoming wire with fee, transaction amount not changed")
+    @Test(description = "C22716, CDT+Teller Session - Commit incoming wire with fee, transaction amount not changed")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");

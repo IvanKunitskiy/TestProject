@@ -96,7 +96,7 @@ public class C22747_CDTwithoutTellerSessionCommitIncomingWireWithFeeTransactionA
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C226747,CDT without Teller Session - Commit incoming wire with fee, transaction amount changed")
+    @Test(description = "C22747,CDT without Teller Session - Commit incoming wire with fee, transaction amount changed")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");

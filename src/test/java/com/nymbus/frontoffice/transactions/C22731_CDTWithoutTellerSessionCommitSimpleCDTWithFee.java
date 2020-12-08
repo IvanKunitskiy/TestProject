@@ -120,7 +120,7 @@ public class C22731_CDTWithoutTellerSessionCommitSimpleCDTWithFee extends BaseTe
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C226731,CDT without Teller Session - Commit simple CDT with fee")
+    @Test(description = "C22731,CDT without Teller Session - Commit simple CDT with fee")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
