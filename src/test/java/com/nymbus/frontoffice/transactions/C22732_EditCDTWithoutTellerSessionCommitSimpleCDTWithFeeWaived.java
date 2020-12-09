@@ -21,12 +21,14 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Transactions")
+@Owner("Dmytro")
 public class C22732_EditCDTWithoutTellerSessionCommitSimpleCDTWithFeeWaived extends BaseTest {
     private Transaction transaction;
     private Transaction savingsTransaction;
@@ -115,7 +117,7 @@ public class C22732_EditCDTWithoutTellerSessionCommitSimpleCDTWithFeeWaived exte
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C226730,CDT without Teller Session - Commit simple CDT transfer with no fee")
+    @Test(description = "C22732,CDT without Teller Session - Commit simple CDT with fee waived")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");

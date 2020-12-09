@@ -93,7 +93,7 @@ public class C22717_CDTTellerSessionCommitOutgoingWireWithFee extends BaseTest {
     }
 
 
-    @Test(description = "C226717, CDT+Teller Session - Commit outgoing wire with fee")
+    @Test(description = "C22717, CDT+Teller Session - Commit outgoing wire with fee")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
