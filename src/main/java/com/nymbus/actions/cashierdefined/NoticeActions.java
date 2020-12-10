@@ -1,5 +1,6 @@
 package com.nymbus.actions.cashierdefined;
 
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.ImageParser;
 import com.nymbus.core.utils.SelenideTools;
@@ -10,11 +11,13 @@ import java.io.File;
 public class NoticeActions {
 
     public File saveNoticeImage() {
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        SelenideTools.switchToLastTab();
         Pages.noticePage().checkPDFVisible();
 
         // Get the 'src' attribute value from the balance inquiry image
-        SelenideTools.sleep(2);
         String src = Pages.noticePage().getNoticeImageSrc();
+        System.out.println("src");
 
         // Generate name for balance inquiry image
         String imageName = "bi-image-" + DateTime.getLocalDateTimeByPattern("yyMMddHHmmss");
@@ -22,7 +25,8 @@ public class NoticeActions {
 
         System.out.println(src);
         // Save the image
-        ImageParser.loadImage(src, biImage.getAbsolutePath());
+        ImageParser.loadPdf(src,biImage.getAbsolutePath());
+        //ImageParser.loadImage(src, biImage.getAbsolutePath(), 0);
         return biImage;
     }
 

@@ -28,7 +28,7 @@ public class BalanceInquiryActions {
         File biImage = new File(System.getProperty("user.dir") + "/screenshots/" + imageName + ".png");
 
         // Save the image
-        ImageParser.loadImage(src, biImage.getAbsolutePath());
+        ImageParser.loadImage(src, biImage.getAbsolutePath(), 0);
         return biImage;
     }
 

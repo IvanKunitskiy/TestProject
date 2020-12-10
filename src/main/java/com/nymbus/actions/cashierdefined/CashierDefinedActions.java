@@ -28,6 +28,16 @@ public class CashierDefinedActions {
         Pages.tellerPage().inputBankRouting("122105155");
     }
 
+    public void createOfficialTransaction(CashierDefinedTransactions type, Transaction transaction, boolean waiveFee){
+        int tempIndex = 0;
+        setTellerOperation(type.getOperation());
+        setWaiveFee(waiveFee);
+        setTransactionSource(transaction.getTransactionSource(), tempIndex);
+        typeName();
+        choosePayeeType();
+    }
+
+
     private void setWaiveFee(boolean waiveFee) {
         if (waiveFee){
             Pages.cashierPage().clickWaiveFee();
