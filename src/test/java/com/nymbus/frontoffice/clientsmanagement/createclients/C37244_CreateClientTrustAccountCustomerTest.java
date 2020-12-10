@@ -19,7 +19,7 @@ import com.nymbus.newmodels.generation.client.builder.type.organisation.TrustAcc
 import com.nymbus.newmodels.generation.client.factory.clientdetails.contactinformation.PhoneFactory;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import org.testng.Assert;
+import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -30,8 +30,9 @@ public class C37244_CreateClientTrustAccountCustomerTest extends BaseTest {
     @BeforeMethod
     public void prepareClientData() {
         String currentFinancialType = WebAdminActions.loginActions().getFinancialType();
-        Assert.assertEquals(currentFinancialType, FinancialInstitutionType.BANK.getFinancialInstitutionType(),
-                "Financial Institution Type is incorrect!");
+        if (!currentFinancialType.equals(FinancialInstitutionType.BANK.getFinancialInstitutionType())) {
+            throw new SkipException("Financial Institution Type is incorrect!");
+        }
 
         OrganisationClientBuilder organisationClientBuilder = new  OrganisationClientBuilder();
         organisationClientBuilder.setOrganisationTypeBuilder(new TrustAccountBuilder());
