@@ -93,6 +93,7 @@ public class Pages extends AllureLogger {
     private static NoticePage noticePage;
     private static BackOfficePage backOfficePage;
     private static DocumentTransactionsPage documentTransactionsPage;
+    private static AccountCommercialAnalysisPage accountCommercialAnalysisPage;
 
     /**
      * Modal Windows
@@ -648,6 +649,16 @@ public class Pages extends AllureLogger {
             noticePage = new NoticePage();
         }
         return noticePage;
+    }
+
+    /**
+     * This function return an instance of `AccountCommercialAnalysisPage`
+     */
+    public static AccountCommercialAnalysisPage accountCommercialAnalysisPage(){
+        if (accountCommercialAnalysisPage == null){
+            accountCommercialAnalysisPage = new AccountCommercialAnalysisPage();
+        }
+        return accountCommercialAnalysisPage;
     }
 
 }
