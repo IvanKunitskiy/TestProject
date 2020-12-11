@@ -14,6 +14,7 @@ public class AccountDetailsPage extends PageTools {
     private By transactionsTab = By.xpath("//a[contains(text(), 'Transactions')]");
     private By instructionsTab = By.xpath("//a[contains(text(), 'Instructions')]");
     private By detailsTab = By.xpath("//a[contains(text(), 'Details')]");
+    private By commercialAnalysisTab = By.xpath("//a[contains(text(), 'Commercial Analysis')]");
 
     /**
      * Account actions
@@ -765,6 +766,12 @@ public class AccountDetailsPage extends PageTools {
     public void clickDetailsTab() {
         waitForElementClickable(detailsTab);
         click(detailsTab);
+    }
+
+    @Step("Click the 'Commercial Analysis' tab")
+    public void clickCommercialAnalysisTab() {
+        waitForElementClickable(commercialAnalysisTab);
+        click(commercialAnalysisTab);
     }
 
     @Step("Is notification with text {0} visible")

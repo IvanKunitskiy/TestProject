@@ -39,6 +39,19 @@ public class ProductsActions {
         return productTypeList.get(new Random().nextInt(productTypeList.size()));
     }
 
+    public String getProduct(Products products, String initials) {
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        Pages.settings().waitForSettingsPageLoaded();
+        SettingsPage.mainPage().clickViewAllProducts();
+        SettingsPage.productsOverviewPage().clickProductTypeSelectorButton();
+        SettingsPage.productsOverviewPage().clickProductTypeOption(products.getProduct());
+        SettingsPage.productsOverviewPage().waitForResultsIsVisible();
+        expandAllRows();
+        List<String> productTypeList = SettingsPage.productsOverviewPage().getAccountDescriptionsByInitials(initials);
+
+        return productTypeList.get(new Random().nextInt(productTypeList.size()));
+    }
+
     public String getMinTerm(Products products, Account account) {
         Pages.aSideMenuPage().clickSettingsMenuItem();
         Pages.settings().waitForSettingsPageLoaded();

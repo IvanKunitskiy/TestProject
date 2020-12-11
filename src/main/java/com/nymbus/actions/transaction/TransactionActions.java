@@ -189,6 +189,15 @@ public class TransactionActions {
         fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
     }
 
+    public void setGlDebitSource(TransactionSource source, int index) {
+        int tempIndex = 1 + index;
+        Pages.tellerPage().clickGLDebitButton();
+        fillSourceAccountNumber(source.getAccountNumber(), tempIndex);
+        fillSourceAccountCode(source.getTransactionCode(), tempIndex);
+        fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
+        fillSourceDetails(source.getNotes(), tempIndex);
+    }
+
     public void setMiscDebitSourceForWithDraw(TransactionSource source, int index) {
         int tempIndex = 1 + index;
         Pages.tellerPage().clickMiscDebitButton();

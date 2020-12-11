@@ -47,4 +47,13 @@ public class SourceFactory {
         source.setAmount(100);
         return source;
     }
+
+    public static TransactionSource getGlDebitSource() {
+        TransactionSource source = new TransactionSource();
+        source.setSourceType(SourceType.GL_DEBIT);
+        source.setAccountNumber("0-0-Dummy");
+        source.setTransactionCode(TransactionCode.GL_DEBIT.getTransCode());
+        source.setAmount(100);
+        return source;
+    }
 }
