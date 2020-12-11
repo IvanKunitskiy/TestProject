@@ -11,6 +11,7 @@ import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
 import com.nymbus.newmodels.account.product.RateType;
+import com.nymbus.newmodels.backoffice.Check;
 import com.nymbus.newmodels.cashier.CashierDefinedTransactions;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -39,6 +40,9 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
     private double savingsTransactionAmount = 200.00;
     private double returnTransactionAmount = 100.00;
     private double fee = 5.00;
+    private int checkAccountNumber;
+    private Check check;
+    private String name = "John";
 
 
     @BeforeMethod
@@ -104,7 +108,18 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         Pages.aSideMenuPage().clickSettingsMenuItem();
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().clickViewControls();
-        String checkAccountNumber = SettingsPage.officialComtrolPage().checkAccountNumber();
+        checkAccountNumber = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());
+
+        //New Check
+        check = new Check();
+        check.setDate(DateTime.getLocalDateOfPattern("MM/dd/yyyy"));
+        check.setCheckType("Cashier Check");
+        check.setPayee(name);
+        check.setPurchaser(client.getInitials());
+        check.setInitials(client.getNameForDebitCard());
+        check.setAmount(returnTransactionAmount);
+        check.setStatus("Outstanding");
+
 
         SelenideTools.sleep(10000);
         Actions.loginActions().doLogOut();
@@ -126,14 +141,45 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
                 "Specify Payee Info required fields:\n" +
                 "Name (any value)\n" +
                 "Payee Type (e.g. 'Person')");
-        Actions.cashierDefinedActions().createOutgoingTransaction(CashierDefinedTransactions.OFFICIAL_CHECK_FROM_SAVINGS,
-                transaction, false);
+        Actions.cashierDefinedActions().createOfficialTransaction(CashierDefinedTransactions.OFFICIAL_CHECK_FROM_SAVINGS,
+                transaction, false, name);
         expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
 
-        logInfo("Step 6: Click [Commit Transaction] button");
+        logInfo("Step 5: Click [Commit Transaction] button and click [Verify] button");
         Actions.transactionActions().clickCommitButton();
+        Pages.verifyConductorModalPage().clickVerifyButton();
+        Assert.assertTrue(Pages.confirmModalPage().checkReprintButton(),"Reprint check is not visible");
+        check.setCheckNumber(Pages.confirmModalPage().getReprintCheckNumber());
 
-        logInfo("Step 7: Go to account used in CREDIT item and verify its:\n" +
+        logInfo("Step 6: Click [Yes] button on a \"Reprint check #X?\" popup");
+        Pages.confirmModalPage().clickYes();
+        Assert.assertTrue(Pages.confirmModalPage().checkReprintButton(),"Is check is not visible");
+
+        logInfo("Step 7: Click [Yes] button on a \"Is check #X still usable?\" popup:");
+        Pages.confirmModalPage().clickYes();
+        Assert.assertTrue(Pages.confirmModalPage().checkReprintButton(),"Reprint check is not visible");
+
+        logInfo("Step 8: Click [NO] on \"Reprint check #X?\" popup");
+        Pages.confirmModalPage().clickNo();
+        Assert.assertEquals(Pages.cashierPage().getPayeeName(), name, "Name doesn't match");
+        SelenideTools.openUrlInNewWindow(Constants.URL.substring(0,Constants.URL.indexOf("com")+3)
+                +"/settings/#/view/bank.data.officialcheck.control");
+        int number = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());
+        Assert.assertEquals( number, checkAccountNumber+1,"Number doesn't match");
+        SelenideTools.closeCurrentTab();
+
+        logInfo("Step 9: Click [Commit] again and click [Verify] button;\n" +
+                "Click [No] button on \"Reprint check #X?\" popup");
+        Actions.transactionActions().clickCommitButton();
+        Pages.verifyConductorModalPage().clickVerifyButton();
+        Pages.confirmModalPage().clickNo();
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        Pages.settings().waitForSettingsPageLoaded();
+        SettingsPage.mainPage().clickViewControls();
+        number = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());
+        Assert.assertEquals( number, checkAccountNumber+1,"Number doesn't match");
+
+        logInfo("Step 10: Go to account used in DEBIT item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
         Actions.transactionActions().goToTellerPage();
@@ -145,12 +191,24 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         Assert.assertEquals(actualSavBalanceData.getAvailableBalance(), expectedSavingsBalanceData.getAvailableBalance(),
                 "Available balance doesn't match!");
 
-        logInfo("Step 8: Open account on the Transactions tab and verify the committed transaction");
+        logInfo("Step 11: Open account on the Transactions tab and verify the committed transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
         savingsAccTransactionData.setBalance(returnTransactionAmount);
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getSecondTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
+
+        logInfo("Step 12: Go to Back Office -> Official Checks and find generated Check from the related transaction\n" +
+                "Verify Check Number, Purchaser, PAYEE, Date Issued, Initials, Check Type, Status, Amount fields");
+        Pages.aSideMenuPage().clickBackOfficeMenuItem();
+        Pages.backOfficePage().clickOfficialChecks();
+        Check checkFromBankOffice = Actions.backOfficeActions().getCheckFromBankOffice();
+        Assert.assertEquals(checkFromBankOffice, check, "Check doesn't match");
+
+        logInfo("Step 13: Open check on Details and verify the following fields: Status, Check Number, " +
+                "Remitter, Phone Number, Document Type, Document ID, Payee, Check Type, Purchase Account, " +
+                "Branch, Initials, Check Amount, Fee, Date Issued, Cash Purchased");
+
 
     }
 
