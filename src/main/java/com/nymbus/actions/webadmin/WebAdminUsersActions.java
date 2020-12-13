@@ -122,7 +122,7 @@ public class WebAdminUsersActions {
                 + "-+code%3A+PrintBalanceOnReceipt%0D%0A&source=";
     }
 
-    private String getNoticesWithDifferentTypes() {
+    private String getNoticesWithDifferentTypesUrl() {
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?"
                 + "waDbName=nymbusdev12DS&"
@@ -135,7 +135,7 @@ public class WebAdminUsersActions {
                 + "orderBy%3A+-id&source=";
     }
 
-    private String getInterestChecks() {
+    private String getInterestChecksUrl() {
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?"
                 + "waDbName=nymbusdev12DS&"
@@ -152,8 +152,24 @@ public class WebAdminUsersActions {
                 + "orderBy%3A+-id&source=";
     }
 
+    private String getOfficialCheckControlNumberUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+100%0D%0A"
+                + "select%3A+checktype%2C+checkingaccountnumber%0D%0A"
+                + "from%3A+bank.data.officialcheck.control%0D%0A"
+                + "where%3A+%0D%0A-+.checktype-%3Ename%3A+Interest+Check%0D%0A"
+                + "formats%3A+%0D%0A-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A"
+                + "orderBy%3A+-id&source=";
+    }
+
+    public String getOfficialCheckControlNumber() {
+        return getOfficialCheckControlNumberFromQueryByUrl(getOfficialCheckControlNumberUrl());
+    }
+
     public String getAccountNumberWithInterestCheck(int index) {
-        return getAccountWithCheckByIndexFromQueryByUrl(getInterestChecks(), 1);
+        return getAccountWithCheckByIndexFromQueryByUrl(getInterestChecksUrl(), 1);
     }
 
     public String getAccountWithDormantStatus(int index) {
@@ -280,7 +296,7 @@ public class WebAdminUsersActions {
     public Notice getRandomNoticeData() {
         Notice notice = new Notice();
 
-        SelenideTools.openUrl(getNoticesWithDifferentTypes());
+        SelenideTools.openUrl(getNoticesWithDifferentTypesUrl());
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
 
@@ -307,6 +323,18 @@ public class WebAdminUsersActions {
                 "There are no search results found on query");
 
         return WebAdminPages.rulesUIQueryAnalyzerPage().getAccountNumberWithCheckValueByIndex(index);
+    }
+
+    private String getOfficialCheckControlNumberFromQueryByUrl(String url) {
+
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
+                "There are no search results found on query");
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getOfficialCheckControlNumber();
     }
 
     private int getRandomIndex(int bound) {

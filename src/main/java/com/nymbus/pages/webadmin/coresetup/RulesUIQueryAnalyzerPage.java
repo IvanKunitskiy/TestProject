@@ -328,4 +328,15 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         waitForElementVisibility(accountNumberWithCheckByIndex, index);
         return getElementText(accountNumberWithCheckByIndex, index).trim();
     }
+
+    /**
+     * Interest Check
+     */
+
+    private By officialCheckControlNumber = By.xpath("//table[@id='searchResultTable']//tr[2]/td[2]/span[contains(@class, 'high_title')]/span");
+
+    @Step("Get official check control acc number")
+    public String getOfficialCheckControlNumber() {
+        return getElementText(officialCheckControlNumber);
+    }
 }

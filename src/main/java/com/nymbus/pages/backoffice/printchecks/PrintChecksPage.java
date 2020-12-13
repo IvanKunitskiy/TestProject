@@ -10,6 +10,7 @@ public class PrintChecksPage extends PageTools {
     private final By checkTypeOption = By.xpath("//li[contains(@id, 'ui-select-choices-row')]/div/span[text()='%s']");
     private final By searchButton = By.xpath("//button[@type='submit']");
     private final By checkboxByAccountNumber = By.xpath("//section[@ui-view='searchResults']//tbody/tr/td[span/span[contains(text(), '%s')]]/preceding-sibling::td/input");
+    private final By checkNumberByAccountNumber = By.xpath("//section[@ui-view='searchResults']//tbody/tr/td[span/span[contains(text(), '%s')]]/following-sibling::td[3]");
     private final By tableRowWithAccountNumber = By.xpath("//section[@ui-view='searchResults']//tbody/tr[td/span/span[contains(text(), '%s')]]");
     private final By loadMoreResultsButton = By.xpath("//button[@data-test-id='action-loadMore']");
     private final By printChecksButton = By.xpath("//button/span[text()='Print Checks']");
@@ -38,6 +39,11 @@ public class PrintChecksPage extends PageTools {
         click(checkboxByAccountNumber, accountNumber);
     }
 
+    @Step("Tick the checkbox by account number")
+    public String getCheckNumberFromLineWithAccountNumber(String accountNumber) {
+        return getElementText(checkNumberByAccountNumber, accountNumber).trim();
+    }
+
     @Step("Verify if line containing account number is visible")
     public boolean isLineWithAccountNumberVisible(String accountNumber) {
         return isElementVisible(tableRowWithAccountNumber, accountNumber);
@@ -47,6 +53,11 @@ public class PrintChecksPage extends PageTools {
     public void clickLoadMoreResultsButton() {
         waitForElementClickable(loadMoreResultsButton);
         click(loadMoreResultsButton);
+    }
+
+    @Step("Is 'Load more' button visible")
+    public boolean isLoadMoreResultsButtonVisible() {
+        return isElementVisible(loadMoreResultsButton);
     }
 
     @Step("Click the 'Print Checks' button")

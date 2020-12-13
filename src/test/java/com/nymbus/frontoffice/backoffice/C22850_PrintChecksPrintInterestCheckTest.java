@@ -5,8 +5,10 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -16,12 +18,14 @@ import org.testng.annotations.Test;
 public class C22850_PrintChecksPrintInterestCheckTest extends BaseTest {
 
     private String accountNumberWithInterestCheck;
+    private String officialCheckControl;
 
     @BeforeMethod
     public void preCondition() {
         Selenide.open(Constants.WEB_ADMIN_URL);
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         accountNumberWithInterestCheck = WebAdminActions.webAdminUsersActions().getAccountNumberWithInterestCheck(1);
+        officialCheckControl = WebAdminActions.webAdminUsersActions().getOfficialCheckControlNumber();
         WebAdminActions.loginActions().doLogout();
     }
 
@@ -44,14 +48,20 @@ public class C22850_PrintChecksPrintInterestCheckTest extends BaseTest {
 
         logInfo("Step 4: Search for interest check generated for account from preconditions;\n" +
                 "Check it and click [Print Checks] button");
-        while (!Pages.printChecksPage().isLineWithAccountNumberVisible(accountNumberWithInterestCheck)) {
-            Pages.printChecksPage().clickLoadMoreResultsButton();
-        }
+        Actions.printChecksActions().expandAllRows();
         Pages.printChecksPage().selectLineWithAccountNumber(accountNumberWithInterestCheck);
+        String checkNumber = Pages.printChecksPage().getCheckNumberFromLineWithAccountNumber(accountNumberWithInterestCheck);
         Pages.printChecksPage().clickPrintChecksButton();
 
         logInfo("Step 5: Verify check information");
-        // TODO: awaiting for update from Maria
+        Actions.mainActions().switchToTab(1);
+        Pages.checkPrintPage().waitForLoadingSpinnerInvisibility();
+        Actions.printChecksActions().verifyMicrLineInPdf(checkNumber, officialCheckControl);
     }
 
+    @AfterMethod(description = "Delete the downloaded PDF.")
+    public void postCondition() {
+        logInfo("Deleting the downloaded PDF...");
+        Functions.cleanDirectory(System.getProperty("user.dir") + "/screenshots/");
+    }
 }
