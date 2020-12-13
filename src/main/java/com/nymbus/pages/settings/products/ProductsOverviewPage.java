@@ -14,6 +14,7 @@ public class ProductsOverviewPage extends PageTools {
     private final By searchResultsTable = By.xpath("//table[contains(@class, 'xwidget_grid_table display')]");
     private final By searchResultsTableRow = By.xpath("//table/tbody/tr");
     private final By accountDescriptionsByType = By.xpath("//table/tbody/tr[(td[3]='%s') and (td[4]='%s')]/td[1]");
+    private final By accountDescriptionsByInitials = By.xpath("//table/tbody/tr/td[@data-column-id='accounttypeinitials' and text()='%s']/preceding-sibling::td");
     private final By loadMoreResults = By.xpath("//a[@title='Next Page']");
     private final By rowByDescriptionSelector = By.xpath("//table/tbody/tr[td[contains(text(), '%s')][1]]");
 
@@ -49,9 +50,14 @@ public class ProductsOverviewPage extends PageTools {
         return getElementsText(searchResultsTableRow);
     }
 
-    @Step("Returning list of 'Account Descriptions' values")
+    @Step("Returning list of 'Account Descriptions' values by account type")
     public List<String> getAccountDescriptionsByAccountType(String accountType, String rateType) {
         return getElementsText(accountDescriptionsByType, accountType, rateType);
+    }
+
+    @Step("Returning list of 'Account Descriptions' values by initials")
+    public List<String> getAccountDescriptionsByInitials(String initials) {
+        return getElementsText(accountDescriptionsByInitials, initials);
     }
 
     @Step("Click the product row by description")

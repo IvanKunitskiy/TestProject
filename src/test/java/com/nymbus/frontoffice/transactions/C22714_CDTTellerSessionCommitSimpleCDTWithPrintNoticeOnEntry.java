@@ -141,7 +141,7 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
     }
 
 
-    @Test(description = "C226714, CDT+Teller Session - Commit simple CDT with print notice == on entry  ")
+    @Test(description = "C22714, CDT+Teller Session - Commit simple CDT with print notice == on entry")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");

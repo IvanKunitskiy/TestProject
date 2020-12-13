@@ -172,6 +172,20 @@ public class WebAdminUsersActions {
         return getAccountWithCheckByIndexFromQueryByUrl(getInterestChecksUrl(), 1);
     }
 
+    private String getAccAnalyzeWithRdcCodeAndAmountUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+10%0D%0A"
+                + "from%3A+bank.data.accode%0D%0A"
+                + "where%3A+%0D%0A"
+                + "-+chargecode%3A+RDC%0D%0A&source=";
+    }
+
+    public int getAccAnalyzeWithRdcCodeAndAmountCount() {
+        return getAccAnalyzeWithRdcCodeCount(getAccAnalyzeWithRdcCodeAndAmountUrl());
+    }
+
     public String getAccountWithDormantStatus(int index) {
         return getDormantAccountByIndexFromQueryByUrl(getAccountsWithDormantStatusUrl(), index);
     }
@@ -335,6 +349,15 @@ public class WebAdminUsersActions {
                 "There are no search results found on query");
 
         return WebAdminPages.rulesUIQueryAnalyzerPage().getOfficialCheckControlNumber();
+    }
+
+
+    public int getAccAnalyzeWithRdcCodeCount(String url) {
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult();
     }
 
     private int getRandomIndex(int bound) {

@@ -93,7 +93,7 @@ public class C22709_CDTTellerSessionCommitIncomingWireWithWaivedFee extends Base
     }
 
 
-    @Test(description = "C226708, CDT+Teller Session - Commit simple CDT with fee waived")
+    @Test(description = "C22709, CDT+Teller Session - Commit incoming wire with waived fee")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");

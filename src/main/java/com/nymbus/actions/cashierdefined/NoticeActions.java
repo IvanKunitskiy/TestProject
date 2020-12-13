@@ -2,6 +2,7 @@ package com.nymbus.actions.cashierdefined;
 
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.ImageParser;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.pages.Pages;
 
 import java.io.File;
@@ -12,6 +13,7 @@ public class NoticeActions {
         Pages.noticePage().checkPDFVisible();
 
         // Get the 'src' attribute value from the balance inquiry image
+        SelenideTools.sleep(2);
         String src = Pages.noticePage().getNoticeImageSrc();
 
         // Generate name for balance inquiry image

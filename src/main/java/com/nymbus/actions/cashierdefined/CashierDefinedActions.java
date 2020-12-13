@@ -30,14 +30,14 @@ public class CashierDefinedActions {
 
     private void setWaiveFee(boolean waiveFee) {
         if (waiveFee){
-            Pages.tellerPage().clickWaiveFee();
+            Pages.cashierPage().clickWaiveFee();
         }
     }
 
     private void setTellerOperation(String type) {
-        Pages.tellerPage().clickSelectOperation();
+        Pages.cashierPage().clickSelectOperation();
 
-        Pages.tellerPage().selectOperation(type);
+        Pages.cashierPage().selectOperation(type);
     }
 
     private void setTransactionSource(TransactionSource source, int index) {
@@ -47,17 +47,17 @@ public class CashierDefinedActions {
     }
 
     private void fillSourceAmount(String amount, int tempIndex) {
-        Pages.tellerPage().clickAmountDiv(tempIndex);
+        Pages.cashierPage().clickAmountDiv(tempIndex);
 
-        Pages.tellerPage().typeAmountValue(tempIndex, amount);
+        Pages.cashierPage().typeAmountValue(tempIndex, amount);
     }
 
     private void fillSourceAccountNumber(String accountNumber, int tempIndex) {
-        Pages.tellerPage().clickAccountNumberDiv(tempIndex);
+        Pages.cashierPage().clickAccountNumberDiv(tempIndex);
 
-        Pages.tellerPage().typeAccountNumber(tempIndex, accountNumber);
+        Pages.cashierPage().typeAccountNumber(tempIndex, accountNumber);
 
-        Pages.tellerPage().clickOnAutocompleteDropDownItem(accountNumber);
+        Pages.cashierPage().clickOnAutocompleteDropDownItem(accountNumber);
     }
 
     public void setTransactionDestination(TransactionDestination transactionDestination, int index) {
@@ -67,15 +67,15 @@ public class CashierDefinedActions {
     }
 
     private void fillDestinationAmount(String amount, int tempIndex) {
-        Pages.tellerPage().clickDestinationAmountDiv(tempIndex);
+        Pages.cashierPage().clickDestinationAmountDiv(tempIndex);
 
-        Pages.tellerPage().typeDestinationAmountValue(tempIndex, amount);
+        Pages.cashierPage().typeDestinationAmountValue(tempIndex, amount);
     }
 
     private void fillDestinationAccountNumber(String accountNumber, int tempIndex) {
-        Pages.tellerPage().typeDestinationAccountNumber(tempIndex, accountNumber);
+        Pages.cashierPage().typeDestinationAccountNumber(tempIndex, accountNumber);
 
-        Pages.tellerPage().clickOnAutocompleteDropDownItem(accountNumber);
+        Pages.cashierPage().clickOnAutocompleteDropDownItem(accountNumber);
     }
 
 }

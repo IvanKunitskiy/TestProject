@@ -9,6 +9,7 @@ import com.nymbus.pages.backoffice.documentsearch.DocumentTransactionsPage;
 import com.nymbus.pages.backoffice.printchecks.CheckPrintPage;
 import com.nymbus.pages.backoffice.printchecks.PrintChecksPage;
 import com.nymbus.pages.cashdrawer.CashDrawerBalancePage;
+import com.nymbus.pages.cashier.CashierPage;
 import com.nymbus.pages.cashier.NoticePage;
 import com.nymbus.pages.clients.AddClientPage;
 import com.nymbus.pages.clients.ClientDetailsPage;
@@ -46,6 +47,7 @@ public class Pages extends AllureLogger {
     private static AddClientPage addClientPage;
     private static ClientDetailsPage clientDetailsPage;
     private static TellerPage tellerPage;
+    private static CashierPage cashierPage;
     private static LoansPage loansPage;
     private static ReportGeneratorPage reportGeneratorPage;
     private static TellerToTellerPage tellerToTellerPage;
@@ -95,6 +97,7 @@ public class Pages extends AllureLogger {
     private static DocumentTransactionsPage documentTransactionsPage;
     private static PrintChecksPage printChecksPage;
     private static CheckPrintPage checkPrintPage;
+    private static AccountCommercialAnalysisPage accountCommercialAnalysisPage;
 
     /**
      * Modal Windows
@@ -169,6 +172,16 @@ public class Pages extends AllureLogger {
             tellerPage = new TellerPage();
         }
         return tellerPage;
+    }
+
+    /**
+     * This function return an instance of `CashierPage`
+     */
+    public static CashierPage cashierPage() {
+        if (cashierPage == null) {
+            cashierPage = new CashierPage();
+        }
+        return cashierPage;
     }
 
     /**
@@ -640,6 +653,16 @@ public class Pages extends AllureLogger {
             noticePage = new NoticePage();
         }
         return noticePage;
+    }
+
+    /**
+     * This function return an instance of `AccountCommercialAnalysisPage`
+     */
+    public static AccountCommercialAnalysisPage accountCommercialAnalysisPage(){
+        if (accountCommercialAnalysisPage == null){
+            accountCommercialAnalysisPage = new AccountCommercialAnalysisPage();
+        }
+        return accountCommercialAnalysisPage;
     }
 
     /**

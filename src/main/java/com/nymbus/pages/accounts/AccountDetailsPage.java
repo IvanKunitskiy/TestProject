@@ -14,6 +14,7 @@ public class AccountDetailsPage extends PageTools {
     private By transactionsTab = By.xpath("//a[contains(text(), 'Transactions')]");
     private By instructionsTab = By.xpath("//a[contains(text(), 'Instructions')]");
     private By detailsTab = By.xpath("//a[contains(text(), 'Details')]");
+    private By commercialAnalysisTab = By.xpath("//a[contains(text(), 'Commercial Analysis')]");
 
     /**
      * Account actions
@@ -112,7 +113,7 @@ public class AccountDetailsPage extends PageTools {
     private By collectedBalance = By.xpath("//*[@data-config-name='collectedbalance']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By accountStatus = By.xpath("//tr[@data-test-id='field-accountstatus']//span[contains(@class, 'ng-binding')]");
     private By activeStatus = By.xpath("//tr[@data-test-id='field-accountstatus']//span[contains(text(), 'Active')]");
-    private By accruedInterest = By.xpath("//tr[@data-config-name='accruedinterest']" +
+    private By accruedInterest = By.xpath("//tr[@data-config-name='accruedinterestthisstatementcycle']" +
             "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By dateClosed = By.xpath("//*[@data-config-name='dateclosed']" +
             "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
@@ -765,6 +766,12 @@ public class AccountDetailsPage extends PageTools {
     public void clickDetailsTab() {
         waitForElementClickable(detailsTab);
         click(detailsTab);
+    }
+
+    @Step("Click the 'Commercial Analysis' tab")
+    public void clickCommercialAnalysisTab() {
+        waitForElementClickable(commercialAnalysisTab);
+        click(commercialAnalysisTab);
     }
 
     @Step("Is notification with text {0} visible")
