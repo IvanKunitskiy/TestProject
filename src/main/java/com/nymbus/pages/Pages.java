@@ -9,6 +9,8 @@ import com.nymbus.pages.backoffice.documentsearch.DocumentTransactionsPage;
 import com.nymbus.pages.cashdrawer.CashDrawerBalancePage;
 import com.nymbus.pages.cashier.CashierPage;
 import com.nymbus.pages.cashier.NoticePage;
+import com.nymbus.pages.check.CheckPage;
+import com.nymbus.pages.check.FullCheckPage;
 import com.nymbus.pages.clients.AddClientPage;
 import com.nymbus.pages.clients.ClientDetailsPage;
 import com.nymbus.pages.clients.ClientsSearchPage;
@@ -93,6 +95,8 @@ public class Pages extends AllureLogger {
     private static NoticePage noticePage;
     private static BackOfficePage backOfficePage;
     private static DocumentTransactionsPage documentTransactionsPage;
+    private static CheckPage checkPage;
+    private static FullCheckPage fullCheckPage;
 
     /**
      * Modal Windows
@@ -649,5 +653,26 @@ public class Pages extends AllureLogger {
         }
         return noticePage;
     }
+
+    /**
+     * This function return instance of 'CheckPage'
+     */
+    public static CheckPage checkPage(){
+        if(checkPage == null){
+            checkPage = new CheckPage();
+        }
+        return checkPage;
+    }
+
+    /**
+     * This function return instance of 'CheckPage'
+     */
+    public static FullCheckPage fullCheckPage(){
+        if(fullCheckPage == null){
+            fullCheckPage = new FullCheckPage();
+        }
+        return fullCheckPage;
+    }
+
 
 }

@@ -12,6 +12,7 @@ import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
 import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.backoffice.Check;
+import com.nymbus.newmodels.backoffice.FullCheck;
 import com.nymbus.newmodels.cashier.CashierDefinedTransactions;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -43,6 +44,7 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
     private int checkAccountNumber;
     private Check check;
     private String name = "John";
+    private FullCheck fullCheck;
 
 
     @BeforeMethod
@@ -110,7 +112,7 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         SettingsPage.mainPage().clickViewControls();
         checkAccountNumber = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());
 
-        //New Check
+        //New Checks
         check = new Check();
         check.setDate(DateTime.getLocalDateOfPattern("MM/dd/yyyy"));
         check.setCheckType("Cashier Check");
@@ -119,9 +121,15 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         check.setInitials(client.getNameForDebitCard());
         check.setAmount(returnTransactionAmount);
         check.setStatus("Outstanding");
+        fullCheck = (FullCheck) check;
+        fullCheck.setFee(fee);
+        fullCheck.setCashPurchased("No");
+        fullCheck.setRemitter("exautotest exautotest");
+        fullCheck.setBranch(savingsAccount.getBankBranch());
+        fullCheck.setDocumentType(client.getIndividualClientDetails().getDocuments().get(0).getIdType().getIdType());
+        fullCheck.setDocumentID(client.getIndividualClientDetails().getDocuments().get(0).getIdNumber());
+        fullCheck.setPhone(client.getIndividualClientDetails().getPhones().get(0).getPhoneNumber());
 
-
-        SelenideTools.sleep(10000);
         Actions.loginActions().doLogOut();
     }
 
@@ -149,7 +157,9 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
         Assert.assertTrue(Pages.confirmModalPage().checkReprintButton(),"Reprint check is not visible");
-        check.setCheckNumber(Pages.confirmModalPage().getReprintCheckNumber());
+        String checkNumber = Pages.confirmModalPage().getReprintCheckNumber();
+        check.setCheckNumber(checkNumber);
+        fullCheck.setCheckNumber(checkNumber);
 
         logInfo("Step 6: Click [Yes] button on a \"Reprint check #X?\" popup");
         Pages.confirmModalPage().clickYes();
@@ -202,13 +212,14 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
                 "Verify Check Number, Purchaser, PAYEE, Date Issued, Initials, Check Type, Status, Amount fields");
         Pages.aSideMenuPage().clickBackOfficeMenuItem();
         Pages.backOfficePage().clickOfficialChecks();
-        Check checkFromBankOffice = Actions.backOfficeActions().getCheckFromBankOffice();
+        Check checkFromBankOffice = Actions.backOfficeActions().getCheckFromBankOffice(checkNumber);
         Assert.assertEquals(checkFromBankOffice, check, "Check doesn't match");
 
         logInfo("Step 13: Open check on Details and verify the following fields: Status, Check Number, " +
                 "Remitter, Phone Number, Document Type, Document ID, Payee, Check Type, Purchase Account, " +
                 "Branch, Initials, Check Amount, Fee, Date Issued, Cash Purchased");
-
+        FullCheck fullCheckFromBankOffice = Actions.backOfficeActions().getFullCheckFromBankOffice();
+        Assert.assertEquals(fullCheckFromBankOffice,fullCheck,"Check details doesn't match");
 
     }
 
