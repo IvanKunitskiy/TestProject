@@ -59,7 +59,7 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         savingsTransaction = new TransactionConstructor(new WithdrawalGLDebitCHKAccBuilder()).constructTransaction();
 
         // Log in
-        Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Set products
         savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
@@ -92,7 +92,7 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Set transaction with amount value
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
@@ -137,7 +137,7 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         logInfo("Step 2: Go to Cashier Defined Transactions page");
         Pages.aSideMenuPage().waitForASideMenu();
@@ -222,11 +222,4 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         Assert.assertEquals(fullCheckFromBankOffice,fullCheck,"Check details doesn't match");
 
     }
-
-
-
-
-
-
-
 }
