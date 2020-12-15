@@ -34,6 +34,12 @@ public class MainPage extends PageTools {
     // Products
     private By viewAllProducts = By.xpath("//a[text()='View all Products']");
 
+    // Printers
+    private By viewAllPrinters = By.xpath("//a[text()='View all Printers']");
+
+    //View COntrols
+    private By viewControls = By.xpath("//span[contains(string(),'View Controls')]");
+
     // Bank Control Settings
     private By viewSettingsLink = By.xpath("//a[span[text()='View Settings']]");
 
@@ -49,6 +55,18 @@ public class MainPage extends PageTools {
     public void clickAddNewCashDrawerLink() {
         waitForElementClickable(addNewCashDrawerLink);
         click(addNewCashDrawerLink);
+    }
+
+    @Step("Click 'View all Printers' link")
+    public void clickViewAllPrinters(){
+        waitForElementClickable(viewAllPrinters);
+        click(viewAllPrinters);
+    }
+
+    @Step("Click 'View controls' link")
+    public void clickViewControls(){
+        waitForElementClickable(viewControls);
+        click(viewControls);
     }
 
     @Step("Setting 'Cash Drawer' to search field")
