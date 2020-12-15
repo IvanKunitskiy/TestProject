@@ -182,6 +182,39 @@ public class WebAdminUsersActions {
                 + "-+chargecode%3A+RDC%0D%0A&source=";
     }
 
+    private String getRemoteDepositReturnEFTDescriptionUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+30%0D%0A"
+                + "from%3A+bank.data.bcfile%0D%0A"
+                + "where%3A+%0D%0A-+code%3A+RemoteDepositReturnEFTDescription%0D%0A&source=";
+    }
+
+    private String getCdtTemplateNameWithMiscDebitCommittedFromChkOnGlAccountUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+100%0D%0A"
+                + "from%3A+bank.data.cdtfrm%0D%0A"
+                + "where%3A+%0D%0A"
+                + "-+.debitaccounttype-%3Ename%3A+CHK+Account%0D%0A"
+                + "-+.creditaccounttype-%3Ename%3A+g%2Fl+tickets%0D%0A"
+                + "-+.debittrancode-%3Ename%3A+Debit+Memo%0D%0A"
+                + "-+operationcode%3A+%7Bnull%7D%0D%0A"
+                + "-+.credittrancode-%3Ename%3A+G%2FL+Credit%0D%0A"
+                + "-+creditdescription%3A+%7Bnull%7D%0D%0A"
+                + "-+debitdescription%3A+%7Bnull%7D&source=";
+    }
+
+    public String getCdtTemplateNameWithMiscDebitCommittedFromChkOnGlAccount() {
+        return getCdtTemplateNameWithMiscDebitCommittedFromChkOnGlAccountFromQueryByUrl(getCdtTemplateNameWithMiscDebitCommittedFromChkOnGlAccountUrl());
+    }
+
+    public String getRemoteDepositReturnEFTDescription() {
+        return getRemoteDepositReturnEFTDescriptionFromQueryByUrl(getRemoteDepositReturnEFTDescriptionUrl());
+    }
+
     public int getAccAnalyzeWithRdcCodeAndAmountCount() {
         return getAccAnalyzeWithRdcCodeCount(getAccAnalyzeWithRdcCodeAndAmountUrl());
     }
@@ -351,6 +384,29 @@ public class WebAdminUsersActions {
         return WebAdminPages.rulesUIQueryAnalyzerPage().getOfficialCheckControlNumber();
     }
 
+    private String getRemoteDepositReturnEFTDescriptionFromQueryByUrl(String url) {
+
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
+                "There are no search results found on query");
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getRemoteDepositReturnEFTDescription();
+    }
+
+    private String getCdtTemplateNameWithMiscDebitCommittedFromChkOnGlAccountFromQueryByUrl(String url) {
+
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
+                "There are no search results found on query");
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getCdtTemplateNameWithMiscDebitCommittedFromChkOnGlAccount();
+    }
 
     public int getAccAnalyzeWithRdcCodeCount(String url) {
         SelenideTools.openUrl(url);
