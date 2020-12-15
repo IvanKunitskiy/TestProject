@@ -49,7 +49,6 @@ public class C22816_WeilandSpfChargeTest extends BaseTest {
         Account chkAccount = new Account().setCHKAccountData();
         chkAccountNumber = chkAccount.getAccountNumber();
         systemDate = WebAdminActions.loginActions().getSystemDate();
-        System.out.println("----" + systemDate);
 
         // Set up instruction
         instruction = new InstructionConstructor(new StopPaymentInstructionBuilder())
