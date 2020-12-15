@@ -1,6 +1,7 @@
 package com.nymbus.pages.accounts;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -15,6 +16,8 @@ public class AccountCommercialAnalysisPage extends PageTools {
     private By volumeByRowIndex = By.xpath("//section[@ui-view='results']/table/tbody/tr[%s]/td[6]/span");
     private By exportedByRowIndex = By.xpath("//section[@ui-view='results']/table/tbody/tr[%s]/td[7]/span/dn-switch/div/div/span[2]");
     private By tableRow = By.xpath("//section[@ui-view='results']/table/tbody/tr");
+    private By dateToInput = By.xpath("//input[@data-test-id='field-dateto']");
+    private By filterButton = By.xpath("//button[text()='Filter']");
 
     @Step("Wait for table results")
     public void waitForTableResults() {
@@ -59,5 +62,19 @@ public class AccountCommercialAnalysisPage extends PageTools {
     @Step("Get records count from table")
     public int getRecordsCount() {
         return getElements(tableRow).size();
+    }
+
+    @Step("Set 'Date To' filter")
+    public void setDateTo(String date) {
+        waitForElementClickable(dateToInput);
+        typeWithoutWipe("", dateToInput);
+        SelenideTools.sleep(1);
+        typeWithoutWipe(date, dateToInput);
+    }
+
+    @Step("Click the 'Filter' button")
+    public void clickFilterButton() {
+        waitForElementClickable(filterButton);
+        click(filterButton);
     }
 }

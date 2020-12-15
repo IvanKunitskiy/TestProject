@@ -273,4 +273,5 @@ public class AccountInstructionsPage extends PageTools {
     public void waitForDeleteButtonInvisibility() {
         waitForElementInvisibility(deleteInstructionButton);
     }
+
 }
