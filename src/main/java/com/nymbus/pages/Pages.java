@@ -6,6 +6,8 @@ import com.nymbus.pages.accounts.transactions.EditAccountTransactionModal;
 import com.nymbus.pages.accounts.transactions.TransactionsPage;
 import com.nymbus.pages.backoffice.BackOfficePage;
 import com.nymbus.pages.backoffice.documentsearch.DocumentTransactionsPage;
+import com.nymbus.pages.backoffice.printchecks.CheckPrintPage;
+import com.nymbus.pages.backoffice.printchecks.PrintChecksPage;
 import com.nymbus.pages.cashdrawer.CashDrawerBalancePage;
 import com.nymbus.pages.cashier.CashierPage;
 import com.nymbus.pages.cashier.NoticePage;
@@ -97,6 +99,9 @@ public class Pages extends AllureLogger {
     private static DocumentTransactionsPage documentTransactionsPage;
     private static CheckPage checkPage;
     private static FullCheckPage fullCheckPage;
+    private static PrintChecksPage printChecksPage;
+    private static CheckPrintPage checkPrintPage;
+    private static AccountCommercialAnalysisPage accountCommercialAnalysisPage;
 
     /**
      * Modal Windows
@@ -674,5 +679,35 @@ public class Pages extends AllureLogger {
         return fullCheckPage;
     }
 
+
+    /**
+     * This function return an instance of `AccountCommercialAnalysisPage`
+     */
+    public static AccountCommercialAnalysisPage accountCommercialAnalysisPage(){
+        if (accountCommercialAnalysisPage == null){
+            accountCommercialAnalysisPage = new AccountCommercialAnalysisPage();
+        }
+        return accountCommercialAnalysisPage;
+    }
+
+    /**
+     * This function return an instance of `PrintChecksPage`
+     */
+    public static PrintChecksPage printChecksPage(){
+        if (printChecksPage == null){
+            printChecksPage = new PrintChecksPage();
+        }
+        return printChecksPage;
+    }
+
+    /**
+     * This function return an instance of `CheckPrintPage`
+     */
+    public static CheckPrintPage checkPrintPage(){
+        if (checkPrintPage == null){
+            checkPrintPage = new CheckPrintPage();
+        }
+        return checkPrintPage;
+    }
 
 }

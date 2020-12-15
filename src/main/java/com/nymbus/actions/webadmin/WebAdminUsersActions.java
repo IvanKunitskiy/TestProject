@@ -11,6 +11,7 @@ import com.nymbus.newmodels.client.verifyingmodels.FirstNameAndLastNameModel;
 import com.nymbus.newmodels.notice.Notice;
 import com.nymbus.newmodels.transaction.nontellertransactions.JSONData;
 import com.nymbus.pages.webadmin.WebAdminPages;
+import org.testng.Assert;
 
 import java.util.Map;
 import java.util.Random;
@@ -121,7 +122,7 @@ public class WebAdminUsersActions {
                 + "-+code%3A+PrintBalanceOnReceipt%0D%0A&source=";
     }
 
-    private String getNoticesWithDifferentTypes() {
+    private String getNoticesWithDifferentTypesUrl() {
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?"
                 + "waDbName=nymbusdev12DS&"
@@ -132,6 +133,57 @@ public class WebAdminUsersActions {
                 + "formats%3A+%0D%0A-+-%3Ebank.data.notice%3A+%24%7Bdescription%7D%0D%0A-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A"
                 + "extra%3A+%0D%0A-+%24bankbranch%3A+.accountid-%3Ebankbranch%0D%0A"
                 + "orderBy%3A+-id&source=";
+    }
+
+    private String getInterestChecksUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+200%0D%0A"
+                + "select%3A+accountid%2C+accounttype%2C+bcdate%2C+templateid%0D%0A"
+                + "from%3A+bank.data.cifext%0D%0A"
+                + "where%3A+%0D%0A-+.templateid-%3Ecode%3A+form35%0D%0A%0D%0A"
+                + "-+accountid%3A+%7Bnot+null%7D%0D%0A"
+                + "orderBy%3A+-id%0D%0A%0D%0A"
+                + "formats%3A+%0D%0A"
+                + "-+-%3Ebank.data.notice%3A+%24%7Bdescription%7D%0D%0A"
+                + "-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A"
+                + "extra%3A+%0D%0A-+%24bankbranch%3A+.accountid-%3Ebankbranch%0D%0A"
+                + "orderBy%3A+-id&source=";
+    }
+
+    private String getOfficialCheckControlNumberUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+100%0D%0A"
+                + "select%3A+checktype%2C+checkingaccountnumber%0D%0A"
+                + "from%3A+bank.data.officialcheck.control%0D%0A"
+                + "where%3A+%0D%0A-+.checktype-%3Ename%3A+Interest+Check%0D%0A"
+                + "formats%3A+%0D%0A-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A"
+                + "orderBy%3A+-id&source=";
+    }
+
+    public String getOfficialCheckControlNumber() {
+        return getOfficialCheckControlNumberFromQueryByUrl(getOfficialCheckControlNumberUrl());
+    }
+
+    public String getAccountNumberWithInterestCheck(int index) {
+        return getAccountWithCheckByIndexFromQueryByUrl(getInterestChecksUrl(), 1);
+    }
+
+    private String getAccAnalyzeWithRdcCodeAndAmountUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+10%0D%0A"
+                + "from%3A+bank.data.accode%0D%0A"
+                + "where%3A+%0D%0A"
+                + "-+chargecode%3A+RDC%0D%0A&source=";
+    }
+
+    public int getAccAnalyzeWithRdcCodeAndAmountCount() {
+        return getAccAnalyzeWithRdcCodeCount(getAccAnalyzeWithRdcCodeAndAmountUrl());
     }
 
     public String getAccountWithDormantStatus(int index) {
@@ -258,7 +310,7 @@ public class WebAdminUsersActions {
     public Notice getRandomNoticeData() {
         Notice notice = new Notice();
 
-        SelenideTools.openUrl(getNoticesWithDifferentTypes());
+        SelenideTools.openUrl(getNoticesWithDifferentTypesUrl());
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
 
@@ -273,6 +325,39 @@ public class WebAdminUsersActions {
         notice.setSubType(WebAdminPages.rulesUIQueryAnalyzerPage().getNoticeAccountTypeValue(bound));
 
         return notice;
+    }
+
+    public String getAccountWithCheckByIndexFromQueryByUrl(String url, int index) {
+
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
+                "There are no search results found on query");
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getAccountNumberWithCheckValueByIndex(index);
+    }
+
+    private String getOfficialCheckControlNumberFromQueryByUrl(String url) {
+
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
+                "There are no search results found on query");
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getOfficialCheckControlNumber();
+    }
+
+
+    public int getAccAnalyzeWithRdcCodeCount(String url) {
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult();
     }
 
     private int getRandomIndex(int bound) {

@@ -41,7 +41,9 @@ public enum TransactionCode {
     TAXES_WH_CRED_302("302 - Taxes W/H Cred"),
     NEW_CD_311("311 - New CD"),
     REDEEMED_CD_315("315 - Redeemed CD"),
-    INT_PAID_COMP_307("307 - Int Paid Comp");
+    INT_PAID_COMP_307("307 - Int Paid Comp"),
+    GL_DEBIT("860 - G/L Debit"),
+    CREDIT_TRANSFER_101("101 - Credit Transfr");
 
     private final String transCode;
 }

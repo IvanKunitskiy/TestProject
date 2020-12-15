@@ -15,10 +15,16 @@ public class BackOfficePage extends PageTools {
         waitForElementClickable(officialChecksButton);
         click(officialChecksButton);
     }
+    private By printChecksSeeMoreLink = By.xpath("//li/div/div[@class='header']/h2[text()='Print Checks']/parent::div/following-sibling::div//div/div/a[text()='See more ']");
 
     @Step("Click the 'See more' document search link")
-    public void clickTheDocumentSearchSeeMoreLink() {
+    public void clickDocumentSearchSeeMoreLink() {
         click(documentSearchSeeMoreLink);
+    }
+
+    @Step("Click the 'See more' print checks link")
+    public void clickPrintChecksSeeMoreLink() {
+        click(printChecksSeeMoreLink);
     }
 
     @Step("Wait for Report Generator page loaded")
