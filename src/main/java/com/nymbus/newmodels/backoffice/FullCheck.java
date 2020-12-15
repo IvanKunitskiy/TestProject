@@ -14,6 +14,18 @@ public class FullCheck extends Check{
     public double fee;
     public String cashPurchased;
 
+    public void fromCheck(Check check){
+        setCheckNumber(check.getCheckNumber());
+        setPurchaser(check.getPurchaser());
+        setPayee(check.getPayee());
+        setDate(check.getDate());
+        setInitials(check.getInitials());
+        setCheckType(check.getCheckType());
+        setStatus(check.getStatus());
+        setAmount(check.getAmount());
+
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

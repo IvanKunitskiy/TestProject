@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Dmytro")
-public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee extends BaseTest {
+public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeWaived extends BaseTest {
     private Transaction transaction;
     private Transaction savingsTransaction;
     private BalanceDataForCHKAcc expectedBalanceData;
@@ -61,7 +61,7 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         savingsTransaction = new TransactionConstructor(new WithdrawalGLDebitCHKAccBuilder()).constructTransaction();
 
         // Log in
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Set products
         savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
@@ -94,7 +94,7 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Set transaction with amount value
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
@@ -136,14 +136,13 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C22719, CDT+Teller Session - Commit official check from client account with fee")
+    @Test(description = "C22720, CDT+Teller Session - Commit official check from client account with fee waived")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        logInfo("Step 2: Go to Cashier Defined Transactions screen and log in to proof date");
-        Actions.transactionActions().loginTeller();
+        logInfo("Step 2: Go to Cashier Defined Transactions page");
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
 
@@ -226,4 +225,7 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         Assert.assertEquals(fullCheckFromBankOffice,fullCheck,"Check details doesn't match");
 
     }
+
+
+
 }
