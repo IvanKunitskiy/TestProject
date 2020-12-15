@@ -1,5 +1,6 @@
 package com.nymbus.actions;
 
+import com.nymbus.actions.backoffice.printchecks.PrintChecksActions;
 import com.nymbus.actions.balanceinquiry.BalanceInquiryActions;
 import com.nymbus.actions.cashierdefined.CashierDefinedActions;
 import com.nymbus.actions.cashierdefined.NoticeActions;
@@ -40,6 +41,7 @@ public class Actions {
     private static TellerBankBranchOverviewActions tellerBankBranchOverviewActions;
     private static CashierDefinedActions cashierDefinedActions;
     private static NoticeActions noticeActions;
+    private static PrintChecksActions printChecksActions;
 
     /**
      * Modal Window Actions
@@ -223,10 +225,23 @@ public class Actions {
         return cashierDefinedActions;
     }
 
+    /**
+     * This function returns an instance of `NoticeActions`
+     */
     public static NoticeActions noticeActions() {
         if (noticeActions == null){
             noticeActions = new NoticeActions();
         }
         return noticeActions;
+    }
+
+    /**
+     * This function returns an instance of `PrintChecksActions`
+     */
+    public static PrintChecksActions printChecksActions() {
+        if (printChecksActions == null) {
+            printChecksActions = new PrintChecksActions();
+        }
+        return printChecksActions;
     }
 }
