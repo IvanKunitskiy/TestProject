@@ -339,4 +339,26 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getOfficialCheckControlNumber() {
         return getElementText(officialCheckControlNumber);
     }
+
+    /**
+     * Remote Deposit Return EFT Description
+     */
+
+    private By remoteDepositReturnEFTDescription = By.xpath("//table[@id='searchResultTable']//tr[2]/td[10]/div[@key-name='string']");
+
+    @Step("Get 'Remote Deposit Return EFT Description' value")
+    public String getRemoteDepositReturnEFTDescription() {
+        return getElementText(remoteDepositReturnEFTDescription).trim();
+    }
+
+    /**
+     * CDT Template
+     */
+
+    private By cdtTemplateCommittedFromChkOnGlAccount = By.xpath("//table[@id='searchResultTable']/tbody/tr/td[7]/div[contains(text(), '%s')]");
+
+    @Step("Get CDT Template where Misc Debit trans is committed from CHK on GL account")
+    public boolean isCdtTemplateCommittedFromChkOnGlAccountCreated(String templateName) {
+        return isElementVisible(cdtTemplateCommittedFromChkOnGlAccount, templateName);
+    }
 }

@@ -53,25 +53,25 @@ public class CashierDefinedActions {
         }
     }
 
-    private void setTellerOperation(String type) {
+    public void setTellerOperation(String type) {
         Pages.cashierPage().clickSelectOperation();
 
         Pages.cashierPage().selectOperation(type);
     }
 
-    private void setTransactionSource(TransactionSource source, int index) {
+    public void setTransactionSource(TransactionSource source, int index) {
         int tempIndex = 1 + index;
         fillSourceAccountNumber(source.getAccountNumber(), tempIndex);
         fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
     }
 
-    private void fillSourceAmount(String amount, int tempIndex) {
+    public void fillSourceAmount(String amount, int tempIndex) {
         Pages.cashierPage().clickAmountDiv(tempIndex);
 
         Pages.cashierPage().typeAmountValue(tempIndex, amount);
     }
 
-    private void fillSourceAccountNumber(String accountNumber, int tempIndex) {
+    public void fillSourceAccountNumber(String accountNumber, int tempIndex) {
         Pages.cashierPage().clickAccountNumberDiv(tempIndex);
 
         Pages.cashierPage().typeAccountNumber(tempIndex, accountNumber);
@@ -85,7 +85,7 @@ public class CashierDefinedActions {
         fillDestinationAmount(String.format("%.2f", transactionDestination.getAmount()), tempIndex);
     }
 
-    private void fillDestinationAmount(String amount, int tempIndex) {
+    public void fillDestinationAmount(String amount, int tempIndex) {
         Pages.cashierPage().clickDestinationAmountDiv(tempIndex);
 
         Pages.cashierPage().typeDestinationAmountValue(tempIndex, amount);
@@ -95,6 +95,18 @@ public class CashierDefinedActions {
         Pages.cashierPage().typeDestinationAccountNumber(tempIndex, accountNumber);
 
         Pages.cashierPage().clickOnAutocompleteDropDownItem(accountNumber);
+    }
+
+    public void fillDestinationDetails(String notes, int tempIndex) {
+        Pages.cashierPage().clickDestinationDetailsArrow(tempIndex);
+
+        Pages.cashierPage().typeDestinationNotesValue(tempIndex, notes);
+    }
+
+    public void fillSourceDetails(String notes, int tempIndex) {
+        Pages.cashierPage().clickSourceDetailsArrow(tempIndex);
+
+        Pages.cashierPage().typeSourceNotesValue(tempIndex, notes);
     }
 
 }
