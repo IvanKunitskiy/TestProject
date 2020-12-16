@@ -4,6 +4,7 @@ import com.nymbus.actions.backoffice.printchecks.PrintChecksActions;
 import com.nymbus.actions.balanceinquiry.BalanceInquiryActions;
 import com.nymbus.actions.cashierdefined.CashierDefinedActions;
 import com.nymbus.actions.cashierdefined.NoticeActions;
+import com.nymbus.actions.check.BackOfficeActions;
 import com.nymbus.actions.clients.ClientPageActions;
 import com.nymbus.actions.clients.ClientsSearchResultsPageActions;
 import com.nymbus.actions.clients.maintenance.MaintenanceHistoryPageActions;
@@ -47,6 +48,7 @@ public class Actions {
      * Modal Window Actions
      * */
     private static DebitCardModalWindowActions debitCardModalWindowActions;
+    private static BackOfficeActions backOfficeActions;
 
     /**
      * This function returns an instance of `LoginActions`
@@ -233,6 +235,13 @@ public class Actions {
             noticeActions = new NoticeActions();
         }
         return noticeActions;
+    }
+
+    public static BackOfficeActions backOfficeActions() {
+        if (backOfficeActions == null){
+            backOfficeActions = new BackOfficeActions();
+        }
+        return backOfficeActions;
     }
 
     /**

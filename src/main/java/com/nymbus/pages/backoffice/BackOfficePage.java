@@ -8,6 +8,13 @@ public class BackOfficePage extends PageTools {
 
     private By reportGeneratorPageHeader = By.xpath("//h1[text()='Ad Hoc Reporting']");
     private By documentSearchSeeMoreLink = By.xpath("//li/div/div[@class='header']/h2[text()='Document Search']/parent::div/following-sibling::div//div/div/a[text()='See more ']");
+    private By officialChecksButton = By.xpath("//h2[text()='Official Checks']/../..//a");
+
+    @Step
+    public void clickOfficialChecks(){
+        waitForElementClickable(officialChecksButton);
+        click(officialChecksButton);
+    }
     private By printChecksSeeMoreLink = By.xpath("//li/div/div[@class='header']/h2[text()='Print Checks']/parent::div/following-sibling::div//div/div/a[text()='See more ']");
 
     @Step("Click the 'See more' document search link")

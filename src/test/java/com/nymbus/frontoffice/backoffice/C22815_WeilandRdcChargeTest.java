@@ -23,9 +23,7 @@ import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Owner;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -96,6 +94,7 @@ public class C22815_WeilandRdcChargeTest extends BaseTest {
     }
 
     @Test(description = "C22815, Weiland: RDC charge")
+    @Severity(SeverityLevel.CRITICAL)
     public void weilandRdcCharge() {
         logInfo("Step 1: Log in to the system as the user from the precondition");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());

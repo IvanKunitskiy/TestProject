@@ -4,6 +4,8 @@ import com.nymbus.pages.settings.bankcontrol.BankControlPage;
 import com.nymbus.pages.settings.cashdrawer.AddCashDrawerPage;
 import com.nymbus.pages.settings.cashdrawer.CashDrawerSearchPage;
 import com.nymbus.pages.settings.cashdrawer.ViewCashDrawerPage;
+import com.nymbus.pages.settings.officialcontrol.OfficialControlPage;
+import com.nymbus.pages.settings.printer.PrinterPage;
 import com.nymbus.pages.settings.products.ProductOverviewPage;
 import com.nymbus.pages.settings.products.ProductsOverviewPage;
 import com.nymbus.pages.settings.safedepositboxsizes.SafeDepositBoxSizesPage;
@@ -31,6 +33,8 @@ public class SettingsPage {
     private static TellerLocationOverviewPage tellerLocationOverviewPage;
     private static BranchOverviewPage branchOverviewPage;
     private static BankControlPage bankControlPage;
+    private static PrinterPage printerPage;
+    private static OfficialControlPage officialControlPage;
 
     /**
      * This function return an instance of `MainPage`
@@ -160,5 +164,19 @@ public class SettingsPage {
             bankControlPage = new BankControlPage();
         }
         return bankControlPage;
+    }
+
+    public static PrinterPage printerPage() {
+        if (printerPage == null) {
+            printerPage = new PrinterPage();
+        }
+        return printerPage;
+    }
+
+    public static OfficialControlPage officialComtrolPage() {
+        if (officialControlPage == null){
+            officialControlPage = new OfficialControlPage();
+        }
+        return officialControlPage;
     }
 }

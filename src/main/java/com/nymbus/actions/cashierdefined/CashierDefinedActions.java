@@ -1,6 +1,7 @@
 package com.nymbus.actions.cashierdefined;
 
 import com.nymbus.newmodels.cashier.CashierDefinedTransactions;
+import com.nymbus.newmodels.cashier.PayeeType;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
@@ -27,6 +28,24 @@ public class CashierDefinedActions {
         setTransactionSource(transaction.getTransactionSource(), tempIndex);
         Pages.tellerPage().inputBankRouting("122105155");
     }
+
+    public void createOfficialTransaction(CashierDefinedTransactions type, Transaction transaction, boolean waiveFee, String name){
+        int tempIndex = 0;
+        setTellerOperation(type.getOperation());
+        setWaiveFee(waiveFee);
+        setTransactionSource(transaction.getTransactionSource(), tempIndex);
+        typeName(name);
+        choosePayeeType(PayeeType.PERSON.getType());
+    }
+
+    private void choosePayeeType(String type) {
+        Pages.cashierPage().selectPayeeType(type);
+    }
+
+    private void typeName(String name) {
+        Pages.cashierPage().inputPayeeName(name);
+    }
+
 
     private void setWaiveFee(boolean waiveFee) {
         if (waiveFee){
