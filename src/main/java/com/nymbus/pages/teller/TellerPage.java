@@ -370,7 +370,8 @@ public class TellerPage extends PageTools {
     @Step("Input 'Bank routing'")
     public void inputBankRouting(String routing){
         waitForElementVisibility(bankRoutingInput);
-        type(routing, bankRoutingInput);
+        jsSetValue(routing, bankRoutingInput);
+        jsRiseOnchange(bankRoutingInput);
     }
 
     @Step("Click 'Waive Fee' popup")
