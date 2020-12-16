@@ -167,7 +167,7 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
 
         logInfo("Step 6: Click [Yes] button on a \"Reprint check #X?\" popup");
         Pages.confirmModalPage().clickYes();
-        Assert.assertTrue(Pages.confirmModalPage().checkReprintButton(),"Is check is not visible");
+        Assert.assertTrue(Pages.confirmModalPage().checkIsCheck(),"Is check is not visible");
 
         logInfo("Step 7: Click [Yes] button on a \"Is check #X still usable?\" popup:");
         Pages.confirmModalPage().clickYes();
