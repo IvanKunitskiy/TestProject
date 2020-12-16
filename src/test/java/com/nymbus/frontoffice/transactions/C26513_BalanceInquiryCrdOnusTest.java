@@ -95,7 +95,7 @@ public class C26513_BalanceInquiryCrdOnusTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
-    @Test
+    @Test(description = "C26513, balanceInquiryCrdOnusTest")
     @Severity(SeverityLevel.CRITICAL)
     public void balanceInquiryCrdOnusTest() {
         logInfo("Step 1: Go to the Swagger and log in as the User from the preconditions");
