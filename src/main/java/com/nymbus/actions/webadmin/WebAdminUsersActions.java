@@ -191,7 +191,7 @@ public class WebAdminUsersActions {
                 + "where%3A+%0D%0A-+code%3A+RemoteDepositReturnEFTDescription%0D%0A&source=";
     }
 
-    private String getCdtTemplateNameWithMiscDebitCommittedFromChkOnGlAccountUrl() {
+    private String getCdtTemplateWithMiscDebitCommittedFromChkOnGlAccountUrl() {
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?"
                 + "waDbName=nymbusdev12DS&"
@@ -207,8 +207,9 @@ public class WebAdminUsersActions {
                 + "-+debitdescription%3A+%7Bnull%7D&source=";
     }
 
-    public String getCdtTemplateNameWithMiscDebitCommittedFromChkOnGlAccount() {
-        return getCdtTemplateNameWithMiscDebitCommittedFromChkOnGlAccountFromQueryByUrl(getCdtTemplateNameWithMiscDebitCommittedFromChkOnGlAccountUrl());
+    public boolean isCdtTemplateCommittedFromChkOnGlAccountCreated(String templateName) {
+        return isCdtTemplateCommittedFromChkOnGlAccountCreatedFromQueryByUrl(
+                getCdtTemplateWithMiscDebitCommittedFromChkOnGlAccountUrl(), templateName);
     }
 
     public String getRemoteDepositReturnEFTDescription() {
@@ -396,7 +397,7 @@ public class WebAdminUsersActions {
         return WebAdminPages.rulesUIQueryAnalyzerPage().getRemoteDepositReturnEFTDescription();
     }
 
-    private String getCdtTemplateNameWithMiscDebitCommittedFromChkOnGlAccountFromQueryByUrl(String url) {
+    private boolean isCdtTemplateCommittedFromChkOnGlAccountCreatedFromQueryByUrl(String url, String templateName) {
 
         SelenideTools.openUrl(url);
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
@@ -405,7 +406,7 @@ public class WebAdminUsersActions {
         Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
                 "There are no search results found on query");
 
-        return WebAdminPages.rulesUIQueryAnalyzerPage().getCdtTemplateNameWithMiscDebitCommittedFromChkOnGlAccount();
+        return WebAdminPages.rulesUIQueryAnalyzerPage().isCdtTemplateCommittedFromChkOnGlAccountCreated(templateName);
     }
 
     public int getAccAnalyzeWithRdcCodeCount(String url) {

@@ -355,10 +355,10 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      * CDT Template
      */
 
-    private By cdtTemplateNameWithMiscDebitCommittedFromChkOnGlAccount = By.xpath("");
+    private By cdtTemplateCommittedFromChkOnGlAccount = By.xpath("//table[@id='searchResultTable']/tbody/tr/td[7]/div[contains(text(), '%s')]");
 
     @Step("Get CDT Template where Misc Debit trans is committed from CHK on GL account")
-    public String getCdtTemplateNameWithMiscDebitCommittedFromChkOnGlAccount() {
-        return getElementText(cdtTemplateNameWithMiscDebitCommittedFromChkOnGlAccount).trim();
+    public boolean isCdtTemplateCommittedFromChkOnGlAccountCreated(String templateName) {
+        return isElementVisible(cdtTemplateCommittedFromChkOnGlAccount, templateName);
     }
 }

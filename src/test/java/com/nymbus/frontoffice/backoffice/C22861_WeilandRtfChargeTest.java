@@ -16,6 +16,7 @@ import com.nymbus.newmodels.generation.client.builder.type.individual.Individual
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -28,7 +29,7 @@ import org.testng.annotations.Test;
 public class C22861_WeilandRtfChargeTest extends BaseTest {
 
     private String chkAccountNumber;
-    private String cdtTemplateName;
+    private final String cdtTemplateName = "AUTOMATION_DEBIT_MEMO_GL_CREDIT";
 
     @BeforeMethod
     public void preCondition() {
@@ -39,7 +40,8 @@ public class C22861_WeilandRtfChargeTest extends BaseTest {
                 "There are no records found with RDC charge code");
         Assert.assertEquals(WebAdminActions.webAdminUsersActions().getRemoteDepositReturnEFTDescription(),
                 "Returned Deposit Item - MSB", "Description is not equal to 'Returned Deposit Item - MSB'");
-        cdtTemplateName = WebAdminActions.webAdminUsersActions().getCdtTemplateNameWithMiscDebitCommittedFromChkOnGlAccount();
+        Assert.assertTrue(WebAdminActions.webAdminUsersActions().isCdtTemplateCommittedFromChkOnGlAccountCreated(cdtTemplateName),
+                "There is no CDT Template where Misc Debit trans is committed from CHK on GL account");
         WebAdminActions.loginActions().doLogout();
 
         // Set up Client
@@ -54,6 +56,7 @@ public class C22861_WeilandRtfChargeTest extends BaseTest {
         // Set up transactions
         Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
         transaction.getTransactionDestination().setAccountNumber(chkAccountNumber);
+        transaction.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
 
         // Log in
         SelenideTools.openUrl(Constants.URL);
@@ -76,7 +79,6 @@ public class C22861_WeilandRtfChargeTest extends BaseTest {
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
         Actions.loginActions().doLogOutProgrammatically();
-
     }
 
     @Test(description = "C22815, Weiland: RDC charge")
@@ -99,11 +101,10 @@ public class C22861_WeilandRtfChargeTest extends BaseTest {
                 "- Amount = any\n" +
                 "- Notes = \"Returned Deposit Item - MSB\" --- two spaces after '-' sign\n" +
                 "and click [Commit Transaction]");
-        performCashierTransactionFromTemplate(chkAccountNumber, "90.00");
-        Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        performCashierTransactionFromTemplate(chkAccountNumber);
 
         logInfo("Step 6: Search for CHK account that was used in transaction and open it on Account Analysis tab");
+        Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccountNumber);
         Pages.accountDetailsPage().clickCommercialAnalysisTab();
         Pages.accountCommercialAnalysisPage().waitForTableResults();
@@ -119,19 +120,42 @@ public class C22861_WeilandRtfChargeTest extends BaseTest {
                 "Returned Transit Check Fee","'Description' is not valid");
         Assert.assertEquals(Pages.accountCommercialAnalysisPage().getRateTypeByRowIndex(1),
                 "Per Item","'Rate Type' is not valid");
-//        Assert.assertEquals(Pages.accountCommercialAnalysisPage().getVolumeFromTableByRowIndex(1),
-//                Functions.getStringValueWithOnlyDigits(glDebitSource.getAmount()), "'Volume' is not valid");
+        Assert.assertEquals(Pages.accountCommercialAnalysisPage().getVolumeFromTableByRowIndex(1), "1", "'Volume' is not valid");
         Assert.assertTrue(Pages.accountCommercialAnalysisPage().getExportedByRowIndex(1).equalsIgnoreCase("no"),
                 "'Exported' is not valid");
+
+        logInfo("Step 8: In another tab go to Journal and search for Transaction from Step 5, open it on Details");
+        SelenideTools.openUrlInNewWindow(Constants.URL);
+        SelenideTools.switchTo().window(1);
+        Pages.aSideMenuPage().clickJournalMenuItem();
+        Actions.journalActions().applyFilterByAccountNumber(chkAccountNumber);
+        Actions.journalActions().clickLastTransaction();
+
+        logInfo("Step 9: Click [Error Correct] button");
+        Pages.journalDetailsPage().clickErrorCorrectButton();
+        Pages.journalDetailsPage().waitForErrorCorrectButtonInvisibility();
+
+        logInfo("Step 10: Refresh Account Analysis page for CHK account and verify that RTF record was deleted for Error Corrected transaction");
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+        SelenideTools.refresh();
+        Pages.accountCommercialAnalysisPage().waitForTableResults();
+        Assert.assertEquals(Pages.accountCommercialAnalysisPage().getRecordsCount(), 1,
+                "RTF record was not deleted for Error Corrected transaction");
     }
 
-    private void performCashierTransactionFromTemplate(String accountNumber, String amount) {
-        int index = 0;
+    private void performCashierTransactionFromTemplate(String accountNumber) {
+        int index = 1;
+        String noteText = "Returned Deposit Item -  MSB";
+        String amount = "90.00";
+
         Actions.cashierDefinedActions().fillSourceAccountNumber(accountNumber, index);
         Actions.cashierDefinedActions().fillSourceAmount(amount, index);
-        Actions.cashierDefinedActions().fillSourceDetails("Returned Deposit Item -  MSB", index);
+        Actions.cashierDefinedActions().fillSourceDetails(noteText, index);
         Actions.cashierDefinedActions().fillDestinationAmount(amount, index);
+        Pages.cashierPage().typeDestinationNotesValue(index, noteText);
         Pages.cashierPage().clickCommitButton();
+        Pages.cashierPage().waitForSuccessAlertModal();
+        Pages.cashierPage().clickOkButton();
     }
-
 }

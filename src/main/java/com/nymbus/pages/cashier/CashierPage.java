@@ -579,5 +579,22 @@ public class CashierPage extends PageTools {
         return getElementText(productType).trim();
     }
 
+    /**
+     * Transaction commit successfully modal
+     */
+
+    private By transactionSuccessAlertModal = By.xpath("//div[contains(@class, 'modal-dialog')]//div[@class='modal-content']");
+    private By okButton = By.xpath("//button[span[text() = 'OK']]");
+
+    @Step("Wait for success alert modal")
+    public void waitForSuccessAlertModal() {
+        waitForElementVisibility(transactionSuccessAlertModal);
+    }
+
+    @Step("Click 'OK' button")
+    public void clickOkButton() {
+        waitForElementVisibility(okButton);
+        click(okButton);
+    }
 
 }
