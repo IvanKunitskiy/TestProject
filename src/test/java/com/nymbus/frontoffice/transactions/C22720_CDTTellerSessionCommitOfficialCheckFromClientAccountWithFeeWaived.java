@@ -143,6 +143,7 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Go to Cashier Defined Transactions page");
+        Actions.transactionActions().loginTeller();
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
 
@@ -153,7 +154,7 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
                 "Name (any value)\n" +
                 "Payee Type (e.g. 'Person')");
         Actions.cashierDefinedActions().createOfficialTransaction(CashierDefinedTransactions.OFFICIAL_CHECK_FROM_SAVINGS,
-                transaction, false, name);
+                transaction, true, name);
         expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
 
         logInfo("Step 5: Click [Commit Transaction] button and click [Verify] button");
@@ -166,7 +167,7 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
 
         logInfo("Step 6: Click [Yes] button on a \"Reprint check #X?\" popup");
         Pages.confirmModalPage().clickYes();
-        Assert.assertTrue(Pages.confirmModalPage().checkReprintButton(),"Is check is not visible");
+        Assert.assertTrue(Pages.confirmModalPage().checkIsCheck(),"Is check is not visible");
 
         logInfo("Step 7: Click [Yes] button on a \"Is check #X still usable?\" popup:");
         Pages.confirmModalPage().clickYes();

@@ -367,7 +367,7 @@ public class CashierPage extends PageTools {
     private By waiveFeeButton = By.xpath("//dn-switch[contains(string(),'No')]//div//div//span");
     private By bankRoutingInput = By.xpath("(//tr[contains(string(),'Bank Routing')])[2]/*/input");
     private By payeeNameInput = By.xpath("(//tr[contains(string(),'Name')])[2]//input");
-    private By payeeTypeSpan = By.xpath("(//span[contains(string(),'Select')])[6]");
+    private By payeeTypeSpan = By.xpath("//tr[contains(string(),'Payee Type')]//span");
     private By payeeType = By.xpath("//span[contains(string(),'%s')]");
 
     @Step("Select Payee Type")
