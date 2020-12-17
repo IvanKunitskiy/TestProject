@@ -20,6 +20,9 @@ public class FullCheckPage extends PageTools {
     private By branch = By.xpath("//*[@id=\"bankbranchlocationid\"]/a/span[2]/span");
     private By fee = By.xpath("//*[@id=\"checkfee\"]");
     private By cashPurchased = By.xpath("//*[@id=\"iscashpurchase\"]/div/div/span[2]");
+    private By voidButton = By.xpath("//button[contains(string(),'Void')]");
+    private By confirmation = By.xpath("//p[contains(string(),'Do you want to void the selected official check?')]");
+    private final By yesButton = By.xpath("//button[span[text()='Yes']]");
 
     @Step("Get 'Check Type' text")
     public String getCheckType() {
@@ -110,6 +113,32 @@ public class FullCheckPage extends PageTools {
         waitForElementVisibility(cashPurchased);
         return getElementText(cashPurchased);
     }
+
+    @Step("Click 'Void' button")
+    public void clickVoid(){
+        waitForElementClickable(voidButton);
+        click(voidButton);
+    }
+
+    @Step("Check 'Void' is disabled")
+    public boolean checkVoidIsDisabled(){
+        waitForElementVisibility(voidButton);
+        return isElementClickable(voidButton);
+    }
+
+
+    @Step("Check 'Confirmation' popup")
+    public boolean checkConfirmation(){
+        waitForElementPresent(confirmation);
+        return isElementVisible(confirmation);
+    }
+
+    @Step("Click on 'Yes' button")
+    public void clickYes() {
+        waitForElementClickable(yesButton);
+        jsClick(yesButton);
+    }
+
 
 
 }
