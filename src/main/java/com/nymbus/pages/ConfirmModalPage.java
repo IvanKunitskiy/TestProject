@@ -16,7 +16,7 @@ public class ConfirmModalPage extends PageTools {
 
     @Step("Check reprint check visible")
     public boolean checkReprintButton(){
-        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
         return isElementVisible(reprintCheck);
     }
 
