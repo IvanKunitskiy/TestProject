@@ -11,7 +11,7 @@ import com.nymbus.newmodels.client.clientdetails.type.ClientStatus;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import io.qameta.allure.*;
-import org.testng.Assert;
+import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -25,8 +25,9 @@ public class C22543_CreateIndividualNonMemberClientTest extends BaseTest {
     @BeforeMethod
     public void prepareClientData(){
         String currentFinancialType = WebAdminActions.loginActions().getFinancialType();
-        Assert.assertEquals(currentFinancialType, FinancialInstitutionType.FEDERAL_CREDIT_UNION.getFinancialInstitutionType(),
-                "Financial Institution Type is incorrect!");
+        if (!currentFinancialType.equals(FinancialInstitutionType.FEDERAL_CREDIT_UNION.getFinancialInstitutionType())) {
+            throw new SkipException("Financial Institution Type is incorrect!");
+        }
 
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());

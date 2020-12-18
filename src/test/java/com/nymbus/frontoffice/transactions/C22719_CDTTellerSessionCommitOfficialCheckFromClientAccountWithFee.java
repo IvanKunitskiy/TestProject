@@ -25,12 +25,14 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Transactions")
+@Owner("Dmytro")
 public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee extends BaseTest {
     private Transaction transaction;
     private Transaction savingsTransaction;
@@ -59,7 +61,7 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         savingsTransaction = new TransactionConstructor(new WithdrawalGLDebitCHKAccBuilder()).constructTransaction();
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Set products
         savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
@@ -92,7 +94,7 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Set transaction with amount value
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
@@ -121,7 +123,8 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         check.setInitials(client.getNameForDebitCard());
         check.setAmount(returnTransactionAmount);
         check.setStatus("Outstanding");
-        fullCheck = (FullCheck) check;
+        fullCheck = new FullCheck();
+        fullCheck.fromCheck(check);
         fullCheck.setFee(fee);
         fullCheck.setCashPurchased("No");
         fullCheck.setRemitter("exautotest exautotest");
@@ -137,9 +140,10 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        logInfo("Step 2: Go to Cashier Defined Transactions page");
+        logInfo("Step 2: Go to Cashier Defined Transactions screen and log in to proof date");
+        Actions.transactionActions().loginTeller();
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
 
@@ -163,7 +167,7 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
 
         logInfo("Step 6: Click [Yes] button on a \"Reprint check #X?\" popup");
         Pages.confirmModalPage().clickYes();
-        Assert.assertTrue(Pages.confirmModalPage().checkReprintButton(),"Is check is not visible");
+        Assert.assertTrue(Pages.confirmModalPage().checkIsCheck(),"Is check is not visible");
 
         logInfo("Step 7: Click [Yes] button on a \"Is check #X still usable?\" popup:");
         Pages.confirmModalPage().clickYes();
