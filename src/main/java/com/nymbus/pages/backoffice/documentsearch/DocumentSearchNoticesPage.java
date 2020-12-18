@@ -6,7 +6,8 @@ import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
-public class DocumentTransactionsPage extends PageTools {
+public class DocumentSearchNoticesPage extends PageTools {
+
     private final By tabContent = By.xpath("//article[@ui-view='tabContent']");
     private final By date = By.xpath("//input[@data-test-id='field-from']");
     private final By branchOption = By.xpath("//div[@class='multipleDropdown__itemsContainer']/div/label[contains(text(), '%s')]/preceding-sibling::input[@type='checkbox']");
