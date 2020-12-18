@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Dmytro")
-public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeWaived extends BaseTest {
+public class C22721_CDTTellerSessionCommitMoneyOrderWithFeeWaived extends BaseTest {
     private Transaction transaction;
     private Transaction savingsTransaction;
     private BalanceDataForCHKAcc expectedBalanceData;
@@ -42,7 +42,7 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
     private Account savingsAccount;
     private double savingsTransactionAmount = 200.00;
     private double returnTransactionAmount = 100.00;
-    private double fee = 5.00;
+    private double fee = 2.00;
     private int checkAccountNumber;
     private Check check;
     private String name = "John";
@@ -136,25 +136,23 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C22720, CDT+Teller Session - Commit official check from client account with fee waived")
+    @Test(description = "C22721, CDT+Teller Session - Commit money order with fee waived")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
-        logInfo("Step 1: Log in to the system as User from the preconditions");
+        logInfo("Step 1: Log in to Nymbus as user from preconditions");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        logInfo("Step 2: Go to Cashier Defined Transactions page");
+        logInfo("Step 2: Go to Cashier Defined Transactions screen and log in to proof date");
         Actions.transactionActions().loginTeller();
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
 
         logInfo("Step 3: Search for template from preconditions and select it");
         logInfo("Step 4: Click on [Waive Fee] toggle button");
-        logInfo("Step 5: Specify account from the precondition in the source line account number field;\n" +
-                "Set transaction amount < Account's Available Balance\n" +
-                "Specify Payee Info required fields:\n" +
-                "Name (any value)\n" +
-                "Payee Type (e.g. 'Person')");
-        Actions.cashierDefinedActions().createOfficialTransaction(CashierDefinedTransactions.OFFICIAL_CHECK_FROM_SAVINGS,
+        logInfo("Step 5: Specify account from precondition in sources line account number field;\n" +
+                "Set transaction amount\n" +
+                "Specify Payee Info required fields: Name (any value) Payee Type (e.g. 'Person')')");
+        Actions.cashierDefinedActions().createOfficialTransaction(CashierDefinedTransactions.MONEY_ORDER_FROM_SAVINGS,
                 transaction, true, name);
         expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
 

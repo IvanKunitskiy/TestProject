@@ -42,7 +42,7 @@ public class C22699_CDTTellerSessionCommitMoneyOrderWithFee extends BaseTest {
     private Account savingsAccount;
     private double savingsTransactionAmount = 200.00;
     private double returnTransactionAmount = 100.00;
-    private double fee = 5.00;
+    private double fee = 2.00;
     private int checkAccountNumber;
     private Check check;
     private String name = "John";
