@@ -29,7 +29,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWithFee extends BaseTest {
+public class C22729_CDTWithoutTellerSessionCommitOfficialCheckFromCashInvalid extends BaseTest {
     private Transaction transaction;
     private Transaction savingsTransaction;
     private BalanceDataForCHKAcc expectedSavingsBalanceData;
