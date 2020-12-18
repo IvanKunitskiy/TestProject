@@ -5,7 +5,8 @@ import com.nymbus.pages.accounts.*;
 import com.nymbus.pages.accounts.transactions.EditAccountTransactionModal;
 import com.nymbus.pages.accounts.transactions.TransactionsPage;
 import com.nymbus.pages.backoffice.BackOfficePage;
-import com.nymbus.pages.backoffice.documentsearch.DocumentTransactionsPage;
+import com.nymbus.pages.backoffice.documentsearch.DocumentSearchNoticesPage;
+import com.nymbus.pages.backoffice.documentsearch.DocumentSearchTransactionsPage;
 import com.nymbus.pages.backoffice.printchecks.CheckPrintPage;
 import com.nymbus.pages.backoffice.printchecks.PrintChecksPage;
 import com.nymbus.pages.cashdrawer.CashDrawerBalancePage;
@@ -96,7 +97,8 @@ public class Pages extends AllureLogger {
     private static ConfirmModalPage confirmModalPage;
     private static NoticePage noticePage;
     private static BackOfficePage backOfficePage;
-    private static DocumentTransactionsPage documentTransactionsPage;
+    private static DocumentSearchNoticesPage documentSearchNoticesPage;
+    private static DocumentSearchTransactionsPage documentSearchTransactionsPage;
     private static CheckPage checkPage;
     private static FullCheckPage fullCheckPage;
     private static PrintChecksPage printChecksPage;
@@ -640,13 +642,23 @@ public class Pages extends AllureLogger {
     }
 
     /**
+     * This function return an instance of `DocumentSearchNoticesPage`
+     */
+    public static DocumentSearchNoticesPage documentSearchNoticesPage() {
+        if (documentSearchNoticesPage == null){
+            documentSearchNoticesPage = new DocumentSearchNoticesPage();
+        }
+        return documentSearchNoticesPage;
+    }
+
+    /**
      * This function return an instance of `DocumentTransactionsPage`
      */
-    public static DocumentTransactionsPage documentTransactionsPage() {
-        if (documentTransactionsPage == null){
-            documentTransactionsPage = new DocumentTransactionsPage();
+    public static DocumentSearchTransactionsPage documentSearchTransactionsPage() {
+        if (documentSearchTransactionsPage == null){
+            documentSearchTransactionsPage = new DocumentSearchTransactionsPage();
         }
-        return documentTransactionsPage;
+        return documentSearchTransactionsPage;
     }
 
     /**

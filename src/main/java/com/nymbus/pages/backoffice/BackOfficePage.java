@@ -10,7 +10,7 @@ public class BackOfficePage extends PageTools {
     private By documentSearchSeeMoreLink = By.xpath("//li/div/div[@class='header']/h2[text()='Document Search']/parent::div/following-sibling::div//div/div/a[text()='See more ']");
     private By officialChecksButton = By.xpath("//h2[text()='Official Checks']/../..//a");
 
-    @Step
+    @Step("Click the 'Official checks' button")
     public void clickOfficialChecks(){
         waitForElementClickable(officialChecksButton);
         click(officialChecksButton);
