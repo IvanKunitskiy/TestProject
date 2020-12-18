@@ -1,6 +1,7 @@
 package com.nymbus.pages.backoffice.documentsearch;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -79,4 +80,11 @@ public class DocumentSearchTransactionsPage extends PageTools {
         waitForElementClickable(clearAllButton);
         click(clearAllButton);
     }
+
+    @Step("Wait for search button is clickable")
+    public void waitForSearchButtonClickable() {
+        SelenideTools.sleep(3);
+        waitForElementClickable(searchButton);
+    }
+
 }

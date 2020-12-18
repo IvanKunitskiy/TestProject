@@ -16,16 +16,18 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuil
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Backoffice")
+@Feature("Notices")
+@Owner("Petro")
 public class C22848_DocumentSearchViewCompanionItemsTest extends BaseTest {
 
-    private Transaction transaction_1;
-    private Transaction transaction_2;
-    private final String transactionAmount_1 = "90.00";
-    private final String transactionAmount_2 = "80.00";
+    private final double transactionAmount_1 = 90.00;
+    private final double transactionAmount_2 = 80.00;
     private String chkAccountNumber;
 
     @BeforeMethod
@@ -41,15 +43,15 @@ public class C22848_DocumentSearchViewCompanionItemsTest extends BaseTest {
         chkAccountNumber = chkAccount.getAccountNumber();
 
         // Set up transactions
-        transaction_1 = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
-        transaction_1.getTransactionSource().setAmount(90);
-        transaction_1.getTransactionDestination().setAmount(90);
+        Transaction transaction_1 = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        transaction_1.getTransactionSource().setAmount(transactionAmount_1);
+        transaction_1.getTransactionDestination().setAmount(transactionAmount_1);
         transaction_1.getTransactionDestination().setAccountNumber(chkAccountNumber);
         transaction_1.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
 
-        transaction_2 = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
-        transaction_2.getTransactionSource().setAmount(80);
-        transaction_2.getTransactionDestination().setAmount(80);
+        Transaction transaction_2 = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        transaction_2.getTransactionSource().setAmount(transactionAmount_2);
+        transaction_2.getTransactionDestination().setAmount(transactionAmount_2);
         transaction_2.getTransactionDestination().setAccountNumber(chkAccountNumber);
         transaction_2.getTransactionDestination().setTransactionCode(TransactionCode.CREDIT_TRANSFER_101.getTransCode());
 
@@ -83,6 +85,7 @@ public class C22848_DocumentSearchViewCompanionItemsTest extends BaseTest {
     }
 
     @Test(description = "C22848, Document Search: View companion items")
+    @Severity(SeverityLevel.CRITICAL)
     public void documentSearchViewCompanionItems() {
 
         logInfo("Step 1: Log in to the system as the user from the precondition");
@@ -97,10 +100,11 @@ public class C22848_DocumentSearchViewCompanionItemsTest extends BaseTest {
                 " so that only one line item is found during the search \n" +
                 "(e.g. specify account number related to one transaction item only, specific amount)");
         Pages.documentSearchTransactionsPage().setAccount(chkAccountNumber);
-        Pages.documentSearchTransactionsPage().setAmount(transactionAmount_1);
+        Pages.documentSearchTransactionsPage().setAmount(String.format("%.2f", transactionAmount_1));
         Pages.documentSearchTransactionsPage().clickSearchButton();
-//        Assert.assertEquals(Pages.documentSearchTransactionsPage().getTransactionsCount(), 1,
-//                "Invalid transactions count");
+        Pages.documentSearchTransactionsPage().waitForSearchButtonClickable();
+        Assert.assertEquals(Pages.documentSearchTransactionsPage().getTransactionsCount(), 1,
+                "Invalid transactions count");
 
         logInfo("Step 4: Select the resulted line item and click [Show Companion Items] button");
         Pages.documentSearchTransactionsPage().selectLineByIndex(1);
@@ -113,6 +117,7 @@ public class C22848_DocumentSearchViewCompanionItemsTest extends BaseTest {
         Pages.documentSearchTransactionsPage().clickClearAllButton();
         Pages.documentSearchTransactionsPage().setAccount(chkAccountNumber);
         Pages.documentSearchTransactionsPage().clickSearchButton();
+        Pages.documentSearchTransactionsPage().waitForSearchButtonClickable();
         Assert.assertEquals(Pages.documentSearchTransactionsPage().getTransactionsCount(), 2,
                 "Invalid transactions count");
 
@@ -122,6 +127,5 @@ public class C22848_DocumentSearchViewCompanionItemsTest extends BaseTest {
         Pages.documentSearchTransactionsPage().waitForCompanionItemsPanel();
         Assert.assertTrue(Pages.documentSearchTransactionsPage().getCompanionItemsCount() >= 1,
                 "Companion items not found");
-
     }
 }
