@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Dmytro")
-public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeWaived extends BaseTest {
+public class C22699_CDTTellerSessionCommitMoneyOrderWithFee extends BaseTest {
     private Transaction transaction;
     private Transaction savingsTransaction;
     private BalanceDataForCHKAcc expectedBalanceData;
@@ -61,7 +61,7 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
         savingsTransaction = new TransactionConstructor(new WithdrawalGLDebitCHKAccBuilder()).constructTransaction();
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Set products
         savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
@@ -94,7 +94,7 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Set transaction with amount value
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
@@ -136,25 +136,23 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C22720, CDT+Teller Session - Commit official check from client account with fee waived")
+    @Test(description = "C22699, CDT+Teller Session - Commit money order with fee")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
-        logInfo("Step 1: Log in to the system as User from the preconditions");
+        logInfo("Step 1: Log in to Nymbus as user from preconditions");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        logInfo("Step 2: Go to Cashier Defined Transactions page");
+        logInfo("Step 2: Go to Cashier Defined Transactions screen and log in to proof date");
         Actions.transactionActions().loginTeller();
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
 
         logInfo("Step 3: Search for template from preconditions and select it");
-        logInfo("Step 4: Specify account from the precondition in the source line account number field;\n" +
-                "Set transaction amount < Account's Available Balance\n" +
-                "Specify Payee Info required fields:\n" +
-                "Name (any value)\n" +
-                "Payee Type (e.g. 'Person')");
-        Actions.cashierDefinedActions().createOfficialTransaction(CashierDefinedTransactions.OFFICIAL_CHECK_FROM_SAVINGS,
-                transaction, true, name);
+        logInfo("Step 4: Specify account from precondition in sources line account number field;\n" +
+                "Set transaction amount\n" +
+                "Specify Payee Info required fields: Name (any value) Payee Type (e.g. 'Person')");
+        Actions.cashierDefinedActions().createOfficialTransaction(CashierDefinedTransactions.MONEY_ORDER_FROM_SAVINGS,
+                transaction, false, name);
         expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
 
         logInfo("Step 5: Click [Commit Transaction] button and click [Verify] button");
@@ -227,7 +225,4 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
         Assert.assertEquals(fullCheckFromBankOffice,fullCheck,"Check details doesn't match");
 
     }
-
-
-
 }
