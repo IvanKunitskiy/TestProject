@@ -58,6 +58,8 @@ public class Constants {
                 return "https://dev21.nj1.nymbus.com/frontoffice/";
             case "dev4":
                 return "https://frontoffice.nj1.nymbus.com/frontoffice/#/crm/login";
+            case "dev18":
+                return "https://dev18.nj1.nymbus.com/frontoffice";
         }
     }
 
@@ -72,6 +74,8 @@ public class Constants {
                 return "https://was-21.nj1.nymbus.com:9445/webadmin/";
             case "dev4":
                 return "https://nymbus-q-was-05.nj1.nymbus.com:9445/webadmin/";
+            case "dev18":
+                return "https://dev18.nj1.nymbus.com/webadmin";
         }
     }
 
@@ -86,6 +90,8 @@ public class Constants {
                 return "https://was-21.nj1.nymbus.com:9445/coreweb/controller/";
             case "dev4":
                 return "https://nymbus-q-was-05.nj1.nymbus.com:9445/coreweb/controller/";
+            case "dev18":
+                return "https://dev18.nj1.nymbus.com/coreweb/controller/";
         }
     }
 
@@ -97,6 +103,7 @@ public class Constants {
                 return "510986";
             case "dev21":
             case "dev4":
+            case "dev18":
                 return "408078";
         }
     }
@@ -124,6 +131,7 @@ public class Constants {
                 return FinancialInstitutionType.FEDERAL_CREDIT_UNION;
             case "dev21":
             case "dev4":
+            case "dev18":
                 return FinancialInstitutionType.BANK;
         }
     }
