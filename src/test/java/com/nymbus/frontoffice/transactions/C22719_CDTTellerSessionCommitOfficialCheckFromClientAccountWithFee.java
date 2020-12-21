@@ -222,6 +222,7 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         logInfo("Step 13: Open check on Details and verify the following fields: Status, Check Number, " +
                 "Remitter, Phone Number, Document Type, Document ID, Payee, Check Type, Purchase Account, " +
                 "Branch, Initials, Check Amount, Fee, Date Issued, Cash Purchased");
+        Pages.checkPage().clickToCheck(checkNumber);
         FullCheck fullCheckFromBankOffice = Actions.backOfficeActions().getFullCheckFromBankOffice();
         Assert.assertEquals(fullCheckFromBankOffice,fullCheck,"Check details doesn't match");
 
