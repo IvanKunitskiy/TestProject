@@ -1,6 +1,7 @@
 package com.nymbus.pages.backoffice.documentsearch;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -22,6 +23,17 @@ public class DocumentSearchTransactionsPage extends PageTools {
     private final By dateInput = By.xpath("//input[@id='proofdatefrom']");
     private final By checkNumberInput = By.xpath("//input[@name='checknumberfrom']");
     private final By tableLineByIndex = By.xpath("//div[@class='gridok_content']/div/div[contains(@class, 'dn-gridok-table__tbody')]/div[%s]");
+    private final By checkImage = By.xpath("//dn-check-preview/div[1]/img");
+
+    @Step("Verify check image is visible")
+    public boolean isCheckVisible() {
+        return isElementVisible(checkImage);
+    }
+
+    @Step("Wait for check visibility")
+    public void waitForCheckVisibility() {
+        waitForElementVisibility(checkImage);
+    }
 
     @Step("Click 'Transactions' tab")
     public void clickTransactionsTab() {
@@ -43,8 +55,9 @@ public class DocumentSearchTransactionsPage extends PageTools {
 
     @Step("Set 'Date' value")
     public void setDate(String date) {
-        waitForElementVisibility(dateInput);
-        type(date, dateInput);
+        typeWithoutWipe("", dateInput);
+        SelenideTools.sleep(1);
+        typeWithoutWipe(date, dateInput);
     }
 
     @Step("Set 'Check #' value")
@@ -99,6 +112,7 @@ public class DocumentSearchTransactionsPage extends PageTools {
     public void clickClearAllButton() {
         waitForElementClickable(clearAllButton);
         click(clearAllButton);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
     }
 
     @Step("Wait for search button is clickable")

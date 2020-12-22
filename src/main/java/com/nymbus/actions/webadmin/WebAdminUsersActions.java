@@ -216,9 +216,9 @@ public class WebAdminUsersActions {
                 + "Query=count%3A+10%0D%0A"
                 + "select%3A+effectiveentrydate%2C+accountnumber%2C+amount%2C+itemtype%2C+uniqueeftdescription%2C+checknumber%0D%0A"
                 + "from%3A+bank.data.transaction.item%0D%0A"
-                + "where%3A+%0D%0A-+.transactioncode-%3Ecode%3A+128%0D%0A-+rejectstatus%3A+%7Bnull%7D%0D%0A"
+                + "where%3A%0D%0A-+.transactionheaderid-%3E.transactionsource-%3Ename%3A+Teller+%0D%0A-+.transactioncode-%3Ecode%3A+128%0D%0A-+rejectstatus%3A+%7Bnull%7D%0D%0A"
                 + "extra%3A+%0D%0A-+%24bankbranch%3A+.accountnumber-%3Ebankbranch%0D%0A"
-                + "formats%3A+%0D%0A-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D&source=";
+                + "formats%3A+%0D%0A-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0AorderBy%3A+-effectiveentrydate&source=";
     }
 
     private String getAtmTransactionUrl() {
@@ -486,7 +486,6 @@ public class WebAdminUsersActions {
         transaction.setBankBranch(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionBankBranchValueByIndex(tmpIndex));
         transaction.setAccountNumber(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionAccountNumberByIndex(tmpIndex));
         String trAmount = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionAmountValueByIndex(tmpIndex);
-        System.out.println("-----------> " + trAmount);
         transaction.setAmount(Double.parseDouble(trAmount));
         String date = WebAdminPages.rulesUIQueryAnalyzerPage().getEffectiveDate(tmpIndex);
         transaction.setEffectiveEntryDate(DateTime.getDateWithFormat(date, "yyyy-MM-dd", "MM/dd/yyyy"));
@@ -510,7 +509,6 @@ public class WebAdminUsersActions {
         transaction.setBankBranch(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionBankBranchValueByIndex(tmpIndex));
         transaction.setAccountNumber(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionAccountNumberByIndex(tmpIndex));
         String trAmount = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionAmountValueByIndex(tmpIndex);
-        System.out.println("-----------> " + trAmount);
         transaction.setAmount(Double.parseDouble(trAmount));
         String date = WebAdminPages.rulesUIQueryAnalyzerPage().getEffectiveDate(tmpIndex);
         transaction.setEffectiveEntryDate(DateTime.getDateWithFormat(date, "yyyy-MM-dd", "MM-dd-yyyy"));

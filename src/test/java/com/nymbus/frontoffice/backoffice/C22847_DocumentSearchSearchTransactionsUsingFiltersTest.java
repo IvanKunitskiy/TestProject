@@ -4,7 +4,6 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.transaction.verifyingModels.WebAdminTransactionFromQuery;
 import com.nymbus.pages.Pages;
@@ -58,7 +57,8 @@ public class C22847_DocumentSearchSearchTransactionsUsingFiltersTest extends Bas
 
         logInfo("Step 4: Click the found transaction");
         Pages.documentSearchTransactionsPage().clickLineByIndex(1);
-        // TODO: verify check in images section
+        Pages.documentSearchTransactionsPage().waitForCheckVisibility();
+        Assert.assertTrue(Pages.documentSearchTransactionsPage().isCheckVisible(), "Check image is not visible");
 
         logInfo("Step 5: Specify amount == amount of T2 from preconditions (e.g. $200), \n" +
                 "account number related to T2 and branch2 in filters section; Run the search");
@@ -73,7 +73,7 @@ public class C22847_DocumentSearchSearchTransactionsUsingFiltersTest extends Bas
 
         logInfo("Step 6: Specify current date in filters section; Run the search");
         Pages.documentSearchTransactionsPage().clickClearAllButton();
-        Pages.documentSearchTransactionsPage().setDate(DateTime.getLocalDate());
+        Pages.documentSearchTransactionsPage().setDate(T3.getEffectiveEntryDate());
         Pages.documentSearchTransactionsPage().clickSearchButton();
         Pages.documentSearchTransactionsPage().waitForSearchButtonClickable();
         Assert.assertTrue(Pages.documentSearchTransactionsPage().getTransactionsCount() >= 1,
