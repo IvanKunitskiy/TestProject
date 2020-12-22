@@ -4,6 +4,7 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -29,7 +30,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWithFee extends BaseTest {
+public class C22744_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWithFeeWaivedWithoutTellerSession extends BaseTest {
     private Transaction transaction;
     private BalanceDataForCHKAcc expectedSavingsBalanceData;
     private TransactionData savingsAccTransactionData;
@@ -55,7 +56,7 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         transaction = new TransactionConstructor(new WithdrawalGLDebitCHKAccBuilder()).constructTransaction();
 
         // Log in
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
 
         // Set products
         savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
@@ -129,12 +130,11 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         Actions.loginActions().doLogOut();
 
         //Create CDT  transaction
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        Actions.transactionActions().loginTeller();
+        Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
         Actions.cashierDefinedActions().createOfficialTransaction(CashierDefinedTransactions.OFFICIAL_CHECK_FROM_SAVINGS,
-                transaction, false, name);
+                transaction, true, name);
         expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
@@ -149,17 +149,17 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
 
     }
 
-    @Test(description = "C22710, BackOffice->Official Checks: Void official check from client account with fee")
+    @Test(description = "C22744, BackOffice->Official Checks: Void official check from client account with fee waived without Teller Session")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
 
-        logInfo("Step 2: Go to Back Office -> Official Checks and search for the Transaction from the preconditions");
+        logInfo("Step 2: Go to Back Office -> Official Checks");
         Pages.aSideMenuPage().clickBackOfficeMenuItem();
         Pages.backOfficePage().clickOfficialChecks();
 
-        logInfo("Step 3: Open Official check on Details");
+        logInfo("Step 3: Find official check from preconditions and open it on details");
         Pages.checkPage().clickToCheck(checkNumber);
         FullCheck fullCheckFromBankOffice = Actions.backOfficeActions().getFullCheckFromBankOffice();
 
@@ -193,6 +193,8 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
 
     }
+
+
 
 
 }

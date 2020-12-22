@@ -11,7 +11,7 @@ public class AccountMaintenanceActions {
     public void expandAllRows() {
         do {
             Pages.accountMaintenancePage().clickViewMoreButton();
-            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            SelenideTools.sleep(Constants.MINI_TIMEOUT);
         }
         while (Pages.accountMaintenancePage().isMoreButtonVisible());
     }
