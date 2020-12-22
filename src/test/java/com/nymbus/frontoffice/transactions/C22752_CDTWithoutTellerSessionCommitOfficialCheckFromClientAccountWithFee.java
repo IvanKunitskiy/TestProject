@@ -131,7 +131,7 @@ public class C22752_CDTWithoutTellerSessionCommitOfficialCheckFromClientAccountW
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C22719, CDT+Teller Session - Commit official check from client account with fee")
+    @Test(description = "C22752, CDT without Teller Session - Commit official check from client account with fee")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");

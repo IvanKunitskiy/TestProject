@@ -35,8 +35,6 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee extends BaseTest {
     private Transaction transaction;
-    private Transaction savingsTransaction;
-    private BalanceDataForCHKAcc expectedBalanceData;
     private BalanceDataForCHKAcc expectedSavingsBalanceData;
     private TransactionData savingsAccTransactionData;
     private Account savingsAccount;
@@ -58,7 +56,6 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         savingsAccount = new Account().setSavingsAccountData();
         Transaction depositSavingsTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
         transaction = new TransactionConstructor(new WithdrawalGLDebitCHKAccBuilder()).constructTransaction();
-        savingsTransaction = new TransactionConstructor(new WithdrawalGLDebitCHKAccBuilder()).constructTransaction();
 
         // Log in
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());

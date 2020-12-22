@@ -25,15 +25,13 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
-import io.qameta.allure.*;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-@Epic("Frontoffice")
-@Feature("Transactions")
-@Owner("Dmytro")
-public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeWaived extends BaseTest {
+public class C22753_CDTWithoutTellerSessionCommitOfficialCheckFromClientAccountWithFeeWaived extends BaseTest {
     private Transaction transaction;
     private BalanceDataForCHKAcc expectedSavingsBalanceData;
     private TransactionData savingsAccTransactionData;
@@ -58,7 +56,7 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
         transaction = new TransactionConstructor(new WithdrawalGLDebitCHKAccBuilder()).constructTransaction();
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
 
         // Set products
         savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
@@ -91,7 +89,7 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
 
         // Set transaction with amount value
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
@@ -133,14 +131,13 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C22720, CDT+Teller Session - Commit official check from client account with fee waived")
+    @Test(description = "C22753, CDT without Teller Session - Commit official check from client account with fee waived")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
 
         logInfo("Step 2: Go to Cashier Defined Transactions page");
-        Actions.transactionActions().loginTeller();
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
 
