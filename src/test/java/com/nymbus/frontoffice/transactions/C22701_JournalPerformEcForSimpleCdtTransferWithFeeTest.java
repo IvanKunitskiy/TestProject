@@ -4,6 +4,7 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -49,23 +50,22 @@ public class C22701_JournalPerformEcForSimpleCdtTransferWithFeeTest extends Base
 
         // Set up account data
         Account chkAccount = new Account().setCHKAccountData();
-        savingsAccount = new Account().setCHKAccountData();
+        savingsAccount = new Account().setSavingsAccountData();
 
         // Set up transaction data for increasing the accounts balances
         Transaction savingsTransaction = new TransactionConstructor(new GLDebitMiscCreditCHKAccBuilder()).constructTransaction();
         savingsTransaction.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_209.getTransCode());
+        savingsTransaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
 
         TransactionSource savingsToChkTransactionSource = new TransactionSource();
         savingsToChkTransactionSource.setAccountNumber(savingsAccount.getAccountNumber());
         savingsToChkTransactionSource.setTransactionCode(TransactionCode.DEBIT_TRANSFER_221.getTransCode());
         savingsToChkTransactionSource.setAmount(10.00);
 
-        TransactionDestination savingsToChkTransactionDestination= new TransactionDestination();
+        TransactionDestination savingsToChkTransactionDestination = new TransactionDestination();
         savingsToChkTransactionDestination.setAccountNumber(chkAccount.getAccountNumber());
         savingsToChkTransactionDestination.setTransactionCode(TransactionCode.CREDIT_TRANSFER_101.getTransCode());
         savingsToChkTransactionDestination.setAmount(10.00);
-
-        // TODO: CheckCdtTemplatePresent?
 
         // Login to the system
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -75,7 +75,12 @@ public class C22701_JournalPerformEcForSimpleCdtTransferWithFeeTest extends Base
         SettingsPage.mainPage().clickViewProfile();
         String bankBranch = SettingsPage.viewUserPage().getBankBranch();
         savingsAccount.setBankBranch(bankBranch);
+        chkAccount.setBankBranch(bankBranch);
         savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
+        System.out.println("----------> " + savingsAccount.getProduct());
+        Pages.aSideMenuPage().clickClientMenuItem();
+        chkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
+        System.out.println("----------> " + chkAccount.getProduct());
         Actions.loginActions().doLogOut();
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
@@ -99,21 +104,16 @@ public class C22701_JournalPerformEcForSimpleCdtTransferWithFeeTest extends Base
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         savingsBalanceData = AccountActions.retrievingAccountData().getBalanceData();
 
-        // Set the account data
-        Pages.aSideMenuPage().clickSettingsMenuItem();
-        SettingsPage.mainPage().clickViewProfile();
-        chkAccount.setBankBranch(bankBranch);
-        chkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
-        Actions.loginActions().doLogOut();
-
         // Create CHK account
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(client.getIndividualType().getClientID());
         AccountActions.createAccount().createCHKAccount(chkAccount);
 
         // Create simple CDT transfer with fee transaction
         Pages.aSideMenuPage().clickCashierDefinedTransactions();
         Actions.transactionActions().doLoginTeller();
-        performCdtWithFeeTransaction(savingsToChkTransactionSource, savingsToChkTransactionDestination, 1);
+        Actions.cashierDefinedActions().setTellerOperation(Constants.CDT_TEMPLATE_NAME);
+        performCdtWithFeeTransaction(savingsToChkTransactionSource, savingsToChkTransactionDestination, 0);
         Actions.loginActions().doLogOutProgrammatically();
 
         // Get checking balance data
