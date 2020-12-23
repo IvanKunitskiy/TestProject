@@ -122,7 +122,7 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
 
         logInfo("Step 11: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         AccountActions.accountMaintenanceActions().expandAllRows();
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("accounttype") >= 1,
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account Type") >= 1,
                 "'accounttype' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account Title") >= 1,
                 "'Account Title' row count is incorrect!");

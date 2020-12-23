@@ -31,7 +31,6 @@ import org.testng.annotations.Test;
 
 public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWithFee extends BaseTest {
     private Transaction transaction;
-    private Transaction savingsTransaction;
     private BalanceDataForCHKAcc expectedSavingsBalanceData;
     private TransactionData savingsAccTransactionData;
     private Account savingsAccount;
@@ -54,7 +53,6 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         savingsAccount = new Account().setSavingsAccountData();
         Transaction depositSavingsTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
         transaction = new TransactionConstructor(new WithdrawalGLDebitCHKAccBuilder()).constructTransaction();
-        savingsTransaction = new TransactionConstructor(new WithdrawalGLDebitCHKAccBuilder()).constructTransaction();
 
         // Log in
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
