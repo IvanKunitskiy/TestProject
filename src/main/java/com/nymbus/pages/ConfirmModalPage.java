@@ -13,11 +13,19 @@ public class ConfirmModalPage extends PageTools {
     private final By okButton = By.xpath("//button[contains(string(),'OK')]");
     private final By reprintCheck = By.xpath("//p[contains(string(),'Reprint check')]");
     private final By isCheck = By.xpath("//p[contains(string(),'Is check')]");
+    private final By alertLoggedMessage =
+            By.xpath("//p[contains(string(),'You must be logged in to a cashdrawer to run cash transactions')]");
 
     @Step("Check reprint check visible")
     public boolean checkReprintButton(){
         SelenideTools.sleep(Constants.SMALL_TIMEOUT);
         return isElementVisible(reprintCheck);
+    }
+
+    @Step("Check alert visible")
+    public boolean checkAllertMessage(){
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        return isElementVisible(alertLoggedMessage);
     }
 
     @Step("Check reprint check visible")

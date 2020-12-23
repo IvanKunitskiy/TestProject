@@ -279,6 +279,12 @@ public class CashierPage extends PageTools {
         jsRiseOnchange(accountNumberField, i);
     }
 
+    @Step("Check {0} 'Account number' is disabled")
+    public boolean checkSourceAccountNumberDisabled(int i){
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        return getElementAttributeValue("disabled",accountNumberField, i).equals("true");
+    }
+
     @Step("Set {0} 'Check Account number' value {1}")
     public void typeCheckAccountNumber(int i, String number) {
         waitForElementClickable(checkAccountNumberField, i);

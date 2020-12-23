@@ -194,8 +194,6 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getSecondTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
 
-
-
     }
 
 
