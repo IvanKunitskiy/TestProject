@@ -361,4 +361,72 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public boolean isCdtTemplateCommittedFromChkOnGlAccountCreated(String templateName) {
         return isElementVisible(cdtTemplateCommittedFromChkOnGlAccount, templateName);
     }
+
+    /**
+    * Transactions
+    */
+
+    private By trBankBranch = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//td[2]/span[contains(@class, 'high_title')]/span");
+    private By trAccountNumber = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//td[3]/span[contains(@class, 'high_title')]/span");
+    private By trAmount = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//td[4]/div[@key-name='amount']");
+    private By trEffectiveDate = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//td[5]/div[@key-name='effectiveentrydate']");
+    private By trCode = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//td[6]/span[contains(@class, 'high_title')]/span");
+    private By trHeaderId = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//td[7]/span[contains(@class, 'high_title')]/span");
+    private By trEftDescription = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//td/div[@key-name='uniqueeftdescription']");
+    private By trItemType = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//td[6]/span[contains(@class, 'high_title')]/span");
+    private By trCheckNumber = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow ']//td/div[@key-name='checknumber']");
+
+    @Step ("Get transaction 'Bank branch' {0} value")
+    public String getTransactionBankBranchValueByIndex(int index) {
+        waitForElementVisibility(trBankBranch, index);
+        return getElementText(trBankBranch, index).trim();
+    }
+
+    @Step ("Get transaction 'Account number' {0} value")
+    public String getTransactionAccountNumberByIndex(int index) {
+        waitForElementVisibility(trAccountNumber, index);
+        return getElementText(trAccountNumber, index).trim();
+    }
+
+    @Step ("Get transaction 'Amount' {0} value")
+    public String getTransactionAmountValueByIndex(int index) {
+        waitForElementVisibility(trAmount, index);
+        return getElementText(trAmount, index).trim();
+    }
+
+    @Step ("Get transaction 'Effective date' {0} value")
+    public String getTransactionEffectiveDateValueByIndex(int index) {
+        waitForElementVisibility(trEffectiveDate, index);
+        return getElementText(trEffectiveDate, index).trim();
+    }
+
+    @Step ("Get transaction 'Code' {0} value")
+    public String getTransactionCodeValueByIndex(int index) {
+        waitForElementVisibility(trCode, index);
+        return getElementText(trCode, index).trim();
+    }
+
+    @Step ("Get transaction 'Header ID' {0} value")
+    public String getTransactionHeaderIdValueByIndex(int index) {
+        waitForElementVisibility(trHeaderId, index);
+        return getElementText(trHeaderId, index).trim();
+    }
+
+    @Step ("Get transaction 'Description' {0} value")
+    public String getTransactionDescriptionValueByIndex(int index) {
+        waitForElementVisibility(trEftDescription, index);
+        return getElementText(trEftDescription, index).trim();
+    }
+
+    @Step ("Get transaction 'Item type' {0} value")
+    public String getTransactionItemTypeValueByIndex(int index) {
+        waitForElementVisibility(trItemType, index);
+        return getElementText(trItemType, index).trim();
+    }
+
+    @Step ("Get transaction 'Check number' {0} value")
+    public String getTransactionCheckNumberValueByIndex(int index) {
+        waitForElementVisibility(trCheckNumber, index);
+        return getElementText(trCheckNumber, index).trim();
+    }
 }
