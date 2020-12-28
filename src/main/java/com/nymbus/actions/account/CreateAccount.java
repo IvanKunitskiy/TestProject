@@ -95,7 +95,6 @@ public class CreateAccount {
         Pages.clientDetailsPage().clickAccountsTab();
         Actions.clientPageActions().closeAllNotifications();
         setBasicAccountFields(account);
-        System.out.println(account.getDateOpened());
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
