@@ -16,6 +16,7 @@ public class NoticeActions {
         Pages.noticePage().checkPDFVisible();
 
         // Get the 'src' attribute value from the balance inquiry image
+        SelenideTools.sleep(0);
         String src = Pages.noticePage().getNoticeImageSrc();
         System.out.println("src");
 
@@ -24,6 +25,7 @@ public class NoticeActions {
         File biImage = new File(System.getProperty("user.dir") + "/screenshots/" + imageName + ".pdf");
 
         System.out.println(src);
+        System.out.println(biImage.getAbsolutePath());
         // Save the image
         ImageParser.loadPdf(src,biImage.getAbsolutePath());
         //ImageParser.loadImage(src, biImage.getAbsolutePath(), 0);

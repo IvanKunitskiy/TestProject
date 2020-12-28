@@ -39,6 +39,7 @@ public class LoginActions {
     }
 
     public void doLogOutProgrammatically() {
+        doLogOut();
         SelenideTools.clearCookies();
         SelenideTools.refresh();
         SelenideTools.openUrlInNewWindow(Constants.URL);
