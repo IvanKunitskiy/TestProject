@@ -1,13 +1,29 @@
 package com.nymbus.actions.cashierdefined;
 
+import com.nymbus.newmodels.account.product.ProductType;
 import com.nymbus.newmodels.cashier.CashierDefinedTransactions;
 import com.nymbus.newmodels.cashier.PayeeType;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.pages.Pages;
+import com.nymbus.pages.settings.SettingsPage;
 
 public class CashierDefinedActions {
+
+    public boolean checkCDTTemplateIsExist(CashierDefinedTransactions template){
+        Pages.aSideMenuPage().waitForASideMenu();
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        Pages.settings().waitForSettingsPageLoaded();
+        SettingsPage.mainPage().clickAllCDTButton();
+        SettingsPage.cdtPage().searchCDTTemplate(template.getOperation());
+        boolean noResults = SettingsPage.cdtPage().checkResultsDiv();
+        if (!noResults){
+            noResults = SettingsPage.cdtPage().checkResults(template.getOperation());
+        }
+        return noResults;
+    }
+
 
     public void createTransaction(CashierDefinedTransactions type, Transaction transaction, boolean waiveFee){
         int tempIndex = 0;
@@ -109,4 +125,20 @@ public class CashierDefinedActions {
         Pages.cashierPage().typeSourceNotesValue(tempIndex, notes);
     }
 
+    public boolean createTransferFromSavToCHK() {
+        SettingsPage.cdtPage().clickAddNew();
+        SettingsPage.createCdtPage().inputName(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK.getOperation());
+        SettingsPage.createCdtPage().selectDebitTypeAccount(ProductType.SAVINGS_ACCOUNT);
+        SettingsPage.createCdtPage().selectCreditTypeAccount(ProductType.CHK_ACCOUNT);
+        SettingsPage.createCdtPage().selectDebitTransactionCode("(221) Debit Transfer");
+        SettingsPage.createCdtPage().selectCreditTransactionCode("(101) Credit Transfr");
+        SettingsPage.createCdtPage().inputDebitDescription("TRANSFER TO CHECKING");
+        SettingsPage.createCdtPage().inputCreditDescription("TRANSFER FROM SAVINGS");
+        SettingsPage.createCdtPage().selectDebitNoticeOption("No Notice");
+        SettingsPage.createCdtPage().selectCreditNoticeOption("No Notice");
+        SettingsPage.createCdtPage().inputFeeAmount("0");
+        SettingsPage.createCdtPage().inputGLAccount("0-0");
+        SettingsPage.createCdtPage().clickSaveButton();
+        return SettingsPage.createCdtPage().checkNameIsVisible();
+    }
 }

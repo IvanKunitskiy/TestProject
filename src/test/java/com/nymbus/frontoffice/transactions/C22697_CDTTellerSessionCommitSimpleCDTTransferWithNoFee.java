@@ -110,6 +110,14 @@ public class C22697_CDTTellerSessionCommitSimpleCDTTransferWithNoFee extends Bas
         expectedSavingsBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "-", expectedSavingsBalanceData.getCurrentBalance(), returnTransactionAmount);
+
+        //Check CDT template
+        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK);
+        if (templateNotExists){
+            boolean isCreated = Actions.cashierDefinedActions().createTransferFromSavToCHK();
+            Assert.assertTrue(isCreated, "CDT template not created");
+        }
+
         Actions.loginActions().doLogOut();
     }
 
