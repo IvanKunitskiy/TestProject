@@ -115,7 +115,6 @@ public class C22698_CDTTellerSessionCommitSimpleCDTWithFee extends BaseTest {
         savingsAccFeeTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "-", expectedSavingsBalanceData.getCurrentBalance(), fee);
 
-
         //Check CDT template
         boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.TRANSFER_FROM_SAVINGS_TO_CHECKING_WITH_FEE);
         if (templateNotExists){

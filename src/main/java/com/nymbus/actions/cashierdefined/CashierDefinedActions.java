@@ -142,7 +142,6 @@ public class CashierDefinedActions {
         return SettingsPage.createCdtPage().checkNameIsVisible();
     }
 
-
     public boolean createTransferFromSavToCHKWithFee() {
         SettingsPage.cdtPage().clickAddNew();
         SettingsPage.createCdtPage().inputName(CashierDefinedTransactions.TRANSFER_FROM_SAVINGS_TO_CHECKING_WITH_FEE.getOperation());
@@ -157,6 +156,25 @@ public class CashierDefinedActions {
         SettingsPage.createCdtPage().inputFeeAmount("3.00");
         SettingsPage.createCdtPage().inputFeeDescription("TRANSFER FROM SAVINGS TO CHECKING WITH FEE");
         SettingsPage.createCdtPage().inputGLAccount("0-0");
+        SettingsPage.createCdtPage().clickSaveButton();
+        return SettingsPage.createCdtPage().checkNameIsVisible();
+    }
+
+
+    public boolean createMoneyOrderFromSavings() {
+        SettingsPage.cdtPage().clickAddNew();
+        SettingsPage.createCdtPage().inputName(CashierDefinedTransactions.MONEY_ORDER_FROM_SAVINGS.getOperation());
+        SettingsPage.createCdtPage().selectDebitTypeAccount(ProductType.SAVINGS_ACCOUNT);
+        SettingsPage.createCdtPage().selectCreditTypeAccount(ProductType.CHK_ACCOUNT);
+        SettingsPage.createCdtPage().selectDebitTransactionCode("(216) Withdrawal");
+        SettingsPage.createCdtPage().selectCreditTransactionCode("(109) Deposit");
+        SettingsPage.createCdtPage().inputDebitDescription("MONEY ORDER PURCHASE");
+        SettingsPage.createCdtPage().inputCreditDescription("MONEY ORDER FROM SAVINGS");
+        SettingsPage.createCdtPage().selectDebitNoticeOption("No Notice");
+        SettingsPage.createCdtPage().selectCreditNoticeOption("No Notice");
+        SettingsPage.createCdtPage().inputFeeAmount("2.00");
+        SettingsPage.createCdtPage().inputFeeDescription("MONEY ORDER FEE");
+        SettingsPage.createCdtPage().inputGLAccount("4800200");
         SettingsPage.createCdtPage().clickSaveButton();
         return SettingsPage.createCdtPage().checkNameIsVisible();
     }
