@@ -119,7 +119,7 @@ public class CreateCDTPage extends PageTools {
 
     @Step("Check name span")
     public boolean checkNameIsVisible(){
-        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         return isElementVisible(nameDiv);
     }
 
