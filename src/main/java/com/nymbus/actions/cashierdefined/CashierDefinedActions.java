@@ -9,7 +9,6 @@ public class CashierDefinedActions {
     public void setTellerOperation(String type) {
         Pages.cashierDefinedActionsPage().clickSelectOperation();
         Pages.cashierDefinedActionsPage().selectOperation(type);
-        clickCommitButton();
     }
 
     public void setTransactionSource(TransactionSource source, int index) {

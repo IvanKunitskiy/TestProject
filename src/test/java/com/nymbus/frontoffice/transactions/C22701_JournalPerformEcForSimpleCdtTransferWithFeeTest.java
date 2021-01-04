@@ -20,6 +20,7 @@ import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
+import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
@@ -34,11 +35,12 @@ import org.testng.annotations.Test;
 public class C22701_JournalPerformEcForSimpleCdtTransferWithFeeTest extends BaseTest {
 
     private Account savingsAccount;
+    private Account chkAccount;
     private BalanceData savingsBalanceData;
-    private BalanceData chkBalanceData;
+    private BalanceDataForCHKAcc chkBalanceData;
     private TransactionData savingsAccTransactionData;
     private TransactionData chkAccTransactionData;
-    private final double fee = 3.00;
+    private final double fee = 10.00;
 
     @BeforeMethod
     public void preCondition() {
@@ -49,7 +51,7 @@ public class C22701_JournalPerformEcForSimpleCdtTransferWithFeeTest extends Base
         IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account data
-        Account chkAccount = new Account().setCHKAccountData();
+        chkAccount = new Account().setCHKAccountData();
         savingsAccount = new Account().setSavingsAccountData();
 
         // Set up transaction data for increasing the accounts balances
@@ -77,10 +79,8 @@ public class C22701_JournalPerformEcForSimpleCdtTransferWithFeeTest extends Base
         savingsAccount.setBankBranch(bankBranch);
         chkAccount.setBankBranch(bankBranch);
         savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
-        System.out.println("----------> " + savingsAccount.getProduct());
         Pages.aSideMenuPage().clickClientMenuItem();
         chkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
-        System.out.println("----------> " + chkAccount.getProduct());
         Actions.loginActions().doLogOut();
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
@@ -119,16 +119,13 @@ public class C22701_JournalPerformEcForSimpleCdtTransferWithFeeTest extends Base
         // Get checking balance data
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenClientByName(chkAccount.getAccountNumber());
-        chkBalanceData = AccountActions.retrievingAccountData().getBalanceData();
+        chkBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
 
         // Update retrieved balances after transaction
-        savingsBalanceData.subtractAmount(savingsToChkTransactionSource.getAmount());
-        chkBalanceData.addAmount(savingsToChkTransactionSource.getAmount());
-        double savingsTransactionBalance = savingsTransaction.getTransactionDestination().getAmount() - savingsToChkTransactionDestination.getAmount() - fee;
         savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-", savingsTransactionBalance, fee);
+                "+", savingsBalanceData.getCurrentBalance(), fee);
         chkAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-", savingsToChkTransactionDestination.getAmount(), savingsToChkTransactionDestination.getAmount());
+                "-", chkBalanceData.getCurrentBalance() - fee, fee);
         Actions.loginActions().doLogOut();
     }
 
@@ -150,10 +147,8 @@ public class C22701_JournalPerformEcForSimpleCdtTransferWithFeeTest extends Base
         logInfo("Step 4: Press [Error Correct] button");
         Pages.journalDetailsPage().clickErrorCorrectButton();
         Pages.journalDetailsPage().waitForErrorCorrectButtonInvisibility();
-        Assert.assertEquals(Actions.journalActions().getTransactionState(), "Void",
-                "Transaction state doesn't changed");
+        chkBalanceData.reduceAmount(fee);
 
-        // TODO: Current and available balance were increased with amount
         logInfo("Step 5: Go to account used in DEBIT item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
@@ -166,17 +161,16 @@ public class C22701_JournalPerformEcForSimpleCdtTransferWithFeeTest extends Base
 
         logInfo("Step 6: Open account on the Transactions tab and verify the transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
-        TransactionData actualSavingsTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
+        int offset = AccountActions.retrievingAccountData().getOffset();
+        TransactionData actualSavingsTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset, 1);
         Assert.assertEquals(actualSavingsTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
-        // TODO: Committed transaction and Fee are marked as "EC" in EC column
 
-        // TODO: Current and available balance were decreased with amount
         logInfo("Step 7: Go to account used in CREDIT item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
         Pages.aSideMenuPage().clickClientMenuItem();
-        AccountActions.editAccount().navigateToAccountDetails(savingsAccount.getAccountNumber(), false);
-        BalanceData actualChkBalanceData = AccountActions.retrievingAccountData().getBalanceData();
+        AccountActions.editAccount().navigateToAccountDetails(chkAccount.getAccountNumber(), false);
+        BalanceDataForCHKAcc actualChkBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         Assert.assertEquals(actualChkBalanceData.getCurrentBalance(), chkBalanceData.getCurrentBalance(),
                 "Current balance doesn't match!");
         Assert.assertEquals(actualChkBalanceData.getAvailableBalance(), chkBalanceData.getAvailableBalance(),
@@ -184,7 +178,8 @@ public class C22701_JournalPerformEcForSimpleCdtTransferWithFeeTest extends Base
 
         logInfo("Step 8: Open account on the Transactions tab and verify the transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
-        TransactionData actualChkTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
+        offset = AccountActions.retrievingAccountData().getOffset();
+        TransactionData actualChkTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset, 1);
         Assert.assertEquals(actualChkTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
     }
 
@@ -192,5 +187,6 @@ public class C22701_JournalPerformEcForSimpleCdtTransferWithFeeTest extends Base
         Actions.cashierDefinedActions().setTransactionSource(source, index);
         Actions.cashierDefinedActions().setTransactionDestination(destination, index);
         Actions.cashierDefinedActions().clickCommitButton();
+        Pages.alertMessageModalPage().clickOkButton();
     }
 }
