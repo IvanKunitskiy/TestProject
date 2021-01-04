@@ -24,6 +24,7 @@ public class CreateCDTPage extends PageTools {
     private final By GLAccountInput = By.xpath("//div[@data-field-id='feeglaccountid']//input");
     private final By saveButton = By.xpath("//button[contains(string(),'Save Changes')]");
     private final By nameDiv = By.xpath("//div[@data-field-id='(databean)name']//span");
+    private final By feeOperationTypeInput = By.xpath("//div[@data-field-id='operationcode']//input");
 
     @Step("Input name")
     public void inputName(String name) {
@@ -121,6 +122,14 @@ public class CreateCDTPage extends PageTools {
     public boolean checkNameIsVisible(){
         SelenideTools.sleep(Constants.MINI_TIMEOUT);
         return isElementVisible(nameDiv);
+    }
+
+    @Step("Select operation type")
+    public void selectOperationType(String type){
+        waitForElementVisibility(feeOperationTypeInput);
+        click(feeOperationTypeInput);
+        waitForElementVisibility(accountType, type);
+        click(accountType, type);
     }
 
 }

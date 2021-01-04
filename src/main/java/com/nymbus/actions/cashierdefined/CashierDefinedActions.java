@@ -160,6 +160,23 @@ public class CashierDefinedActions {
         return SettingsPage.createCdtPage().checkNameIsVisible();
     }
 
+    public boolean createIncomingWireToSavings() {
+        SettingsPage.cdtPage().clickAddNew();
+        SettingsPage.createCdtPage().inputName(CashierDefinedTransactions.INCOMING_WIRE_TO_SAVINGS.getOperation());
+        SettingsPage.createCdtPage().selectDebitTypeAccount(ProductType.INCOMING_WIRE);
+        SettingsPage.createCdtPage().selectCreditTypeAccount(ProductType.SAVINGS_ACCOUNT);
+        SettingsPage.createCdtPage().selectDebitTransactionCode("(860) G/L Debit");
+        SettingsPage.createCdtPage().selectCreditTransactionCode("(264) Incoming Wire");
+        SettingsPage.createCdtPage().inputDebitDescription("INCOMING WIRE TO SAVINGS");
+        SettingsPage.createCdtPage().inputCreditDescription("INCOMING WIRE TRANSFERS");
+        SettingsPage.createCdtPage().selectDebitNoticeOption("No Notice");
+        SettingsPage.createCdtPage().selectCreditNoticeOption("No Notice");
+        SettingsPage.createCdtPage().inputFeeAmount("5.00");
+        SettingsPage.createCdtPage().inputGLAccount("0-0");
+        SettingsPage.createCdtPage().selectOperationType("Wire");
+        SettingsPage.createCdtPage().clickSaveButton();
+        return SettingsPage.createCdtPage().checkNameIsVisible();
+    }
 
     public boolean createMoneyOrderFromSavings() {
         SettingsPage.cdtPage().clickAddNew();
@@ -175,6 +192,40 @@ public class CashierDefinedActions {
         SettingsPage.createCdtPage().inputFeeAmount("2.00");
         SettingsPage.createCdtPage().inputFeeDescription("MONEY ORDER FEE");
         SettingsPage.createCdtPage().inputGLAccount("4800200");
+        SettingsPage.createCdtPage().clickSaveButton();
+        return SettingsPage.createCdtPage().checkNameIsVisible();
+    }
+
+    public boolean createOfficialCheckFromSavings() {
+        SettingsPage.cdtPage().clickAddNew();
+        SettingsPage.createCdtPage().inputName(CashierDefinedTransactions.OFFICIAL_CHECK_FROM_SAVINGS.getOperation());
+        SettingsPage.createCdtPage().selectDebitTypeAccount(ProductType.SAVINGS_ACCOUNT);
+        SettingsPage.createCdtPage().selectCreditTypeAccount(ProductType.CHK_ACCOUNT);
+        SettingsPage.createCdtPage().selectDebitTransactionCode("(216) Withdrawal");
+        SettingsPage.createCdtPage().selectCreditTransactionCode("(109) Deposit");
+        SettingsPage.createCdtPage().inputDebitDescription("OFFICIAL CHECK PURCHASE");
+        SettingsPage.createCdtPage().inputCreditDescription("OFFICIAL CHECK FROM SAV");
+        SettingsPage.createCdtPage().selectDebitNoticeOption("No Notice");
+        SettingsPage.createCdtPage().selectCreditNoticeOption("No Notice");
+        SettingsPage.createCdtPage().inputFeeAmount("5.00");
+        SettingsPage.createCdtPage().inputGLAccount("4800200");
+        SettingsPage.createCdtPage().selectOperationType("Official Check");
+        SettingsPage.createCdtPage().inputFeeDescription("OFFICIAL CHECK FEE");
+        SettingsPage.createCdtPage().clickSaveButton();
+        return SettingsPage.createCdtPage().checkNameIsVisible();
+    }
+
+    public boolean createTransferFromSavToCHKWithNotice() {
+        SettingsPage.cdtPage().clickAddNew();
+        SettingsPage.createCdtPage().inputName(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry.getOperation());
+        SettingsPage.createCdtPage().selectDebitTypeAccount(ProductType.SAVINGS_ACCOUNT);
+        SettingsPage.createCdtPage().selectCreditTypeAccount(ProductType.CHK_ACCOUNT);
+        SettingsPage.createCdtPage().selectDebitTransactionCode("(221) Debit Transfer");
+        SettingsPage.createCdtPage().selectCreditTransactionCode("(101) Credit Transfr");
+        SettingsPage.createCdtPage().selectDebitNoticeOption("On Entry");
+        SettingsPage.createCdtPage().selectCreditNoticeOption("On Entry");
+        SettingsPage.createCdtPage().inputFeeAmount("0.00");
+        SettingsPage.createCdtPage().inputGLAccount("0-0");
         SettingsPage.createCdtPage().clickSaveButton();
         return SettingsPage.createCdtPage().checkNameIsVisible();
     }

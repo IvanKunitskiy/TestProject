@@ -128,11 +128,18 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         fullCheck.setPhone(client.getIndividualClientDetails().getPhones().get(0).getPhoneNumber());
         Actions.loginActions().doLogOut();
 
-        //Create CDT  transaction
+        //Check CDT template
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        Actions.transactionActions().loginTeller();
+        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.OFFICIAL_CHECK_FROM_SAVINGS);
+        if (templateNotExists){
+            boolean isCreated = Actions.cashierDefinedActions().createOfficialCheckFromSavings();
+            Assert.assertTrue(isCreated, "CDT template not created");
+        }
+
+        //Create CDT  transaction
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
+        Actions.transactionActions().loginTeller();
         Actions.cashierDefinedActions().createOfficialTransaction(CashierDefinedTransactions.OFFICIAL_CHECK_FROM_SAVINGS,
                 transaction, false, name);
         expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
