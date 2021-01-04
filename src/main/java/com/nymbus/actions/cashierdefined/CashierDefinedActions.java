@@ -174,6 +174,7 @@ public class CashierDefinedActions {
         SettingsPage.createCdtPage().inputFeeAmount("5.00");
         SettingsPage.createCdtPage().inputGLAccount("0-0");
         SettingsPage.createCdtPage().selectOperationType("Wire");
+        SettingsPage.createCdtPage().inputFeeDescription("Incoming Wire Fee");
         SettingsPage.createCdtPage().clickSaveButton();
         return SettingsPage.createCdtPage().checkNameIsVisible();
     }
