@@ -22,9 +22,11 @@ public class CreateCDTPage extends PageTools {
     private final By creditPrintNoticeInput = By.xpath("//div[@data-field-id='creditprintnoticeflag']//input");
     private final By feeAmountInput = By.xpath("//div[@data-field-id='feeamount']//input");
     private final By GLAccountInput = By.xpath("//div[@data-field-id='feeglaccountid']//input");
+    private final By creditAccountInput = By.xpath("//div[@data-field-id='creditglaccountid']//input");
     private final By saveButton = By.xpath("//button[contains(string(),'Save Changes')]");
     private final By nameDiv = By.xpath("//div[@data-field-id='(databean)name']//span");
     private final By feeOperationTypeInput = By.xpath("//div[@data-field-id='operationcode']//input");
+    private final By operationTypeType = By.xpath("//div[@data-field-id='operationcode']//ul//a[contains(string(),'%s')]");
 
     @Step("Input name")
     public void inputName(String name) {
@@ -112,6 +114,14 @@ public class CreateCDTPage extends PageTools {
         click(accountType, number);
     }
 
+    @Step("Input credit account")
+    public void inputCreditAccount(String number) {
+        waitForElementVisibility(creditAccountInput);
+        type(number, creditAccountInput);
+        waitForElementVisibility(accountType, number);
+        click(accountType, number);
+    }
+
     @Step("Click the 'Save button' button")
     public void clickSaveButton() {
         waitForElementClickable(saveButton);
@@ -128,8 +138,8 @@ public class CreateCDTPage extends PageTools {
     public void selectOperationType(String type){
         waitForElementVisibility(feeOperationTypeInput);
         click(feeOperationTypeInput);
-        waitForElementVisibility(accountType, type);
-        click(accountType, type);
+        waitForElementVisibility(operationTypeType, type);
+        click(operationTypeType, type);
     }
 
 }

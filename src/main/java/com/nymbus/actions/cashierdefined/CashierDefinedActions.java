@@ -230,4 +230,24 @@ public class CashierDefinedActions {
         SettingsPage.createCdtPage().clickSaveButton();
         return SettingsPage.createCdtPage().checkNameIsVisible();
     }
+
+    public boolean createOutgoingWireFromSavings() {
+        SettingsPage.cdtPage().clickAddNew();
+        SettingsPage.createCdtPage().inputName(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS.getOperation());
+        SettingsPage.createCdtPage().selectDebitTypeAccount(ProductType.SAVINGS_ACCOUNT);
+        SettingsPage.createCdtPage().selectCreditTypeAccount(ProductType.OUTGOING_WIRE);
+        SettingsPage.createCdtPage().selectDebitTransactionCode("(231) Outgoing Wire");
+        SettingsPage.createCdtPage().selectCreditTransactionCode("(865) G/L Credit");
+        SettingsPage.createCdtPage().inputDebitDescription("OUTGOING DOM WIRE FROM SAVINGS");
+        SettingsPage.createCdtPage().inputCreditDescription("OUTGOING DOM WIRE FROM SAVINGS");
+        SettingsPage.createCdtPage().inputCreditAccount("1005300");
+        SettingsPage.createCdtPage().selectDebitNoticeOption("No Notice");
+        SettingsPage.createCdtPage().selectCreditNoticeOption("No Notice");
+        SettingsPage.createCdtPage().inputFeeAmount("30.00");
+        SettingsPage.createCdtPage().inputGLAccount("4800200");
+        SettingsPage.createCdtPage().selectOperationType("Wire");
+        SettingsPage.createCdtPage().inputFeeDescription("WIRE FEE");
+        SettingsPage.createCdtPage().clickSaveButton();
+        return SettingsPage.createCdtPage().checkNameIsVisible();
+    }
 }
