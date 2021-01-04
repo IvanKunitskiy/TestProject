@@ -44,8 +44,7 @@ public enum TransactionCode {
     CREDIT_TRANSFER_101("101 - Credit Transfr"),
     REDEEMED_CD_315("315 - Redeemed CD"),
     INT_PAID_COMP_307("307 - Int Paid Comp"),
-    GL_DEBIT("860 - G/L Debit"),
-    CREDIT_TRANSFER_101("101 - Credit Transfr");
+    GL_DEBIT("860 - G/L Debit");
 
     private final String transCode;
 }
