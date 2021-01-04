@@ -4,7 +4,16 @@ import com.nymbus.core.allure.AllureLogger;
 import com.nymbus.pages.accounts.*;
 import com.nymbus.pages.accounts.transactions.EditAccountTransactionModal;
 import com.nymbus.pages.accounts.transactions.TransactionsPage;
+import com.nymbus.pages.backoffice.BackOfficePage;
+import com.nymbus.pages.backoffice.documentsearch.DocumentSearchNoticesPage;
+import com.nymbus.pages.backoffice.documentsearch.DocumentSearchTransactionsPage;
+import com.nymbus.pages.backoffice.printchecks.CheckPrintPage;
+import com.nymbus.pages.backoffice.printchecks.PrintChecksPage;
 import com.nymbus.pages.cashdrawer.CashDrawerBalancePage;
+import com.nymbus.pages.cashier.CashierPage;
+import com.nymbus.pages.cashier.NoticePage;
+import com.nymbus.pages.check.CheckPage;
+import com.nymbus.pages.check.FullCheckPage;
 import com.nymbus.pages.clients.AddClientPage;
 import com.nymbus.pages.clients.ClientDetailsPage;
 import com.nymbus.pages.clients.ClientsSearchPage;
@@ -38,6 +47,7 @@ public class Pages extends AllureLogger {
     private static AddClientPage addClientPage;
     private static ClientDetailsPage clientDetailsPage;
     private static TellerPage tellerPage;
+    private static CashierPage cashierPage;
     private static LoansPage loansPage;
     private static ReportGeneratorPage reportGeneratorPage;
     private static TellerToTellerPage tellerToTellerPage;
@@ -82,6 +92,15 @@ public class Pages extends AllureLogger {
     private static EditAccountTransactionModal editAccountTransactionModal;
     private static CashDrawerBalancePage cashDrawerBalancePage;
     private static ConfirmModalPage confirmModalPage;
+    private static NoticePage noticePage;
+    private static BackOfficePage backOfficePage;
+    private static DocumentSearchNoticesPage documentSearchNoticesPage;
+    private static DocumentSearchTransactionsPage documentSearchTransactionsPage;
+    private static CheckPage checkPage;
+    private static FullCheckPage fullCheckPage;
+    private static PrintChecksPage printChecksPage;
+    private static CheckPrintPage checkPrintPage;
+    private static AccountCommercialAnalysisPage accountCommercialAnalysisPage;
     private static CashierDefinedActionsPage cashierDefinedActionsPage;
     private static AlertMessageModalPage alertMessageModalPage;
 
@@ -158,6 +177,16 @@ public class Pages extends AllureLogger {
             tellerPage = new TellerPage();
         }
         return tellerPage;
+    }
+
+    /**
+     * This function return an instance of `CashierPage`
+     */
+    public static CashierPage cashierPage() {
+        if (cashierPage == null) {
+            cashierPage = new CashierPage();
+        }
+        return cashierPage;
     }
 
     /**
@@ -600,6 +629,98 @@ public class Pages extends AllureLogger {
         }
         return confirmModalPage;
     }
+
+    /**
+     * This function return an instance of `BackOfficePage`
+     */
+    public static BackOfficePage backOfficePage() {
+        if (backOfficePage == null){
+            backOfficePage = new BackOfficePage();
+        }
+        return backOfficePage;
+    }
+
+    /**
+     * This function return an instance of `DocumentSearchNoticesPage`
+     */
+    public static DocumentSearchNoticesPage documentSearchNoticesPage() {
+        if (documentSearchNoticesPage == null){
+            documentSearchNoticesPage = new DocumentSearchNoticesPage();
+        }
+        return documentSearchNoticesPage;
+    }
+
+    /**
+     * This function return an instance of `DocumentTransactionsPage`
+     */
+    public static DocumentSearchTransactionsPage documentSearchTransactionsPage() {
+        if (documentSearchTransactionsPage == null){
+            documentSearchTransactionsPage = new DocumentSearchTransactionsPage();
+        }
+        return documentSearchTransactionsPage;
+    }
+
+    /**
+     * This function return an instance of `NoticePage`
+     */
+    public static NoticePage noticePage(){
+        if (noticePage == null){
+            noticePage = new NoticePage();
+        }
+        return noticePage;
+    }
+
+    /**
+     * This function return instance of 'CheckPage'
+     */
+    public static CheckPage checkPage(){
+        if(checkPage == null){
+            checkPage = new CheckPage();
+        }
+        return checkPage;
+    }
+
+    /**
+     * This function return instance of 'CheckPage'
+     */
+    public static FullCheckPage fullCheckPage(){
+        if(fullCheckPage == null){
+            fullCheckPage = new FullCheckPage();
+        }
+        return fullCheckPage;
+    }
+
+
+    /**
+     * This function return an instance of `AccountCommercialAnalysisPage`
+     */
+    public static AccountCommercialAnalysisPage accountCommercialAnalysisPage(){
+        if (accountCommercialAnalysisPage == null){
+            accountCommercialAnalysisPage = new AccountCommercialAnalysisPage();
+        }
+        return accountCommercialAnalysisPage;
+    }
+
+    /**
+     * This function return an instance of `PrintChecksPage`
+     */
+    public static PrintChecksPage printChecksPage(){
+        if (printChecksPage == null){
+            printChecksPage = new PrintChecksPage();
+        }
+        return printChecksPage;
+    }
+
+    /**
+     * This function return an instance of `CheckPrintPage`
+     */
+    public static CheckPrintPage checkPrintPage(){
+        if (checkPrintPage == null){
+            checkPrintPage = new CheckPrintPage();
+        }
+        return checkPrintPage;
+    }
+
 
     /**
      * This function return an instance of `ConfirmModalPage`

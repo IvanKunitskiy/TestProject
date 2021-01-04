@@ -6,16 +6,17 @@ import org.openqa.selenium.By;
 
 public class ASideMenuPage extends PageTools {
 
-    private final By menu = By.id("menu");
-    private final By clientMenuItem = By.xpath("//li[a[@id='menu-customers']]");
-    private final By tellerMenuItem = By.xpath("//li[a[@id='menu-teller']]");
-    private final By loansMenuItem = By.xpath("//li[a[@id='menu-loans']]");
-    private final By tellerToTellerMenuItem = By.xpath("//li[a[@id='menu-tellerToTeller']]");
-    private final By reportGeneratorMenuItem = By.xpath("//li[a[@id='menu-adhocReport']]");
-    private final By backOfficeMenuItem = By.xpath("//li[a[@id='menu-backoffice']]");
-    private final By settingsMenuItem = By.xpath("//li[a[@id='menu-settings']]");
-    private final By journalMenuItem = By.xpath("//li[a[@id='menu-tellerJournal']]");
-    private final By cashDrawerMenuItem = By.xpath("//li[a[@id='menu-cashDrawer']]");
+    private By menu = By.id("menu");
+    private By clientMenuItem = By.xpath("//li[a[@id='menu-customers']]");
+    private By tellerMenuItem = By.xpath("//li[a[@id='menu-teller']]");
+    private By loansMenuItem = By.xpath("//li[a[@id='menu-loans']]");
+    private By tellerToTellerMenuItem = By.xpath("//li[a[@id='menu-tellerToTeller']]");
+    private By reportGeneratorMenuItem = By.xpath("//li[a[@id='menu-adhocReport']]");
+    private By backOfficeMenuItem = By.xpath("//li[a[@id='menu-backoffice']]");
+    private By settingsMenuItem = By.xpath("//li[a[@id='menu-settings']]");
+    private By journalMenuItem = By.xpath("//li[a[@id='menu-tellerJournal']]");
+    private By cashDrawerMenuItem = By.xpath("//li[a[@id='menu-cashDrawer']]");
+    private By cashierDefinedMenuItem = By.xpath("//li[a[@id='menu-cashierdefinedtrans']]");
     private final By cashierDefinedTransactions = By.xpath("//li[a[@id='menu-cashierdefinedtrans']]");
 
     @Step("Wait for a side menu")
@@ -117,6 +118,12 @@ public class ASideMenuPage extends PageTools {
     public void clickSettingsMenuItem(){
         waitForElementVisibility(settingsMenuItem);
         click(settingsMenuItem);
+    }
+
+    @Step("Click 'Cashier Defined Transactions' menu item")
+    public void clickCashierDefinedTransactionsMenuItem(){
+        waitForElementVisibility(cashierDefinedMenuItem);
+        click(cashierDefinedMenuItem);
     }
 
     @Step("Check is Settings page opened")

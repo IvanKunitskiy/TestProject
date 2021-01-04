@@ -23,6 +23,9 @@ public class Constants {
     //    public static String LAST_NAME = "autotest";
     public static String LAST_NAME = "autestthredone";
 
+    public static String NOT_TELLER_USERNAME ="autotesttell";
+    public static String NOT_TELLER_PASSWORD ="autotesttell";
+
     public static int DAYS_BEFORE_SYSTEM_DATE = 3;
     public static int MAX_CHARACTERS_ON_DEBIT_CARD = 25;
 
@@ -57,6 +60,8 @@ public class Constants {
                 return "https://dev21.nj1.nymbus.com/frontoffice/";
             case "dev4":
                 return "https://frontoffice.nj1.nymbus.com/frontoffice/#/crm/login";
+            case "dev18":
+                return "https://dev18.nj1.nymbus.com/frontoffice/#/crm/login";
         }
     }
 
@@ -71,6 +76,8 @@ public class Constants {
                 return "https://was-21.nj1.nymbus.com:9445/webadmin/";
             case "dev4":
                 return "https://nymbus-q-was-05.nj1.nymbus.com:9445/webadmin/";
+            case "dev18":
+                return "https://dev18.nj1.nymbus.com/webadmin/";
         }
     }
 
@@ -85,6 +92,8 @@ public class Constants {
                 return "https://was-21.nj1.nymbus.com:9445/coreweb/controller/";
             case "dev4":
                 return "https://nymbus-q-was-05.nj1.nymbus.com:9445/coreweb/controller/";
+            case "dev18":
+                return "https://dev18.nj1.nymbus.com/coreweb/controller/";
         }
     }
 
@@ -96,6 +105,7 @@ public class Constants {
                 return "510986";
             case "dev21":
             case "dev4":
+            case "dev18":
                 return "408078";
         }
     }
@@ -123,6 +133,7 @@ public class Constants {
                 return FinancialInstitutionType.FEDERAL_CREDIT_UNION;
             case "dev21":
             case "dev4":
+            case "dev18":
                 return FinancialInstitutionType.BANK;
         }
     }

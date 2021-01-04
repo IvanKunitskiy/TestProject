@@ -21,12 +21,14 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Transactions")
+@Owner("Dmytro")
 public class C22664_CommitWithdrawAndCloseSavingsTest extends BaseTest {
     private Transaction withdrawTransaction;
     private TransactionData transactionData;
@@ -69,6 +71,8 @@ public class C22664_CommitWithdrawAndCloseSavingsTest extends BaseTest {
 
         // Set up transaction with account number
         transaction.getTransactionDestination().setAccountNumber(savingsAcc.getAccountNumber());
+        transaction.getTransactionDestination().setAmount(200);
+        transaction.getTransactionSource().setAmount(200);
 
         // perform transaction
         Actions.transactionActions().goToTellerPage();

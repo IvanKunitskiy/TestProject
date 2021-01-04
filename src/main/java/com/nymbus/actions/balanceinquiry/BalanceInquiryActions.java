@@ -28,7 +28,7 @@ public class BalanceInquiryActions {
         File biImage = new File(System.getProperty("user.dir") + "/screenshots/" + imageName + ".png");
 
         // Save the image
-        ImageParser.loadImage(src, biImage.getAbsolutePath());
+        ImageParser.loadImage(src, biImage.getAbsolutePath(), 0);
         return biImage;
     }
 
@@ -75,6 +75,7 @@ public class BalanceInquiryActions {
         // Open input image with leptonica library
         PIX image = pixRead(balanceInquiryImage.getAbsolutePath());
         api.SetImage(image);
+
 
         // Get OCR result
         outText = api.GetUTF8Text();

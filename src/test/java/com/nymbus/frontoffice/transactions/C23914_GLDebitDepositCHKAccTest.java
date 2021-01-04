@@ -24,12 +24,14 @@ import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.WebAdminTransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Transactions")
+@Owner("Dmytro")
 public class C23914_GLDebitDepositCHKAccTest extends BaseTest {
     private Transaction transaction;
     private BalanceDataForCHKAcc balanceData;
@@ -70,7 +72,7 @@ public class C23914_GLDebitDepositCHKAccTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "Commit transaction GL Debit -> Deposit (on CHK Account)")
+    @Test(description = "C23914, Commit transaction GL Debit -> Deposit (on CHK Account)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyTransactionGLDebitDeposit() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");

@@ -7,7 +7,7 @@ import org.openqa.selenium.By;
 public class TransfersPage extends PageTools {
 
     private By newTransferButton = By.xpath("//button[span[contains(text(), 'New Transfer')]]");
-    private By transferSelector = By.xpath("//div[div[span[span[contains(text(), '%s')]]]]");
+    private By transferSelector = By.xpath("//div[div[span[span[contains(text(), '%s')]]]]/div");
 
     @Step("Click the 'New Transfer' button")
     public void clickNewTransferButton() {

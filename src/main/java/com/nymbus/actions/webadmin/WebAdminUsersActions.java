@@ -1,6 +1,7 @@
 package com.nymbus.actions.webadmin;
 
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.data.entity.User;
@@ -8,8 +9,11 @@ import com.nymbus.data.entity.verifyingmodels.TellerSessionVerifyingModel;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.basicinformation.type.ClientType;
 import com.nymbus.newmodels.client.verifyingmodels.FirstNameAndLastNameModel;
+import com.nymbus.newmodels.notice.Notice;
 import com.nymbus.newmodels.transaction.nontellertransactions.JSONData;
+import com.nymbus.newmodels.transaction.verifyingModels.WebAdminTransactionFromQuery;
 import com.nymbus.pages.webadmin.WebAdminPages;
+import org.testng.Assert;
 
 import java.util.List;
 import java.util.Map;
@@ -121,6 +125,145 @@ public class WebAdminUsersActions {
                 + "-+code%3A+PrintBalanceOnReceipt%0D%0A&source=";
     }
 
+    private String getNoticesWithDifferentTypesUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+200%0D%0A"
+                + "select%3A+accountid%2C+accounttype%2C+bcdate%2C+templateid%0D%0A"
+                + "from%3A+bank.data.cifext%0D%0A"
+                + "where%3A+%0D%0A-+accountid%3A+%7Bnot+null%7D%0D%0AorderBy%3A+-id%0D%0A%0D%0A"
+                + "formats%3A+%0D%0A-+-%3Ebank.data.notice%3A+%24%7Bdescription%7D%0D%0A-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A"
+                + "extra%3A+%0D%0A-+%24bankbranch%3A+.accountid-%3Ebankbranch%0D%0A"
+                + "orderBy%3A+-id&source=";
+    }
+
+    private String getInterestChecksUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+200%0D%0A"
+                + "select%3A+accountid%2C+accounttype%2C+bcdate%2C+templateid%0D%0A"
+                + "from%3A+bank.data.cifext%0D%0A"
+                + "where%3A+%0D%0A-+.templateid-%3Ecode%3A+form35%0D%0A%0D%0A"
+                + "-+accountid%3A+%7Bnot+null%7D%0D%0A"
+                + "orderBy%3A+-id%0D%0A%0D%0A"
+                + "formats%3A+%0D%0A"
+                + "-+-%3Ebank.data.notice%3A+%24%7Bdescription%7D%0D%0A"
+                + "-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A"
+                + "extra%3A+%0D%0A-+%24bankbranch%3A+.accountid-%3Ebankbranch%0D%0A"
+                + "orderBy%3A+-id&source=";
+    }
+
+    private String getOfficialCheckControlNumberUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+100%0D%0A"
+                + "select%3A+checktype%2C+checkingaccountnumber%0D%0A"
+                + "from%3A+bank.data.officialcheck.control%0D%0A"
+                + "where%3A+%0D%0A-+.checktype-%3Ename%3A+Interest+Check%0D%0A"
+                + "formats%3A+%0D%0A-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A"
+                + "orderBy%3A+-id&source=";
+    }
+
+    public String getOfficialCheckControlNumber() {
+        return getOfficialCheckControlNumberFromQueryByUrl(getOfficialCheckControlNumberUrl());
+    }
+
+    public String getAccountNumberWithInterestCheck(int index) {
+        return getAccountWithCheckByIndexFromQueryByUrl(getInterestChecksUrl(), 1);
+    }
+
+    private String getAccAnalyzeWithRdcCodeAndAmountUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+10%0D%0A"
+                + "from%3A+bank.data.accode%0D%0A"
+                + "where%3A+%0D%0A"
+                + "-+chargecode%3A+RDC%0D%0A&source=";
+    }
+
+    private String getRemoteDepositReturnEFTDescriptionUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+30%0D%0A"
+                + "from%3A+bank.data.bcfile%0D%0A"
+                + "where%3A+%0D%0A-+code%3A+RemoteDepositReturnEFTDescription%0D%0A&source=";
+    }
+
+    private String getCdtTemplateWithMiscDebitCommittedFromChkOnGlAccountUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+100%0D%0A"
+                + "from%3A+bank.data.cdtfrm%0D%0A"
+                + "where%3A+%0D%0A"
+                + "-+.debitaccounttype-%3Ename%3A+CHK+Account%0D%0A"
+                + "-+.creditaccounttype-%3Ename%3A+g%2Fl+tickets%0D%0A"
+                + "-+.debittrancode-%3Ename%3A+Debit+Memo%0D%0A"
+                + "-+operationcode%3A+%7Bnull%7D%0D%0A"
+                + "-+.credittrancode-%3Ename%3A+G%2FL+Credit%0D%0A"
+                + "-+creditdescription%3A+%7Bnull%7D%0D%0A"
+                + "-+debitdescription%3A+%7Bnull%7D&source=";
+    }
+
+    private String getCheckTransactionUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=coreDS&dql"
+                + "Query=count%3A+10%0D%0A"
+                + "select%3A+effectiveentrydate%2C+accountnumber%2C+amount%2C+itemtype%2C+uniqueeftdescription%2C+checknumber%0D%0A"
+                + "from%3A+bank.data.transaction.item%0D%0A"
+                + "where%3A%0D%0A-+.transactionheaderid-%3E.transactionsource-%3Ename%3A+Teller+%0D%0A-+.transactioncode-%3Ecode%3A+128%0D%0A-+rejectstatus%3A+%7Bnull%7D%0D%0A"
+                + "extra%3A+%0D%0A-+%24bankbranch%3A+.accountnumber-%3Ebankbranch%0D%0A"
+                + "formats%3A+%0D%0A-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0AorderBy%3A+-effectiveentrydate&source=";
+    }
+
+    private String getAtmTransactionUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=coreDS&"
+                + "dqlQuery=count%3A+10%0D%0A"
+                + "select%3A+effectiveentrydate%2C+accountnumber%2C+amount%2C+itemtype%2C+uniqueeftdescription%2C+transactionheaderid%2C+transactioncode%0D%0A"
+                + "from%3A+bank.data.transaction.item%0D%0A"
+                + "where%3A+%0D%0A"
+                + "-+.transactioncode-%3Ename%3A+ATM+Deposit%0D%0A"
+                + "-+.transactionheaderid-%3E.transactionsource-%3Ename%3A+ATM%0D%0A"
+                + "-+rejectstatus%3A+%7Bnull%7D%0D%0Aextra%3A+%0D%0A"
+                + "-+%24bankbranch%3A+.accountnumber"
+                + "-%3Ebankbranch%0D%0A"
+                + "formats%3A+%0D%0A-+-%3"
+                + "Ebank.data.actmst%3A+%24%7Baccountnumber%7D&source=";
+    }
+
+    private String getTransactionsCommittedOnCurrentDateUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=coreDS&"
+                + "dqlQuery=count%3A+10%0D%0A"
+                + "select%3A+effectiveentrydate%2C+accountnumber%2C+amount%2C+itemtype%2C+uniqueeftdescription%2C+transactionheaderid%2C+transactioncode%0D%0A"
+                + "from%3A+bank.data.transaction.item%0D%0A"
+                + "where%3A+%0D%0A-+effectiveentrydate%3A+%28currentday%29%0D%0A-+rejectstatus%3A+%7Bnull%7D%0D%0A"
+                + "extra%3A+%0D%0A-+%24bankbranch%3A+.accountnumber-%3Ebankbranch%0D%0A"
+                + "formats%3A+%0D%0A-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D&source=";
+    }
+
+    public boolean isCdtTemplateCommittedFromChkOnGlAccountCreated(String templateName) {
+        return isCdtTemplateCommittedFromChkOnGlAccountCreatedFromQueryByUrl(
+                getCdtTemplateWithMiscDebitCommittedFromChkOnGlAccountUrl(), templateName);
+    }
+
+    public String getRemoteDepositReturnEFTDescription() {
+        return getRemoteDepositReturnEFTDescriptionFromQueryByUrl(getRemoteDepositReturnEFTDescriptionUrl());
+    }
+
+    public int getAccAnalyzeWithRdcCodeAndAmountCount() {
+        return getAccAnalyzeWithRdcCodeCountFromQueryByUrl(getAccAnalyzeWithRdcCodeAndAmountUrl());
+    }
+
     private String getCdtTemplatesUrl() {
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?"
@@ -162,6 +305,18 @@ public class WebAdminUsersActions {
 
     public int getPrintBalanceOnReceiptValue() {
         return getPrintBalanceOnReceiptValueFromQueryByUrl(getPrintBalanceOnReceiptUrl());
+    }
+
+    public WebAdminTransactionFromQuery getCheckTransaction() {
+        return getCheckTransactionFromQueryByUrl(getCheckTransactionUrl());
+    }
+
+    public WebAdminTransactionFromQuery getAtmTransaction() {
+        return getAtmTransactionFromQueryByUrl(getAtmTransactionUrl());
+    }
+
+    public WebAdminTransactionFromQuery getTransactionCommittedOnCurrentDate() {
+        return getTransactionCommittedOnCurrentDateQueryByUrl(getTransactionsCommittedOnCurrentDateUrl());
     }
 
     private int getPrintBalanceOnReceiptValueFromQueryByUrl(String url) {
@@ -269,6 +424,158 @@ public class WebAdminUsersActions {
     public void goToTellerSessionUrl(String userId) {
         SelenideTools.openUrl(getTellerSessionUrl(userId));
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+    }
+
+    public Notice getRandomNoticeData() {
+        Notice notice = new Notice();
+
+        SelenideTools.openUrl(getNoticesWithDifferentTypesUrl());
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        int numberOfSearchResult = WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult();
+        int showCount = 200;
+        int bound = Math.min(numberOfSearchResult, showCount);
+        int bankBranchAndDateRandomIndex = getRandomIndex(bound);
+
+        notice.setBankBranch(WebAdminPages.rulesUIQueryAnalyzerPage().getNoticeBankBranchValue(bankBranchAndDateRandomIndex));
+        notice.setDate(WebAdminPages.rulesUIQueryAnalyzerPage().getNoticeDateValue(bankBranchAndDateRandomIndex));
+        notice.setAccountNumber(WebAdminPages.rulesUIQueryAnalyzerPage().getNoticeAccountIdValue(bound));
+        notice.setSubType(WebAdminPages.rulesUIQueryAnalyzerPage().getNoticeAccountTypeValue(bound));
+
+        return notice;
+    }
+
+    public String getAccountWithCheckByIndexFromQueryByUrl(String url, int index) {
+
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
+                "There are no search results found on query");
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getAccountNumberWithCheckValueByIndex(index);
+    }
+
+    private String getOfficialCheckControlNumberFromQueryByUrl(String url) {
+
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
+                "There are no search results found on query");
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getOfficialCheckControlNumber();
+    }
+
+    private String getRemoteDepositReturnEFTDescriptionFromQueryByUrl(String url) {
+
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
+                "There are no search results found on query");
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getRemoteDepositReturnEFTDescription();
+    }
+
+    private boolean isCdtTemplateCommittedFromChkOnGlAccountCreatedFromQueryByUrl(String url, String templateName) {
+
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
+                "There are no search results found on query");
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().isCdtTemplateCommittedFromChkOnGlAccountCreated(templateName);
+    }
+
+    public int getAccAnalyzeWithRdcCodeCountFromQueryByUrl(String url) {
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult();
+    }
+
+    public WebAdminTransactionFromQuery getCheckTransactionFromQueryByUrl(String url) {
+        WebAdminTransactionFromQuery transaction = new WebAdminTransactionFromQuery();
+        int tmpIndex = 1;
+
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
+                "There are no 'teller 128-check -> deposit' transactions");
+
+        transaction.setBankBranch(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionBankBranchValueByIndex(tmpIndex));
+        transaction.setAccountNumber(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionAccountNumberByIndex(tmpIndex));
+        String trAmount = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionAmountValueByIndex(tmpIndex);
+        transaction.setAmount(Double.parseDouble(trAmount));
+        String date = WebAdminPages.rulesUIQueryAnalyzerPage().getEffectiveDate(tmpIndex);
+        transaction.setEffectiveEntryDate(DateTime.getDateWithFormat(date, "yyyy-MM-dd", "MM/dd/yyyy"));
+        transaction.setCheckNumber(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionCheckNumberValueByIndex(tmpIndex));
+        transaction.setUniqueEftDescription(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionDescriptionValueByIndex(tmpIndex));
+
+        return transaction;
+    }
+
+    public WebAdminTransactionFromQuery getAtmTransactionFromQueryByUrl(String url) {
+        WebAdminTransactionFromQuery transaction = new WebAdminTransactionFromQuery();
+        int tmpIndex = 1;
+
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
+                "There are no 'atm deposit' transactions");
+
+        transaction.setBankBranch(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionBankBranchValueByIndex(tmpIndex));
+        transaction.setAccountNumber(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionAccountNumberByIndex(tmpIndex));
+        String trAmount = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionAmountValueByIndex(tmpIndex);
+        transaction.setAmount(Double.parseDouble(trAmount));
+        String date = WebAdminPages.rulesUIQueryAnalyzerPage().getEffectiveDate(tmpIndex);
+        transaction.setEffectiveEntryDate(DateTime.getDateWithFormat(date, "yyyy-MM-dd", "MM-dd-yyyy"));
+        transaction.setTransactionCode(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionCodeValueByIndex(tmpIndex));
+        transaction.setTransactionHeaderId(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(tmpIndex));
+        transaction.setUniqueEftDescription(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionDescriptionValueByIndex(tmpIndex));
+
+        return transaction;
+    }
+
+    public WebAdminTransactionFromQuery getTransactionCommittedOnCurrentDateQueryByUrl(String url) {
+        WebAdminTransactionFromQuery transaction = new WebAdminTransactionFromQuery();
+        int tmpIndex = 1;
+
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
+                "There are no 'atm deposit' transactions");
+
+        transaction.setBankBranch(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionBankBranchValueByIndex(tmpIndex));
+        transaction.setAccountNumber(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionAccountNumberByIndex(tmpIndex));
+        String trAmount = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionAmountValueByIndex(tmpIndex);
+        transaction.setAmount(Double.parseDouble(trAmount));
+        String date = WebAdminPages.rulesUIQueryAnalyzerPage().getEffectiveDate(tmpIndex);
+        transaction.setEffectiveEntryDate(DateTime.getDateWithFormat(date, "yyyy-MM-dd", "MM-dd-yyyy"));
+        transaction.setItemType(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionItemTypeValueByIndex(tmpIndex));
+        transaction.setTransactionCode(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionCodeValueByIndex(tmpIndex));
+        transaction.setTransactionHeaderId(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(tmpIndex));
+        transaction.setUniqueEftDescription(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionDescriptionValueByIndex(tmpIndex));
+
+        return transaction;
+    }
+
+    private int getRandomIndex(int bound) {
+        return new Random().nextInt(bound) + 1;
     }
 
     public void setUserPassword(User user) {

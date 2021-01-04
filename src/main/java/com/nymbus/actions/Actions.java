@@ -1,7 +1,10 @@
 package com.nymbus.actions;
 
+import com.nymbus.actions.backoffice.printchecks.PrintChecksActions;
 import com.nymbus.actions.balanceinquiry.BalanceInquiryActions;
 import com.nymbus.actions.cashierdefined.CashierDefinedActions;
+import com.nymbus.actions.cashierdefined.NoticeActions;
+import com.nymbus.actions.check.BackOfficeActions;
 import com.nymbus.actions.clients.ClientPageActions;
 import com.nymbus.actions.clients.ClientsSearchResultsPageActions;
 import com.nymbus.actions.clients.maintenance.MaintenanceHistoryPageActions;
@@ -38,11 +41,14 @@ public class Actions {
     private static ProductsActions productsActions;
     private static TellerBankBranchOverviewActions tellerBankBranchOverviewActions;
     private static CashierDefinedActions cashierDefinedActions;
+    private static NoticeActions noticeActions;
+    private static PrintChecksActions printChecksActions;
 
     /**
      * Modal Window Actions
      * */
     private static DebitCardModalWindowActions debitCardModalWindowActions;
+    private static BackOfficeActions backOfficeActions;
 
     /**
      * This function returns an instance of `LoginActions`
@@ -215,9 +221,36 @@ public class Actions {
      * This function returns an instance of `CashierDefinedActionsPage`
      */
     public static CashierDefinedActions cashierDefinedActions() {
-        if (cashierDefinedActions== null) {
+        if (cashierDefinedActions == null) {
             cashierDefinedActions = new CashierDefinedActions();
         }
         return cashierDefinedActions;
+    }
+
+    /**
+     * This function returns an instance of `NoticeActions`
+     */
+    public static NoticeActions noticeActions() {
+        if (noticeActions == null){
+            noticeActions = new NoticeActions();
+        }
+        return noticeActions;
+    }
+
+    public static BackOfficeActions backOfficeActions() {
+        if (backOfficeActions == null){
+            backOfficeActions = new BackOfficeActions();
+        }
+        return backOfficeActions;
+    }
+
+    /**
+     * This function returns an instance of `PrintChecksActions`
+     */
+    public static PrintChecksActions printChecksActions() {
+        if (printChecksActions == null) {
+            printChecksActions = new PrintChecksActions();
+        }
+        return printChecksActions;
     }
 }

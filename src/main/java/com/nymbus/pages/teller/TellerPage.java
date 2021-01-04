@@ -2,6 +2,8 @@ package com.nymbus.pages.teller;
 
 import com.codeborne.selenide.Condition;
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -13,6 +15,8 @@ public class TellerPage extends PageTools {
     private By effectiveDate = By.xpath("//input[@data-test-id='field-']");
     private By drawerNameInFooter = By.xpath("//footer//span[contains(text(), 'Drawer Name')]/span");
     private By transactionSection = By.xpath("//section[@ui-view='transaction']");
+    private By tellerOperation =By.xpath("//span[contains(string(),'Select Operation')]");
+    private By operationSelector = By.xpath("//span[contains(string(),'%s')]");
 
     @Step("Wait for transaction section visibility")
     public void waitForTransactionSectionVisibility() {
@@ -54,6 +58,18 @@ public class TellerPage extends PageTools {
     public String getEffectiveDate() {
         waitForElementClickable(effectiveDate);
         return getElementAttributeValue("value", effectiveDate);
+    }
+
+    @Step("Click 'Select Operation' popup")
+    public void clickSelectOperation(){
+        waitForElementVisibility(tellerOperation);
+        jsClick(tellerOperation);
+    }
+
+    @Step("Select operation")
+    public void selectOperation(String type){
+        waitForElementVisibility(operationSelector,type);
+        jsClick(operationSelector, type);
     }
 
     /**
@@ -347,6 +363,23 @@ public class TellerPage extends PageTools {
             "//a[contains(@class, 'detail-icon')]");
 
     private By transactionDestinationNotesInput = By.xpath("(//*[@id='accordion-operation-destinations-content']//*[@transaction='item'])[%s]//input[@ng-model='transaction.notes']");
+
+    private By waiveFeeButton = By.xpath("//dn-switch[contains(string(),'No')]//div//div//span");
+    private By bankRoutingInput = By.xpath("(//tr[contains(string(),'Bank Routing')])[2]/*/input");
+
+    @Step("Input 'Bank routing'")
+    public void inputBankRouting(String routing){
+        waitForElementVisibility(bankRoutingInput);
+        jsSetValue(routing, bankRoutingInput);
+        jsRiseOnchange(bankRoutingInput);
+    }
+
+    @Step("Click 'Waive Fee' popup")
+    public void clickWaiveFee(){
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        waitForElementVisibility(waiveFeeButton);
+        jsClick(waiveFeeButton);
+    }
 
     @Step("Click transition {0} 'Details' arrow")
     public void clickDestinationDetailsArrow(int i) {
