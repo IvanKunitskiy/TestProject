@@ -127,8 +127,15 @@ public class C22734_CDTWithoutTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
 
+        //Check CDT template
+        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry);
+        if (templateNotExists){
+            boolean isCreated = Actions.cashierDefinedActions().createTransferFromSavToCHKWithNotice();
+            Assert.assertTrue(isCreated, "CDT template not created");
+        }
+
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
 
         // Set transaction with amount value
         Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
