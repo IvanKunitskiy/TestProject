@@ -199,10 +199,7 @@ public class C22744_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getSecondTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
-
     }
-
-
 
 
 }
