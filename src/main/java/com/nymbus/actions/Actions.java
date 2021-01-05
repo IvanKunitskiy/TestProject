@@ -218,7 +218,7 @@ public class Actions {
     }
 
     /**
-     * This function returns an instance of `CashierDefinedActions`
+     * This function returns an instance of `CashierDefinedActionsPage`
      */
     public static CashierDefinedActions cashierDefinedActions() {
         if (cashierDefinedActions == null) {

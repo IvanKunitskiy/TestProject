@@ -109,4 +109,8 @@ public class CashierDefinedActions {
         Pages.cashierPage().typeSourceNotesValue(tempIndex, notes);
     }
 
+    public void clickCommitButton() {
+        Pages.cashierPage().clickCommitButton();
+    }
+
 }
