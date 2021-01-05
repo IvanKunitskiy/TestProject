@@ -216,6 +216,25 @@ public class CashierDefinedActions {
         return SettingsPage.createCdtPage().checkNameIsVisible();
     }
 
+    public boolean createOfficialCheckWithCash() {
+        SettingsPage.cdtPage().clickAddNew();
+        SettingsPage.createCdtPage().inputName(CashierDefinedTransactions.OFFICIAL_CHECK_WITH_CASH.getOperation());
+        SettingsPage.createCdtPage().selectDebitTypeAccount(ProductType.GL_TICKETS);
+        SettingsPage.createCdtPage().selectCreditTypeAccount(ProductType.GL_TICKETS);
+        SettingsPage.createCdtPage().selectDebitTransactionCode("(850) Cash In");
+        SettingsPage.createCdtPage().selectCreditTransactionCode("(865) G/L Credit");
+        SettingsPage.createCdtPage().inputDebitDescription("OFFICIAL CHECK PURCHASE");
+        SettingsPage.createCdtPage().inputCreditDescription("OFFICIAL CHECK WITH CASH");
+        SettingsPage.createCdtPage().selectDebitNoticeOption("No Notice");
+        SettingsPage.createCdtPage().selectCreditNoticeOption("No Notice");
+        SettingsPage.createCdtPage().inputFeeAmount("5.00");
+        SettingsPage.createCdtPage().inputGLAccount("4800200");
+        SettingsPage.createCdtPage().selectOperationType("Official Check");
+        SettingsPage.createCdtPage().inputFeeDescription("OFFICIAL CHECK FEE");
+        SettingsPage.createCdtPage().clickSaveButton();
+        return SettingsPage.createCdtPage().checkNameIsVisible();
+    }
+
     public boolean createTransferFromSavToCHKWithNotice() {
         SettingsPage.cdtPage().clickAddNew();
         SettingsPage.createCdtPage().inputName(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry.getOperation());
