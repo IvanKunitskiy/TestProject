@@ -100,6 +100,13 @@ public class C22730_CDTWithoutTellerSessionCommitSimpleCDTTransferWithNoFee exte
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
 
+        //Check CDT template
+        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK);
+        if (templateNotExists){
+            boolean isCreated = Actions.cashierDefinedActions().createTransferFromSavToCHK();
+            Assert.assertTrue(isCreated, "CDT template not created");
+        }
+
         Actions.loginActions().doLogOutProgrammatically();
         Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
 
