@@ -6,6 +6,8 @@ import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
+import java.util.List;
+
 public class RulesUIQueryAnalyzerPage extends PageTools {
 
     private By searchRegion = By.xpath("//td[@class='mainPanel' and //form[contains(@action, 'RulesUIQuery')]]");
@@ -428,5 +430,16 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getTransactionCheckNumberValueByIndex(int index) {
         waitForElementVisibility(trCheckNumber, index);
         return getElementText(trCheckNumber, index).trim();
+    }
+
+    /**
+     * CDT template
+     */
+    private By templateName = By.xpath("//tr[@class='searchResultRow ']/td[7]/div");
+
+    @Step ("Get list of CDT template names")
+    public List<String> getListOfCdtTemplateNames() {
+        waitForElementVisibility(templateName);
+        return getElementsText(templateName);
     }
 }

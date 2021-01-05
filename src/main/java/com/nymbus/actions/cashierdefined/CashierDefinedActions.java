@@ -250,4 +250,8 @@ public class CashierDefinedActions {
         SettingsPage.createCdtPage().clickSaveButton();
         return SettingsPage.createCdtPage().checkNameIsVisible();
     }
+    public void clickCommitButton() {
+        Pages.cashierPage().clickCommitButton();
+    }
+
 }
