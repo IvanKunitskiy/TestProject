@@ -277,7 +277,6 @@ public class UsersActions {
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().clickViewSettingsLink();
         SettingsPage.bankControlPage().clickMiscellaneousButton();
-        //String ctrLimitValue = SettingsPage.bankControlPage().getCTRLimitValue();
         if (SettingsPage.bankControlPage().getOnlineSTRAlert().equals("0")) {
             isChanged = true;
             SettingsPage.bankControlPage().clickEditButton();
@@ -285,9 +284,6 @@ public class UsersActions {
         } else {
             SettingsPage.bankControlPage().clickEditButton();
         }
-//        if (!(Integer.parseInt(ctrLimitValue) > 0)) {
-//            SettingsPage.bankControlPage().setCTRLimitValue(ctrLimit);
-//        }
         SettingsPage.bankControlPage().setCTRLimitValue(ctrLimit);
         SettingsPage.bankControlPage().clickSaveButton();
         return isChanged;
@@ -303,6 +299,7 @@ public class UsersActions {
             SettingsPage.bankControlPage().clickEditButton();
             SettingsPage.bankControlPage().clickOnlineSTRAlert();
             SettingsPage.bankControlPage().clickSaveButton();
+            SelenideTools.sleep(Constants.SMALL_TIMEOUT);
         }
     }
 

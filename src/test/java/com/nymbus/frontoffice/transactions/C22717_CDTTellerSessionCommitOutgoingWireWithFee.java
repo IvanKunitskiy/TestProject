@@ -89,6 +89,13 @@ public class C22717_CDTTellerSessionCommitOutgoingWireWithFee extends BaseTest {
         expectedSavingsBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "-", expectedSavingsBalanceData.getCurrentBalance(), fee);
+
+        //Check CDT template
+        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS);
+        if (templateNotExists){
+            boolean isCreated = Actions.cashierDefinedActions().createOutgoingWireFromSavings();
+            Assert.assertTrue(isCreated, "CDT template not created");
+        }
         Actions.loginActions().doLogOut();
     }
 

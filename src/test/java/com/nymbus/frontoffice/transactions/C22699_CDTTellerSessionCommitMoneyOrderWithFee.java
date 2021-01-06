@@ -133,6 +133,12 @@ public class C22699_CDTTellerSessionCommitMoneyOrderWithFee extends BaseTest {
         fullCheck.setDocumentID(client.getIndividualClientDetails().getDocuments().get(0).getIdNumber());
         fullCheck.setPhone(client.getIndividualClientDetails().getPhones().get(0).getPhoneNumber());
 
+        //Check CDT template
+        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.MONEY_ORDER_FROM_SAVINGS);
+        if (templateNotExists){
+            boolean isCreated = Actions.cashierDefinedActions().createMoneyOrderFromSavings();
+            Assert.assertTrue(isCreated, "CDT template not created");
+        }
         Actions.loginActions().doLogOut();
     }
 

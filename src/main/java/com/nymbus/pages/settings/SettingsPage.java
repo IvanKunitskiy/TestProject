@@ -4,6 +4,8 @@ import com.nymbus.pages.settings.bankcontrol.BankControlPage;
 import com.nymbus.pages.settings.cashdrawer.AddCashDrawerPage;
 import com.nymbus.pages.settings.cashdrawer.CashDrawerSearchPage;
 import com.nymbus.pages.settings.cashdrawer.ViewCashDrawerPage;
+import com.nymbus.pages.settings.cdt.CDTPage;
+import com.nymbus.pages.settings.cdt.CreateCDTPage;
 import com.nymbus.pages.settings.officialcontrol.OfficialControlPage;
 import com.nymbus.pages.settings.printer.PrinterPage;
 import com.nymbus.pages.settings.products.ProductOverviewPage;
@@ -35,6 +37,8 @@ public class SettingsPage {
     private static BankControlPage bankControlPage;
     private static PrinterPage printerPage;
     private static OfficialControlPage officialControlPage;
+    private static CDTPage cdtPage;
+    private static CreateCDTPage createCDTPage;
 
     /**
      * This function return an instance of `MainPage`
@@ -44,6 +48,26 @@ public class SettingsPage {
             mainPage = new MainPage();
         }
         return mainPage;
+    }
+
+    /**
+     * This function return an instance of `CDTPage`
+     */
+    public static CDTPage cdtPage() {
+        if (cdtPage == null) {
+            cdtPage = new CDTPage();
+        }
+        return cdtPage;
+    }
+
+    /**
+     * This function return an instance of `CreateCDTPage`
+     */
+    public static CreateCDTPage createCdtPage() {
+        if (createCDTPage == null) {
+            createCDTPage = new CreateCDTPage();
+        }
+        return createCDTPage;
     }
 
     /**

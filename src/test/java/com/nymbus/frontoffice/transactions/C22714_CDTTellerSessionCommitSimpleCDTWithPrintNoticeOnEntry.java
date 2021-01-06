@@ -137,6 +137,13 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
         expectedSavingsBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "-", expectedSavingsBalanceData.getCurrentBalance(), savingsTransactionAmount);
+
+        //Check CDT template
+        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry);
+        if (templateNotExists){
+            boolean isCreated = Actions.cashierDefinedActions().createTransferFromSavToCHKWithNotice();
+            Assert.assertTrue(isCreated, "CDT template not created");
+        }
         Actions.loginActions().doLogOut();
     }
 

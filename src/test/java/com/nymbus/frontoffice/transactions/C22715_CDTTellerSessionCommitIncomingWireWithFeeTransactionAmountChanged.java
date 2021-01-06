@@ -37,7 +37,7 @@ public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountCh
     private double transactionAmount = 200.00;
     private double savingsTransactionAmount = 200.00;
     private double returnTransactionAmount = 100.00;
-    private double fee = 1.00;
+    private double fee = 5.00;
 
 
     @BeforeMethod
@@ -89,6 +89,13 @@ public class C22715_CDTTellerSessionCommitIncomingWireWithFeeTransactionAmountCh
         expectedSavingsBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "+", expectedSavingsBalanceData.getCurrentBalance(), returnTransactionAmount - fee);
+
+        //Check CDT template
+        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.INCOMING_WIRE_TO_SAVINGS);
+        if (templateNotExists){
+            boolean isCreated = Actions.cashierDefinedActions().createIncomingWireToSavings();
+            Assert.assertTrue(isCreated, "CDT template not created");
+        }
         Actions.loginActions().doLogOut();
     }
 

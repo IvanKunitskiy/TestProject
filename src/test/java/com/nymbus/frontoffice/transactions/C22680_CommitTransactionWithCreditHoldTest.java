@@ -121,6 +121,7 @@ public class C22680_CommitTransactionWithCreditHoldTest extends BaseTest {
         Actions.transactionActions().fillingSupervisorModal(userCredentials);
         chkAccBalanceData.addAvailableBalance(transaction.getTransactionDestination().getAmount());
         chkAccBalanceData.addCurrentBalance(transaction.getTransactionDestination().getAmount());
+        Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
 
         logInfo("Step 8: Go to account with debit hold instruction used in transaction and verify its:\n" +

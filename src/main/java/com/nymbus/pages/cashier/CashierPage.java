@@ -16,7 +16,7 @@ public class CashierPage extends PageTools {
     private By drawerNameInFooter = By.xpath("//footer//span[contains(text(), 'Drawer Name')]/span");
     private By transactionSection = By.xpath("//section[@ui-view='transaction']");
     private By tellerOperation =By.xpath("//span[contains(string(),'Select Operation')]");
-    private By operationSelector = By.xpath("//span[contains(string(),'%s')]");
+    private By operationSelector = By.xpath("//span[text()='%s']");
 
     @Step("Wait for transaction section visibility")
     public void waitForTransactionSectionVisibility() {

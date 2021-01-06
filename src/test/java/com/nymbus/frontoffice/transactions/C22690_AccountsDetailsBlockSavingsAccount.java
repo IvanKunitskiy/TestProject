@@ -88,7 +88,7 @@ public class C22690_AccountsDetailsBlockSavingsAccount extends BaseTest {
         expectedSavingsBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "-", expectedSavingsBalanceData.getCurrentBalance(), savingsTransactionAmount);
-        accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
+        accruedInterest = Pages.accountDetailsPage().getAccruedInterestThisStatementCycle();
         Actions.loginActions().doLogOut();
 
         // Set up instruction
