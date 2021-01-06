@@ -86,6 +86,13 @@ public class C22750_CDTWithoutTellerSessionCommitOutgoingWireWithFee extends Bas
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
 
+        //Check CDT template
+        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS);
+        if (templateNotExists){
+            boolean isCreated = Actions.cashierDefinedActions().createOutgoingWireFromSavings();
+            Assert.assertTrue(isCreated, "CDT template not created");
+        }
+
         Actions.loginActions().doLogOutProgrammatically();
         Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
 
