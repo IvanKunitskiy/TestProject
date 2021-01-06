@@ -12,6 +12,8 @@ public class Constants {
     public static String BIN_NUMBER = getBinNumber();
     public static FinancialInstitutionType INSTITUTION_TYPE = getInstitutionType();
 
+    public static final String CDT_TEMPLATE_NAME = "AUTOMATION_SAV_TO_CHK_CDT";
+
     public static String USERNAME = "autestthredone";
     //    public static String USERNAME = "autotest";
     public static String PASSWORD = "autestthredone";
