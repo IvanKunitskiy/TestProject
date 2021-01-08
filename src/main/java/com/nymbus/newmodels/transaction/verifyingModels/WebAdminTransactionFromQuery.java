@@ -6,7 +6,7 @@ import lombok.Data;
 public class WebAdminTransactionFromQuery {
     private String bankBranch;
     private String accountNumber;
-    private double amount;
+    private String amount;
     private String effectiveEntryDate;
     private String itemType;
     private String uniqueEftDescription;
