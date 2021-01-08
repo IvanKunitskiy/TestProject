@@ -46,6 +46,9 @@ public class MainPage extends PageTools {
     // Teller Locations
     private By viewAllTellerLocationsLink = By.xpath("//a[text()='View all Teller Locations']");
 
+    //Cashier Defined Transactions
+    private By viewAllCDT = By.xpath("//a[text()='View all Cashier Defined Transactions']");
+
     @Step("Waiting 'Cash Drawer' region")
     public void waitForCashDrawerRegion() {
         waitForElementVisibility(cashDrawerRegion);
@@ -165,5 +168,11 @@ public class MainPage extends PageTools {
     public void clickViewAllTellerLocationsLink() {
         scrollToPlaceElementInCenter(viewAllTellerLocationsLink);
         click(viewAllTellerLocationsLink);
+    }
+
+    @Step("Click view all CDT templates button")
+    public void clickAllCDTButton() {
+        scrollToPlaceElementInCenter(viewAllCDT);
+        click(viewAllCDT);
     }
 }

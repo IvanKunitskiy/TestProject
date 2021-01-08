@@ -14,13 +14,20 @@ public class ASideMenuPage extends PageTools {
     private By reportGeneratorMenuItem = By.xpath("//li[a[@id='menu-adhocReport']]");
     private By backOfficeMenuItem = By.xpath("//li[a[@id='menu-backoffice']]");
     private By settingsMenuItem = By.xpath("//li[a[@id='menu-settings']]");
-    private By cashierDefinedMenuItem = By.xpath("//li[a[@id='menu-cashierdefinedtrans']]");
     private By journalMenuItem = By.xpath("//li[a[@id='menu-tellerJournal']]");
     private By cashDrawerMenuItem = By.xpath("//li[a[@id='menu-cashDrawer']]");
+    private By cashierDefinedMenuItem = By.xpath("//li[a[@id='menu-cashierdefinedtrans']]");
+    private final By cashierDefinedTransactions = By.xpath("//li[a[@id='menu-cashierdefinedtrans']]");
 
     @Step("Wait for a side menu")
     public void waitForASideMenu(){
         waitForElementVisibility(menu);
+    }
+
+    @Step("Click 'Cashier Defined Transactions' menu item")
+    public void clickCashierDefinedTransactions() {
+        waitForElementVisibility(cashierDefinedTransactions);
+        click(cashierDefinedTransactions);
     }
 
     @Step("Click 'Cash Drawer' menu item")

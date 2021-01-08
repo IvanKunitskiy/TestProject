@@ -2,6 +2,8 @@ package com.nymbus.pages.modalwindow;
 
 import com.codeborne.selenide.Condition;
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -236,6 +238,7 @@ public class VerifyConductorModalPage extends PageTools {
 
     @Step("Click 'Verify' button")
     public void clickVerifyButton() {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         waitForElementVisibility(verifyButton);
         jsClick(verifyButton);
     }

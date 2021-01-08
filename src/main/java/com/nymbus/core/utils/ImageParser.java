@@ -2,9 +2,15 @@ package com.nymbus.core.utils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Base64;
 
 public class ImageParser {
@@ -61,36 +67,47 @@ public class ImageParser {
     }
 
     public static void loadPdf(String src, String absolutePath) {
-        OutputStream outStream = null;
-        URLConnection uCon = null;
-        final int size = 1024;
-
-        InputStream is = null;
+//        OutputStream outStream = null;
+//        URLConnection uCon = null;
+//        final int size = 1024;
+//
+//        InputStream is = null;
+//        try {
+//            URL url;
+//            byte[] buf;
+//            int byteRead, byteWritten = 0;
+//            url = new URL(src);
+//            outStream = new BufferedOutputStream(new FileOutputStream(absolutePath));
+//
+//            uCon = url.openConnection();
+//            is = uCon.getInputStream();
+//            buf = new byte[size];
+//            while ((byteRead = is.read(buf)) != -1) {
+//                outStream.write(buf, 0, byteRead);
+//                byteWritten += byteRead;
+//            }
+//            System.out.println("Downloaded Successfully.");
+//            System.out.println("File name: bytes :" + byteWritten);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            try {
+//                is.close();
+//                outStream.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+        URL url = null;
         try {
-            URL url;
-            byte[] buf;
-            int byteRead, byteWritten = 0;
             url = new URL(src);
-            outStream = new BufferedOutputStream(new FileOutputStream(absolutePath));
-
-            uCon = url.openConnection();
-            is = uCon.getInputStream();
-            buf = new byte[size];
-            while ((byteRead = is.read(buf)) != -1) {
-                outStream.write(buf, 0, byteRead);
-                byteWritten += byteRead;
-            }
-            System.out.println("Downloaded Successfully.");
-            System.out.println("File name: bytes :" + byteWritten);
-        } catch (Exception e) {
+        } catch (MalformedURLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-                outStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        }
+        try (InputStream in = url.openStream()) {
+            Files.copy(in, Paths.get(absolutePath), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

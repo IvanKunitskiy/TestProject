@@ -31,7 +31,6 @@ public class BankControlPage extends PageTools {
         click(saveButton);
     }
 
-
     @Step("Get the 'CTR Online Alert' value")
     public void clickOnlineSTRAlert() {
         waitForElementVisibility(applyCTROnlineAlert);

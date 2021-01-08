@@ -112,7 +112,7 @@ public class C22689_AccountsDetailsBlockCHKAccount extends BaseTest {
         expectedBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         chkAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "-", expectedBalanceData.getCurrentBalance(), transactionAmount);
-        accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
+        accruedInterest = Pages.accountDetailsPage().getAccruedInterestThisStatementCycle();
 
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         expectedSavingsBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
