@@ -23,6 +23,7 @@ public class LoginActions {
 
     public void doLogOut() {
         Pages.navigationPage().waitForUserMenuVisible();
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         if (!Pages.navigationPage().isSingOutButtonVisible())
             Pages.navigationPage().clickAccountButton();
         Pages.navigationPage().clickSignOut();

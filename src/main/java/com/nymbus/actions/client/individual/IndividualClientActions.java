@@ -1,6 +1,8 @@
 package com.nymbus.actions.client.individual;
 
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.basicinformation.address.Address;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.documents.Document;
@@ -93,6 +95,7 @@ public class IndividualClientActions {
 
     public void setBasicInformation(IndividualClient client) {
         setClientType(client);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         setClientStatus(client);
         Pages.addClientPage().setFirstNameValue(client.getIndividualType().getFirstName());
         Pages.addClientPage().setMiddleNameValue(client.getIndividualType().getMiddleName());
