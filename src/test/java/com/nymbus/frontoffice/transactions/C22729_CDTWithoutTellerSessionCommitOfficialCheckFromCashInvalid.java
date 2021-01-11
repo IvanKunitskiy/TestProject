@@ -7,12 +7,28 @@ import com.nymbus.newmodels.cashier.CashierDefinedTransactions;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Dmytro")
 public class C22729_CDTWithoutTellerSessionCommitOfficialCheckFromCashInvalid extends BaseTest {
+
+    @BeforeMethod
+    public void prepareTransactionData() {
+        // Log in
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+        //Check CDT template
+        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.OFFICIAL_CHECK_WITH_CASH);
+        if (templateNotExists){
+            boolean isCreated = Actions.cashierDefinedActions().createOfficialCheckWithCash();
+            Assert.assertTrue(isCreated, "CDT template not created");
+        }
+
+        Actions.loginActions().doLogOut();
+    }
 
     @Test(description = "C22729, CDT without Teller Session - Commit official check from cash (invalid)")
     @Severity(SeverityLevel.CRITICAL)

@@ -131,6 +131,14 @@ public class C22744_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
 
         //Create CDT  transaction
         Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
+
+        //Check CDT template
+        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.OFFICIAL_CHECK_FROM_SAVINGS);
+        if (templateNotExists){
+            boolean isCreated = Actions.cashierDefinedActions().createOfficialCheckFromSavings();
+            Assert.assertTrue(isCreated, "CDT template not created");
+        }
+
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
         Actions.cashierDefinedActions().createOfficialTransaction(CashierDefinedTransactions.OFFICIAL_CHECK_FROM_SAVINGS,
@@ -191,10 +199,7 @@ public class C22744_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getSecondTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
-
     }
-
-
 
 
 }

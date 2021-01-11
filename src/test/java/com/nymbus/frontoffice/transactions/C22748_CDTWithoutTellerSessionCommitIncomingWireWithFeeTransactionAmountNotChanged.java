@@ -85,6 +85,13 @@ public class C22748_CDTWithoutTellerSessionCommitIncomingWireWithFeeTransactionA
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
 
+        //Check CDT template
+        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.INCOMING_WIRE_TO_SAVINGS);
+        if (templateNotExists){
+            boolean isCreated = Actions.cashierDefinedActions().createIncomingWireToSavings();
+            Assert.assertTrue(isCreated, "CDT template not created");
+        }
+
         Actions.loginActions().doLogOutProgrammatically();
         Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
 

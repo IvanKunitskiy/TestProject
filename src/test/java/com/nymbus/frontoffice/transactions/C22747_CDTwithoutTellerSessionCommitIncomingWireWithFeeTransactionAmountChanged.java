@@ -76,6 +76,7 @@ public class C22747_CDTwithoutTellerSessionCommitIncomingWireWithFeeTransactionA
         depositSavingsTransaction.getTransactionDestination().setAmount(savingsTransactionAmount);
         depositSavingsTransaction.getTransactionSource().setAmount(savingsTransactionAmount);
 
+
         // Perform deposit transactions
         Actions.loginActions().doLogOutProgrammatically();
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -84,6 +85,13 @@ public class C22747_CDTwithoutTellerSessionCommitIncomingWireWithFeeTransactionA
         Actions.transactionActions().createTransaction(depositSavingsTransaction);
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
+
+        //Check CDT template
+        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.INCOMING_WIRE_TO_SAVINGS);
+        if (templateNotExists){
+            boolean isCreated = Actions.cashierDefinedActions().createIncomingWireToSavings();
+            Assert.assertTrue(isCreated, "CDT template not created");
+        }
 
         Actions.loginActions().doLogOutProgrammatically();
         Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
@@ -138,6 +146,5 @@ public class C22747_CDTwithoutTellerSessionCommitIncomingWireWithFeeTransactionA
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
-
     }
 }

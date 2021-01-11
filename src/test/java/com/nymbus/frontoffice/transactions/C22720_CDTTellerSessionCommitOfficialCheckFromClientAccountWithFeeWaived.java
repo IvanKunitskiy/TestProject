@@ -130,6 +130,13 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
         fullCheck.setDocumentID(client.getIndividualClientDetails().getDocuments().get(0).getIdNumber());
         fullCheck.setPhone(client.getIndividualClientDetails().getPhones().get(0).getPhoneNumber());
 
+        //Check CDT template
+        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.OFFICIAL_CHECK_FROM_SAVINGS);
+        if (templateNotExists){
+            boolean isCreated = Actions.cashierDefinedActions().createOfficialCheckFromSavings();
+            Assert.assertTrue(isCreated, "CDT template not created");
+        }
+
         Actions.loginActions().doLogOut();
     }
 
