@@ -15,6 +15,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.WebAdminTransactionFromQ
 import com.nymbus.pages.webadmin.WebAdminPages;
 import org.testng.Assert;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -263,6 +264,25 @@ public class WebAdminUsersActions {
         return getAccAnalyzeWithRdcCodeCountFromQueryByUrl(getAccAnalyzeWithRdcCodeAndAmountUrl());
     }
 
+    private String getCdtTemplatesUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+100%0D%0A%23"
+                + "+select%3A+%28databean%29NAME%2C+feeamount%2C+creditprintnoticeflag%0D%0A"
+                + "from%3A+bank.data.cdtfrm%0D%0A"
+                + "where%3A+%0D%0A"
+                + "-+operationcode%3A+%7Bnull%7D%0D%0A%23"
+                + "+-+.operationcode-%3Ename%3A+%7Bnot+equals%3A+%5BOfficial+Check%2C+Money+Order%5D%7D%0D%0A"
+                + "-+feeamount%3A+%7Bgreater%3A+0%7D%0D%0A"
+                + "-+.creditprintnoticeflag-%3Ecode%3A+ctfdpn.0%0D%0A%0D%0A"
+                + "orderBy%3A+id&source=";
+    }
+
+    public boolean checkCdtTemplatePresent(String templateName) {
+        return checkCdtTemplatePresentByName(getCdtTemplatesUrl(), templateName);
+    }
+
     public String getAccountWithDormantStatus(int index) {
         return getDormantAccountByIndexFromQueryByUrl(getAccountsWithDormantStatusUrl(), index);
     }
@@ -360,6 +380,16 @@ public class WebAdminUsersActions {
         SelenideTools.switchTo().window(0);
 
         return accountNumber;
+    }
+
+    private boolean checkCdtTemplatePresentByName(String url, String templateName) {
+        SelenideTools.openUrl(url);
+
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        List<String> listOfCdtTemplateNames = WebAdminPages.rulesUIQueryAnalyzerPage().getListOfCdtTemplateNames();
+        return listOfCdtTemplateNames.contains(templateName);
     }
 
     public FirstNameAndLastNameModel getExistingIndividualClient() {
@@ -486,7 +516,7 @@ public class WebAdminUsersActions {
         transaction.setBankBranch(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionBankBranchValueByIndex(tmpIndex));
         transaction.setAccountNumber(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionAccountNumberByIndex(tmpIndex));
         String trAmount = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionAmountValueByIndex(tmpIndex);
-        transaction.setAmount(Double.parseDouble(trAmount));
+        transaction.setAmount(String.format("%.2f", Double.parseDouble(trAmount)));
         String date = WebAdminPages.rulesUIQueryAnalyzerPage().getEffectiveDate(tmpIndex);
         transaction.setEffectiveEntryDate(DateTime.getDateWithFormat(date, "yyyy-MM-dd", "MM/dd/yyyy"));
         transaction.setCheckNumber(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionCheckNumberValueByIndex(tmpIndex));
@@ -509,7 +539,7 @@ public class WebAdminUsersActions {
         transaction.setBankBranch(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionBankBranchValueByIndex(tmpIndex));
         transaction.setAccountNumber(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionAccountNumberByIndex(tmpIndex));
         String trAmount = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionAmountValueByIndex(tmpIndex);
-        transaction.setAmount(Double.parseDouble(trAmount));
+        transaction.setAmount(String.format("%.2f", Double.parseDouble(trAmount)));
         String date = WebAdminPages.rulesUIQueryAnalyzerPage().getEffectiveDate(tmpIndex);
         transaction.setEffectiveEntryDate(DateTime.getDateWithFormat(date, "yyyy-MM-dd", "MM-dd-yyyy"));
         transaction.setTransactionCode(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionCodeValueByIndex(tmpIndex));
@@ -533,7 +563,7 @@ public class WebAdminUsersActions {
         transaction.setBankBranch(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionBankBranchValueByIndex(tmpIndex));
         transaction.setAccountNumber(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionAccountNumberByIndex(tmpIndex));
         String trAmount = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionAmountValueByIndex(tmpIndex);
-        transaction.setAmount(Double.parseDouble(trAmount));
+        transaction.setAmount(String.format("%.2f", Double.parseDouble(trAmount)));
         String date = WebAdminPages.rulesUIQueryAnalyzerPage().getEffectiveDate(tmpIndex);
         transaction.setEffectiveEntryDate(DateTime.getDateWithFormat(date, "yyyy-MM-dd", "MM-dd-yyyy"));
         transaction.setItemType(WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionItemTypeValueByIndex(tmpIndex));

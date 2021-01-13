@@ -35,10 +35,7 @@ import com.nymbus.pages.loans.AddNewLoanProductPage;
 import com.nymbus.pages.loans.LoanProductOverviewPage;
 import com.nymbus.pages.loans.LoanProductPage;
 import com.nymbus.pages.loans.LoansPage;
-import com.nymbus.pages.modalwindow.CashInModalWindowPage;
-import com.nymbus.pages.modalwindow.DebitCardModalWindow;
-import com.nymbus.pages.modalwindow.SupervisorModalPage;
-import com.nymbus.pages.modalwindow.VerifyConductorModalPage;
+import com.nymbus.pages.modalwindow.*;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
 import com.nymbus.pages.teller.*;
 import com.nymbus.pages.tellertotellertransfer.TellerToTellerPage;
@@ -107,6 +104,8 @@ public class Pages extends AllureLogger {
     private static PrintChecksPage printChecksPage;
     private static CheckPrintPage checkPrintPage;
     private static AccountCommercialAnalysisPage accountCommercialAnalysisPage;
+    private static CashierDefinedActionsPage cashierDefinedActionsPage;
+    private static AlertMessageModalPage alertMessageModalPage;
     private static LoanProductPage loanProductPage;
     private static AddNewLoanProductPage addNewLoanProductPage;
     private static LoanProductOverviewPage loanProductOverviewPage;
@@ -729,6 +728,26 @@ public class Pages extends AllureLogger {
         return checkPrintPage;
     }
 
+
+    /**
+     * This function return an instance of `ConfirmModalPage`
+     */
+    public static CashierDefinedActionsPage cashierDefinedActionsPage() {
+        if (cashierDefinedActionsPage == null){
+            cashierDefinedActionsPage = new CashierDefinedActionsPage();
+        }
+        return cashierDefinedActionsPage;
+    }
+
+    /**
+     * This function return an instance of `AlertMessageModalPage`
+     */
+    public static AlertMessageModalPage alertMessageModalPage() {
+        if (alertMessageModalPage == null){
+            alertMessageModalPage = new AlertMessageModalPage();
+        }
+        return alertMessageModalPage;
+    }
     /**
      * This function return an instance of `LoanProductPage`
      */

@@ -399,7 +399,8 @@ public class AddAccountPage extends PageTools {
         waitForElementClickable(dateOpenedField);
         scrollToPlaceElementInCenter(dateOpenedField);
         typeWithoutWipe("", dateOpenedField);
-        SelenideTools.sleep(1);
+        click(dateOpenedField);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         typeWithoutWipe(dateOpenedValue, dateOpenedField);
     }
 

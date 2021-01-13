@@ -62,7 +62,7 @@ public class C22673_ErrorCorrectTransactionOnDormantAccountTest extends BaseTest
         // Set transaction data
         transactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 DateTime.getLocalDateOfPattern("MM/dd/yyyy"), "-",
-                accountBalanceData.getCurrentBalance(),
+                Double.parseDouble((accountBalanceData.getCurrentBalance() + "").replaceAll("[^0-9.]", "")),
                 transaction.getTransactionDestination().getAmount());
     }
 

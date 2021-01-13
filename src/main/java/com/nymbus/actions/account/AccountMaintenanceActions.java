@@ -24,7 +24,7 @@ public class AccountMaintenanceActions {
         expandAllRows();
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Product") >= 1,
                 "'Product' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("accounttype") >= 1,
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account Type") >= 1,
                 "'Account Type' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account Title") >= 1,
                 "'Account Title' row count is incorrect!");

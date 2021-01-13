@@ -89,6 +89,13 @@ public class C22718_CDTTellerSessionCommitOutgoingWireWithWaivedFee extends Base
         expectedSavingsBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "-", expectedSavingsBalanceData.getCurrentBalance(), fee);
+
+        //Check CDT template
+        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS);
+        if (templateNotExists){
+            boolean isCreated = Actions.cashierDefinedActions().createOutgoingWireFromSavings();
+            Assert.assertTrue(isCreated, "CDT template not created");
+        }
         Actions.loginActions().doLogOut();
     }
 
@@ -109,7 +116,7 @@ public class C22718_CDTTellerSessionCommitOutgoingWireWithWaivedFee extends Base
                 "Set transaction amount > fee amount");
         Actions.cashierDefinedActions().createOutgoingTransaction(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS,
                 transaction, true);
-        expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount() + fee);
+        expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
 
         logInfo("Step 6: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();

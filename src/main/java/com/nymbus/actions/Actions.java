@@ -3,7 +3,6 @@ package com.nymbus.actions;
 import com.nymbus.actions.backoffice.printchecks.PrintChecksActions;
 import com.nymbus.actions.balanceinquiry.BalanceInquiryActions;
 import com.nymbus.actions.cashierdefined.CashierDefinedActions;
-import com.nymbus.actions.cashierdefined.NoticeActions;
 import com.nymbus.actions.check.BackOfficeActions;
 import com.nymbus.actions.clients.ClientPageActions;
 import com.nymbus.actions.clients.ClientsSearchResultsPageActions;
@@ -43,7 +42,6 @@ public class Actions {
     private static ProductsActions productsActions;
     private static TellerBankBranchOverviewActions tellerBankBranchOverviewActions;
     private static CashierDefinedActions cashierDefinedActions;
-    private static NoticeActions noticeActions;
     private static PrintChecksActions printChecksActions;
     private static LoanProductOverviewActions loanProductOverviewActions;
     private static AddNewLoanActions addNewLoanActions;
@@ -222,23 +220,13 @@ public class Actions {
     }
 
     /**
-     * This function returns an instance of `CashierDefinedActions`
+     * This function returns an instance of `CashierDefinedActionsPage`
      */
     public static CashierDefinedActions cashierDefinedActions() {
         if (cashierDefinedActions == null) {
             cashierDefinedActions = new CashierDefinedActions();
         }
         return cashierDefinedActions;
-    }
-
-    /**
-     * This function returns an instance of `NoticeActions`
-     */
-    public static NoticeActions noticeActions() {
-        if (noticeActions == null){
-            noticeActions = new NoticeActions();
-        }
-        return noticeActions;
     }
 
     public static BackOfficeActions backOfficeActions() {

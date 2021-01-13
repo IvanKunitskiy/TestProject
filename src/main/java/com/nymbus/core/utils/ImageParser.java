@@ -2,15 +2,17 @@ package com.nymbus.core.utils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Base64;
 
 public class ImageParser {
 
     private static BufferedImage getBufferedImage(String imageSource, int index) {
         try {
+            index++;
             String base64Image = imageSource.split(",")[index];
             byte[] imageBytes = Base64.getDecoder().decode(base64Image);
             return ImageIO.read(new ByteArrayInputStream(imageBytes));
@@ -58,39 +60,5 @@ public class ImageParser {
 
     public static void loadImageFromUrl(String url, String filename) {
         writeBufferedImage(getBufferedImageFromUrl(url), filename);
-    }
-
-    public static void loadPdf(String src, String absolutePath) {
-        OutputStream outStream = null;
-        URLConnection uCon = null;
-        final int size = 1024;
-
-        InputStream is = null;
-        try {
-            URL url;
-            byte[] buf;
-            int byteRead, byteWritten = 0;
-            url = new URL(src);
-            outStream = new BufferedOutputStream(new FileOutputStream(absolutePath));
-
-            uCon = url.openConnection();
-            is = uCon.getInputStream();
-            buf = new byte[size];
-            while ((byteRead = is.read(buf)) != -1) {
-                outStream.write(buf, 0, byteRead);
-                byteWritten += byteRead;
-            }
-            System.out.println("Downloaded Successfully.");
-            System.out.println("File name: bytes :" + byteWritten);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-                outStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

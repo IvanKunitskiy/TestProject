@@ -7,6 +7,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -26,10 +27,9 @@ import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
 import io.qameta.allure.*;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.io.File;
 
 @Epic("Frontoffice")
 @Feature("Transactions")
@@ -127,8 +127,15 @@ public class C22734_CDTWithoutTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
 
+        //Check CDT template
+        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry);
+        if (templateNotExists){
+            boolean isCreated = Actions.cashierDefinedActions().createTransferFromSavToCHKWithNotice();
+            Assert.assertTrue(isCreated, "CDT template not created");
+        }
+
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
 
         // Set transaction with amount value
         Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
@@ -151,7 +158,6 @@ public class C22734_CDTWithoutTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry
         Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
 
         logInfo("Step 2: Go to Cashier Defined Transactions screen and log in to proof date");
-        Actions.transactionActions().loginTeller();
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
 
@@ -175,29 +181,8 @@ public class C22734_CDTWithoutTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry
                 "- Account number - below the Bank Info\n" +
                 "- Transaction details to the right in the header\n" +
                 "- Name and Address of the Owner of Debit account at the bottom of the body");
-        //SelenideTools.sleep(100);
-        File file = Actions.noticeActions().saveNoticeImage();
-        String noticeData = Actions.balanceInquiryActions().readBalanceInquiryImage(file);
-
-        Assert.assertTrue(noticeData.contains(tellerLocation.getBankName()), "'Bank name' does not match");
-        Assert.assertTrue(noticeData.contains(tellerLocation.getCity()),
-                "'City' does not match");
-        Assert.assertTrue(noticeData.contains(tellerLocation.getState()),
-                "'State' does not match");
-        Assert.assertTrue(noticeData.contains(tellerLocation.getZipCode()),
-                "'Zip code' does not match");
-        Assert.assertTrue(noticeData.contains(tellerLocation.getPhoneNumber()),
-                "'Zip code' does not match");
-        Assert.assertTrue(noticeData.contains(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry.getOperation()),
-                "'CDT Template' doesn't match");
-        Assert.assertTrue(noticeData.contains(proofDateValue),
-                "'Proof date' doesn't match");
-        Assert.assertTrue(noticeData.contains(savingsAccount.getAccountNumber()), "'Debit card number' doesn't" +
-                " match");
-        Assert.assertTrue(noticeData.contains(client.getIndividualType().getFirstName()), "'Name' doesn't" +
-                " match");
-        Assert.assertTrue(noticeData.contains(client.getIndividualType().getAddresses().stream().findFirst().get().getAddress()),
-                "'Debit card number' doesn't match");
+        AccountActions.callStatement().verifyTransactionData(tellerLocation, CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry,
+                proofDateValue, client, savingsAccount);
 
         logInfo("Step 7: Verify the following fields are printed on the Notice 2nd Page:\n" +
                 "- Bank information to the left in the header\n" +
@@ -207,28 +192,8 @@ public class C22734_CDTWithoutTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry
                 "- Transaction details to the right in the header\n" +
                 "- Name and Address of the Owner of Debit account at the bottom of the body");
         Pages.noticePage().clickNextButton();
-        File fileSecondPage = Actions.noticeActions().saveNoticeImage();
-        String noticeDataSecondPage = Actions.balanceInquiryActions().readBalanceInquiryImage(fileSecondPage);
-
-        Assert.assertTrue(noticeDataSecondPage.contains(tellerLocation.getBankName()), "'Bank name' does not match");
-        Assert.assertTrue(noticeDataSecondPage.contains(tellerLocation.getCity()),
-                "'City' does not match");
-        Assert.assertTrue(noticeDataSecondPage.contains(tellerLocation.getState()),
-                "'State' does not match");
-        Assert.assertTrue(noticeDataSecondPage.contains(tellerLocation.getZipCode()),
-                "'Zip code' does not match");
-        Assert.assertTrue(noticeDataSecondPage.contains(tellerLocation.getPhoneNumber()),
-                "'Zip code' does not match");
-        Assert.assertTrue(noticeDataSecondPage.contains(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry.getOperation()),
-                "'CDT Template' doesn't match");
-        Assert.assertTrue(noticeDataSecondPage.contains(proofDateValue),
-                "'Proof date' doesn't match");
-        Assert.assertTrue(noticeDataSecondPage.contains(savingsAccount.getAccountNumber()), "'Debit card number' doesn't" +
-                " match");
-        Assert.assertTrue(noticeDataSecondPage.contains(client.getIndividualType().getFirstName()), "'Name' doesn't" +
-                " match");
-        Assert.assertTrue(noticeDataSecondPage.contains(client.getIndividualType().getAddresses().stream().findFirst().get().getAddress()),
-                "'Debit card number' doesn't match");
+        AccountActions.callStatement().verifyTransactionData(tellerLocation, CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry,
+                proofDateValue, client, savingsAccount);
 
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
@@ -267,8 +232,12 @@ public class C22734_CDTWithoutTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
+    }
 
-
+    @AfterMethod(description = "Delete the downloaded PDF.")
+    public void postCondition() {
+        logInfo("Deleting the downloaded PDF...");
+        Functions.cleanDirectory(System.getProperty("user.dir") + "/screenshots/");
     }
 
 

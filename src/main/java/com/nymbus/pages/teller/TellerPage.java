@@ -134,6 +134,7 @@ public class TellerPage extends PageTools {
 
     @Step("Is any notifications present")
     public boolean isNotificationsPresent() {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         return isCondition(Condition.appears, notifications);
     }
 
