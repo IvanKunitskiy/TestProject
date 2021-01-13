@@ -3,12 +3,15 @@ package com.nymbus.actions.account;
 import com.codeborne.pdftest.PDF;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.cashier.CashierDefinedTransactions;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.basicinformation.address.Address;
+import com.nymbus.newmodels.settings.teller.TellerLocation;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 
@@ -51,6 +54,24 @@ public class CallStatement {
         SelenideTools.closeCurrentTab();
         SelenideTools.switchTo().window(0);
     }
+
+    /**
+     * Verify transaction PDF file
+     */
+
+    public void verifyTransactionData(TellerLocation location, CashierDefinedTransactions transaction,
+                                      String proofDate, IndividualClient client, Account account) {
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
+        SelenideTools.switchToLastTab();
+        Pages.noticePage().checkPDFVisible();
+        SelenideTools.sleep(30);
+        File file = Pages.accountStatementPage().downloadCallStatementPdf();
+        PDF pdf = new PDF(file);
+
+        verifyTellerLocationInPdf(pdf, location);
+        verifyAccountInfoInPdf(pdf, transaction, proofDate, client, account);
+    }
+
 
     /**
      * Verify CD, CD IRA account call statement PDF file
@@ -102,6 +123,49 @@ public class CallStatement {
         // Phone - Clients Phone
         String phoneNumber = client.getIndividualClientDetails().getPhones().get(1).getPhoneNumber().replaceFirst("(\\d{3})(\\d{3})(\\d+)", "$1-$2-$3");
         assertThat(pdf, containsText(phoneNumber));
+    }
+
+    /**
+     * Verify 'Client section' in PDF file
+     */
+
+    private void verifyTellerLocationInPdf(PDF pdf, TellerLocation location) {
+        // Bank Name
+        assertThat(pdf, containsText(location.getBankName()));
+
+        // City
+        assertThat(pdf, containsText(location.getCity()));
+
+        // State
+        assertThat(pdf, containsText(location.getState()));
+
+        // ZipCode
+        assertThat(pdf, containsText(location.getZipCode()));
+
+        // Phone - Clients Phone
+        assertThat(pdf, containsText(location.getPhoneNumber()));
+    }
+
+    /**
+     * Verify 'Client section' in PDF file
+     */
+
+    private void verifyAccountInfoInPdf(PDF pdf, CashierDefinedTransactions transaction,
+                                        String proofDate, IndividualClient client, Account account) {
+        // CDT template
+        assertThat(pdf, containsText(transaction.getOperation()));
+
+        // Date
+        assertThat(pdf, containsText(proofDate));
+
+        // Account number
+        assertThat(pdf, containsText(account.getAccountNumber()));
+
+        // Firstname
+        assertThat(pdf, containsText(client.getIndividualType().getFirstName()));
+
+        // Adress
+        assertThat(pdf, containsText(client.getIndividualType().getAddresses().stream().findFirst().get().getAddress()));
     }
 
     /**
