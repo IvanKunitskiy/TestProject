@@ -81,7 +81,7 @@ public class C22861_WeilandRtfChargeTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
-    @Test(description = "C22815, Weiland: RDC charge")
+    @Test(description = "C22861, Weiland Rtf Charge")
     @Severity(SeverityLevel.CRITICAL)
     public void weilandRdcCharge() {
 

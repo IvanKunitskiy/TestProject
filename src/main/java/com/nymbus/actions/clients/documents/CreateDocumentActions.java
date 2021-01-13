@@ -100,6 +100,7 @@ public class CreateDocumentActions {
                 return "ACH Forms";
             case "dev21":
             case "dev4":
+            case "dev18":
                 return "Account Opening";
         }
     }
@@ -112,6 +113,7 @@ public class CreateDocumentActions {
                 return "Direct Deposit Forms";
             case "dev21":
             case "dev4":
+            case "dev18":
                 return "Application";
         }
     }
@@ -124,6 +126,7 @@ public class CreateDocumentActions {
                 return "Unauthorized ACH Forms";
             case "dev21":
             case "dev4":
+            case "dev18":
                 return "Birth Certificate";
         }
     }
