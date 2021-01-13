@@ -1,6 +1,7 @@
 package com.nymbus.actions.account;
 
 import com.nymbus.actions.Actions;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
@@ -438,6 +439,17 @@ public class CreateAccount {
         Pages.addAccountPage().clickCurrentOfficerSelectorOption(account.getCurrentOfficer());
     }
 
+    public void setOriginatingOfficer(Account account) {
+        Pages.addAccountPage().clickOriginatingOfficerSelectorButton();
+        List<String> listOfOriginatingOfficers = Pages.addAccountPage().getOriginatingOfficerList();
+
+        Assert.assertTrue(listOfOriginatingOfficers.size() > 0, "There are no 'Originating Officer' options available");
+        if (account.getOriginatingOfficer() == null) {
+            account.setOriginatingOfficer(listOfOriginatingOfficers.get(new Random().nextInt(listOfOriginatingOfficers.size())).trim());
+        }
+        Pages.addAccountPage().clickOriginatingOfficerSelectorOption(account.getOriginatingOfficer());
+    }
+
     public void setStatementCycle(Account account) {
         Pages.addAccountPage().clickStatementCycleSelectorButton();
         List<String> listOfStatementCycle = Pages.addAccountPage().getStatementCycleList();
@@ -506,6 +518,17 @@ public class CreateAccount {
         Pages.addAccountPage().clickBankBranchOption(account.getBankBranch());
     }
 
+    public void setAccountType(Account account) {
+        Pages.addAccountPage().clickAccountTypeSelectorButton();
+        List<String> listOfAccountType = Pages.addAccountPage().getAccountTypeList();
+
+        Assert.assertTrue(listOfAccountType.size() > 0, "There are no 'Account type' options available");
+        if (account.getAccountType() == null) {
+            account.setAccountType(listOfAccountType.get(new Random().nextInt(listOfAccountType.size())).trim());
+        }
+        Pages.addAccountPage().clickAccountTypeSelectorOption(account.getAccountType());
+    }
+
     public void setAddNewOption(Account account) {
         Pages.clientDetailsPage().clickAddNewButton();
         List<String> listOfAddNewOptions = Pages.clientDetailsPage().getAddNewList();
@@ -561,6 +584,72 @@ public class CreateAccount {
         Pages.addAccountPage().clickMailCodeSelectorOption(account.getMailCode());
     }
 
+    public void setLoanClassCode(Account account) {
+        Pages.addAccountPage().clickLoanClassCodeSelectorButton();
+        List<String> listOfLoanClassCode = Pages.addAccountPage().getLoanClassCodeList();
+
+        Assert.assertTrue(listOfLoanClassCode.size() > 0, "There are no 'Loan Class Code' options available");
+        if (account.getLoanClassCode() == null) {
+            account.setLoanClassCode(listOfLoanClassCode.get(new Random().nextInt(listOfLoanClassCode.size())).trim());
+        }
+        Pages.addAccountPage().clickLoanClassCodeSelectorOption(account.getLoanClassCode());
+    }
+
+    public void setPaymentAmountType(Account account) {
+        Pages.addAccountPage().clickPaymentAmountTypeSelectorButton();
+        List<String> listOfPaymentAmountType = Pages.addAccountPage().getPaymentAmountTypeList();
+
+        Assert.assertTrue(listOfPaymentAmountType.size() > 0, "There are no 'Payment Amount' options available");
+        if (account.getPaymentAmountType() == null) {
+            account.setPaymentAmountType(listOfPaymentAmountType.get(new Random().nextInt(listOfPaymentAmountType.size())).trim());
+        }
+        Pages.addAccountPage().clickPaymentAmountTypeSelectorOption(account.getPaymentAmountType());
+    }
+
+    public void setPaymentFrequency(Account account) {
+        Pages.addAccountPage().clickPaymentFrequencySelectorButton();
+        List<String> listOfPaymentFrequency = Pages.addAccountPage().getPaymentFrequencyList();
+
+        Assert.assertTrue(listOfPaymentFrequency.size() > 0, "There are no 'Payment Frequency' options available");
+        if (account.getPaymentFrequency() == null) {
+            account.setPaymentFrequency(listOfPaymentFrequency.get(new Random().nextInt(listOfPaymentFrequency.size())).trim());
+        }
+        Pages.addAccountPage().clickPaymentFrequencySelectorOption(account.getPaymentFrequency());
+    }
+
+    public void setInterestMethod(Account account) {
+        Pages.addAccountPage().clickInterestMethodSelectorButton();
+        List<String> listOfInterestMethod = Pages.addAccountPage().getInterestMethodList();
+
+        Assert.assertTrue(listOfInterestMethod.size() > 0, "There are no 'Interest Method' options available");
+        if (account.getInterestMethod() == null) {
+            account.setInterestMethod(listOfInterestMethod.get(new Random().nextInt(listOfInterestMethod.size())).trim());
+        }
+        Pages.addAccountPage().clickInterestMethodSelectorOption(account.getInterestMethod());
+    }
+
+    public void setDaysBaseYearBase(Account account) {
+        Pages.addAccountPage().clickDaysBaseYearBaseSelectorButton();
+        List<String> listOfDaysBaseYearBase = Pages.addAccountPage().getDaysBaseYearBaseList();
+
+        Assert.assertTrue(listOfDaysBaseYearBase.size() > 0, "There are no 'Days Base/Year Base' options available");
+        if (account.getDaysBaseYearBase() == null) {
+            account.setDaysBaseYearBase(listOfDaysBaseYearBase.get(new Random().nextInt(listOfDaysBaseYearBase.size())).trim());
+        }
+        Pages.addAccountPage().clickDaysBaseYearBaseSelectorOption(account.getDaysBaseYearBase());
+    }
+
+    public void setRateChangeFrequency(Account account) {
+        Pages.addAccountPage().clickRateChangeFrequencySelectorButton();
+        List<String> listOfRateChangeFrequency = Pages.addAccountPage().getRateChangeFrequencyList();
+
+        Assert.assertTrue(listOfRateChangeFrequency.size() > 0, "There are no 'Rate Change Frequency' options available");
+        if (account.getRateChangeFrequency() == null) {
+            account.setRateChangeFrequency(listOfRateChangeFrequency.get(new Random().nextInt(listOfRateChangeFrequency.size())).trim());
+        }
+        Pages.addAccountPage().clickRateChangeFrequencySelectorOption(account.getRateChangeFrequency());
+    }
+
     public String getDateOpenedValue(Account account) {
         String dateOpened = Pages.addAccountPage().getDateOpened();
 
@@ -571,6 +660,27 @@ public class CreateAccount {
             dateOpened = Pages.addAccountPage().getDateOpened();
         }
         return dateOpened;
+    }
+
+    public void disableCycleLoanSwitch() {
+        if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("yes")) {
+            Pages.addAccountPage().clickCycleLoanSwitch();
+            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        }
+    }
+
+    public void disableLocPaymentRecalculationFlagValueSwitch() {
+        if (Pages.addAccountPage().getLocPaymentRecalculationFlagValue().equalsIgnoreCase("yes")) {
+            Pages.addAccountPage().clickLocPaymentRecalculationFlagValue();
+            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        }
+    }
+
+    public void disableAdjustableRateSwitch() {
+        if (Pages.addAccountPage().getAdjustableRateValue().equalsIgnoreCase("yes")) {
+            Pages.addAccountPage().clickAdjustableRate();
+            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        }
     }
 
     /**

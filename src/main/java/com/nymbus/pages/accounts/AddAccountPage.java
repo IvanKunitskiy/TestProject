@@ -62,6 +62,19 @@ public class AddAccountPage extends PageTools {
     private final By dateOfFirstDeposit = By.xpath("//input[@id='datefirstdeposit']");
     private final By autoRenewableSwitch = By.xpath("//dn-switch[@id='autorenewablecode']");
     private final By autoRenewableSwitchValue = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span");
+    private final By paymentAmount = By.xpath("//input[@data-test-id='field-paymentamount']");
+    private final By cycleLoanValue = By.xpath("//dn-switch[@id='cycleloan']/div/div/span[2]");
+    private final By cycleLoanSwitch = By.xpath("//dn-switch[@id='cycleloan']");
+    private final By nextPaymentBilledDueDate = By.xpath("//input[@data-test-id='field-nextduedate']");
+    private final By paymentBilledLeadDays = By.xpath("//input[@data-test-id='field-noticedays']");
+    private final By currentEffectiveRate = By.xpath("//input[@data-test-id='field-currenteffectiverate']");
+    private final By term = By.xpath("//input[@data-test-id='field-termofloanmonths']");
+    private final By locPaymentRecalculationFlag = By.xpath("//dn-switch[@id='locpaymentrecalc']");
+    private final By locPaymentRecalculationFlagValue = By.xpath("//dn-switch[@id='locpaymentrecalc']/div/div/span[2]");
+    private final By adjustableRate = By.xpath("//dn-switch[@id='adjustablerate_checkbox']");
+    private final By adjustableRateValue = By.xpath("//dn-switch[@id='adjustablerate_checkbox']/div/div/span[1]");
+    private final By nextRateChangeDate = By.xpath("//input[@id='armdatenextirchange']");
+    private final By escrowPayment = By.xpath("//input[@data-test-id='field-escrowpayment']");
 
     /**
      * Account holders and signers
@@ -81,6 +94,10 @@ public class AddAccountPage extends PageTools {
     private final By currentOfficerSelectorButton = By.xpath("//div[@data-test-id='field-officer']");
     private final By currentOfficerList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private final By currentOfficerSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private final By originatingOfficerSelectorButton = By.xpath("//div[@data-test-id='field-originatingOfficer']");
+    private final By originatingOfficerList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By originatingOfficerSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
     private final By callClassCodeSelectorButton = By.xpath("//div[@data-test-id='field-callclasscode']");
     private final By callClassCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
@@ -134,9 +151,54 @@ public class AddAccountPage extends PageTools {
     private final By mailCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private final By mailCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
 
+    private final By loanClassCodeSelectorButton = By.xpath("//div[@id='classtype']");
+    private final By loanClassCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By loanClassCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
+
+    private final By accountTypeSelectorButton = By.xpath("//div[@id='customertype']");
+    private final By accountTypeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By accountTypeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
+
+    private final By paymentAmountTypeSelectorButton = By.xpath("//div[@id='paymenttypefornonclass1']");
+    private final By paymentAmountTypeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By paymentAmountTypeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
+
+    private final By paymentFrequencySelectorButton = By.xpath("//div[@id='principalpaymentfrequencycode']");
+    private final By paymentFrequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By paymentFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
+
+    private final By interestMethodSelectorButton = By.xpath("//div[@id='interestmethod']");
+    private final By interestMethodList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By interestMethodSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
+
+    private final By daysBaseYearBaseSelectorButton = By.xpath("//div[@id='daybaseforinterestrate']");
+    private final By daysBaseYearBaseList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By daysBaseYearBaseSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
+
+    private final By rateChangeFrequencySelectorButton = By.xpath("//div[@id='variableratechangefrequency']");
+    private final By rateChangeFrequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By rateChangeFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
+
     @Step("Wait for account holder name")
     public void waitForAccountHolderName() {
         waitForElementVisibility(accountHolderName);
+    }
+
+    @Step("Click the 'Account Type' option")
+    public void clickAccountTypeSelectorOption(String accountTypeOption) {
+        waitForElementClickable(accountTypeSelectorOption, accountTypeOption);
+        click(accountTypeSelectorOption, accountTypeOption);
+    }
+
+    @Step("Returning list of 'Account Type' options")
+    public List<String> getAccountTypeList() {
+        return getElementsText(accountTypeList);
+    }
+
+    @Step("Click the 'Account Type' selector button")
+    public void clickAccountTypeSelectorButton() {
+        scrollToPlaceElementInCenter(accountTypeSelectorButton);
+        click(accountTypeSelectorButton);
     }
 
     @Step("Click the 'Discount reason' option")
@@ -341,6 +403,24 @@ public class AddAccountPage extends PageTools {
         typeWithoutWipe(dateOpenedValue, dateOpenedField);
     }
 
+    @Step("Set 'Next Payment Billed Due Date' value")
+    public void setNextPaymentBilledDueDate(String date) {
+        waitForElementClickable(nextPaymentBilledDueDate);
+        scrollToPlaceElementInCenter(nextPaymentBilledDueDate);
+        typeWithoutWipe("", nextPaymentBilledDueDate);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        typeWithoutWipe(date, nextPaymentBilledDueDate);
+    }
+
+    @Step("Set 'Next Rate Change Date' value")
+    public void setNextRateChangeDate(String date) {
+        waitForElementClickable(nextRateChangeDate);
+        scrollToPlaceElementInCenter(nextRateChangeDate);
+        typeWithoutWipe("", nextRateChangeDate);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        typeWithoutWipe(date, nextRateChangeDate);
+    }
+
     @Step("Set 'DBC ODP Opt In/Out Status Date' value")
     public void setOptInOutDateValue(String optInOutDateValue) {
         waitForElementVisibility(optInOutDateInputField);
@@ -454,6 +534,28 @@ public class AddAccountPage extends PageTools {
         scrollToPlaceElementInCenter(currentOfficerSelectorButton);
         waitForElementClickable(currentOfficerSelectorButton);
         click(currentOfficerSelectorButton);
+    }
+
+    @Step("Click the 'Originating Officer' option")
+    public void clickOriginatingOfficerSelectorOption(String originatingOfficerOption) {
+        waitForElementVisibility(originatingOfficerSelectorOption, originatingOfficerOption);
+        waitForElementClickable(originatingOfficerSelectorOption, originatingOfficerOption);
+        click(originatingOfficerSelectorOption, originatingOfficerOption);
+    }
+
+    @Step("Returning list of 'Originating Officer' options")
+    public List<String> getOriginatingOfficerList() {
+        waitForElementVisibility(originatingOfficerList);
+        waitForElementClickable(originatingOfficerList);
+        return getElementsText(originatingOfficerList);
+    }
+
+    @Step("Click the 'Originating Officer' selector button")
+    public void clickOriginatingOfficerSelectorButton() {
+        waitForElementVisibility(originatingOfficerSelectorButton);
+        scrollToPlaceElementInCenter(originatingOfficerSelectorButton);
+        waitForElementClickable(originatingOfficerSelectorButton);
+        click(originatingOfficerSelectorButton);
     }
 
     @Step("Returning the 'Address' value")
@@ -874,6 +976,162 @@ public class AddAccountPage extends PageTools {
         click(mailCodeSelectorButton);
     }
 
+    @Step("Click the 'Loan Class Code' selector button")
+    public void clickLoanClassCodeSelectorOption(String loanClassCodeOption) {
+        waitForElementVisibility(loanClassCodeSelectorOption,  loanClassCodeOption);
+        waitForElementClickable(loanClassCodeSelectorOption,  loanClassCodeOption);
+        click(loanClassCodeSelectorOption,  loanClassCodeOption);
+    }
+
+    @Step("Returning list of 'Loan Class Code' options")
+    public List<String> getLoanClassCodeList() {
+        waitForElementVisibility(loanClassCodeList);
+        waitForElementClickable(loanClassCodeList);
+        return getElementsText(loanClassCodeList);
+    }
+
+    @Step("Click the 'Loan Class Code' selector button")
+    public void clickLoanClassCodeSelectorButton() {
+        waitForElementVisibility(loanClassCodeSelectorButton);
+        scrollToPlaceElementInCenter(loanClassCodeSelectorButton);
+        waitForElementClickable(loanClassCodeSelectorButton);
+        click(loanClassCodeSelectorButton);
+    }
+
+    @Step("Click the 'Payment Amount Type' selector button")
+    public void clickPaymentAmountTypeSelectorOption(String paymentAmountTypeOption) {
+        waitForElementVisibility(paymentAmountTypeSelectorOption,  paymentAmountTypeOption);
+        waitForElementClickable(paymentAmountTypeSelectorOption,  paymentAmountTypeOption);
+        click(paymentAmountTypeSelectorOption,  paymentAmountTypeOption);
+    }
+
+    @Step("Returning list of 'Payment Amount Type' options")
+    public List<String> getPaymentAmountTypeList() {
+        waitForElementVisibility(paymentAmountTypeList);
+        waitForElementClickable(paymentAmountTypeList);
+        return getElementsText(paymentAmountTypeList);
+    }
+
+    @Step("Click the 'Payment Amount Type' selector button")
+    public void clickPaymentAmountTypeSelectorButton() {
+        waitForElementVisibility(paymentAmountTypeSelectorButton);
+        scrollToPlaceElementInCenter(paymentAmountTypeSelectorButton);
+        waitForElementClickable(paymentAmountTypeSelectorButton);
+        click(paymentAmountTypeSelectorButton);
+    }
+
+    @Step("Click the 'Payment Amount Type' selector button")
+    public void clickPaymentFrequencySelectorOption(String paymentFrequencyOption) {
+        waitForElementVisibility(paymentFrequencySelectorOption,  paymentFrequencyOption);
+        waitForElementClickable(paymentFrequencySelectorOption,  paymentFrequencyOption);
+        click(paymentFrequencySelectorOption,  paymentFrequencyOption);
+    }
+
+    @Step("Returning list of 'Payment Amount Type' options")
+    public List<String> getPaymentFrequencyList() {
+        waitForElementVisibility(paymentFrequencyList);
+        waitForElementClickable(paymentFrequencyList);
+        return getElementsText(paymentFrequencyList);
+    }
+
+    @Step("Click the 'Payment Amount Type' selector button")
+    public void clickPaymentFrequencySelectorButton() {
+        waitForElementVisibility(paymentFrequencySelectorButton);
+        scrollToPlaceElementInCenter(paymentFrequencySelectorButton);
+        waitForElementClickable(paymentFrequencySelectorButton);
+        click(paymentFrequencySelectorButton);
+    }
+
+    @Step("Click the 'Interest Method' selector button")
+    public void clickInterestMethodSelectorOption(String interestMethodOption) {
+        waitForElementVisibility(interestMethodSelectorOption, interestMethodOption);
+        waitForElementClickable(interestMethodSelectorOption, interestMethodOption);
+        click(interestMethodSelectorOption, interestMethodOption);
+    }
+
+    @Step("Returning list of 'Interest Method' options")
+    public List<String> getInterestMethodList() {
+        waitForElementVisibility(interestMethodList);
+        waitForElementClickable(interestMethodList);
+        return getElementsText(interestMethodList);
+    }
+
+    @Step("Click the 'Interest Method' selector button")
+    public void clickInterestMethodSelectorButton() {
+        waitForElementVisibility(interestMethodSelectorButton);
+        scrollToPlaceElementInCenter(interestMethodSelectorButton);
+        waitForElementClickable(interestMethodSelectorButton);
+        click(interestMethodSelectorButton);
+    }
+
+    @Step("Click the 'Days Base/Year Base' selector button")
+    public void clickDaysBaseYearBaseSelectorOption(String daysBaseYearBaseOption) {
+        waitForElementVisibility(daysBaseYearBaseSelectorOption, daysBaseYearBaseOption);
+        waitForElementClickable(daysBaseYearBaseSelectorOption, daysBaseYearBaseOption);
+        click(daysBaseYearBaseSelectorOption, daysBaseYearBaseOption);
+    }
+
+    @Step("Returning list of 'Days Base/Year Base' options")
+    public List<String> getDaysBaseYearBaseList() {
+        waitForElementVisibility(daysBaseYearBaseList);
+        waitForElementClickable(daysBaseYearBaseList);
+        return getElementsText(daysBaseYearBaseList);
+    }
+
+    @Step("Click the 'Days Base/Year Base' selector button")
+    public void clickDaysBaseYearBaseSelectorButton() {
+        waitForElementVisibility(daysBaseYearBaseSelectorButton);
+        scrollToPlaceElementInCenter(daysBaseYearBaseSelectorButton);
+        waitForElementClickable(daysBaseYearBaseSelectorButton);
+        click(daysBaseYearBaseSelectorButton);
+    }
+
+    @Step("Click the 'Rate Change Frequency' selector button")
+    public void clickRateChangeFrequencySelectorOption(String rateChangeFrequencyOption) {
+        waitForElementVisibility(rateChangeFrequencySelectorOption, rateChangeFrequencyOption);
+        waitForElementClickable(rateChangeFrequencySelectorOption, rateChangeFrequencyOption);
+        click(rateChangeFrequencySelectorOption, rateChangeFrequencyOption);
+    }
+
+    @Step("Returning list of 'Rate Change Frequency' options")
+    public List<String> getRateChangeFrequencyList() {
+        waitForElementVisibility(rateChangeFrequencyList);
+        waitForElementClickable(rateChangeFrequencyList);
+        return getElementsText(rateChangeFrequencyList);
+    }
+
+    @Step("Click the 'Rate Change Frequency' selector button")
+    public void clickRateChangeFrequencySelectorButton() {
+        waitForElementVisibility(rateChangeFrequencySelectorButton);
+        scrollToPlaceElementInCenter(rateChangeFrequencySelectorButton);
+        waitForElementClickable(rateChangeFrequencySelectorButton);
+        click(rateChangeFrequencySelectorButton);
+    }
+
+    @Step("Set 'Payment Amount' value")
+    public void setPaymentAmount(String value) {
+        waitForElementClickable(paymentAmount);
+        type(value, paymentAmount);
+    }
+
+    @Step("Set 'Term' value")
+    public void setTerm(String value) {
+        waitForElementClickable(term);
+        type(value, term);
+    }
+
+    @Step("Set 'Payment Billed Lead Days' value")
+    public void setPaymentBilledLeadDays(String value) {
+        waitForElementClickable(paymentBilledLeadDays);
+        type(value, paymentBilledLeadDays);
+    }
+
+    @Step("Set 'Current effective rate' value")
+    public void setCurrentEffectiveRate(String value) {
+        waitForElementClickable(currentEffectiveRate);
+        type(value, currentEffectiveRate);
+    }
+
     @Step("Click the 'Save' button")
     public void clickSaveAccountButton() {
         waitForElementVisibility(saveAccountButton);
@@ -887,5 +1145,44 @@ public class AddAccountPage extends PageTools {
         waitForElementVisibility(applySeasonalAddress);
         waitForElementClickable(applySeasonalAddress);
         return getElementText(applySeasonalAddress);
+    }
+
+    @Step("Get the 'Cycle Loan' value")
+    public String getCycleLoanValue() {
+        return getElementText(cycleLoanValue).trim();
+    }
+
+    @Step("Click the 'Cycle Loan' switch")
+    public void clickCycleLoanSwitch() {
+        waitForElementClickable(cycleLoanSwitch);
+        click(cycleLoanSwitch);
+    }
+
+    @Step("Get the 'LOC Payment Recalculation Flag' value")
+    public String getLocPaymentRecalculationFlagValue() {
+        return getElementText(locPaymentRecalculationFlagValue).trim();
+    }
+
+    @Step("Click the 'LOC Payment Recalculation Flag' switch")
+    public void clickLocPaymentRecalculationFlagValue() {
+        waitForElementClickable(locPaymentRecalculationFlag);
+        click(locPaymentRecalculationFlag);
+    }
+
+    @Step("Get the 'Adjustable Rate' value")
+    public String getAdjustableRateValue() {
+        return getElementText(adjustableRateValue).trim();
+    }
+
+    @Step("Click the 'Adjustable Rate' switch")
+    public void clickAdjustableRate() {
+        waitForElementClickable(adjustableRate);
+        scrollToPlaceElementInCenter(adjustableRate);
+        click(adjustableRate);
+    }
+
+    @Step("Get the 'Escrow payment' value")
+    public String getEscrowPaymentValue() {
+        return getElementAttributeValue("value", escrowPayment).replaceAll("[^0-9.]", "");
     }
 }

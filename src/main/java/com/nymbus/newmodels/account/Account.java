@@ -1,10 +1,15 @@
 package com.nymbus.newmodels.account;
 
+import com.nymbus.actions.loans.DaysBaseYearBase;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
+import com.nymbus.newmodels.account.loanaccount.InterestMethod;
+import com.nymbus.newmodels.account.loanaccount.LoanClassCode;
+import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.ProductType;
+import com.nymbus.newmodels.client.other.account.AccountType;
 import com.nymbus.newmodels.client.other.account.InterestFrequency;
 
 import java.sql.Timestamp;
@@ -20,6 +25,7 @@ public class Account {
     private String accountTitle;
     private String accountType;
     private String currentOfficer;
+    private String originatingOfficer;
     private String callClassCode;
     private String accountAnalysis;
     private String chargeOrAnalyze;
@@ -85,6 +91,38 @@ public class Account {
     private String dailyInterestAccrual;
     private String nextInterestPaymentAmount;
     private String minTerm;
+    private String loanClassCode;
+    private String paymentAmount;
+    private String paymentAmountType;
+    private String paymentFrequency;
+    private String currentEffectiveRate;
+    private String nextPaymentBilledDueDate;
+    private String interestMethod;
+    private String daysBaseYearBase;
+    private String paymentBilledLeadDays;
+    private String rateChangeFrequency;
+
+    public Account setLoanAccountData() {
+        Account account = new Account();
+
+        account.setAddNewOption("Account");
+        account.setAccountType(AccountType.INDIVIDUAL.getAccountType());
+        account.setProductType(ProductType.LOAN_ACCOUNT.getProductType());
+        account.setAccountNumber(Generator.genAccountNumber());
+        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
+        account.setLoanClassCode(LoanClassCode.COMMERCIAL_LOAN.getLoanClassCode());
+        account.setPaymentAmount("1001.00");
+        account.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
+        account.setPaymentFrequency(PaymentFrequency.MONTHLY.getPaymentFrequency());
+        account.setPaymentBilledLeadDays(String.valueOf(Generator.genInt(1, 30))); // less than number of days in Payment Frequency (e.g. Payment Frequency = Monthly, then range from 1 to 31)
+        account.setNextPaymentBilledDueDate(DateTime.getDateWithFormatPlusDays(account.getDateOpened(), "MM/dd/yyy", "MM/dd/yyy", 1));
+        account.setCurrentEffectiveRate(String.valueOf(10));
+        account.setInterestMethod(InterestMethod.SIMPLE_INTEREST.getInterestMethod());
+        account.setTerm(String.valueOf(12));
+        account.setDaysBaseYearBase(DaysBaseYearBase.DAY_YEAR_365_365.getDaysBaseYearBase());
+
+        return account;
+    }
 
     public Account setCdAccountData() {
         Account account = new Account();
@@ -848,5 +886,93 @@ public class Account {
             case "dev4":
                 return "12";
         }
+    }
+
+    public String getOriginatingOfficer() {
+        return originatingOfficer;
+    }
+
+    public void setOriginatingOfficer(String originatingOfficer) {
+        this.originatingOfficer = originatingOfficer;
+    }
+
+    public String getLoanClassCode() {
+        return loanClassCode;
+    }
+
+    public void setLoanClassCode(String loanClassCode) {
+        this.loanClassCode = loanClassCode;
+    }
+
+    public String getPaymentAmount() {
+        return paymentAmount;
+    }
+
+    public void setPaymentAmount(String paymentAmount) {
+        this.paymentAmount = paymentAmount;
+    }
+
+    public String getPaymentAmountType() {
+        return paymentAmountType;
+    }
+
+    public void setPaymentAmountType(String paymentAmountType) {
+        this.paymentAmountType = paymentAmountType;
+    }
+
+    public String getPaymentFrequency() {
+        return paymentFrequency;
+    }
+
+    public void setPaymentFrequency(String paymentFrequency) {
+        this.paymentFrequency = paymentFrequency;
+    }
+
+    public String getCurrentEffectiveRate() {
+        return currentEffectiveRate;
+    }
+
+    public void setCurrentEffectiveRate(String currentEffectiveRate) {
+        this.currentEffectiveRate = currentEffectiveRate;
+    }
+
+    public String getNextPaymentBilledDueDate() {
+        return nextPaymentBilledDueDate;
+    }
+
+    public void setNextPaymentBilledDueDate(String nextPaymentBilledDueDate) {
+        this.nextPaymentBilledDueDate = nextPaymentBilledDueDate;
+    }
+
+    public String getInterestMethod() {
+        return interestMethod;
+    }
+
+    public void setInterestMethod(String interestMethod) {
+        this.interestMethod = interestMethod;
+    }
+
+    public String getDaysBaseYearBase() {
+        return daysBaseYearBase;
+    }
+
+    public void setDaysBaseYearBase(String daysBaseYearBase) {
+        this.daysBaseYearBase = daysBaseYearBase;
+    }
+
+    public String getPaymentBilledLeadDays() {
+        return paymentBilledLeadDays;
+    }
+
+    public void setPaymentBilledLeadDays(String paymentBilledLeadDays) {
+        this.paymentBilledLeadDays = paymentBilledLeadDays;
+    }
+
+    public String getRateChangeFrequency() {
+        return rateChangeFrequency;
+    }
+
+    public void setRateChangeFrequency(String rateChangeFrequency) {
+        this.rateChangeFrequency = rateChangeFrequency;
     }
 }
