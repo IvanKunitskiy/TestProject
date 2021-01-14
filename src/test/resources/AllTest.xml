@@ -50,4 +50,10 @@
         </packages>
     </test>
 
+    <test name="Loans management">
+        <packages>
+            <package name="com.nymbus.frontoffice.loansmanagement.*"/>
+        </packages>
+    </test>
+
 </suite>

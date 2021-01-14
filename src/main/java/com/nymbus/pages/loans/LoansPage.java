@@ -13,4 +13,15 @@ public class LoansPage extends PageTools {
         waitForElementVisibility(loansPageHeader);
     }
 
+    /**
+     * Loan Product
+     */
+
+    private By viewAllLoanProductsLink = By.xpath("//a[text()='View all'][parent::node()/preceding-sibling::div[@class='header']/h2[text()='Loan Product']]");
+
+    @Step("Click the 'View all' loan products link")
+    public void clickViewAllLoanProductsLink() {
+        click(viewAllLoanProductsLink);
+    }
+
 }

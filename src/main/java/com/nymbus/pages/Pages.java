@@ -31,6 +31,9 @@ import com.nymbus.pages.clients.transfers.ViewTransferPage;
 import com.nymbus.pages.creditcards.CardsManagementPage;
 import com.nymbus.pages.journal.JournalDetailsPage;
 import com.nymbus.pages.journal.JournalPage;
+import com.nymbus.pages.loans.AddNewLoanProductPage;
+import com.nymbus.pages.loans.LoanProductOverviewPage;
+import com.nymbus.pages.loans.LoanProductPage;
 import com.nymbus.pages.loans.LoansPage;
 import com.nymbus.pages.modalwindow.*;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
@@ -103,6 +106,10 @@ public class Pages extends AllureLogger {
     private static AccountCommercialAnalysisPage accountCommercialAnalysisPage;
     private static CashierDefinedActionsPage cashierDefinedActionsPage;
     private static AlertMessageModalPage alertMessageModalPage;
+    private static LoanProductPage loanProductPage;
+    private static AddNewLoanProductPage addNewLoanProductPage;
+    private static LoanProductOverviewPage loanProductOverviewPage;
+    private static AccountPaymentInfoPage accountPaymentInfoPage;
 
     /**
      * Modal Windows
@@ -741,4 +748,44 @@ public class Pages extends AllureLogger {
         }
         return alertMessageModalPage;
     }
+    /**
+     * This function return an instance of `LoanProductPage`
+     */
+    public static LoanProductPage loanProductPage(){
+        if (loanProductPage == null){
+            loanProductPage = new LoanProductPage();
+        }
+        return loanProductPage;
+    }
+
+    /**
+     * This function return an instance of `AddNewLoanProductPage`
+     */
+    public static AddNewLoanProductPage addNewLoanProductPage(){
+        if (addNewLoanProductPage == null){
+            addNewLoanProductPage = new AddNewLoanProductPage();
+        }
+        return addNewLoanProductPage;
+    }
+
+    /**
+     * This function return an instance of `LoanProductOverviewPage`
+     */
+    public static LoanProductOverviewPage loanProductOverviewPage(){
+        if (loanProductOverviewPage == null){
+            loanProductOverviewPage = new LoanProductOverviewPage();
+        }
+        return loanProductOverviewPage;
+    }
+
+    /**
+     * This function return an instance of `AccountPaymentInfoPage`
+     */
+    public static AccountPaymentInfoPage accountPaymentInfoPage(){
+        if (accountPaymentInfoPage == null){
+            accountPaymentInfoPage = new AccountPaymentInfoPage();
+        }
+        return accountPaymentInfoPage;
+    }
+
 }

@@ -55,7 +55,7 @@ public class AccountMaintenanceActions {
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Product") >= 1,
                 "'Product' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("accounttype") >= 1,
-                "'accounttype' row count is incorrect!");
+                "'Account Type' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account Title") >= 1,
                 "'Account Title' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Current Officer") >= 1,
@@ -241,6 +241,50 @@ public class AccountMaintenanceActions {
                 "'IRA Distribution Code' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Apply Interest To") >= 1,
                 "'Apply Interest To' row count is incorrect!");
+    }
+
+    /**
+     * Loan account
+     */
+
+    public void verifyLoanAccountRecords() {
+        expandAllRows();
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account Type") >= 1,
+                "'Account Type' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Originating Officer") >= 1,
+                "'Originating Officer' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Current Officer") >= 1,
+                "'Current Officer' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Mail Code") >= 1,
+                "'Mail Code' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date Opened") >= 1,
+                "'Date Opened' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Bank Branch") >= 1,
+                "'Bank Branch' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Loan Class Code") >= 1,
+                "'Loan Class Code' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Payment amount") >= 1,
+                "'Payment Amount' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Payment Amount Type") >= 1,
+                "'Payment Amount Type' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Payment Frequency") >= 1,
+                "'Payment Frequency' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Next Payment Billed Due Date") >= 1,
+                "'Next Payment Billed Due Date' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Payment Billed Lead Days") >= 1,
+                "'Payment Billed Lead Days' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Current effective rate") >= 1,
+                "'Current effective rate' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest Method") >= 1,
+                "'Interest Method' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Days Base/Year Base") >= 1,
+                "'Days Base/Year Base' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Term (months)") >= 1,
+                "'Term (months)' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("LOC Payment Recalculation Flag") >= 1,
+                "'LOC Payment Recalculation Flag' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Cycle Loan") >= 1,
+                "'Cycle Loan' row count is incorrect!");
     }
 
     /**
