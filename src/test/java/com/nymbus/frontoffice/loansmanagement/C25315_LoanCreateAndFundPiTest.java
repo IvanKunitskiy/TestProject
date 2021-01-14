@@ -66,10 +66,7 @@ public class C25315_LoanCreateAndFundPiTest extends BaseTest {
 
         // Get escrow payment value for the loan product
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        Actions.loanProductOverviewActions().navigateToLoanProductOverviewPage();
-        Actions.loanProductOverviewActions().expandAllRows();
-        Pages.loanProductPage().clickLoanProductByName(loanProductName);
-        escrowPaymentValue = Double.parseDouble(Pages.loanProductOverviewPage().getEscrowPaymentValue());
+        escrowPaymentValue = Actions.loanProductOverviewActions().getLoanProductEscrowPaymentValue(loanProductName);
 
         // Set the product
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));

@@ -57,4 +57,12 @@ public class LoanProductOverviewActions {
         }
     }
 
+    public double getLoanProductEscrowPaymentValue(String productName) {
+        navigateToLoanProductOverviewPage();
+        expandAllRows();
+        Pages.loanProductPage().clickLoanProductByName(productName);
+
+        return Double.parseDouble(Pages.loanProductOverviewPage().getEscrowPaymentValue());
+    }
+
 }
