@@ -35,7 +35,6 @@ public class C25323_LoanCreateAndFundPrincipalAndInterestTest extends BaseTest {
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
-    private double escrowPaymentValue;
 
     @BeforeMethod
     public void preCondition() {
@@ -64,14 +63,6 @@ public class C25323_LoanCreateAndFundPrincipalAndInterestTest extends BaseTest {
 
         // Check that a Loan product exist with the following editable fields (Readonly? = NO) and create if not exist
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
-        Actions.loginActions().doLogOut();
-
-        // Get escrow payment value for the loan product
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        Actions.loanProductOverviewActions().navigateToLoanProductOverviewPage();
-        Actions.loanProductOverviewActions().expandAllRows();
-        Pages.loanProductPage().clickLoanProductByName(loanProductName);
-        escrowPaymentValue = Double.parseDouble(Pages.loanProductOverviewPage().getEscrowPaymentValue());
 
         // Set the product
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
@@ -176,6 +167,7 @@ public class C25323_LoanCreateAndFundPrincipalAndInterestTest extends BaseTest {
         Assert.assertEquals(Pages.accountPaymentInfoPage().getPiPaymentsFrequency(), loanAccount.getPaymentFrequency(),
                 "'Frequency' is not valid");
         Assert.assertEquals(Pages.accountPaymentInfoPage().getPiPaymentsAmount(), "", "'Amount' is not valid");
-//        Assert.assertEquals(, "Interest Only", "'Active Payment Amount' is not valid");
+        Assert.assertEquals(Pages.accountPaymentInfoPage().getActivePaymentAmountInterestOnly(), "Interest Only",
+                "'Active Payment Amount' is not valid");
     }
 }
