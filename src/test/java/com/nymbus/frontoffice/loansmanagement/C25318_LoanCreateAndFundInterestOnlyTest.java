@@ -6,6 +6,7 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
 import com.nymbus.newmodels.account.product.RateType;
@@ -26,7 +27,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Petro")
-public class C25315_LoanCreateAndFundPiTest extends BaseTest {
+public class C25318_LoanCreateAndFundInterestOnlyTest extends BaseTest {
 
     private Account loanAccount;
     private IndividualClient client;
@@ -34,7 +35,6 @@ public class C25315_LoanCreateAndFundPiTest extends BaseTest {
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
-    private double escrowPaymentValue;
 
     @BeforeMethod
     public void preCondition() {
@@ -49,6 +49,7 @@ public class C25315_LoanCreateAndFundPiTest extends BaseTest {
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
+        loanAccount.setPaymentAmountType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
 
         // Set transaction data
         miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());
@@ -62,11 +63,6 @@ public class C25315_LoanCreateAndFundPiTest extends BaseTest {
 
         // Check that a Loan product exist with the following editable fields (Readonly? = NO) and create if not exist
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
-        Actions.loginActions().doLogOut();
-
-        // Get escrow payment value for the loan product
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        escrowPaymentValue = Actions.loanProductOverviewActions().getLoanProductEscrowPaymentValue(loanProductName);
 
         // Set the product
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
@@ -82,9 +78,9 @@ public class C25315_LoanCreateAndFundPiTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C25315, Loan - Create and Fund: P&I (bill)")
+    @Test(description = "C25318, Loan - Create and Fund: Interest Only (bill)")
     @Severity(SeverityLevel.CRITICAL)
-    public void loanCreateAndFundPi() {
+    public void loanCreateAndFundInterestOnly() {
 
         logInfo("Step 1: Log in to the system");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -132,8 +128,8 @@ public class C25315_LoanCreateAndFundPiTest extends BaseTest {
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
-        logInfo("Step 9: Look through the records on Maintenance History page "
-                + "and check that all fields that were filled in during account creation are reported in the account Maintenance History");
+        logInfo("Step 9: Look through the records on Maintenance History page and check that all fields " +
+                "that were filled in during account creation are reported in the account Maintenance History");
         AccountActions.accountMaintenanceActions().verifyLoanAccountRecords();
 
         logInfo("Step 10: Go to the 'Teller' screen");
@@ -146,6 +142,7 @@ public class C25315_LoanCreateAndFundPiTest extends BaseTest {
         Actions.transactionActions().setMiscDebitSource(miscDebitSource, 0);
         Actions.transactionActions().setMiscCreditDestination(miscCreditDestination, 0);
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
+        Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
 
         logInfo("Step 13: Close Transaction Receipt popup");
         Pages.tellerPage().closeModal();
@@ -170,10 +167,8 @@ public class C25315_LoanCreateAndFundPiTest extends BaseTest {
                 "'Payment Type' is not valid");
         Assert.assertEquals(Pages.accountPaymentInfoPage().getPiPaymentsFrequency(), loanAccount.getPaymentFrequency(),
                 "'Frequency' is not valid");
-        double paymentAmount = Double.parseDouble(loanAccount.getPaymentAmount());
-        double actualPaymentAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getPiPaymentsAmount());
-        Assert.assertEquals(actualPaymentAmount, paymentAmount - escrowPaymentValue, "'Amount' is not valid");
-        double activePaymentAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getActivePaymentAmount());
-        Assert.assertEquals(activePaymentAmount, paymentAmount, "'Active Payment Amount' is not valid");
+        Assert.assertEquals(Pages.accountPaymentInfoPage().getPiPaymentsAmount(), "", "'Amount' is not valid");
+        Assert.assertEquals(Pages.accountPaymentInfoPage().getActivePaymentAmountInterestOnly(), "Interest Only",
+                "'Active Payment Amount' is not valid");
     }
 }

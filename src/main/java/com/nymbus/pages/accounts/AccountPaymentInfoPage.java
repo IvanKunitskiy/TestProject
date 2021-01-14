@@ -46,9 +46,15 @@ public class AccountPaymentInfoPage extends PageTools {
      */
 
     private final By activePaymentAmount = By.xpath("//input[@data-test-id='field-paymentamount']");
+    private final By activePaymentAmountInterestOnly = By.xpath("//div[@ui-view='paymentHistory']//div[@ng-if='accountData && otherPaymentField']/div[2]");
 
-    @Step("Get 'Pi Payments Amount' value")
+    @Step("Get 'Active Payment Amount' value")
     public String getActivePaymentAmount() {
         return getElementAttributeValue("value", activePaymentAmount).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Active Payment Amount' interest only value")
+    public String getActivePaymentAmountInterestOnly() {
+        return getElementText(activePaymentAmountInterestOnly).trim();
     }
 }
