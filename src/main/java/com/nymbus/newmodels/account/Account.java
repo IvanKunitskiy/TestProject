@@ -101,6 +101,7 @@ public class Account {
     private String daysBaseYearBase;
     private String paymentBilledLeadDays;
     private String rateChangeFrequency;
+    private String cycleCode;
 
     public Account setLoanAccountData() {
         Account account = new Account();
@@ -974,5 +975,13 @@ public class Account {
 
     public void setRateChangeFrequency(String rateChangeFrequency) {
         this.rateChangeFrequency = rateChangeFrequency;
+    }
+
+    public String getCycleCode() {
+        return cycleCode;
+    }
+
+    public void setCycleCode(String cycleCode) {
+        this.cycleCode = cycleCode;
     }
 }

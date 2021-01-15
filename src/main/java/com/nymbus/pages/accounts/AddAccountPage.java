@@ -179,6 +179,10 @@ public class AddAccountPage extends PageTools {
     private final By rateChangeFrequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private final By rateChangeFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
 
+    private final By cycleCodeSelectorButton = By.xpath("//div[@id='cyclecode']");
+    private final By cycleCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By cycleCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
+
     @Step("Wait for account holder name")
     public void waitForAccountHolderName() {
         waitForElementVisibility(accountHolderName);
@@ -1109,6 +1113,28 @@ public class AddAccountPage extends PageTools {
         click(rateChangeFrequencySelectorButton);
     }
 
+    @Step("Click the 'Cycle Code' selector button")
+    public void clickCycleCodeSelectorOption(String cycleCodeOption) {
+        waitForElementVisibility(cycleCodeSelectorOption, cycleCodeOption);
+        waitForElementClickable(cycleCodeSelectorOption, cycleCodeOption);
+        click(cycleCodeSelectorOption, cycleCodeOption);
+    }
+
+    @Step("Returning list of 'Cycle Code' options")
+    public List<String> getCycleCodeList() {
+        waitForElementVisibility(cycleCodeList);
+        waitForElementClickable(cycleCodeList);
+        return getElementsText(cycleCodeList);
+    }
+
+    @Step("Click the 'Cycle Code' selector button")
+    public void clickCycleCodeSelectorButton() {
+        waitForElementVisibility(cycleCodeSelectorButton);
+        scrollToPlaceElementInCenter(cycleCodeSelectorButton);
+        waitForElementClickable(cycleCodeSelectorButton);
+        click(cycleCodeSelectorButton);
+    }
+
     @Step("Set 'Payment Amount' value")
     public void setPaymentAmount(String value) {
         waitForElementClickable(paymentAmount);
@@ -1118,18 +1144,21 @@ public class AddAccountPage extends PageTools {
     @Step("Set 'Term' value")
     public void setTerm(String value) {
         waitForElementClickable(term);
+        scrollToPlaceElementInCenter(term);
         type(value, term);
     }
 
     @Step("Set 'Payment Billed Lead Days' value")
     public void setPaymentBilledLeadDays(String value) {
         waitForElementClickable(paymentBilledLeadDays);
+        scrollToPlaceElementInCenter(paymentBilledLeadDays);
         type(value, paymentBilledLeadDays);
     }
 
     @Step("Set 'Current effective rate' value")
     public void setCurrentEffectiveRate(String value) {
         waitForElementClickable(currentEffectiveRate);
+        scrollToPlaceElementInCenter(currentEffectiveRate);
         type(value, currentEffectiveRate);
     }
 
@@ -1156,6 +1185,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Cycle Loan' switch")
     public void clickCycleLoanSwitch() {
         waitForElementClickable(cycleLoanSwitch);
+        scrollToPlaceElementInCenter(cycleLoanSwitch);
         click(cycleLoanSwitch);
     }
 
@@ -1167,6 +1197,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'LOC Payment Recalculation Flag' switch")
     public void clickLocPaymentRecalculationFlagValue() {
         waitForElementClickable(locPaymentRecalculationFlag);
+        scrollToPlaceElementInCenter(locPaymentRecalculationFlag);
         click(locPaymentRecalculationFlag);
     }
 
