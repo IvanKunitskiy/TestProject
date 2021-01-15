@@ -35,6 +35,7 @@ public class C25323_LoanCreateAndFundPrincipalAndInterestTest extends BaseTest {
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
+    private double escrowPaymentValue;
 
     @BeforeMethod
     public void preCondition() {
@@ -63,6 +64,11 @@ public class C25323_LoanCreateAndFundPrincipalAndInterestTest extends BaseTest {
 
         // Check that a Loan product exist with the following editable fields (Readonly? = NO) and create if not exist
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
+        Actions.loginActions().doLogOut();
+
+        // Get escrow payment value for the loan product
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        escrowPaymentValue = Actions.loanProductOverviewActions().getLoanProductEscrowPaymentValue(loanProductName);
 
         // Set the product
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
@@ -166,8 +172,10 @@ public class C25323_LoanCreateAndFundPrincipalAndInterestTest extends BaseTest {
                 "'Payment Type' is not valid");
         Assert.assertEquals(Pages.accountPaymentInfoPage().getPiPaymentsFrequency(), loanAccount.getPaymentFrequency(),
                 "'Frequency' is not valid");
-        Assert.assertEquals(Pages.accountPaymentInfoPage().getPiPaymentsAmount(), "", "'Amount' is not valid");
-        Assert.assertEquals(Pages.accountPaymentInfoPage().getActivePaymentAmountInterestOnly(), "Interest Only",
-                "'Active Payment Amount' is not valid");
+        double paymentAmount = Double.parseDouble(loanAccount.getPaymentAmount());
+        double actualPaymentAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getPiPaymentsAmount());
+        Assert.assertEquals(actualPaymentAmount, paymentAmount - escrowPaymentValue, "'Amount' is not valid");
+        double activePaymentAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getActivePaymentAmount());
+        Assert.assertEquals(activePaymentAmount, paymentAmount, "'Active Payment Amount' is not valid");
     }
 }
