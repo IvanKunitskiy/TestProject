@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Dmytro")
-public class C22733_CDTWithoutTellerSessionCommitMoneyOrderWithFee extends BaseTest {
+public class C22754_CDTWithoutTellerSessionCommitMoneyOrderWithFeeWaived extends BaseTest {
     private Transaction transaction;
     private Transaction savingsTransaction;
     private BalanceDataForCHKAcc expectedBalanceData;
@@ -140,10 +140,11 @@ public class C22733_CDTWithoutTellerSessionCommitMoneyOrderWithFee extends BaseT
             boolean isCreated = Actions.cashierDefinedActions().createMoneyOrderFromSavings();
             Assert.assertTrue(isCreated, "CDT template not created");
         }
+
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C22733, CDT without Teller Session - Commit money order with fee")
+    @Test(description = "C22754, CDT without Teller Session - Commit money order with fee waived")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
         logInfo("Step 1: Log in to Nymbus as user from preconditions");
@@ -154,14 +155,15 @@ public class C22733_CDTWithoutTellerSessionCommitMoneyOrderWithFee extends BaseT
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
 
         logInfo("Step 3: Search for template from preconditions and select it");
-        logInfo("Step 4: Specify account from precondition in sources line account number field;\n" +
+        logInfo("Step 4: Click on [Waive Fee] toggle button");
+        logInfo("Step 5: Specify account from precondition in sources line account number field;\n" +
                 "Set transaction amount\n" +
-                "Specify Payee Info required fields: Name (any value) Payee Type (e.g. 'Person')");
+                "Specify Payee Info required fields: Name (any value) Payee Type (e.g. 'Person')')");
         Actions.cashierDefinedActions().createOfficialTransaction(CashierDefinedTransactions.MONEY_ORDER_FROM_SAVINGS,
-                transaction, false, name);
+                transaction, true, name);
         expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
 
-        logInfo("Step 5: Click [Commit Transaction] button and click [Verify] button");
+        logInfo("Step 6: Click [Commit Transaction] button and click [Verify] button");
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
         Assert.assertTrue(Pages.confirmModalPage().checkReprintButton(), "Reprint check is not visible");
@@ -169,15 +171,15 @@ public class C22733_CDTWithoutTellerSessionCommitMoneyOrderWithFee extends BaseT
         check.setCheckNumber(checkNumber);
         fullCheck.setCheckNumber(checkNumber);
 
-        logInfo("Step 6: Click [Yes] button on a \"Reprint check #X?\" popup");
+        logInfo("Step 7: Click [Yes] button on a \"Reprint check #X?\" popup");
         Pages.confirmModalPage().clickYes();
         Assert.assertTrue(Pages.confirmModalPage().checkIsCheck(), "Is check is not visible");
 
-        logInfo("Step 7: Click [Yes] button on a \"Is check #X still usable?\" popup:");
+        logInfo("Step 8: Click [Yes] button on a \"Is check #X still usable?\" popup:");
         Pages.confirmModalPage().clickYes();
         Assert.assertTrue(Pages.confirmModalPage().checkReprintButton(), "Reprint check is not visible");
 
-        logInfo("Step 8: Click [NO] on \"Reprint check #X?\" popup");
+        logInfo("Step 9: Click [NO] on \"Reprint check #X?\" popup");
         Pages.confirmModalPage().clickNo();
         Assert.assertEquals(Pages.cashierPage().getPayeeName(), name, "Name doesn't match");
         SelenideTools.openUrlInNewWindow(Constants.URL.substring(0, Constants.URL.indexOf("com") + 3)
@@ -186,7 +188,7 @@ public class C22733_CDTWithoutTellerSessionCommitMoneyOrderWithFee extends BaseT
         Assert.assertEquals(number, checkAccountNumber + 1, "Number doesn't match");
         SelenideTools.closeCurrentTab();
 
-        logInfo("Step 9: Click [Commit] again and click [Verify] button;\n" +
+        logInfo("Step 10: Click [Commit] again and click [Verify] button;\n" +
                 "Click [No] button on \"Reprint check #X?\" popup");
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
@@ -197,7 +199,7 @@ public class C22733_CDTWithoutTellerSessionCommitMoneyOrderWithFee extends BaseT
         number = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());
         Assert.assertEquals(number, checkAccountNumber + 1, "Number doesn't match");
 
-        logInfo("Step 10: Go to account used in DEBIT item and verify its:\n" +
+        logInfo("Step 11: Go to account used in DEBIT item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
         Actions.transactionActions().goToTellerPage();
@@ -209,21 +211,21 @@ public class C22733_CDTWithoutTellerSessionCommitMoneyOrderWithFee extends BaseT
         Assert.assertEquals(actualSavBalanceData.getAvailableBalance(), expectedSavingsBalanceData.getAvailableBalance(),
                 "Available balance doesn't match!");
 
-        logInfo("Step 11: Open account on the Transactions tab and verify the committed transaction");
+        logInfo("Step 12: Open account on the Transactions tab and verify the committed transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
         savingsAccTransactionData.setBalance(returnTransactionAmount);
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getSecondTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
 
-        logInfo("Step 12: Go to Back Office -> Official Checks and find generated Check from the related transaction\n" +
+        logInfo("Step 13: Go to Back Office -> Official Checks and find generated Check from the related transaction\n" +
                 "Verify Check Number, Purchaser, PAYEE, Date Issued, Initials, Check Type, Status, Amount fields");
         Pages.aSideMenuPage().clickBackOfficeMenuItem();
         Pages.backOfficePage().clickOfficialChecks();
         Check checkFromBankOffice = Actions.backOfficeActions().getCheckFromBankOffice(checkNumber);
         Assert.assertEquals(checkFromBankOffice, check, "Check doesn't match");
 
-        logInfo("Step 13: Open check on Details and verify the following fields: Status, Check Number, " +
+        logInfo("Step 14: Open check on Details and verify the following fields: Status, Check Number, " +
                 "Remitter, Phone Number, Document Type, Document ID, Payee, Check Type, Purchase Account, " +
                 "Branch, Initials, Check Amount, Fee, Date Issued, Cash Purchased");
         Pages.checkPage().clickToCheck(checkNumber);
@@ -231,4 +233,6 @@ public class C22733_CDTWithoutTellerSessionCommitMoneyOrderWithFee extends BaseT
         Assert.assertEquals(fullCheckFromBankOffice, fullCheck, "Check details doesn't match");
 
     }
+
+
 }

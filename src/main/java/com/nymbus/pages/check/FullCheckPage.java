@@ -51,7 +51,7 @@ public class FullCheckPage extends PageTools {
     @Step("Get 'Amount' text")
     public String getAmount() {
         waitForElementVisibility(amount);
-        return getElementText(amount);
+        return getDisabledElementAttributeValue("value",amount);
     }
 
     @Step("Get 'Status' text")
@@ -63,37 +63,37 @@ public class FullCheckPage extends PageTools {
     @Step("Get 'Date' text")
     public String getDate(){
         waitForElementVisibility(date);
-        return getElementText(date);
+        return getDisabledElementAttributeValue("text",date);
     }
 
     @Step("Get 'Check number' text")
     public String getCheckNumber(){
         waitForElementVisibility(checkNumber);
-        return getElementText(checkNumber);
+        return getDisabledElementAttributeValue("text",checkNumber);
     }
 
     @Step("Get 'Remitter' text")
     public String getRemitter(){
         waitForElementVisibility(remitter);
-        return getElementText(remitter);
+        return getDisabledElementAttributeValue("text",remitter);
     }
 
     @Step("Get 'Phone' text")
     public String getPhone(){
         waitForElementVisibility(phone);
-        return getElementText(phone);
+        return getDisabledElementAttributeValue("text",phone);
     }
 
     @Step("Get 'Document type' text")
     public String getDocumentType(){
         waitForElementVisibility(documentType);
-        return getElementText(documentType);
+        return getDisabledElementAttributeValue("text",documentType);
     }
 
     @Step("Get 'Document Id' text")
     public String getDocumentID(){
         waitForElementVisibility(documentID);
-        return getElementText(documentID);
+        return getDisabledElementAttributeValue("text",documentID);
     }
 
     @Step("Get 'Branch' text")
@@ -105,7 +105,7 @@ public class FullCheckPage extends PageTools {
     @Step("Get 'Fee' text")
     public String getFee(){
         waitForElementVisibility(fee);
-        return getElementText(fee);
+        return getDisabledElementAttributeValue("value",fee);
     }
 
     @Step("Get 'Cash purchased' text")

@@ -110,8 +110,16 @@ public class CreateCDTPage extends PageTools {
     public void inputGLAccount(String number) {
         waitForElementVisibility(GLAccountInput);
         type(number, GLAccountInput);
-        waitForElementVisibility(accountType, number);
-        click(accountType, number);
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        boolean elementVisible = isElementVisible(accountType, number);
+        if (elementVisible){
+            waitForElementVisibility(accountType, number);
+            click(accountType, number);
+        } else {
+            type("0-0", GLAccountInput);
+            waitForElementVisibility(accountType, "0-0");
+            click(accountType, "0-0");
+        }
     }
 
     @Step("Input credit account")
