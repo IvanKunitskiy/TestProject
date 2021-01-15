@@ -177,9 +177,10 @@ public class C22753_CDTWithoutTellerSessionCommitOfficialCheckFromClientAccountW
 
         logInfo("Step 9: Click [NO] on \"Reprint check #X?\" popup");
         Pages.confirmModalPage().clickNo();
-        Assert.assertEquals(Pages.cashierPage().getPayeeName(), name, "Name doesn't match");
+        Assert.assertEquals(Pages.cashierPage().getPayeeName(), "John", "Name doesn't match");
         SelenideTools.openUrlInNewWindow(Constants.URL.substring(0,Constants.URL.indexOf("com")+3)
                 +"/settings/#/view/bank.data.officialcheck.control");
+        SelenideTools.switchToLastTab();
         int number = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());
         Assert.assertEquals( number, checkAccountNumber+1,"Number doesn't match");
         SelenideTools.closeCurrentTab();
