@@ -12,7 +12,8 @@ public enum ProductType {
     INCOMING_WIRE("incoming wire (g/l)"),
     OUTGOING_WIRE("outgoing wire (g/l)"),
     GL_TICKETS("g/l tickets"),
-    SAFE_DEPOSIT_BOX("Safe Deposit Box");
+    SAFE_DEPOSIT_BOX("Safe Deposit Box"),
+    LOAN_ACCOUNT("Loan Account");
 
     public final String productType;
 }

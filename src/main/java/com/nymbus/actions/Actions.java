@@ -9,6 +9,8 @@ import com.nymbus.actions.clients.ClientsSearchResultsPageActions;
 import com.nymbus.actions.clients.maintenance.MaintenanceHistoryPageActions;
 import com.nymbus.actions.clients.maintenance.MaintenancePageActions;
 import com.nymbus.actions.journal.JournalActions;
+import com.nymbus.actions.loans.AddNewLoanActions;
+import com.nymbus.actions.loans.LoanProductOverviewActions;
 import com.nymbus.actions.modalwindow.DebitCardModalWindowActions;
 import com.nymbus.actions.settings.CashDrawerAction;
 import com.nymbus.actions.settings.ProductsActions;
@@ -41,6 +43,8 @@ public class Actions {
     private static TellerBankBranchOverviewActions tellerBankBranchOverviewActions;
     private static CashierDefinedActions cashierDefinedActions;
     private static PrintChecksActions printChecksActions;
+    private static LoanProductOverviewActions loanProductOverviewActions;
+    private static AddNewLoanActions addNewLoanActions;
 
     /**
      * Modal Window Actions
@@ -240,5 +244,25 @@ public class Actions {
             printChecksActions = new PrintChecksActions();
         }
         return printChecksActions;
+    }
+
+    /**
+     * This function returns an instance of `LoanProductOverviewActions`
+     */
+    public static LoanProductOverviewActions loanProductOverviewActions() {
+        if (loanProductOverviewActions == null) {
+            loanProductOverviewActions = new LoanProductOverviewActions();
+        }
+        return loanProductOverviewActions;
+    }
+
+    /**
+     * This function returns an instance of `AddNewLoanActions`
+     */
+    public static AddNewLoanActions addNewLoanActions() {
+        if (addNewLoanActions == null) {
+            addNewLoanActions = new AddNewLoanActions();
+        }
+        return addNewLoanActions;
     }
 }

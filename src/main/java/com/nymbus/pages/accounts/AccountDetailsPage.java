@@ -8,13 +8,14 @@ import org.openqa.selenium.By;
 public class AccountDetailsPage extends PageTools {
 
     /**
-     * Tabs button
+     * Tab buttons
      */
     private By maintenanceTab = By.xpath("//a[contains(text(), 'Maintenance')]");
     private By transactionsTab = By.xpath("//a[contains(text(), 'Transactions')]");
     private By instructionsTab = By.xpath("//a[contains(text(), 'Instructions')]");
     private By detailsTab = By.xpath("//a[contains(text(), 'Details')]");
     private By commercialAnalysisTab = By.xpath("//a[contains(text(), 'Commercial Analysis')]");
+    private By paymentInfoTab = By.xpath("//a[contains(text(), 'Payment Info')]");
 
     /**
      * Account actions
@@ -781,6 +782,12 @@ public class AccountDetailsPage extends PageTools {
     public void clickCommercialAnalysisTab() {
         waitForElementClickable(commercialAnalysisTab);
         click(commercialAnalysisTab);
+    }
+
+    @Step("Click the 'Payment Info' tab")
+    public void clickPaymentInfoTab() {
+        waitForElementClickable(paymentInfoTab);
+        click(paymentInfoTab);
     }
 
     @Step("Is notification with text {0} visible")
