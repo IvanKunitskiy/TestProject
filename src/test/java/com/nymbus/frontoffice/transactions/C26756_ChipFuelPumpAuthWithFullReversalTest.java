@@ -36,7 +36,7 @@ import java.util.Map;
 
 @Epic("Frontoffice")
 @Feature("Transactions")
-@Owner("Dmytro")
+@Owner("Petro")
 public class C26756_ChipFuelPumpAuthWithFullReversalTest extends BaseTest {
 
     private IndividualClient client;
