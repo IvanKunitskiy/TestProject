@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -50,6 +51,7 @@ public class C25355_LoanCreateAndFundSimpleInterestTest extends BaseTest {
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         loanAccount.setPaymentAmountType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
+        loanAccount.setNextPaymentBilledDueDate(DateTime.getLocalDatePlusMonthsWithPatternAndLastDay(loanAccount.getDateOpened(), 1, "MM/dd/yyyy"));
 
         // Set transaction data
         miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());
@@ -113,7 +115,6 @@ public class C25355_LoanCreateAndFundSimpleInterestTest extends BaseTest {
         AccountActions.createAccount().enableCycleLoanSwitch();
         AccountActions.createAccount().setCycleCode(loanAccount);
         Pages.addAccountPage().setNextPaymentBilledDueDate(loanAccount.getNextPaymentBilledDueDate());
-//        Pages.addAccountPage().setPaymentBilledLeadDays(loanAccount.getPaymentBilledLeadDays());
         Pages.addAccountPage().setCurrentEffectiveRate(loanAccount.getCurrentEffectiveRate());
         AccountActions.createAccount().setInterestMethod(loanAccount);
         AccountActions.createAccount().disableAdjustableRateSwitch();
