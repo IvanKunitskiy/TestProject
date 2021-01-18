@@ -639,6 +639,17 @@ public class CreateAccount {
         Pages.addAccountPage().clickDaysBaseYearBaseSelectorOption(account.getDaysBaseYearBase());
     }
 
+    public void setCommitmentTypeAmt(Account account) {
+        Pages.addAccountPage().clickCommitmentTypeAmtSelectorButton();
+        List<String> listOfCommitmentTypeAmt = Pages.addAccountPage().getCommitmentTypeAmtList();
+
+        Assert.assertTrue(listOfCommitmentTypeAmt.size() > 0, "There are no 'Commitment type/amt' options available");
+        if (account.getCommitmentTypeAmt() == null) {
+            account.setCommitmentTypeAmt(listOfCommitmentTypeAmt.get(new Random().nextInt(listOfCommitmentTypeAmt.size())).trim());
+        }
+        Pages.addAccountPage().clickCommitmentTypeAmtSelectorOption(account.getCommitmentTypeAmt());
+    }
+
     public void setRateChangeFrequency(Account account) {
         Pages.addAccountPage().clickRateChangeFrequencySelectorButton();
         List<String> listOfRateChangeFrequency = Pages.addAccountPage().getRateChangeFrequencyList();
