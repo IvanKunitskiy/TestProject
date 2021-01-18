@@ -31,8 +31,9 @@ public class BackOfficeActions {
         check.setPurchaser(Pages.fullCheckPage().getPurchaser());
         check.setBranch(Pages.fullCheckPage().getBranch());
         check.setInitials(Pages.fullCheckPage().getInitials());
-        check.setAmount(Double.parseDouble(Pages.fullCheckPage().getAmount()));
-        check.setFee(Double.parseDouble(Pages.fullCheckPage().getFee()));
+        String amount = Pages.fullCheckPage().getAmount();
+        check.setAmount(Double.parseDouble(amount.substring(2)));
+        check.setFee(Double.parseDouble(Pages.fullCheckPage().getFee().substring(2)));
         check.setDate(Pages.fullCheckPage().getDate());
         check.setCashPurchased(Pages.fullCheckPage().getCashPurchased());
         return check;

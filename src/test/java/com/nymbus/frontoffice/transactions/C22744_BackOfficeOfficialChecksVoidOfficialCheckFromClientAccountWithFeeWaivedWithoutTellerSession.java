@@ -6,6 +6,7 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -147,12 +148,17 @@ public class C22744_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
         checkNumber = Pages.confirmModalPage().getReprintCheckNumber();
+        checkNumber = checkNumber.substring(0,checkNumber.length()-2);
         Pages.confirmModalPage().clickYes();
         Pages.confirmModalPage().clickYes();
         Pages.confirmModalPage().clickNo();
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
+        SelenideTools.sleep(10);
         Pages.confirmModalPage().clickNo();
+        SelenideTools.sleep(10);
+        Pages.confirmModalPage().clickNo();
+        SelenideTools.sleep(10);
         Actions.loginActions().doLogOut();
 
     }
