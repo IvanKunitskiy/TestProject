@@ -163,6 +163,36 @@ public class CreateAccount {
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
 
+    public void createLoanAccount(Account account) {
+        Pages.clientDetailsPage().clickAccountsTab();
+        setAddNewOption(account);
+        setProductType(account);
+        setProduct(account);
+        setAccountType(account);
+        Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        setOriginatingOfficer(account);
+        setCurrentOfficer(account);
+        setMailCode(account);
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
+        setBankBranch(account);
+        setLoanClassCode(account);
+        Pages.addAccountPage().setPaymentAmount(account.getPaymentAmount());
+        setPaymentAmountType(account);
+        setPaymentFrequency(account);
+        disableCycleLoanSwitch();
+        Pages.addAccountPage().setNextPaymentBilledDueDate(account.getNextPaymentBilledDueDate());
+        Pages.addAccountPage().setPaymentBilledLeadDays(account.getPaymentBilledLeadDays());
+        Pages.addAccountPage().setCurrentEffectiveRate(account.getCurrentEffectiveRate());
+        setInterestMethod(account);
+        disableAdjustableRateSwitch();
+        setDaysBaseYearBase(account);
+        Pages.addAccountPage().setTerm(account.getTerm());
+        setCommitmentTypeAmt(account);
+        disableLocPaymentRecalculationFlagValueSwitch();
+        Pages.addAccountPage().clickSaveAccountButton();
+        Pages.accountDetailsPage().waitForFullProfileButton();
+    }
+
     public void setValuesInFieldsRequiredForSavingsAccount(Account account) {
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);

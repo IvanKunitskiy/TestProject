@@ -140,6 +140,7 @@ public class AccountDetailsPage extends PageTools {
     /**
      * Details tab
      */
+
     @Step("Get 'Date Closed'")
     public String getDateClosed() {
         waitForElementVisibility(dateClosed);
@@ -810,4 +811,82 @@ public class AccountDetailsPage extends PageTools {
         waitForElementVisibility(activateButton);
         return isElementVisible(activateButton);
     }
+
+
+    /**
+     * Grouping sections
+     */
+
+    private final By balanceAndInterest = By.xpath("//span[text()='Balance and Interest']");
+    private final By accountSettings = By.xpath("//span[text()='Account Settings']");
+    private final By creditLimit = By.xpath("//span[text()='Credit Limit']");
+    private final By ratePaymentChange = By.xpath("//span[text()='Rate/Payment Change']");
+    private final By lateCharge = By.xpath("//span[text()='Late Charge']");
+    private final By loanCodesReporting = By.xpath("//span[text()='Loan Codes & Reporting']");
+    private final By userDefinedFields = By.xpath("//span[text()='User Defined Fields']");
+    private final By accountInfoStatistics = By.xpath("//span[text()='Account Info/Statistics']");
+    private final By collections = By.xpath("//span[text()='Collections']");
+    private final By otherLoanSettings = By.xpath("//span[text()='Other Loan Settings']");
+
+    @Step("Check if 'Balance and Interest' group is visible")
+    public boolean isBalanceAndInterestVisible() {
+        waitForElementVisibility(balanceAndInterest);
+        return isElementVisible(balanceAndInterest);
+    }
+
+    @Step("Check if 'Account Settings' group is visible")
+    public boolean isAccountSettingsVisible() {
+        waitForElementVisibility(accountSettings);
+        return isElementVisible(accountSettings);
+    }
+
+
+    @Step("Check if 'Credit Limit' group is visible")
+    public boolean isCreditLimitVisible() {
+        waitForElementVisibility(creditLimit);
+        return isElementVisible(creditLimit);
+    }
+
+    @Step("Check if 'Rate/Payment Change' group is visible")
+    public boolean isRatePaymentChangeVisible() {
+        waitForElementVisibility(ratePaymentChange);
+        return isElementVisible(ratePaymentChange);
+    }
+
+    @Step("Check if 'Late Charge' group is visible")
+    public boolean isLateChargeVisible() {
+        waitForElementVisibility(lateCharge);
+        return isElementVisible(lateCharge);
+    }
+
+    @Step("Check if 'Loan Codes & Reporting' group is visible")
+    public boolean isLoanCodesReportingVisible() {
+        waitForElementVisibility(loanCodesReporting);
+        return isElementVisible(loanCodesReporting);
+    }
+
+    @Step("Check if 'User Defined Fields' group is visible")
+    public boolean isUserDefinedFieldsVisible() {
+        waitForElementVisibility(userDefinedFields);
+        return isElementVisible(userDefinedFields);
+    }
+
+    @Step("Check if 'Account Info/Statistics' group is visible")
+    public boolean isAccountInfoStatisticsVisible() {
+        waitForElementVisibility(accountInfoStatistics);
+        return isElementVisible(accountInfoStatistics);
+    }
+
+    @Step("Check if 'Collections' group is visible")
+    public boolean isCollectionsVisible() {
+        waitForElementVisibility(collections);
+        return isElementVisible(collections);
+    }
+
+    @Step("Check if 'Other Loan Settings' group is visible")
+    public boolean isOtherLoanSettingsVisible() {
+        waitForElementVisibility(otherLoanSettings);
+        return isElementVisible(otherLoanSettings);
+    }
+
 }
