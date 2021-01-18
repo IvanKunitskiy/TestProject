@@ -661,6 +661,17 @@ public class CreateAccount {
         Pages.addAccountPage().clickRateChangeFrequencySelectorOption(account.getRateChangeFrequency());
     }
 
+    public void setCycleCode(Account account) {
+        Pages.addAccountPage().clickCycleCodeSelectorButton();
+        List<String> listOfCycleCode = Pages.addAccountPage().getCycleCodeList();
+
+        Assert.assertTrue(listOfCycleCode.size() > 0, "There are no 'Cycle Code' options available");
+        if (account.getCycleCode() == null) {
+            account.setCycleCode(listOfCycleCode.get(new Random().nextInt(listOfCycleCode.size())).trim());
+        }
+        Pages.addAccountPage().clickCycleCodeSelectorOption(account.getCycleCode());
+    }
+
     public String getDateOpenedValue(Account account) {
         String dateOpened = Pages.addAccountPage().getDateOpened();
 
@@ -680,8 +691,22 @@ public class CreateAccount {
         }
     }
 
+    public void enableCycleLoanSwitch() {
+        if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("no")) {
+            Pages.addAccountPage().clickCycleLoanSwitch();
+            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        }
+    }
+
     public void disableLocPaymentRecalculationFlagValueSwitch() {
         if (Pages.addAccountPage().getLocPaymentRecalculationFlagValue().equalsIgnoreCase("yes")) {
+            Pages.addAccountPage().clickLocPaymentRecalculationFlagValue();
+            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        }
+    }
+
+    public void enableLocPaymentRecalculationFlagValueSwitch() {
+        if (Pages.addAccountPage().getLocPaymentRecalculationFlagValue().equalsIgnoreCase("no")) {
             Pages.addAccountPage().clickLocPaymentRecalculationFlagValue();
             SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         }
