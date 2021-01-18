@@ -183,6 +183,10 @@ public class AddAccountPage extends PageTools {
     private final By cycleCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private final By cycleCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
 
+    private final By commitmentTypeAmtSelectorButton = By.xpath("//div[@id='commitmenttype']");
+    private final By commitmentTypeAmtList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By commitmentTypeAmtSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
+
     @Step("Wait for account holder name")
     public void waitForAccountHolderName() {
         waitForElementVisibility(accountHolderName);
@@ -1111,6 +1115,28 @@ public class AddAccountPage extends PageTools {
         scrollToPlaceElementInCenter(rateChangeFrequencySelectorButton);
         waitForElementClickable(rateChangeFrequencySelectorButton);
         click(rateChangeFrequencySelectorButton);
+    }
+
+    @Step("Click the 'Commitment type/amt' selector button")
+    public void clickCommitmentTypeAmtSelectorOption(String commitmentTypeAmtOption) {
+        waitForElementVisibility(commitmentTypeAmtSelectorOption, commitmentTypeAmtOption);
+        waitForElementClickable(commitmentTypeAmtSelectorOption, commitmentTypeAmtOption);
+        click(commitmentTypeAmtSelectorOption, commitmentTypeAmtOption);
+    }
+
+    @Step("Returning list of 'Commitment type/amt' options")
+    public List<String> getCommitmentTypeAmtList() {
+        waitForElementVisibility(commitmentTypeAmtList);
+        waitForElementClickable(commitmentTypeAmtList);
+        return getElementsText(commitmentTypeAmtList);
+    }
+
+    @Step("Click the 'Commitment type/amt' selector button")
+    public void clickCommitmentTypeAmtSelectorButton() {
+        waitForElementVisibility(commitmentTypeAmtSelectorButton);
+        scrollToPlaceElementInCenter(commitmentTypeAmtSelectorButton);
+        waitForElementClickable(commitmentTypeAmtSelectorButton);
+        click(commitmentTypeAmtSelectorButton);
     }
 
     @Step("Click the 'Cycle Code' selector button")

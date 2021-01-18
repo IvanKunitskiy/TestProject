@@ -25,20 +25,25 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class C22753_CDTWithoutTellerSessionCommitOfficialCheckFromClientAccountWithFeeWaived extends BaseTest {
+
+@Epic("Frontoffice")
+@Feature("Transactions")
+@Owner("Dmytro")
+public class C22754_CDTWithoutTellerSessionCommitMoneyOrderWithFeeWaived extends BaseTest {
     private Transaction transaction;
+    private Transaction savingsTransaction;
+    private BalanceDataForCHKAcc expectedBalanceData;
     private BalanceDataForCHKAcc expectedSavingsBalanceData;
     private TransactionData savingsAccTransactionData;
     private Account savingsAccount;
     private double savingsTransactionAmount = 200.00;
     private double returnTransactionAmount = 100.00;
-    private double fee = 5.00;
+    private double fee = 2.00;
     private int checkAccountNumber;
     private Check check;
     private String name = "John";
@@ -54,6 +59,7 @@ public class C22753_CDTWithoutTellerSessionCommitOfficialCheckFromClientAccountW
         savingsAccount = new Account().setSavingsAccountData();
         Transaction depositSavingsTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
         transaction = new TransactionConstructor(new WithdrawalGLDebitCHKAccBuilder()).constructTransaction();
+        savingsTransaction = new TransactionConstructor(new WithdrawalGLDebitCHKAccBuilder()).constructTransaction();
 
         // Log in
         Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
@@ -88,13 +94,6 @@ public class C22753_CDTWithoutTellerSessionCommitOfficialCheckFromClientAccountW
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
 
-        //Check CDT template
-        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.OFFICIAL_CHECK_FROM_SAVINGS);
-        if (templateNotExists){
-            boolean isCreated = Actions.cashierDefinedActions().createOfficialCheckFromSavings();
-            Assert.assertTrue(isCreated, "CDT template not created");
-        }
-
         Actions.loginActions().doLogOutProgrammatically();
         Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
 
@@ -110,7 +109,7 @@ public class C22753_CDTWithoutTellerSessionCommitOfficialCheckFromClientAccountW
         SettingsPage.mainPage().clickViewAllPrinters();
         SettingsPage.printerPage().clickToPrinter("Xerox_Phaser_3260 Moscow 2nd floor");
         boolean isOfficial = SettingsPage.printerPage().checkIsOfficialPrinter();
-        Assert.assertTrue(isOfficial,"Is not official printer");
+        Assert.assertTrue(isOfficial, "Is not official printer");
         Pages.aSideMenuPage().clickSettingsMenuItem();
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().clickViewControls();
@@ -135,54 +134,58 @@ public class C22753_CDTWithoutTellerSessionCommitOfficialCheckFromClientAccountW
         fullCheck.setDocumentID(client.getIndividualClientDetails().getDocuments().get(0).getIdNumber());
         fullCheck.setPhone(client.getIndividualClientDetails().getPhones().get(0).getPhoneNumber());
 
+        //Check CDT template
+        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.MONEY_ORDER_FROM_SAVINGS);
+        if (templateNotExists) {
+            boolean isCreated = Actions.cashierDefinedActions().createMoneyOrderFromSavings();
+            Assert.assertTrue(isCreated, "CDT template not created");
+        }
+
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C22753, CDT without Teller Session - Commit official check from client account with fee waived")
+    @Test(description = "C22754, CDT without Teller Session - Commit money order with fee waived")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
-        logInfo("Step 1: Log in to the system as User from the preconditions");
+        logInfo("Step 1: Log in to Nymbus as user from preconditions");
         Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
 
-        logInfo("Step 2: Go to Cashier Defined Transactions page");
+        logInfo("Step 2: Go to Cashier Defined Transactions screen and log in to proof date");
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
 
         logInfo("Step 3: Search for template from preconditions and select it");
         logInfo("Step 4: Click on [Waive Fee] toggle button");
-        logInfo("Step 5: Specify account from the precondition in the source line account number field;\n" +
-                "Set transaction amount < Account's Available Balance\n" +
-                "Specify Payee Info required fields:\n" +
-                "Name (any value)\n" +
-                "Payee Type (e.g. 'Person')");
-        Actions.cashierDefinedActions().createOfficialTransaction(CashierDefinedTransactions.OFFICIAL_CHECK_FROM_SAVINGS,
+        logInfo("Step 5: Specify account from precondition in sources line account number field;\n" +
+                "Set transaction amount\n" +
+                "Specify Payee Info required fields: Name (any value) Payee Type (e.g. 'Person')')");
+        Actions.cashierDefinedActions().createOfficialTransaction(CashierDefinedTransactions.MONEY_ORDER_FROM_SAVINGS,
                 transaction, true, name);
         expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
 
         logInfo("Step 6: Click [Commit Transaction] button and click [Verify] button");
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
-        Assert.assertTrue(Pages.confirmModalPage().checkReprintButton(),"Reprint check is not visible");
+        Assert.assertTrue(Pages.confirmModalPage().checkReprintButton(), "Reprint check is not visible");
         String checkNumber = Pages.confirmModalPage().getReprintCheckNumber();
         check.setCheckNumber(checkNumber);
         fullCheck.setCheckNumber(checkNumber);
 
         logInfo("Step 7: Click [Yes] button on a \"Reprint check #X?\" popup");
         Pages.confirmModalPage().clickYes();
-        Assert.assertTrue(Pages.confirmModalPage().checkIsCheck(),"Is check is not visible");
+        Assert.assertTrue(Pages.confirmModalPage().checkIsCheck(), "Is check is not visible");
 
         logInfo("Step 8: Click [Yes] button on a \"Is check #X still usable?\" popup:");
         Pages.confirmModalPage().clickYes();
-        Assert.assertTrue(Pages.confirmModalPage().checkReprintButton(),"Reprint check is not visible");
+        Assert.assertTrue(Pages.confirmModalPage().checkReprintButton(), "Reprint check is not visible");
 
         logInfo("Step 9: Click [NO] on \"Reprint check #X?\" popup");
         Pages.confirmModalPage().clickNo();
-        Assert.assertEquals(Pages.cashierPage().getPayeeName(), "John", "Name doesn't match");
-        SelenideTools.openUrlInNewWindow(Constants.URL.substring(0,Constants.URL.indexOf("com")+3)
-                +"/settings/#/view/bank.data.officialcheck.control");
-        SelenideTools.switchToLastTab();
+        Assert.assertEquals(Pages.cashierPage().getPayeeName(), name, "Name doesn't match");
+        SelenideTools.openUrlInNewWindow(Constants.URL.substring(0, Constants.URL.indexOf("com") + 3)
+                + "/settings/#/view/bank.data.officialcheck.control");
         int number = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());
-        Assert.assertEquals( number, checkAccountNumber+1,"Number doesn't match");
+        Assert.assertEquals(number, checkAccountNumber + 1, "Number doesn't match");
         SelenideTools.closeCurrentTab();
 
         logInfo("Step 10: Click [Commit] again and click [Verify] button;\n" +
@@ -194,7 +197,7 @@ public class C22753_CDTWithoutTellerSessionCommitOfficialCheckFromClientAccountW
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().clickViewControls();
         number = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());
-        Assert.assertEquals( number, checkAccountNumber+1,"Number doesn't match");
+        Assert.assertEquals(number, checkAccountNumber + 1, "Number doesn't match");
 
         logInfo("Step 11: Go to account used in DEBIT item and verify its:\n" +
                 "- current balance\n" +
@@ -227,10 +230,9 @@ public class C22753_CDTWithoutTellerSessionCommitOfficialCheckFromClientAccountW
                 "Branch, Initials, Check Amount, Fee, Date Issued, Cash Purchased");
         Pages.checkPage().clickToCheck(checkNumber);
         FullCheck fullCheckFromBankOffice = Actions.backOfficeActions().getFullCheckFromBankOffice();
-        Assert.assertEquals(fullCheckFromBankOffice,fullCheck,"Check details doesn't match");
+        Assert.assertEquals(fullCheckFromBankOffice, fullCheck, "Check details doesn't match");
 
     }
-
 
 
 }

@@ -102,6 +102,7 @@ public class Account {
     private String paymentBilledLeadDays;
     private String rateChangeFrequency;
     private String cycleCode;
+    private String commitmentTypeAmt;
 
     public Account setLoanAccountData() {
         Account account = new Account();
@@ -975,6 +976,14 @@ public class Account {
 
     public void setRateChangeFrequency(String rateChangeFrequency) {
         this.rateChangeFrequency = rateChangeFrequency;
+    }
+
+    public String getCommitmentTypeAmt() {
+        return commitmentTypeAmt;
+    }
+
+    public void setCommitmentTypeAmt(String commitmentTypeAmt) {
+        this.commitmentTypeAmt = commitmentTypeAmt;
     }
 
     public String getCycleCode() {
