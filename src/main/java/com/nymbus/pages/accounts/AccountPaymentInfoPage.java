@@ -7,6 +7,30 @@ import org.openqa.selenium.By;
 public class AccountPaymentInfoPage extends PageTools {
 
     /**
+     * Payment history
+     */
+
+    private final By editPaymentHistoryButton = By.xpath("//button[@data-test-id='action-edit-payment-info']");
+    private final By saveButton = By.xpath("//button[@data-test-id='action-save-payment-info']");
+
+    @Step("Click 'Edit' button")
+    public void clickEditPaymentHistoryButton() {
+        waitForElementClickable(editPaymentHistoryButton);
+        click(editPaymentHistoryButton);
+    }
+
+    @Step("Click 'Save' button")
+    public void clickSaveButton() {
+        waitForElementClickable(saveButton);
+        click(saveButton);
+    }
+
+    @Step("Wait for 'Save' button invisibility")
+    public void waitForSaveButtonInvisibility() {
+        waitForElementInvisibility(saveButton);
+    }
+
+    /**
      * P&I Payments
      */
 
@@ -15,6 +39,18 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By piPaymentsPaymentType = By.xpath("//div[@data-test-id='field-paymenttype_paymentHistory_0']/a/span[2]/span");
     private final By piPaymentsFrequency = By.xpath("//div[@data-test-id='field-frequency_paymentHistory_0']/a/span[2]/span");
     private final By piPaymentsAmount = By.xpath("//input[@data-test-id='field-amount_paymentHistory_0']");
+    private final By piPaymentsPercentage = By.xpath("//input[@data-test-id='field-percentage_paymentHistory_0']");
+    private final By piPaymentsRecalcFuturePymt = By.xpath("//dn-switch[@id='recalcfuturepayment']/div/div/span[2]");
+
+    @Step("Get Pi Payments Payment 'Recalc Future Pymt' value")
+    public String getPiPaymentsRecalcFuturePymt() {
+        return getElementText(piPaymentsRecalcFuturePymt).trim();
+    }
+
+    @Step("Get 'Pi Payments Percentage' value")
+    public String getPiPaymentsPercentage() {
+        return getElementAttributeValue("value", piPaymentsPercentage).trim();
+    }
 
     @Step("Get 'Pi Payments Effective Date' value")
     public String getPiPaymentsEffectiveDate() {
@@ -39,6 +75,11 @@ public class AccountPaymentInfoPage extends PageTools {
     @Step("Get 'Pi Payments Amount' value")
     public String getPiPaymentsAmount() {
         return getElementAttributeValue("value", piPaymentsAmount).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Type 'amount' value")
+    public void typeAmountValue(String value) {
+        type(value, piPaymentsAmount);
     }
 
     /**
