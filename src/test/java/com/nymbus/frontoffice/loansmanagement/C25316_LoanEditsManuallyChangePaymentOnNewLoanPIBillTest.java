@@ -71,6 +71,9 @@ public class C25316_LoanEditsManuallyChangePaymentOnNewLoanPIBillTest extends Ba
         logInfo("Step 3: Open 'Payment info' tab");
         Pages.accountDetailsPage().clickPaymentInfoTab();
 
+        logInfo("Step 4: Click on the 'Edit' button in the 'Payment History' section");
+        Pages.accountPaymentInfoPage().clickEditPaymentHistoryButton();
+
         Assert.assertEquals(Pages.accountPaymentInfoPage().getPiPaymentsEffectiveDate(), loanAccount.getDateOpened(),
                 "'Effective Date' is not valid");
         Assert.assertEquals(Pages.accountPaymentInfoPage().getPiPaymentsInactiveDate(), "",
@@ -86,9 +89,6 @@ public class C25316_LoanEditsManuallyChangePaymentOnNewLoanPIBillTest extends Ba
         Assert.assertEquals(Pages.accountPaymentInfoPage().getPiPaymentsPercentage(), "", "'Percentage' is not valid");
         Assert.assertTrue(Pages.accountPaymentInfoPage().getPiPaymentsRecalcFuturePymt().equalsIgnoreCase("no"),
                 "'Recalc Future Pymt' is not valid");
-
-        logInfo("Step 4: Click on the 'Edit' button in the 'Payment History' section");
-        Pages.accountPaymentInfoPage().clickEditPaymentHistoryButton();
 
         logInfo("Step 5: Change the value in the 'Amount' field for the 'P&I Payment' row to any other valid value");
         String newAmount = "1003.00";
