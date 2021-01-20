@@ -128,10 +128,12 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
         Pages.supervisorModalPage().clickEnter();
 
         logInfo("Step 6: Pay attention at the interest amount in 'Alert Message' pop up");
+        // TODO: Check Adjustment value and Interest Earned
         Pages.alertMessageModalPage().clickOkButton();
-        Pages.accountDetailsPage().clickTransactionsTab();
 
         logInfo("Step 7: Go to 'Transactions' tab and pay attention at the generated transaction");
+        Pages.accountDetailsPage().clickTransactionsTab();
+        // TODO: pay attention at the generated transaction
 
         logInfo("Step 8: Go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
