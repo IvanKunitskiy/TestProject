@@ -49,7 +49,7 @@ public class AccountPaymentInfoPage extends PageTools {
 
     @Step("Get 'Pi Payments Percentage' value")
     public String getPiPaymentsPercentage() {
-        return getElementAttributeValue("value", piPaymentsPercentage).trim();
+        return getElementAttributeValue("value", piPaymentsPercentage).replaceAll("[^0-9]", "");
     }
 
     @Step("Get 'Pi Payments Effective Date' value")
@@ -80,6 +80,11 @@ public class AccountPaymentInfoPage extends PageTools {
     @Step("Type 'amount' value")
     public void typeAmountValue(String value) {
         type(value, piPaymentsAmount);
+    }
+
+    @Step("Type 'Percentage' value")
+    public void typePercentageValue(String value) {
+        type(value, piPaymentsPercentage);
     }
 
     /**

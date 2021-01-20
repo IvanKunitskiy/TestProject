@@ -5,7 +5,9 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
@@ -18,16 +20,14 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Petro")
-public class C25316_LoanEditsManuallyChangePaymentOnNewLoanPIBillTest extends BaseTest {
+public class C25317_LoanEditsManuallyChangePaymentOnNewLoanInterestOnlyBillTest extends BaseTest {
 
     private Account loanAccount;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
-    private double escrowPaymentValue;
 
     @BeforeMethod
     public void preCondition() {
-
         // Set up client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
@@ -37,17 +37,16 @@ public class C25316_LoanEditsManuallyChangePaymentOnNewLoanPIBillTest extends Ba
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
+        loanAccount.setPaymentAmountType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
 
         // Check that a Loan product exist with the following editable fields (Readonly? = NO) and create if not exist
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
         Actions.loginActions().doLogOut();
 
-        // Get escrow payment value for the loan product
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-        escrowPaymentValue = Actions.loanProductOverviewActions().getLoanProductEscrowPaymentValue(loanProductName);
-
         // Create a client
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
@@ -58,9 +57,9 @@ public class C25316_LoanEditsManuallyChangePaymentOnNewLoanPIBillTest extends Ba
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C25316, Loan Edits: Manually change payment on new loan P&I(bill)")
+    @Test(description = "C25317, Loan Edits: Manually change payment on new loan Interest Only (bill)")
     @Severity(SeverityLevel.CRITICAL)
-    public void loanEditsManuallyChangePaymentOnNewLoanPIBill() {
+    public void loanCreateAndFundInterestOnly() {
 
         logInfo("Step 1: Log in to the system");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -82,37 +81,30 @@ public class C25316_LoanEditsManuallyChangePaymentOnNewLoanPIBillTest extends Ba
                 "'Payment Type' is not valid");
         Assert.assertEquals(Pages.accountPaymentInfoPage().getPiPaymentsFrequency(), loanAccount.getPaymentFrequency(),
                 "'Frequency' is not valid");
-        double paymentAmount = Double.parseDouble(loanAccount.getPaymentAmount());
-        double actualPaymentAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getPiPaymentsAmount());
-        double expectedPaymentAmount = paymentAmount - escrowPaymentValue;
-        Assert.assertEquals(actualPaymentAmount, expectedPaymentAmount, "'Amount' is not valid");
-        Assert.assertEquals(Pages.accountPaymentInfoPage().getPiPaymentsPercentage(), "", "'Percentage' is not valid");
+        Assert.assertEquals(Pages.accountPaymentInfoPage().getPiPaymentsAmount(), "", "'Amount' is not valid");
+        Assert.assertEquals(Pages.accountPaymentInfoPage().getPiPaymentsPercentage(), "100", "'Percentage' is not valid");
         Assert.assertTrue(Pages.accountPaymentInfoPage().getPiPaymentsRecalcFuturePymt().equalsIgnoreCase("no"),
                 "'Recalc Future Pymt' is not valid");
 
-        logInfo("Step 5: Change the value in the 'Amount' field for the 'P&I Payment' row to any other valid value");
-        String newAmount = "1003.00";
-        Pages.accountPaymentInfoPage().typeAmountValue(newAmount);
+        logInfo("Step 5: Change the value in the 'Percentage' field for 'P&I Payment' row to any other valid value");
+        String newPercentage = String.valueOf(Generator.genInt(1, 100));
+        Pages.accountPaymentInfoPage().typePercentageValue(newPercentage);
 
-        logInfo("Step 6: Click on the 'Save' button");
+        logInfo("Step 6: Click the 'Save' button");
         Pages.accountPaymentInfoPage().clickSaveButton();
         Pages.accountPaymentInfoPage().waitForSaveButtonInvisibility();
-        actualPaymentAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getPiPaymentsAmount());
-        Assert.assertEquals(actualPaymentAmount, Double.parseDouble(newAmount), "'Amount' is not valid");
-        double activePaymentAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getActivePaymentAmount());
-        Assert.assertEquals(activePaymentAmount, escrowPaymentValue + Double.parseDouble(newAmount), "'Active Payment Amount' is not valid");
+        String actualPercentage = Pages.accountPaymentInfoPage().getPiPaymentsPercentage();
+        Assert.assertEquals(actualPercentage, newPercentage, "'Percentage' is not valid");
+        Assert.assertEquals(Pages.accountPaymentInfoPage().getActivePaymentAmountInterestOnly(), "Interest Only",
+                "'Active Payment Amount' is not valid");
 
         logInfo("Step 7: Go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
-        logInfo("Step 8: Look through the Maintenance History records "
-                + "and make sure that there is information about editing the 'Amount' field "
-                + "and changing the value in the 'Active Payment Amount' field");
+        logInfo("Step 8: Look through the Maintenance History records and make sure that there is information about editing the 'Percentage' field");
         AccountActions.accountMaintenanceActions().expandAllRows();
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Amount") >= 1,
-                "'Amount' row count is incorrect!");
-        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Amount") >= 1,
-                "'Active Payment Amount' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Percentage") >= 1,
+                "'Percentage' row count is incorrect!");
     }
 }
