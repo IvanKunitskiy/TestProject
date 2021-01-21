@@ -114,7 +114,8 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
                 "- NEW Current Effective Rate != Old Current Effective Rate\n" +
                 "- Begin Earn Date = Date in the past but > = Date Opened\n" +
                 "- Accrue Thru Date = Today (set Current date - 1 day by default)");
-        int newCurrentEffectiveRate = Integer.parseInt(loanAccount.getCurrentEffectiveRate()) + Random.genInt(1, 10);
+        int oldCurrentEffectiveRate = Integer.parseInt(loanAccount.getCurrentEffectiveRate());
+        int newCurrentEffectiveRate = oldCurrentEffectiveRate + Random.genInt(1, 10);
         Pages.interestRateChangeModalPage().setNewCurrentEffectiveRateValue(String.valueOf(newCurrentEffectiveRate));
         Pages.interestRateChangeModalPage().setAccrueThruDate(loanAccount.getDateOpened());
         Pages.interestRateChangeModalPage().setBeginEarnDate(DateTime.getLocalDateWithPattern("MM/dd/yyyy"));
@@ -128,6 +129,10 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
         Pages.supervisorModalPage().clickEnter();
 
         logInfo("Step 6: Pay attention at the interest amount in 'Alert Message' pop up");
+        String[] daysBaseYearBase = loanAccount.getDaysBaseYearBase().replaceAll("[^0-9/]", "").split("/");
+        int adjustedDays = Integer.parseInt(daysBaseYearBase[0]);
+        int yearBase = Integer.parseInt(daysBaseYearBase[1]);
+        int adjustmentValue = (newCurrentEffectiveRate * (newCurrentEffectiveRate - oldCurrentEffectiveRate)) / adjustedDays * yearBase;
         // TODO: Check Adjustment value and Interest Earned
         Pages.alertMessageModalPage().clickOkButton();
 
