@@ -5,9 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
-import com.nymbus.core.utils.IOUtils;
-import com.nymbus.core.utils.SelenideTools;
+import com.nymbus.core.utils.*;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.Products;
 import com.nymbus.newmodels.accountinstructions.ActivityHoldInstruction;
@@ -19,9 +17,11 @@ import com.nymbus.newmodels.generation.client.builder.type.individual.Individual
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -39,6 +39,7 @@ public class C22822_WeilandImportfile extends BaseTest {
     private String systemDate;
     private double amount = 1.99;
     private String overdraftLimit = "$ 500.00";
+    TransactionData chkTransactionData;
 
     @BeforeMethod
     public void preCondition() {
@@ -121,7 +122,9 @@ public class C22822_WeilandImportfile extends BaseTest {
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        chkTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
+                "-", depositTransaction.getTransactionSource().getAmount() - amount, amount);
     }
 
 
@@ -134,15 +137,135 @@ public class C22822_WeilandImportfile extends BaseTest {
         logInfo("Step 2: Go to BackOffice page");
         Pages.aSideMenuPage().clickBackOfficeMenuItem();
 
-        logInfo("Open \"File Import\" widget drop-down - select \"Weilad Charge File\" - click \"Import\"");
+        logInfo("Step 3: Open \"File Import\" widget drop-down - select \"Weilad Charge File\" - click \"Import\"");
         Pages.backOfficePage().chooseFileImportType("Weiland");
         Pages.backOfficePage().clickImport();
 
-        logInfo("Step 3: Drag&Drop Weiland file from preconditions and click [Import] button");
-        Pages.backOfficePage().importFile("weiland.IF3");
+        logInfo("Step 4: Drag&Drop Weiland file from preconditions and click [Import] button");
+        Pages.backOfficePage().importFile(Functions.getFilePathByName("weiland.IF3"));
 
+        logInfo("Step 5: Verify \"Import Files\" window");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(1,chkAccountNumber),
+                "Import table does not match");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(2,String.valueOf(amount)),
+                "Import table does not match");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(3,"Analysis Charges AutoTest"),
+                "Import table does not match");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(4,chkAccountNumber2),
+                "Import table does not match");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(5,String.valueOf(amount)),
+                "Import table does not match");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(6,"Analysis Charges AutoTest"),
+                "Import table does not match");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(7,chkAccountNumber3),
+                "Import table does not match");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(8,String.valueOf(amount)),
+                "Import table does not match");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(9,"Analysis Charges AutoTest"),
+                "Import table does not match");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(10,chkAccountNumber4),
+                "Import table does not match");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(11,String.valueOf(amount)),
+                "Import table does not match");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(12,"Analysis Charges AutoTest"),
+                "Import table does not match");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(13,chkAccountNumber5),
+                "Import table does not match");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(14,String.valueOf(amount)),
+                "Import table does not match");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(15,"Analysis Charges AutoTest"),
+                "Import table does not match");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(16,"1111100"),
+                "Import table does not match");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(17,String.valueOf(amount*5)),
+                "Import table does not match");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(18,"Analysis Charges AutoTest"),
+                "Import table does not match");
 
+        logInfo("Step 6: Click [Post] button");
+        Pages.backOfficePage().clickPostButton();
 
+        logInfo("Step 7: Verify results for CHK#1");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromSpanImportFilesTable(3,""),
+                "Reject reason does not match");
 
+        logInfo("Step 8: In another tab search for CHK#1 and open it on Transactions tab\n" +
+                "Verify that \"120 - Service charge\" transaction was generated for account");
+        SelenideTools.openUrlInNewWindow(Constants.URL);
+        SelenideTools.switchTo().window(1);
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccountNumber);
+        Pages.accountDetailsPage().clickTransactionsTab();
+        TransactionData actualSavFeeTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
+        Assert.assertEquals(actualSavFeeTransactionData, chkTransactionData, "Transaction data doesn't match!");
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+
+        logInfo("Step 9: Verify results for CHK#2");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromSpanImportFilesTable(6,""),
+                "Reject reason does not match");
+
+        logInfo("Step 10: In another tab search for CHK#2 and open it on Transactions tab\n" +
+                "Verify that \"120 - Service charge\" transaction was generated for account");
+        SelenideTools.openUrlInNewWindow(Constants.URL);
+        SelenideTools.switchTo().window(1);
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccountNumber2);
+        Pages.accountDetailsPage().clickTransactionsTab();
+        actualSavFeeTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbolForMinus();
+        chkTransactionData.setBalance(amount);
+        actualSavFeeTransactionData.setEffectiveDate(actualSavFeeTransactionData.getPostingDate());
+        Assert.assertEquals(actualSavFeeTransactionData, chkTransactionData, "Transaction data doesn't match!");
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+
+        logInfo("Step 11: Verify results for CHK#3");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromSpanImportFilesTable(9,"This account is closed."),
+                "Reject reason does not match");
+
+        logInfo("Step 12: In another tab search for CHK#3 and open it on Transactions tab\n" +
+                "Verify that \"120 - Service charge\" transaction was NOT generated on account");
+        SelenideTools.openUrlInNewWindow(Constants.URL);
+        SelenideTools.switchTo().window(1);
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccountNumber3);
+        Pages.accountDetailsPage().clickTransactionsTab();
+        actualSavFeeTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbolForMinusAmount();
+        chkTransactionData.setBalance(0);
+        chkTransactionData.setAmount(0);
+        chkTransactionData.setAmountSymbol("+");
+        actualSavFeeTransactionData.setEffectiveDate(actualSavFeeTransactionData.getPostingDate());
+        Assert.assertEquals(actualSavFeeTransactionData, chkTransactionData, "Transaction data doesn't match!");
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+
+        logInfo("Step 13: Verify results for CHK#4");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromSpanImportFilesTable(12,"Activity hold entry found"),
+                "Reject reason does not match");
+
+        logInfo("Step 14: In another tab search for CHK#4 and open it on Transactions tab\n" +
+                "Verify that \"120 - Service charge\" transaction was NOT generated on account");
+        SelenideTools.openUrlInNewWindow(Constants.URL);
+        SelenideTools.switchTo().window(1);
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccountNumber4);
+        Pages.accountDetailsPage().clickTransactionsTab();
+        actualSavFeeTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
+        chkTransactionData.setBalance(100);
+        chkTransactionData.setAmount(100);
+        chkTransactionData.setAmountSymbol("+");
+        Assert.assertEquals(actualSavFeeTransactionData, chkTransactionData, "Transaction data doesn't match!");
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+
+        logInfo("Step 15: Verify results for CHK#5");
+        Assert.assertTrue(Pages.backOfficePage().checkValueFromSpanImportFilesTable(15,"NSF on account"),
+                "Reject reason does not match");
+
+        logInfo("Step 16: In another tab search for CHK#5 and open it on Transactions tab\n" +
+                "Verify that \"120 - Service charge\" transaction was NOT generated on account");
+        SelenideTools.openUrlInNewWindow(Constants.URL);
+        SelenideTools.switchTo().window(1);
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccountNumber5);
+        Pages.accountDetailsPage().clickTransactionsTab();
+        Assert.assertTrue(Pages.accountTransactionPage().isNoResultsVisible(), "Transaction data doesn't match!");
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
     }
 }

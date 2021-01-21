@@ -15,6 +15,9 @@ public class BackOfficePage extends PageTools {
     private By importSpan = By.xpath("//span[contains(string(),'Import')]");
     private By importButton = By.xpath("(//span[contains(string(),'Import')])[2]");
     private By fileInput = By.xpath("//input[@type='file']");
+    private By cellImportTable = By.xpath("(//td)[%s]");
+    private By postButton = By.xpath("//span[contains(text(),\"Post\")]");
+    private By cellSpan = By.xpath("(//td)[%s]/span");
 
     @Step("Click the 'Official checks' button")
     public void clickOfficialChecks() {
@@ -64,5 +67,26 @@ public class BackOfficePage extends PageTools {
         Selenide.executeJavaScript("arguments[0].style.height='auto'; arguments[0].style.visibility='hidden';",
                 getWebElement(fileInput));
         click(importButton);
+    }
+
+    @Step("Check value from import table")
+    public boolean checkValueFromImportFilesTable(int i, String text) {
+        waitForElementVisibility(cellImportTable,i);
+        String elementsText = getElementText(cellImportTable, i);
+        return elementsText.equals(text);
+    }
+
+    @Step("Click 'Post' button")
+    public void clickPostButton() {
+        waitForElementVisibility(postButton);
+        waitForElementClickable(postButton);
+        click(postButton);
+    }
+
+    @Step("Check value from span import table")
+    public boolean checkValueFromSpanImportFilesTable(int i, String text) {
+        waitForElementVisibility(cellSpan,i);
+        String elementsText = getElementText(cellSpan, i);
+        return elementsText.equals(text);
     }
 }
