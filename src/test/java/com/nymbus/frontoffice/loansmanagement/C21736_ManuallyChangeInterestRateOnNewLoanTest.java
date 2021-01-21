@@ -25,25 +25,25 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.text.DecimalFormat;
+
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Petro")
 public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
 
     private Account loanAccount;
-    private IndividualClient client;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
     private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
-    private double escrowPaymentValue;
 
     @BeforeMethod
     public void preCondition() {
         // Set up client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up CHK account
         Account checkingAccount = new Account().setCHKAccountData();
@@ -67,11 +67,8 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
         Actions.loginActions().doLogOut();
 
-        // Get escrow payment value for the loan product
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        escrowPaymentValue = Actions.loanProductOverviewActions().getLoanProductEscrowPaymentValue(loanProductName);
-
         // Set the product
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
 
         // Create a client
@@ -106,6 +103,8 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
 
         logInfo("Step 2: Open loan account from preconditions");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
+        double currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
+        double accruedInterest = Double.parseDouble(Pages.accountDetailsPage().getAccruedInterest());
         Pages.accountDetailsPage().clickMaintenanceTab();
         AccountActions.accountMaintenanceActions().setTool(Tool.INTEREST_RATE_CHANGE);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
@@ -115,10 +114,11 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
                 "- Begin Earn Date = Date in the past but > = Date Opened\n" +
                 "- Accrue Thru Date = Today (set Current date - 1 day by default)");
         int oldCurrentEffectiveRate = Integer.parseInt(loanAccount.getCurrentEffectiveRate());
-        int newCurrentEffectiveRate = oldCurrentEffectiveRate + Random.genInt(1, 10);
+        double newCurrentEffectiveRate = oldCurrentEffectiveRate + Random.genInt(1, 10);
+        int days = 1;
         Pages.interestRateChangeModalPage().setNewCurrentEffectiveRateValue(String.valueOf(newCurrentEffectiveRate));
-        Pages.interestRateChangeModalPage().setAccrueThruDate(loanAccount.getDateOpened());
-        Pages.interestRateChangeModalPage().setBeginEarnDate(DateTime.getLocalDateWithPattern("MM/dd/yyyy"));
+        Pages.interestRateChangeModalPage().setAccrueThruDate(DateTime.getDateWithFormatPlusDays(loanAccount.getDateOpened(), "MM/dd/yyyy", "MM/dd/yyyy", days));
+        Pages.interestRateChangeModalPage().setBeginEarnDate(loanAccount.getDateOpened());
 
         logInfo("Step 4: Click on the 'Commit Transaction' button");
         Pages.interestRateChangeModalPage().clickCommitTransactionButton();
@@ -130,15 +130,22 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
 
         logInfo("Step 6: Pay attention at the interest amount in 'Alert Message' pop up");
         String[] daysBaseYearBase = loanAccount.getDaysBaseYearBase().replaceAll("[^0-9/]", "").split("/");
-        int adjustedDays = Integer.parseInt(daysBaseYearBase[0]);
+
         int yearBase = Integer.parseInt(daysBaseYearBase[1]);
-        int adjustmentValue = (newCurrentEffectiveRate * (newCurrentEffectiveRate - oldCurrentEffectiveRate)) / adjustedDays * yearBase;
-        // TODO: Check Adjustment value and Interest Earned
+        double adjustmentAmount = currentBalance * (newCurrentEffectiveRate / 100) / (yearBase * days);
+        adjustmentAmount = roundAmountToTwoDecimals(adjustmentAmount);
+        double interestEarned = accruedInterest + adjustmentAmount;
+
+        String alertMessageModalText = Pages.alertMessageModalPage().getAlertMessageModalText();
+
+        Assert.assertTrue(alertMessageModalText.contains(String.format("%.2f", adjustmentAmount)), "'Adjustment Amount' is calculated incorrect");
+        Assert.assertTrue(alertMessageModalText.contains(String.format("%.2f", interestEarned)), "'Interest Earned' is calculated incorrect");
         Pages.alertMessageModalPage().clickOkButton();
 
         logInfo("Step 7: Go to 'Transactions' tab and pay attention at the generated transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
-        // TODO: pay attention at the generated transaction
+        String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
+        checkTransactionCode(transactionCode, newCurrentEffectiveRate, oldCurrentEffectiveRate);
 
         logInfo("Step 8: Go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
@@ -152,5 +159,20 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
                 "'Interest earned' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date this rate change") >= 1,
                 "'Date this rate change' row count is incorrect!");
+    }
+
+    private void checkTransactionCode(String transactionCode, double newCurrentEffectiveRate, int oldCurrentEffectiveRate) {
+        if (newCurrentEffectiveRate > oldCurrentEffectiveRate) {
+            Assert.assertEquals(TransactionCode.ADD_TO_IENC_409.getTransCode(), transactionCode,
+                    "Transaction code is not equal to '408 - Take From IENC'");
+        } else {
+            Assert.assertEquals(TransactionCode.TAKE_FROM_IENC_408.getTransCode(), transactionCode,
+                    "Transaction code is not equal to '409 - Add To IENC'");
+        }
+    }
+
+    private double roundAmountToTwoDecimals(double amount) {
+        DecimalFormat df = new DecimalFormat("#.##");
+        return Double.parseDouble(df.format(amount));
     }
 }

@@ -17,20 +17,23 @@ public class InterestRateChangeModalPage extends PageTools {
 
     @Step("Set 'Begin earn date' value")
     public void setBeginEarnDate(String date) {
-        click(beginEarnDate);
+        waitForElementVisibility(beginEarnDate);
+        waitForElementClickable(beginEarnDate);
+        type(date, beginEarnDate);
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
-        typeWithoutWipe(date, beginEarnDate);
     }
 
     @Step("Set 'Accrue thru date' value")
     public void setAccrueThruDate(String date) {
-        click(accrueThruDate);
+        waitForElementVisibility(accrueThruDate);
+        waitForElementClickable(accrueThruDate);
+        type(date, accrueThruDate);
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
-        typeWithoutWipe(date, accrueThruDate);
     }
 
     @Step("Set 'NEW Current Effective Rate' amount")
     public void setNewCurrentEffectiveRateValue(String value) {
+        waitForElementVisibility(newCurrentEffectiveRate);
         waitForElementClickable(newCurrentEffectiveRate);
         type(value, newCurrentEffectiveRate);
     }
@@ -48,7 +51,7 @@ public class InterestRateChangeModalPage extends PageTools {
     @Step("Click 'Commit transaction' button")
     public void clickCommitTransactionButton() {
         waitForElementVisibility(commitTransactionButton);
-        jsClick(commitTransactionButton);
+        click(commitTransactionButton);
     }
 
     @Step("Click 'Cancel' button")
