@@ -109,7 +109,7 @@ public class AddNewTransferActions {
         Pages.newTransferPage().clickTransferTypeSelectorOption(transfer.getTransferType().getTransferType());
     }
 
-    public void setLoanPaymentTransferType(Transfer transfer) {
+    public void setLoanPaymentTransferType(LoanPaymentTransfer transfer) {
         Pages.newTransferPage().clickTransferTypeSelectorButton();
         List<String> listOfTransferType = Pages.newTransferPage().getTransferTypeList();
 

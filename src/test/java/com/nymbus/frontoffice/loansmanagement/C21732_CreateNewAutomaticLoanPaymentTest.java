@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.transfers.TransfersActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -13,16 +14,16 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.transfer.LoanPaymentTransfer;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
-import com.nymbus.newmodels.generation.tansactions.factory.DestinationFactory;
-import com.nymbus.newmodels.generation.tansactions.factory.SourceFactory;
+import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
+import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.generation.transfers.TransferBuilder;
-import com.nymbus.newmodels.transaction.TransactionDestination;
-import com.nymbus.newmodels.transaction.TransactionSource;
+import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -31,13 +32,9 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C21732_CreateNewAutomaticLoanPaymentTest extends BaseTest {
 
-    private Account loanAccount;
     private IndividualClient client;
-    private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
-    private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
-    private double escrowPaymentValue;
     private LoanPaymentTransfer loanPaymentTransfer;
 
     @BeforeMethod
@@ -50,20 +47,22 @@ public class C21732_CreateNewAutomaticLoanPaymentTest extends BaseTest {
 
         // Set up CHK account
         Account checkingAccount = new Account().setCHKAccountData();
-        loanAccount = new Account().setLoanAccountData();
+        Account loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
 
         // Set transaction data
-        miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());
-        miscDebitSource.setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
-        miscCreditDestination.setAccountNumber(checkingAccount.getAccountNumber());
-        miscCreditDestination.setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
-        miscCreditDestination.setAmount(100);
+        Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
+        transaction.getTransactionSource().setAmount(200);
+        transaction.getTransactionDestination().setAccountNumber(checkingAccount.getAccountNumber());
+        transaction.getTransactionDestination().setAmount(200);
+        transaction.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
 
         // Set up transfer
         TransferBuilder transferBuilder = new TransferBuilder();
         loanPaymentTransfer = transferBuilder.getLoanPaymentTransfer();
+        loanPaymentTransfer.setFromAccount(checkingAccount);
+        loanPaymentTransfer.setToAccount(loanAccount);
 
         // Login to the system
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -72,11 +71,8 @@ public class C21732_CreateNewAutomaticLoanPaymentTest extends BaseTest {
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
         Actions.loginActions().doLogOut();
 
-        // Get escrow payment value for the loan product
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        escrowPaymentValue = Actions.loanProductOverviewActions().getLoanProductEscrowPaymentValue(loanProductName);
-
         // Set the product
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
 
         // Create a client
@@ -90,6 +86,11 @@ public class C21732_CreateNewAutomaticLoanPaymentTest extends BaseTest {
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createLoanAccount(loanAccount);
         Actions.loginActions().doLogOut();
+
+        // Perform transaction
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
+        Actions.loginActions().doLogOutProgrammatically();
     }
 
     @Test(description = "C21732, Create new automatic loan payment")
@@ -108,7 +109,7 @@ public class C21732_CreateNewAutomaticLoanPaymentTest extends BaseTest {
         Pages.transfersPage().clickNewTransferButton();
 
         logInfo("Step 5: Select 'Transfer Type:' = Loan Payment");
-        Pages.transfersPage().clickTransferInTheListByType(loanPaymentTransfer.getTransferType().getTransferType());
+        TransfersActions.addNewTransferActions().setLoanPaymentTransferType(loanPaymentTransfer);
 
         logInfo("Step 6: Specify:\n" +
                 "- Expiration Date (optional) = should be after payment date (f.e. after maturity date on loan account)\n" +
@@ -126,5 +127,18 @@ public class C21732_CreateNewAutomaticLoanPaymentTest extends BaseTest {
         Pages.newTransferPage().setTransferCharge(loanPaymentTransfer.getTransferCharge());
 
         logInfo("Step 7: Click 'Save'");
+        Pages.newTransferPage().clickSaveButton();
+        Assert.assertTrue(Pages.viewTransferPage().getFromAccount().contains(loanPaymentTransfer.getFromAccount().getAccountNumber()),
+                "'From Account' is not valid");
+        Assert.assertTrue(Pages.viewTransferPage().getToAccount().contains(loanPaymentTransfer.getToAccount().getAccountNumber()),
+                "'To Account' is not valid");
+        Assert.assertEquals(Pages.viewTransferPage().getTransferCharge(), loanPaymentTransfer.getTransferCharge(),
+                "'Transfer Charge' is not valid");
+        Assert.assertEquals(Pages.viewTransferPage().getCreationDate(), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
+                "'Creation Date' is not equal to current date");
+        Assert.assertEquals(Pages.viewTransferPage().getAdvanceDaysFromDueDate(), loanPaymentTransfer.getAdvanceDaysFromDueDate(),
+                "'Advance Days From Due Date' is not equal to current date");
+        Assert.assertEquals(Pages.viewTransferPage().getEftChargeCode(), loanPaymentTransfer.getEftChargeCode(),
+                "'EFT charge code' is not equal to current date");
     }
 }

@@ -12,6 +12,9 @@ public class ViewTransferPage extends PageTools {
     private By transferCharge = By.xpath("//input[@id='transfercharge']");
     private By editButton = By.xpath("//button//span[contains(text(), 'Edit')]/ancestor::button");
     private By deleteButton = By.xpath("//button//span[contains(text(), 'Delete')]/ancestor::button");
+    private By creationDate = By.xpath("//input[@data-test-id='field-creationdate']");
+    private By advanceDaysFromDueDate = By.xpath("//input[@data-test-id='field-advancedaystomakepayment']");
+    private By eftChargeCode = By.xpath("//div[@name='transferchargecode']/a/span/span");
 
     @Step("Check if 'Edit' button enabled")
     public boolean isEditButtonEnabled() {
@@ -65,6 +68,24 @@ public class ViewTransferPage extends PageTools {
     public String getTransferCharge() {
         waitForElementVisibility(transferCharge);
         return getDisabledElementAttributeValue("value", transferCharge).replaceAll("[^0-9]", "");
+    }
+
+    @Step("Get 'Creation Date' value in transfer view mode")
+    public String getCreationDate() {
+        waitForElementVisibility(creationDate);
+        return getDisabledElementAttributeValue("value", creationDate);
+    }
+
+    @Step("Get 'Advance days from due date' value in transfer view mode")
+    public String getAdvanceDaysFromDueDate() {
+        waitForElementVisibility(advanceDaysFromDueDate);
+        return getDisabledElementAttributeValue("value", advanceDaysFromDueDate);
+    }
+
+    @Step("Get 'EFT charge code' value in transfer view mode")
+    public String getEftChargeCode() {
+        waitForElementVisibility(eftChargeCode);
+        return getElementText(eftChargeCode);
     }
 
 }
