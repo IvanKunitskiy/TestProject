@@ -25,12 +25,14 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Backoffice")
+@Feature("Account Analysis")
+@Owner("Dmytro")
 public class C22744_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWithFeeWaivedWithoutTellerSession extends BaseTest {
     private Transaction transaction;
     private BalanceDataForCHKAcc expectedSavingsBalanceData;
@@ -154,11 +156,11 @@ public class C22744_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         Pages.confirmModalPage().clickNo();
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
-        SelenideTools.sleep(10);
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         Pages.confirmModalPage().clickNo();
-        SelenideTools.sleep(10);
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         Pages.confirmModalPage().clickNo();
-        SelenideTools.sleep(10);
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         Actions.loginActions().doLogOut();
 
     }
