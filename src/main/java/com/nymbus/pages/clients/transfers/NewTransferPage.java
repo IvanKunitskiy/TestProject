@@ -26,12 +26,17 @@ public class NewTransferPage extends PageTools {
     private By maxAmountToTransfer = By.xpath("//input[@id='transferamount']");
     private By amount = By.xpath("//input[@id='transferamount']");
     private By transferCharge = By.xpath("//input[@id='transfercharge']");
+    private By advanceDaysToMakePayment = By.xpath("//input[@data-test-id='field-advancedaystomakepayment']");
+    private By toAccountInputField = By.xpath("//div[@data-test-id='field-accountid2']/div/input");
+    private By expirationDate = By.xpath("//input[@data-test-id='field-expirationdate']");
 
     private By frequencySelectorButton = By.xpath("//div[@data-test-id='field-frequencytransfer']");
     private By frequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By frequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
-    private By toAccountInputField = By.xpath("//div[@data-test-id='field-accountid2']/div/input");
+    private By eftChargeCodeSelectorButton = By.xpath("//div[@data-test-id='field-transferchargecode']");
+    private By eftChargeCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private By eftChargeCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
     @Step("Type value to the 'Max Amount To Transfer' field")
     public void setMaxAmount(String value) {
@@ -43,6 +48,12 @@ public class NewTransferPage extends PageTools {
     public void setAmount(String value) {
         waitForElementClickable(amount, value);
         type(value, amount);
+    }
+
+    @Step("Type value to the 'Advance days from due date' field")
+    public void setAdvanceDaysFromDueDate(String value) {
+        waitForElementClickable(advanceDaysToMakePayment, value);
+        type(value, advanceDaysToMakePayment);
     }
 
     @Step("Type value to the 'Transfer Charge' field")
@@ -160,5 +171,31 @@ public class NewTransferPage extends PageTools {
     public void clickFrequencySelectorButton() {
         waitForElementClickable(frequencySelectorButton);
         click(frequencySelectorButton);
+    }
+
+    @Step("Click the 'Eft Charge Code' option")
+    public void clickEftChargeCodeSelectorOption(String eftChargeCodeOption) {
+        waitForElementVisibility(eftChargeCodeSelectorOption, eftChargeCodeOption);
+        waitForElementClickable(eftChargeCodeSelectorOption, eftChargeCodeOption);
+        click(eftChargeCodeSelectorOption, eftChargeCodeOption);
+    }
+
+    @Step("Returning list of 'Eft Charge Code' options")
+    public List<String> getEftChargeCodeList() {
+        waitForElementVisibility(eftChargeCodeList);
+        waitForElementClickable(eftChargeCodeList);
+        return getElementsText(eftChargeCodeList);
+    }
+
+    @Step("Click the 'Eft Charge Code' selector button")
+    public void clickEftChargeCodeSelectorButton() {
+        waitForElementClickable(eftChargeCodeSelectorButton);
+        click(eftChargeCodeSelectorButton);
+    }
+
+    @Step("Type value to the 'Expiration Date' field")
+    public void setExpirationDate(String value) {
+        waitForElementClickable(expirationDate, value);
+        type(value, expirationDate);
     }
 }
