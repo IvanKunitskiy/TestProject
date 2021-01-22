@@ -193,6 +193,33 @@ public class RetrievingAccountData {
         return transactionData;
     }
 
+    public TransactionData getTransactionDataWithBalanceSymbolForMinus() {
+        int tempIndex = 1;
+        TransactionData transactionData = new TransactionData();
+
+        transactionData.setPostingDate(Pages.accountTransactionPage().getPostingDateValue(tempIndex));
+        transactionData.setEffectiveDate(Pages.accountTransactionPage().getEffectiveDateValue(tempIndex));
+        transactionData.setAmount(getAmountMinusValue(tempIndex));
+        transactionData.setBalance(getAmountValue(tempIndex));
+        transactionData.setAmountSymbol(Pages.accountTransactionPage().getAmountSymbol(tempIndex));
+
+        return transactionData;
+    }
+
+    public TransactionData getTransactionDataWithBalanceSymbolForMinusAmount() {
+        int tempIndex = 1;
+        TransactionData transactionData = new TransactionData();
+
+        transactionData.setPostingDate(Pages.accountTransactionPage().getPostingDateValue(tempIndex));
+        transactionData.setEffectiveDate(Pages.accountTransactionPage().getEffectiveDateValue(tempIndex));
+        transactionData.setAmount(getAmountMinusValue(tempIndex));
+        transactionData.setBalance(getAmountValue(tempIndex));
+        transactionData.setAmountSymbol(Pages.accountTransactionPage().getAmountMinusSymbol(tempIndex));
+
+        return transactionData;
+    }
+
+
     public TransactionData getSecondTransactionDataWithBalanceSymbol() {
         int tempIndex = 2;
         TransactionData transactionData = new TransactionData();
@@ -247,6 +274,12 @@ public class RetrievingAccountData {
     public double getAmountValue(int index) {
         double amountIntegerPart = getAmount(index);
         double amountFractionalPart = getAmountFractionalPart(index);
+        return amountIntegerPart + amountFractionalPart;
+    }
+
+    public double getAmountMinusValue(int index) {
+        double amountIntegerPart = Double.parseDouble(Pages.accountTransactionPage().getAmountValue(index));
+        double amountFractionalPart = Double.parseDouble(Pages.accountTransactionPage().getAmountMinusFractionalValue(index))/100;
         return amountIntegerPart + amountFractionalPart;
     }
 

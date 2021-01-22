@@ -3,9 +3,12 @@ package com.nymbus.actions.account;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.maintenance.Tool;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
+
+import java.util.List;
 
 public class AccountMaintenanceActions {
     public void expandAllRows() {
@@ -14,6 +17,14 @@ public class AccountMaintenanceActions {
             SelenideTools.sleep(Constants.MINI_TIMEOUT);
         }
         while (Pages.accountMaintenancePage().isMoreButtonVisible());
+    }
+
+    public void setTool(Tool tool) {
+        Pages.accountMaintenancePage().clickChooseToolSelectorButton();
+        List<String> listOfChooseTool = Pages.accountMaintenancePage().getChooseToolList();
+
+        Assert.assertTrue(listOfChooseTool.size() > 0, "There are no 'Tool' options available");
+        Pages.accountMaintenancePage().clickChooseToolOption(tool.getTool());
     }
 
     /**

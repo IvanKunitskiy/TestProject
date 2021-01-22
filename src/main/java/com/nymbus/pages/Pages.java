@@ -110,6 +110,7 @@ public class Pages extends AllureLogger {
     private static AddNewLoanProductPage addNewLoanProductPage;
     private static LoanProductOverviewPage loanProductOverviewPage;
     private static AccountPaymentInfoPage accountPaymentInfoPage;
+    private static InterestRateChangeModalPage interestRateChangeModalPage;
 
     /**
      * Modal Windows
@@ -786,6 +787,16 @@ public class Pages extends AllureLogger {
             accountPaymentInfoPage = new AccountPaymentInfoPage();
         }
         return accountPaymentInfoPage;
+    }
+
+    /**
+     * This function return an instance of `InterestRateChangeModalPage`
+     */
+    public static InterestRateChangeModalPage interestRateChangeModalPage(){
+        if (interestRateChangeModalPage == null){
+            interestRateChangeModalPage = new InterestRateChangeModalPage();
+        }
+        return interestRateChangeModalPage;
     }
 
 }

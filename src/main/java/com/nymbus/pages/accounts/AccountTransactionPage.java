@@ -26,15 +26,18 @@ public class AccountTransactionPage extends PageTools {
      * Data in table
      */
     private By noResultsLabel = By.xpath("//section[@ng-if='!haveTransactions()']//div//p");
+    private By amountMinusSymbol = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-if='showCurrency']/span[1]");
     private By amountSymbol = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[1]");
     private By postingDate = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[2]//span");
     private By effectiveDate = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[3]//span");
     private By effectiveDateWithSourceFilter = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[2]//span");
+    private By amountMinus = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-if='showCurrency']/span[2]");
     private By amount = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[2]");
     private By balance = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[2]");
     private By balanceSymbol = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[1]");
     private By balanceFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[3]");
     private By amountFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[3]");
+    private By amountMinusFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-if='showCurrency']/span[3]");
     private By transactionItems = By.xpath("//tr[contains(@class, 'transactionLine')]");
     private By image = By.xpath("//tr[contains(@class, 'detail-view')][1]//img");
     private By transactionCode = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-switch-when='transactioncode']");
@@ -73,6 +76,12 @@ public class AccountTransactionPage extends PageTools {
         return getElementText(amountSymbol, index).trim();
     }
 
+    @Step("Get amountSymbol")
+    public String getAmountMinusSymbol(int index) {
+        waitForElementVisibility(amountMinusSymbol, index);
+        return getElementText(amountMinusSymbol, index).trim();
+    }
+
     @Step("Get 'Posting date' value")
     public String getPostingDateValue(int index) {
         waitForElementVisibility(postingDate, index);
@@ -97,6 +106,12 @@ public class AccountTransactionPage extends PageTools {
         return getElementText(amount, index).trim().replaceAll("[^0-9.]", "");
     }
 
+    @Step("Get 'Amount' value")
+    public String getAmountMinusValue(int index) {
+        waitForElementVisibility(amountMinus, index);
+        return getElementText(amountMinus, index).trim().replaceAll("[^0-9.]", "");
+    }
+
     @Step("Get full 'Amount' value")
     public String getFullAmountValue(int index, String transactionCode) {
         waitForElementVisibility(amountByTransactionCode, transactionCode, index);
@@ -107,6 +122,12 @@ public class AccountTransactionPage extends PageTools {
     public String getAmountFractionalValue(int index) {
         waitForElementVisibility(amountFractional, index);
         return getElementText(amountFractional, index).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Amount' fractional value")
+    public String getAmountMinusFractionalValue(int index) {
+        waitForElementVisibility(amountMinusFractional, index);
+        return getElementText(amountMinusFractional, index).trim().replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Balance' value")
