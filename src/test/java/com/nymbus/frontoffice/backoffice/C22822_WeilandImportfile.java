@@ -19,8 +19,7 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccB
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -28,6 +27,9 @@ import org.testng.annotations.Test;
 import java.util.Arrays;
 import java.util.List;
 
+@Epic("Backoffice")
+@Feature("Account Analysis")
+@Owner("Dmytro")
 public class C22822_WeilandImportfile extends BaseTest {
 
     private String chkAccountNumber;

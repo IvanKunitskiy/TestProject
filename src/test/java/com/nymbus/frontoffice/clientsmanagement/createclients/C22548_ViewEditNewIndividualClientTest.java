@@ -13,13 +13,15 @@ import com.nymbus.newmodels.generation.client.builder.type.individual.Individual
 import com.nymbus.newmodels.generation.client.factory.basicinformation.AddressFactory;
 import com.nymbus.newmodels.generation.client.factory.clientdetails.contactinformation.PhoneFactory;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
+@Epic("Backoffice")
+@Feature("Create clients")
+@Owner("Dmytro")
 public class C22548_ViewEditNewIndividualClientTest extends BaseTest {
     private String clientId;
     private TrustAccountUpdateModel updateModel;
@@ -99,6 +101,9 @@ public class C22548_ViewEditNewIndividualClientTest extends BaseTest {
 
         // Add one more address
         ClientsActions.clientDetailsActions().addAddress(updateModel.getAdditionalAddress());
+
+        //Update switch Ignore OFAC Matching
+        ClientsActions.clientDetailsActions().clickIgnoreOFACMatching();
 
         // Save changes
         ClientsActions.clientDetailsActions().clickSaveChangesButton();

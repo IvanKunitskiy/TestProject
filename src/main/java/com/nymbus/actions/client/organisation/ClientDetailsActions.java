@@ -342,4 +342,8 @@ public class ClientDetailsActions {
                             "Rows count is incorrect!");
         softAssert.assertAll();
     }
+
+    public void clickIgnoreOFACMatching() {
+        Pages.clientDetailsPage().clickIgnoreOFACMatching();
+    }
 }
