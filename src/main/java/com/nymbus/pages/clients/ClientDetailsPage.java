@@ -64,6 +64,7 @@ public class ClientDetailsPage extends PageTools {
     private By addressCity = By.name("cityname_0");
     private By addressState = By.xpath("//div[@name='states_0']//span[contains(@class, 'select2-chosen')]/span");
     private By addressZipCode = By.name("zipcode_0");
+    private By ofacMatching = By.xpath("//dn-switch[@id='ignoreofac']");
 
 
     /**
@@ -745,5 +746,12 @@ public class ClientDetailsPage extends PageTools {
     public String getCardStatus() {
         waitForElementVisibility(cardStatusColumn);
         return getElementText(cardStatusColumn);
+    }
+
+    @Step("Click 'Ignore OFAC Matching'")
+    public void clickIgnoreOFACMatching() {
+        waitForElementVisibility(ofacMatching);
+        waitForElementClickable(ofacMatching);
+        click(ofacMatching);
     }
 }
