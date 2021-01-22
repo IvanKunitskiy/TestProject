@@ -1439,13 +1439,21 @@ public class EditAccountPage extends PageTools {
         jsClick(mailCodeSelectorButton);
     }
 
-    @Step("Set 'Date Opened' value")
+    @Step("Set 'Date Last Access' value")
     public void setDateLastAccess(String dateLastAccessValue) {
         waitForElementVisibility(dateLastAccess);
         waitForElementClickable(dateLastAccess);
         typeWithoutWipe("", dateLastAccess);
         SelenideTools.sleep(1);
         typeWithoutWipe(dateLastAccessValue, dateLastAccess);
+    }
+
+    @Step("Set 'Maturity Date' value")
+    public void setMaturityDate(String maturityDateValue) {
+        waitForElementClickable(maturityDate);
+        typeWithoutWipe("", maturityDate);
+        SelenideTools.sleep(1);
+        typeWithoutWipe(maturityDateValue, maturityDate);
     }
 
     @Step("Set 'Date Of First Deposit' value")

@@ -45,7 +45,9 @@ public enum TransactionCode {
     REDEEMED_CD_315("315 - Redeemed CD"),
     INT_PAID_COMP_307("307 - Int Paid Comp"),
     GL_DEBIT("860 - G/L Debit"),
-    NEW_LOAN_411("411 - New Loan");
+    NEW_LOAN_411("411 - New Loan"),
+    TAKE_FROM_IENC_408("408 - Take From IENC"),
+    ADD_TO_IENC_409("409 - Add To IENC");
 
     private final String transCode;
 }

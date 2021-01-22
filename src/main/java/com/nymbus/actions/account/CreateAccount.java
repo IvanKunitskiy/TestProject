@@ -163,6 +163,36 @@ public class CreateAccount {
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
 
+    public void createLoanAccount(Account account) {
+        Pages.clientDetailsPage().clickAccountsTab();
+        setAddNewOption(account);
+        setProductType(account);
+        setProduct(account);
+        setAccountType(account);
+        Pages.addAccountPage().setAccountNumberValue(account.getAccountNumber());
+        setOriginatingOfficer(account);
+        setCurrentOfficer(account);
+        setMailCode(account);
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
+        setBankBranch(account);
+        setLoanClassCode(account);
+        Pages.addAccountPage().setPaymentAmount(account.getPaymentAmount());
+        setPaymentAmountType(account);
+        setPaymentFrequency(account);
+        disableCycleLoanSwitch();
+        Pages.addAccountPage().setNextPaymentBilledDueDate(account.getNextPaymentBilledDueDate());
+        Pages.addAccountPage().setPaymentBilledLeadDays(account.getPaymentBilledLeadDays());
+        Pages.addAccountPage().setCurrentEffectiveRate(account.getCurrentEffectiveRate());
+        setInterestMethod(account);
+        disableAdjustableRateSwitch();
+        setDaysBaseYearBase(account);
+        Pages.addAccountPage().setTerm(account.getTerm());
+        setCommitmentTypeAmt(account);
+        disableLocPaymentRecalculationFlagValueSwitch();
+        Pages.addAccountPage().clickSaveAccountButton();
+        Pages.accountDetailsPage().waitForFullProfileButton();
+    }
+
     public void setValuesInFieldsRequiredForSavingsAccount(Account account) {
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
@@ -661,6 +691,17 @@ public class CreateAccount {
         Pages.addAccountPage().clickRateChangeFrequencySelectorOption(account.getRateChangeFrequency());
     }
 
+    public void setCycleCode(Account account) {
+        Pages.addAccountPage().clickCycleCodeSelectorButton();
+        List<String> listOfCycleCode = Pages.addAccountPage().getCycleCodeList();
+
+        Assert.assertTrue(listOfCycleCode.size() > 0, "There are no 'Cycle Code' options available");
+        if (account.getCycleCode() == null) {
+            account.setCycleCode(listOfCycleCode.get(new Random().nextInt(listOfCycleCode.size())).trim());
+        }
+        Pages.addAccountPage().clickCycleCodeSelectorOption(account.getCycleCode());
+    }
+
     public String getDateOpenedValue(Account account) {
         String dateOpened = Pages.addAccountPage().getDateOpened();
 
@@ -680,8 +721,22 @@ public class CreateAccount {
         }
     }
 
+    public void enableCycleLoanSwitch() {
+        if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("no")) {
+            Pages.addAccountPage().clickCycleLoanSwitch();
+            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        }
+    }
+
     public void disableLocPaymentRecalculationFlagValueSwitch() {
         if (Pages.addAccountPage().getLocPaymentRecalculationFlagValue().equalsIgnoreCase("yes")) {
+            Pages.addAccountPage().clickLocPaymentRecalculationFlagValue();
+            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        }
+    }
+
+    public void enableLocPaymentRecalculationFlagValueSwitch() {
+        if (Pages.addAccountPage().getLocPaymentRecalculationFlagValue().equalsIgnoreCase("no")) {
             Pages.addAccountPage().clickLocPaymentRecalculationFlagValue();
             SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         }
