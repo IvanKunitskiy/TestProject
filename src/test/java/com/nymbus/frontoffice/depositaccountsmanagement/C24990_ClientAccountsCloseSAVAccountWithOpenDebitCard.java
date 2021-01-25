@@ -22,7 +22,6 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccB
 import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitGLCreditTransactionBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.Transaction;
-import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -37,10 +36,10 @@ import static io.qameta.allure.SeverityLevel.CRITICAL;
 @Epic("Frontoffice")
 @Feature("Deposit Accounts Management")
 @Owner("Dmytro")
-public class C24989_ClientAccountsCloseCHKAccountWithOpenDebitCard extends BaseTest {
+public class C24990_ClientAccountsCloseSAVAccountWithOpenDebitCard extends BaseTest {
     private DebitCard debitCard;
     private IndividualClient client;
-    private Account checkingAccount;
+    private Account savingsAccount;
     private Transaction miscDebitGLCreditTransaction;
 
     @BeforeMethod
@@ -50,8 +49,8 @@ public class C24989_ClientAccountsCloseCHKAccountWithOpenDebitCard extends BaseT
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         client = individualClientBuilder.buildClient();
 
-        // Set up CHK account
-        checkingAccount = new Account().setCHKAccountData();
+        // Set up account
+        savingsAccount = new Account().setSavingsAccountData();
         miscDebitGLCreditTransaction = new TransactionConstructor(new MiscDebitGLCreditTransactionBuilder()).constructTransaction();
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
 
@@ -80,24 +79,25 @@ public class C24989_ClientAccountsCloseCHKAccountWithOpenDebitCard extends BaseT
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
         // Set product
-        checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
-        miscDebitGLCreditTransaction.getTransactionSource().setAccountNumber(checkingAccount.getAccountNumber());
-        miscDebitGLCreditTransaction.getTransactionSource().setTransactionCode(TransactionCode.WITHDRAW_AND_CLOSE.getTransCode());
+        savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
+        miscDebitGLCreditTransaction.getTransactionSource().setAccountNumber(savingsAccount.getAccountNumber());
+        miscDebitGLCreditTransaction.getTransactionSource().setTransactionCode("227 - Withdraw&Close");
 
-        // Create a clint
+        // Create a client
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
 
-        // Create CHK account
-        AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkingAccount);
+        // Create savings account
+        AccountActions.createAccount().createSavingAccountForTransactionPurpose(savingsAccount);
 
-        // Set created CHK account as related to credit card
-        debitCard.getAccounts().add(checkingAccount.getAccountNumber());
+        // Set created account as related to credit card
+        debitCard.getAccounts().add(savingsAccount.getAccountNumber());
         Actions.loginActions().doLogOut();
 
         // Set up transaction with account number
-        depositTransaction.getTransactionDestination().setAccountNumber(checkingAccount.getAccountNumber());
+        depositTransaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
+        depositTransaction.getTransactionDestination().setTransactionCode("209 - Deposit");
 
         // Perform deposit transaction
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -135,8 +135,8 @@ public class C24989_ClientAccountsCloseCHKAccountWithOpenDebitCard extends BaseT
     }
 
     @Severity(CRITICAL)
-    @Test(description = "C24989, Client Accounts - Close CHK account with open debit card")
-    public void clientAccountsCloseCHKAccountWithOpenDebitCard() {
+    @Test(description = "C24990, Client Accounts - Close SAV account with open debit card")
+    public void clientAccountsCloseSavAccountWithOpenDebitCard() {
 
         logInfo("Step 1: Log in to the system");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -157,5 +157,4 @@ public class C24989_ClientAccountsCloseCHKAccountWithOpenDebitCard extends BaseT
         Actions.transactionActions().clickCommitButton();
         Assert.assertTrue(Pages.tellerPage().errorMessagesIsVisible(), "Error messages not visible");
     }
-
 }
