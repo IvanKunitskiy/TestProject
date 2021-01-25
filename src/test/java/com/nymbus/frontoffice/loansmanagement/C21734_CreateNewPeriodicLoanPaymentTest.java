@@ -10,6 +10,7 @@ import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
 import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.client.other.transfer.Frequency;
 import com.nymbus.newmodels.client.other.transfer.Transfer;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
@@ -63,6 +64,7 @@ public class C21734_CreateNewPeriodicLoanPaymentTest extends BaseTest {
         transfer = transferBuilder.getTransfer();
         transfer.setFromAccount(checkingAccount);
         transfer.setToAccount(loanAccount);
+        transfer.setFrequency(Frequency.ANNUAL);
 
         // Login to the system
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -134,7 +136,7 @@ public class C21734_CreateNewPeriodicLoanPaymentTest extends BaseTest {
                 "'From Account' is not valid");
         Assert.assertTrue(Pages.viewTransferPage().getToAccount().contains(transfer.getToAccount().getAccountNumber()),
                 "'To Account' is not valid");
-        Assert.assertEquals(Pages.viewTransferPage().getFrequency(), transfer.getFrequency(),
+        Assert.assertTrue(Pages.viewTransferPage().getFrequency().equalsIgnoreCase(transfer.getFrequency().getFrequencyType()),
                 "'Frequency' is not equal to current date");
         Assert.assertEquals(Pages.viewTransferPage().getAmount(), transfer.getAmount(),
                 "'Amount' is not equal to current date");

@@ -15,7 +15,7 @@ public class ViewTransferPage extends PageTools {
     private By creationDate = By.xpath("//input[@data-test-id='field-creationdate']");
     private By advanceDaysFromDueDate = By.xpath("//input[@data-test-id='field-advancedaystomakepayment']");
     private By eftChargeCode = By.xpath("//div[@name='transferchargecode']/a/span/span");
-    private By frequency = By.xpath("////div[@name='frequencytransfer']/a/span/span");
+    private By frequency = By.xpath("//div[@name='frequencytransfer']/a/span/span");
     private By amount = By.xpath("//input[@data-test-id='field-transferamount']");
 
     @Step("Check if 'Edit' button enabled")
@@ -99,6 +99,6 @@ public class ViewTransferPage extends PageTools {
     @Step("Get 'Amount' value in transfer view mode")
     public String getAmount() {
         waitForElementVisibility(amount);
-        return getElementAttributeValue("value", amount);
+        return getElementAttributeValue("value", amount).replaceAll("[^0-9]", "");
     }
 }
