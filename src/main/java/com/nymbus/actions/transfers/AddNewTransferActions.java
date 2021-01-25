@@ -131,6 +131,17 @@ public class AddNewTransferActions {
         Pages.newTransferPage().clickEftChargeCodeSelectorOption(transfer.getEftChargeCode());
     }
 
+    public void setEftChargeCode(Transfer transfer) {
+        Pages.newTransferPage().clickEftChargeCodeSelectorButton();
+        List<String> listOfEftChargeCode = Pages.newTransferPage().getEftChargeCodeList();
+
+        Assert.assertTrue(listOfEftChargeCode.size() > 0, "There are no options available");
+        if (transfer.getEftChargeCode() == null) {
+            transfer.setEftChargeCode(listOfEftChargeCode.get(new Random().nextInt(listOfEftChargeCode.size())).trim());
+        }
+        Pages.newTransferPage().clickEftChargeCodeSelectorOption(transfer.getEftChargeCode());
+    }
+
     public void setTransferFromAccount(Transfer transfer) {
         Pages.newTransferPage().clickFromAccountSelectorButton();
         List<String> listOfFromAccount = Pages.newTransferPage().getFromAccountList();
