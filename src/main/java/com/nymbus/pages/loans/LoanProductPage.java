@@ -33,8 +33,9 @@ public class LoanProductPage extends PageTools {
 
     @Step("Type to search field")
     public void typeToSearchInput(String queryText) {
+        waitForElementVisibility(searchInput);
         waitForElementClickable(searchInput);
-        typeWithoutWipe(queryText, searchInput);
+        type(queryText, searchInput);
     }
 
     @Step("Click the 'Search' button")
