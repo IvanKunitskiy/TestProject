@@ -17,6 +17,13 @@ public class TellerPage extends PageTools {
     private By transactionSection = By.xpath("//section[@ui-view='transaction']");
     private By tellerOperation =By.xpath("//span[contains(string(),'Select Operation')]");
     private By operationSelector = By.xpath("//span[contains(string(),'%s')]");
+    private By errorMessage = By.xpath("//div[contains(@class, 'toast-error')]");
+
+    @Step("Check error message")
+    public boolean errorMessagesIsVisible(){
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        return isElementVisible(errorMessage);
+    }
 
     @Step("Wait for transaction section visibility")
     public void waitForTransactionSectionVisibility() {
