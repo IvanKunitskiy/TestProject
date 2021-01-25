@@ -40,4 +40,17 @@ public class TransferBuilder {
 
         return transfer;
     }
+
+    public LoanPaymentTransfer getLoanPaymentTransfer() {
+        LoanPaymentTransfer transfer = new LoanPaymentTransfer();
+
+        transfer.setTransferType(TransferType.LOAN_PAYMENT);
+        transfer.setExpirationDate(DateTime.getTomorrowDate("MM/dd/yyyy"));
+        transfer.setAdvanceDaysFromDueDate(String.valueOf(Generator.genInt(1, 30)));
+        transfer.setEftChargeCode("Account Analysis");
+        transfer.setTransferCharge(String.valueOf(Generator.genInt(100, 900)));
+
+        return transfer;
+    }
+
 }
