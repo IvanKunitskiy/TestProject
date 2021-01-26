@@ -130,7 +130,7 @@ public class C22822_WeilandImportfile extends BaseTest {
     }
 
 
-    @Test(description = "C22816, Weiland: Import file")
+    @Test(description = "C22822, Weiland: Import file")
     @Severity(SeverityLevel.CRITICAL)
     public void weilandImportFile() {
         logInfo("Step 1: Log in to the system as the user from the precondition");

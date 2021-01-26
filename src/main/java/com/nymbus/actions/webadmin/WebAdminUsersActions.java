@@ -621,4 +621,30 @@ public class WebAdminUsersActions {
         String data = WebAdminPages.drlCachesPage().getCashValuesData(modal);
         JSONData.setFieldsMap(data, fieldsMap);
     }
+
+    public boolean getUseGLAccountNumberForOfficialChecks(String userName, String password) {
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL +
+                "rulesui2.sbs.bcfile.ct?formName=bank.data.bcfile&filter_(databean)code=UseGLAccountNumberForOfficialCheck");
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(userName,password);
+        boolean useGLAccountsValue = WebAdminPages.usersPage().getUseGLAccountsValue();
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        return useGLAccountsValue;
+    }
+
+    public String getInternalCheckingAccountNumber(String userName, String password) {
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL +
+                "RulesUIQuery.ct?waDbName=nymbusdev12DS&dqlQuery=count%3A+100%0D%0Afrom%3A+bank.data.officialcheck.control%0D%0Awhere%3A+%0D%0A-+.checktype->name%3A+Interest+Check%0D%0Aformats%3A+%0D%0A-+->bank.data.actmst%3A+%24%7Baccountnumber%7D&source=");
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(userName,password);
+        String accountNumber = WebAdminPages.usersPage().getInternalAccountNumber();
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        return accountNumber;
+    }
 }
