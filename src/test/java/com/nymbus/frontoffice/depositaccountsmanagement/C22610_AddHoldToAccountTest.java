@@ -74,6 +74,7 @@ public class C22610_AddHoldToAccountTest extends BaseTest {
         Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
+        Actions.loginActions().doLogOutProgrammatically();
     }
 
     @Test(description = "C22610, Client Accounts: Add hold to account (review available balance)")
@@ -81,6 +82,7 @@ public class C22610_AddHoldToAccountTest extends BaseTest {
     public void verifyHoldInstruction() {
 
         logInfo("Step 2: Search for the account from the precondition and open it on Instructions tab");
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         AccountActions.editAccount().navigateToAccountDetails(savingsAccount.getAccountNumber(), false);
         InstructionBalanceData instructionBalanceData = AccountActions.retrievingAccountData().getInstructionBalanceData();
         AccountActions.editAccount().goToInstructionsTab();
