@@ -4,7 +4,6 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -49,7 +48,7 @@ public class C22580_BalanceInquiryTest extends BaseTest {
         HoldInstruction instruction =  new InstructionConstructor(new HoldInstructionBuilder()).constructInstruction(HoldInstruction.class);
 
         // Log in and create a client
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Set the product of the user to account
         savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
@@ -69,7 +68,7 @@ public class C22580_BalanceInquiryTest extends BaseTest {
         // Create transaction
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Navigate to instructions tab
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
@@ -87,7 +86,7 @@ public class C22580_BalanceInquiryTest extends BaseTest {
     public void verifyBalanceInquiry() {
 
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Search for the Savings account from the precondition and open it on Details tab");
         AccountActions.editAccount().navigateToAccountDetails(savingsAccountNumber, false);

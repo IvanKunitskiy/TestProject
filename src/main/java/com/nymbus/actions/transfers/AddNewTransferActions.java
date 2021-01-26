@@ -33,6 +33,19 @@ public class AddNewTransferActions {
         Pages.newTransferPage().clickSaveButton();
     }
 
+    public void addNewLoanPaymentTransfer(LoanPaymentTransfer loanPaymentTransfer) {
+        Pages.accountNavigationPage().clickTransfersTab();
+        Pages.transfersPage().clickNewTransferButton();
+        TransfersActions.addNewTransferActions().setLoanPaymentTransferType(loanPaymentTransfer);
+        Pages.newTransferPage().setExpirationDate(loanPaymentTransfer.getExpirationDate());
+        TransfersActions.addNewTransferActions().setLoanPaymentFromAccount(loanPaymentTransfer);
+        TransfersActions.addNewTransferActions().setLoanPaymentToAccount(loanPaymentTransfer);
+        Pages.newTransferPage().setAdvanceDaysFromDueDate(loanPaymentTransfer.getAdvanceDaysFromDueDate());
+        TransfersActions.addNewTransferActions().setEftChargeCode(loanPaymentTransfer);
+        Pages.newTransferPage().setTransferCharge(loanPaymentTransfer.getTransferCharge());
+        Pages.newTransferPage().clickSaveButton();
+    }
+
     public void setHighBalanceTransferType(HighBalanceTransfer transfer) {
         Pages.newTransferPage().clickTransferTypeSelectorButton();
         List<String> listOfTransferType = Pages.newTransferPage().getTransferTypeList();
@@ -121,6 +134,17 @@ public class AddNewTransferActions {
     }
 
     public void setEftChargeCode(LoanPaymentTransfer transfer) {
+        Pages.newTransferPage().clickEftChargeCodeSelectorButton();
+        List<String> listOfEftChargeCode = Pages.newTransferPage().getEftChargeCodeList();
+
+        Assert.assertTrue(listOfEftChargeCode.size() > 0, "There are no options available");
+        if (transfer.getEftChargeCode() == null) {
+            transfer.setEftChargeCode(listOfEftChargeCode.get(new Random().nextInt(listOfEftChargeCode.size())).trim());
+        }
+        Pages.newTransferPage().clickEftChargeCodeSelectorOption(transfer.getEftChargeCode());
+    }
+
+    public void setEftChargeCode(Transfer transfer) {
         Pages.newTransferPage().clickEftChargeCodeSelectorButton();
         List<String> listOfEftChargeCode = Pages.newTransferPage().getEftChargeCodeList();
 

@@ -29,6 +29,7 @@ public class NewTransferPage extends PageTools {
     private By advanceDaysToMakePayment = By.xpath("//input[@data-test-id='field-advancedaystomakepayment']");
     private By toAccountInputField = By.xpath("//div[@data-test-id='field-accountid2']/div/input");
     private By expirationDate = By.xpath("//input[@data-test-id='field-expirationdate']");
+    private By nextDateOfTransfer = By.xpath("//input[@data-test-id='field-nextdateoftransfer']");
 
     private By frequencySelectorButton = By.xpath("//div[@data-test-id='field-frequencytransfer']");
     private By frequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
@@ -197,5 +198,11 @@ public class NewTransferPage extends PageTools {
     public void setExpirationDate(String value) {
         waitForElementClickable(expirationDate, value);
         type(value, expirationDate);
+    }
+
+    @Step("Type value to the 'Next Date Of Transfer' field")
+    public void setNextDateOfTransfer(String date) {
+        waitForElementClickable(nextDateOfTransfer, date);
+        type(date, nextDateOfTransfer);
     }
 }

@@ -4,7 +4,6 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -60,14 +59,14 @@ public class C25323_LoanCreateAndFundPrincipalAndInterestTest extends BaseTest {
         miscCreditDestination.setAmount(100);
 
         // Login to the system
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Check that a Loan product exist with the following editable fields (Readonly? = NO) and create if not exist
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
         Actions.loginActions().doLogOut();
 
         // Get escrow payment value for the loan product
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         escrowPaymentValue = Actions.loanProductOverviewActions().getLoanProductEscrowPaymentValue(loanProductName);
 
         // Set the product
@@ -89,7 +88,7 @@ public class C25323_LoanCreateAndFundPrincipalAndInterestTest extends BaseTest {
     public void loanCreateAndFundPrincipalAndInterest() {
 
         logInfo("Step 1: Log in to the system");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Open 'Client' from preconditions on the 'Accounts' tab");
         Actions.clientPageActions().searchAndOpenIndividualClientByID(client.getIndividualType().getClientID());

@@ -22,7 +22,6 @@ public class LoanProductOverviewActions {
     }
 
     public void searchTheLoanProduct(String queryText) {
-        Pages.loanProductPage().clickSearchInput();
         Pages.loanProductPage().typeToSearchInput(queryText);
         Pages.loanProductPage().clickSearchButton();
         Pages.loanProductPage().waitForSearchButtonActive();
