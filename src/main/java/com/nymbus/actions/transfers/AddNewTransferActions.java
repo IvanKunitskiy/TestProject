@@ -46,6 +46,19 @@ public class AddNewTransferActions {
         Pages.newTransferPage().clickSaveButton();
     }
 
+    public void addNewPeriodicLoanPaymentTransfer(Transfer transfer) {
+        Pages.accountNavigationPage().clickTransfersTab();
+        Pages.transfersPage().clickNewTransferButton();
+        TransfersActions.addNewTransferActions().setTransferType(transfer);
+        TransfersActions.addNewTransferActions().setTransferFromAccount(transfer);
+        TransfersActions.addNewTransferActions().setTransferToAccount(transfer);
+        TransfersActions.addNewTransferActions().setTransferFrequency(transfer);
+        Pages.newTransferPage().setAmount(transfer.getAmount());
+        TransfersActions.addNewTransferActions().setEftChargeCode(transfer);
+        Pages.newTransferPage().setTransferCharge(transfer.getTransferCharge());
+        Pages.newTransferPage().clickSaveButton();
+    }
+
     public void setHighBalanceTransferType(HighBalanceTransfer transfer) {
         Pages.newTransferPage().clickTransferTypeSelectorButton();
         List<String> listOfTransferType = Pages.newTransferPage().getTransferTypeList();
