@@ -4,7 +4,6 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
@@ -61,7 +60,7 @@ public class C25355_LoanCreateAndFundSimpleInterestTest extends BaseTest {
         miscCreditDestination.setAmount(100);
 
         // Login to the system
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Check that a Loan product exist with the following editable fields (Readonly? = NO) and create if not exist
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
@@ -80,12 +79,12 @@ public class C25355_LoanCreateAndFundSimpleInterestTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C25318, Loan - Create and Fund: Interest Only (bill)")
+    @Test(description = "C25355, Loan - Create and Fund: Simple interest")
     @Severity(SeverityLevel.CRITICAL)
     public void loanCreateAndFundInterestOnly() {
 
         logInfo("Step 1: Log in to the system");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Open 'Client' from preconditions on the 'Accounts' tab");
         Actions.clientPageActions().searchAndOpenIndividualClientByID(client.getIndividualType().getClientID());

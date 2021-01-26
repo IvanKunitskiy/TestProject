@@ -5,7 +5,6 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.notes.NotesActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -45,7 +44,7 @@ public class C22605_AddAccountLevelNotesTest extends BaseTest {
         chkAccount = new Account().setCHKAccountData();
 
         // Create a client
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Set the product
         chkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
@@ -64,7 +63,7 @@ public class C22605_AddAccountLevelNotesTest extends BaseTest {
     public void viewClientLevelCallStatement() {
 
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Search for the CHK account from the precondition and open it on Transactions tab");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);

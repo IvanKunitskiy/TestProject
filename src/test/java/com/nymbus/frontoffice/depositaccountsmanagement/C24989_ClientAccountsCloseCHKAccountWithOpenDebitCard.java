@@ -4,7 +4,6 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -77,7 +76,7 @@ public class C24989_ClientAccountsCloseCHKAccountWithOpenDebitCard extends BaseT
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Set product
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
@@ -100,7 +99,7 @@ public class C24989_ClientAccountsCloseCHKAccountWithOpenDebitCard extends BaseT
         depositTransaction.getTransactionDestination().setAccountNumber(checkingAccount.getAccountNumber());
 
         // Perform deposit transaction
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Pages.navigationPage().waitForUserMenuVisible();
         Actions.transactionActions().goToTellerPage();
         Actions.transactionActions().doLoginTeller();
@@ -108,11 +107,10 @@ public class C24989_ClientAccountsCloseCHKAccountWithOpenDebitCard extends BaseT
         Pages.tellerPage().setEffectiveDate(depositTransaction.getTransactionDate());
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
-        Actions.loginActions().doLogOut();
-
+        Actions.loginActions().doLogOutProgrammatically();
 
         //Create Debit Card
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Pages.navigationPage().waitForUserMenuVisible();
 
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
@@ -139,7 +137,7 @@ public class C24989_ClientAccountsCloseCHKAccountWithOpenDebitCard extends BaseT
     public void clientAccountsCloseCHKAccountWithOpenDebitCard() {
 
         logInfo("Step 1: Log in to the system");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Go to Teller page");
         Actions.transactionActions().loginTeller();

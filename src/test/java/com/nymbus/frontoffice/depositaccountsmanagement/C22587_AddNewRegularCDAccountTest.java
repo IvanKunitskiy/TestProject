@@ -4,7 +4,6 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -42,7 +41,7 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         Account checkingAccount = new Account().setCHKAccountData();
 
         // Login to the system
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Set accounts data
         cdAccount.setBankBranch(Actions.usersActions().getBankBranch());
@@ -69,7 +68,7 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
     public void addNewRegularCDAccountTest() {
 
         logInfo("Step 1: Log in to the system as the user from the precondition");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Search for the client from the preconditions and open his profile on Accounts tab");
         Actions.clientPageActions().searchAndOpenIndividualClientByID(client.getIndividualType().getClientID());
