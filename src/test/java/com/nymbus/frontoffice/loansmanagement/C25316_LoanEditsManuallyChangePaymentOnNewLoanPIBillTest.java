@@ -4,7 +4,6 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -39,12 +38,12 @@ public class C25316_LoanEditsManuallyChangePaymentOnNewLoanPIBillTest extends Ba
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
 
         // Check that a Loan product exist with the following editable fields (Readonly? = NO) and create if not exist
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
         Actions.loginActions().doLogOut();
 
         // Get escrow payment value for the loan product
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         escrowPaymentValue = Actions.loanProductOverviewActions().getLoanProductEscrowPaymentValue(loanProductName);
 
         // Create a client
@@ -63,7 +62,7 @@ public class C25316_LoanEditsManuallyChangePaymentOnNewLoanPIBillTest extends Ba
     public void loanEditsManuallyChangePaymentOnNewLoanPIBill() {
 
         logInfo("Step 1: Log in to the system");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Open loan account from preconditions");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);

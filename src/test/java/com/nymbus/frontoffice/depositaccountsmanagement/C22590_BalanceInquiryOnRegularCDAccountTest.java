@@ -4,7 +4,6 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -55,7 +54,7 @@ public class C22590_BalanceInquiryOnRegularCDAccountTest extends BaseTest {
         instruction.setAmount(10);
 
         // Create a client
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Set the product
         cdAccount.setProduct(Actions.productsActions().getProduct(Products.CD_PRODUCTS, AccountType.CD, RateType.FIXED));
@@ -70,7 +69,7 @@ public class C22590_BalanceInquiryOnRegularCDAccountTest extends BaseTest {
         // Commit transaction to account
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Navigate to instructions tab
         Actions.clientPageActions().searchAndOpenClientByName(cdAccount.getAccountNumber());
@@ -88,7 +87,7 @@ public class C22590_BalanceInquiryOnRegularCDAccountTest extends BaseTest {
     public void viewClientLevelCallStatement() {
 
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Search for the CD account from the precondition and open it on Details");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(cdAccount);

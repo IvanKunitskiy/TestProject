@@ -4,7 +4,6 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -44,7 +43,7 @@ public class C22602_EditTransactionDescriptionTest extends BaseTest {
         transaction.getTransactionDestination().setTransactionCode("109 - Deposit");
 
         // Create a client
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Set the product
         chkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
@@ -64,7 +63,7 @@ public class C22602_EditTransactionDescriptionTest extends BaseTest {
     public void editTransactionDescription() {
 
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Search for account from the precondition and open it on Notes tab");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);

@@ -53,7 +53,7 @@ public class C22585_BalanceInquiryOnSavingsIRAAccountTest extends BaseTest {
 
         // Log in
         Selenide.open(Constants.URL);
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Set the product of the user to account
         iraAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.IRA, RateType.TIER));
@@ -73,7 +73,7 @@ public class C22585_BalanceInquiryOnSavingsIRAAccountTest extends BaseTest {
         // Commit transaction to account
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create instruction
         Pages.aSideMenuPage().clickClientMenuItem();
@@ -90,7 +90,7 @@ public class C22585_BalanceInquiryOnSavingsIRAAccountTest extends BaseTest {
     public void viewClientLevelCallStatement() {
 
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Search for the CHK account from the precondition and open it on Details");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(iraAccount);

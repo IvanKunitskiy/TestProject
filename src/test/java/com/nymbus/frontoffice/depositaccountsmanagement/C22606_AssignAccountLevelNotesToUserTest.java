@@ -63,11 +63,11 @@ public class C22606_AssignAccountLevelNotesToUserTest extends BaseTest {
         chkAccount = new Account().setCHKAccountData();
 
         // Create user and set him a password
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.usersActions().createUser(user);
         Actions.loginActions().doLogOut();
         Selenide.open(Constants.WEB_ADMIN_URL);
-        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         WebAdminActions.webAdminUsersActions().setUserPassword(user);
         WebAdminActions.loginActions().doLogout();
 
@@ -131,7 +131,7 @@ public class C22606_AssignAccountLevelNotesToUserTest extends BaseTest {
         Actions.loginActions().doLogOut();
 
         logInfo("Step 9: Log in to the system as the User specified as Responsible Officer on Step 5");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 10: Click bell icon in the top right of the header and pay attention to the Alerts panel");
         Pages.navigationPage().clickAlertNotificationsButton();
