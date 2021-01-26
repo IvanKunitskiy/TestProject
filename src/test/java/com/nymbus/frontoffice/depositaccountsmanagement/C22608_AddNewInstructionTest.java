@@ -23,7 +23,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 @Epic("Frontoffice")
-@Feature("Clients Management")
+@Feature("Deposit Accounts Management")
 @Owner("Petro")
 public class C22608_AddNewInstructionTest extends BaseTest {
 

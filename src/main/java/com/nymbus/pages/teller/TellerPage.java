@@ -21,7 +21,10 @@ public class TellerPage extends PageTools {
 
     @Step("Check error message")
     public boolean errorMessagesIsVisible(){
-        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        if(isElementVisible(errorMessage)){
+            return true;
+        }
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         return isElementVisible(errorMessage);
     }
 
