@@ -80,7 +80,7 @@ public class C25355_LoanCreateAndFundSimpleInterestTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C25318, Loan - Create and Fund: Interest Only (bill)")
+    @Test(description = "C25355, Loan - Create and Fund: Simple interest")
     @Severity(SeverityLevel.CRITICAL)
     public void loanCreateAndFundInterestOnly() {
 
