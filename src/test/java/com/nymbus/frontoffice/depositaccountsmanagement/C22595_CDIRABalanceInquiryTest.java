@@ -4,7 +4,6 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -51,7 +50,7 @@ public class C22595_CDIRABalanceInquiryTest extends BaseTest {
         Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
 
         // Log in
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Set the product
         cdIraAccount.setProduct(Actions.productsActions().getProduct(Products.CD_PRODUCTS, AccountType.IRA, RateType.FIXED));
@@ -71,7 +70,7 @@ public class C22595_CDIRABalanceInquiryTest extends BaseTest {
         // Commit transaction to account
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
         Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Create instruction
         Pages.aSideMenuPage().clickClientMenuItem();
@@ -88,7 +87,7 @@ public class C22595_CDIRABalanceInquiryTest extends BaseTest {
     public void cdIraBalanceInquiryTest() {
 
         logInfo("Step 1: Log in to the system as User from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Search for the CD IRA account from the precondition and open it on Details");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(cdIraAccount);

@@ -4,7 +4,6 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -41,7 +40,7 @@ public class C22611_EditDeleteHoldTest extends BaseTest {
         Account savingsAccount = new Account().setSavingsAccountData();
         Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
         instruction =  new InstructionConstructor(new HoldInstructionBuilder()).constructInstruction(HoldInstruction.class);
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Set the product
         savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
@@ -60,8 +59,10 @@ public class C22611_EditDeleteHoldTest extends BaseTest {
 
         // Create transaction
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
+        Actions.loginActions().doLogOutProgrammatically();
 
         // Navigate to instructions tab
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenClientByName(accountNumber);
         AccountActions.editAccount().goToInstructionsTab();
         int instructionsCount = AccountActions.createInstruction().getInstructionCount();
@@ -79,7 +80,7 @@ public class C22611_EditDeleteHoldTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void verifyEditDeleteHoldInstruction() {
         logInfo("Step 1: Log in to the system as the user from the preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Search for the account from the precondition and open it on Instructions tab");
         Actions.clientPageActions().searchAndOpenClientByName(accountNumber);
