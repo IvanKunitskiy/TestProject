@@ -33,6 +33,19 @@ public class AddNewTransferActions {
         Pages.newTransferPage().clickSaveButton();
     }
 
+    public void addNewLoanPaymentTransfer(LoanPaymentTransfer loanPaymentTransfer) {
+        Pages.accountNavigationPage().clickTransfersTab();
+        Pages.transfersPage().clickNewTransferButton();
+        TransfersActions.addNewTransferActions().setLoanPaymentTransferType(loanPaymentTransfer);
+        Pages.newTransferPage().setExpirationDate(loanPaymentTransfer.getExpirationDate());
+        TransfersActions.addNewTransferActions().setLoanPaymentFromAccount(loanPaymentTransfer);
+        TransfersActions.addNewTransferActions().setLoanPaymentToAccount(loanPaymentTransfer);
+        Pages.newTransferPage().setAdvanceDaysFromDueDate(loanPaymentTransfer.getAdvanceDaysFromDueDate());
+        TransfersActions.addNewTransferActions().setEftChargeCode(loanPaymentTransfer);
+        Pages.newTransferPage().setTransferCharge(loanPaymentTransfer.getTransferCharge());
+        Pages.newTransferPage().clickSaveButton();
+    }
+
     public void setHighBalanceTransferType(HighBalanceTransfer transfer) {
         Pages.newTransferPage().clickTransferTypeSelectorButton();
         List<String> listOfTransferType = Pages.newTransferPage().getTransferTypeList();
