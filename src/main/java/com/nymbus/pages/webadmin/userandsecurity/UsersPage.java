@@ -13,6 +13,8 @@ public class UsersPage extends PageTools {
     private By newPasswordField = By.id("loginPassword");
     private By confirmPasswordField = By.id("confirmPassword");
     private By saveButton = By.xpath("//input[contains(@class, 'saveButton')]");
+    private By userGlAccoutsInput = By.xpath("(//input[@type='integerbox'])[2]");
+    private By accountNumber = By.xpath("((//td[@class='fieldsCell'])[7]//span)[6]");
 
     @Step("Wait for Users region")
     public void waitUsersRegion() {
@@ -59,4 +61,13 @@ public class UsersPage extends PageTools {
         click(saveButton);
     }
 
+    public boolean getUseGLAccountsValue() {
+        waitForElementVisibility(userGlAccoutsInput);
+        return !getElementAttributeValue("value", userGlAccoutsInput).equals("0");
+    }
+
+    public String getInternalAccountNumber() {
+        waitForElementVisibility(accountNumber);
+        return getElementText(accountNumber);
+    }
 }
