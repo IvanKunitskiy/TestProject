@@ -3,6 +3,7 @@ package com.nymbus.actions.transfers;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.client.other.transfer.HighBalanceTransfer;
 import com.nymbus.newmodels.client.other.transfer.LoanPaymentTransfer;
+import com.nymbus.newmodels.client.other.transfer.Transfer;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 
@@ -22,6 +23,14 @@ public class EditTransferActions {
     }
 
     public void setRandomEftChargeCode(LoanPaymentTransfer transfer) {
+        Pages.editTransferPage().clickEftChargeCodeSelectorButton();
+        List<String> listOfEftChargeCode = Pages.editTransferPage().getEftChargeCodeList();
+        Assert.assertTrue(listOfEftChargeCode.size() > 0, "There are no options available");
+        transfer.setEftChargeCode(listOfEftChargeCode.get(new Random().nextInt(listOfEftChargeCode.size())).trim());
+        Pages.editTransferPage().clickEftChargeCodeSelectorOption(transfer.getEftChargeCode());
+    }
+
+    public void setRandomEftChargeCode(Transfer transfer) {
         Pages.editTransferPage().clickEftChargeCodeSelectorButton();
         List<String> listOfEftChargeCode = Pages.editTransferPage().getEftChargeCodeList();
         Assert.assertTrue(listOfEftChargeCode.size() > 0, "There are no options available");

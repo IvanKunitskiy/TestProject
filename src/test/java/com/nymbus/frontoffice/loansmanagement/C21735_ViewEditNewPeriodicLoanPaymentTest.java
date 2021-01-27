@@ -11,7 +11,8 @@ import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
 import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
-import com.nymbus.newmodels.client.other.transfer.LoanPaymentTransfer;
+import com.nymbus.newmodels.client.other.transfer.Frequency;
+import com.nymbus.newmodels.client.other.transfer.Transfer;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
@@ -20,7 +21,9 @@ import com.nymbus.newmodels.generation.transfers.TransferBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.*;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Owner;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -28,12 +31,12 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Petro")
-public class C21733_ViewEditNewAutomaticLoanPaymentTest extends BaseTest {
+public class C21735_ViewEditNewPeriodicLoanPaymentTest extends BaseTest {
 
     private IndividualClient client;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
-    private LoanPaymentTransfer loanPaymentTransfer;
+    private Transfer transfer;
 
     @BeforeMethod
     public void preCondition() {
@@ -58,9 +61,10 @@ public class C21733_ViewEditNewAutomaticLoanPaymentTest extends BaseTest {
 
         // Set up transfer
         TransferBuilder transferBuilder = new TransferBuilder();
-        loanPaymentTransfer = transferBuilder.getLoanPaymentTransfer();
-        loanPaymentTransfer.setFromAccount(checkingAccount);
-        loanPaymentTransfer.setToAccount(loanAccount);
+        transfer = transferBuilder.getTransfer();
+        transfer.setFromAccount(checkingAccount);
+        transfer.setToAccount(loanAccount);
+        transfer.setFrequency(Frequency.ANNUAL);
 
         // Login to the system
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -90,16 +94,16 @@ public class C21733_ViewEditNewAutomaticLoanPaymentTest extends BaseTest {
         Actions.transactionActions().performGLDebitMiscCreditTransaction(transaction);
         Actions.loginActions().doLogOutProgrammatically();
 
-        // Add new loan transfer
+        // Add new Periodic Loan Payment Transfer
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenIndividualClientByID(client.getIndividualType().getClientID());
-        TransfersActions.addNewTransferActions().addNewLoanPaymentTransfer(loanPaymentTransfer);
+        TransfersActions.addNewTransferActions().addNewPeriodicLoanPaymentTransfer(transfer);
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C21733, View / edit new automatic loan payment")
-    @Severity(SeverityLevel.CRITICAL)
-    public void viewEditNewAutomaticLoanPayment() {
+    @Test(description = "C21735, View / edit new periodic loan payment")
+    public void viewEditNewPeriodicLoanPayment() {
+
         logInfo("Step 1: Log in to the system as User from the preconditions");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
@@ -109,26 +113,22 @@ public class C21733_ViewEditNewAutomaticLoanPaymentTest extends BaseTest {
         logInfo("Step 3: Go to 'Transfers' page");
         Pages.accountNavigationPage().clickTransfersTab();
 
-        logInfo("Step 4: Select 'Loan Payment' transfer and pay attention at the Loan Transfer field");
-        Pages.transfersPage().clickTransferInTheListByType(loanPaymentTransfer.getTransferType().getTransferType());
+        logInfo("Step 4: Select 'Transfer' and pay attention to the Periodic Transfer field");
+        Pages.transfersPage().clickTransferInTheListByType(transfer.getTransferType().getTransferType());
 
         logInfo("Step 5: Click on the 'Edit' button");
         Pages.viewTransferPage().clickEditButton();
 
         logInfo("Step 6: Change some fields f.e.: 'From Account:', 'Advance days from due date:', 'Transfer Charge:'");
         logInfo("Step 7: Click 'Save'");
-        loanPaymentTransfer.setAdvanceDaysFromDueDate(String.valueOf(Generator.genInt(1, 30)));
-        Pages.editTransferPage().setAdvanceDaysFromDueDate(loanPaymentTransfer.getAdvanceDaysFromDueDate());
-        loanPaymentTransfer.setTransferCharge(String.valueOf(Generator.genInt(100, 900)));
-        Pages.editTransferPage().setTransferCharge(loanPaymentTransfer.getTransferCharge());
-        TransfersActions.editTransferActions().setRandomEftChargeCode(loanPaymentTransfer);
+        transfer.setTransferCharge(String.valueOf(Generator.genInt(100, 900)));
+        Pages.editTransferPage().setTransferCharge(transfer.getTransferCharge());
+        TransfersActions.editTransferActions().setRandomEftChargeCode(transfer);
         Pages.editTransferPage().clickSaveButton();
 
-        Assert.assertEquals(Pages.viewTransferPage().getEftChargeCode(), loanPaymentTransfer.getEftChargeCode(),
+        Assert.assertEquals(Pages.viewTransferPage().getEftChargeCode(), transfer.getEftChargeCode(),
                 "'EFT Charge code' value is not saved after editing");
-        Assert.assertEquals(Pages.viewTransferPage().getAdvanceDaysFromDueDate(), loanPaymentTransfer.getAdvanceDaysFromDueDate(),
-                "'Advance Days From Due Date' value is not saved after editing");
-        Assert.assertEquals(Pages.viewTransferPage().getTransferCharge(), loanPaymentTransfer.getTransferCharge(),
+        Assert.assertEquals(Pages.viewTransferPage().getTransferCharge(), transfer.getTransferCharge(),
                 "'Transfer Charge' value is not saved after editing");
     }
 }
