@@ -1,6 +1,9 @@
 package com.nymbus.pages.settings;
 
 import com.nymbus.pages.settings.bankcontrol.BankControlPage;
+import com.nymbus.pages.settings.callclasscodes.CallClassCodesPage;
+import com.nymbus.pages.settings.callclasscodes.CallCodePage;
+import com.nymbus.pages.settings.callclasscodes.EditCallCodePage;
 import com.nymbus.pages.settings.cashdrawer.AddCashDrawerPage;
 import com.nymbus.pages.settings.cashdrawer.CashDrawerSearchPage;
 import com.nymbus.pages.settings.cashdrawer.ViewCashDrawerPage;
@@ -39,6 +42,9 @@ public class SettingsPage {
     private static OfficialControlPage officialControlPage;
     private static CDTPage cdtPage;
     private static CreateCDTPage createCDTPage;
+    private static CallClassCodesPage callClassCodesPage;
+    private static CallCodePage callCodePage;
+    private static EditCallCodePage editCallCodePage;
 
     /**
      * This function return an instance of `MainPage`
@@ -190,6 +196,9 @@ public class SettingsPage {
         return bankControlPage;
     }
 
+    /**
+     * This function return an instance of `PrinterPage`
+     */
     public static PrinterPage printerPage() {
         if (printerPage == null) {
             printerPage = new PrinterPage();
@@ -197,10 +206,43 @@ public class SettingsPage {
         return printerPage;
     }
 
+    /**
+     * This function return an instance of `OfficialControlPage`
+     */
     public static OfficialControlPage officialComtrolPage() {
         if (officialControlPage == null){
             officialControlPage = new OfficialControlPage();
         }
         return officialControlPage;
+    }
+
+    /**
+     * This function return an instance of `CallClassCodesPage`
+     */
+    public static CallClassCodesPage callClassCodesPage() {
+        if (callClassCodesPage == null) {
+            callClassCodesPage = new CallClassCodesPage();
+        }
+        return callClassCodesPage;
+    }
+
+    /**
+     * This function return an instance of `CallCodePage`
+     */
+    public static CallCodePage callCodePage() {
+        if (callCodePage == null) {
+            callCodePage = new CallCodePage();
+        }
+        return callCodePage;
+    }
+
+    /**
+     * This function return an instance of `EditCallCodePage`
+     */
+    public static EditCallCodePage editCallCodePage() {
+        if (editCallCodePage == null) {
+            editCallCodePage = new EditCallCodePage();
+        }
+        return editCallCodePage;
     }
 }

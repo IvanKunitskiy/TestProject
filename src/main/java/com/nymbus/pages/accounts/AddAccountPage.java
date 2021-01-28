@@ -520,7 +520,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Call Class Code' selector button")
     public void clickCallClassCodeSelectorButton() {
         scrollToPlaceElementInCenter(callClassCodeSelectorButton);
-        jsClick(callClassCodeSelectorButton);
+        click(callClassCodeSelectorButton);
     }
 
     @Step("Click the 'Current Officer' option")

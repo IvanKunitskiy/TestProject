@@ -189,6 +189,7 @@ public class CreateAccount {
         Pages.addAccountPage().setTerm(account.getTerm());
         setCommitmentTypeAmt(account);
         disableLocPaymentRecalculationFlagValueSwitch();
+        setCallClassCode(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
