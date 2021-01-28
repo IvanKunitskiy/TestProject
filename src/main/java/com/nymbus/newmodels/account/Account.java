@@ -103,6 +103,7 @@ public class Account {
     private String rateChangeFrequency;
     private String cycleCode;
     private String commitmentTypeAmt;
+    private String dateFirstPaymentDue;
 
     public Account setLoanAccountData() {
         Account account = new Account();
@@ -117,7 +118,8 @@ public class Account {
         account.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
         account.setPaymentFrequency(PaymentFrequency.MONTHLY.getPaymentFrequency());
         account.setPaymentBilledLeadDays(String.valueOf(Generator.genInt(1, 30))); // less than number of days in Payment Frequency (e.g. Payment Frequency = Monthly, then range from 1 to 31)
-        account.setNextPaymentBilledDueDate(DateTime.getDateWithFormatPlusDays(account.getDateOpened(), "MM/dd/yyy", "MM/dd/yyy", 1));
+        account.setNextPaymentBilledDueDate(DateTime.getLocalDatePlusMonthsWithPatternAndLastDay(account.getDateOpened(), 1, "MM/dd/yyyy"));
+        account.setDateFirstPaymentDue(DateTime.getLocalDatePlusMonthsWithPatternAndLastDay(account.getDateOpened(), 1, "MM/dd/yyyy"));
         account.setCurrentEffectiveRate(String.valueOf(10));
         account.setInterestMethod(InterestMethod.SIMPLE_INTEREST.getInterestMethod());
         account.setTerm(String.valueOf(12));
@@ -992,5 +994,13 @@ public class Account {
 
     public void setCycleCode(String cycleCode) {
         this.cycleCode = cycleCode;
+    }
+
+    public String getDateFirstPaymentDue() {
+        return dateFirstPaymentDue;
+    }
+
+    public void setDateFirstPaymentDue(String dateFirstPaymentDue) {
+        this.dateFirstPaymentDue = dateFirstPaymentDue;
     }
 }

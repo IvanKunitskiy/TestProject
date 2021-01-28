@@ -181,6 +181,7 @@ public class CreateAccount {
         setPaymentFrequency(account);
         disableCycleLoanSwitch();
         Pages.addAccountPage().setNextPaymentBilledDueDate(account.getNextPaymentBilledDueDate());
+        Pages.addAccountPage().setDateFirstPaymentDue(account.getDateFirstPaymentDue());
         Pages.addAccountPage().setPaymentBilledLeadDays(account.getPaymentBilledLeadDays());
         Pages.addAccountPage().setCurrentEffectiveRate(account.getCurrentEffectiveRate());
         setInterestMethod(account);
