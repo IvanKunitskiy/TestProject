@@ -12,10 +12,7 @@ import com.nymbus.actions.journal.JournalActions;
 import com.nymbus.actions.loans.AddNewLoanActions;
 import com.nymbus.actions.loans.LoanProductOverviewActions;
 import com.nymbus.actions.modalwindow.DebitCardModalWindowActions;
-import com.nymbus.actions.settings.CashDrawerAction;
-import com.nymbus.actions.settings.ProductsActions;
-import com.nymbus.actions.settings.TellerBankBranchOverviewActions;
-import com.nymbus.actions.settings.UsersActions;
+import com.nymbus.actions.settings.*;
 import com.nymbus.actions.teller.TellerActions;
 import com.nymbus.actions.transaction.NonTellerTransactionActions;
 import com.nymbus.actions.transaction.TransactionActions;
@@ -45,6 +42,7 @@ public class Actions {
     private static PrintChecksActions printChecksActions;
     private static LoanProductOverviewActions loanProductOverviewActions;
     private static AddNewLoanActions addNewLoanActions;
+    private static CallClassCodesActions callClassCodesActions;
 
     /**
      * Modal Window Actions
@@ -264,5 +262,15 @@ public class Actions {
             addNewLoanActions = new AddNewLoanActions();
         }
         return addNewLoanActions;
+    }
+
+    /**
+     * This function returns an instance of `CallClassCodesActions`
+     */
+    public static CallClassCodesActions callClassCodesActions() {
+        if (callClassCodesActions == null) {
+            callClassCodesActions = new CallClassCodesActions();
+        }
+        return callClassCodesActions;
     }
 }

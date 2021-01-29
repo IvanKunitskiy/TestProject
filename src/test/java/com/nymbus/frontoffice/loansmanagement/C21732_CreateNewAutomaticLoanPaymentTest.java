@@ -20,9 +20,7 @@ import com.nymbus.newmodels.generation.transfers.TransferBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Owner;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -94,6 +92,7 @@ public class C21732_CreateNewAutomaticLoanPaymentTest extends BaseTest {
     }
 
     @Test(description = "C21732, Create new automatic loan payment")
+    @Severity(SeverityLevel.CRITICAL)
     public void createNewAutomaticLoanPayment() {
 
         logInfo("Step 1: Log in to NYMBUS");

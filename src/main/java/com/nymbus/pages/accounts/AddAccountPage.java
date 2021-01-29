@@ -75,6 +75,7 @@ public class AddAccountPage extends PageTools {
     private final By adjustableRateValue = By.xpath("//dn-switch[@id='adjustablerate_checkbox']/div/div/span[1]");
     private final By nextRateChangeDate = By.xpath("//input[@id='armdatenextirchange']");
     private final By escrowPayment = By.xpath("//input[@data-test-id='field-escrowpayment']");
+    private final By dateFirstPaymentDue = By.xpath("//input[@data-test-id='field-datefirstpaymentdue']");
 
     /**
      * Account holders and signers
@@ -421,6 +422,15 @@ public class AddAccountPage extends PageTools {
         typeWithoutWipe(date, nextPaymentBilledDueDate);
     }
 
+    @Step("Set 'Date First Payment Due' value")
+    public void setDateFirstPaymentDue(String date) {
+        waitForElementClickable(dateFirstPaymentDue);
+        scrollToPlaceElementInCenter(dateFirstPaymentDue);
+        typeWithoutWipe("", dateFirstPaymentDue);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        typeWithoutWipe(date, dateFirstPaymentDue);
+    }
+
     @Step("Set 'Next Rate Change Date' value")
     public void setNextRateChangeDate(String date) {
         waitForElementClickable(nextRateChangeDate);
@@ -520,7 +530,7 @@ public class AddAccountPage extends PageTools {
     @Step("Click the 'Call Class Code' selector button")
     public void clickCallClassCodeSelectorButton() {
         scrollToPlaceElementInCenter(callClassCodeSelectorButton);
-        jsClick(callClassCodeSelectorButton);
+        click(callClassCodeSelectorButton);
     }
 
     @Step("Click the 'Current Officer' option")

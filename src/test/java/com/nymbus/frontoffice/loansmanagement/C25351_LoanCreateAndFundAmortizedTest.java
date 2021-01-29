@@ -60,9 +60,10 @@ public class C25351_LoanCreateAndFundAmortizedTest extends BaseTest {
         // Set transaction data
         miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());
         miscDebitSource.setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
+        miscDebitSource.setAmount(12000);
         miscCreditDestination.setAccountNumber(checkingAccount.getAccountNumber());
         miscCreditDestination.setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
-        miscCreditDestination.setAmount(100);
+        miscCreditDestination.setAmount(12000);
 
         // Login to the system
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -123,6 +124,7 @@ public class C25351_LoanCreateAndFundAmortizedTest extends BaseTest {
         AccountActions.createAccount().setPaymentFrequency(loanAccount);
         AccountActions.createAccount().disableCycleLoanSwitch();
         Pages.addAccountPage().setNextPaymentBilledDueDate(loanAccount.getNextPaymentBilledDueDate());
+        Pages.addAccountPage().setDateFirstPaymentDue(loanAccount.getDateFirstPaymentDue());
         Pages.addAccountPage().setPaymentBilledLeadDays(loanAccount.getPaymentBilledLeadDays());
         Pages.addAccountPage().setCurrentEffectiveRate(loanAccount.getCurrentEffectiveRate());
         AccountActions.createAccount().setInterestMethod(loanAccount);
@@ -153,6 +155,7 @@ public class C25351_LoanCreateAndFundAmortizedTest extends BaseTest {
         logInfo("Step 12: Fill in the following fields and click the [Commit Transaction]");
         Actions.transactionActions().setMiscDebitSource(miscDebitSource, 0);
         Actions.transactionActions().setMiscCreditDestination(miscCreditDestination, 0);
+        Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
 
         logInfo("Step 13: Close Transaction Receipt popup");

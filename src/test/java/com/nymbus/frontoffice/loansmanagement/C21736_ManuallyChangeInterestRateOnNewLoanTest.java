@@ -56,9 +56,10 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
         // Set transaction data
         miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());
         miscDebitSource.setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
+        miscDebitSource.setAmount(12000);
         miscCreditDestination.setAccountNumber(checkingAccount.getAccountNumber());
         miscCreditDestination.setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
-        miscCreditDestination.setAmount(100);
+        miscCreditDestination.setAmount(12000);
 
         // Login to the system
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
