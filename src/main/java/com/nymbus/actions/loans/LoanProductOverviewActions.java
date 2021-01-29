@@ -29,7 +29,7 @@ public class LoanProductOverviewActions {
 
     public boolean isLoanProductExists(String productDescription) {
         navigateToLoanProductOverviewPage();
-        searchTheLoanProduct(productDescription);
+        expandAllRows();
 
         return Pages.loanProductPage().isRowWithProductDescriptionVisible(productDescription);
     }
@@ -39,6 +39,7 @@ public class LoanProductOverviewActions {
         Pages.addNewLoanProductPage().typeValueToProductDescriptionInput(loanProductName);
         Pages.addNewLoanProductPage().typeValueToInitialsInput(initials);
         Actions.addNewLoanActions().disableReadonlyByFieldName("Loan Class Code");
+        Actions.addNewLoanActions().disableReadonlyByFieldName("Call Class Code");
         Actions.addNewLoanActions().disableReadonlyByFieldName("Payment amount");
         Actions.addNewLoanActions().disableReadonlyByFieldName("Payment Amount Type");
         Actions.addNewLoanActions().disableReadonlyByFieldName("Payment Frequency");

@@ -35,7 +35,8 @@ public class LoanProductPage extends PageTools {
     public void typeToSearchInput(String queryText) {
         waitForElementVisibility(searchInput);
         waitForElementClickable(searchInput);
-        type(queryText, searchInput);
+        typeWithoutWipe(queryText, searchInput);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
     }
 
     @Step("Click the 'Search' button")

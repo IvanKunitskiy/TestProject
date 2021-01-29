@@ -72,6 +72,7 @@ public class EditAccountPage extends PageTools {
     private By applySeasonalAddress = By.xpath("//dn-switch[@id='useseasonaladdress']");
     private By bankruptcyJudgement = By.xpath("//div[@id='bankruptcyjudgementcode']//span[contains(@class, 'ng-scope')]");
     private By exemptFromRegCC = By.xpath("//dn-switch[@id='exemptfromregcc']");
+    private By callClassCodeNotValid = By.xpath("//div[@data-test-id='field-callclasscode']/a[contains(@uib-tooltip-html, 'is no longer a valid value')]");
 
     private By federalWHReasonSelectorButton = By.xpath("//div[@id='federalwithholdingreason']");
     private By federalWHReasonList = By.xpath("//li[contains(@role, 'option')]/div/span");
@@ -1733,5 +1734,11 @@ public class EditAccountPage extends PageTools {
     public void clickMiscSectionLink() {
         scrollToPlaceElementInCenter(miscGroup);
         click(miscGroup);
+    }
+
+    @Step("Check 'Call class code' not valid anymore")
+    public boolean isCallClassCodeNotValid() {
+        waitForElementVisibility(callClassCodeNotValid);
+        return isElementVisible(callClassCodeNotValid);
     }
 }

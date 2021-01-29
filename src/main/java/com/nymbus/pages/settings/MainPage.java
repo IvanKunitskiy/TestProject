@@ -49,6 +49,9 @@ public class MainPage extends PageTools {
     //Cashier Defined Transactions
     private By viewAllCDT = By.xpath("//a[text()='View all Cashier Defined Transactions']");
 
+    // Call Class Codes
+    private By viewAllCallCodes = By.xpath("//a[text()='View all Call Codes']");
+
     @Step("Waiting 'Cash Drawer' region")
     public void waitForCashDrawerRegion() {
         waitForElementVisibility(cashDrawerRegion);
@@ -175,4 +178,12 @@ public class MainPage extends PageTools {
         scrollToPlaceElementInCenter(viewAllCDT);
         click(viewAllCDT);
     }
+
+    // Call Class Codes
+    @Step("Click 'View all Call Class Codes' link")
+    public void clickViewAllCallClassCodesLink() {
+        scrollToPlaceElementInCenter(viewAllCallCodes);
+        click(viewAllCallCodes);
+    }
+
 }
