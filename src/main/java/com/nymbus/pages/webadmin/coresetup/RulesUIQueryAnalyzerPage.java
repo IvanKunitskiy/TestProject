@@ -442,4 +442,16 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         waitForElementVisibility(templateName);
         return getElementsText(templateName);
     }
+
+    /**
+     * Loan Accounts
+     */
+
+    private By loanAccountId = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][1]/td[5]/span[contains(@class, 'high_title')]/span");
+
+    @Step ("Get 'Loan account number' {index} value")
+    public String getLoanAccountNumberValueByIndex(int index) {
+        waitForElementVisibility(loanAccountId, index);
+        return getElementText(loanAccountId, index).trim();
+    }
 }

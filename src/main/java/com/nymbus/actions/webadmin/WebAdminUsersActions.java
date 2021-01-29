@@ -251,19 +251,6 @@ public class WebAdminUsersActions {
                 + "formats%3A+%0D%0A-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D&source=";
     }
 
-    public boolean isCdtTemplateCommittedFromChkOnGlAccountCreated(String templateName) {
-        return isCdtTemplateCommittedFromChkOnGlAccountCreatedFromQueryByUrl(
-                getCdtTemplateWithMiscDebitCommittedFromChkOnGlAccountUrl(), templateName);
-    }
-
-    public String getRemoteDepositReturnEFTDescription() {
-        return getRemoteDepositReturnEFTDescriptionFromQueryByUrl(getRemoteDepositReturnEFTDescriptionUrl());
-    }
-
-    public int getAccAnalyzeWithRdcCodeAndAmountCount() {
-        return getAccAnalyzeWithRdcCodeCountFromQueryByUrl(getAccAnalyzeWithRdcCodeAndAmountUrl());
-    }
-
     private String getCdtTemplatesUrl() {
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?"
@@ -277,6 +264,40 @@ public class WebAdminUsersActions {
                 + "-+feeamount%3A+%7Bgreater%3A+0%7D%0D%0A"
                 + "-+.creditprintnoticeflag-%3Ecode%3A+ctfdpn.0%0D%0A%0D%0A"
                 + "orderBy%3A+id&source=";
+    }
+
+     private String getLoanAccount() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev12DS&"
+                + "dqlQuery=count%3A+20%0D%0A"
+                + "select%3A+%28databean%29CREATEDBY%2C+%28databean%29CREATEDWHEN%2C+accountid%2C+commitmenttype%0D%0A"
+                + "from%3A+bank.data.actloan%0D%0A"
+                + "where%3A+%0D%0A+"
+                + "-+accountid%3A%0D%0A++++++"
+                + "from%3A+bank.data.actmst%0D%0A++++++"
+                + "where%3A%0D%0A++++++++"
+                +"-+dateclosed%3A+%7Bnull%7D%0D%0A++++++++"
+                + "-+.accounttype-%3E%28databean%29code%3A+tatyp1.4%0D%0A+"
+                + "-+.commitmenttype-%3E%28databean%29code%3A+tcmtt1.0+++++%0D%0A"
+                + "formats%3A+%0D%0A-"
+                + "+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A"
+                + "deletedIncluded%3A+true%0D%0A"
+                + "extra%3A+%0D%0A"
+                + "-+%24CurBal%3A+bank.data.actloan%5Baccountid%5D-%3E%5Brootid%5Dbank.data.actmst-%3Ecurrentbalance%0D%0A&source=";
+     }
+
+    public boolean isCdtTemplateCommittedFromChkOnGlAccountCreated(String templateName) {
+        return isCdtTemplateCommittedFromChkOnGlAccountCreatedFromQueryByUrl(
+                getCdtTemplateWithMiscDebitCommittedFromChkOnGlAccountUrl(), templateName);
+    }
+
+    public String getRemoteDepositReturnEFTDescription() {
+        return getRemoteDepositReturnEFTDescriptionFromQueryByUrl(getRemoteDepositReturnEFTDescriptionUrl());
+    }
+
+    public int getAccAnalyzeWithRdcCodeAndAmountCount() {
+        return getAccAnalyzeWithRdcCodeCountFromQueryByUrl(getAccAnalyzeWithRdcCodeAndAmountUrl());
     }
 
     public boolean checkCdtTemplatePresent(String templateName) {
@@ -317,6 +338,31 @@ public class WebAdminUsersActions {
 
     public WebAdminTransactionFromQuery getTransactionCommittedOnCurrentDate() {
         return getTransactionCommittedOnCurrentDateQueryByUrl(getTransactionsCommittedOnCurrentDateUrl());
+    }
+
+    public String getLoanAccountNumber() {
+        return getLoanAccountNumberFromQueryByUrl(getLoanAccount());
+    }
+
+    private String getLoanAccountNumberFromQueryByUrl(String url) {
+        SelenideTools.openUrlInNewWindow(url);
+
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        int numberOfSearchResult = WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult();
+        int showCount = 20;
+        int bound = Math.min(numberOfSearchResult, showCount);
+        int loanAccountNumberRandomIndex = getRandomIndex(bound);
+        String loanAccountNumber = WebAdminPages.rulesUIQueryAnalyzerPage().getLoanAccountNumberValueByIndex(loanAccountNumberRandomIndex);
+
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+
+        return loanAccountNumber;
     }
 
     private int getPrintBalanceOnReceiptValueFromQueryByUrl(String url) {

@@ -34,6 +34,8 @@ public class AccountTransactionPage extends PageTools {
     private By amountMinus = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-if='showCurrency']/span[2]");
     private By amount = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[2]");
     private By balance = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[2]");
+    private By balanceForLoan = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[10]//span[@ng-if='showCurrency']/span[2]");
+    private By balanceForLoanFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[10]//span[@ng-if='showCurrency']/span[3]");
     private By balanceSymbol = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[1]");
     private By balanceFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[3]");
     private By amountFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[3]");
@@ -134,6 +136,17 @@ public class AccountTransactionPage extends PageTools {
     public String getBalanceValue(int index) {
         waitForElementVisibility(balance, index);
         return getElementText(balance, index).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Balance' value for loan account")
+    public String getBalanceValueForLoanAccount(int index) {
+        return getElementText(balanceForLoan, index).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Balance' value")
+    public String getBalanceFractionalValueForLoanAccountForLoanAccount(int index) {
+        waitForElementVisibility(balanceForLoanFractional, index);
+        return getElementText(balanceForLoanFractional, index).trim().replaceAll("[^0-9]", "");
     }
 
     @Step("Get 'Balance' value with symbol")

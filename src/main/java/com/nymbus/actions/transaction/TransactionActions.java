@@ -312,19 +312,19 @@ public class TransactionActions {
         fillDestinationAmount(String.format("%.2f", transactionDestination.getAmount()), tempIndex);
     }
 
-    private void fillDestinationAccountCode(String transactionCode, int tempIndex) {
+    public void fillDestinationAccountCode(String transactionCode, int tempIndex) {
         Pages.tellerPage().clickOnDestinationCodeField(tempIndex);
 
         Pages.tellerPage().clickOnDropDownItem(transactionCode);
     }
 
-    private void fillDestinationAmount(String amount, int tempIndex) {
+    public void fillDestinationAmount(String amount, int tempIndex) {
         Pages.tellerPage().clickDestinationAmountDiv(tempIndex);
 
         Pages.tellerPage().typeDestinationAmountValue(tempIndex, amount);
     }
 
-    private void fillDestinationAccountNumber(String accountNumber, int tempIndex) {
+    public void fillDestinationAccountNumber(String accountNumber, int tempIndex) {
         Pages.tellerPage().typeDestinationAccountNumber(tempIndex, accountNumber);
 
         Pages.tellerPage().clickOnAutocompleteDropDownItem(accountNumber);
@@ -355,13 +355,13 @@ public class TransactionActions {
         Pages.tellerPage().typeCheckNumber(tempIndex, number);
     }
 
-    private void fillSourceAmount(String amount, int tempIndex) {
+    public void fillSourceAmount(String amount, int tempIndex) {
         Pages.tellerPage().clickAmountDiv(tempIndex);
 
         Pages.tellerPage().typeAmountValue(tempIndex, amount);
     }
 
-    private void fillSourceAccountCode(String transactionCode, int tempIndex) {
+    public void fillSourceAccountCode(String transactionCode, int tempIndex) {
         Pages.tellerPage().clickSourceTransactionCodeArrow(tempIndex);
 
         Pages.tellerPage().clickOnDropDownItem(transactionCode);
@@ -373,7 +373,7 @@ public class TransactionActions {
         Pages.tellerPage().clickOnDropDownItem(transactionCode);
     }
 
-    private void fillSourceAccountNumber(String accountNumber, int tempIndex) {
+    public void fillSourceAccountNumber(String accountNumber, int tempIndex) {
         Pages.tellerPage().clickAccountNumberDiv(tempIndex);
 
         Pages.tellerPage().typeAccountNumber(tempIndex, accountNumber);
@@ -528,6 +528,13 @@ public class TransactionActions {
             Pages.tellerPage().clickAccountQuickViewArrow();
         }
         return Pages.tellerPage().getFirstAutomaticOverdraftLimit().trim();
+    }
+
+    public String getPayoffAmount() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getPayoffAmount();
     }
 
     public boolean isTransactionCodePresent(String transCode) {
