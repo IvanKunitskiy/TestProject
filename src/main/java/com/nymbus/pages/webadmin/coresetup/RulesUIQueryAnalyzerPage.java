@@ -16,6 +16,8 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private By firstNameByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[11]/div");
     private By lastNameByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[12]/div");
     private By accountNumberByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[2]/span/span");
+    private By accountNumberSecByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[3]/span/span");
+    private By balance = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[2]/div");
     private By dormantAccountNumberByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[2]/div");
     private By foundNumberOfRecords = By.xpath("//div[@class='panelContent']/div[@id='dqlSearch']/div/span[contains(text(), 'Found')]");
     private By printBalanceOnReceiptValue = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[10]/div[@key-name='long']");
@@ -59,6 +61,18 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getAccountNumberByIndex(int index) {
         waitForElementVisibility(accountNumberByIndex, index);
         return getElementText(accountNumberByIndex, index);
+    }
+
+    @Step("Get account number value")
+    public String getAccountNumberSecByIndex(int index) {
+        waitForElementVisibility(accountNumberSecByIndex, index);
+        return getElementText(accountNumberSecByIndex, index);
+    }
+
+    @Step("Get account balance value")
+    public String getBalanceByIndex(int index) {
+        waitForElementVisibility(balance, index);
+        return getElementText(balance, index);
     }
 
     @Step("Get Print Balance On Receipt value")
