@@ -91,12 +91,10 @@ public class C22604_SearchFilterTransactionHistoryItemsToWork extends BaseTest {
         logInfo("Step 11: \t\n" +
                 "Look through the list of the rejected transaction and make sure that transaction that was paid on " +
                 "Items to work is not present in the list of rejected transactions");
-        System.out.println(rejectedTransactionsItems);
         if (rejectedTransactionsItems==1){
             Assert.assertTrue(Pages.accountTransactionPage().isNoResultsVisible(),"Transaction is not visible");
         }else {
             int rejectedTransactionsItems1 = Pages.accountTransactionPage().getRejectedTransactionsItems();
-            System.out.println(rejectedTransactionsItems1);
             Assert.assertTrue(rejectedTransactionsItems1 < rejectedTransactionsItems,
                     "Transaction is not visible");
         }
