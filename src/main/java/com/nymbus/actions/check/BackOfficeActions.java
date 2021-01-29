@@ -38,4 +38,19 @@ public class BackOfficeActions {
         check.setCashPurchased(Pages.fullCheckPage().getCashPurchased());
         return check;
     }
+
+    public void clickToRejectTransaction(String number, String effectiveDate) {
+        Pages.backOfficePage().inputProofDate(effectiveDate);
+        Pages.backOfficePage().inputReasonBadCode();
+        Pages.backOfficePage().clickFilterButton();
+        Pages.backOfficePage().clickToAccountNumber(number);
+    }
+
+    public void changeTransactionCode() {
+        Pages.backOfficePage().clickEditButton();
+        Pages.backOfficePage().chooseTranCode();
+        Pages.backOfficePage().clickSaveButton();
+        Pages.backOfficePage().clickCreateSwapButton();
+        Pages.backOfficePage().clickCloseButton();
+    }
 }

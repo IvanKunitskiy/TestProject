@@ -53,9 +53,10 @@ public class C25318_LoanCreateAndFundInterestOnlyTest extends BaseTest {
         // Set transaction data
         miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());
         miscDebitSource.setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
+        miscDebitSource.setAmount(12000);
         miscCreditDestination.setAccountNumber(checkingAccount.getAccountNumber());
         miscCreditDestination.setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
-        miscCreditDestination.setAmount(100);
+        miscCreditDestination.setAmount(12000);
 
         // Login to the system
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -112,6 +113,7 @@ public class C25318_LoanCreateAndFundInterestOnlyTest extends BaseTest {
         AccountActions.createAccount().disableCycleLoanSwitch();
         Pages.addAccountPage().setNextPaymentBilledDueDate(loanAccount.getNextPaymentBilledDueDate());
         Pages.addAccountPage().setPaymentBilledLeadDays(loanAccount.getPaymentBilledLeadDays());
+        Pages.addAccountPage().setDateFirstPaymentDue(loanAccount.getDateFirstPaymentDue());
         Pages.addAccountPage().setCurrentEffectiveRate(loanAccount.getCurrentEffectiveRate());
         AccountActions.createAccount().setInterestMethod(loanAccount);
         AccountActions.createAccount().disableAdjustableRateSwitch();
@@ -140,8 +142,8 @@ public class C25318_LoanCreateAndFundInterestOnlyTest extends BaseTest {
         logInfo("Step 12: Fill in the following fields and click the [Commit Transaction]");
         Actions.transactionActions().setMiscDebitSource(miscDebitSource, 0);
         Actions.transactionActions().setMiscCreditDestination(miscCreditDestination, 0);
-        Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
+        Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
 
         logInfo("Step 13: Close Transaction Receipt popup");
         Pages.tellerPage().closeModal();

@@ -181,6 +181,7 @@ public class CreateAccount {
         setPaymentFrequency(account);
         disableCycleLoanSwitch();
         Pages.addAccountPage().setNextPaymentBilledDueDate(account.getNextPaymentBilledDueDate());
+        Pages.addAccountPage().setDateFirstPaymentDue(account.getDateFirstPaymentDue());
         Pages.addAccountPage().setPaymentBilledLeadDays(account.getPaymentBilledLeadDays());
         Pages.addAccountPage().setCurrentEffectiveRate(account.getCurrentEffectiveRate());
         setInterestMethod(account);
@@ -189,6 +190,7 @@ public class CreateAccount {
         Pages.addAccountPage().setTerm(account.getTerm());
         setCommitmentTypeAmt(account);
         disableLocPaymentRecalculationFlagValueSwitch();
+        setCallClassCode(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
