@@ -18,6 +18,7 @@ import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -78,6 +79,9 @@ public class C25318_LoanCreateAndFundInterestOnlyTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Loans Management";
+
+    @TestRailIssue(issueID = 25318, testRunName = TEST_RUN_NAME)
     @Test(description = "C25318, Loan - Create and Fund: Interest Only (bill)")
     @Severity(SeverityLevel.CRITICAL)
     public void loanCreateAndFundInterestOnly() {

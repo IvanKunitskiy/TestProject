@@ -13,6 +13,7 @@ import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.client.other.DocumentFactory;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
@@ -47,6 +48,9 @@ public class C22545_AddNewDocumentOnClientLevelTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Clients Management";
+
+    @TestRailIssue(issueID = 22545, testRunName = TEST_RUN_NAME)
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "C22545, Add New Document On Client Level")
     public void addNewDocumentOnClientLevel() {

@@ -13,6 +13,7 @@ import com.nymbus.newmodels.generation.client.builder.type.individual.Individual
 import com.nymbus.newmodels.generation.client.factory.basicinformation.AddressFactory;
 import com.nymbus.newmodels.generation.client.factory.clientdetails.contactinformation.PhoneFactory;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -50,6 +51,9 @@ public class C22548_ViewEditNewIndividualClientTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Create clients";
+
+    @TestRailIssue(issueID = 22548, testRunName = TEST_RUN_NAME)
     @Test(description = "C22548, View / edit new individual client (member)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyIndividualClientEdition() {

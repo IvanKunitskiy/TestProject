@@ -23,6 +23,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
@@ -156,6 +157,9 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
 
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22710, testRunName = TEST_RUN_NAME)
     @Test(description = "C22710, BackOffice->Official Checks: Void official check from client account with fee")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {

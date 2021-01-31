@@ -7,6 +7,7 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.data.entity.User;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
@@ -26,6 +27,9 @@ public class C22519_CreateUserTest extends BaseTest {
         user = new User().setDefaultUserData();
     }
 
+    private final String TEST_RUN_NAME = "User Management";
+
+    @TestRailIssue(issueID = 22519, testRunName = TEST_RUN_NAME)
     @Test(description = "C22519, Create User + Forgot Password + Log In")
     public void verifyUserCreation() {
 

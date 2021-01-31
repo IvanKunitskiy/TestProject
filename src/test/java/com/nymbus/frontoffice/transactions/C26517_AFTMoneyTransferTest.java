@@ -26,6 +26,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -108,6 +109,9 @@ public class C26517_AFTMoneyTransferTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 26517, testRunName = TEST_RUN_NAME)
     @Test(description = "C26517, AFT Money Transfer")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyAFTMoneyTransfer() {

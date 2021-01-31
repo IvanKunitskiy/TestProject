@@ -21,6 +21,7 @@ import com.nymbus.newmodels.generation.debitcard.builder.DebitCardBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -95,6 +96,9 @@ public class C26513_BalanceInquiryCrdOnusTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 26513, testRunName = TEST_RUN_NAME)
     @Test(description = "C26513, balanceInquiryCrdOnusTest")
     @Severity(SeverityLevel.CRITICAL)
     public void balanceInquiryCrdOnusTest() {

@@ -23,6 +23,7 @@ import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -93,6 +94,9 @@ public class C22815_WeilandRdcChargeTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Account Analysis";
+
+    @TestRailIssue(issueID = 22815, testRunName = TEST_RUN_NAME)
     @Test(description = "C22815, Weiland: RDC charge")
     @Severity(SeverityLevel.CRITICAL)
     public void weilandRdcCharge() {

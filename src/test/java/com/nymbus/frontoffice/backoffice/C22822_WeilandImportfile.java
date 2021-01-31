@@ -19,6 +19,7 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccB
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -130,6 +131,9 @@ public class C22822_WeilandImportfile extends BaseTest {
     }
 
 
+    private final String TEST_RUN_NAME = "Account Analysis";
+
+    @TestRailIssue(issueID = 22822, testRunName = TEST_RUN_NAME)
     @Test(description = "C22822, Weiland: Import file")
     @Severity(SeverityLevel.CRITICAL)
     public void weilandImportFile() {

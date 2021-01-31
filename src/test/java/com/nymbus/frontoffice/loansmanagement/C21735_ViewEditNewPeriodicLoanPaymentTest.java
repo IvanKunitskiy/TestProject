@@ -21,6 +21,7 @@ import com.nymbus.newmodels.generation.transfers.TransferBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
@@ -101,6 +102,9 @@ public class C21735_ViewEditNewPeriodicLoanPaymentTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Loans Management";
+
+    @TestRailIssue(issueID = 21735, testRunName = TEST_RUN_NAME)
     @Test(description = "C21735, View / edit new periodic loan payment")
     public void viewEditNewPeriodicLoanPayment() {
 

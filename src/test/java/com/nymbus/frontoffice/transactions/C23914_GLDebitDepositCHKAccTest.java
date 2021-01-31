@@ -24,6 +24,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.WebAdminTransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -72,6 +73,9 @@ public class C23914_GLDebitDepositCHKAccTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 23914, testRunName = TEST_RUN_NAME)
     @Test(description = "C23914, Commit transaction GL Debit -> Deposit (on CHK Account)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyTransactionGLDebitDeposit() {

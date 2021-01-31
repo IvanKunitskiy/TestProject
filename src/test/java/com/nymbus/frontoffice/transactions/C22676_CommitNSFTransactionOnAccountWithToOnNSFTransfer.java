@@ -23,6 +23,7 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -139,6 +140,9 @@ public class C22676_CommitNSFTransactionOnAccountWithToOnNSFTransfer extends Bas
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22676, testRunName = TEST_RUN_NAME)
     @Test(description = "C22676, Commit NSF transaction on account with To On NSF transfer")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyNSFTransaction() {

@@ -16,6 +16,7 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuil
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -84,6 +85,9 @@ public class C22848_DocumentSearchViewCompanionItemsTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
+    private final String TEST_RUN_NAME = "Notices";
+
+    @TestRailIssue(issueID = 22848, testRunName = TEST_RUN_NAME)
     @Test(description = "C22848, Document Search: View companion items")
     @Severity(SeverityLevel.CRITICAL)
     public void documentSearchViewCompanionItems() {

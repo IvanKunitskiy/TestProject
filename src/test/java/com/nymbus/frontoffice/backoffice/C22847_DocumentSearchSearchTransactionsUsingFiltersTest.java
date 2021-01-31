@@ -7,6 +7,7 @@ import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.transaction.verifyingModels.WebAdminTransactionFromQuery;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -33,6 +34,9 @@ public class C22847_DocumentSearchSearchTransactionsUsingFiltersTest extends Bas
         WebAdminActions.loginActions().doLogout();
     }
 
+    private final String TEST_RUN_NAME = "Notices";
+
+    @TestRailIssue(issueID = 22847, testRunName = TEST_RUN_NAME)
     @Test(description="C22847, Document Search: Search transactions using filters")
     @Severity(SeverityLevel.CRITICAL)
     public void documentSearchSearchTransactionsUsingFilters() {

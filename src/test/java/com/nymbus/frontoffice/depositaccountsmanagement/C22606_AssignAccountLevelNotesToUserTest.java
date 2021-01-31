@@ -19,6 +19,7 @@ import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.note.Note;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
@@ -87,6 +88,9 @@ public class C22606_AssignAccountLevelNotesToUserTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Deposit Accounts Management";
+
+    @TestRailIssue(issueID = 22606, testRunName = TEST_RUN_NAME)
     @Test(description = "C22606, Assign account level notes to user")
     public void assignAccountLevelNotesToUser() {
 

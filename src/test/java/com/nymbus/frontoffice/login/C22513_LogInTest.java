@@ -1,6 +1,7 @@
 package com.nymbus.frontoffice.login;
 
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.testrail.TestRailIssue;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
@@ -12,6 +13,9 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22513_LogInTest extends BaseTest {
 
+    private final String TEST_RUN_NAME = "Log in";
+
+    @TestRailIssue(issueID = 22513, testRunName = TEST_RUN_NAME)
     @Test(description = "C22513, Log in")
     public void verifyLogin() {
 

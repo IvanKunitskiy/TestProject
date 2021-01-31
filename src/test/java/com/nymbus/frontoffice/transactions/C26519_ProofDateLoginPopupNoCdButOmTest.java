@@ -7,6 +7,7 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.data.entity.User;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -36,6 +37,9 @@ public class C26519_ProofDateLoginPopupNoCdButOmTest extends BaseTest {
         Selenide.open(Constants.URL);
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 26519, testRunName = TEST_RUN_NAME)
     @Test(description = "C26519, Proof Date Login popup (no CD but OM)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyProofDateLoginPopup() {

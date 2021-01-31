@@ -22,6 +22,7 @@ import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitGLCreditTran
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
@@ -132,6 +133,9 @@ public class C24990_ClientAccountsCloseSAVAccountWithOpenDebitCard extends BaseT
 
     }
 
+    private final String TEST_RUN_NAME = "Deposit Accounts Management";
+
+    @TestRailIssue(issueID = 24990, testRunName = TEST_RUN_NAME)
     @Severity(CRITICAL)
     @Test(description = "C24990, Client Accounts - Close SAV account with open debit card")
     public void clientAccountsCloseSavAccountWithOpenDebitCard() {

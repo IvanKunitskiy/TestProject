@@ -15,6 +15,7 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -52,6 +53,9 @@ public class C22685_SearchForClientOnTellerHeader extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22685, testRunName = TEST_RUN_NAME)
     @Test(description = "C22685, Search for client on Teller header")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyNSFTransaction() {

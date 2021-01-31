@@ -25,6 +25,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
@@ -138,6 +139,9 @@ public class C22753_CDTWithoutTellerSessionCommitOfficialCheckFromClientAccountW
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22753, testRunName = TEST_RUN_NAME)
     @Test(description = "C22753, CDT without Teller Session - Commit official check from client account with fee waived")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {

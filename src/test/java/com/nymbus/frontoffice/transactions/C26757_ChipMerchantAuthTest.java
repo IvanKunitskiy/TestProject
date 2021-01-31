@@ -25,6 +25,7 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -122,6 +123,9 @@ public class C26757_ChipMerchantAuthTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 26757, testRunName = TEST_RUN_NAME)
     @Test(description = "C26757, Chip Merchant Auth")
     @Severity(SeverityLevel.CRITICAL)
     public void chipMerchantAuthTest() {

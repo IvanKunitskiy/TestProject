@@ -13,6 +13,7 @@ import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.SkipException;
@@ -68,6 +69,9 @@ public class C25312_CommitDebitTransactionWithOfficialCheckAccount extends BaseT
 
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 25312, testRunName = TEST_RUN_NAME)
     @Test(description = "C25312, Commit debit transaction with official check account")
     @Severity(SeverityLevel.CRITICAL)
     public void commitDebitTransactionWithOfficialCheckAccount() {

@@ -12,6 +12,7 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -48,6 +49,9 @@ public class C22688_SearchForAccountInTransactionItemByAccountNumberLastFour ext
         Actions.loginActions().doLogOutProgrammatically();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22688, testRunName = TEST_RUN_NAME)
     @Test(description = "C22688, Search for Account in Transaction item by account number, last four")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyNSFTransaction() {

@@ -14,6 +14,7 @@ import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.note.Note;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -65,6 +66,9 @@ public class C22554_AddNewClientLevelNoteTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Clients Management";
+
+    @TestRailIssue(issueID = 22554, testRunName = TEST_RUN_NAME)
     @Test(description = "C22554, Add New Client Level Note Test")
     @Severity(SeverityLevel.CRITICAL)
     public void addNewClientLevelNoteTest() {

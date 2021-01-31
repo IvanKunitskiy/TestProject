@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.login;
 import com.codeborne.selenide.WebDriverRunner;
 import com.nymbus.actions.Actions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.testrail.TestRailIssue;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.pages.Pages;
 import io.qameta.allure.*;
@@ -14,6 +15,9 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C22514_LogOutTest extends BaseTest {
 
+    private final String TEST_RUN_NAME = "Log in";
+
+    @TestRailIssue(issueID = 22514, testRunName = TEST_RUN_NAME)
     @Test(description = "C22514, Log Out")
     public void verifyLogOut() {
 

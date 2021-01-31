@@ -23,6 +23,7 @@ import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -122,6 +123,9 @@ public class C37313_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 37313, testRunName = TEST_RUN_NAME)
     @Test(description = "C37313, Print teller receipt without balance (Accounts do not have a client in common)")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {

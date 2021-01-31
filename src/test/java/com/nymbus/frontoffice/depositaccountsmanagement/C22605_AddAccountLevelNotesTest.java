@@ -14,6 +14,7 @@ import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.note.Note;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -58,6 +59,9 @@ public class C22605_AddAccountLevelNotesTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Deposit Accounts Management";
+
+    @TestRailIssue(issueID = 22605, testRunName = TEST_RUN_NAME)
     @Test(description = "C22605, Add account level notes")
     @Severity(SeverityLevel.CRITICAL)
     public void viewClientLevelCallStatement() {

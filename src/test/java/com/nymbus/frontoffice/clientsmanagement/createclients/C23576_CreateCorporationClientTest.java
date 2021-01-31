@@ -11,6 +11,7 @@ import com.nymbus.newmodels.generation.client.OrganisationClientSettings;
 import com.nymbus.newmodels.generation.client.builder.OrganisationClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.organisation.CorporationBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -36,6 +37,9 @@ public class C23576_CreateCorporationClientTest extends BaseTest {
         organisationClient = organisationClientBuilder.buildClient();
     }
 
+    private final String TEST_RUN_NAME = "Create clients";
+
+    @TestRailIssue(issueID = 23576, testRunName = TEST_RUN_NAME)
     @Test(description = "C23576, Create Client - Corporation")
     @Severity(SeverityLevel.CRITICAL)
     public void createCorporationTest() {

@@ -16,6 +16,7 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditCHKAccBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -59,6 +60,9 @@ public class C22560_ViewClientLevelCallStatementTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Clients Management";
+
+    @TestRailIssue(issueID = 22560, testRunName = TEST_RUN_NAME)
     @Test(description = "C22560, View client level 'Call Statement'", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void viewClientLevelCallStatement() {

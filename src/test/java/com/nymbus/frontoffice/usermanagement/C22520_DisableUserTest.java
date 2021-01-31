@@ -8,6 +8,7 @@ import com.nymbus.core.utils.Constants;
 import com.nymbus.data.entity.User;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -25,6 +26,9 @@ public class C22520_DisableUserTest extends BaseTest {
         user = new User().setDefaultUserData();
     }
 
+    private final String TEST_RUN_NAME = "User Management";
+
+    @TestRailIssue(issueID = 22520, testRunName = TEST_RUN_NAME)
     @Test(description = "C22520, Disable User")
     public void verifyUserDisabling() {
 

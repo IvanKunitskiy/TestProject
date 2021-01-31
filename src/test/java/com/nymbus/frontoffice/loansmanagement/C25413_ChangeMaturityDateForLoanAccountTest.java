@@ -10,6 +10,7 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -55,6 +56,9 @@ public class C25413_ChangeMaturityDateForLoanAccountTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Loans Management";
+
+    @TestRailIssue(issueID = 25413, testRunName = TEST_RUN_NAME)
     @Test(description = "C25413, Change Maturity Date for loan account")
     @Severity(SeverityLevel.CRITICAL)
     public void changeMaturityDateForLoanAccount() {

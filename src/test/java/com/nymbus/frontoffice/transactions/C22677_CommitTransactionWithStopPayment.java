@@ -22,6 +22,7 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -87,6 +88,9 @@ public class C22677_CommitTransactionWithStopPayment extends BaseTest {
     }
 
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22677, testRunName = TEST_RUN_NAME)
     @Test(description = "C22677, Commit transaction with stop payment")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyNSFTransaction() {

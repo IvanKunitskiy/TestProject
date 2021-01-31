@@ -17,6 +17,7 @@ import com.nymbus.newmodels.generation.debitcard.DebitCardConstructor;
 import com.nymbus.newmodels.generation.debitcard.builder.DebitCardBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -87,6 +88,9 @@ public class C22533_SearchByLastFourOfDebitCardTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Clients search";
+
+    @TestRailIssue(issueID = 22533, testRunName = TEST_RUN_NAME)
     @Test(description = "C22533, Search by last four of debit card number")
     @Severity(SeverityLevel.CRITICAL)
     public void searchByCardNumber() {

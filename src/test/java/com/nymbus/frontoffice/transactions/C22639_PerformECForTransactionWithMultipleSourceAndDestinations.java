@@ -26,6 +26,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -140,6 +141,9 @@ public class C22639_PerformECForTransactionWithMultipleSourceAndDestinations ext
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22639, testRunName = TEST_RUN_NAME)
     @Test(description = "C22639, Perform EC for transaction with multiple sources and destinations")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyErrorCorrectForMultipleTransaction() {

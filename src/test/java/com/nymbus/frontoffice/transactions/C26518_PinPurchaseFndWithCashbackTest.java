@@ -30,6 +30,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -135,6 +136,9 @@ public class C26518_PinPurchaseFndWithCashbackTest extends BaseTest {
                 "-", glDebitMiscCreditTransaction.getTransactionDestination().getAmount() - requestTransactionAmount, requestTransactionAmount);
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 26518, testRunName = TEST_RUN_NAME)
     @Test(description = "C26518, PIN Purchase FND with Cashback")
     @Severity(SeverityLevel.CRITICAL)
     public void pinPurchaseFndWithCashbackTest() {

@@ -13,6 +13,7 @@ import com.nymbus.newmodels.client.basicinformation.type.TaxPayerIDType;
 import com.nymbus.newmodels.client.verifyingmodels.TrustAccountPredefinedField;
 import com.nymbus.newmodels.generation.client.builder.OrganisationClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.organisation.TrustAccountBuilder;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.SkipException;
@@ -37,6 +38,9 @@ public class C24986_CreateClientTrustAccountTest extends BaseTest {
         trustAccountPredefinedField = getTrustAccountPredefinedField();
     }
 
+    private final String TEST_RUN_NAME = "Create clients";
+
+    @TestRailIssue(issueID = 24986, testRunName = TEST_RUN_NAME)
     @Test(description = "C24986, Create Client - Trust account(for FI type = Credit Union)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyIndividualClientCreation() {

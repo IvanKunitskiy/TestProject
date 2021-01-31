@@ -20,6 +20,7 @@ import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitGLCreditTran
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -97,6 +98,9 @@ public class C22665_PerformECForWithdrawAndCloseSavingsAccTest extends BaseTest 
         Actions.loginActions().doLogOutProgrammatically();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22665, testRunName = TEST_RUN_NAME)
     @Test(description = "C22665, Journal: Perform EC for withdraw&close Savings (balance + IENP)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyECForWithdrawAndCloseTransaction() {

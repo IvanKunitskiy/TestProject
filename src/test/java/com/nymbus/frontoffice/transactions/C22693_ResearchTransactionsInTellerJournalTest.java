@@ -20,6 +20,7 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditCHKA
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -124,6 +125,9 @@ public class C22693_ResearchTransactionsInTellerJournalTest extends BaseTest {
         transactionNumber_2 = WebAdminActions.webAdminTransactionActions().getTransactionNumber(userCredentials_2, checkingAccount_2);
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22693, testRunName = TEST_RUN_NAME)
     @Test(description = "C22693, Research transactions in teller journal")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {

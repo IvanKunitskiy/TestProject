@@ -19,6 +19,7 @@ import com.nymbus.newmodels.transaction.MultipleTransaction;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.*;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -110,6 +111,9 @@ public class C22638_CommitMultipleTransactionTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22638, testRunName = TEST_RUN_NAME)
     @Test(description = "C22638,  Commit transaction with multiple sources and destinations")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyTransactionWithMultipleSourcesAndDestinations() {

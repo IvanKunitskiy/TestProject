@@ -10,6 +10,7 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.clientdetails.type.ClientStatus;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
@@ -36,6 +37,9 @@ public class C22543_CreateIndividualNonMemberClientTest extends BaseTest {
         individualClient.getIndividualType().setClientStatus(ClientStatus.NON_MEMBER);
     }
 
+    private final String TEST_RUN_NAME = "Create clients";
+
+    @TestRailIssue(issueID = 22543, testRunName = TEST_RUN_NAME)
     @Test(description = "C22543, Create Client - IndividualType - Non Member")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyNonMemberClientCreation() {

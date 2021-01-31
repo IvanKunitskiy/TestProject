@@ -21,6 +21,7 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -95,6 +96,9 @@ public class C22660_CommitWithdrawAndClose extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22660, testRunName = TEST_RUN_NAME)
     @Test(description = "C22660, Commit withdraw&close CHK (balance + IENP)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyWithdrawAndCloseTransaction() {

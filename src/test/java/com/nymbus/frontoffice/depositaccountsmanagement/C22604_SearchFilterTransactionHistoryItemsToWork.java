@@ -9,6 +9,7 @@ import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -39,6 +40,9 @@ public class C22604_SearchFilterTransactionHistoryItemsToWork extends BaseTest {
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
     }
 
+    private final String TEST_RUN_NAME = "Deposit Accounts Management";
+
+    @TestRailIssue(issueID = 22604, testRunName = TEST_RUN_NAME)
     @Test(description = "C22604, Search / filter transaction history: Items to Work")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyWarehouseTransactions() {

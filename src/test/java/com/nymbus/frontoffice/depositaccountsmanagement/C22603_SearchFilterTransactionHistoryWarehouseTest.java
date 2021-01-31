@@ -6,6 +6,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.pages.webadmin.WebAdminPages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
@@ -27,6 +28,9 @@ public class C22603_SearchFilterTransactionHistoryWarehouseTest extends BaseTest
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
     }
 
+    private final String TEST_RUN_NAME = "Deposit Accounts Management";
+
+    @TestRailIssue(issueID = 22603, testRunName = TEST_RUN_NAME)
     @Test(description = "C22603, Account Transactions: Search / filter transaction history: Warehouse")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyWarehouseTransactions() {

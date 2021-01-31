@@ -21,6 +21,7 @@ import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -90,7 +91,10 @@ public class C25351_LoanCreateAndFundAmortizedTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
-    @Test(description = "C25315, Loan - Create and Fund: P&I (bill)")
+    private final String TEST_RUN_NAME = "Loans Management";
+
+    @TestRailIssue(issueID = 25351, testRunName = TEST_RUN_NAME)
+    @Test(description = "C25351, Loan - Create and Fund: P&I (bill)")
     @Severity(SeverityLevel.CRITICAL)
     public void loanCreateAndFundPi() {
 

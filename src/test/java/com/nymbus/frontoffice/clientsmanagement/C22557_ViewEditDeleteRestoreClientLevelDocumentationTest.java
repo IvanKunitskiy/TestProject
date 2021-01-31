@@ -13,6 +13,7 @@ import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.client.other.DocumentFactory;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import com.nymbus.util.Random;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -49,6 +50,9 @@ public class C22557_ViewEditDeleteRestoreClientLevelDocumentationTest extends Ba
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Clients Management";
+
+    @TestRailIssue(issueID = 22557, testRunName = TEST_RUN_NAME)
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "C22557, View / edit / delete/ restore Client level document")
     public void addNewDocumentOnClientLevel() {

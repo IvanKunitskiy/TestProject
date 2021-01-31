@@ -25,6 +25,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -106,6 +107,9 @@ public class C22763_208ATMDepositONUSTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22763, testRunName = TEST_RUN_NAME)
     @Test(description = "C22763, 208 ATM Deposit ONUS")
     @Severity(SeverityLevel.CRITICAL)
     public void verify208ATMDepositOnus() {

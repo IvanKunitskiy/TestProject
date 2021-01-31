@@ -16,6 +16,7 @@ import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.transfers.TransferBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -67,6 +68,9 @@ public class C22546_AddNewClientTransferTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Clients Management";
+
+    @TestRailIssue(issueID = 22546, testRunName = TEST_RUN_NAME)
     @Test(description = "C22546, Add new client transfer ")
     @Severity(SeverityLevel.CRITICAL)
     public void addNewClientTransfer() {

@@ -15,6 +15,7 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditCDAccBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -65,6 +66,9 @@ public class C22692_AccountsDetailsBlockSafeDepositBoxAccount extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22692, testRunName = TEST_RUN_NAME)
     @Test(description = "C22692, Accounts Details block - Safe Deposit Box Account")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyNSFTransaction() {

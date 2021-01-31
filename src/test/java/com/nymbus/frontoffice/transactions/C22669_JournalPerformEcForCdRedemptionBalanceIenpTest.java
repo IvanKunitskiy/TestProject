@@ -20,6 +20,7 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -92,6 +93,9 @@ public class C22669_JournalPerformEcForCdRedemptionBalanceIenpTest extends BaseT
         Actions.loginActions().doLogOutProgrammatically();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22669, testRunName = TEST_RUN_NAME)
     @Test(description = "C22669, Journal: Perform EC for CD redemption (balance + IENP)")
     @Severity(SeverityLevel.CRITICAL)
     public void journalPerformEcForCdRedemptionBalanceIenp() {

@@ -29,6 +29,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -139,6 +140,9 @@ public class C26510_WithdrawalFndFastCash80FrgnTest extends BaseTest {
                 "-", glDebitMiscCreditTransaction.getTransactionDestination().getAmount() - atmFee, atmFee);
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 26510, testRunName = TEST_RUN_NAME)
     @Test(description = "C26510, Withdrawal FND Fast Cash 80$ FRGN")
     @Severity(SeverityLevel.CRITICAL)
     public void withdrawalFndFastCash80Frgn() {

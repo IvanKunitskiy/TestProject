@@ -7,6 +7,7 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -29,6 +30,9 @@ public class C22850_PrintChecksPrintInterestCheckTest extends BaseTest {
         WebAdminActions.loginActions().doLogout();
     }
 
+    private final String TEST_RUN_NAME = "Notices";
+
+    @TestRailIssue(issueID = 22850, testRunName = TEST_RUN_NAME)
     @Test(description = "C22850, Print Checks: Print Interest Check")
     @Severity(SeverityLevel.CRITICAL)
     public void printChecksPrintInterestCheck() {

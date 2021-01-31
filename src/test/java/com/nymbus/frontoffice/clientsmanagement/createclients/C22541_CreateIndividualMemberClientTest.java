@@ -9,6 +9,7 @@ import com.nymbus.core.utils.FinancialInstitutionType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
@@ -34,6 +35,9 @@ public class C22541_CreateIndividualMemberClientTest extends BaseTest {
         individualClient = individualClientBuilder.buildClient();
     }
 
+    private final String TEST_RUN_NAME = "Create clients";
+
+    @TestRailIssue(issueID = 22541, testRunName = TEST_RUN_NAME)
     @Test(description = "C22541, Create Client - IndividualType - Member")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyIndividualClientCreation() {

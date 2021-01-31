@@ -17,6 +17,7 @@ import com.nymbus.newmodels.client.verifyingmodels.TrustAccountPredefinedField;
 import com.nymbus.newmodels.generation.client.builder.OrganisationClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.organisation.TrustAccountBuilder;
 import com.nymbus.newmodels.generation.client.factory.clientdetails.contactinformation.PhoneFactory;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.SkipException;
@@ -42,6 +43,9 @@ public class C37244_CreateClientTrustAccountCustomerTest extends BaseTest {
         trustAccountPredefinedField = getTrustAccountPredefinedField();
     }
 
+    private final String TEST_RUN_NAME = "Create clients";
+
+    @TestRailIssue(issueID = 37244, testRunName = TEST_RUN_NAME)
     @Test(description = "C37244, Create Client - Trust account (for FI type = Bank)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyIndividualClientCreation() {

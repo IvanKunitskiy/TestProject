@@ -10,6 +10,7 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.clientdetails.type.ClientStatus;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.SkipException;
@@ -33,6 +34,9 @@ public class C28143_CreateClientIndividualCustomerTest extends BaseTest {
         individualClient.getIndividualType().setClientStatus(ClientStatus.CUSTOMER);
     }
 
+    private final String TEST_RUN_NAME = "Create clients";
+
+    @TestRailIssue(issueID = 28143, testRunName = TEST_RUN_NAME)
     @Test(description = "C28143, Create Client - Individual - Customer (FI type=Bank)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyIndividualClientCreation() {

@@ -10,6 +10,7 @@ import com.nymbus.newmodels.client.clientdetails.type.ClientStatus;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -31,6 +32,9 @@ public class C22551_CreateIndividualConsumerClientTest extends BaseTest {
         individualClient.getIndividualType().setClientStatus(ClientStatus.CONSUMER);
     }
 
+    private final String TEST_RUN_NAME = "Create clients";
+
+    @TestRailIssue(issueID = 22551, testRunName = TEST_RUN_NAME)
     @Test(description = "C22551, Create Client - Consumer")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyIndividualConsumerClientCreation() {

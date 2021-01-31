@@ -22,6 +22,7 @@ import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -99,6 +100,9 @@ public class C26609_ZeroDollarAuthTest extends BaseTest {
 
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 26609, testRunName = TEST_RUN_NAME)
     @Test(description = "C26609, Zero Dollar Auth")
     @Severity(SeverityLevel.CRITICAL)
     public void zeroDollarAuthTest() {

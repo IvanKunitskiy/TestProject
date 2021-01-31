@@ -20,6 +20,7 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.Denominations;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -89,6 +90,9 @@ public class C37315_CTRAlertForCashInvolvedTransactions extends BaseTest {
     }
 
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 37315, testRunName = TEST_RUN_NAME)
     @Test(description = "C37315, CTR Alert for Cash involved transactions")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {

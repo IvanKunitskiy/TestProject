@@ -25,6 +25,7 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
@@ -122,6 +123,9 @@ public class C22601_ViewTransactionHistoryTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
+    private final String TEST_RUN_NAME = "Deposit Accounts Management";
+
+    @TestRailIssue(issueID = 22601, testRunName = TEST_RUN_NAME)
     @Test(description = "C22601, Account Transactions: View transaction history")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyTransactionHistory() {

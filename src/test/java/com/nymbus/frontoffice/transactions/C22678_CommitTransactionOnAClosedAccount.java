@@ -15,6 +15,7 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditCHKAccBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -54,6 +55,9 @@ public class C22678_CommitTransactionOnAClosedAccount extends BaseTest {
         AccountActions.editAccount().closeAccount();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22678, testRunName = TEST_RUN_NAME)
     @Test(description = "C22678, Commit transaction on a closed account")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyCommittingTransactionOnCloseAcc() {

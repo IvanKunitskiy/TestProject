@@ -14,6 +14,7 @@ import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -58,6 +59,9 @@ public class C22672_TellerCommitTransactionOnDormantAccountTest extends BaseTest
                 "+", balance, transaction.getTransactionDestination().getAmount());
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22672, testRunName = TEST_RUN_NAME)
     @Test(description = "C22672, Teller: Commit transaction on dormant account")
     @Severity(SeverityLevel.CRITICAL)
     public void tellerCommitTransactionOnDormantAccount() {

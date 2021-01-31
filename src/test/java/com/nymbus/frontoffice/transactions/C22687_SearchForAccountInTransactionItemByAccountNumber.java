@@ -15,6 +15,7 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -52,6 +53,9 @@ public class C22687_SearchForAccountInTransactionItemByAccountNumber extends Bas
         Actions.loginActions().doLogOutProgrammatically();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22687, testRunName = TEST_RUN_NAME)
     @Test(description = "C22687, Search for Account in Transaction item by account number")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyNSFTransaction() {

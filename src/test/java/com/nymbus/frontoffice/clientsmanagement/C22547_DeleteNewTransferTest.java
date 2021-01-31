@@ -20,6 +20,7 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditCHKA
 import com.nymbus.newmodels.generation.transfers.TransferBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -114,6 +115,9 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Clients Management";
+
+    @TestRailIssue(issueID = 22547, testRunName = TEST_RUN_NAME)
     @Test(description = "C22547, Delete new transfer")
     @Severity(SeverityLevel.CRITICAL)
     public void deleteNewTransfer() {

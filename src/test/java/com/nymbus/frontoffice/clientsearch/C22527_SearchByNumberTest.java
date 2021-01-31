@@ -13,6 +13,7 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
@@ -57,6 +58,9 @@ public class C22527_SearchByNumberTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Clients search";
+
+    @TestRailIssue(issueID = 22527, testRunName = TEST_RUN_NAME)
     @Severity(CRITICAL)
     @Test(description = "C22527, Search individualClient by number")
     public void searchByNumber() {

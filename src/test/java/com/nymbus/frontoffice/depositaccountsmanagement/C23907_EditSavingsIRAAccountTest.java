@@ -13,6 +13,7 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -52,6 +53,9 @@ public class C23907_EditSavingsIRAAccountTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Deposit Accounts Management";
+
+    @TestRailIssue(issueID = 23907, testRunName = TEST_RUN_NAME)
     @Test(description = "C23907, Edit savings IRA account")
     @Severity(SeverityLevel.CRITICAL)
     public void editSavingsIRAAccount() {

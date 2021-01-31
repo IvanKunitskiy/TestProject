@@ -20,6 +20,7 @@ import com.nymbus.newmodels.generation.transfers.TransferBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -97,6 +98,9 @@ public class C21733_ViewEditNewAutomaticLoanPaymentTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Loans Management";
+
+    @TestRailIssue(issueID = 21733, testRunName = TEST_RUN_NAME)
     @Test(description = "C21733, View / edit new automatic loan payment")
     @Severity(SeverityLevel.CRITICAL)
     public void viewEditNewAutomaticLoanPayment() {

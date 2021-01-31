@@ -9,6 +9,7 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -39,6 +40,9 @@ public class C22531_SearchByLastFourDigitsOfTaxIDTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Clients search";
+
+    @TestRailIssue(issueID = 22531, testRunName = TEST_RUN_NAME)
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "C22531, Search by last four digits of TaxID")
     public void searchByTaxID() {

@@ -8,6 +8,7 @@ import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.notice.Notice;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -28,6 +29,9 @@ public class C22849_DocumentsSearchViewPrintNoticesTest extends BaseTest {
         WebAdminActions.loginActions().doLogout();
     }
 
+    private final String TEST_RUN_NAME = "Notices";
+
+    @TestRailIssue(issueID = 22849, testRunName = TEST_RUN_NAME)
     @Test(description = "C22849, Documents Search: View / print notices")
     @Severity(SeverityLevel.CRITICAL)
     public void documentsSearchViewPrintNotices() {

@@ -22,6 +22,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -95,6 +96,9 @@ public class C22635_PerformECForGLDebitMiscCreditSavingAccTest extends BaseTest 
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22635, testRunName = TEST_RUN_NAME)
     @Test(description = "C22635, Perform EC for GL Debit -> Misc Credit transaction (Savings Account)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyErrorCorrectForGLDebitMiscCreditTransactionOnSavingAcc() {

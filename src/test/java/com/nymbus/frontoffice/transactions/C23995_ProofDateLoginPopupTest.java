@@ -11,6 +11,7 @@ import com.nymbus.data.entity.verifyingmodels.TellerSessionVerifyingModel;
 import com.nymbus.newmodels.settings.UserSettings;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -61,6 +62,9 @@ public class C23995_ProofDateLoginPopupTest extends BaseTest {
         Assert.assertFalse(verifyingModel.isUserSessionExist(), "Teller session is active for current user!");
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 23995, testRunName = TEST_RUN_NAME)
     @Test(description = "C23995, Teller: Proof Date Login popup")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyProofDateLoginPopup() {

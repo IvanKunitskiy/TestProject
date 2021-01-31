@@ -29,6 +29,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -135,6 +136,9 @@ public class C25360_ChkAtmBalanceInquiryForeignTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 25360, testRunName = TEST_RUN_NAME)
     @Test(description = "C25360, CHK ATM Balance Inquiry FOREIGN")
     @Severity(SeverityLevel.CRITICAL)
     public void chkAtmBalanceInquiryForeign() {

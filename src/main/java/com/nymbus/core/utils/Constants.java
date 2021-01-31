@@ -2,6 +2,8 @@ package com.nymbus.core.utils;
 
 import com.nymbus.newmodels.UserCredentials;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Stack;
 
 public class Constants {
@@ -26,10 +28,30 @@ public class Constants {
     public static String NOT_TELLER_USERNAME ="autotesttell";
     public static String NOT_TELLER_PASSWORD ="autotesttell";
 
+    public static String BROWSER = System.getProperty("browserName", "chrome");
+
     public static int DAYS_BEFORE_SYSTEM_DATE = 3;
     public static int MAX_CHARACTERS_ON_DEBIT_CARD = 25;
 
     public static String INDIVIDUAL_TYPE_FOR_WEB_ADMIN_QUERY = getIndividualType();
+
+    public final static int PROJECT_ID = 2;
+    public final static int SUITE_ID = 81;
+
+    public final static String TEST_RAIL_USER = "pkyriushkin";
+    public final static String TEST_RAIL_PASSWORD = "Xu&|75sSg8F!!!!";
+    public final static String TEST_RAIL_URL = "https://testrail.nymbus.com/testrail";
+
+    public static String CURRENT_TIME;
+    static {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDateTime now = LocalDateTime.now();
+
+        CURRENT_TIME = dtf.format(now);
+    }
+
+    public final static boolean SEND_RESULT_TO_TESTRAIL = Boolean.parseBoolean(System.getProperty("sendResultToRestRail", "false"));
+
 
     public static Stack<UserCredentials> USERS = new Stack<>();
     static {

@@ -30,6 +30,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -138,6 +139,9 @@ public class C26516_WithdrawalDDAInternationalSurchargeFRGNTest extends BaseTest
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 26516, testRunName = TEST_RUN_NAME)
     @Test(description = "C26516, Withdrawal -DDA International - $5 Surcharge FRGN")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyWithdrawalDDAInternational() {

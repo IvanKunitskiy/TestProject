@@ -20,6 +20,7 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
@@ -77,6 +78,9 @@ public class C22610_AddHoldToAccountTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
+    private final String TEST_RUN_NAME = "Deposit Accounts Management";
+
+    @TestRailIssue(issueID = 22610, testRunName = TEST_RUN_NAME)
     @Test(description = "C22610, Client Accounts: Add hold to account (review available balance)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyHoldInstruction() {

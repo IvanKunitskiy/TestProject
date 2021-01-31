@@ -20,6 +20,7 @@ import com.nymbus.newmodels.generation.debitcard.DebitCardConstructor;
 import com.nymbus.newmodels.generation.debitcard.builder.DebitCardBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -95,6 +96,9 @@ public class C22553_ViewEditNewDebitCardTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Clients Management";
+
+    @TestRailIssue(issueID = 22553, testRunName = TEST_RUN_NAME)
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "C22553, View / edit new debit card")
     public void viewEditNewDebitCard() {

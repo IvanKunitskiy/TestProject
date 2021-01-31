@@ -9,6 +9,7 @@ import com.nymbus.data.entity.CashDrawer;
 import com.nymbus.data.entity.User;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -28,6 +29,9 @@ public class C22523_CreateCashDrawerTest extends BaseTest {
         cashDrawer = new CashDrawer().setDefaultTellerValues();
     }
 
+    private final String TEST_RUN_NAME = "User Management";
+
+    @TestRailIssue(issueID = 22523, testRunName = TEST_RUN_NAME)
     @Test(description = "C22523, Create Cash Drawer from Cash Drawers dashboard + assign to existing user")
     public void verifyCashDrawerCreationAssignFromCashDrawerPage() {
 

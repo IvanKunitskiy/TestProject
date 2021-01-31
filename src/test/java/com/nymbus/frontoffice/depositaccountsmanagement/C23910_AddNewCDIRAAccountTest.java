@@ -13,6 +13,7 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -56,6 +57,9 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Deposit Accounts Management";
+
+    @TestRailIssue(issueID = 23910, testRunName = TEST_RUN_NAME)
     @Test(description = "C23910, Add New CD IRA Account")
     @Severity(SeverityLevel.CRITICAL)
     public void addNewCDIRAAccount() {

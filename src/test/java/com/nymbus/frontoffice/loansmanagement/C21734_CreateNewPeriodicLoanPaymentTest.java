@@ -20,6 +20,7 @@ import com.nymbus.newmodels.generation.transfers.TransferBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
@@ -95,6 +96,9 @@ public class C21734_CreateNewPeriodicLoanPaymentTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
+    private final String TEST_RUN_NAME = "Loans Management";
+
+    @TestRailIssue(issueID = 21734, testRunName = TEST_RUN_NAME)
     @Test(description = "C21734, Create new periodic loan payment")
     @Severity(SeverityLevel.CRITICAL)
     public void createNewPeriodicLoanPayment() {

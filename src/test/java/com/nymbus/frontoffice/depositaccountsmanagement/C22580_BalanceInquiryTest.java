@@ -19,6 +19,7 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -81,6 +82,9 @@ public class C22580_BalanceInquiryTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Deposit Accounts Management";
+
+    @TestRailIssue(issueID = 22580, testRunName = TEST_RUN_NAME)
     @Test(description = "C22580, Client Accounts: Balance inquiry on Regular Savings account")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyBalanceInquiry() {

@@ -24,6 +24,7 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCDAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -105,6 +106,9 @@ public class C22691_AccountsDetailsBlockCDAccount extends BaseTest {
 
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22691, testRunName = TEST_RUN_NAME)
     @Test(description = "C22691, Accounts Details block - CD Account")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyNSFTransaction() {

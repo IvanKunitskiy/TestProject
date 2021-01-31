@@ -17,6 +17,7 @@ import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.client.other.AccountLevelDocumentFactory;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -63,6 +64,9 @@ public class C22599_AddAccountLevelDocumentTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Deposit Accounts Management";
+
+    @TestRailIssue(issueID = 22599, testRunName = TEST_RUN_NAME)
     @Test(description = "C22599, Add Account Level Document")
     @Severity(SeverityLevel.CRITICAL)
     public void addAccountLevelDocument() {

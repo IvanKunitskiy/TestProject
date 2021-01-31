@@ -24,6 +24,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -129,6 +130,9 @@ public class C22701_JournalPerformEcForSimpleCdtTransferWithFeeTest extends Base
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22701, testRunName = TEST_RUN_NAME)
     @Test(description = "C22701, Journal - Perform EC for simple CDT transfer with fee")
     @Severity(SeverityLevel.CRITICAL)
     public void journalPerformEcForSimpleCdtTransferWithFeeTest() {

@@ -24,6 +24,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.WebAdminTransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -69,6 +70,9 @@ public class C22634_GLDebit_MiscCredit_SavingsAcc_Test extends BaseTest {
                  transaction.getTransactionDestination().getAmount());
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22634, testRunName = TEST_RUN_NAME)
     @Test(description = "C22634, Commit transaction GL Debit -> Misc Credit")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyTransactionGLDebitMiscCredit() {

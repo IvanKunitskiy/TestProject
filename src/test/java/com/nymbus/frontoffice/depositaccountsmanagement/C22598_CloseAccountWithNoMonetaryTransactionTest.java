@@ -14,6 +14,7 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -55,6 +56,9 @@ public class C22598_CloseAccountWithNoMonetaryTransactionTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Deposit Accounts Management";
+
+    @TestRailIssue(issueID = 22598, testRunName = TEST_RUN_NAME)
     @Test(description = "C22598, Close Account with no monetary transaction")
     @Severity(SeverityLevel.CRITICAL)
     public void closeAccountWithNoMonetaryTransaction() {

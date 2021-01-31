@@ -9,6 +9,7 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -55,6 +56,9 @@ public class C21729_EditLoanAccountDropdownValueIfItsNoLongerAvailableForSelecti
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Loans Management";
+
+    @TestRailIssue(issueID = 21729, testRunName = TEST_RUN_NAME)
     @Test(description = "C21729, Edit loan account (dropdown value if it's no longer available for selection)")
     @Severity(SeverityLevel.CRITICAL)
     public void editLoanAccountDropdownValueIfItsNoLongerAvailableForSelection() {

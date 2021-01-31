@@ -14,6 +14,7 @@ import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.note.Note;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -80,6 +81,9 @@ public class C22555_AssignNoteToAUserTest extends BaseTest {
         WebAdminActions.loginActions().doLogoutProgrammatically();
     }
 
+    private final String TEST_RUN_NAME = "Clients Management";
+
+    @TestRailIssue(issueID = 22555, testRunName = TEST_RUN_NAME)
     @Test(description = "C22555, Assign Note To A User Test")
     @Severity(SeverityLevel.CRITICAL)
     public void assignNoteToAUser() {

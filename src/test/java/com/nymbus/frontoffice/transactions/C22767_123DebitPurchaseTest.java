@@ -28,6 +28,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -124,6 +125,9 @@ public class C22767_123DebitPurchaseTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22767, testRunName = TEST_RUN_NAME)
     @Test(description = "C22767, 123 - Debit Purchase")
     @Severity(SeverityLevel.CRITICAL)
     public void verify123DebitPurchaseTest() {

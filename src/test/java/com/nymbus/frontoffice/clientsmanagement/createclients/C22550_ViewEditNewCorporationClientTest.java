@@ -13,6 +13,7 @@ import com.nymbus.newmodels.generation.client.builder.type.organisation.Corporat
 import com.nymbus.newmodels.generation.client.factory.basicinformation.AddressFactory;
 import com.nymbus.newmodels.generation.client.factory.clientdetails.contactinformation.PhoneFactory;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeMethod;
@@ -43,6 +44,9 @@ public class C22550_ViewEditNewCorporationClientTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Create clients";
+
+    @TestRailIssue(issueID = 22550, testRunName = TEST_RUN_NAME)
     @Test(description = "C22550, View / edit new corporation client")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyCorporationClientEdition() {

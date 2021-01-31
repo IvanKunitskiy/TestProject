@@ -22,6 +22,7 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -108,6 +109,9 @@ public class C22679_CommitTransactionWithDebitHoldTest extends BaseTest {
                 withdrawalTransaction.getTransactionDestination().getAmount());
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22679, testRunName = TEST_RUN_NAME)
     @Test(description = "C22679, Commit transaction with debit hold")
     @Severity(SeverityLevel.CRITICAL)
     public void commitTransactionWithDebitHold() {

@@ -23,6 +23,7 @@ import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
@@ -132,6 +133,9 @@ public class C24989_ClientAccountsCloseCHKAccountWithOpenDebitCard extends BaseT
 
     }
 
+    private final String TEST_RUN_NAME = "Deposit Accounts Management";
+
+    @TestRailIssue(issueID = 24989, testRunName = TEST_RUN_NAME)
     @Severity(CRITICAL)
     @Test(description = "C24989, Client Accounts - Close CHK account with open debit card")
     public void clientAccountsCloseCHKAccountWithOpenDebitCard() {

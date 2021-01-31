@@ -19,6 +19,7 @@ import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import com.nymbus.util.Random;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -95,6 +96,9 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
+    private final String TEST_RUN_NAME = "Loans Management";
+
+    @TestRailIssue(issueID = 21736, testRunName = TEST_RUN_NAME)
     @Test(description = "C21736, Manually change interest rate on new loan")
     @Severity(SeverityLevel.CRITICAL)
     public void manuallyChangeInterestRateOnNewLoan() {

@@ -22,6 +22,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.ExtendedBalanceDataForCH
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -104,6 +105,9 @@ public class C24749_PerformECForMiscDebitGLCreditCHKAccTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 24749, testRunName = TEST_RUN_NAME)
     @Test(description = "C24749, Perform EC for Misc Debit -> GL Credit transaction (CHK account)")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyErrorCorrectForMiscDebitGLCreditTransactionOnCHKAcc() {

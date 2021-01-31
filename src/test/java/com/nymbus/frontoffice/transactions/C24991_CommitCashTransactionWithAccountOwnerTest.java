@@ -20,6 +20,7 @@ import com.nymbus.newmodels.generation.tansactions.builder.CashInMiscCreditCHKAc
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -73,6 +74,9 @@ public class C24991_CommitCashTransactionWithAccountOwnerTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 24991, testRunName = TEST_RUN_NAME)
     @Test(description = "C24991, Verify: Commit Cash transaction with account owner")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyCashTransactionWithAccountOwner() {

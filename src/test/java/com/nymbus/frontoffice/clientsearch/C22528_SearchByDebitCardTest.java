@@ -19,6 +19,7 @@ import com.nymbus.newmodels.generation.debitcard.DebitCardConstructor;
 import com.nymbus.newmodels.generation.debitcard.builder.DebitCardBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
@@ -99,6 +100,9 @@ public class C22528_SearchByDebitCardTest extends BaseTest {
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Clients search";
+
+    @TestRailIssue(issueID = 22528, testRunName = TEST_RUN_NAME)
     @Severity(CRITICAL)
     @Test(description = "C22528, Search individualClient by debitcard number")
     public void searchByCardNumber() {

@@ -18,6 +18,7 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitMiscCreditBuil
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -81,6 +82,9 @@ public class C22861_WeilandRtfChargeTest extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
     }
 
+    private final String TEST_RUN_NAME = "Account Analysis";
+
+    @TestRailIssue(issueID = 22861, testRunName = TEST_RUN_NAME)
     @Test(description = "C22861, Weiland Rtf Charge")
     @Severity(SeverityLevel.CRITICAL)
     public void weilandRdcCharge() {

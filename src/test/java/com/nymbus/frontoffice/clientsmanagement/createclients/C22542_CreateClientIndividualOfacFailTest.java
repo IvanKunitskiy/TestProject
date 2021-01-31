@@ -11,6 +11,7 @@ import com.nymbus.newmodels.client.verifyingmodels.FirstNameAndLastNameModel;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -43,6 +44,9 @@ public class C22542_CreateClientIndividualOfacFailTest extends BaseTest {
         individualClient.getIndividualType().setLastName(existingClient.getLastName());
     }
 
+    private final String TEST_RUN_NAME = "Create clients";
+
+    @TestRailIssue(issueID = 22542, testRunName = TEST_RUN_NAME)
     @Test(description = "C22542, Create Client - IndividualType - Ofac check fail")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyOfacValidation() {

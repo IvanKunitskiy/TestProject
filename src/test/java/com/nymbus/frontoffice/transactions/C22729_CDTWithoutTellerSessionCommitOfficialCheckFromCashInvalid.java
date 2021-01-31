@@ -5,6 +5,7 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.cashier.CashierDefinedTransactions;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -30,6 +31,9 @@ public class C22729_CDTWithoutTellerSessionCommitOfficialCheckFromCashInvalid ex
         Actions.loginActions().doLogOut();
     }
 
+    private final String TEST_RUN_NAME = "Transactions";
+
+    @TestRailIssue(issueID = 22729, testRunName = TEST_RUN_NAME)
     @Test(description = "C22729, CDT without Teller Session - Commit official check from cash (invalid)")
     @Severity(SeverityLevel.CRITICAL)
     public void printTellerReceiptWithoutBalance() {
