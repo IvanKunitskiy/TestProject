@@ -135,6 +135,7 @@ public class C22547_DeleteNewTransferTest extends BaseTest {
 
         logInfo("Step 5: Click [Delete] button");
         Pages.viewTransferPage().clickDeleteButton();
+        Pages.viewTransferPage().clickYesButton();
 
         logInfo("Step 6: Open Client Profile on Accounts tab and search for the Account that was used as Account From or Account To in the transfer. Open account on the Maintenenace-> Maintenance History page");
         Pages.accountNavigationPage().clickAccountsTab();
