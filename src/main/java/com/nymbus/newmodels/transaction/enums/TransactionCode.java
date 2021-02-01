@@ -47,7 +47,10 @@ public enum TransactionCode {
     GL_DEBIT("860 - G/L Debit"),
     NEW_LOAN_411("411 - New Loan"),
     TAKE_FROM_IENC_408("408 - Take From IENC"),
-    ADD_TO_IENC_409("409 - Add To IENC");
+    ADD_TO_IENC_409("409 - Add To IENC"),
+    LOAN_PAYMENT_114("114 - Loan Payment"),
+    PAYOFF_433("433 - Payoff");
+
 
     private final String transCode;
 }

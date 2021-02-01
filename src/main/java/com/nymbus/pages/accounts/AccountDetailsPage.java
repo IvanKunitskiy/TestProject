@@ -23,6 +23,7 @@ public class AccountDetailsPage extends PageTools {
     private By editButton = By.xpath("//button[@data-test-id='action-editAccount']");
     private By balanceInquiry = By.xpath("//button[@data-test-id='action-print-receipt']");
     private By activateButton = By.xpath("//button[@data-test-id='action-activateAccount']");
+    private By amountDueInquiry = By.xpath("//button[@data-test-id='action-amount-due-inquiry']");
 
 
     /**
@@ -585,6 +586,12 @@ public class AccountDetailsPage extends PageTools {
     public void clickActivateButton() {
         waitForElementClickable(activateButton);
         click(activateButton);
+    }
+
+    @Step("Click the 'Amount Due Inquiry' button")
+    public void clickAmountDueInquiryButton() {
+        waitForElementClickable(amountDueInquiry);
+        click(amountDueInquiry);
     }
 
     @Step("Get account 'Earning Credit Rate' value")

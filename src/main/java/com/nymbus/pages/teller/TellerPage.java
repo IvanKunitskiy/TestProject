@@ -495,6 +495,8 @@ public class TellerPage extends PageTools {
     private By rentalAmount = By.xpath("//*[@id='accordion-operation-aqv-content']" +
             "//span[text()='Rental Amount']//ancestor::node()[1]//span[2]");
     private By detaulsButton = By.xpath("//button[contains(string(), 'Details')]");
+    private By payoffAmount = By.xpath("//*[@id='accordion-operation-aqv-content']" +
+            "//span[text()='Payoff Amount']//ancestor::node()[1]//span[2]");
 
     @Step("Is account quick view visible")
     public boolean isAccountQuickViewVisible() {
@@ -536,6 +538,12 @@ public class TellerPage extends PageTools {
     public String getAccruedInterest() {
         waitForElementVisibility(accruedInterest);
         return getElementText(accruedInterest).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Payoff Amount' value")
+    public String getPayoffAmount() {
+        waitForElementVisibility(payoffAmount);
+        return getElementText(payoffAmount).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Automatic Overdraft Limit' value")
