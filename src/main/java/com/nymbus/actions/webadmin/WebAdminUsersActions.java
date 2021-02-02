@@ -172,7 +172,7 @@ public class WebAdminUsersActions {
     }
 
     public String getAccountNumberWithInterestCheck(int index) {
-        return getAccountWithCheckByIndexFromQueryByUrl(getInterestChecksUrl(), 1);
+        return getAccountWithCheckByIndexFromQueryByUrl(getInterestChecksUrl(), index);
     }
 
     private String getAccAnalyzeWithRdcCodeAndAmountUrl() {
@@ -266,7 +266,7 @@ public class WebAdminUsersActions {
                 + "orderBy%3A+id&source=";
     }
 
-     private String getLoanAccount() {
+     private String getLoanAccountUrl() {
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?"
                 + "waDbName=nymbusdev12DS&"
@@ -284,8 +284,44 @@ public class WebAdminUsersActions {
                 + "+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A"
                 + "deletedIncluded%3A+true%0D%0A"
                 + "extra%3A+%0D%0A"
-                + "-+%24CurBal%3A+bank.data.actloan%5Baccountid%5D-%3E%5Brootid%5Dbank.data.actmst-%3Ecurrentbalance%0D%0A&source=";
+                + "-+%24CurBal%3A+bank.data.actloan%5Baccountid%5D-%3E%5Brootid%5D"
+                + "bank.data.actmst-%3Ecurrentbalance%0D%0A&source=";
      }
+
+     private String getActiveConvertedLoanAccountFundedInPastUrl() {
+        return Constants.WEB_ADMIN_URL +
+                "RulesUIQuery.ct?" +
+                "waDbName=coreDS&" +
+                "dqlQuery=count%3A+20%0D%0A" +
+                "from%3A+bank.data.actloan%0D%0A" +
+                "where%3A%0D%0A%23+" +
+                "-+.paymenttypefornonclass1-%3Ename%3A+Prin+%26+Int+%28Bill%29%0D%0A+" +
+                "-+.accountid-%3EdateClosed%3A+%7Bnull%7D%0D%0A+" +
+                "-+.accountid-%3EcurrentBalance%3A+%7Bgreater%3A+0%7D%0D%0A+" +
+                "-+.accountid-%3EdateOpened%3A+%7Bless%3A+%272019-09-01%27%7D%0D%0A+" +
+                "-+currenteffectiverate%3A+%7Bgreater%3A+0%7D%0D%0A" +
+                "orderBy%3A+-id%0D%0A" +
+                "formats%3A+%0D%0A-+-%3E" +
+                "bank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A&source=";
+     }
+
+    private String getInterestEarnedUrl(String accountNumber) {
+        return Constants.WEB_ADMIN_URL +
+                "RulesUIQuery.ct?" +
+                "waDbName=nymbusdev12DS&" +
+                "dqlQuery=count%3A+5%0D%0A" +
+                "select%3A+%28databean%29CREATEDBY%2C+%28databean%29CREATEDWHEN%2C+accountid%2C+interestearned%0D%0A" +
+                "from%3A+bank.data.actloan%0D%0A" +
+                "where%3A+%0D%0A+" +
+                "-+.accountid-%3Eaccountnumber%3A+" +
+                accountNumber + "+%0D%0A" +
+                "orderBy%3A+-id%0D%0A" +
+                "deletedIncluded%3A+true&source=";
+    }
+
+    public String getActiveConvertedLoanAccountFundedInPast() {
+        return getActiveConvertedLoanAccountFundedInPastFromUrl(getActiveConvertedLoanAccountFundedInPastUrl());
+    }
 
     public boolean isCdtTemplateCommittedFromChkOnGlAccountCreated(String templateName) {
         return isCdtTemplateCommittedFromChkOnGlAccountCreatedFromQueryByUrl(
@@ -341,7 +377,20 @@ public class WebAdminUsersActions {
     }
 
     public String getLoanAccountNumber() {
-        return getLoanAccountNumberFromQueryByUrl(getLoanAccount());
+        return getLoanAccountNumberFromQueryByUrl(getLoanAccountUrl());
+    }
+
+    public String getInterestEarned(String accountId) {
+        return getInterestEarnedFromQueryByUrl(getInterestEarnedUrl(accountId));
+    }
+
+    private String getInterestEarnedFromQueryByUrl(String url) {
+        int tmpIndex = 1;
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getInterestEarnedValueByIndex(tmpIndex);
     }
 
     private String getLoanAccountNumberFromQueryByUrl(String url) {
@@ -436,6 +485,16 @@ public class WebAdminUsersActions {
 
         List<String> listOfCdtTemplateNames = WebAdminPages.rulesUIQueryAnalyzerPage().getListOfCdtTemplateNames();
         return listOfCdtTemplateNames.contains(templateName);
+    }
+
+    private String getActiveConvertedLoanAccountFundedInPastFromUrl(String url) {
+        SelenideTools.openUrl(url);
+
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        int index = (new Random().nextInt(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult())) + 1;
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getActiveLoanConvertedAccountNumberValueByIndex(index);
     }
 
     public FirstNameAndLastNameModel getExistingIndividualClient() {
