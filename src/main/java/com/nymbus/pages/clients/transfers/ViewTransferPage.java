@@ -12,6 +12,7 @@ public class ViewTransferPage extends PageTools {
     private By transferCharge = By.xpath("//input[@id='transfercharge']");
     private By editButton = By.xpath("//button//span[contains(text(), 'Edit')]/ancestor::button");
     private By deleteButton = By.xpath("//button//span[contains(text(), 'Delete')]/ancestor::button");
+    private By yesButton = By.xpath("//button[contains(string(),'Yes')]");
     private By creationDate = By.xpath("//input[@data-test-id='field-creationdate']");
     private By advanceDaysFromDueDate = By.xpath("//input[@data-test-id='field-advancedaystomakepayment']");
     private By eftChargeCode = By.xpath("//div[@name='transferchargecode']/a/span/span");
@@ -33,6 +34,13 @@ public class ViewTransferPage extends PageTools {
         waitForElementClickable(deleteButton);
         waitForElementVisibility(deleteButton);
         click(deleteButton);
+    }
+
+    @Step("Click 'Yes' button")
+    public void clickYesButton() {
+        waitForElementClickable(yesButton);
+        waitForElementVisibility(yesButton);
+        click(yesButton);
     }
 
     @Step("Click 'Edit' button")
