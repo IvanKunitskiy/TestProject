@@ -305,6 +305,20 @@ public class WebAdminUsersActions {
                 "bank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A&source=";
      }
 
+    private String getInterestEarnedUrl(String accountNumber) {
+        return Constants.WEB_ADMIN_URL +
+                "RulesUIQuery.ct?" +
+                "waDbName=nymbusdev12DS&" +
+                "dqlQuery=count%3A+5%0D%0A" +
+                "select%3A+%28databean%29CREATEDBY%2C+%28databean%29CREATEDWHEN%2C+accountid%2C+interestearned%0D%0A" +
+                "from%3A+bank.data.actloan%0D%0A" +
+                "where%3A+%0D%0A+" +
+                "-+.accountid-%3Eaccountnumber%3A+" +
+                accountNumber + "+%0D%0A" +
+                "orderBy%3A+-id%0D%0A" +
+                "deletedIncluded%3A+true&source=";
+    }
+
     public String getActiveConvertedLoanAccountFundedInPast() {
         return getActiveConvertedLoanAccountFundedInPastFromUrl(getActiveConvertedLoanAccountFundedInPastUrl());
     }
@@ -364,6 +378,19 @@ public class WebAdminUsersActions {
 
     public String getLoanAccountNumber() {
         return getLoanAccountNumberFromQueryByUrl(getLoanAccountUrl());
+    }
+
+    public String getInterestEarned(String accountId) {
+        return getInterestEarnedFromQueryByUrl(getInterestEarnedUrl(accountId));
+    }
+
+    private String getInterestEarnedFromQueryByUrl(String url) {
+        int tmpIndex = 1;
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getInterestEarnedValueByIndex(tmpIndex);
     }
 
     private String getLoanAccountNumberFromQueryByUrl(String url) {

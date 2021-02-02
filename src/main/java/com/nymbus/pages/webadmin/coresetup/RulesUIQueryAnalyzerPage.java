@@ -465,6 +465,9 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private By activeConvertedLoanAccountId = By.xpath("//table[contains(@class, 'searchResultPanel')]/tbody/" +
             "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]/" +
             "td[@class='fieldsCell'][12]/span/span");
+    private By interestEarned = By.xpath("//table[contains(@class, 'searchResultPanel' )]//" +
+            "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]/" +
+            "td/div[@key-name='interestearned']");
 
     @Step ("Get 'Loan account number' {index} value")
     public String getLoanAccountNumberValueByIndex(int index) {
@@ -476,5 +479,11 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getActiveLoanConvertedAccountNumberValueByIndex(int index) {
         waitForElementVisibility(activeConvertedLoanAccountId, index);
         return getElementText(activeConvertedLoanAccountId, index).trim();
+    }
+
+    @Step ("Get 'Interest Earned' {index} value")
+    public String getInterestEarnedValueByIndex(int index) {
+        waitForElementVisibility(interestEarned, index);
+        return getElementText(interestEarned, index).trim();
     }
 }

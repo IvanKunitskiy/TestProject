@@ -1,7 +1,6 @@
 package com.nymbus.frontoffice.loansmanagement;
 
 import com.nymbus.actions.Actions;
-import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
@@ -48,10 +47,9 @@ public class C25454_InterestRateChangeManuallyChangeInterestRateOnConvertedLoanA
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(activeLoanAccountId);
 
         String currentEffectiveRate = Pages.accountDetailsPage().getCurrentEffectiveRate();
-        String dateOpened = Pages.accountDetailsPage().getDateOpenedValue();
         int yearBase = Integer.parseInt(Pages.accountDetailsPage().getDaysBaseYearBase().split("/")[1].substring(0, 3));
         double currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
-        double accruedInterest = Double.parseDouble(Pages.accountDetailsPage().getAccruedInterest());
+        String accountNumber = Pages.accountDetailsPage().getAccountNumberValue();
 
         Pages.accountDetailsPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickChooseToolSelectorButton();
@@ -62,12 +60,14 @@ public class C25454_InterestRateChangeManuallyChangeInterestRateOnConvertedLoanA
                 "- NEW Current Effective Rate != old Current Effective Rate\n" +
                 "- Begin Earn Date = date in the past\n" +
                 "- Accrue Thru Date = yesterday (by default value is set to Current date - 1 day)");
+        int beginEarnDateDays = 4;
+        int accrueThruDateDays = 1;
         double oldCurrentEffectiveRate = Double.parseDouble(currentEffectiveRate);
         double newCurrentEffectiveRate = oldCurrentEffectiveRate + Random.genInt(1, 10);
-        int days = 1;
+
         Pages.interestRateChangeModalPage().setNewCurrentEffectiveRateValue(String.valueOf(newCurrentEffectiveRate));
-        Pages.interestRateChangeModalPage().setBeginEarnDate(dateOpened);
-        Pages.interestRateChangeModalPage().setAccrueThruDate(DateTime.getDateMinusDays(DateTime.getLocalDateWithPattern("MM/dd/yyyy"), days));
+        Pages.interestRateChangeModalPage().setBeginEarnDate(DateTime.getDateMinusDays(DateTime.getLocalDateWithPattern("MM/dd/yyyy"), beginEarnDateDays));
+        Pages.interestRateChangeModalPage().setAccrueThruDate(DateTime.getDateMinusDays(DateTime.getLocalDateWithPattern("MM/dd/yyyy"), accrueThruDateDays));
 
         logInfo("Step 4: Click on the 'Commit Transaction' button");
         Pages.interestRateChangeModalPage().clickCommitTransactionButton();
@@ -77,19 +77,14 @@ public class C25454_InterestRateChangeManuallyChangeInterestRateOnConvertedLoanA
         Pages.supervisorModalPage().inputPassword(userCredentials.getPassword());
         Pages.supervisorModalPage().clickEnter();
 
-        double nRatePercent = newCurrentEffectiveRate / 100;
-        double oRatePercent = oldCurrentEffectiveRate / 100;
-        double adjustmentAmount = currentBalance * (nRatePercent - oRatePercent) / (yearBase * days);
+        double adjustmentAmount = (currentBalance * ((newCurrentEffectiveRate - oldCurrentEffectiveRate) / 100) / yearBase) * beginEarnDateDays;
         adjustmentAmount = roundAmountToTwoDecimals(adjustmentAmount);
-        double interestEarned = accruedInterest + adjustmentAmount;
-
-        System.out.println(adjustmentAmount);
-        System.out.println(interestEarned);
-
+        double interestEarned = getInterestEarned(accountNumber);
         String alertMessageModalText = Pages.alertMessageModalPage().getAlertMessageModalText();
-//        Assert.assertTrue(alertMessageModalText.contains(String.format("%.2f", adjustmentAmount)), "'Adjustment Amount' is calculated incorrect");
-//        Assert.assertTrue(alertMessageModalText.contains(String.format("%.2f", interestEarned)), "'Interest Earned' is calculated incorrect");
 
+        Assert.assertTrue(alertMessageModalText.contains(String.format("%.2f", adjustmentAmount)), "'Adjustment Amount' is calculated incorrect");
+        Assert.assertTrue(alertMessageModalText.contains(String.format("%.2f", interestEarned)), "'Interest Earned' is calculated incorrect");
+        Assert.assertTrue(alertMessageModalText.contains(String.format("%.2f", interestEarned)), "'Interest Earned' is calculated incorrect");
         Pages.alertMessageModalPage().clickOkButton();
 
         logInfo("Step 7: Go to 'Transactions' tab and pay attention at the generated transaction");
@@ -100,7 +95,6 @@ public class C25454_InterestRateChangeManuallyChangeInterestRateOnConvertedLoanA
         logInfo("Step 8: Go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
-        AccountActions.accountMaintenanceActions().expandAllRows();
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Current effective rate") >= 1,
                 "'Current effective rate' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Interest earned") >= 1,
@@ -122,5 +116,19 @@ public class C25454_InterestRateChangeManuallyChangeInterestRateOnConvertedLoanA
     private double roundAmountToTwoDecimals(double amount) {
         DecimalFormat df = new DecimalFormat("#.##");
         return Double.parseDouble(df.format(amount));
+    }
+
+    private double getInterestEarned(String accountNumber) {
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        double interestEarned = Double.parseDouble(WebAdminActions.webAdminUsersActions().getInterestEarned(accountNumber));
+
+        WebAdminActions.loginActions().doLogout();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+
+        return interestEarned;
     }
 }
