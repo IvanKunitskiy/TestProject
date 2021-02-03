@@ -4,6 +4,7 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -20,8 +21,12 @@ import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.util.List;
+import java.util.Random;
 
 @Epic("Frontoffice")
 @Feature("Loans Management")
@@ -29,12 +34,10 @@ import org.testng.annotations.Test;
 public class C25418_LoanPayoffChargesSetUpPayoffChargesTest extends BaseTest {
 
     private Account loanAccount;
-    private IndividualClient client;
     private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
-    private double escrowPaymentValue;
 
     @BeforeMethod
     public void preCondition() {
@@ -42,7 +45,7 @@ public class C25418_LoanPayoffChargesSetUpPayoffChargesTest extends BaseTest {
         // Set up client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up CHK account
         Account checkingAccount = new Account().setCHKAccountData();
@@ -67,9 +70,6 @@ public class C25418_LoanPayoffChargesSetUpPayoffChargesTest extends BaseTest {
 
         // Get escrow payment value for the loan product
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        escrowPaymentValue = Actions.loanProductOverviewActions().getLoanProductEscrowPaymentValue(loanProductName);
-
-        // Set the product
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
 
         // Create a client
@@ -80,7 +80,18 @@ public class C25418_LoanPayoffChargesSetUpPayoffChargesTest extends BaseTest {
 
         // Create checking account and logout
         AccountActions.createAccount().createCHKAccount(checkingAccount);
-        Actions.loginActions().doLogOut();
+        Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
+        AccountActions.createAccount().createLoanAccount(loanAccount);
+
+        // Perform transaction
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
+        Actions.transactionActions().setMiscDebitSource(miscDebitSource, 0);
+        Actions.transactionActions().setMiscCreditDestination(miscCreditDestination, 0);
+        Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
+        Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
+        Pages.tellerPage().closeModal();
+        Actions.loginActions().doLogOutProgrammatically();
     }
 
     private final String TEST_RUN_NAME = "Loans Management";
@@ -95,17 +106,38 @@ public class C25418_LoanPayoffChargesSetUpPayoffChargesTest extends BaseTest {
 
         logInfo("Step 2: Open loan account from preconditions");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
+        Pages.accountDetailsPage().clickAmountDueInquiryButton();
+        Pages.amountDueInquiryModalPage().clickCloseButton();
 
         logInfo("Step 3: Go to maintenance -> Tool -> Loan Payoff Charges");
+        Pages.accountDetailsPage().clickMaintenanceTab();
         AccountActions.accountMaintenanceActions().setTool(Tool.LOAN_PAYOFF_CHARGES);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
 
         logInfo("Steep 4: Click '+ Add New Payoff Charge'");
         Pages.loanPayoffChargesModalPage().clickAddNewPayoffChargeButton();
+        Pages.loanPayoffChargesModalPage().waitForModalWindowVisibility();
 
         logInfo("Step 5: Specify all fields and click 'Done'");
+        String chargeTypeDescription = Generator.genString(10);
+        Pages.loanPayoffChargesModalPage().typeChargeDescription(chargeTypeDescription);
+
+        double chargeAmount = 1.00;
+        Pages.loanPayoffChargesModalPage().typeChargeAmount(String.format("%.2f", chargeAmount));
+
+        Pages.loanPayoffChargesModalPage().typeGlOffset("fee");
+        List<String> glOffsetList = Pages.loanPayoffChargesModalPage().getGlOffsetList();
+        Assert.assertTrue(glOffsetList.size() > 0, "There are no 'GL Offset' options available");
+        String randomGlOffsetOption = glOffsetList.get(new Random().nextInt(glOffsetList.size())).trim();
+        Pages.loanPayoffChargesModalPage().clickGlOffsetOption(randomGlOffsetOption);
+        Pages.loanPayoffChargesModalPage().clickDoneButton();
+        Pages.loanPayoffChargesModalPage().clickCloseButton();
 
         logInfo("Step 6: Go to 'Details' tab -> click on the 'Amount Due Inquiry' button and note 'Payoff Charges' field");
+        Pages.accountDetailsPage().clickDetailsTab();
+        Pages.accountDetailsPage().clickAmountDueInquiryButton();
+        double payoffAfterCharges = Double.parseDouble(Pages.amountDueInquiryModalPage().getPayoffCharges());
 
+        Assert.assertEquals(chargeAmount, payoffAfterCharges, "'Payoff Charges' value is not valid");
     }
 }
