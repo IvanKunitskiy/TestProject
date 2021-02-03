@@ -1,6 +1,7 @@
 package com.nymbus.pages.clients;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -750,6 +751,8 @@ public class ClientDetailsPage extends PageTools {
 
     @Step("Click 'Ignore OFAC Matching'")
     public void clickIgnoreOFACMatching() {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        scrollToPlaceElementInCenter(ofacMatching);
         waitForElementVisibility(ofacMatching);
         waitForElementClickable(ofacMatching);
         click(ofacMatching);
