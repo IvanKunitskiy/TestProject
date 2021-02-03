@@ -130,6 +130,8 @@ public class AccountDetailsPage extends PageTools {
     private By termInMonthOrDays = By.xpath("//tr[@data-config-name='terminmonthsordays']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By dailyInterestAccrual = By.xpath("//tr[@data-config-name='dailyinterestaccrual']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By overdraftChargedOff = By.xpath("//tr[@data-config-name='overdraftchargedoff']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By currentEffectiveRate = By.xpath("//tr[@data-test-id='field-currenteffectiverate']//span[contains(@class, 'dnTextFixedWidthText ng-binding')]");
+    private By daysBase = By.xpath("//tr[@data-test-id='field-daybaseforinterestrate']//td//span/span");
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -141,6 +143,11 @@ public class AccountDetailsPage extends PageTools {
     /**
      * Details tab
      */
+
+    @Step("Get 'Current effective rate'")
+    public String getCurrentEffectiveRate() {
+        return getElementText(currentEffectiveRate).replaceAll("[^0-9.]", "");
+    }
 
     @Step("Get 'Date Closed'")
     public String getDateClosed() {
@@ -664,6 +671,12 @@ public class AccountDetailsPage extends PageTools {
     public String getDateOpenedValue() {
         waitForElementVisibility(dateOpened);
         return getElementText(dateOpened);
+    }
+
+    @Step("Get account 'Days Base' value")
+    public String getDaysBaseYearBase() {
+        waitForElementVisibility(daysBase);
+        return getElementText(daysBase);
     }
 
     @Step("Get account 'Product' value")

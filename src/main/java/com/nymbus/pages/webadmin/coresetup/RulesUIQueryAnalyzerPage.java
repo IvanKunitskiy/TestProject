@@ -461,11 +461,29 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      * Loan Accounts
      */
 
-    private By loanAccountId = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][1]/td[5]/span[contains(@class, 'high_title')]/span");
+    private By loanAccountId = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[5]/span[contains(@class, 'high_title')]/span");
+    private By activeConvertedLoanAccountId = By.xpath("//table[contains(@class, 'searchResultPanel')]/tbody/" +
+            "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]/" +
+            "td[@class='fieldsCell'][12]/span/span");
+    private By interestEarned = By.xpath("//table[contains(@class, 'searchResultPanel' )]//" +
+            "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]/" +
+            "td/div[@key-name='interestearned']");
 
     @Step ("Get 'Loan account number' {index} value")
     public String getLoanAccountNumberValueByIndex(int index) {
         waitForElementVisibility(loanAccountId, index);
         return getElementText(loanAccountId, index).trim();
+    }
+
+    @Step ("Get 'Active Converted Loan Account' {index} value")
+    public String getActiveLoanConvertedAccountNumberValueByIndex(int index) {
+        waitForElementVisibility(activeConvertedLoanAccountId, index);
+        return getElementText(activeConvertedLoanAccountId, index).trim();
+    }
+
+    @Step ("Get 'Interest Earned' {index} value")
+    public String getInterestEarnedValueByIndex(int index) {
+        waitForElementVisibility(interestEarned, index);
+        return getElementText(interestEarned, index).trim();
     }
 }
