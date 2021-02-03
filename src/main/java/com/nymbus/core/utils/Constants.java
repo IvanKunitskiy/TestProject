@@ -31,6 +31,7 @@ public class Constants {
     public static String BROWSER = System.getProperty("browserName", "chrome");
 
     public static int DAYS_BEFORE_SYSTEM_DATE = 3;
+    public static int DAYS_BEFORE_SYSTEM_DATE_MONTH = 31;
     public static int MAX_CHARACTERS_ON_DEBIT_CARD = 25;
 
     public static String INDIVIDUAL_TYPE_FOR_WEB_ADMIN_QUERY = getIndividualType();

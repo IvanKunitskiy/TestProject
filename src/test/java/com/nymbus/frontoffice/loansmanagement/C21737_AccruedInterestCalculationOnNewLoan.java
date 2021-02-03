@@ -3,8 +3,13 @@ package com.nymbus.frontoffice.loansmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.loanaccount.DaysYearBase;
+import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
 import com.nymbus.newmodels.account.product.RateType;
@@ -46,6 +51,10 @@ public class C21737_AccruedInterestCalculationOnNewLoan extends BaseTest {
 
         // Set up Loan account
         loanAccount = new Account().setLoanAccountData();
+        loanAccount.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
+        loanAccount.setCurrentEffectiveRate(String.valueOf(9));
+        loanAccount.setDaysBaseYearBase(DaysYearBase.DAYS_360_YEAR_365.getDaysYearCount());
+        loanAccount.setPaymentAmountType(PaymentAmountType.PRINCIPAL_AND_INTEREST.getPaymentAmountType());
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
 
@@ -76,8 +85,6 @@ public class C21737_AccruedInterestCalculationOnNewLoan extends BaseTest {
 
         // Create checking, loan account and logout
         AccountActions.createAccount().createCHKAccount(checkingAccount);
-        Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
-        AccountActions.createAccount().createLoanAccount(loanAccount);
         Actions.loginActions().doLogOut();
 
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -136,6 +143,8 @@ public class C21737_AccruedInterestCalculationOnNewLoan extends BaseTest {
         AccountActions.createAccount().setPaymentAmountType(loanAccount);
         AccountActions.createAccount().setPaymentFrequency(loanAccount);
         AccountActions.createAccount().disableCycleLoanSwitch();
+        AccountActions.createAccount().disableAdjustableRateSwitch();
+        AccountActions.createAccount().setDaysBaseYearBase(loanAccount);
         Pages.addAccountPage().setNextPaymentBilledDueDate(loanAccount.getNextPaymentBilledDueDate());
         Pages.addAccountPage().setDateFirstPaymentDue(loanAccount.getDateFirstPaymentDue());
         Pages.addAccountPage().setPaymentBilledLeadDays(loanAccount.getPaymentBilledLeadDays());
@@ -147,8 +156,12 @@ public class C21737_AccruedInterestCalculationOnNewLoan extends BaseTest {
         AccountActions.createAccount().setCommitmentTypeAmt(loanAccount);
         AccountActions.createAccount().disableLocPaymentRecalculationFlagValueSwitch();
         AccountActions.createAccount().setCallClassCode(loanAccount);
-        Pages.addAccountPage().clickSaveAccountButton();
-        Pages.accountDetailsPage().waitForFullProfileButton();
+        Pages.addAccountPage().clickSaveAndDepositAccountButton();
+
+        logInfo("Step 7: Select CHK or SAV account in destination\n" +
+                "Specify both amounts = 9,792.50\n" +
+                "Select effective date = same day in previous month = Date opened\n" +
+                "and click on the \"Commit Transaction\" button");
 
 
 
