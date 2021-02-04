@@ -128,7 +128,7 @@ public class AccountDetailsPage extends PageTools {
     private By interestPaidLastYear = By.xpath("//tr[@data-config-name='interestpaidlastyear']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By taxesWithheldYTD = By.xpath("//tr[@data-config-name='taxeswithheldytd']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By termInMonthOrDays = By.xpath("//tr[@data-config-name='terminmonthsordays']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private By dailyInterestAccrual = By.xpath("//tr[@data-config-name='dailyinterestaccrual']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By dailyInterestAccrual = By.xpath("//tr[@data-test-id='field-dailyinterestfactor']//span/span");
     private By overdraftChargedOff = By.xpath("//tr[@data-config-name='overdraftchargedoff']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By currentEffectiveRate = By.xpath("//tr[@data-test-id='field-currenteffectiverate']//span[contains(@class, 'dnTextFixedWidthText ng-binding')]");
     private By daysBase = By.xpath("//tr[@data-test-id='field-daybaseforinterestrate']//td//span/span");

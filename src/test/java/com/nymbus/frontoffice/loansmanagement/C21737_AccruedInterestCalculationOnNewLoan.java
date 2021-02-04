@@ -7,6 +7,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.DaysYearBase;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
@@ -22,6 +23,8 @@ import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -38,6 +41,7 @@ public class C21737_AccruedInterestCalculationOnNewLoan extends BaseTest {
     private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
     private IndividualClient client;
+    private double amount = 9792.50;
 
     @BeforeMethod
     public void preCondition() {
@@ -51,7 +55,7 @@ public class C21737_AccruedInterestCalculationOnNewLoan extends BaseTest {
 
         // Set up Loan account
         loanAccount = new Account().setLoanAccountData();
-        loanAccount.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
+        loanAccount.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE_MONTH));
         loanAccount.setCurrentEffectiveRate(String.valueOf(9));
         loanAccount.setDaysBaseYearBase(DaysYearBase.DAYS_360_YEAR_365.getDaysYearCount());
         loanAccount.setPaymentAmountType(PaymentAmountType.PRINCIPAL_AND_INTEREST.getPaymentAmountType());
@@ -64,7 +68,7 @@ public class C21737_AccruedInterestCalculationOnNewLoan extends BaseTest {
         miscDebitSource.setAmount(12000);
         miscCreditDestination.setAccountNumber(checkingAccount.getAccountNumber());
         miscCreditDestination.setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
-        miscCreditDestination.setAmount(12000);
+        miscCreditDestination.setAmount(amount);
 
         // Login to the system
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -83,19 +87,9 @@ public class C21737_AccruedInterestCalculationOnNewLoan extends BaseTest {
         ClientsActions.individualClientActions().setDocumentation(client);
         client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
 
-        // Create checking, loan account and logout
+        // Create checking
         AccountActions.createAccount().createCHKAccount(checkingAccount);
         Actions.loginActions().doLogOut();
-
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        Actions.transactionActions().goToTellerPage();
-        Actions.transactionActions().doLoginTeller();
-        Actions.transactionActions().setMiscDebitSource(miscDebitSource, 0);
-        Actions.transactionActions().setMiscCreditDestination(miscCreditDestination, 0);
-        Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
-        Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
-        Pages.tellerPage().closeModal();
-        Actions.loginActions().doLogOutProgrammatically();
 
     }
 
@@ -111,6 +105,7 @@ public class C21737_AccruedInterestCalculationOnNewLoan extends BaseTest {
 
         logInfo("Step 2: Open 'Client' from preconditions on the 'Accounts' tab");
         Actions.clientPageActions().searchAndOpenIndividualClientByID(client.getIndividualType().getClientID());
+        Pages.clientDetailsPage().clickAccountsTab();
 
         logInfo("Step 3: Select \"Account\" option in the \"Add New\" drop-down");
         Pages.clientDetailsPage().clickAddNewButton();
@@ -123,11 +118,10 @@ public class C21737_AccruedInterestCalculationOnNewLoan extends BaseTest {
         AccountActions.createAccount().setProduct(loanAccount);
 
         logInfo("Step 6: Specify all required fields and set:\n" +
-                "\n" +
                 "Date opened = same day in the previous month\n" +
                 "Days Base/Year Base = 360/365\n" +
                 "Interest Method = Simple Interest\n" +
-                "Current effective rate = 9%\n" +
+                "Current effective rate = 9\n" +
                 "Payment Amount Type = Principal & Interest\n" +
                 "Adjustable Rate = No\n" +
                 "and click on the \"Save & Cash or Deposit\" button");
@@ -162,8 +156,29 @@ public class C21737_AccruedInterestCalculationOnNewLoan extends BaseTest {
                 "Specify both amounts = 9,792.50\n" +
                 "Select effective date = same day in previous month = Date opened\n" +
                 "and click on the \"Commit Transaction\" button");
+        Actions.transactionActions().doLoginTeller();
+        Actions.transactionActions().fillSourceAmount(String.format("%.2f",amount),1);
+        Actions.transactionActions().setMiscCreditDestination(miscCreditDestination, 0);
+        Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
+        Pages.tellerPage().clickCommitButton();
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        Pages.tellerPage().closeModal();
 
+        logInfo("Step 8: Open created loan account");
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
 
+        logInfo("Step 9: Pay attention to the \"Daily Interest factor\" field");
+        String dailyInterestAccrual = Pages.accountDetailsPage().getDailyInterestAccrual();
+        TestRailAssert.assertTrue(dailyInterestAccrual.equals("2.4145"),
+                new CustomStepResult("Daily accrued interests is equals",
+                        "Daily accrued interests is not equals"));
 
+        logInfo("Step 10: Pay attention to the \"Accrued interest\" field");
+        String accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
+        System.out.println(accruedInterest);
+        TestRailAssert.assertTrue(accruedInterest.equals("72.44"),
+                new CustomStepResult("Accrued interests is equals",
+                        "Accrued interests is not equals"));
     }
 }
