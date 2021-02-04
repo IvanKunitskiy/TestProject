@@ -55,7 +55,7 @@ public class C21737_AccruedInterestCalculationOnNewLoan extends BaseTest {
 
         // Set up Loan account
         loanAccount = new Account().setLoanAccountData();
-        loanAccount.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE_MONTH));
+        loanAccount.setDateOpened(DateTime.getDateWithNMonthAdded(WebAdminActions.loginActions().getSystemDate(),"MM/dd/yyyy",-1));
         loanAccount.setCurrentEffectiveRate(String.valueOf(9));
         loanAccount.setDaysBaseYearBase(DaysBaseYearBase.DAYS_360_YEAR_365.getDaysBaseYearBase());
         loanAccount.setPaymentAmountType(PaymentAmountType.PRINCIPAL_AND_INTEREST.getPaymentAmountType());
