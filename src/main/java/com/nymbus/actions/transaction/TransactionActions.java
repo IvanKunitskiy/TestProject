@@ -537,6 +537,62 @@ public class TransactionActions {
         return Pages.tellerPage().getPayoffAmount();
     }
 
+    public String getLateChargesDue() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getLateChargesDue();
+    }
+
+    public String getTotalPastDue() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getTotalPastDue();
+    }
+
+    public String getPrincipalNextDue() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getPrincipalNextDue();
+    }
+
+    public String getInterestNextDue() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getInterestNextDue();
+    }
+
+    public String getTotalNextDue() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getTotalNextDue();
+    }
+
+    public String getCurrentDateDue() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getCurrentDateDue();
+    }
+
+    public String getLoanClassCode() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getLoanClassCode();
+    }
+
+    public String getPaymentAmount() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getPaymentAmount();
+    }
+
     public boolean isTransactionCodePresent(String transCode) {
         boolean result = false;
         int transactionItems = Pages.accountTransactionPage().getTransactionItemsCount();

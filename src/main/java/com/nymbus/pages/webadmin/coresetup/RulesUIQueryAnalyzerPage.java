@@ -468,6 +468,10 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private By interestEarned = By.xpath("//table[contains(@class, 'searchResultPanel' )]//" +
             "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]/" +
             "td/div[@key-name='interestearned']");
+    private By payoff = By.xpath("//table[contains(@class, 'searchResultPanel' )]//" +
+            "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))]/td/div[@key-name='payoff']");
+    private By totalPast = By.xpath("//table[contains(@class, 'searchResultPanel' )]//" +
+            "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))]/td/div[@key-name='totalPast']");
 
     @Step ("Get 'Loan account number' {index} value")
     public String getLoanAccountNumberValueByIndex(int index) {
@@ -485,5 +489,17 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getInterestEarnedValueByIndex(int index) {
         waitForElementVisibility(interestEarned, index);
         return getElementText(interestEarned, index).trim();
+    }
+
+    @Step("Get 'Payoff' value")
+    public String getPayoff() {
+        waitForElementVisibility(payoff);
+        return getElementText(payoff).trim();
+    }
+
+    @Step("Get 'Total Past' value")
+    public String getTotalPast() {
+        waitForElementVisibility(totalPast);
+        return getElementText(totalPast).trim();
     }
 }

@@ -319,6 +319,38 @@ public class WebAdminUsersActions {
                 "deletedIncluded%3A+true&source=";
     }
 
+    private String getPayoffAmountUrl(String accountNumber) {
+        return Constants.WEB_ADMIN_URL +
+                "RulesUIQuery.ct?" +
+                "waDbName=nymbusdev12DS&" +
+                "dqlQuery=count%3A+10%0D%0A" +
+                "from%3A+bank.data.actloan.calc%0D%0A" +
+                "where%3A+%0D%0A" +
+                "-+.accountid-%3Eaccountnumber%3A+" +
+                accountNumber +
+                "++&source=";
+    }
+
+    private String getTotalPastUrl(String accountNumber) {
+        return Constants.WEB_ADMIN_URL +
+                "RulesUIQuery.ct?" +
+                "waDbName=nymbusdev12DS&" +
+                "dqlQuery=count%3A+10%0D%0A" +
+                "from%3A+bank.data.actloan.calc%0D%0A" +
+                "where%3A+%0D%0A" +
+                "-+.accountid-%3Eaccountnumber%3A+" +
+                accountNumber +
+                "++&source=";
+    }
+
+    public String getPayoffAmount(String accountNumber) {
+        return getPayoffAmountFromQueryByUrl(getPayoffAmountUrl(accountNumber));
+    }
+
+    public String getTotalPast(String accountNumber) {
+        return getTotalPastFromQueryByUrl(getTotalPastUrl(accountNumber));
+    }
+
     public String getActiveConvertedLoanAccountFundedInPast() {
         return getActiveConvertedLoanAccountFundedInPastFromUrl(getActiveConvertedLoanAccountFundedInPastUrl());
     }
@@ -382,6 +414,22 @@ public class WebAdminUsersActions {
 
     public String getInterestEarned(String accountId) {
         return getInterestEarnedFromQueryByUrl(getInterestEarnedUrl(accountId));
+    }
+
+    private String getPayoffAmountFromQueryByUrl(String url) {
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getPayoff();
+    }
+
+    private String getTotalPastFromQueryByUrl(String url) {
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getTotalPast();
     }
 
     private String getInterestEarnedFromQueryByUrl(String url) {

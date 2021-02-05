@@ -598,4 +598,61 @@ public class TellerPage extends PageTools {
         waitForElementVisibility(productType);
         return getElementText(productType).trim();
     }
+
+    private final By lateChargesDue = By.xpath("//*[@id='accordion-operation-aqv-content']//span[text()='Late Charges Due']//ancestor::node()[1]//span[2]");
+    private final By totalPastDue = By.xpath("//*[@id='accordion-operation-aqv-content']//span[text()='Total Past Due']//ancestor::node()[1]//span[2]");
+    private final By principalNextDue = By.xpath("//*[@id='accordion-operation-aqv-content']//span[text()='Principal next due']//ancestor::node()[1]//span[2]");
+    private final By interestNextDue = By.xpath("//*[@id='accordion-operation-aqv-content']//span[text()='Interest Next Due']//ancestor::node()[1]//span[2]");
+    private final By totalNextDue = By.xpath("//*[@id='accordion-operation-aqv-content']//span[text()='Total Next Due']//ancestor::node()[1]//span[2]");
+    private final By currentDateDue = By.xpath("//*[@id='accordion-operation-aqv-content']//span[text()='Current Date']//ancestor::node()[1]//span[2]");
+    private final By loanClassCode = By.xpath("//*[@id='accordion-operation-aqv-content']//span[text()='Loan Class Code']//ancestor::node()[1]//span[2]");
+    private final By paymentAmount = By.xpath("//*[@id='accordion-operation-aqv-content']//span[text()='Payment Amount']//ancestor::node()[1]//span[2]");
+
+    @Step("Get 'Late Charges Due' value")
+    public String getLateChargesDue() {
+        waitForElementVisibility(lateChargesDue);
+        return getElementText(lateChargesDue).trim();
+    }
+
+    @Step("Get 'Total Past Due' value")
+    public String getTotalPastDue() {
+        waitForElementVisibility(totalPastDue);
+        return getElementText(totalPastDue).trim();
+    }
+
+    @Step("Get 'Principal next due' value")
+    public String getPrincipalNextDue() {
+        waitForElementVisibility(principalNextDue);
+        return getElementText(principalNextDue).trim();
+    }
+
+    @Step("Get 'Interest next due' value")
+    public String getInterestNextDue() {
+        waitForElementVisibility(interestNextDue);
+        return getElementText(interestNextDue).trim();
+    }
+
+    @Step("Get 'Total Next Due' value")
+    public String getTotalNextDue() {
+        waitForElementVisibility(totalNextDue);
+        return getElementText(totalNextDue).trim();
+    }
+
+    @Step("Get 'Сurrent Date Due' value")
+    public String getCurrentDateDue() {
+        waitForElementVisibility(currentDateDue);
+        return getElementText(currentDateDue).trim();
+    }
+
+    @Step("Get 'Loan Class Code' value")
+    public String getLoanClassCode() {
+        waitForElementVisibility(loanClassCode);
+        return getElementText(loanClassCode).trim();
+    }
+
+    @Step("Get 'Payment amount' value")
+    public String getPaymentAmount() {
+        waitForElementVisibility(paymentAmount);
+        return getElementText(paymentAmount).trim();
+    }
 }
