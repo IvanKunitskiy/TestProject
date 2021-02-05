@@ -24,6 +24,7 @@ public class AddAccountPage extends PageTools {
     private final By bankBranchSelectorButton = By.xpath("//div[@id='bankbranch']");
     private final By bankBranchSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private final By saveAccountButton = By.xpath("//button[@data-test-id='action-save']");
+    private final By saveAndDepositAccountButton = By.xpath("//button[contains(string(),'Save & Cash or Deposit')]");
     private final By bankBranchList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private final By accountType = By.xpath("//div[@data-test-id='field-customertype']/a/span/span");
     private final By dateOpened = By.xpath("//input[@data-test-id='field-dateopened']");
@@ -1204,6 +1205,14 @@ public class AddAccountPage extends PageTools {
         scrollToPlaceElementInCenter(saveAccountButton);
         waitForElementClickable(saveAccountButton);
         click(saveAccountButton);
+    }
+
+    @Step("Click the 'Save and Deposit' button")
+    public void clickSaveAndDepositAccountButton() {
+        waitForElementVisibility(saveAndDepositAccountButton);
+        scrollToPlaceElementInCenter(saveAndDepositAccountButton);
+        waitForElementClickable(saveAndDepositAccountButton);
+        click(saveAndDepositAccountButton);
     }
 
     @Step("Get the 'Apply Seasonal Address' value")
