@@ -11,6 +11,7 @@ public class AmountDueInquiryModalPage extends PageTools {
     private By payoffAmount = By.xpath("//tr/td[text()='Payoff Amount']/following-sibling::td//span[@text='value']/span");
     private By payoffCharges = By.xpath("//tr/td[text()='Payoff Charges']/following-sibling::td//span[@text='value']/span");
     private By closeButton = By.xpath("//button[@data-test-id='action-Close']");
+    private By prepaymentPenalty = By.xpath("//tr/td[text()='Prepayment Penalty']/following-sibling::td//span[@text='value']/span");
 
     @Step("Wait for modal window visibility")
     public void waitForModalWindowVisibility() {
@@ -32,6 +33,12 @@ public class AmountDueInquiryModalPage extends PageTools {
     public String getPayoffCharges() {
         waitForElementVisibility(payoffCharges);
         return getElementText(payoffCharges).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Prepayment Penalty' value")
+    public String getPrepaymentPenalty() {
+        waitForElementVisibility(prepaymentPenalty);
+        return getElementText(prepaymentPenalty).replaceAll("[^0-9.]", "");
     }
 
     @Step("Click 'Close' button")

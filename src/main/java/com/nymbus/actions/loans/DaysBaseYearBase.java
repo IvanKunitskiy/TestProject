@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum DaysBaseYearBase {
     DAY_YEAR_365_365("365/365 day year"),
     DAY_YEAR_365_360("365/360 day year"),
+    DAYS_360_YEAR_365("360/365"),
     DAY_YEAR_360_360("360/360 day year");
 
     private final String daysBaseYearBase;

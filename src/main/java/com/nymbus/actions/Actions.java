@@ -10,6 +10,7 @@ import com.nymbus.actions.clients.maintenance.MaintenanceHistoryPageActions;
 import com.nymbus.actions.clients.maintenance.MaintenancePageActions;
 import com.nymbus.actions.journal.JournalActions;
 import com.nymbus.actions.loans.AddNewLoanActions;
+import com.nymbus.actions.loans.LoanPayoffActions;
 import com.nymbus.actions.loans.LoanProductOverviewActions;
 import com.nymbus.actions.modalwindow.DebitCardModalWindowActions;
 import com.nymbus.actions.settings.*;
@@ -43,6 +44,7 @@ public class Actions {
     private static LoanProductOverviewActions loanProductOverviewActions;
     private static AddNewLoanActions addNewLoanActions;
     private static CallClassCodesActions callClassCodesActions;
+    private static LoanPayoffActions loanPayoffActions;
 
     /**
      * Modal Window Actions
@@ -272,5 +274,15 @@ public class Actions {
             callClassCodesActions = new CallClassCodesActions();
         }
         return callClassCodesActions;
+    }
+
+    /**
+     * This function returns an instance of `LoanPayoffActions`
+     */
+    public static LoanPayoffActions loanPayoffActions() {
+        if (loanPayoffActions == null) {
+            loanPayoffActions = new LoanPayoffActions();
+        }
+        return loanPayoffActions;
     }
 }
