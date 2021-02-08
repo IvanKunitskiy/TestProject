@@ -530,11 +530,11 @@ public class TransactionActions {
         return Pages.tellerPage().getFirstAutomaticOverdraftLimit().trim();
     }
 
-    public String getPayoffAmount() {
+    public double getPayoffAmount() {
         if(!Pages.tellerPage().isAccountQuickViewVisible()) {
             Pages.tellerPage().clickAccountQuickViewArrow();
         }
-        return Pages.tellerPage().getPayoffAmount();
+        return Double.parseDouble(Pages.tellerPage().getPayoffAmount());
     }
 
     public String getLateChargesDue() {
@@ -544,32 +544,32 @@ public class TransactionActions {
         return Pages.tellerPage().getLateChargesDue();
     }
 
-    public String getTotalPastDue() {
+    public double getTotalPastDue() {
         if(!Pages.tellerPage().isAccountQuickViewVisible()) {
             Pages.tellerPage().clickAccountQuickViewArrow();
         }
-        return Pages.tellerPage().getTotalPastDue();
+        return Double.parseDouble(Pages.tellerPage().getTotalPastDue());
     }
 
-    public String getPrincipalNextDue() {
+    public double getPrincipalNextDue() {
         if(!Pages.tellerPage().isAccountQuickViewVisible()) {
             Pages.tellerPage().clickAccountQuickViewArrow();
         }
-        return Pages.tellerPage().getPrincipalNextDue();
+        return Double.parseDouble(Pages.tellerPage().getPrincipalNextDue());
     }
 
-    public String getInterestNextDue() {
+    public double getInterestNextDue() {
         if(!Pages.tellerPage().isAccountQuickViewVisible()) {
             Pages.tellerPage().clickAccountQuickViewArrow();
         }
-        return Pages.tellerPage().getInterestNextDue();
+        return Double.parseDouble(Pages.tellerPage().getInterestNextDue());
     }
 
-    public String getTotalNextDue() {
+    public double getTotalNextDue() {
         if(!Pages.tellerPage().isAccountQuickViewVisible()) {
             Pages.tellerPage().clickAccountQuickViewArrow();
         }
-        return Pages.tellerPage().getTotalNextDue();
+        return Double.parseDouble(Pages.tellerPage().getTotalNextDue());
     }
 
     public String getCurrentDateDue() {
@@ -586,11 +586,11 @@ public class TransactionActions {
         return Pages.tellerPage().getLoanClassCode();
     }
 
-    public String getPaymentAmount() {
+    public double getPaymentAmount() {
         if(!Pages.tellerPage().isAccountQuickViewVisible()) {
             Pages.tellerPage().clickAccountQuickViewArrow();
         }
-        return Pages.tellerPage().getPaymentAmount();
+        return Double.parseDouble(Pages.tellerPage().getPaymentAmount());
     }
 
     public boolean isTransactionCodePresent(String transCode) {

@@ -17,5 +17,5 @@ public class AccountData {
     private String totalNextDue;
     private String currentDateDue;
     private String loanClassCode;
-    private String paymentAmount;
+    private String activePaymentAmount;
 }

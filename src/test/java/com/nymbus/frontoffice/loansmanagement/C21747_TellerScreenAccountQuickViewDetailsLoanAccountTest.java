@@ -6,6 +6,7 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.AccountData;
@@ -38,7 +39,7 @@ public class C21747_TellerScreenAccountQuickViewDetailsLoanAccountTest extends B
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
-    private final AccountData accountData = new AccountData();
+    private AccountData accountData;
 
     @BeforeMethod
     public void preCondition() {
@@ -55,13 +56,13 @@ public class C21747_TellerScreenAccountQuickViewDetailsLoanAccountTest extends B
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
 
         // Set transaction data
-        int transactionAmount = 12000;
+        final int TRANSACTION_AMOUNT = 12000;
         miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());
         miscDebitSource.setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
-        miscDebitSource.setAmount(transactionAmount);
+        miscDebitSource.setAmount(TRANSACTION_AMOUNT);
         miscCreditDestination.setAccountNumber(checkingAccount.getAccountNumber());
         miscCreditDestination.setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
-        miscCreditDestination.setAmount(transactionAmount);
+        miscCreditDestination.setAmount(TRANSACTION_AMOUNT);
 
         // Login to the system
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -97,8 +98,8 @@ public class C21747_TellerScreenAccountQuickViewDetailsLoanAccountTest extends B
         Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
 
+        accountData = getAccountDataFromWebAdmin(loanAccount.getAccountNumber());
         setAccountDataFromDetails(loanAccount, accountData);
-        setAccountDataFromWebAdmin(loanAccount.getAccountNumber(), accountData);
     }
 
     private final String TEST_RUN_NAME = "Loans Management";
@@ -121,34 +122,49 @@ public class C21747_TellerScreenAccountQuickViewDetailsLoanAccountTest extends B
         Actions.transactionActions().fillSourceAccountNumber(loanAccount.getAccountNumber(), 1);
 
         logInfo("Step 5: Look at the pre-populated data in the 'Account Quick View' form on the right part of the screen");
-        Assert.assertEquals(client.getIndividualType().getClientID(), Actions.transactionActions().getPIFNumber());
-        Assert.assertEquals(loanAccount.getAccountType(), Actions.transactionActions().getAccountType());
-        Assert.assertEquals(Double.parseDouble(accountData.getCurrentBalance()), Actions.transactionActions().getCurrentBalance());
-        Assert.assertEquals(Double.parseDouble(accountData.getAvailableBalance()), Actions.transactionActions().getAvailableBalance());
-        Assert.assertEquals(Double.parseDouble(accountData.getAccruedInterest()), Actions.transactionActions().getAccruedInterest());
-        Assert.assertEquals(accountData.getLateChangesDue(), Actions.transactionActions().getLateChargesDue());
-        // TODO:
-        Actions.transactionActions().getPayoffAmount();
-        Actions.transactionActions().getTotalPastDue();
-        Actions.transactionActions().getPrincipalNextDue();
-        Actions.transactionActions().getInterestNextDue();
-        Actions.transactionActions().getTotalNextDue();
-        Actions.transactionActions().getCurrentDateDue();
-        Actions.transactionActions().getPaymentAmount();
-        Assert.assertEquals(accountData.getLoanClassCode(), Actions.transactionActions().getLoanClassCode());
+        Assert.assertEquals(client.getIndividualType().getClientID(), Actions.transactionActions().getPIFNumber(),
+                "'PIF number' value is not valid");
+        Assert.assertEquals(loanAccount.getProductType(), Actions.transactionActions().getAccountType(),
+                "'Account type' value is not valid");
+        Assert.assertEquals(Double.parseDouble(accountData.getCurrentBalance()), Actions.transactionActions().getCurrentBalance(),
+                "'Current balance' value is not valid");
+        Assert.assertEquals(Double.parseDouble(accountData.getAvailableBalance()), Actions.transactionActions().getAvailableBalance(),
+                "'Available balance' value is not valid");
+        Assert.assertEquals(Double.parseDouble(accountData.getAccruedInterest()), Actions.transactionActions().getAccruedInterest(),
+                "'Accrued Interest' value is not valid");
+        Assert.assertEquals(accountData.getLateChangesDue(), Actions.transactionActions().getLateChargesDue(),
+                "'Late Charges Due' value is not valid");
+        Assert.assertEquals(Double.parseDouble(accountData.getActivePaymentAmount()), Actions.transactionActions().getPaymentAmount(),
+                "'Payment Amount' value is not valid");
+        Assert.assertEquals(Double.parseDouble(accountData.getPayoffAmount()), Actions.transactionActions().getPayoffAmount(),
+                "'Payoff Amount' value is not valid");
+        Assert.assertEquals(Double.parseDouble(accountData.getTotalPastDue()), Actions.transactionActions().getTotalPastDue(),
+                "'Total Past Due' value is not valid");
+        Assert.assertEquals(Double.parseDouble(accountData.getPrincipalNextDue()), Actions.transactionActions().getPrincipalNextDue(),
+                "'Principal Next Due' value is not valid");
+        Assert.assertEquals(Double.parseDouble(accountData.getInterestNextDue()), Actions.transactionActions().getInterestNextDue(),
+                "'Principal Next Due' value is not valid");
+        Assert.assertEquals(Double.parseDouble(accountData.getTotalNextDue()), Actions.transactionActions().getTotalNextDue(),
+                "'Total Next Due' value is not valid");
+        Assert.assertEquals(DateTime.getDateWithFormat(accountData.getCurrentDateDue(), "yyyy-MM-dd", "MM/dd/yyyy"),
+                DateTime.getDateWithFormat(Actions.transactionActions().getCurrentDateDue(), "MMMM dd, yyyy", "MM/dd/yyyy"),
+                "'Current Date Due' value is not valid");
+        Assert.assertEquals(loanAccount.getLoanClassCode(), Actions.transactionActions().getLoanClassCode(),
+                "'Loan Class Code' value is not valid");
     }
 
-    private void setAccountDataFromWebAdmin(String accNumber, AccountData accountData) {
+    private AccountData getAccountDataFromWebAdmin(String accNumber) {
         SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
         SelenideTools.switchTo().window(1);
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        accountData.setPayoffAmount(WebAdminActions.webAdminUsersActions().getPayoffAmount(accNumber));
-        accountData.setTotalPastDue(WebAdminActions.webAdminUsersActions().getTotalPast(accNumber));
+        AccountData loanAccountData = WebAdminActions.webAdminUsersActions().getLoanAccountData(accNumber);
 
         WebAdminActions.loginActions().doLogout();
         SelenideTools.closeCurrentTab();
         SelenideTools.switchTo().window(0);
+
+        return loanAccountData;
     }
 
     private void setAccountDataFromDetails(Account loanAccount, AccountData accountData) {
@@ -156,16 +172,13 @@ public class C21747_TellerScreenAccountQuickViewDetailsLoanAccountTest extends B
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
 
         accountData.setCurrentBalance(Pages.accountDetailsPage().getCurrentBalance());
-        accountData.setAvailableBalance(Pages.accountDetailsPage().getAvailableBalance());
+        accountData.setAvailableBalance(Pages.accountDetailsPage().getAvailableBalanceFromHeaderMenu());
         accountData.setAccruedInterest(Pages.accountDetailsPage().getAccruedInterest());
         accountData.setLateChangesDue(Pages.accountDetailsPage().getLateFeeDue());
         accountData.setLoanClassCode(Pages.accountDetailsPage().getLoanClassCode());
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+        accountData.setActivePaymentAmount(Pages.accountPaymentInfoPage().getActivePaymentAmount());
 
-        // TODO:
-//        Pages.accountDetailsPage().getTotalPastDueDate();
-//        Pages.accountDetailsPage().getPrincipalNextDue();
-//        Pages.accountDetailsPage().getInterestNextDue();
-//        Pages.accountDetailsPage().getCurrentDueDate();
-//        Pages.accountDetailsPage().getPaymentAmount();
+        Actions.loginActions().doLogOut();
     }
 }
