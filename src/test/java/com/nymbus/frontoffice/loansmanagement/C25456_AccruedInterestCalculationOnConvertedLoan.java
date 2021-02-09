@@ -107,7 +107,7 @@ public class C25456_AccruedInterestCalculationOnConvertedLoan extends BaseTest {
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 25454, testRunName = TEST_RUN_NAME)
+    @TestRailIssue(issueID = 25456, testRunName = TEST_RUN_NAME)
     @Test(description = "C25456, Accrued interest calculation on converted loan")
     @Severity(SeverityLevel.CRITICAL)
     public void accruedInterestCalculationOnConvertedLoan() {
