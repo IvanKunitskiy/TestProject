@@ -113,6 +113,7 @@ public class Pages extends AllureLogger {
     private static InterestRateChangeModalPage interestRateChangeModalPage;
     private static AmountDueInquiryModalPage amountDueInquiryModalPage;
     private static LoanPayoffChargesModalPage loanPayoffChargesModalPage;
+    private static LoanPayoffPrepaymentPenaltyModalPage loanPayoffPrepaymentPenaltyModalPage;
 
     /**
      * Modal Windows
@@ -821,4 +822,13 @@ public class Pages extends AllureLogger {
         return loanPayoffChargesModalPage;
     }
 
+    /**
+     * This function return an instance of `LoanPayoffPrepaymentPenaltyModalPage`
+     */
+    public static LoanPayoffPrepaymentPenaltyModalPage loanPayoffPrepaymentPenaltyModalPage(){
+        if (loanPayoffPrepaymentPenaltyModalPage == null){
+            loanPayoffPrepaymentPenaltyModalPage = new LoanPayoffPrepaymentPenaltyModalPage();
+        }
+        return loanPayoffPrepaymentPenaltyModalPage;
+    }
 }

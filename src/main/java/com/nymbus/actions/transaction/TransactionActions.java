@@ -530,11 +530,67 @@ public class TransactionActions {
         return Pages.tellerPage().getFirstAutomaticOverdraftLimit().trim();
     }
 
-    public String getPayoffAmount() {
+    public double getPayoffAmount() {
         if(!Pages.tellerPage().isAccountQuickViewVisible()) {
             Pages.tellerPage().clickAccountQuickViewArrow();
         }
-        return Pages.tellerPage().getPayoffAmount();
+        return Double.parseDouble(Pages.tellerPage().getPayoffAmount());
+    }
+
+    public String getLateChargesDue() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getLateChargesDue();
+    }
+
+    public double getTotalPastDue() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Double.parseDouble(Pages.tellerPage().getTotalPastDue());
+    }
+
+    public double getPrincipalNextDue() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Double.parseDouble(Pages.tellerPage().getPrincipalNextDue());
+    }
+
+    public double getInterestNextDue() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Double.parseDouble(Pages.tellerPage().getInterestNextDue());
+    }
+
+    public double getTotalNextDue() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Double.parseDouble(Pages.tellerPage().getTotalNextDue());
+    }
+
+    public String getCurrentDateDue() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getCurrentDateDue();
+    }
+
+    public String getLoanClassCode() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Pages.tellerPage().getLoanClassCode();
+    }
+
+    public double getPaymentAmount() {
+        if(!Pages.tellerPage().isAccountQuickViewVisible()) {
+            Pages.tellerPage().clickAccountQuickViewArrow();
+        }
+        return Double.parseDouble(Pages.tellerPage().getPaymentAmount());
     }
 
     public boolean isTransactionCodePresent(String transCode) {

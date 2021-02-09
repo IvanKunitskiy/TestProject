@@ -108,11 +108,11 @@ public class C21743_Process433PayoffTransactionTest extends BaseTest {
         Actions.transactionActions().fillDestinationAccountNumber(transactionDestination.getAccountNumber(), tempIndex);
         Actions.transactionActions().fillDestinationAccountCode(transactionDestination.getTransactionCode(), tempIndex);
 
-        String payoffAmount = Actions.transactionActions().getPayoffAmount();
-        TransactionData transactionData = new TransactionData(postingDate, localDate, "", 0.00, Double.parseDouble(payoffAmount));
+        double payoffAmount = Actions.transactionActions().getPayoffAmount();
+        TransactionData transactionData = new TransactionData(postingDate, localDate, "", 0.00, payoffAmount);
 
-        Actions.transactionActions().fillSourceAmount(payoffAmount, tempIndex);
-        Actions.transactionActions().fillDestinationAmount(payoffAmount, tempIndex);
+        Actions.transactionActions().fillSourceAmount(String.valueOf(payoffAmount), tempIndex);
+        Actions.transactionActions().fillDestinationAmount(String.valueOf(payoffAmount), tempIndex);
         Pages.tellerPage().setEffectiveDate(localDate);
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.supervisorModalPage().inputLogin(userCredentials.getUserName());
