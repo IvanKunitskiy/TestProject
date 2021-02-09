@@ -2,9 +2,7 @@ package com.nymbus.apirequest;
 
 import com.nymbus.core.allure.AllureLogger;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.newmodels.transaction.enums.ATMTransactionType;
 import com.nymbus.newmodels.transaction.nontellertransactions.JSONData;
-import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import io.restassured.http.ContentType;
 import io.restassured.response.ResponseBodyExtractionOptions;
 import org.json.JSONObject;
@@ -31,6 +29,24 @@ public class NonTellerTransaction extends AllureLogger {
         when().
                 post(GENERIC_PROCESS_URL).
         then().
+                statusCode(200).
+                body("data[0].field.39", equalTo("00"));
+    }
+
+    public void generatePaymentDueRecord(String accountNumber) {
+        JSONObject requestBody = JSONData.getPaymentDueData(accountNumber);
+
+        logInfo("Request body: " + requestBody.toString());
+        System.out.println(requestBody.toString());
+
+        given().
+                auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
+                contentType(ContentType.JSON).
+                relaxedHTTPSValidation().
+                body(requestBody.toString()).
+                when().
+                post(GENERIC_PROCESS_URL).
+                then().
                 statusCode(200).
                 body("data[0].field.39", equalTo("00"));
     }
