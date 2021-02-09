@@ -68,7 +68,7 @@ public class C25418_LoanPayoffChargesSetUpPayoffChargesTest extends BaseTest {
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
         Actions.loginActions().doLogOut();
 
-        // Get escrow payment value for the loan product
+        // Set the product
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
 
