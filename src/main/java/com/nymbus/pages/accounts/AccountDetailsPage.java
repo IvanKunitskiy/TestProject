@@ -84,6 +84,7 @@ public class AccountDetailsPage extends PageTools {
     private By correspondingAccount= By.xpath("//tr[@data-config-name='correspondingaccountid']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By printStatementNextUpdate= By.xpath("//tr[@data-config-name='printstatementnextupdate']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By interestPaidYTD= By.xpath("//tr[@data-config-name='interestpaidytd']//span[contains(@class, 'dnTextFixedWidthText')]"); //
+    private By dateInterestPaidThru = By.xpath("//tr[@data-test-id='field-dateinterestpaidthrough']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By dateNextInterest= By.xpath("//tr[@data-config-name='datenextinterestpayment']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By rentalAmount = By.xpath("//tr[@data-config-name='rentalamount']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By discountReason = By.xpath("//tr[@data-config-name='discountreason']//span[contains(@class, 'dnTextFixedWidthText')]");
@@ -346,6 +347,12 @@ public class AccountDetailsPage extends PageTools {
     public String getDateNextInterest() {
         waitForElementVisibility(dateNextInterest);
         return getElementText(dateNextInterest);
+    }
+
+    @Step("Get 'Date interest Thru' value")
+    public String getDateInterestPaidThru(){
+        waitForElementVisibility(dateInterestPaidThru);
+        return getElementText(dateInterestPaidThru);
     }
 
     @Step("Get 'Maturity Date' value")
