@@ -118,6 +118,8 @@ public class AccountDetailsPage extends PageTools {
     private By activeStatus = By.xpath("//tr[@data-test-id='field-accountstatus']//span[contains(text(), 'Active')]");
     private By accruedInterest = By.xpath("//tr[@data-config-name='accruedinterest']" +
             "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
+    private By dailyInterestFactor = By.xpath("//tr[@data-config-name='dailyinterestfactor']" +
+            "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By accruedInterestThisStatementCycle = By.xpath("//tr[@data-config-name='accruedinterestthisstatementcycle']" +
             "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By dateClosed = By.xpath("//*[@data-config-name='dateclosed']" +
@@ -260,6 +262,12 @@ public class AccountDetailsPage extends PageTools {
         waitForElementVisibility(accruedInterest);
         String accruedInterestValue = getElementText(accruedInterest).trim();
         return accruedInterestValue.replaceAll("[^0-9.-]", "");
+    }
+
+    @Step("Get 'Daily Interest Factor' value")
+    public String getDailyInterestFactor() {
+        waitForElementVisibility(dailyInterestFactor);
+        return getElementText(dailyInterestFactor).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Accrued Interest this statement cycle' value")
