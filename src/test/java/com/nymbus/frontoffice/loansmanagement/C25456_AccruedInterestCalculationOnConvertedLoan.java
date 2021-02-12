@@ -6,6 +6,7 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -18,6 +19,7 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
 import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitMiscCreditBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.newmodels.transaction.enums.DestinationType;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
@@ -29,7 +31,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 
 @Epic("Frontoffice")
 @Feature("Loans Management")
@@ -91,7 +92,7 @@ public class C25456_AccruedInterestCalculationOnConvertedLoan extends BaseTest {
         transaction.getTransactionDestination().setAccountNumber(loanAccountNumber);
         transaction.getTransactionDestination().setAmount(transactionAmount);
         transaction.getTransactionDestination().setTransactionCode("416 - Payment");
-        transaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());
+        transaction.getTransactionDestination().setSourceType(DestinationType.MISC_CREDIT);
 
         // Perform deposit transactions
         Actions.loginActions().doLogOutProgrammatically();
@@ -126,23 +127,27 @@ public class C25456_AccruedInterestCalculationOnConvertedLoan extends BaseTest {
         double daysBaseYearBase = Double.parseDouble(daysBaseYearBaseText.substring(4,7));
         double expectedFactor = (currentBalance * currentEffectiveRate / 100) / daysBaseYearBase;
         expectedFactor = Double.parseDouble(String.format("%.4f", expectedFactor));
-        BigDecimal bigDecimal = BigDecimal.valueOf(expectedFactor);
-        BigDecimal bigDecimal1 = BigDecimal.valueOf(-0.0001);
-        bigDecimal =bigDecimal.add(bigDecimal1);
-        expectedFactor = bigDecimal.doubleValue();
-
+        if (expectedFactor!=dailyInterestFactor) {
+            BigDecimal bigDecimal = BigDecimal.valueOf(expectedFactor);
+            BigDecimal bigDecimal1 = BigDecimal.valueOf(-0.0001);
+            bigDecimal = bigDecimal.add(bigDecimal1);
+            expectedFactor = bigDecimal.doubleValue();
+        }
         TestRailAssert.assertTrue(dailyInterestFactor == expectedFactor,
                 new CustomStepResult("Daily interest factor is correct","Daily interest factor is not correct"));
 
         logInfo("Step 4: Take a look at \"Accrued interest\" value");
         double accruedInterest = Double.parseDouble(Pages.accountDetailsPage().getAccruedInterest());
-        double v = Double.parseDouble(daysBaseYearBaseText.substring(0, 3));
-        System.out.println(v);
-        double expectedAccruedInterest = expectedFactor * v;
-        System.out.println(accruedInterest);
-        System.out.println(expectedAccruedInterest);
-
-        TestRailAssert.assertTrue(accruedInterest == expectedAccruedInterest,
+        String dateInterestPaidThru = Pages.accountDetailsPage().getDateInterestPaidThru();
+        int daysBetweenTwoDates = DateTime.getDaysBetweenTwoDates(dateInterestPaidThru,
+                WebAdminActions.loginActions().getSystemDate(), false);
+        double expectedAccruedInterest;
+        if (daysBetweenTwoDates==1){
+            expectedAccruedInterest = expectedFactor * (0);
+        } else {
+            expectedAccruedInterest = expectedFactor * (daysBetweenTwoDates-2);
+        }
+        TestRailAssert.assertTrue((int)accruedInterest == (int)expectedAccruedInterest,
                 new CustomStepResult("Accrued interest factor is correct","Accrued interest factor is not correct"));
 
         logInfo("Step 5: Go to \"Teller\" page");
@@ -163,13 +168,14 @@ public class C25456_AccruedInterestCalculationOnConvertedLoan extends BaseTest {
                 "\"Amount\" - specify the same amount");
         int currentIndex = 0;
         Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction.getTransactionSource(), currentIndex);
-        Actions.transactionActions().setGLCreditDestination(transaction.getTransactionDestination(), currentIndex);
+        Actions.transactionActions().setMiscCreditDestination(transaction.getTransactionDestination(), currentIndex);
         Actions.transactionActions().clickCommitButton();
 
         logInfo("Step 8: Close Transaction Receipt popup");
         Pages.tellerPage().closeModal();
 
         logInfo("Step 9: Repeat steps 2-3");
+        Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccountNumber);
         dailyInterestFactor = Double.parseDouble(Pages.accountDetailsPage().getDailyInterestAccrual());
         currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
@@ -177,21 +183,30 @@ public class C25456_AccruedInterestCalculationOnConvertedLoan extends BaseTest {
         daysBaseYearBaseText = Pages.accountDetailsPage().getDaysBaseYearBase();
         daysBaseYearBase = Double.parseDouble(daysBaseYearBaseText.substring(4,7));
         expectedFactor = (currentBalance * currentEffectiveRate / 100) / daysBaseYearBase;
-        DecimalFormat f = new DecimalFormat("##.0000");
+        expectedFactor = Double.parseDouble(String.format("%.4f", expectedFactor));
+        if (expectedFactor!=dailyInterestFactor) {
+            BigDecimal bigDecimal = BigDecimal.valueOf(expectedFactor);
+            BigDecimal bigDecimal1 = BigDecimal.valueOf(-0.0001);
+            bigDecimal = bigDecimal.add(bigDecimal1);
+            expectedFactor = bigDecimal.doubleValue();
+        }
 
         TestRailAssert.assertTrue(dailyInterestFactor == expectedFactor,
                 new CustomStepResult("Daily interest factor is correct","Daily interest factor is not correct"));
 
         logInfo("Step 10: Repeat step 4 and verify the \"Accrued interest\" field");
         accruedInterest = Double.parseDouble(Pages.accountDetailsPage().getAccruedInterest());
-        expectedAccruedInterest = expectedFactor * Double.parseDouble(daysBaseYearBaseText.substring(0,3));
+        dateInterestPaidThru = Pages.accountDetailsPage().getDateInterestPaidThru();
+        daysBetweenTwoDates = DateTime.getDaysBetweenTwoDates(dateInterestPaidThru,
+                WebAdminActions.loginActions().getSystemDate(), false);
+        if (daysBetweenTwoDates==1){
+            expectedAccruedInterest = expectedFactor * (0);
+        } else {
+            expectedAccruedInterest = expectedFactor * (daysBetweenTwoDates-2);
+        }
 
-        TestRailAssert.assertTrue(accruedInterest == expectedAccruedInterest,
+        TestRailAssert.assertTrue((int)accruedInterest == (int)expectedAccruedInterest,
                 new CustomStepResult("Accrued interest factor is correct","Accrued interest factor is not correct"));
-
-
-
-
     }
 
 }

@@ -84,6 +84,7 @@ public class AccountDetailsPage extends PageTools {
     private By correspondingAccount= By.xpath("//tr[@data-config-name='correspondingaccountid']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By printStatementNextUpdate= By.xpath("//tr[@data-config-name='printstatementnextupdate']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By interestPaidYTD= By.xpath("//tr[@data-config-name='interestpaidytd']//span[contains(@class, 'dnTextFixedWidthText')]"); //
+    private By dateInterestPaidThru = By.xpath("//tr[@data-test-id='field-dateinterestpaidthrough']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By dateNextInterest= By.xpath("//tr[@data-config-name='datenextinterestpayment']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By rentalAmount = By.xpath("//tr[@data-config-name='rentalamount']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By discountReason = By.xpath("//tr[@data-config-name='discountreason']//span[contains(@class, 'dnTextFixedWidthText')]");
@@ -117,6 +118,8 @@ public class AccountDetailsPage extends PageTools {
     private By activeStatus = By.xpath("//tr[@data-test-id='field-accountstatus']//span[contains(text(), 'Active')]");
     private By accruedInterest = By.xpath("//tr[@data-config-name='accruedinterest']" +
             "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
+    private By dailyInterestFactor = By.xpath("//tr[@data-config-name='dailyinterestfactor']" +
+            "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By accruedInterestThisStatementCycle = By.xpath("//tr[@data-config-name='accruedinterestthisstatementcycle']" +
             "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By dateClosed = By.xpath("//*[@data-config-name='dateclosed']" +
@@ -132,6 +135,8 @@ public class AccountDetailsPage extends PageTools {
     private By overdraftChargedOff = By.xpath("//tr[@data-config-name='overdraftchargedoff']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By currentEffectiveRate = By.xpath("//tr[@data-test-id='field-currenteffectiverate']//span[contains(@class, 'dnTextFixedWidthText ng-binding')]");
     private By daysBase = By.xpath("//tr[@data-test-id='field-daybaseforinterestrate']//td//span/span");
+    private By loanClassCode = By.xpath("//tr[@data-config-name='classtype']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By lateFeeDue = By.xpath("//tr[@data-config-name='latefeedue']//span[contains(@class, 'dnTextFixedWidthText')]");
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -259,6 +264,12 @@ public class AccountDetailsPage extends PageTools {
         return accruedInterestValue.replaceAll("[^0-9.-]", "");
     }
 
+    @Step("Get 'Daily Interest Factor' value")
+    public String getDailyInterestFactor() {
+        waitForElementVisibility(dailyInterestFactor);
+        return getElementText(dailyInterestFactor).replaceAll("[^0-9.]", "");
+    }
+
     @Step("Get 'Accrued Interest this statement cycle' value")
     public String getAccruedInterestThisStatementCycle() {
         waitForElementVisibility(accruedInterestThisStatementCycle);
@@ -272,21 +283,21 @@ public class AccountDetailsPage extends PageTools {
         return getElementText(accruedInterest).replaceAll("[^0-9.]", "");
     }
 
-    @Step("Get 'AvailableBalance' value")
+    @Step("Get 'Available Balance' value")
     public String getAvailableBalance() {
         waitForElementVisibility(availableBalance);
         String availableBalanceValue = getElementText(availableBalance).trim();
         return availableBalanceValue.replaceAll("[^0-9.-]", "");
     }
 
-    @Step("Get 'AvailableBalance' value from header menu")
+    @Step("Get 'Available Balance' value from header menu")
     public String getAvailableBalanceFromHeaderMenu() {
         waitForElementVisibility(availableBalance1);
         String availableBalanceValue = getElementText(availableBalance1).trim();
         return availableBalanceValue.replaceAll("[^0-9.-]", "");
     }
 
-    @Step("Get 'AggregateBalanceYearToDate' value")
+    @Step("Get 'Aggregate Balance Year To Date' value")
     public String getAggregateBalanceYearToDate() {
         scrollToElement(aggregateBalanceYearToDate);
         waitForElementVisibility(aggregateBalanceYearToDate);
@@ -294,12 +305,26 @@ public class AccountDetailsPage extends PageTools {
         return aggregateBalanceYearToDateValue.replaceAll("[^0-9.-]", "");
     }
 
-    @Step("Get 'TotalContributionsForLifeOfAccount' value")
+    @Step("Get 'Total Contributions For Life Of Account' value")
     public String getTotalContributionsForLifeOfAccount() {
         scrollToElement(totalContributionsForLifeOfAccount);
         waitForElementVisibility(totalContributionsForLifeOfAccount);
         String totalContributionsForLifeOfAccountValue = getElementText(totalContributionsForLifeOfAccount).trim();
         return totalContributionsForLifeOfAccountValue.replaceAll("[^0-9.-]", "");
+    }
+
+    @Step("Get 'Loan Class Code' value")
+    public String getLoanClassCode() {
+        scrollToElement(loanClassCode);
+        waitForElementVisibility(loanClassCode);
+        return getElementText(loanClassCode).trim();
+    }
+
+    @Step("Get 'Late Fee Due' value")
+    public String getLateFeeDue() {
+        scrollToElement(lateFeeDue);
+        waitForElementVisibility(lateFeeDue);
+        return getElementText(lateFeeDue).trim();
     }
 
     @Step("Check if 'Account Closed' notification visible")
@@ -330,6 +355,12 @@ public class AccountDetailsPage extends PageTools {
     public String getDateNextInterest() {
         waitForElementVisibility(dateNextInterest);
         return getElementText(dateNextInterest);
+    }
+
+    @Step("Get 'Date interest Thru' value")
+    public String getDateInterestPaidThru(){
+        waitForElementVisibility(dateInterestPaidThru);
+        return getElementText(dateInterestPaidThru);
     }
 
     @Step("Get 'Maturity Date' value")

@@ -3,8 +3,10 @@ package com.nymbus.frontoffice.loansmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.loans.BalanceUsed;
+import com.nymbus.actions.loans.PenaltyCalculationType;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Generator;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -20,18 +22,13 @@ import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
 import com.nymbus.testrail.TestRailIssue;
-import io.qameta.allure.*;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.List;
-import java.util.Random;
-
-@Epic("Frontoffice")
-@Feature("Loans Management")
-@Owner("Petro")
-public class C25418_LoanPayoffChargesSetUpPayoffChargesTest extends BaseTest {
+public class C25420_LoanPayoffPrepaymentPenaltySetUpPrepaymentPenaltyTest extends BaseTest {
 
     private Account loanAccount;
     private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
@@ -68,7 +65,7 @@ public class C25418_LoanPayoffChargesSetUpPayoffChargesTest extends BaseTest {
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
         Actions.loginActions().doLogOut();
 
-        // Set the product
+        // Get escrow payment value for the loan product
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
 
@@ -96,10 +93,10 @@ public class C25418_LoanPayoffChargesSetUpPayoffChargesTest extends BaseTest {
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 25418, testRunName = TEST_RUN_NAME)
-    @Test(description = "C25418, Loan Payoff Charges: Set up payoff charges")
+    @TestRailIssue(issueID = 25420, testRunName = TEST_RUN_NAME)
+    @Test(description = "C25420, Loan Payoff Prepayment Penalty: Set up prepayment penalty (Original balance + Fixed Percentage)")
     @Severity(SeverityLevel.CRITICAL)
-    public void loanPayoffChargesSetUpPayoffCharges() {
+    public void loanPayoffPrepaymentPenaltySetUpPrepaymentPenalty() {
 
         logInfo("Step 1: Log in to the system");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -111,33 +108,31 @@ public class C25418_LoanPayoffChargesSetUpPayoffChargesTest extends BaseTest {
 
         logInfo("Step 3: Go to maintenance -> Tool -> Loan Payoff Charges");
         Pages.accountDetailsPage().clickMaintenanceTab();
-        AccountActions.accountMaintenanceActions().setTool(Tool.LOAN_PAYOFF_CHARGES);
+        AccountActions.accountMaintenanceActions().setTool(Tool.LOAN_PAYOFF_PREPAYMENT_PENALTY);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
 
-        logInfo("Steep 4: Click '+ Add New Payoff Charge'");
-        Pages.loanPayoffChargesModalPage().clickAddNewPayoffChargeButton();
-        Pages.loanPayoffChargesModalPage().waitForModalWindowVisibility();
-
-        logInfo("Step 5: Specify all fields and click 'Done'");
-        String chargeTypeDescription = Generator.genString(10);
-        Pages.loanPayoffChargesModalPage().typeChargeDescription(chargeTypeDescription);
-
-        double chargeAmount = 1.00;
-        Pages.loanPayoffChargesModalPage().typeChargeAmount(String.format("%.2f", chargeAmount));
-
-        Pages.loanPayoffChargesModalPage().typeGlOffset("fee");
-        List<String> glOffsetList = Pages.loanPayoffChargesModalPage().getGlOffsetList();
-        Assert.assertTrue(glOffsetList.size() > 0, "There are no 'GL Offset' options available");
-        String randomGlOffsetOption = glOffsetList.get(new Random().nextInt(glOffsetList.size())).trim();
-        Pages.loanPayoffChargesModalPage().clickGlOffsetOption(randomGlOffsetOption);
+        logInfo("Step 4: Set up Loan Payoff Prepayment Penalty:" +
+                "Effective Date = in the past\n" +
+                "Expire Date = in the future\n" +
+                "Balance Used = Original balance\n" +
+                "Penalty Calculation Type = Fixed Percentage\n" +
+                "Fixed Percentage = 10\n" +
+                "Minimum Penalty - empty\n" +
+                "Maximum Penalty - empty");
+        String currentDate = DateTime.getLocalDateOfPattern("MM/dd/yyyy");
+        Pages.loanPayoffPrepaymentPenaltyModalPage().typeEffectiveDate(DateTime.getDateMinusDays(currentDate, 1));
+        Pages.loanPayoffPrepaymentPenaltyModalPage().typeExpireDate(DateTime.getDateWithFormatPlusDays(currentDate, "MM/dd/yyyy", "MM/dd/yyyy", 1));
+        Actions.loanPayoffActions().setBalanceUsed(BalanceUsed.ORIGINAL_BALANCE);
+        Actions.loanPayoffActions().setPenaltyCalculationType(PenaltyCalculationType.FIXED_PERCENTAGE);
+        Pages.loanPayoffPrepaymentPenaltyModalPage().typeFixedPercentage("10");
         Pages.loanPayoffChargesModalPage().clickDoneButton();
+        double prepaymentPenalty = Double.parseDouble(Pages.loanPayoffPrepaymentPenaltyModalPage().getPrepaymentPenaltyAmount());
         Pages.loanPayoffChargesModalPage().clickCloseButton();
 
         logInfo("Step 6: Go to 'Details' tab -> click on the 'Amount Due Inquiry' button and note 'Payoff Charges' field");
         Pages.accountDetailsPage().clickDetailsTab();
         Pages.accountDetailsPage().clickAmountDueInquiryButton();
-        double payoffAfterCharges = Double.parseDouble(Pages.amountDueInquiryModalPage().getPayoffCharges());
-
-        Assert.assertEquals(chargeAmount, payoffAfterCharges, "'Payoff Charges' value is not valid");
+        double actualPrepaymentPenalty = Double.parseDouble(Pages.amountDueInquiryModalPage().getPrepaymentPenalty());
+        Assert.assertEquals(prepaymentPenalty, actualPrepaymentPenalty, "'Payoff Charges' value is not valid");
     }
 }
