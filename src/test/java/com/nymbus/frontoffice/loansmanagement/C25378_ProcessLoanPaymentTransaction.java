@@ -31,7 +31,7 @@ public class C25378_ProcessLoanPaymentTransaction extends BaseTest {
     private Account loanAccount;
     private Account checkAccount;
     private Transaction transaction;
-    private double transactionAmount;
+    private double transactionAmount = 100.0;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
 
@@ -140,6 +140,9 @@ public class C25378_ProcessLoanPaymentTransaction extends BaseTest {
                 "- Date interest paid thru\n" +
                 "- Current Balance\n" +
                 "- Accrued Interest");
+        //Pages.accountDetailsPage().getInterestPaid
+
+        SelenideTools.sleep(200);
 
 
 
