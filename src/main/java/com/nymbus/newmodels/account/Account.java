@@ -112,7 +112,7 @@ public class Account {
         account.setAccountType(AccountType.INDIVIDUAL.getAccountType());
         account.setProductType(ProductType.LOAN_ACCOUNT.getProductType());
         account.setAccountNumber(Generator.genAccountNumber());
-        account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
+        account.setDateOpened(DateTime.getDateMinusMonth(WebAdminActions.loginActions().getSystemDate(), 1));
         account.setLoanClassCode(LoanClassCode.COMMERCIAL_LOAN.getLoanClassCode());
         account.setPaymentAmount("1001.00");
         account.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
