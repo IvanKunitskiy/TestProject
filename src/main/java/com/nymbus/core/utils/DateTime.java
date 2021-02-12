@@ -290,4 +290,17 @@ public class DateTime {
         }
         return simpleDateFormat.format(calendar.getTime());
     }
+
+    public static String getDatePlusMonth(String date, int month) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Calendar calendar = Calendar.getInstance();
+
+        try {
+            calendar.setTime(simpleDateFormat.parse(date));
+            calendar.add(Calendar.MONTH, month);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return simpleDateFormat.format(calendar.getTime());
+    }
 }
