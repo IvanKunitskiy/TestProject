@@ -83,4 +83,8 @@ public class Functions {
         int count = Math.max(maxLength - length, 0);
         return String.join("", Collections.nCopies(count,symbol));
     }
+
+    public static double roundToTwoDecimalPlaces(double value) {
+        return Math.round(value * 100.0) / 100.0;
+    }
 }
