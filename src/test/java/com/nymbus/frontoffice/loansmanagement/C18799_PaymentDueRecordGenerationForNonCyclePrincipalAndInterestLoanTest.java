@@ -42,7 +42,6 @@ public class C18799_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestLoa
     private String clientRootId;
     private Account loanAccount;
     private String activePaymentAmount;
-    private String paymentBilledLeadDays;
     private double escrowPaymentValue;
 
     @BeforeMethod
@@ -93,7 +92,6 @@ public class C18799_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestLoa
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createLoanAccount(loanAccount);
         clientRootId = ClientsActions.createClient().getClientIdFromUrl();
-        paymentBilledLeadDays = Pages.accountDetailsPage().getPaymentBilledLeadDays();
         Pages.accountDetailsPage().clickPaymentInfoTab();
         activePaymentAmount = Pages.accountPaymentInfoPage().getActivePaymentAmount();
 
@@ -137,20 +135,19 @@ public class C18799_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestLoa
                 "deleteincluded: true\n");
         logInfo("Step 5: Check fields in the bank.data.paymentdue");
         WebAdminActions.webAdminUsersActions().queryDueData(loanAccount.getAccountNumber());
-
         TestRailAssert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getAccountIdByIndex(1).equals(clientRootId),
                 new CustomStepResult("'Account id' is not valid", "'Account id' is valid"));
-        String dueDateWithFormat = DateTime.getDateWithFormat(WebAdminPages.rulesUIQueryAnalyzerPage().getDueDateByIndex(1), "yyyy-MM-dd", "MM/dd/yyyy ");
-        System.out.println("|" + dueDateWithFormat + "|");
-        System.out.println("|" + loanAccount.getNextPaymentBilledDueDate() + "|");
+        String dueDateWithFormat = DateTime.getDateWithFormat(WebAdminPages.rulesUIQueryAnalyzerPage().getDueDateByIndex(1), "yyyy-MM-dd", "MM/dd/yyyy");
         TestRailAssert.assertTrue(dueDateWithFormat.equals(loanAccount.getNextPaymentBilledDueDate()),
                 new CustomStepResult("'Due date' is not valid", "'Due date' is valid"));
         TestRailAssert.assertTrue(Double.parseDouble(WebAdminPages.rulesUIQueryAnalyzerPage().getEscrowByIndex(1)) == escrowPaymentValue,
                 new CustomStepResult("'Escrow' is not valid", "'Escrow' is valid"));
-        TestRailAssert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getAmountByIndex(1).equals(activePaymentAmount),
+        double amountFromWebAdmin = Double.parseDouble(WebAdminPages.rulesUIQueryAnalyzerPage().getAmountByIndex(1));
+        TestRailAssert.assertTrue(amountFromWebAdmin == Double.parseDouble(activePaymentAmount),
                 new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
-        String dateMinusDays = DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(), Integer.parseInt(paymentBilledLeadDays));
-        TestRailAssert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getDateAssessedByIndex(1).equals(dateMinusDays),
+        String dateAssessedWithFormat = DateTime.getDateWithFormat(WebAdminPages.rulesUIQueryAnalyzerPage().getDateAssessedByIndex(1), "yyyy-MM-dd", "MM/dd/yyyy");
+        String dateOfRequestWithFormat = DateTime.getLocalDateOfPattern("MM/dd/yyyy");
+        TestRailAssert.assertTrue(dateAssessedWithFormat.equals(dateOfRequestWithFormat),
                 new CustomStepResult("'dateassessed' is not valid", "'dateassessed' is valid"));
         TestRailAssert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getPaymentDueTypeByIndex(1).equals("Principal & Interest"),
                 new CustomStepResult("'paymentduetype' is not valid", "'paymentduetype' is valid"));
