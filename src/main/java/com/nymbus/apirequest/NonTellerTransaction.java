@@ -113,14 +113,12 @@ public class NonTellerTransaction extends AllureLogger {
                 contentType(ContentType.JSON).
                 relaxedHTTPSValidation().
                 body(requestBody.toString()).
-                when().
+        when().
                 post(GENERIC_PROCESS_URL).
-                then().
+        then().
                 statusCode(200).extract().body();
 
         logInfo("Response body: " + responseBody.asString());
-
-        // TODO:
     }
 
     public String getFiledValue(Map<String, String> fields, String field) {

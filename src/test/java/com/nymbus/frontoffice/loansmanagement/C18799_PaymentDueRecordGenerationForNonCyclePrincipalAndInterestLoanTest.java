@@ -6,6 +6,7 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
@@ -21,6 +22,9 @@ import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.pages.webadmin.WebAdminPages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -31,12 +35,15 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C18799_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestLoanTest extends BaseTest {
 
-    private Account loanAccount;
     private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
     private String clientRootId;
+    private Account loanAccount;
+    private String activePaymentAmount;
+    private String paymentBilledLeadDays;
+    private double escrowPaymentValue;
 
     @BeforeMethod
     public void preCondition() {
@@ -72,6 +79,7 @@ public class C18799_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestLoa
 
         // Set the product
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        escrowPaymentValue = Actions.loanProductOverviewActions().getLoanProductEscrowPaymentValue(loanProductName);
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
 
         // Create a client
@@ -79,12 +87,15 @@ public class C18799_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestLoa
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
         client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
-        clientRootId = ClientsActions.createClient().getClientIdFromUrl();
 
-        // Create checking account and logout
+        // Create accounts get the data and logout
         AccountActions.createAccount().createCHKAccount(checkingAccount);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createLoanAccount(loanAccount);
+        clientRootId = ClientsActions.createClient().getClientIdFromUrl();
+        paymentBilledLeadDays = Pages.accountDetailsPage().getPaymentBilledLeadDays();
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+        activePaymentAmount = Pages.accountPaymentInfoPage().getActivePaymentAmount();
 
         // Perform transaction
         Actions.transactionActions().goToTellerPage();
@@ -124,8 +135,26 @@ public class C18799_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestLoa
                 "- .accountid->accountnumber: (accountnumber of created loan account)\n" +
                 "orderBy: -id\n" +
                 "deleteincluded: true\n");
-
         logInfo("Step 5: Check fields in the bank.data.paymentdue");
+        WebAdminActions.webAdminUsersActions().queryDueData(loanAccount.getAccountNumber());
 
+        TestRailAssert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getAccountIdByIndex(1).equals(clientRootId),
+                new CustomStepResult("'Account id' is not valid", "'Account id' is valid"));
+        String dueDateWithFormat = DateTime.getDateWithFormat(WebAdminPages.rulesUIQueryAnalyzerPage().getDueDateByIndex(1), "yyyy-MM-dd", "MM/dd/yyyy ");
+        System.out.println("|" + dueDateWithFormat + "|");
+        System.out.println("|" + loanAccount.getNextPaymentBilledDueDate() + "|");
+        TestRailAssert.assertTrue(dueDateWithFormat.equals(loanAccount.getNextPaymentBilledDueDate()),
+                new CustomStepResult("'Due date' is not valid", "'Due date' is valid"));
+        TestRailAssert.assertTrue(Double.parseDouble(WebAdminPages.rulesUIQueryAnalyzerPage().getEscrowByIndex(1)) == escrowPaymentValue,
+                new CustomStepResult("'Escrow' is not valid", "'Escrow' is valid"));
+        TestRailAssert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getAmountByIndex(1).equals(activePaymentAmount),
+                new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
+        String dateMinusDays = DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(), Integer.parseInt(paymentBilledLeadDays));
+        TestRailAssert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getDateAssessedByIndex(1).equals(dateMinusDays),
+                new CustomStepResult("'dateassessed' is not valid", "'dateassessed' is valid"));
+        TestRailAssert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getPaymentDueTypeByIndex(1).equals("Principal & Interest"),
+                new CustomStepResult("'paymentduetype' is not valid", "'paymentduetype' is valid"));
+        TestRailAssert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getPaymentDueStatusByIndex(1).equals("Active"),
+                new CustomStepResult("'paymentduestatus' is not valid", "'paymentduestatus' is valid"));
     }
 }
