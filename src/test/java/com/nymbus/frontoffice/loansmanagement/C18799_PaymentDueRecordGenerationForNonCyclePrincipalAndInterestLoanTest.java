@@ -134,7 +134,7 @@ public class C18799_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestLoa
                 "orderBy: -id\n" +
                 "deleteincluded: true\n");
         logInfo("Step 5: Check fields in the bank.data.paymentdue");
-        WebAdminActions.webAdminUsersActions().queryDueData(loanAccount.getAccountNumber());
+        WebAdminActions.webAdminUsersActions().queryPaymentDueData(loanAccount.getAccountNumber());
         TestRailAssert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getAccountIdByIndex(1).equals(clientRootId),
                 new CustomStepResult("'Account id' is not valid", "'Account id' is valid"));
         String dueDateWithFormat = DateTime.getDateWithFormat(WebAdminPages.rulesUIQueryAnalyzerPage().getDueDateByIndex(1), "yyyy-MM-dd", "MM/dd/yyyy");

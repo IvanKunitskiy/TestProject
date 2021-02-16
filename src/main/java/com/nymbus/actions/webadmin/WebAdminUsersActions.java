@@ -462,7 +462,7 @@ public class WebAdminUsersActions {
         return accountData;
     }
 
-    public void queryDueData(String accountNumber) {
+    public void queryPaymentDueData(String accountNumber) {
         SelenideTools.openUrl(getPaymentDueUrl(accountNumber));
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
