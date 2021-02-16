@@ -215,6 +215,18 @@ public class JSONData {
         return beans;
     }
 
+    private static JSONArray getPaymentBeansArray(String accountId) {
+        JSONArray beans = new JSONArray();
+        JSONObject json = new JSONObject();
+
+        json.put("fields", new JSONObject());
+        json.put("rootId", accountId);
+        json.put("type", "bank.data.actmst");
+        beans.put(json);
+
+        return beans;
+    }
+
     private static JSONArray getActionsArray() {
         JSONArray actions = new JSONArray();
         actions.put("0200");
@@ -271,6 +283,17 @@ public class JSONData {
 
         return json;
     }
+
+    public static JSONObject getPaymentData(String[] actions, String accountId) {
+        JSONObject json = new JSONObject();
+
+        json.put("actions", getActionsArray(actions));
+        json.put("beans", getPaymentBeansArray(accountId));
+        json.put("ruleType", "methods");
+
+        return json;
+    }
+
     private static JSONObject getFieldsArr(Map <String, String> fields) {
         return new JSONObject(fields);
     }

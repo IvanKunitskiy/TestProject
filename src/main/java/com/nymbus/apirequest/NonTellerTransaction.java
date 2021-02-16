@@ -121,6 +121,24 @@ public class NonTellerTransaction extends AllureLogger {
                 body("data[0].field.39", equalTo(responseCodeOfField39));
     }
 
+    public void generatePaymentDueRecordForNonCyclePrincipalAndInterestLoan(String[] actions, String accountId) {
+        JSONObject requestBody = JSONData.getPaymentData(actions, accountId);
+
+        logInfo("Request body: " + requestBody.toString());
+
+        ResponseBodyExtractionOptions responseBody = given().
+                auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
+                contentType(ContentType.JSON).
+                relaxedHTTPSValidation().
+                body(requestBody.toString()).
+        when().
+                post(GENERIC_PROCESS_URL).
+        then().
+                statusCode(200).extract().body();
+
+        logInfo("Response body: " + responseBody.asString());
+    }
+
     public String getFiledValue(Map<String, String> fields, String field) {
         JSONObject requestBody = JSONData.getATMData(fields);
 

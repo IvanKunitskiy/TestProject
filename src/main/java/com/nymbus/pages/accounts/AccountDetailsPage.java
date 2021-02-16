@@ -137,6 +137,7 @@ public class AccountDetailsPage extends PageTools {
     private By daysBase = By.xpath("//tr[@data-test-id='field-daybaseforinterestrate']//td//span/span");
     private By loanClassCode = By.xpath("//tr[@data-config-name='classtype']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By lateFeeDue = By.xpath("//tr[@data-config-name='latefeedue']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By paymentBilledLeadDays = By.xpath("//tr[@data-config-name='noticedays']/td//span[@text='value']/span");
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -714,6 +715,12 @@ public class AccountDetailsPage extends PageTools {
     public String getProductValue() {
         waitForElementVisibility(product);
         return getElementText(product);
+    }
+
+    @Step("Get account 'Payment Billed Lead Days' value")
+    public String getPaymentBilledLeadDays() {
+        waitForElementVisibility(paymentBilledLeadDays);
+        return getElementText(paymentBilledLeadDays);
     }
 
     @Step("Wait for 'Full Profile' button is visible")
