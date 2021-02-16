@@ -2,9 +2,7 @@ package com.nymbus.apirequest;
 
 import com.nymbus.core.allure.AllureLogger;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.newmodels.transaction.enums.ATMTransactionType;
 import com.nymbus.newmodels.transaction.nontellertransactions.JSONData;
-import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import io.restassured.http.ContentType;
 import io.restassured.response.ResponseBodyExtractionOptions;
 import org.json.JSONObject;
@@ -103,6 +101,24 @@ public class NonTellerTransaction extends AllureLogger {
         then().
                 statusCode(200).
                 body("data[0].field.39", equalTo(responseCodeOfField39));
+    }
+
+    public void generatePaymentDueRecordForNonCyclePrincipalAndInterestLoan(String[] actions, String accountId) {
+        JSONObject requestBody = JSONData.getPaymentData(actions, accountId);
+
+        logInfo("Request body: " + requestBody.toString());
+
+        ResponseBodyExtractionOptions responseBody = given().
+                auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
+                contentType(ContentType.JSON).
+                relaxedHTTPSValidation().
+                body(requestBody.toString()).
+        when().
+                post(GENERIC_PROCESS_URL).
+        then().
+                statusCode(200).extract().body();
+
+        logInfo("Response body: " + responseBody.asString());
     }
 
     public String getFiledValue(Map<String, String> fields, String field) {
