@@ -1,5 +1,7 @@
 package com.nymbus.actions.account;
 
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
@@ -211,6 +213,61 @@ public class EditAccount {
             account.setStatementCycle(listOfStatementCycle.get(new Random().nextInt(listOfStatementCycle.size())).trim());
         }
         Pages.editAccountPage().clickStatementCycleOption(account.getStatementCycle());
+    }
+
+    public void setDaysBaseYearBase(Account account) {
+        Pages.editAccountPage().clickDaysBaseYearBaseSelectorButton();
+        List<String> listOfDaysBaseYearBase = Pages.editAccountPage().getDaysBaseYearBaseList();
+
+        Assert.assertTrue(listOfDaysBaseYearBase.size() > 0, "There are no 'Days Base/Year Base' options available");
+        if (account.getDaysBaseYearBase() == null) {
+            account.setDaysBaseYearBase(listOfDaysBaseYearBase.get(new Random().nextInt(listOfDaysBaseYearBase.size())).trim());
+        }
+        Pages.editAccountPage().clickDaysBaseYearBaseSelectorOption(account.getDaysBaseYearBase());
+    }
+
+    public void setRateChangeFrequency(Account account) {
+        Pages.editAccountPage().clickRateChangeFrequencySelectorButton();
+        List<String> listOfRateChangeFrequency = Pages.editAccountPage().getRateChangeFrequencyList();
+
+        Assert.assertTrue(listOfRateChangeFrequency.size() > 0, "There are no product types available");
+        if (account.getRateChangeFrequency() == null) {
+            account.setRateChangeFrequency(listOfRateChangeFrequency.get(new Random().nextInt(listOfRateChangeFrequency.size())).trim());
+        }
+        Pages.editAccountPage().clickRateChangeFrequencySelectorOption(account.getRateChangeFrequency());
+    }
+
+    public void setPaymentChangeFrequency(Account account) {
+        Pages.editAccountPage().clickPaymentChangeFrequencySelectorButton();
+        List<String> listOfPaymentChangeFrequency = Pages.editAccountPage().getPaymentChangeFrequencyList();
+
+        Assert.assertTrue(listOfPaymentChangeFrequency.size() > 0, "There are no product types available");
+        if (account.getPaymentChangeFrequency() == null) {
+            account.setPaymentChangeFrequency(listOfPaymentChangeFrequency.get(new Random().nextInt(listOfPaymentChangeFrequency.size())).trim());
+        }
+        Pages.editAccountPage().clickPaymentChangeFrequencySelectorOption(account.getPaymentChangeFrequency());
+    }
+
+    public void setRateIndex(Account account) {
+        Pages.editAccountPage().clickRateIndexSelectorButton();
+        List<String> listOfRateIndex = Pages.editAccountPage().getRateIndexList();
+
+        Assert.assertTrue(listOfRateIndex.size() > 0, "There are no product types available");
+        if (account.getRateIndex() == null) {
+            account.setRateIndex(listOfRateIndex.get(new Random().nextInt(listOfRateIndex.size())).trim());
+        }
+        Pages.editAccountPage().clickRateIndexSelectorOption(account.getRateIndex());
+    }
+
+    public void setRateRoundingMethod(Account account) {
+        Pages.editAccountPage().clickRateRoundingMethodSelectorButton();
+        List<String> listOfRateRoundingMethod = Pages.editAccountPage().getRateRoundingMethodList();
+
+        Assert.assertTrue(listOfRateRoundingMethod.size() > 0, "There are no product types available");
+        if (account.getRateRoundingMethod() == null) {
+            account.setRateRoundingMethod(listOfRateRoundingMethod.get(new Random().nextInt(listOfRateRoundingMethod.size())).trim());
+        }
+        Pages.editAccountPage().clickRateRoundingMethodSelectorOption(account.getRateRoundingMethod());
     }
 
     /**
@@ -669,5 +726,12 @@ public class EditAccount {
         Pages.editAccountPage().setAutomaticOverdraftLimit(overdraftLimit);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForEditButton();
+    }
+
+    public void enableAdjustableRateSwitch() {
+        if (Pages.editAccountPage().getAdjustableRateValue().equalsIgnoreCase("no")) {
+            Pages.editAccountPage().clickAdjustableRate();
+            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        }
     }
 }

@@ -73,6 +73,10 @@ public class EditAccountPage extends PageTools {
     private By bankruptcyJudgement = By.xpath("//div[@id='bankruptcyjudgementcode']//span[contains(@class, 'ng-scope')]");
     private By exemptFromRegCC = By.xpath("//dn-switch[@id='exemptfromregcc']");
     private By callClassCodeNotValid = By.xpath("//div[@data-test-id='field-callclasscode']/a[contains(@uib-tooltip-html, 'is no longer a valid value')]");
+    private By adjustableRate = By.xpath("//dn-switch[@id='adjustablerate_checkbox']");
+    private By adjustableRateValue = By.xpath("//dn-switch[@id='adjustablerate_checkbox']/div/div/span[1]");
+    private By saveAccountButton = By.xpath("//button[@data-test-id='action-save']");
+    private By changePaymentWithRateChange = By.xpath("//dn-switch[@id='changepaymentwithratechange']");
 
     private By federalWHReasonSelectorButton = By.xpath("//div[@id='federalwithholdingreason']");
     private By federalWHReasonList = By.xpath("//li[contains(@role, 'option')]/div/span");
@@ -147,6 +151,26 @@ public class EditAccountPage extends PageTools {
     private By statementCycleSelectorButton = By.xpath("//div[@id='statementcycle']");
     private By statementCycleList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By statementCycleSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+
+    private final By daysBaseYearBaseSelectorButton = By.xpath("//div[@id='daybaseforinterestrate']");
+    private final By daysBaseYearBaseList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By daysBaseYearBaseSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
+
+    private final By rateChangeFrequencySelectorButton = By.xpath("//div[@id='variableratechangefrequency']");
+    private final By rateChangeFrequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By rateChangeFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
+
+    private final By paymentChangeFrequencySelectorButton = By.xpath("//div[@id='armchangefrequency']");
+    private final By paymentChangeFrequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By paymentChangeFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
+
+    private final By rateIndexSelectorButton = By.xpath("//div[@id='armrateindex']");
+    private final By rateIndexList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By rateIndexSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
+
+    private final By rateRoundingMethodSelectorButton = By.xpath("//div[@id='armroundingindicator']");
+    private final By rateRoundingMethodList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By rateRoundingMethodSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
 
     /**
      * Disabled fields in edit mode
@@ -241,6 +265,17 @@ public class EditAccountPage extends PageTools {
     private By interestLastPaid = By.xpath("//input[@data-test-id='field-amountinterestlastpaid']");
     private By birthDate = By.xpath("//input[@data-test-id='field-dateofbirth']");
     private By dateDeceased = By.xpath("//input[@data-test-id='field-datedeceased']");
+    private By nextRateChangeDate = By.xpath("//input[@id='armdatenextirchange']");
+    private final By rateChangeLeadDays = By.xpath("//input[@id='ratechangeleaddays']");
+    private final By nextPaymentChangeDate = By.xpath("//input[@id='armdatenextpaymentchange']");
+    private final By paymentChangeLeadDays = By.xpath("//input[@id='paymentchangeleaddays']");
+    private final By rateMargin = By.xpath("//input[@id='interestratebase']");
+    private final By minRate = By.xpath("//input[@id='armfloor']");
+    private final By maxRate = By.xpath("//input[@id='armceiling']");
+    private final By maxRateChangeUpDown = By.xpath("//input[@id='armperiodiccap']");
+    private final By maxRateLifetimeCap = By.xpath("//input[@id='armlifetimecap']");
+    private final By rateRoundingFactor = By.xpath("//input[@id='armroundingfactor']");
+    private final By originalInterestRate = By.xpath("//input[@id='armoriginalinterestrate']");
 
     /**
      * Groups
@@ -300,6 +335,12 @@ public class EditAccountPage extends PageTools {
         waitForElementClickable(exemptFromRegCC);
         scrollToPlaceElementInCenter(exemptFromRegCC);
         return getElementText(exemptFromRegCC);
+    }
+
+    @Step("Click 'Change Payment with Rate Change' switch")
+    public void clickChangePaymentWithRateChangeSwitch() {
+        scrollToPlaceElementInCenter(changePaymentWithRateChange);
+        click(changePaymentWithRateChange);
     }
 
     @Step("Click 'Apply Seasonal Address' switch")
@@ -650,6 +691,25 @@ public class EditAccountPage extends PageTools {
     /**
      * Check if field is disabled in edit mode
      */
+
+    private final By pendingVariablePayment = By.xpath("//input[@id='armpendingpaymentamt']");
+    private final By lastPaymentChangeDate = By.xpath("//input[@id='armdatelastpaymentchange']");
+    private final By priorPaymentAmount = By.xpath("//input[@id='armpriorpaymentamount']");
+
+    @Step("Check if 'Last Payment Change Date' field is disabled edit mode")
+    public boolean isLastPaymentChangeDateDisabled() {
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", lastPaymentChangeDate));
+    }
+
+    @Step("Check if 'Pending Variable Payment Amount' field is disabled edit mode")
+    public boolean isPendingVariablePaymentAmountDisabled() {
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", pendingVariablePayment));
+    }
+
+    @Step("Check if 'Prior Variable Payment Amount' field is disabled edit mode")
+    public boolean isPriorVariablePaymentAmountDisabled() {
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", priorPaymentAmount));
+    }
 
     @Step("Check if 'IRA Distribution Account Number' field is disabled edit mode")
     public boolean isIraDistributionAccountNumberDisabledInEditMode() {
@@ -1484,6 +1544,94 @@ public class EditAccountPage extends PageTools {
         typeWithoutWipe(date, dateDeceased);
     }
 
+    @Step("Set 'Next Rate Change Date' value")
+    public void setNextRateChangeDate(String date) {
+        waitForElementClickable(nextRateChangeDate);
+        scrollToPlaceElementInCenter(nextRateChangeDate);
+        typeWithoutWipe("", nextRateChangeDate);
+        SelenideTools.sleep(1);
+        typeWithoutWipe(date, nextRateChangeDate);
+    }
+
+    @Step("Set 'Rate Change Lead Days' value")
+    public void setRateChangeLeadDays(String days) {
+        waitForElementClickable(rateChangeLeadDays);
+        scrollToPlaceElementInCenter(rateChangeLeadDays);
+        type(days, rateChangeLeadDays);
+    }
+
+    @Step("Set 'Next Payment Change Date' value")
+    public void setNextPaymentChangeDate(String date) {
+        waitForElementClickable(nextPaymentChangeDate);
+        scrollToPlaceElementInCenter(nextPaymentChangeDate);
+        typeWithoutWipe("", nextPaymentChangeDate);
+        SelenideTools.sleep(1);
+        typeWithoutWipe(date, nextPaymentChangeDate);
+    }
+
+    @Step("Set 'Rate Margin' value")
+    public void setRateMargin(String days) {
+        waitForElementClickable(rateMargin);
+        scrollToPlaceElementInCenter(rateMargin);
+        type(days, rateMargin);
+    }
+
+    @Step("Set 'Min Rate' value")
+    public void setMinRate(String days) {
+        waitForElementClickable(minRate);
+        scrollToPlaceElementInCenter(minRate);
+        type(days, minRate);
+    }
+
+    @Step("Set 'Max Rate' value")
+    public void setMaxRate(String days) {
+        waitForElementClickable(maxRate);
+        scrollToPlaceElementInCenter(maxRate);
+        type(days, maxRate);
+    }
+
+    @Step("Set 'Max Rate change up/down' value")
+    public void setMaxRateChangeUpDown(String days) {
+        waitForElementClickable(maxRateChangeUpDown);
+        scrollToPlaceElementInCenter(maxRateChangeUpDown);
+        type(days, maxRateChangeUpDown);
+    }
+
+    @Step("Set 'Max rate lifetime cap' value")
+    public void setMaxRateLifetimeCap(String days) {
+        waitForElementClickable(maxRateLifetimeCap);
+        scrollToPlaceElementInCenter(maxRateLifetimeCap);
+        type(days, maxRateLifetimeCap);
+    }
+
+    @Step("Set 'Rate rounding factor' value")
+    public void setRateRoundingFactor(String days) {
+        waitForElementClickable(rateRoundingFactor);
+        scrollToPlaceElementInCenter(rateRoundingFactor);
+        type(days, rateRoundingFactor);
+    }
+
+//    @Step("Set 'Rate rounding method' value")
+//    public void setRateRoundingMethod(String days) {
+//        waitForElementClickable(rateRoundingMethod);
+//        scrollToPlaceElementInCenter(rateRoundingMethod);
+//        type(days, rateRoundingMethod);
+//    }
+
+    @Step("Set 'Original interest rate' value")
+    public void setOriginalInterestRate(String days) {
+        waitForElementClickable(originalInterestRate);
+        scrollToPlaceElementInCenter(originalInterestRate);
+        type(days, originalInterestRate);
+    }
+
+    @Step("Set 'Payment Change Lead Days' value")
+    public void setPaymentChangeLeadDays(String days) {
+        waitForElementClickable(paymentChangeLeadDays);
+        scrollToPlaceElementInCenter(paymentChangeLeadDays);
+        type(days, paymentChangeLeadDays);
+    }
+
     @Step("Click on 'Reason Debit Card Charge Waived' option")
     public void clickReasonDebitCardChargeWaivedSelectorOption(String reasonDebitCardChargeWaivedOption) {
         waitForElementVisibility(reasonReasonDebitCardChargeWaivedSelectorOption, reasonDebitCardChargeWaivedOption);
@@ -1740,5 +1888,135 @@ public class EditAccountPage extends PageTools {
     public boolean isCallClassCodeNotValid() {
         waitForElementVisibility(callClassCodeNotValid);
         return isElementVisible(callClassCodeNotValid);
+    }
+
+    @Step("Click the 'Days Base/Year Base' selector button")
+    public void clickDaysBaseYearBaseSelectorOption(String daysBaseYearBaseOption) {
+        waitForElementVisibility(daysBaseYearBaseSelectorOption, daysBaseYearBaseOption);
+        waitForElementClickable(daysBaseYearBaseSelectorOption, daysBaseYearBaseOption);
+        click(daysBaseYearBaseSelectorOption, daysBaseYearBaseOption);
+    }
+
+    @Step("Returning list of 'Days Base/Year Base' options")
+    public List<String> getDaysBaseYearBaseList() {
+        waitForElementVisibility(daysBaseYearBaseList);
+        waitForElementClickable(daysBaseYearBaseList);
+        return getElementsText(daysBaseYearBaseList);
+    }
+
+    @Step("Click the 'Days Base/Year Base' selector button")
+    public void clickDaysBaseYearBaseSelectorButton() {
+        waitForElementVisibility(daysBaseYearBaseSelectorButton);
+        scrollToPlaceElementInCenter(daysBaseYearBaseSelectorButton);
+        waitForElementClickable(daysBaseYearBaseSelectorButton);
+        click(daysBaseYearBaseSelectorButton);
+    }
+
+    @Step("Click the 'Rate Change Frequency' selector button")
+    public void clickRateChangeFrequencySelectorOption(String rateChangeFrequencyOption) {
+        waitForElementVisibility(rateChangeFrequencySelectorOption, rateChangeFrequencyOption);
+        waitForElementClickable(rateChangeFrequencySelectorOption, rateChangeFrequencyOption);
+        click(rateChangeFrequencySelectorOption, rateChangeFrequencyOption);
+    }
+
+    @Step("Returning list of 'Rate Change Frequency' options")
+    public List<String> getRateChangeFrequencyList() {
+        waitForElementVisibility(rateChangeFrequencyList);
+        waitForElementClickable(rateChangeFrequencyList);
+        return getElementsText(rateChangeFrequencyList);
+    }
+
+    @Step("Click the 'Rate Change Frequency' selector button")
+    public void clickRateChangeFrequencySelectorButton() {
+        waitForElementVisibility(rateChangeFrequencySelectorButton);
+        scrollToPlaceElementInCenter(rateChangeFrequencySelectorButton);
+        waitForElementClickable(rateChangeFrequencySelectorButton);
+        click(rateChangeFrequencySelectorButton);
+    }
+
+    @Step("Click the 'Payment Change Frequency' selector button")
+    public void clickPaymentChangeFrequencySelectorOption(String paymentChangeFrequencyOption) {
+        waitForElementVisibility(paymentChangeFrequencySelectorOption, paymentChangeFrequencyOption);
+        waitForElementClickable(paymentChangeFrequencySelectorOption, paymentChangeFrequencyOption);
+        click(paymentChangeFrequencySelectorOption, paymentChangeFrequencyOption);
+    }
+
+    @Step("Returning list of 'Payment Change Frequency' options")
+    public List<String> getPaymentChangeFrequencyList() {
+        waitForElementVisibility(paymentChangeFrequencyList);
+        waitForElementClickable(paymentChangeFrequencyList);
+        return getElementsText(paymentChangeFrequencyList);
+    }
+
+    @Step("Click the 'Payment Change Frequency' selector button")
+    public void clickPaymentChangeFrequencySelectorButton() {
+        waitForElementVisibility(paymentChangeFrequencySelectorButton);
+        scrollToPlaceElementInCenter(paymentChangeFrequencySelectorButton);
+        waitForElementClickable(paymentChangeFrequencySelectorButton);
+        click(paymentChangeFrequencySelectorButton);
+    }
+
+    @Step("Click the 'Rate Index' selector button")
+    public void clickRateIndexSelectorOption(String rateIndexOption) {
+        waitForElementVisibility(rateIndexSelectorOption, rateIndexOption);
+        waitForElementClickable(rateIndexSelectorOption, rateIndexOption);
+        click(rateIndexSelectorOption, rateIndexOption);
+    }
+
+    @Step("Returning list of 'Rate Index' options")
+    public List<String> getRateIndexList() {
+        waitForElementVisibility(rateIndexList);
+        waitForElementClickable(rateIndexList);
+        return getElementsText(rateIndexList);
+    }
+
+    @Step("Click the 'Rate Index' selector button")
+    public void clickRateIndexSelectorButton() {
+        waitForElementVisibility(rateIndexSelectorButton);
+        scrollToPlaceElementInCenter(rateIndexSelectorButton);
+        waitForElementClickable(rateIndexSelectorButton);
+        click(rateIndexSelectorButton);
+    }
+
+    @Step("Click the 'Rate Rounding Method' selector button")
+    public void clickRateRoundingMethodSelectorOption(String rateRoundingMethodOption) {
+        waitForElementVisibility(rateRoundingMethodSelectorOption, rateRoundingMethodOption);
+        waitForElementClickable(rateRoundingMethodSelectorOption, rateRoundingMethodOption);
+        click(rateRoundingMethodSelectorOption, rateRoundingMethodOption);
+    }
+
+    @Step("Returning list of 'Rate Rounding Method' options")
+    public List<String> getRateRoundingMethodList() {
+        waitForElementVisibility(rateRoundingMethodList);
+        waitForElementClickable(rateRoundingMethodList);
+        return getElementsText(rateRoundingMethodList);
+    }
+
+    @Step("Click the 'Rate Rounding Method' selector button")
+    public void clickRateRoundingMethodSelectorButton() {
+        waitForElementVisibility(rateRoundingMethodSelectorButton);
+        scrollToPlaceElementInCenter(rateRoundingMethodSelectorButton);
+        waitForElementClickable(rateRoundingMethodSelectorButton);
+        click(rateRoundingMethodSelectorButton);
+    }
+
+    @Step("Get the 'Adjustable Rate' value")
+    public String getAdjustableRateValue() {
+        return getElementText(adjustableRateValue).trim();
+    }
+
+    @Step("Click the 'Adjustable Rate' switch")
+    public void clickAdjustableRate() {
+        waitForElementClickable(adjustableRate);
+        scrollToPlaceElementInCenter(adjustableRate);
+        click(adjustableRate);
+    }
+
+    @Step("Click the 'Save' button")
+    public void clickSaveAccountButton() {
+        waitForElementVisibility(saveAccountButton);
+        scrollToPlaceElementInCenter(saveAccountButton);
+        waitForElementClickable(saveAccountButton);
+        click(saveAccountButton);
     }
 }

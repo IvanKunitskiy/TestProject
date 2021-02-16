@@ -104,6 +104,9 @@ public class Account {
     private String cycleCode;
     private String commitmentTypeAmt;
     private String dateFirstPaymentDue;
+    private String paymentChangeFrequency;
+    private String rateIndex;
+    private String rateRoundingMethod;
 
     public Account setLoanAccountData() {
         Account account = new Account();
@@ -1002,5 +1005,29 @@ public class Account {
 
     public void setDateFirstPaymentDue(String dateFirstPaymentDue) {
         this.dateFirstPaymentDue = dateFirstPaymentDue;
+    }
+
+    public String getPaymentChangeFrequency() {
+        return paymentChangeFrequency;
+    }
+
+    public void setPaymentChangeFrequency(String paymentChangeFrequency) {
+        this.paymentChangeFrequency = paymentChangeFrequency;
+    }
+
+    public String getRateIndex() {
+        return rateIndex;
+    }
+
+    public void setRateIndex(String rateIndex) {
+        this.rateIndex = rateIndex;
+    }
+
+    public String getRateRoundingMethod() {
+        return rateRoundingMethod;
+    }
+
+    public void setRateRoundingMethod(String rateRoundingMethod) {
+        this.rateRoundingMethod = rateRoundingMethod;
     }
 }
