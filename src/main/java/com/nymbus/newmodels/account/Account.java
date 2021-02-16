@@ -112,13 +112,13 @@ public class Account {
         account.setAccountType(AccountType.INDIVIDUAL.getAccountType());
         account.setProductType(ProductType.LOAN_ACCOUNT.getProductType());
         account.setAccountNumber(Generator.genAccountNumber());
-        account.setDateOpened(DateTime.getDateMinusMonth(WebAdminActions.loginActions().getSystemDate(), 1));
+        account.setDateOpened(DateTime.getDateMinusMonth(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), 1));
         account.setLoanClassCode(LoanClassCode.COMMERCIAL_LOAN.getLoanClassCode());
         account.setPaymentAmount("1001.00");
         account.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
         account.setPaymentFrequency(PaymentFrequency.MONTHLY.getPaymentFrequency());
         account.setPaymentBilledLeadDays(String.valueOf(Generator.genInt(1, 30))); // less than number of days in Payment Frequency (e.g. Payment Frequency = Monthly, then range from 1 to 31)
-        account.setNextPaymentBilledDueDate(DateTime.getDateMinusMonth(account.getDateOpened(), 1));
+        account.setNextPaymentBilledDueDate(DateTime.getDatePlusMonth(account.getDateOpened(), 1));
         account.setDateFirstPaymentDue(DateTime.getLocalDatePlusMonthsWithPatternAndLastDay(account.getDateOpened(), 1, "MM/dd/yyyy"));
         account.setCurrentEffectiveRate(String.valueOf(10));
         account.setInterestMethod(InterestMethod.SIMPLE_INTEREST.getInterestMethod());
