@@ -66,8 +66,7 @@ public class C25378_ProcessLoanPaymentTransaction extends BaseTest {
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
-
-
+        
         // Create account
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkAccount);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
