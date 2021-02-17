@@ -283,6 +283,18 @@ public class RetrievingAccountData {
         return amountIntegerPart + amountFractionalPart;
     }
 
+    public double getInterestMinusValue(int index) {
+        double interest = Double.parseDouble(Pages.accountTransactionPage().getInterestValue(index));
+        double interestFractionalPart = Double.parseDouble(Pages.accountTransactionPage().getInterestMinusFractionalValue(index))/100;
+        return interest + interestFractionalPart;
+    }
+
+    public double getEscrowMinusValue(int index) {
+        double escrow = Double.parseDouble(Pages.accountTransactionPage().getEscrowValue(index));
+        double escrowFractionalPart = Double.parseDouble(Pages.accountTransactionPage().getEscrowMinusFractionalValue(index))/100;
+        return escrow + escrowFractionalPart;
+    }
+
     public double getAmountValue(int index, int offset) {
         double amountIntegerPart = getAmount(index, offset);
         double amountFractionalPart = getAmountFractionalPart(index, offset);

@@ -84,12 +84,15 @@ public class AccountDetailsPage extends PageTools {
     private By correspondingAccount= By.xpath("//tr[@data-config-name='correspondingaccountid']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By printStatementNextUpdate= By.xpath("//tr[@data-config-name='printstatementnextupdate']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By interestPaidYTD= By.xpath("//tr[@data-config-name='interestpaidytd']//span[contains(@class, 'dnTextFixedWidthText')]"); //
+    private By interestPaidToDate= By.xpath("//tr[@data-config-name='interestpaidtodate']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By dateInterestPaidThru = By.xpath("//tr[@data-test-id='field-dateinterestpaidthrough']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By dateNextInterest= By.xpath("//tr[@data-config-name='datenextinterestpayment']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By rentalAmount = By.xpath("//tr[@data-config-name='rentalamount']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By discountReason = By.xpath("//tr[@data-config-name='discountreason']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By discountPeriods = By.xpath("//tr[@data-config-name='discountperiods']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By dateNextBilling = By.xpath("//tr[@data-config-name='datenextbiling']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By dateNextDue = By.xpath("//tr[@data-config-name='nextduedate']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private By dateLastPayment = By.xpath("//tr[@data-config-name='datelastpayment']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By accountsLink = By.xpath("//a[@data-test-id='go-accounts']");
     private By mailCode = By.xpath("//tr[@data-config-name='mailingcode']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By bankAccountNumberInterestOnCD = By.xpath("//tr[@data-config-name='bankaccountnumberinterestoncd']//span[contains(@class, 'dnTextFixedWidthText')]");
@@ -436,6 +439,12 @@ public class AccountDetailsPage extends PageTools {
         return getElementText(interestPaidYTD).replaceAll("[^0-9.]", "");
     }
 
+    @Step("Get 'Interest Paid To Date' value")
+    public String getInterestPaidToDate() {
+        waitForElementVisibility(interestPaidToDate);
+        return getElementText(interestPaidToDate).replaceAll("[^0-9.]", "");
+    }
+
     @Step("Get 'Interest Paid Last Year' value")
     public String getInterestPaidLastYear() {
         waitForElementVisibility(interestPaidLastYear);
@@ -679,6 +688,18 @@ public class AccountDetailsPage extends PageTools {
     public String getBillingNextDate() {
         waitForElementVisibility(dateNextBilling);
         return getElementText(dateNextBilling);
+    }
+
+    @Step("Get account 'Date next Due' value")
+    public String getNextDueDate() {
+        waitForElementVisibility(dateNextDue);
+        return getElementText(dateNextDue);
+    }
+
+    @Step("Get account 'Date last payment' value")
+    public String getDateLastPayment() {
+        waitForElementVisibility(dateLastPayment);
+        return getElementText(dateLastPayment);
     }
 
     @Step("Get account 'Call Class Code' value")

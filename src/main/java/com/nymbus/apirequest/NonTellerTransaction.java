@@ -39,7 +39,8 @@ public class NonTellerTransaction extends AllureLogger {
         logInfo("Request body: " + requestBody.toString());
         System.out.println(requestBody.toString());
 
-        given().
+
+        ResponseBodyExtractionOptions responseBody = given().
                 auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
                 contentType(ContentType.JSON).
                 relaxedHTTPSValidation().
@@ -47,8 +48,9 @@ public class NonTellerTransaction extends AllureLogger {
                 when().
                 post(GENERIC_PROCESS_URL).
                 then().
-                statusCode(200).
-                body("data[0].field.39", equalTo("00"));
+                statusCode(200).extract().body();
+
+        logInfo("Response body: " + responseBody.asString());
     }
 
     public void generateMixDepCashTransaction(Map<String, String> fields) {
