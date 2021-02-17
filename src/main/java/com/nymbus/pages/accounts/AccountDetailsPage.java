@@ -940,4 +940,11 @@ public class AccountDetailsPage extends PageTools {
         return isElementVisible(otherLoanSettings);
     }
 
+    private final By changePaymentWithRateChange = By.xpath("//tr[@data-test-id='field-changepaymentwithratechange']/td/dn-field-view/div/div/span/span");
+
+    @Step("Get the 'Change Payment with Rate Change' value")
+    public String getChangePaymentWithRateChange() {
+        return getElementText(changePaymentWithRateChange);
+    }
+
 }

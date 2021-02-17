@@ -354,6 +354,24 @@ public class EditAccount {
         }
     }
 
+    public void fillInPaymentChangeInputFieldsInLoanAccountEditMode(Account account) {
+        AccountActions.editAccount().setPaymentChangeFrequency(account);
+        AccountActions.editAccount().setRateChangeFrequency(account);
+        Pages.editAccountPage().setNextRateChangeDate(account.getNextRateChangeDate());
+        Pages.editAccountPage().setRateChangeLeadDays(account.getRateChangeLeadDays());
+        Pages.editAccountPage().setNextPaymentChangeDate(account.getNextPaymentChangeDate());
+        Pages.editAccountPage().setPaymentChangeLeadDays(account.getPaymentChangeLeadDays());
+        AccountActions.editAccount().setRateIndex(account);
+        Pages.editAccountPage().setRateMargin(account.getRateMargin());
+        Pages.editAccountPage().setMinRate(account.getMinRate());
+        Pages.editAccountPage().setMaxRate(account.getMaxRate());
+        Pages.editAccountPage().setMaxRateChangeUpDown(account.getMaxRateChangeUpDown());
+        Pages.editAccountPage().setMaxRateLifetimeCap(account.getMaxRateLifetimeCap());
+        Pages.editAccountPage().setRateRoundingFactor(account.getRateRoundingFactor());
+        AccountActions.editAccount().setRateRoundingMethod(account);
+        Pages.editAccountPage().setOriginalInterestRate(account.getOriginalInterestRate());
+    }
+
     public void selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccount(Account account) {
         setCurrentOfficer(account);
         setBankBranch(account);
@@ -731,6 +749,13 @@ public class EditAccount {
     public void enableAdjustableRateSwitch() {
         if (Pages.editAccountPage().getAdjustableRateValue().equalsIgnoreCase("no")) {
             Pages.editAccountPage().clickAdjustableRate();
+            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        }
+    }
+
+    public void enableChangePaymentWithRateChangeSwitch() {
+        if (Pages.editAccountPage().getChangePaymentWithRateChangeValue().equalsIgnoreCase("no")) {
+            Pages.editAccountPage().clickChangePaymentWithRateChangeSwitch();
             SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         }
     }

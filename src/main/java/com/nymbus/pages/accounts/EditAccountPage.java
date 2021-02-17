@@ -74,9 +74,10 @@ public class EditAccountPage extends PageTools {
     private By exemptFromRegCC = By.xpath("//dn-switch[@id='exemptfromregcc']");
     private By callClassCodeNotValid = By.xpath("//div[@data-test-id='field-callclasscode']/a[contains(@uib-tooltip-html, 'is no longer a valid value')]");
     private By adjustableRate = By.xpath("//dn-switch[@id='adjustablerate_checkbox']");
-    private By adjustableRateValue = By.xpath("//dn-switch[@id='adjustablerate_checkbox']/div/div/span[1]");
+    private By adjustableRateValue = By.xpath("//dn-switch[@id='adjustablerate_checkbox']/div/div/span[2]");
     private By saveAccountButton = By.xpath("//button[@data-test-id='action-save']");
     private By changePaymentWithRateChange = By.xpath("//dn-switch[@id='changepaymentwithratechange']");
+    private By changePaymentWithRateChangeValue = By.xpath("//dn-switch[@id='changepaymentwithratechange']/div/div/span[2]");
 
     private By federalWHReasonSelectorButton = By.xpath("//div[@id='federalwithholdingreason']");
     private By federalWHReasonList = By.xpath("//li[contains(@role, 'option')]/div/span");
@@ -2010,6 +2011,11 @@ public class EditAccountPage extends PageTools {
         waitForElementClickable(adjustableRate);
         scrollToPlaceElementInCenter(adjustableRate);
         click(adjustableRate);
+    }
+
+    @Step("Get the 'Change Payment With Rate Change' value")
+    public String getChangePaymentWithRateChangeValue() {
+        return getElementText(changePaymentWithRateChangeValue).trim();
     }
 
     @Step("Click the 'Save' button")

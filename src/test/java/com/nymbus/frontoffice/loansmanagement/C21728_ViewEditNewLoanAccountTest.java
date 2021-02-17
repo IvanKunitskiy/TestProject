@@ -5,8 +5,6 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.loans.DaysBaseYearBase;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.DateTime;
-import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -161,34 +159,35 @@ public class C21728_ViewEditNewLoanAccountTest extends BaseTest {
         Pages.editAccountPage().isPriorVariablePaymentAmountDisabled();
 
         logInfo("Step 7: Fill in all appeared fields with valid values (use future dates for 'Date' fields)");
-        Pages.editAccountPage().clickChangePaymentWithRateChangeSwitch();
-        AccountActions.editAccount().setRateChangeFrequency(loanAccount);
-        AccountActions.editAccount().setPaymentChangeFrequency(loanAccount);
-        Pages.editAccountPage().setNextRateChangeDate(getLocalDatePlusRandomMonthAmount());
-        Pages.editAccountPage().setRateChangeLeadDays(Generator.getRandomStringNumber(1));
-        Pages.editAccountPage().setNextPaymentChangeDate(getLocalDatePlusRandomMonthAmount());
-        Pages.editAccountPage().setPaymentChangeLeadDays(Generator.getRandomStringNumber(1));
-        AccountActions.editAccount().setRateIndex(loanAccount);
-        Pages.editAccountPage().setRateMargin(Generator.getRandomStringNumber(2));
-        Pages.editAccountPage().setMinRate(Generator.getRandomStringNumber(1));
-        Pages.editAccountPage().setMaxRate(Generator.getRandomStringNumber(2));
-        Pages.editAccountPage().setMaxRateChangeUpDown(Generator.getRandomStringNumber(2));
-        Pages.editAccountPage().setMaxRateLifetimeCap(Generator.getRandomStringNumber(2));
-        Pages.editAccountPage().setRateRoundingFactor(Generator.getRandomStringNumber(2));
-        AccountActions.editAccount().setRateRoundingMethod(loanAccount);
-        Pages.editAccountPage().setOriginalInterestRate(Generator.getRandomStringNumber(2));
+        AccountActions.editAccount().enableChangePaymentWithRateChangeSwitch();
+        AccountActions.editAccount().fillInPaymentChangeInputFieldsInLoanAccountEditMode(loanAccount);
 
         logInfo("Step 8: Click 'Save'");
         Pages.editAccountPage().clickSaveAccountButton();
+        Pages.accountDetailsPage().waitForFullProfileButton();
 
         // TODO: Verify all entered values in "Rate/Payment Change" section
-    }
 
-    private String getLocalDatePlusRandomMonthAmount() {
-        int randomMonthsAmount = Generator.genInt(1, 12);
-        String localDateOfPattern = DateTime.getLocalDateOfPattern("MM/dd/yyyy");
 
-        return DateTime.getLocalDateWithFormatPlusDays(localDateOfPattern, "MM/dd/yyyy",
-                "MM/dd/yyyy", randomMonthsAmount);
+//        Change Payment with Rate Change
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getChangePaymentWithRateChange().equalsIgnoreCase("no"),
+                new CustomStepResult("'Change Payment with Rate Change' group is not valid",
+                        "'Change Payment with Rate Change' group is valid"));
+//        Rate Change Frequency
+//        Payment Change Frequency
+//        Next Rate Change Date
+//        Rate Change Lead Days
+//        Next Payment Change Date
+//        Payment Change Lead Days
+//        Rate index
+//        Rate Margin
+//        Min Rate
+//        Max Rate
+//        Max rate change up/down
+//        Max rate lifetime cap
+//        Rate rounding factor
+//        Rate Rounding Method
+//        Original interest rate
+
     }
 }

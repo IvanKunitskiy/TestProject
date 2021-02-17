@@ -5,9 +5,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
-import com.nymbus.newmodels.account.loanaccount.InterestMethod;
-import com.nymbus.newmodels.account.loanaccount.LoanClassCode;
-import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
+import com.nymbus.newmodels.account.loanaccount.*;
 import com.nymbus.newmodels.account.product.ProductType;
 import com.nymbus.newmodels.client.other.account.AccountType;
 import com.nymbus.newmodels.client.other.account.InterestFrequency;
@@ -107,6 +105,17 @@ public class Account {
     private String paymentChangeFrequency;
     private String rateIndex;
     private String rateRoundingMethod;
+    private String nextRateChangeDate;
+    private String rateChangeLeadDays;
+    private String nextPaymentChangeDate;
+    private String paymentChangeLeadDays;
+    private String rateMargin;
+    private String minRate;
+    private String maxRate;
+    private String maxRateChangeUpDown;
+    private String maxRateLifetimeCap;
+    private String rateRoundingFactor;
+    private String originalInterestRate;
 
     public Account setLoanAccountData() {
         Account account = new Account();
@@ -127,6 +136,21 @@ public class Account {
         account.setInterestMethod(InterestMethod.SIMPLE_INTEREST.getInterestMethod());
         account.setTerm(String.valueOf(12));
         account.setDaysBaseYearBase(DaysBaseYearBase.DAY_YEAR_365_365.getDaysBaseYearBase());
+
+        /* Edit loan account fields */
+        account.setRateChangeFrequency(RateChangeFrequency.NONE.getRateChangeFrequency());
+        account.setPaymentChangeFrequency(PaymentChangeFrequency.NONE.getPaymentChangeFrequency());
+        account.setNextRateChangeDate(DateTime.getDateWithNMonthAdded(WebAdminActions.loginActions().getSystemDate(), "MM/dd/yyyy", Generator.genInt(1, 12)));
+        account.setRateChangeLeadDays(Generator.getRandomStringNumber(1));
+        account.setNextPaymentChangeDate(DateTime.getDateWithNMonthAdded(WebAdminActions.loginActions().getSystemDate(), "MM/dd/yyyy", Generator.genInt(1, 12)));
+        account.setPaymentChangeLeadDays(Generator.getRandomStringNumber(2));
+        account.setRateMargin(Generator.getRandomStringNumber(2));
+        account.setMinRate(Generator.getRandomStringNumber(1));
+        account.setMaxRate(Generator.getRandomStringNumber(2));
+        account.setMaxRateChangeUpDown(Generator.getRandomStringNumber(2));
+        account.setMaxRateLifetimeCap(Generator.getRandomStringNumber(2));
+        account.setRateRoundingFactor(Generator.getRandomStringNumber(2));
+        account.setOriginalInterestRate(Generator.getRandomStringNumber(2));
 
         return account;
     }
@@ -1029,5 +1053,93 @@ public class Account {
 
     public void setRateRoundingMethod(String rateRoundingMethod) {
         this.rateRoundingMethod = rateRoundingMethod;
+    }
+
+    public String getNextRateChangeDate() {
+        return nextRateChangeDate;
+    }
+
+    public void setNextRateChangeDate(String nextRateChangeDate) {
+        this.nextRateChangeDate = nextRateChangeDate;
+    }
+
+    public String getRateChangeLeadDays() {
+        return rateChangeLeadDays;
+    }
+
+    public void setRateChangeLeadDays(String rateChangeLeadDays) {
+        this.rateChangeLeadDays = rateChangeLeadDays;
+    }
+
+    public String getNextPaymentChangeDate() {
+        return nextPaymentChangeDate;
+    }
+
+    public void setNextPaymentChangeDate(String nextPaymentChangeDate) {
+        this.nextPaymentChangeDate = nextPaymentChangeDate;
+    }
+
+    public String getPaymentChangeLeadDays() {
+        return paymentChangeLeadDays;
+    }
+
+    public void setPaymentChangeLeadDays(String paymentChangeLeadDays) {
+        this.paymentChangeLeadDays = paymentChangeLeadDays;
+    }
+
+    public String getRateMargin() {
+        return rateMargin;
+    }
+
+    public void setRateMargin(String rateMargin) {
+        this.rateMargin = rateMargin;
+    }
+
+    public String getMinRate() {
+        return minRate;
+    }
+
+    public void setMinRate(String minRate) {
+        this.minRate = minRate;
+    }
+
+    public String getMaxRate() {
+        return maxRate;
+    }
+
+    public void setMaxRate(String maxRate) {
+        this.maxRate = maxRate;
+    }
+
+    public String getMaxRateChangeUpDown() {
+        return maxRateChangeUpDown;
+    }
+
+    public void setMaxRateChangeUpDown(String maxRateChangeUpDown) {
+        this.maxRateChangeUpDown = maxRateChangeUpDown;
+    }
+
+    public String getMaxRateLifetimeCap() {
+        return maxRateLifetimeCap;
+    }
+
+    public void setMaxRateLifetimeCap(String maxRateLifetimeCap) {
+        this.maxRateLifetimeCap = maxRateLifetimeCap;
+    }
+
+    public String getRateRoundingFactor() {
+        return rateRoundingFactor;
+    }
+
+    public void setRateRoundingFactor(String rateRoundingFactor) {
+        this.rateRoundingFactor = rateRoundingFactor;
+    }
+
+    public String getOriginalInterestRate() {
+        return originalInterestRate;
+    }
+
+    public void setOriginalInterestRate(String originalInterestRate) {
+        this.originalInterestRate = originalInterestRate;
     }
 }
