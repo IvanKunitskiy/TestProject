@@ -356,6 +356,19 @@ public class WebAdminUsersActions {
                 "++&source=";
     }
 
+    private String getPaymentDueUrl(String accountNumber) {
+        return Constants.WEB_ADMIN_URL +
+                "RulesUIQuery.ct?" +
+                "waDbName=coreDS&" +
+                "dqlQuery=count%3A+10%0D%0A%23" +
+                "select%3A+accountid%2C+duedate%2C+principal%2C+interest%2C+escrow%2C+amount%2C+dateassessed%2C+paymentduetype%2C+paymentduestatus%0D%0A" +
+                "from%3A+bank.data.paymentdue%0D%0A" +
+                "where%3A+%0D%0A-+.accountid-%3Eaccountnumber%3A+"+
+                accountNumber +
+                "%0D%0AorderBy%3A+-id%0D%0A" +
+                "deletedIncluded%3A+true&source=";
+    }
+
     public AccountData getLoanAccountData(String accountNumber) {
         return getLoanAccountDataFromQueryByUrl(getLoanAccountDataUrl(accountNumber));
     }
@@ -447,6 +460,12 @@ public class WebAdminUsersActions {
         accountData.setCurrentDateDue(WebAdminPages.rulesUIQueryAnalyzerPage().getCurrentDateDue());
 
         return accountData;
+    }
+
+    public void queryPaymentDueData(String accountNumber) {
+        SelenideTools.openUrl(getPaymentDueUrl(accountNumber));
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
     }
 
     private String getPayoffAmountFromQueryByUrl(String url) {

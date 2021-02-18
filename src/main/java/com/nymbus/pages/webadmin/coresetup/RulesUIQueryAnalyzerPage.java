@@ -542,4 +542,52 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         waitForElementVisibility(currentDateDue);
         return getElementText(currentDateDue).trim();
     }
+
+    /**
+     * Payment Due
+     */
+
+    private final By accountId = By.xpath("//table/tbody//tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]//td/span[@key-name='accountid']");
+    private final By dueDate = By.xpath("//table/tbody//tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]//td/div[@key-name='duedate']");
+    private final By escrow = By.xpath("//table/tbody//tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]//td/div[@key-name='escrow']");
+    private final By amount = By.xpath("//table/tbody//tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]//td/div[@key-name='amount']");
+    private final By dateAssessed = By.xpath("//table/tbody//tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]//td/div[@key-name='dateassessed']");
+    private final By paymentDueType = By.xpath("//table/tbody//tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]//td/span[@key-name='paymentduetype']/following-sibling::span[3]/span");
+    private final By paymentDueStatus = By.xpath("//table/tbody//tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]//td/span[@key-name='paymentduestatus']/following-sibling::span[3]/span");
+
+    @Step("Get 'Account id' value")
+    public String getAccountIdByIndex(int index) {
+        return getElementText(accountId, index).trim();
+    }
+
+    @Step("Get 'Due Date' value")
+    public String getDueDateByIndex(int index) {
+        return getElementText(dueDate, index).trim();
+    }
+
+    @Step("Get 'Escrow' value")
+    public String getEscrowByIndex(int index) {
+        return getElementText(escrow, index).trim();
+    }
+
+    @Step("Get 'Amount' value")
+    public String getAmountByIndex(int index) {
+        return getElementText(amount, index).trim();
+    }
+
+    @Step("Get 'Amount' value")
+    public String getDateAssessedByIndex(int index) {
+        return getElementText(dateAssessed, index).trim();
+    }
+
+    @Step("Get 'Payment Due Type' value")
+    public String getPaymentDueTypeByIndex(int index) {
+        return getElementText(paymentDueType, index).trim();
+    }
+
+    @Step("Get 'Payment Due Status' value")
+    public String getPaymentDueStatusByIndex(int index) {
+        return getElementText(paymentDueStatus, index).trim();
+    }
+
 }
