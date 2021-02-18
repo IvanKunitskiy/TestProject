@@ -47,6 +47,15 @@ public class JSONData {
         return json;
     }
 
+    public static JSONObject getPaymentDueData(String accountNumber) {
+        JSONObject json = new JSONObject();
+        json.put("actions", getLoanActionsArray());
+        json.put("ruleType", "methods");
+        json.put("beans", getLoanBeansArray(accountNumber));
+
+        return json;
+    }
+
     public static JSONObject getAtmDepositData(String cardNumber, String cardExpiration, String amount, String onusTerminalID) {
         JSONObject json = new JSONObject();
         json.put("actions", getDepositActionsArray());
@@ -186,6 +195,17 @@ public class JSONData {
         return beans;
     }
 
+    private static JSONArray getLoanBeansArray(String accountNumber) {
+        JSONArray beans = new JSONArray();
+        JSONObject json = new JSONObject();
+        json.put("fields", new JSONObject());
+        json.put("rootId",accountNumber);
+        json.put("type","bank.data.actmst");
+        beans.put(json);
+
+        return beans;
+    }
+
     private static JSONArray getDepositBeansArray(String cardNumber, String cardExpiration, String amount, String onusTerminalID) {
         JSONArray beans = new JSONArray();
         JSONObject json = new JSONObject();
@@ -221,6 +241,14 @@ public class JSONData {
     private static JSONArray getDepositActionsArray() {
         JSONArray actions = new JSONArray();
         actions.put("0200");
+
+        return actions;
+    }
+
+    private static JSONArray getLoanActionsArray() {
+        JSONArray actions = new JSONArray();
+        actions.put("request");
+        actions.put("generatePaymentDue");
 
         return actions;
     }

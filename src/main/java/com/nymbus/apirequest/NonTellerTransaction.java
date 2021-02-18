@@ -33,6 +33,26 @@ public class NonTellerTransaction extends AllureLogger {
                 body("data[0].field.39", equalTo("00"));
     }
 
+    public void generatePaymentDueRecord(String accountNumber) {
+        JSONObject requestBody = JSONData.getPaymentDueData(accountNumber);
+
+        logInfo("Request body: " + requestBody.toString());
+        System.out.println(requestBody.toString());
+
+
+        ResponseBodyExtractionOptions responseBody = given().
+                auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
+                contentType(ContentType.JSON).
+                relaxedHTTPSValidation().
+                body(requestBody.toString()).
+                when().
+                post(GENERIC_PROCESS_URL).
+                then().
+                statusCode(200).extract().body();
+
+        logInfo("Response body: " + responseBody.asString());
+    }
+
     public void generateMixDepCashTransaction(Map<String, String> fields) {
         JSONObject requestBody = JSONData.getATMData(fields);
 

@@ -41,6 +41,17 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By piPaymentsAmount = By.xpath("//input[@data-test-id='field-amount_paymentHistory_0']");
     private final By piPaymentsPercentage = By.xpath("//input[@data-test-id='field-percentage_paymentHistory_0']");
     private final By piPaymentsRecalcFuturePymt = By.xpath("//dn-switch[@id='recalcfuturepayment']/div/div/span[2]");
+    private final By paymentDueRecord = By.xpath("(//div[@ui-view='paymentsDue']//tr)[2]");
+    private final By amountDue = By.xpath("//input[@data-test-id='field-amountdue']");
+    private final By paidStatus = By.xpath("(//div[@id='paymentduestatus']//span[contains(string(),\"Paid\")])[2]");
+    private final By datePaymentPaidInFull = By.xpath("//input[@id='datepaid']");
+    private final By dueDate = By.xpath("//input[@id='duedate']");
+    private final By paymentDate = By.xpath("//tr[@data-test-id='repeat-transaction-0']//span//span");
+    private final By interest = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[2]//span//span");
+    private final By principal = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[3]//span//span");
+    private final By escrow = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[4]//span//span");
+    private final By amount = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[5]//span//span");
+    private final By status = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[6]//span//span");
 
     @Step("Get Pi Payments Payment 'Recalc Future Pymt' value")
     public String getPiPaymentsRecalcFuturePymt() {
@@ -103,4 +114,72 @@ public class AccountPaymentInfoPage extends PageTools {
     public String getActivePaymentAmountInterestOnly() {
         return getElementText(activePaymentAmountInterestOnly).trim();
     }
+
+    @Step("Click payment due record")
+    public void clickPaymentDueRecord() {
+        waitForElementVisibility(paymentDueRecord);
+        waitForElementClickable(paymentDueRecord);
+        click(paymentDueRecord);
+    }
+
+    @Step("Get amount due")
+    public String getAmountDue() {
+        waitForElementVisibility(amountDue);
+        return getDisabledElementAttributeValue("value",amountDue);
+    }
+
+    @Step("Check Paid status visibility")
+    public boolean paidStatusIsVisibility(){
+        return isElementVisible(paidStatus);
+    }
+
+    @Step("Get Date payment paid in full value")
+    public String getDatePaymentPaidInFull() {
+        waitForElementVisibility(datePaymentPaidInFull);
+        return getDisabledElementAttributeValue("value", datePaymentPaidInFull);
+    }
+
+    @Step("Get Due date value")
+    public String getDueDate() {
+        waitForElementVisibility(dueDate);
+        return getDisabledElementAttributeValue("value", dueDate);
+    }
+
+    @Step("Get payment date value")
+    public String getPaymentDate(){
+        waitForElementVisibility(paymentDate);
+        return getElementText(paymentDate);
+    }
+
+    @Step("Get Interest value")
+    public String getInterest(){
+        waitForElementVisibility(interest);
+        return getElementText(interest).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get Principal value")
+    public String getPrincipal(){
+        waitForElementVisibility(principal);
+        return getElementText(principal).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get Escrow value")
+    public String getEscrow(){
+        waitForElementVisibility(escrow);
+        return getElementText(escrow).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get Amount value")
+    public String getAmount(){
+        waitForElementVisibility(amount);
+        return getElementText(amount).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get Status value")
+    public String getStatus(){
+        waitForElementVisibility(status);
+        return getElementText(status);
+    }
+
+
 }
