@@ -5,7 +5,9 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -39,7 +41,7 @@ public class C21743_Process433PayoffTransactionTest extends BaseTest {
     public void preCondition() {
 
         // Get loan account number
-        loanAccountNumber = WebAdminActions.webAdminUsersActions().getLoanAccountNumber();
+        loanAccountNumber = getLoanAccountNumberFromWebAdmin();
 
         // Set up client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
@@ -163,5 +165,19 @@ public class C21743_Process433PayoffTransactionTest extends BaseTest {
                 "'Account Status' row count is incorrect!");
         Assert.assertEquals(Pages.accountMaintenancePage().getRowNewValueByRowName("Account Status", 1),
                 "Closed", "'Account Status' is not 'Closed'");
+    }
+
+    private String getLoanAccountNumberFromWebAdmin() {
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        String accountNumber = WebAdminActions.webAdminUsersActions().getLoanAccountNumber();
+
+        WebAdminActions.loginActions().doLogout();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+
+        return accountNumber;
     }
 }

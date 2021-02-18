@@ -9,7 +9,7 @@ import org.openqa.selenium.By;
 public class InterestRateChangeModalPage extends PageTools {
 
     private final By modalWindow = By.xpath("//div[@class='modal-content']");
-    private final By newCurrentEffectiveRate = By.xpath("//input[@data-test-id='field-new_currenteffectiverate']");
+    private final By newCurrentEffectiveRate = By.xpath("//input[@data-test-id='field-newinterestrate']");
     private final By beginEarnDate = By.xpath("//input[@data-test-id='field-datethisratechange']");
     private final By accrueThruDate = By.xpath("//input[@data-test-id='field-dateaccruethru']");
     private final By commitTransactionButton = By.xpath("//button/span[text()='Commit Transaction']");

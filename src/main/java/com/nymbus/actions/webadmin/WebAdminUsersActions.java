@@ -475,10 +475,7 @@ public class WebAdminUsersActions {
     }
 
     private String getLoanAccountNumberFromQueryByUrl(String url) {
-        SelenideTools.openUrlInNewWindow(url);
-
-        SelenideTools.switchTo().window(1);
-        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        SelenideTools.openUrl(url);
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
 
@@ -486,13 +483,8 @@ public class WebAdminUsersActions {
         int showCount = 20;
         int bound = Math.min(numberOfSearchResult, showCount);
         int loanAccountNumberRandomIndex = getRandomIndex(bound);
-        String loanAccountNumber = WebAdminPages.rulesUIQueryAnalyzerPage().getLoanAccountNumberValueByIndex(loanAccountNumberRandomIndex);
 
-        WebAdminActions.loginActions().doLogoutProgrammatically();
-        SelenideTools.closeCurrentTab();
-        SelenideTools.switchTo().window(0);
-
-        return loanAccountNumber;
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getLoanAccountNumberValueByIndex(loanAccountNumberRandomIndex);
     }
 
     private int getPrintBalanceOnReceiptValueFromQueryByUrl(String url) {
