@@ -46,6 +46,10 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By paidStatus = By.xpath("(//div[@id='paymentduestatus']//span[contains(string(),\"Paid\")])[2]");
     private final By datePaymentPaidInFull = By.xpath("//input[@id='datepaid']");
     private final By dueDate = By.xpath("//input[@id='duedate']");
+    private final By dateDue = By.xpath("(//tr[@data-test-id='repeat-payment-0'])[3]//span//span");
+    private final By dueType = By.xpath("((//tr[@data-test-id='repeat-payment-0'])[3]//span//span)[2]");
+    private final By dueAmount = By.xpath("((//tr[@data-test-id='repeat-payment-0'])[3]//span//span)[3]");
+    private final By dueStatus = By.xpath("((//tr[@data-test-id='repeat-payment-0'])[3]//span//span)[4]");
     private final By paymentDate = By.xpath("//tr[@data-test-id='repeat-transaction-0']//span//span");
     private final By interest = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[2]//span//span");
     private final By principal = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[3]//span//span");
@@ -143,6 +147,30 @@ public class AccountPaymentInfoPage extends PageTools {
     public String getDueDate() {
         waitForElementVisibility(dueDate);
         return getDisabledElementAttributeValue("value", dueDate);
+    }
+
+    @Step("Get Due date value")
+    public String getDateDue() {
+        waitForElementVisibility(dateDue);
+        return getElementText(dateDue);
+    }
+
+    @Step("Get Due type value")
+    public String getDueType() {
+        waitForElementVisibility(dueType);
+        return getElementText(dueType);
+    }
+
+    @Step("Get Due amount value")
+    public String getDueAmount() {
+        waitForElementVisibility(dueAmount);
+        return getElementText(dueAmount);
+    }
+
+    @Step("Get Due status value")
+    public String getDueStatus() {
+        waitForElementVisibility(dueStatus);
+        return getElementText(dueStatus);
     }
 
     @Step("Get payment date value")
