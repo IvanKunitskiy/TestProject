@@ -137,6 +137,22 @@ public class AccountDetailsPage extends PageTools {
     private By daysBase = By.xpath("//tr[@data-test-id='field-daybaseforinterestrate']//td//span/span");
     private By loanClassCode = By.xpath("//tr[@data-config-name='classtype']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By lateFeeDue = By.xpath("//tr[@data-config-name='latefeedue']//span[contains(@class, 'dnTextFixedWidthText')]");
+    private final By changePaymentWithRateChange = By.xpath("//tr[@data-test-id='field-changepaymentwithratechange']/td/dn-field-view/div/div/span/span");
+    private final By rateChangeFrequency = By.xpath("//tr[@data-test-id='field-variableratechangefrequency']/td/dn-field-view/div/div/span/span");
+    private final By paymentChangeFrequency = By.xpath("//tr[@data-test-id='field-armchangefrequency']/td/dn-field-view/div/div/span/span");
+    private final By nextRateChangeDate = By.xpath("//tr[@data-test-id='field-armdatenextirchange']/td/dn-field-view/div/div/span/span");
+    private final By rateChangeLeadDays = By.xpath("//tr[@data-test-id='field-ratechangeleaddays']/td/dn-field-view/div/div/span/span");
+    private final By nextPaymentChangeDate = By.xpath("//tr[@data-test-id='field-armdatenextpaymentchange']/td/dn-field-view/div/div/span/span");
+    private final By paymentChangeLeadDays = By.xpath("//tr[@data-test-id='field-paymentchangeleaddays']/td/dn-field-view/div/div/span/span");
+    private final By rateIndex = By.xpath("//tr[@data-test-id='field-armrateindex']/td/dn-field-view/div/div/span/span");
+    private final By rateMargin = By.xpath("//tr[@data-test-id='field-interestratebase']/td/dn-field-view/div/div/span/span");
+    private final By minRate = By.xpath("//tr[@data-test-id='field-armfloor']/td/dn-field-view/div/div/span/span");
+    private final By maxRate = By.xpath("//tr[@data-test-id='field-armceiling']/td/dn-field-view/div/div/span/span");
+    private final By maxRateChangeUpDown = By.xpath("//tr[@data-test-id='field-armperiodiccap']/td/dn-field-view/div/div/span/span");
+    private final By maxRateLifetimeCap = By.xpath("//tr[@data-test-id='field-armlifetimecap']/td/dn-field-view/div/div/span/span");
+    private final By rateRoundingFactor = By.xpath("//tr[@data-test-id='field-armroundingfactor']/td/dn-field-view/div/div/span/span");
+    private final By rateRoundingMethod = By.xpath("//tr[@data-test-id='field-armroundingindicator']/td/dn-field-view/div/div/span/span");
+    private final By originalInterestRate = By.xpath("//tr[@data-test-id='field-armoriginalinterestrate']/td/dn-field-view/div/div/span/span");
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -940,11 +956,84 @@ public class AccountDetailsPage extends PageTools {
         return isElementVisible(otherLoanSettings);
     }
 
-    private final By changePaymentWithRateChange = By.xpath("//tr[@data-test-id='field-changepaymentwithratechange']/td/dn-field-view/div/div/span/span");
-
     @Step("Get the 'Change Payment with Rate Change' value")
     public String getChangePaymentWithRateChange() {
         return getElementText(changePaymentWithRateChange);
+    }
+
+    @Step("Get the 'Rate Change Frequency' value")
+    public String getRateChangeFrequency() {
+        return getElementText(rateChangeFrequency);
+    }
+
+    @Step("Get the 'Payment Change Frequency' value")
+    public String getPaymentChangeFrequency() {
+        return getElementText(paymentChangeFrequency);
+    }
+
+    @Step("Get the 'Next Rate Change Date' value")
+    public String getNextRateChangeDate() {
+        return getElementText(nextRateChangeDate);
+    }
+
+    @Step("Get the 'Rate Change Lead Days' value")
+    public String getRateChangeLeadDays() {
+        return getElementText(rateChangeLeadDays);
+    }
+
+    @Step("Get the 'Next Payment Change Date' value")
+    public String getNextPaymentChangeDate() {
+        return getElementText(nextPaymentChangeDate);
+    }
+
+    @Step("Get the 'Payment Change Lead Days' value")
+    public String getPaymentChangeLeadDays() {
+        return getElementText(paymentChangeLeadDays);
+    }
+
+    @Step("Get the 'Rate index' value")
+    public String getRateIndex() {
+        return getElementText(rateIndex);
+    }
+
+    @Step("Get the 'Rate Margin' value")
+    public String getRateMargin() {
+        return getElementText(rateMargin).replaceAll("[^0-9]", "");
+    }
+
+    @Step("Get the 'Min Rate' value")
+    public String getMinRate() {
+        return getElementText(minRate).replaceAll("[^0-9]", "");
+    }
+
+    @Step("Get the 'Max Rate' value")
+    public String getMaxRate() {
+        return getElementText(maxRate).replaceAll("[^0-9]", "");
+    }
+
+    @Step("Get the 'Max rate change up/down' value")
+    public String getMaxRateChangeUpDown() {
+        return getElementText(maxRateChangeUpDown).replaceAll("[^0-9]", "");
+    }
+
+    @Step("Get the 'Max rate lifetime cap' value")
+    public String getMaxRateLifetimeCap() {
+        return getElementText(maxRateLifetimeCap).replaceAll("[^0-9]", "");
+    }
+
+    @Step("Get the 'Rate rounding factor' value")
+    public String getRateRoundingFactor() {
+        return getElementText(rateRoundingFactor);
+    }
+
+    @Step("Get the 'Rate Rounding Method' value")
+    public String getRateRoundingMethod() {
+        return getElementText(rateRoundingMethod);
+    }
+
+    @Step("Get the 'Original interest rate' value")
+    public String getOriginalInterestRate() {
+        return getElementText(originalInterestRate).replaceAll("[^0-9]", "");
     }
 
 }

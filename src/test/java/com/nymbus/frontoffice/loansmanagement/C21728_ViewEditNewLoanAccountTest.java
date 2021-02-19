@@ -32,12 +32,10 @@ import org.testng.annotations.Test;
 public class C21728_ViewEditNewLoanAccountTest extends BaseTest {
 
     private Account loanAccount;
-    private IndividualClient client;
     private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
-    private double escrowPaymentValue;
 
     @BeforeMethod
     public void preCondition() {
@@ -45,7 +43,7 @@ public class C21728_ViewEditNewLoanAccountTest extends BaseTest {
         // Set up client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up CHK account
         Account checkingAccount = new Account().setCHKAccountData();
@@ -71,11 +69,8 @@ public class C21728_ViewEditNewLoanAccountTest extends BaseTest {
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
         Actions.loginActions().doLogOut();
 
-        // Get escrow payment value for the loan product
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        escrowPaymentValue = Actions.loanProductOverviewActions().getLoanProductEscrowPaymentValue(loanProductName);
-
         // Set the product
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
 
         // Create a client
@@ -111,7 +106,7 @@ public class C21728_ViewEditNewLoanAccountTest extends BaseTest {
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Open loan account from preconditions on 'Details' tab");
-        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber("626292805715");
 
         logInfo("Step 3: Pay attention at the loan account fields");
         TestRailAssert.assertTrue(Pages.accountDetailsPage().isBalanceAndInterestVisible(),
@@ -159,35 +154,58 @@ public class C21728_ViewEditNewLoanAccountTest extends BaseTest {
         Pages.editAccountPage().isPriorVariablePaymentAmountDisabled();
 
         logInfo("Step 7: Fill in all appeared fields with valid values (use future dates for 'Date' fields)");
-        AccountActions.editAccount().enableChangePaymentWithRateChangeSwitch();
         AccountActions.editAccount().fillInPaymentChangeInputFieldsInLoanAccountEditMode(loanAccount);
 
         logInfo("Step 8: Click 'Save'");
         Pages.editAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
-
-        // TODO: Verify all entered values in "Rate/Payment Change" section
-
-
-//        Change Payment with Rate Change
         TestRailAssert.assertTrue(Pages.accountDetailsPage().getChangePaymentWithRateChange().equalsIgnoreCase("no"),
                 new CustomStepResult("'Change Payment with Rate Change' group is not valid",
                         "'Change Payment with Rate Change' group is valid"));
-//        Rate Change Frequency
-//        Payment Change Frequency
-//        Next Rate Change Date
-//        Rate Change Lead Days
-//        Next Payment Change Date
-//        Payment Change Lead Days
-//        Rate index
-//        Rate Margin
-//        Min Rate
-//        Max Rate
-//        Max rate change up/down
-//        Max rate lifetime cap
-//        Rate rounding factor
-//        Rate Rounding Method
-//        Original interest rate
-
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getRateChangeFrequency().equals(loanAccount.getRateChangeFrequency()),
+                new CustomStepResult("'Rate Change Frequency' group is not valid",
+                        "'Rate Change Frequency' group is valid"));
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getPaymentChangeFrequency().equals(loanAccount.getPaymentChangeFrequency()),
+                new CustomStepResult("'Payment Change Frequency' group is not valid",
+                        "'Payment Change Frequency' group is valid"));
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getNextRateChangeDate().equals(loanAccount.getNextRateChangeDate()),
+                new CustomStepResult("'Next Rate Change Date' group is not valid",
+                        "'Next Rate Change Date' group is valid"));
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getRateChangeLeadDays().equals(loanAccount.getRateChangeLeadDays()),
+                new CustomStepResult("'Rate Change Lead Days' group is not valid",
+                        "'Rate Change Lead Days' group is valid"));
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getNextPaymentChangeDate().equals(loanAccount.getNextPaymentChangeDate()),
+                new CustomStepResult("'Next Payment Change Date' group is not valid",
+                        "'Next Payment Change Date' group is valid"));
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getPaymentChangeLeadDays().equals(loanAccount.getPaymentChangeLeadDays()),
+                new CustomStepResult("'Payment Change Lead Days' group is not valid",
+                        "'Payment Change Lead Days' group is valid"));
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getRateIndex().equals(loanAccount.getRateIndex()),
+                new CustomStepResult("'Rate Index' group is not valid",
+                        "'Rate Index' group is valid"));
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getRateMargin().equals(loanAccount.getRateMargin()),
+                new CustomStepResult("'Rate Margin' group is not valid",
+                        "'Rate Margin' group is valid"));
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getMinRate().equals(loanAccount.getMinRate()),
+                new CustomStepResult("'Min Rate' group is not valid",
+                        "'Min Rate' group is valid"));
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getMaxRate().equals(loanAccount.getMaxRate()),
+                new CustomStepResult("'Max Rate' group is not valid",
+                        "'Max Rate' group is valid"));
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getMaxRateChangeUpDown().equals(loanAccount.getMaxRateChangeUpDown()),
+                new CustomStepResult("'Max rate change up/down' group is not valid",
+                        "'Max rate change up/down' group is valid"));
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getMaxRateLifetimeCap().equals(loanAccount.getMaxRateLifetimeCap()),
+                new CustomStepResult("'Max rate lifetime cap' group is not valid",
+                        "'Max rate lifetime cap' group is valid"));
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getRateRoundingFactor().equals(loanAccount.getRateRoundingFactor()),
+                new CustomStepResult("'Rate rounding factor' group is not valid",
+                        "'Rate rounding factor' group is valid"));
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getRateRoundingMethod().equals(loanAccount.getRateRoundingMethod()),
+                new CustomStepResult("'Rate rounding factor' group is not valid",
+                        "'Rate rounding factor' group is valid"));
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getOriginalInterestRate().equals(loanAccount.getOriginalInterestRate()),
+                new CustomStepResult("'Original interest rate' group is not valid",
+                        "'Original interest rate' group is valid"));
     }
 }
