@@ -20,7 +20,7 @@ import java.text.DecimalFormat;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Petro")
-public class C25454_InterestRateChangeManuallyChangeInterestRateOnConvertedLoanAccountTest extends BaseTest {
+public class C25454_ManuallyChangeInterestRateOnConvertedLoanAccountTest extends BaseTest {
 
     private String activeLoanAccountId;
 
@@ -47,6 +47,7 @@ public class C25454_InterestRateChangeManuallyChangeInterestRateOnConvertedLoanA
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(activeLoanAccountId);
 
         String currentEffectiveRate = Pages.accountDetailsPage().getCurrentEffectiveRate();
+        System.out.println("currentEffectiveRate : " + currentEffectiveRate);
         int yearBase = Integer.parseInt(Pages.accountDetailsPage().getDaysBaseYearBase().split("/")[1].substring(0, 3));
         double currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
         String accountNumber = Pages.accountDetailsPage().getAccountNumberValue();

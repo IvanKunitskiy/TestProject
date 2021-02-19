@@ -22,12 +22,14 @@ import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
 import com.nymbus.testrail.TestRailIssue;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Loans Management")
+@Owner("Petro")
 public class C25420_LoanPayoffPrepaymentPenaltySetUpPrepaymentPenaltyTest extends BaseTest {
 
     private Account loanAccount;
