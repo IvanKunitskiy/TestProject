@@ -46,6 +46,11 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By paidStatus = By.xpath("(//div[@id='paymentduestatus']//span[contains(string(),\"Paid\")])[2]");
     private final By datePaymentPaidInFull = By.xpath("//input[@id='datepaid']");
     private final By dueDate = By.xpath("//input[@id='duedate']");
+    private final By disInterest = By.xpath("//input[@id='interest']");
+    private final By disPrincipal = By.xpath("//input[@id='principal']");
+    private final By disEscrow = By.xpath("//input[@id='escrow']");
+    private final By disAmount = By.xpath("//input[@id='amount']");
+    private final By dueTypeTittle = By.xpath("//input[@id='paymentDueTypeTitle']");
     private final By dateDue = By.xpath("(//tr[@data-test-id='repeat-payment-0'])[3]//span//span");
     private final By dueType = By.xpath("((//tr[@data-test-id='repeat-payment-0'])[3]//span//span)[2]");
     private final By dueAmount = By.xpath("((//tr[@data-test-id='repeat-payment-0'])[3]//span//span)[3]");
@@ -147,6 +152,36 @@ public class AccountPaymentInfoPage extends PageTools {
     public String getDueDate() {
         waitForElementVisibility(dueDate);
         return getDisabledElementAttributeValue("value", dueDate);
+    }
+
+    @Step("Get interest value")
+    public String getDisabledInterest() {
+        waitForElementVisibility(disInterest);
+        return getDisabledElementAttributeValue("value", disInterest).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get principal value")
+    public String getDisabledPrincipal() {
+        waitForElementVisibility(disPrincipal);
+        return getDisabledElementAttributeValue("value", disPrincipal).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get escrow value")
+    public String getDisabledEscrow() {
+        waitForElementVisibility(disEscrow);
+        return getDisabledElementAttributeValue("value", disEscrow).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get amount value")
+    public String getDisabledAmount() {
+        waitForElementVisibility(disAmount);
+        return getDisabledElementAttributeValue("value", disAmount).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get Due date value")
+    public String getTypeDue() {
+        waitForElementVisibility(dueTypeTittle);
+        return getDisabledElementAttributeValue("value", dueTypeTittle);
     }
 
     @Step("Get Due date value")
