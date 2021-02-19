@@ -471,7 +471,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private By loanAccountId = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[5]/span[contains(@class, 'high_title')]/span");
     private By activeConvertedLoanAccountId = By.xpath("//table[contains(@class, 'searchResultPanel')]/tbody/" +
             "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]/" +
-            "td[@class='fieldsCell'][12]/span/span");
+            "td[@class='fieldsCell'][10]/span/span");
     private By interestEarned = By.xpath("//table[contains(@class, 'searchResultPanel' )]//" +
             "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]/" +
             "td/div[@key-name='interestearned']");
