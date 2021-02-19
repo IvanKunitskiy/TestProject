@@ -4,6 +4,8 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.Locale;
@@ -86,5 +88,12 @@ public class Functions {
 
     public static double roundToTwoDecimalPlaces(double value) {
         return Math.round(value * 100.0) / 100.0;
+    }
+
+    public static double getDoubleWithFormatAndFloorRounding(double value, String format) {
+        DecimalFormat df = new DecimalFormat(format);
+        df.setRoundingMode(RoundingMode.FLOOR);
+
+        return Double.parseDouble(df.format(value));
     }
 }

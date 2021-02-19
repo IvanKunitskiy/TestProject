@@ -39,6 +39,10 @@ public class NonTellerTransactionActions {
         Actions.nonTellerTransaction().generateATMTransaction(fields, actions);
     }
 
+    public void performPaymentDueRecordForNonCyclePrincipalAndInterestLoan(String[] actions, String accountId) {
+        Actions.nonTellerTransaction().generatePaymentDueRecordForNonCyclePrincipalAndInterestLoan(actions, accountId);
+    }
+
     public Map<String, String> getDataMap(Map<String, String> fields) {
        return  Actions.nonTellerTransaction().getDataMap(fields);
     }

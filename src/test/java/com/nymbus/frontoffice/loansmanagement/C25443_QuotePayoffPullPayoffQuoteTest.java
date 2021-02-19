@@ -26,7 +26,7 @@ import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static com.nymbus.core.utils.Functions.roundToTwoDecimalPlaces;
+import static com.nymbus.core.utils.Functions.getDoubleWithFormatAndFloorRounding;
 
 @Epic("Frontoffice")
 @Feature("Loans Management")
@@ -136,14 +136,14 @@ public class C25443_QuotePayoffPullPayoffQuoteTest extends BaseTest {
         String payoff = Pages.quotePayoffModalPage().getPayoff();
         double expectedPayoff = Double.parseDouble(interest) + Double.parseDouble(balance) + Double.parseDouble(payoffCharges);
         double actualPayoff = Double.parseDouble(Pages.quotePayoffModalPage().getPayoffByRowIndex(1));
-        TestRailAssert.assertTrue(actualPayoff == roundToTwoDecimalPlaces(expectedPayoff),
+        TestRailAssert.assertTrue(actualPayoff == getDoubleWithFormatAndFloorRounding(expectedPayoff, "###.##"),
                 new CustomStepResult("'Payoff' value is not valid", "'Payoff' value is valid"));
         TestRailAssert.assertTrue(balance.equals(currentBalance),
                 new CustomStepResult("'Current Balance' value is not valid", "'Current Balance' value is not valid"));
         double actualInterest = Double.parseDouble(Pages.quotePayoffModalPage().getInterestByRowIndex(1));
         double expectedInterest = Double.parseDouble(accruedInterest) + (Double.parseDouble(dailyInterestFactor) * (days + 1));
-        TestRailAssert.assertTrue(actualInterest == roundToTwoDecimalPlaces(expectedInterest),
-                new CustomStepResult("'Current Balance' value is not valid", "'Current Balance' value is not valid"));
+        TestRailAssert.assertTrue(actualInterest == getDoubleWithFormatAndFloorRounding(expectedInterest, "###.##"),
+                new CustomStepResult("'Interest' value is not valid", "'Interest' value is not valid"));
 
         // Values from fields below are evaluated to '0.00' as the account is brand new
         String defaultZero = "0.00";
