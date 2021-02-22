@@ -4,9 +4,7 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
-import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -41,10 +39,8 @@ public class C25479_ProcessLoanPrepaymentTransaction extends BaseTest {
     private double transactionAmount = 1001.00;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
-    private String clientRootId;
     private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
-    private String accruedInterest;
 
 
     @BeforeMethod
@@ -82,7 +78,6 @@ public class C25479_ProcessLoanPrepaymentTransaction extends BaseTest {
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkAccount);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createLoanAccount(loanAccount);
-        clientRootId = ClientsActions.createClient().getClientIdFromUrl();
 
         // Set up transactions with account number
         depositTransaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());
@@ -110,9 +105,12 @@ public class C25479_ProcessLoanPrepaymentTransaction extends BaseTest {
         Actions.transactionActions().createTransaction(depositTransaction);
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Perform transaction
         Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
         Actions.transactionActions().setMiscDebitSource(miscDebitSource, 0);
         Actions.transactionActions().setMiscCreditDestination(miscCreditDestination, 0);
         Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
@@ -128,7 +126,6 @@ public class C25479_ProcessLoanPrepaymentTransaction extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void process416LoanPaymentTransaction() {
         logInfo("Step 1: Log in to SmartCore");
-        SelenideTools.openUrl(Constants.URL);
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Go to \"Teller\" page");
@@ -262,7 +259,6 @@ public class C25479_ProcessLoanPrepaymentTransaction extends BaseTest {
                 new CustomStepResult("Accrued interest is not valid", "Accrued interest is valid"));
 
         logInfo("Step 12: Go to the \"Transaction\" tab and verify payment portions of 416 transaction");
-        Pages.accountDetailsPage().clickTransactionsTab();
         Pages.accountDetailsPage().clickTransactionsTab();
         double amountValue = AccountActions.retrievingAccountData().getAmountValue(1);
         TestRailAssert.assertTrue(amountValue == transactionAmount,
