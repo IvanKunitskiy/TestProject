@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Dmytro")
-public class C25378_ProcessLoanPaymentTransaction extends BaseTest {
+public class C25379_ProcessLoanPaymentTransactionInterestOnly extends BaseTest {
     private Account loanAccount;
     private Account checkAccount;
     private Transaction transaction;
@@ -131,8 +131,8 @@ public class C25378_ProcessLoanPaymentTransaction extends BaseTest {
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 25378, testRunName = TEST_RUN_NAME)
-    @Test(description = "C25378, Process 416 loan payment transaction")
+    @TestRailIssue(issueID = 25379, testRunName = TEST_RUN_NAME)
+    @Test(description = "C25379, Process 416 loan payment transaction. Interest Only (bill)")
     @Severity(SeverityLevel.CRITICAL)
     public void process416LoanPaymentTransaction() {
         logInfo("Step 1: Log in to SmartCore");
@@ -246,6 +246,7 @@ public class C25378_ProcessLoanPaymentTransaction extends BaseTest {
         double escrowValue = AccountActions.retrievingAccountData().getEscrowMinusValue(1);
         TestRailAssert.assertTrue(escrowValue == Double.parseDouble(escrow),
                 new CustomStepResult("Escrow is not valid", "Escrow is valid"));
-
     }
+
+
 }
