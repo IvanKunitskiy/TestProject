@@ -219,25 +219,25 @@ public class AccountPaymentInfoPage extends PageTools {
 
     @Step("Get 'Due Date' from 'Payments Due' value by index : {index}")
     public String getPaymentDueType(int index){
-        waitForElementVisibility(dueDateFromRecordByIndex);
-        return getElementText(dueDateFromRecordByIndex).trim();
+        waitForElementVisibility(dueDateFromRecordByIndex, index);
+        return getElementText(dueDateFromRecordByIndex, index).trim();
     }
 
     @Step("Get 'Due Date' from 'Payments Due' value by index : {index}")
     public String getPaymentDueTypeFromRecordByIndex(int index){
-        waitForElementVisibility(paymentDueTypeFromRecordByIndex);
-        return getElementText(paymentDueTypeFromRecordByIndex).trim();
+        waitForElementVisibility(paymentDueTypeFromRecordByIndex, index);
+        return getElementText(paymentDueTypeFromRecordByIndex, index).trim();
     }
 
     @Step("Get 'Due Date' from 'Payments Due' value by index : {index}")
     public String getAmountDueFromRecordByIndex(int index){
-        waitForElementVisibility(amountDueFromRecordByIndex);
-        return getElementText(amountDueFromRecordByIndex).trim();
+        waitForElementVisibility(amountDueFromRecordByIndex, index);
+        return getElementText(amountDueFromRecordByIndex, index).trim();
     }
 
     @Step("Get 'Due Date' from 'Payments Due' value by index : {index}")
     public String getStatusFromRecordByIndex(int index){
-        waitForElementVisibility(statusFromRecordByIndex);
-        return getElementText(statusFromRecordByIndex).trim();
+        waitForElementVisibility(statusFromRecordByIndex, index);
+        return getElementText(statusFromRecordByIndex, index).trim();
     }
 }

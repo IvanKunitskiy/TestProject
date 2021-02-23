@@ -34,7 +34,7 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
     private Account chkAccount;
     private Transaction transaction_109;
     private Transaction transaction_416;
-    private double transactionAmount = 1001.00;
+    private final int transactionAmount = 12000;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
     private String clientRootId;
@@ -59,23 +59,23 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
 
         // 109 - deposit transaction
         transaction_109 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
-        int transaction109Amount = 12000;
+//        int transaction109Amount = 12000;
         transaction_109 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
         transaction_109.getTransactionSource().setAccountNumber(loanAccount.getAccountNumber());
         transaction_109.getTransactionSource().setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
-        transaction_109.getTransactionSource().setAmount(transaction109Amount);
+        transaction_109.getTransactionSource().setAmount(transactionAmount);
         transaction_109.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
-        transaction_109.getTransactionDestination().setAmount(transaction109Amount);
+        transaction_109.getTransactionDestination().setAmount(transactionAmount);
         transaction_109.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
 
         // 416 - transaction
         transaction_416 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
-        int transaction416Amount = 12000;
+//        int transaction416Amount = 12000;
         transaction_416.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
-        transaction_416.getTransactionSource().setAmount(transaction416Amount);
+        transaction_416.getTransactionSource().setAmount(transactionAmount);
         transaction_416.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
         transaction_416.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
-        transaction_416.getTransactionDestination().setAmount(transaction416Amount);
+        transaction_416.getTransactionDestination().setAmount(transactionAmount);
         transaction_416.getTransactionDestination().setTransactionCode(TransactionCode.PAYMENT_416.getTransCode());
 
         // Login to the system
@@ -194,11 +194,9 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getPaymentDate().equals(dateLastPayment),
                 new CustomStepResult("Payment date is not valid", "Payment date is valid"));
         String interest = Pages.accountPaymentInfoPage().getInterest();
-        TestRailAssert.assertTrue(interest.equals(accruedInterest),
-                new CustomStepResult("Interest is not valid", "Interest due is valid"));
-        String amount = Pages.accountPaymentInfoPage().getAmount();
         String escrow = Pages.accountPaymentInfoPage().getEscrow();
         String principal = Pages.accountPaymentInfoPage().getPrincipal();
+        String amount = Pages.accountPaymentInfoPage().getAmount();
         double sum = Double.parseDouble(interest) + Double.parseDouble(escrow) + Double.parseDouble(principal);
         TestRailAssert.assertTrue(Double.parseDouble(amount) == sum,
                 new CustomStepResult("Amount sum is not valid", "Amount sum is valid"));
@@ -207,8 +205,9 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getStatus().equals("416 Payment"),
                 new CustomStepResult("Status is not valid", "Status is valid"));
 
-        logInfo("Step 11: Go to the 'Transactions' tab and verify generated transactions");
+        logInfo("Step 10: Go to the 'Transactions' tab and verify generated transactions");
         Pages.accountDetailsPage().clickTransactionsTab();
+
         double amountValue = AccountActions.retrievingAccountData().getAmountValue(1);
         TestRailAssert.assertTrue(amountValue == transactionAmount,
                 new CustomStepResult("Amount is not valid", "Amount is valid"));
@@ -221,5 +220,17 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
         double escrowValue = AccountActions.retrievingAccountData().getEscrowMinusValue(1);
         TestRailAssert.assertTrue(escrowValue == Double.parseDouble(escrow),
                 new CustomStepResult("Escrow is not valid", "Escrow is valid"));
+
+        logInfo("Step 11: Go to the 'Details' tab ");
+        Pages.accountDetailsPage().clickDetailsTab();
+
+        logInfo("Step 12: Pay attention at the\n" +
+                "- Next Payment Billed Due Date\n" +
+                "- Interest paid to date\n" +
+                "- Date Last Payment\n" +
+                "- Date interest paid thru\n" +
+                "- Current Balance\n" +
+                "- Accrued Interest");
+
     }
 }
