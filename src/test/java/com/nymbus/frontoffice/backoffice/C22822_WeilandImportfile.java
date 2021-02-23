@@ -117,8 +117,12 @@ public class C22822_WeilandImportfile extends BaseTest {
         Actions.transactionActions().createTransaction(depositTransaction);
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
+        Actions.loginActions().doLogOutProgrammatically();
+
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         depositTransaction.getTransactionDestination().setAccountNumber(chkAccount4.getAccountNumber());
         Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
         Actions.transactionActions().createTransaction(depositTransaction);
         Actions.transactionActions().clickCommitButton();
         Actions.transactionActions().fillingSupervisorModal(userCredentials);
