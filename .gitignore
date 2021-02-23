@@ -4,6 +4,7 @@
 *.log
 
 *.html
+*.IF3
 
 build
 target
