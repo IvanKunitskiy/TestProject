@@ -178,7 +178,7 @@ public class AccountPaymentInfoPage extends PageTools {
     @Step("Get 'Payment due type' value")
     public String getPaymentDueType(){
         waitForElementVisibility(paymentDueType);
-        return getElementText(paymentDueType).trim();
+        return getDisabledElementAttributeValue("value", paymentDueType).trim();
     }
 
     @Step("Get interest value")
@@ -286,24 +286,24 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By statusFromRecordByIndex = By.xpath("//div[@ui-view='paymentsDue']//table/tbody/tr[%s]/td[4]//span/span");
 
     @Step("Get 'Due Date' from 'Payments Due' value by index : {index}")
-    public String getPaymentDueType(int index){
+    public String getDueDateFromRecordByIndex(int index){
         waitForElementVisibility(dueDateFromRecordByIndex, index);
         return getElementText(dueDateFromRecordByIndex, index).trim();
     }
 
-    @Step("Get 'Due Date' from 'Payments Due' value by index : {index}")
+    @Step("Get 'Payment Due Type' from 'Payments Due' value by index : {index}")
     public String getPaymentDueTypeFromRecordByIndex(int index){
         waitForElementVisibility(paymentDueTypeFromRecordByIndex, index);
         return getElementText(paymentDueTypeFromRecordByIndex, index).trim();
     }
 
-    @Step("Get 'Due Date' from 'Payments Due' value by index : {index}")
+    @Step("Get 'Amount Due' from 'Payments Due' value by index : {index}")
     public String getAmountDueFromRecordByIndex(int index){
         waitForElementVisibility(amountDueFromRecordByIndex, index);
-        return getElementText(amountDueFromRecordByIndex, index).trim();
+        return getElementText(amountDueFromRecordByIndex, index).replaceAll("[^0-9.]", "");
     }
 
-    @Step("Get 'Due Date' from 'Payments Due' value by index : {index}")
+    @Step("Get 'Status' from 'Payments Due' value by index : {index}")
     public String getStatusFromRecordByIndex(int index){
         waitForElementVisibility(statusFromRecordByIndex, index);
         return getElementText(statusFromRecordByIndex, index).trim();

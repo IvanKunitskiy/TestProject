@@ -14,6 +14,7 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
+import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
 import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitMiscCreditBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
@@ -21,6 +22,7 @@ import com.nymbus.pages.Pages;
 import com.nymbus.testrail.CustomStepResult;
 import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
+import com.nymbus.util.Random;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -34,7 +36,7 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
     private Account chkAccount;
     private Transaction transaction_109;
     private Transaction transaction_416;
-    private final int transactionAmount = 12000;
+    private final double transactionAmount = 1001.00;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
     private String clientRootId;
@@ -57,25 +59,28 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
         loanAccount.setPaymentAmountType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
         loanAccount.setCommitmentTypeAmt(CommitmentTypeAmt.NONE.getCommitmentTypeAmt());
 
-        // 109 - deposit transaction
+        // Chk acc transaction
+        Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
+        depositTransaction.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
+        depositTransaction.getTransactionDestination().setAmount(transactionAmount);
+        depositTransaction.getTransactionSource().setAmount(transactionAmount);
+
+        // 109 - transaction
         transaction_109 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
-//        int transaction109Amount = 12000;
+        int transaction109Amount = 12000;
         transaction_109 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
         transaction_109.getTransactionSource().setAccountNumber(loanAccount.getAccountNumber());
         transaction_109.getTransactionSource().setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
-        transaction_109.getTransactionSource().setAmount(transactionAmount);
+        transaction_109.getTransactionSource().setAmount(transaction109Amount);
         transaction_109.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
-        transaction_109.getTransactionDestination().setAmount(transactionAmount);
+        transaction_109.getTransactionDestination().setAmount(transaction109Amount);
         transaction_109.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
 
         // 416 - transaction
         transaction_416 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
-//        int transaction416Amount = 12000;
         transaction_416.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
-        transaction_416.getTransactionSource().setAmount(transactionAmount);
-        transaction_416.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
         transaction_416.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
-        transaction_416.getTransactionDestination().setAmount(transactionAmount);
+        transaction_416.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
         transaction_416.getTransactionDestination().setTransactionCode(TransactionCode.PAYMENT_416.getTransCode());
 
         // Login to the system
@@ -102,11 +107,12 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
         AccountActions.createAccount().createLoanAccount(loanAccount);
         clientRootId = ClientsActions.createClient().getClientIdFromUrl();
         dateLastPayment = Pages.accountDetailsPage().getDateLastPayment();
+        System.out.println("loanAccount.getNextPaymentBilledDueDate() : " + loanAccount.getNextPaymentBilledDueDate());
 
-        // Perform '109 - deposit' transaction
+        // Perform transaction to increase chk account 'Available Balance'
         Actions.transactionActions().goToTellerPage();
         Actions.transactionActions().doLoginTeller();
-        Actions.transactionActions().createTransaction(transaction_109);
+        Actions.transactionActions().createTransaction(depositTransaction);
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
 
@@ -114,14 +120,31 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
         Actions.loginActions().doLogOutProgrammatically();
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        // Create nonTellerTransactions
+        // Perform '109 - deposit' transaction
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
+        Actions.transactionActions().createTransaction(transaction_109);
+        Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
+        Actions.transactionActions().clickCommitButton();
+        Pages.tellerPage().closeModal();
+
+        // Perform non-teller transaction
         Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
 
+        // Get accrued interest
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
         accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+        double amountDue = Double.parseDouble(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1));
+        System.out.println("amountDue : " + amountDue);
 
-        Actions.loginActions().doLogOut();
+        double transaction416Amount = amountDue + Random.genInt(10, 50);
+
+        transaction_416.getTransactionDestination().setAmount(transaction416Amount);
+        transaction_416.getTransactionSource().setAmount(transaction416Amount);
+
+        Actions.loginActions().doLogOutProgrammatically();
     }
 
     private final String TEST_RUN_NAME = "Loans Management";
@@ -160,12 +183,14 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
         Pages.accountDetailsPage().clickPaymentInfoTab();
 
         logInfo("Step 7: Check Payment Due record from preconditions");
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getPaymentDueType(1).equals(loanAccount.getNextPaymentBilledDueDate()),
+        System.out.println(Pages.accountPaymentInfoPage().getDueDateFromRecordByIndex(1));
+        System.out.println(loanAccount.getNextPaymentBilledDueDate());
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDueDateFromRecordByIndex(1).equals(loanAccount.getNextPaymentBilledDueDate()),
                 new CustomStepResult("'Due Date' is not valid", "'Due Date' is valid"));
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getPaymentDueTypeFromRecordByIndex(1).equals(loanAccount.getPaymentAmountType()),
                 new CustomStepResult("'Payment Due Type' is not valid", "'Payment Due Type' is valid"));
         String amountDueFromRecordPaymentDueRecord = Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1);
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1).equals("$ 0.00"),
+        TestRailAssert.assertTrue(amountDueFromRecordPaymentDueRecord.equals("0.00"),
                 new CustomStepResult("Amount due is not valid", "Amount due is valid"));
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1).equals("Paid"),
                 new CustomStepResult("'Status' is not valid", "'Status' is valid"));
@@ -176,7 +201,7 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
                 new CustomStepResult("'Payment Due Type' is not valid", "'Payment Due Type' is valid"));
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getInterest().equals(accruedInterest),
                 new CustomStepResult("'Interest' is not valid", "'Interest' is valid"));
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getPrincipal().equals("$ 0.00"),
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getPrincipal().equals("0.00"),
                 new CustomStepResult("'Principal' is not valid", "'Principal' is valid"));
         // TODO: PaymentAmount
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getPaymentAmount().equals(amountDueFromRecordPaymentDueRecord),
