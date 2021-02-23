@@ -98,8 +98,6 @@ public class C25479_ProcessLoanPrepaymentTransaction extends BaseTest {
         miscCreditDestination.setAmount(transactionAmount);
 
         // Perform deposit transactions
-        Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.transactionActions().goToTellerPage();
         Actions.transactionActions().doLoginTeller();
         Actions.transactionActions().createTransaction(depositTransaction);
