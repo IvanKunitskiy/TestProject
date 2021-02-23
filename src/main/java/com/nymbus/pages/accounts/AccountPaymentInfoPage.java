@@ -42,6 +42,17 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By piPaymentsPercentage = By.xpath("//input[@data-test-id='field-percentage_paymentHistory_0']");
     private final By piPaymentsRecalcFuturePymt = By.xpath("//dn-switch[@id='recalcfuturepayment']/div/div/span[2]");
 
+
+    private final By disInterest = By.xpath("//input[@id='interest']");
+    private final By disPrincipal = By.xpath("//input[@id='principal']");
+    private final By disEscrow = By.xpath("//input[@id='escrow']");
+    private final By disAmount = By.xpath("//input[@id='amount']");
+    private final By dueTypeTittle = By.xpath("//input[@id='paymentDueTypeTitle']");
+    private final By dateDue = By.xpath("(//tr[@data-test-id='repeat-payment-0'])[3]//span//span");
+    private final By dueType = By.xpath("((//tr[@data-test-id='repeat-payment-0'])[3]//span//span)[2]");
+    private final By dueAmount = By.xpath("((//tr[@data-test-id='repeat-payment-0'])[3]//span//span)[3]");
+    private final By dueStatus = By.xpath("((//tr[@data-test-id='repeat-payment-0'])[3]//span//span)[4]");
+
     @Step("Get Pi Payments Payment 'Recalc Future Pymt' value")
     public String getPiPaymentsRecalcFuturePymt() {
         return getElementText(piPaymentsRecalcFuturePymt).trim();
@@ -128,16 +139,19 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By status = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[6]//span//span");
     private final By paymentDueType = By.xpath("//input[@data-test-id='field-paymentDueTypeTitle']");
     private final By paymentAmount = By.xpath("//input[@data-test-id='field-amount'']");
+
     @Step("Get 'Payment amount'")
     public String getPaymentAmount() {
         waitForElementVisibility(paymentAmount);
         return getDisabledElementAttributeValue("value", paymentAmount).replaceAll("[^0-9.]", "");
     }
+
     @Step("Get amount due")
     public String getAmountDue() {
         waitForElementVisibility(amountDue);
         return getDisabledElementAttributeValue("value",amountDue);
     }
+
     @Step("Check Paid status visibility")
     public boolean paidStatusIsVisibility(){
         return isElementVisible(paidStatus);
@@ -167,6 +181,60 @@ public class AccountPaymentInfoPage extends PageTools {
         return getElementText(paymentDueType).trim();
     }
 
+    @Step("Get interest value")
+    public String getDisabledInterest() {
+        waitForElementVisibility(disInterest);
+        return getDisabledElementAttributeValue("value", disInterest).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get principal value")
+    public String getDisabledPrincipal() {
+        waitForElementVisibility(disPrincipal);
+        return getDisabledElementAttributeValue("value", disPrincipal).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get escrow value")
+    public String getDisabledEscrow() {
+        waitForElementVisibility(disEscrow);
+        return getDisabledElementAttributeValue("value", disEscrow).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get amount value")
+    public String getDisabledAmount() {
+        waitForElementVisibility(disAmount);
+        return getDisabledElementAttributeValue("value", disAmount).replaceAll("[^0-9.]", "");
+    }
+
+
+    @Step("Get Due date value")
+    public String getTypeDue() {
+        waitForElementVisibility(dueTypeTittle);
+        return getDisabledElementAttributeValue("value", dueTypeTittle);
+    }
+
+    @Step("Get Due date value")
+    public String getDateDue() {
+        waitForElementVisibility(dateDue);
+        return getElementText(dateDue);
+    }
+
+    @Step("Get Due type value")
+    public String getDueType() {
+        waitForElementVisibility(dueType);
+        return getElementText(dueType);
+    }
+
+    @Step("Get Due amount value")
+    public String getDueAmount() {
+        waitForElementVisibility(dueAmount);
+        return getElementText(dueAmount);
+    }
+
+    @Step("Get Due status value")
+    public String getDueStatus() {
+        waitForElementVisibility(dueStatus);
+        return getElementText(dueStatus);
+    }
 
     /**
      * Transactions Section
