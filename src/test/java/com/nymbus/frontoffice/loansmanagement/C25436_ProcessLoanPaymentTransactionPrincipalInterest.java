@@ -1,0 +1,143 @@
+package com.nymbus.frontoffice.loansmanagement;
+
+import com.nymbus.actions.Actions;
+import com.nymbus.actions.account.AccountActions;
+import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.core.base.BaseTest;
+import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
+import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
+import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
+import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitMiscCreditBuilder;
+import com.nymbus.newmodels.generation.tansactions.factory.DestinationFactory;
+import com.nymbus.newmodels.generation.tansactions.factory.SourceFactory;
+import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.newmodels.transaction.TransactionDestination;
+import com.nymbus.newmodels.transaction.TransactionSource;
+import com.nymbus.newmodels.transaction.enums.TransactionCode;
+import com.nymbus.pages.Pages;
+import com.nymbus.testrail.TestRailIssue;
+import io.qameta.allure.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+@Epic("Frontoffice")
+@Feature("Loans Management")
+@Owner("Dmytro")
+public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseTest {
+    private Account loanAccount;
+    private Account checkAccount;
+    private Transaction transaction;
+    private double transactionAmount = 1001.00;
+    private final String loanProductName = "Test Loan Product";
+    private final String loanProductInitials = "TLP";
+    private String clientRootId;
+    private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
+    private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
+    private String accruedInterest;
+    private int balance;
+
+
+    @BeforeMethod
+    public void precondition() {
+        // Set up Client and Accounts
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        IndividualClient client = individualClientBuilder.buildClient();
+        checkAccount = new Account().setCHKAccountData();
+        loanAccount = new Account().setLoanAccountData();
+        loanAccount.setPaymentAmountType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
+        loanAccount.setProduct(loanProductName);
+        loanAccount.setEscrow("$ 0.00");
+        loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
+        Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
+        transaction = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
+
+        // Login to the system
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        // Check that a Loan product exist with the following editable fields (Readonly? = NO) and create if not exist
+        Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
+        Actions.loginActions().doLogOut();
+
+        // Log in
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        // Set products
+        checkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
+
+        // Create client
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+
+        // Create account
+        AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkAccount);
+        Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
+        AccountActions.createAccount().createLoanAccount(loanAccount);
+        clientRootId = ClientsActions.createClient().getClientIdFromUrl();
+
+        // Set up transactions with account number
+        depositTransaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());
+        depositTransaction.getTransactionDestination().setAmount(transactionAmount);
+        depositTransaction.getTransactionSource().setAmount(transactionAmount);
+        transaction.getTransactionSource().setAccountNumber(checkAccount.getAccountNumber());
+        transaction.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
+        transaction.getTransactionDestination().setTransactionCode("416 - Payment");
+        transaction.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
+        balance = 12000;
+        miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());
+        miscDebitSource.setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
+        miscDebitSource.setAmount(balance);
+        miscCreditDestination.setAccountNumber(checkAccount.getAccountNumber());
+        miscCreditDestination.setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
+        miscCreditDestination.setAmount(balance);
+
+        // Perform deposit transactions
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
+        Actions.transactionActions().createTransaction(depositTransaction);
+        Actions.transactionActions().clickCommitButton();
+        Pages.tellerPage().closeModal();
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        // Perform transaction
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
+        Actions.transactionActions().setMiscDebitSource(miscDebitSource, 0);
+        Actions.transactionActions().setMiscCreditDestination(miscCreditDestination, 0);
+        Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
+        Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
+        Pages.tellerPage().closeModal();
+
+        // Create nonTellerTransactions
+        Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
+
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
+        accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+        this.transactionAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getAmountDueTable().replaceAll("[^0-9.]", ""));
+        transaction.getTransactionSource().setAmount(this.transactionAmount);
+        transaction.getTransactionDestination().setAmount(this.transactionAmount);
+
+        Actions.loginActions().doLogOutProgrammatically();
+    }
+
+    private final String TEST_RUN_NAME = "Loans Management";
+
+    @TestRailIssue(issueID = 25379, testRunName = TEST_RUN_NAME)
+    @Test(description = "C25379, Process 416 loan payment transaction. Interest Only (bill)")
+    @Severity(SeverityLevel.CRITICAL)
+    public void process416LoanPaymentTransaction() {
+
+
+    }
+}
