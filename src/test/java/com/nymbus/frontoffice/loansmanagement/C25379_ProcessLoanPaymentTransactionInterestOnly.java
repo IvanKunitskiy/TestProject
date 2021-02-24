@@ -204,16 +204,16 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnly extends BaseTest {
                         "Date Payment Paid In Full is valid"));
 
         String dueDateSec = Pages.accountPaymentInfoPage().getDueDate();
-        TestRailAssert.assertTrue(dueDateSec.equals(DateTime.getDateMinusMonth(nextDueDate1,1)),
+        TestRailAssert.assertTrue(dueDateSec.equals(DateTime.getDateMinusMonth(nextDueDate1, 1)),
                 new CustomStepResult("Due date is not valid", "Due date is valid"));
 
         String typeDue = Pages.accountPaymentInfoPage().getTypeDue();
         String expectedType = "Interest Only (Bill)";
         TestRailAssert.assertTrue(typeDue.equals(expectedType),
-                new CustomStepResult("Date type is not valid","Date type is valid"));
+                new CustomStepResult("Date type is not valid", "Date type is valid"));
         String disInterest = Pages.accountPaymentInfoPage().getDisabledInterest();
         TestRailAssert.assertTrue(disInterest.equals("101.92"),
-                new CustomStepResult("Interest is not valid","Interest is valid"));
+                new CustomStepResult("Interest is not valid", "Interest is valid"));
         String disAmount = Pages.accountPaymentInfoPage().getDisabledAmount();
         String disEscrow = Pages.accountPaymentInfoPage().getDisabledEscrow();
         String disPrincipal = Pages.accountPaymentInfoPage().getDisabledPrincipal();
@@ -281,9 +281,7 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnly extends BaseTest {
         TestRailAssert.assertTrue(Double.parseDouble(currentBalance) == balance,
                 new CustomStepResult("Current balance is not valid", "Current balance is valid"));
         String actualAccruedInterest = Pages.accountDetailsPage().getAccruedInterest();
-        System.out.println(actualAccruedInterest);
-        System.out.println(Double.parseDouble(accruedInterest) - transactionAmount);
-        TestRailAssert.assertTrue(actualAccruedInterest.equals("" + (Double.parseDouble(accruedInterest) - transactionAmount)),
+        TestRailAssert.assertTrue(Double.parseDouble(actualAccruedInterest) == (Double.parseDouble(accruedInterest) - transactionAmount),
                 new CustomStepResult("Accrued interest is not valid", "Accrued interest is valid"));
     }
 }
