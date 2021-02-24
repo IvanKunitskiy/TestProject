@@ -184,6 +184,7 @@ public class CreateAccount {
         Pages.addAccountPage().setDateFirstPaymentDue(account.getDateFirstPaymentDue());
         Pages.addAccountPage().setPaymentBilledLeadDays(account.getPaymentBilledLeadDays());
         Pages.addAccountPage().setCurrentEffectiveRate(account.getCurrentEffectiveRate());
+        setEscrowPayment(account);
         setInterestMethod(account);
         disableAdjustableRateSwitch();
         setDaysBaseYearBase(account);
@@ -193,6 +194,12 @@ public class CreateAccount {
         setCallClassCode(account);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
+    }
+
+    private void setEscrowPayment(Account account) {
+        if (account.getEscrow() !=null && !Pages.addAccountPage().getEscrowPaymentValue().equals(account.getEscrow())){
+            Pages.addAccountPage().setEscrowPaymentValue(account.getEscrow());
+        }
     }
 
     public void setValuesInFieldsRequiredForSavingsAccount(Account account) {

@@ -104,6 +104,7 @@ public class Account {
     private String cycleCode;
     private String commitmentTypeAmt;
     private String dateFirstPaymentDue;
+    private String escrow;
 
     public Account setLoanAccountData() {
         Account account = new Account();
@@ -286,6 +287,14 @@ public class Account {
         account.setUserDefinedField_4(Generator.genString(5));
 
         return account;
+    }
+
+    public String getEscrow() {
+        return escrow;
+    }
+
+    public void setEscrow(String escrow) {
+        this.escrow = escrow;
     }
 
     public String getProductType() {

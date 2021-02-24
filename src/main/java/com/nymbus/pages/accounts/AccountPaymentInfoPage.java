@@ -44,7 +44,7 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By paymentDueRecord = By.xpath("(//div[@ui-view='paymentsDue']//tr)[2]");
     private final By amountDue = By.xpath("//input[@data-test-id='field-amountdue']");
     private final By paidStatus = By.xpath("(//div[@id='paymentduestatus']//span[contains(string(),\"Paid\")])[2]");
-    private final By paymentType = By.xpath("(//div[@id='paymenttype_paymentHistory_0']//span[contains(string(),\"Prin & Int (Bill)\")])[2]");
+    private final By paymentType = By.xpath("(//div[@id='paymenttype_paymentHistory_0']//span[contains(string(),\"Interest Only (Bill)\")])[2]");
     private final By datePaymentPaidInFull = By.xpath("//input[@id='datepaid']");
     private final By dueDate = By.xpath("//input[@id='duedate']");
     private final By disInterest = By.xpath("//input[@id='interest']");
@@ -62,6 +62,7 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By escrow = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[4]//span//span");
     private final By amount = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[5]//span//span");
     private final By status = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[6]//span//span");
+    private final By amountDueFromtTable = By.xpath("(//tr[@data-test-id='repeat-payment-0']//td[3]//span//span)[2]");
 
     @Step("Get Pi Payments Payment 'Recalc Future Pymt' value")
     public String getPiPaymentsRecalcFuturePymt() {
@@ -242,6 +243,12 @@ public class AccountPaymentInfoPage extends PageTools {
     public String getAmount(){
         waitForElementVisibility(amount);
         return getElementText(amount).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get Amount value")
+    public String getAmountDueTable(){
+        waitForElementVisibility(amountDueFromtTable);
+        return getElementText(amountDueFromtTable).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get Status value")
