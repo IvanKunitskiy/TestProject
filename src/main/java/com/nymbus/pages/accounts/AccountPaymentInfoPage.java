@@ -133,17 +133,23 @@ public class AccountPaymentInfoPage extends PageTools {
      */
 
     private final By amountDue = By.xpath("//input[@data-test-id='field-amountdue']");
-    private final By paidStatus = By.xpath("(//div[@id='paymentduestatus']//span[contains(string(),\"Paid\")])[2]");
+    private final By paidStatus = By.xpath("(//div[@id='paymentduestatus']//span[contains(string(),'Paid')])[2]");
+    private final By paymentDueStatus = By.xpath("//div[@data-test-id='field-paymentduestatus']/a/span/span");
     private final By datePaymentPaidInFull = By.xpath("//input[@id='datepaid']");
     private final By dueDate = By.xpath("//input[@id='duedate']");
-    private final By status = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[6]//span//span");
     private final By paymentDueType = By.xpath("//input[@data-test-id='field-paymentDueTypeTitle']");
-    private final By paymentAmount = By.xpath("//input[@data-test-id='field-amount'']");
+    private final By paymentAmount = By.xpath("//input[@data-test-id='field-amount']");
 
     @Step("Get 'Payment amount'")
     public String getPaymentAmount() {
         waitForElementVisibility(paymentAmount);
         return getDisabledElementAttributeValue("value", paymentAmount).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Status' value")
+    public String getPaymentDueStatus() {
+        waitForElementVisibility(paymentDueStatus);
+        return getElementText(paymentDueStatus).trim();
     }
 
     @Step("Get amount due")
@@ -167,12 +173,6 @@ public class AccountPaymentInfoPage extends PageTools {
     public String getDueDate() {
         waitForElementVisibility(dueDate);
         return getDisabledElementAttributeValue("value", dueDate);
-    }
-
-    @Step("Get Status value")
-    public String getStatus(){
-        waitForElementVisibility(status);
-        return getElementText(status).trim();
     }
 
     @Step("Get 'Payment due type' value")
@@ -245,11 +245,18 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By escrow = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[4]//span//span");
     private final By amount = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[5]//span//span");
     private final By principal = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[3]//span//span");
+    private final By status = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[6]//span//span");
 
     @Step("Get Principal value")
     public String getPrincipal(){
         waitForElementVisibility(principal);
         return getElementText(principal).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get Status value")
+    public String getStatus(){
+        waitForElementVisibility(status);
+        return getElementText(status).trim();
     }
 
     @Step("Get Interest value")

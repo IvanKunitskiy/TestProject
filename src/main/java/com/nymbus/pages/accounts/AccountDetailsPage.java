@@ -157,6 +157,7 @@ public class AccountDetailsPage extends PageTools {
     private final By rateRoundingFactor = By.xpath("//tr[@data-test-id='field-armroundingfactor']/td/dn-field-view/div/div/span/span");
     private final By rateRoundingMethod = By.xpath("//tr[@data-test-id='field-armroundingindicator']/td/dn-field-view/div/div/span/span");
     private final By originalInterestRate = By.xpath("//tr[@data-test-id='field-armoriginalinterestrate']/td/dn-field-view/div/div/span/span");
+    private final By nextPaymentBilledDueDate = By.xpath("//tr[@data-test-id='field-nextduedate']//span/span");
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -168,6 +169,12 @@ public class AccountDetailsPage extends PageTools {
     /**
      * Details tab
      */
+
+    @Step("Get 'Next Payment Billed Due Date'")
+    public String getNextPaymentBilledDueDate() {
+        waitForElementVisibility(nextPaymentBilledDueDate);
+        return getElementText(nextPaymentBilledDueDate).trim();
+    }
 
     @Step("Get 'Current effective rate'")
     public String getCurrentEffectiveRate() {
