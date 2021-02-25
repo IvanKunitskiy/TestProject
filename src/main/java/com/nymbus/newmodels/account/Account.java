@@ -102,6 +102,7 @@ public class Account {
     private String cycleCode;
     private String commitmentTypeAmt;
     private String dateFirstPaymentDue;
+    private String escrow;
     private String paymentChangeFrequency;
     private String rateIndex;
     private String rateRoundingMethod;
@@ -313,6 +314,14 @@ public class Account {
         account.setUserDefinedField_4(Generator.genString(5));
 
         return account;
+    }
+
+    public String getEscrow() {
+        return escrow;
+    }
+
+    public void setEscrow(String escrow) {
+        this.escrow = escrow;
     }
 
     public String getProductType() {

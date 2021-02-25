@@ -139,6 +139,7 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By dueDate = By.xpath("//input[@id='duedate']");
     private final By paymentDueType = By.xpath("//input[@data-test-id='field-paymentDueTypeTitle']");
     private final By paymentAmount = By.xpath("//input[@data-test-id='field-amount']");
+    private final By paymentType = By.xpath("(//div[@id='paymenttype_paymentHistory_0']//span[contains(string(),\"Interest Only (Bill)\")])[2]");
 
     @Step("Get 'Payment amount'")
     public String getPaymentAmount() {
@@ -161,6 +162,11 @@ public class AccountPaymentInfoPage extends PageTools {
     @Step("Check Paid status visibility")
     public boolean paidStatusIsVisibility(){
         return isElementVisible(paidStatus);
+    }
+
+    @Step("Check payment status visibility")
+    public boolean paymentStatusIsVisibility(){
+        return isElementVisible(paymentType);
     }
 
     @Step("Get Date payment paid in full value")
@@ -205,7 +211,6 @@ public class AccountPaymentInfoPage extends PageTools {
         return getDisabledElementAttributeValue("value", disAmount).replaceAll("[^0-9.]", "");
     }
 
-
     @Step("Get Due date value")
     public String getTypeDue() {
         waitForElementVisibility(dueTypeTittle);
@@ -246,6 +251,7 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By amount = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[5]//span//span");
     private final By principal = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[3]//span//span");
     private final By status = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[6]//span//span");
+    private final By amountDueFromtTable = By.xpath("(//tr[@data-test-id='repeat-payment-0']//td[3]//span//span)[2]");
 
     @Step("Get Principal value")
     public String getPrincipal(){
@@ -281,6 +287,12 @@ public class AccountPaymentInfoPage extends PageTools {
     public String getPaymentDate(){
         waitForElementVisibility(paymentDate);
         return getElementText(paymentDate);
+    }
+
+    @Step("Get Amount value")
+    public String getAmountDueTable(){
+        waitForElementVisibility(amountDueFromtTable);
+        return getElementText(amountDueFromtTable).replaceAll("[^0-9.]", "");
     }
 
     /**
