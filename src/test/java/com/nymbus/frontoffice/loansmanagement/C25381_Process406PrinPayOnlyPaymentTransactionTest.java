@@ -12,8 +12,14 @@ import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
+import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
+import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
+import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitMiscCreditBuilder;
+import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
 import com.nymbus.testrail.TestRailIssue;
+import com.nymbus.util.Random;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -28,6 +34,10 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
     private String clientRootId;
+    private final double transactionAmount = 1001.00;
+    private Transaction transaction_411;
+    private String accruedInterest;
+    private Transaction transaction_406;
 
     @BeforeMethod
     public void preCondition() {
@@ -42,6 +52,30 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
+
+        // Set up transactions
+        Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
+        depositTransaction.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
+        depositTransaction.getTransactionDestination().setAmount(transactionAmount);
+        depositTransaction.getTransactionSource().setAmount(transactionAmount);
+
+        int transaction411Amount = 12000;
+        transaction_411 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
+        transaction_411.getTransactionSource().setAccountNumber(loanAccount.getAccountNumber());
+        transaction_411.getTransactionSource().setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
+        transaction_411.getTransactionSource().setAmount(transaction411Amount);
+        transaction_411.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
+        transaction_411.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
+        transaction_411.getTransactionDestination().setAmount(transaction411Amount);
+
+        int transaction406Amount = transaction411Amount - Random.genInt(1, 20);
+        transaction_406 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
+        transaction_406.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
+        transaction_406.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
+        transaction_406.getTransactionSource().setAmount(transaction411Amount - Random.genInt(1, 20));
+        transaction_406.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
+        transaction_406.getTransactionDestination().setTransactionCode(TransactionCode.PRIN_PAYM_ONLY_406.getTransCode());
+        transaction_406.getTransactionDestination().setAmount(transaction406Amount);
 
         // Login to the system
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -62,10 +96,39 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create account
-        AccountActions.createAccount().createCHKAccountForTransactionPurpose(chkAccount);
+        AccountActions.createAccount().createCHKAccount(chkAccount);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createLoanAccount(loanAccount);
         clientRootId = ClientsActions.createClient().getClientIdFromUrl();
+
+        // Perform deposit transaction
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
+        Actions.transactionActions().createTransaction(depositTransaction);
+        Actions.transactionActions().clickCommitButton();
+        Pages.tellerPage().closeModal();
+
+        // Re-login
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        // Perform 411 transaction
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
+        Actions.transactionActions().setMiscDebitSource(transaction_411.getTransactionSource(), 0);
+        Actions.transactionActions().setMiscCreditDestination(transaction_411.getTransactionDestination(), 0);
+        Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
+        Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
+        Pages.tellerPage().closeModal();
+
+        // Create nonTellerTransactions
+        Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
+
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
+        accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
+
+        Actions.loginActions().doLogOutProgrammatically();
 
     }
 
@@ -85,7 +148,34 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         logInfo("Step 3: Log in to the proof date");
         Actions.transactionActions().doLoginTeller();
 
+        logInfo("Step 4: Commit 406 transaction with the following fields:\n" +
+                "\n" +
+                "    Sources -> Misc Debit:\n" +
+                "        \"Account Number\" - active CHK or SAV account from preconditions\n" +
+                "        \"Transaction Code\" - \"114 - Loan Payment\"\n" +
+                "        Amount < current balance with loan account from preconditions\n" +
+                "\n" +
+                "    Destinations -> Misc Credit:\n" +
+                "        Account number - Loan account from preconditions\n" +
+                "        \"Transaction Code\" - \"406 - Prin Paym Only\"\n" +
+                "        \"Amount\" - specify the same amount\n" +
+                "\n");
+        int currentIndex = 0;
+        Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction_406.getTransactionSource(), currentIndex);
+        Actions.transactionActions().setMiscCreditDestination(transaction_406.getTransactionDestination(), currentIndex);
+        Pages.tellerPage().setEffectiveDate(transaction_406.getTransactionDate());
+        Actions.transactionActions().clickCommitButton();
 
+        logInfo("Step 5: Close Transaction Receipt popup");
+        Pages.tellerPage().closeModal();
 
+        logInfo("Step 6: Open loan account from preconditions on 'Details' tab");
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
+
+        logInfo("Step 7: Pay attention to the following fields:\n" +
+                "- Next Payment Billed Due Date\n" +
+                "- Date Last Payment\n" +
+                "- Current Balance");
     }
 }
