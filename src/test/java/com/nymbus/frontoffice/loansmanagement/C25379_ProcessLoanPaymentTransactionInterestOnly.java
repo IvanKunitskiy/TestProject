@@ -183,8 +183,8 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnly extends BaseTest {
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().paidStatusIsVisibility(),
                 new CustomStepResult("Paid is not visible", "Paid is visible"));
 
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().paymentStatusIsVisibility(),
-                new CustomStepResult("Paid is not visible", "Paid is visible"));
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().paymentStatusIsVisibility("Interest Only (Bill)"),
+                new CustomStepResult("Payment Status is not visible", "Payment Status is visible"));
 
         String dueDate = Pages.accountPaymentInfoPage().getDueDate();
         TestRailAssert.assertTrue(dueDate.equals(loanAccount.getNextPaymentBilledDueDate()),

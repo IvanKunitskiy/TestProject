@@ -44,7 +44,7 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By paymentDueRecord = By.xpath("(//div[@ui-view='paymentsDue']//tr)[2]");
     private final By amountDue = By.xpath("//input[@data-test-id='field-amountdue']");
     private final By paidStatus = By.xpath("(//div[@id='paymentduestatus']//span[contains(string(),\"Paid\")])[2]");
-    private final By paymentType = By.xpath("(//div[@id='paymenttype_paymentHistory_0']//span[contains(string(),\"Interest Only (Bill)\")])[2]");
+    private final By paymentType = By.xpath("(//div[@id='paymenttype_paymentHistory_0']//span[contains(string(),\"%s\")])[2]");
     private final By datePaymentPaidInFull = By.xpath("//input[@id='datepaid']");
     private final By dueDate = By.xpath("//input[@id='duedate']");
     private final By disInterest = By.xpath("//input[@id='interest']");
@@ -145,8 +145,8 @@ public class AccountPaymentInfoPage extends PageTools {
     }
 
     @Step("Check payment status visibility")
-    public boolean paymentStatusIsVisibility(){
-        return isElementVisible(paymentType);
+    public boolean paymentStatusIsVisibility(String type){
+        return isElementVisible(paymentType, type);
     }
 
     @Step("Get Date payment paid in full value")
