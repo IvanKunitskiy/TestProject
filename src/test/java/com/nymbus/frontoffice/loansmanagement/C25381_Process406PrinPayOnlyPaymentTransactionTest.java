@@ -36,8 +36,7 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
     private String clientRootId;
-    private final double transactionAmount = 1001.00;
-    private Transaction transaction_411;
+    private Transaction transaction_109;
     private String accruedInterest;
     private Transaction transaction_406;
     private String dateLastPayment;
@@ -56,28 +55,30 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         chkAccount = new Account().setCHKAccountData();
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
+        loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         loanAccount.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
 
         // Set up transactions
+        final double depositTransactionAmount = 1001.00;
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
         depositTransaction.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
-        depositTransaction.getTransactionDestination().setAmount(transactionAmount);
-        depositTransaction.getTransactionSource().setAmount(transactionAmount);
+        depositTransaction.getTransactionDestination().setAmount(depositTransactionAmount);
+        depositTransaction.getTransactionSource().setAmount(depositTransactionAmount);
 
-        int transaction411Amount = 12000;
-        transaction_411 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
-        transaction_411.getTransactionSource().setAccountNumber(loanAccount.getAccountNumber());
-        transaction_411.getTransactionSource().setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
-        transaction_411.getTransactionSource().setAmount(transaction411Amount);
-        transaction_411.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
-        transaction_411.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
-        transaction_411.getTransactionDestination().setAmount(transaction411Amount);
+        int transaction109Amount = 12000;
+        transaction_109 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
+        transaction_109.getTransactionSource().setAccountNumber(loanAccount.getAccountNumber());
+        transaction_109.getTransactionSource().setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
+        transaction_109.getTransactionSource().setAmount(transaction109Amount);
+        transaction_109.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
+        transaction_109.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
+        transaction_109.getTransactionDestination().setAmount(transaction109Amount);
 
-        int transaction406Amount = transaction411Amount - Random.genInt(1, 20);
+        int transaction406Amount = transaction109Amount - Random.genInt(1, 20);
         transaction_406 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
         transaction_406.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
         transaction_406.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
-        transaction_406.getTransactionSource().setAmount(transaction411Amount - Random.genInt(1, 20));
+        transaction_406.getTransactionSource().setAmount(transaction109Amount - Random.genInt(1, 20));
         transaction_406.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
         transaction_406.getTransactionDestination().setTransactionCode(TransactionCode.PRIN_PAYM_ONLY_406.getTransCode());
         transaction_406.getTransactionDestination().setAmount(transaction406Amount);
@@ -117,11 +118,10 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         Actions.loginActions().doLogOutProgrammatically();
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        // Perform 411 transaction
+        // Perform 109 transaction
         Actions.transactionActions().goToTellerPage();
         Actions.transactionActions().doLoginTeller();
-        Actions.transactionActions().setMiscDebitSource(transaction_411.getTransactionSource(), 0);
-        Actions.transactionActions().setMiscCreditDestination(transaction_411.getTransactionDestination(), 0);
+        Actions.transactionActions().createTransaction(transaction_109);
         Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().closeModal();
@@ -194,5 +194,19 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         System.out.println(transaction_406.getTransactionDestination().getAmount());
         TestRailAssert.assertTrue(actualCurrentBalance == currentBalance - transaction_406.getTransactionDestination().getAmount(),
                 new CustomStepResult("'Date Last Payment' is not valid", "'Date Last Payment' is valid"));
+
+        logInfo("Step 8: Open 'Payment Info' tab");
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+
+        logInfo("Step 9: Click on the Payment Due record in the 'Payments Due' section and pay attention to the Payment Due Details");
+        Pages.accountPaymentInfoPage().clickPaymentDueRecord();
+        // None of the Payment Due fields is affected by "406 - Prin Paym Only" transaction
+
+        logInfo("Step 10: Pay attention at the 'Transactions'");
+        // "406 - Prin Paym Only" transaction is NOT displayed in the 'Transaction' list
+
+        logInfo("Step 11: Go to Transactions tab and verify generated transaction");
+        Pages.accountDetailsPage().clickTransactionsTab();
+        // "406 - Prin Paym Only" transaction is generated with Principal only portion amount == amount paid in step 4
     }
 }
