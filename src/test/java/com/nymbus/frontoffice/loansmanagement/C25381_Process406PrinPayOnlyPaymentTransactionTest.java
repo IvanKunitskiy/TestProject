@@ -18,6 +18,8 @@ import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitMiscCreditBu
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import com.nymbus.util.Random;
 import io.qameta.allure.*;
@@ -38,6 +40,9 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
     private Transaction transaction_411;
     private String accruedInterest;
     private Transaction transaction_406;
+    private String dateLastPayment;
+    private String nextPaymentBilledDueDate;
+    private double currentBalance;
 
     @BeforeMethod
     public void preCondition() {
@@ -127,9 +132,11 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
         accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
+        dateLastPayment = Pages.accountDetailsPage().getDateLastPayment();
+        nextPaymentBilledDueDate = Pages.accountDetailsPage().getNextPaymentBilledDueDate();
+        currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu());
 
         Actions.loginActions().doLogOutProgrammatically();
-
     }
 
     private final String TEST_RUN_NAME = "Loans Management";
@@ -177,5 +184,15 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
                 "- Next Payment Billed Due Date\n" +
                 "- Date Last Payment\n" +
                 "- Current Balance");
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getNextPaymentBilledDueDate().equals(nextPaymentBilledDueDate),
+                new CustomStepResult("'Next Payment Billed Due Date' is not valid", "'Next Payment Billed Due Date' is valid"));
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getNextPaymentBilledDueDate().equals(dateLastPayment),
+                new CustomStepResult("'Date Last Payment' is not valid", "'Date Last Payment' is valid"));
+        double actualCurrentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
+        System.out.println(actualCurrentBalance);
+        System.out.println(currentBalance);
+        System.out.println(transaction_406.getTransactionDestination().getAmount());
+        TestRailAssert.assertTrue(actualCurrentBalance == currentBalance - transaction_406.getTransactionDestination().getAmount(),
+                new CustomStepResult("'Date Last Payment' is not valid", "'Date Last Payment' is valid"));
     }
 }
