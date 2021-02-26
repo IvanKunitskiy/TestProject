@@ -287,7 +287,7 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         TestRailAssert.assertTrue(dateInterestPaidThru.equals(DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(), 1)),
                 new CustomStepResult("'DateInterestPaidThru' is not valid", "'DateInterestPaidThru' is valid"));
         currentBalance = Pages.accountDetailsPage().getCurrentBalance();
-        TestRailAssert.assertTrue(Double.parseDouble(currentBalance) == balance,
+        TestRailAssert.assertTrue(Double.parseDouble(currentBalance) == (balance - transactionAmount),
                 new CustomStepResult("Current balance is not valid", "Current balance is valid"));
         String actualAccruedInterest = Pages.accountDetailsPage().getAccruedInterest();
         TestRailAssert.assertTrue(Double.parseDouble(actualAccruedInterest) == (Double.parseDouble(accruedInterest) - transactionAmount),
