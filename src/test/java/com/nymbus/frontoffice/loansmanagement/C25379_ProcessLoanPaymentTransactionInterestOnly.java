@@ -127,9 +127,9 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnly extends BaseTest {
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
         accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
         Pages.accountDetailsPage().clickPaymentInfoTab();
-        this.transactionAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getAmountDueTable().replaceAll("[^0-9.]", ""));
-        transaction.getTransactionSource().setAmount(this.transactionAmount);
-        transaction.getTransactionDestination().setAmount(this.transactionAmount);
+        transactionAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getAmountDueTable().replaceAll("[^0-9.]", ""));
+        transaction.getTransactionSource().setAmount(transactionAmount);
+        transaction.getTransactionDestination().setAmount(transactionAmount);
 
         Actions.loginActions().doLogOutProgrammatically();
     }

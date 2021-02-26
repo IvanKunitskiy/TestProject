@@ -41,6 +41,8 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By piPaymentsAmount = By.xpath("//input[@data-test-id='field-amount_paymentHistory_0']");
     private final By piPaymentsPercentage = By.xpath("//input[@data-test-id='field-percentage_paymentHistory_0']");
     private final By piPaymentsRecalcFuturePymt = By.xpath("//dn-switch[@id='recalcfuturepayment']/div/div/span[2]");
+
+
     private final By paymentDueRecord = By.xpath("(//div[@ui-view='paymentsDue']//tr)[2]");
     private final By amountDue = By.xpath("//input[@data-test-id='field-amountdue']");
     private final By paidStatus = By.xpath("(//div[@id='paymentduestatus']//span[contains(string(),\"Paid\")])[2]");
@@ -56,13 +58,6 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By dueType = By.xpath("((//tr[@data-test-id='repeat-payment-0'])[3]//span//span)[2]");
     private final By dueAmount = By.xpath("((//tr[@data-test-id='repeat-payment-0'])[3]//span//span)[3]");
     private final By dueStatus = By.xpath("((//tr[@data-test-id='repeat-payment-0'])[3]//span//span)[4]");
-    private final By paymentDate = By.xpath("//tr[@data-test-id='repeat-transaction-0']//span//span");
-    private final By interest = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[2]//span//span");
-    private final By principal = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[3]//span//span");
-    private final By escrow = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[4]//span//span");
-    private final By amount = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[5]//span//span");
-    private final By status = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[6]//span//span");
-    private final By amountDueFromtTable = By.xpath("(//tr[@data-test-id='repeat-payment-0']//td[3]//span//span)[2]");
 
     @Step("Get Pi Payments Payment 'Recalc Future Pymt' value")
     public String getPiPaymentsRecalcFuturePymt() {
@@ -110,6 +105,18 @@ public class AccountPaymentInfoPage extends PageTools {
     }
 
     /**
+     * Payments Due
+     */
+    private final By paymentDueRecord = By.xpath("(//div[@ui-view='paymentsDue']//tr)[2]");
+
+    @Step("Click payment due record")
+    public void clickPaymentDueRecord() {
+        waitForElementVisibility(paymentDueRecord);
+        waitForElementClickable(paymentDueRecord);
+        click(paymentDueRecord);
+    }
+
+    /**
      * Other Payments
      */
 
@@ -126,11 +133,30 @@ public class AccountPaymentInfoPage extends PageTools {
         return getElementText(activePaymentAmountInterestOnly).trim();
     }
 
-    @Step("Click payment due record")
-    public void clickPaymentDueRecord() {
-        waitForElementVisibility(paymentDueRecord);
-        waitForElementClickable(paymentDueRecord);
-        click(paymentDueRecord);
+
+    /**
+     * Payment Due Details
+     */
+
+    private final By amountDue = By.xpath("//input[@data-test-id='field-amountdue']");
+    private final By paidStatus = By.xpath("(//div[@id='paymentduestatus']//span[contains(string(),'Paid')])[2]");
+    private final By paymentDueStatus = By.xpath("//div[@data-test-id='field-paymentduestatus']/a/span/span");
+    private final By datePaymentPaidInFull = By.xpath("//input[@id='datepaid']");
+    private final By dueDate = By.xpath("//input[@id='duedate']");
+    private final By paymentDueType = By.xpath("//input[@data-test-id='field-paymentDueTypeTitle']");
+    private final By paymentAmount = By.xpath("//input[@data-test-id='field-amount']");
+    private final By paymentType = By.xpath("(//div[@id='paymenttype_paymentHistory_0']//span[contains(string(),\"Interest Only (Bill)\")])[2]");
+
+    @Step("Get 'Payment amount'")
+    public String getPaymentAmount() {
+        waitForElementVisibility(paymentAmount);
+        return getDisabledElementAttributeValue("value", paymentAmount).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Status' value")
+    public String getPaymentDueStatus() {
+        waitForElementVisibility(paymentDueStatus);
+        return getElementText(paymentDueStatus).trim();
     }
 
     @Step("Get amount due")
@@ -159,6 +185,12 @@ public class AccountPaymentInfoPage extends PageTools {
     public String getDueDate() {
         waitForElementVisibility(dueDate);
         return getDisabledElementAttributeValue("value", dueDate);
+    }
+
+    @Step("Get 'Payment due type' value")
+    public String getPaymentDueType(){
+        waitForElementVisibility(paymentDueType);
+        return getDisabledElementAttributeValue("value", paymentDueType).trim();
     }
 
     @Step("Get interest value")
@@ -215,22 +247,34 @@ public class AccountPaymentInfoPage extends PageTools {
         return getElementText(dueStatus);
     }
 
-    @Step("Get payment date value")
-    public String getPaymentDate(){
-        waitForElementVisibility(paymentDate);
-        return getElementText(paymentDate);
+    /**
+     * Transactions Section
+     */
+
+    private final By paymentDate = By.xpath("//tr[@data-test-id='repeat-transaction-0']//span//span");
+    private final By interest = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[2]//span//span");
+    private final By escrow = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[4]//span//span");
+    private final By amount = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[5]//span//span");
+    private final By principal = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[3]//span//span");
+    private final By status = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[6]//span//span");
+    private final By amountDueFromtTable = By.xpath("(//tr[@data-test-id='repeat-payment-0']//td[3]//span//span)[2]");
+
+    @Step("Get Principal value")
+    public String getPrincipal(){
+        waitForElementVisibility(principal);
+        return getElementText(principal).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get Status value")
+    public String getStatus(){
+        waitForElementVisibility(status);
+        return getElementText(status).trim();
     }
 
     @Step("Get Interest value")
     public String getInterest(){
         waitForElementVisibility(interest);
         return getElementText(interest).replaceAll("[^0-9.]", "");
-    }
-
-    @Step("Get Principal value")
-    public String getPrincipal(){
-        waitForElementVisibility(principal);
-        return getElementText(principal).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get Escrow value")
@@ -245,17 +289,48 @@ public class AccountPaymentInfoPage extends PageTools {
         return getElementText(amount).replaceAll("[^0-9.]", "");
     }
 
+    @Step("Get payment date value")
+    public String getPaymentDate(){
+        waitForElementVisibility(paymentDate);
+        return getElementText(paymentDate);
+    }
+
     @Step("Get Amount value")
     public String getAmountDueTable(){
         waitForElementVisibility(amountDueFromtTable);
         return getElementText(amountDueFromtTable).replaceAll("[^0-9.]", "");
     }
 
-    @Step("Get Status value")
-    public String getStatus(){
-        waitForElementVisibility(status);
-        return getElementText(status);
+    /**
+     * Payments Due Section
+     */
+
+    private final By dueDateFromRecordByIndex = By.xpath("//div[@ui-view='paymentsDue']//table/tbody/tr[%s]/td[1]//span/span");
+    private final By paymentDueTypeFromRecordByIndex = By.xpath("//div[@ui-view='paymentsDue']//table/tbody/tr[%s]/td[2]//span/span");
+    private final By amountDueFromRecordByIndex = By.xpath("//div[@ui-view='paymentsDue']//table/tbody/tr[%s]/td[3]//span/span");
+    private final By statusFromRecordByIndex = By.xpath("//div[@ui-view='paymentsDue']//table/tbody/tr[%s]/td[4]//span/span");
+
+    @Step("Get 'Due Date' from 'Payments Due' value by index : {index}")
+    public String getDueDateFromRecordByIndex(int index){
+        waitForElementVisibility(dueDateFromRecordByIndex, index);
+        return getElementText(dueDateFromRecordByIndex, index).trim();
     }
 
+    @Step("Get 'Payment Due Type' from 'Payments Due' value by index : {index}")
+    public String getPaymentDueTypeFromRecordByIndex(int index){
+        waitForElementVisibility(paymentDueTypeFromRecordByIndex, index);
+        return getElementText(paymentDueTypeFromRecordByIndex, index).trim();
+    }
 
+    @Step("Get 'Amount Due' from 'Payments Due' value by index : {index}")
+    public String getAmountDueFromRecordByIndex(int index){
+        waitForElementVisibility(amountDueFromRecordByIndex, index);
+        return getElementText(amountDueFromRecordByIndex, index).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Status' from 'Payments Due' value by index : {index}")
+    public String getStatusFromRecordByIndex(int index){
+        waitForElementVisibility(statusFromRecordByIndex, index);
+        return getElementText(statusFromRecordByIndex, index).trim();
+    }
 }

@@ -19,7 +19,6 @@ public class NonTellerTransaction extends AllureLogger {
         JSONObject requestBody = JSONData.getAtmDepositData(cardNumber, expirationDate, amount);
 
         logInfo("Request body: " + requestBody.toString());
-        System.out.println(requestBody.toString());
 
         given().
                 auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
@@ -37,8 +36,6 @@ public class NonTellerTransaction extends AllureLogger {
         JSONObject requestBody = JSONData.getPaymentDueData(accountNumber);
 
         logInfo("Request body: " + requestBody.toString());
-        System.out.println(requestBody.toString());
-
 
         ResponseBodyExtractionOptions responseBody = given().
                 auth().preemptive().basic(Constants.USERNAME, Constants.PASSWORD).
