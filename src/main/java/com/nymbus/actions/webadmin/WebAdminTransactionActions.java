@@ -3,6 +3,7 @@ package com.nymbus.actions.webadmin;
 import com.codeborne.selenide.Selenide;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.UserCredentials;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
@@ -203,10 +204,10 @@ public class WebAdminTransactionActions {
 
     public void verifyDeletedRecords() {
         int recordsCount = WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResultInterfaceTable();
-        Assert.assertTrue(recordsCount > 0,"Transaction items doesn't find!");
+        Assert.assertTrue(recordsCount > 0, "Transaction items doesn't find!");
         SoftAssert softAssert = new SoftAssert();
         String empty = "";
-        for (int i = 1; i <= recordsCount; i++ ) {
+        for (int i = 1; i <= recordsCount; i++) {
             softAssert.assertNotEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDeletedWhenValue(i), empty,
                     "Deleted When field is blank!");
             softAssert.assertNotEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDeletedBy(i), empty,
@@ -239,5 +240,18 @@ public class WebAdminTransactionActions {
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
         return transactionNumber;
+    }
+
+    public double getInterestEarned(UserCredentials userCredentials, Account account) {
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL +
+                "RulesUIQuery.ct?waDbName=coreDS&dqlQuery=count%3A+10%0D%0Aselect%3A+%28databean%29CREATEDBY%2C+%28databean%29CREATEDWHEN%2C+accountid%2C+interestearned%0D%0Afrom%3A+bank.data.actloan%0D%0Awhere%3A+%0D%0A-+.accountid->accountnumber%3A+41100079031%0D%0AdeletedIncluded%3A+true&source=");
+        SelenideTools.switchToLastTab();
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        String transactionNumber = WebAdminPages.rulesUIQueryAnalyzerPage().getNameValue(1);
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+
+        return Double.parseDouble(transactionNumber);
     }
 }
