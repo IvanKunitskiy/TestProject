@@ -42,13 +42,6 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By piPaymentsPercentage = By.xpath("//input[@data-test-id='field-percentage_paymentHistory_0']");
     private final By piPaymentsRecalcFuturePymt = By.xpath("//dn-switch[@id='recalcfuturepayment']/div/div/span[2]");
 
-
-    private final By paymentDueRecord = By.xpath("(//div[@ui-view='paymentsDue']//tr)[2]");
-    private final By amountDue = By.xpath("//input[@data-test-id='field-amountdue']");
-    private final By paidStatus = By.xpath("(//div[@id='paymentduestatus']//span[contains(string(),\"Paid\")])[2]");
-    private final By paymentType = By.xpath("(//div[@id='paymenttype_paymentHistory_0']//span[contains(string(),\"%s\")])[2]");
-    private final By datePaymentPaidInFull = By.xpath("//input[@id='datepaid']");
-    private final By dueDate = By.xpath("//input[@id='duedate']");
     private final By disInterest = By.xpath("//input[@id='interest']");
     private final By disPrincipal = By.xpath("//input[@id='principal']");
     private final By disEscrow = By.xpath("//input[@id='escrow']");
