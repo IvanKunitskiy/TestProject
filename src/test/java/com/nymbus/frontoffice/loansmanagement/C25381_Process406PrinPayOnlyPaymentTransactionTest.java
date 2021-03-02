@@ -31,12 +31,9 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest {
 
-    private Account chkAccount;
     private Account loanAccount;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
-    private String clientRootId;
-    private Transaction transaction_109;
     private Transaction transaction_406;
     private String nextPaymentBilledDueDate;
     private double currentBalance;
@@ -59,7 +56,7 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account
-        chkAccount = new Account().setCHKAccountData();
+        Account chkAccount = new Account().setCHKAccountData();
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
@@ -73,7 +70,7 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         depositTransaction.getTransactionSource().setAmount(depositTransactionAmount);
 
         int transaction109Amount = 12000;
-        transaction_109 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
+        Transaction transaction_109 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
         transaction_109.getTransactionSource().setAccountNumber(loanAccount.getAccountNumber());
         transaction_109.getTransactionSource().setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
         transaction_109.getTransactionSource().setAmount(transaction109Amount);
@@ -108,15 +105,11 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
 
-        // TODO: delete
-//        Pages.aSideMenuPage().clickClientMenuItem();
-//        Actions.clientPageActions().searchAndOpenIndividualClientByID("23170");
-
         // Create account
         AccountActions.createAccount().createCHKAccount(chkAccount);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createLoanAccount(loanAccount);
-        clientRootId = ClientsActions.createClient().getClientIdFromUrl();
+        String clientRootId = ClientsActions.createClient().getClientIdFromUrl();
 
         // Perform deposit transaction
         Actions.transactionActions().goToTellerPage();
@@ -183,7 +176,6 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
                 "        \"Account Number\" - active CHK or SAV account from preconditions\n" +
                 "        \"Transaction Code\" - \"114 - Loan Payment\"\n" +
                 "        Amount < current balance with loan account from preconditions\n" +
-                "\n" +
                 "    Destinations -> Misc Credit:\n" +
                 "        Account number - Loan account from preconditions\n" +
                 "        \"Transaction Code\" - \"406 - Prin Paym Only\"\n" +
@@ -210,9 +202,6 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         TestRailAssert.assertTrue(Pages.accountDetailsPage().getDateLastPayment().isEmpty(),
                 new CustomStepResult("'Date Last Payment' is not valid", "'Date Last Payment' is valid"));
         double actualCurrentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
-        System.out.println(actualCurrentBalance);
-        System.out.println(currentBalance);
-        System.out.println(transaction406Amount);
         TestRailAssert.assertTrue(actualCurrentBalance == currentBalance - transaction406Amount,
                 new CustomStepResult("'Date Last Payment' is not valid", "'Date Last Payment' is valid"));
 
