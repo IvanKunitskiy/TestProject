@@ -92,13 +92,9 @@ public class C25383_Process420ForceToPrinLoanTransactionTest extends BaseTest {
         chkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
 
         // Create client
-//        ClientsActions.individualClientActions().createClient(client);
-//        ClientsActions.individualClientActions().setClientDetailsData(client);
-//        ClientsActions.individualClientActions().setDocumentation(client);
-
-        // TODO: delete
-        Pages.aSideMenuPage().clickClientMenuItem();
-        Actions.clientPageActions().searchAndOpenIndividualClientByID("23170");
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create account
         AccountActions.createAccount().createCHKAccount(chkAccount);
@@ -221,13 +217,15 @@ public class C25383_Process420ForceToPrinLoanTransactionTest extends BaseTest {
         double amount = Double.parseDouble(Pages.accountPaymentInfoPage().getAmount());
         TestRailAssert.assertTrue(amount == transaction420Amount,
                 new CustomStepResult("Amount is not valid", "Amount is valid"));
-        // Principal = transaction from step 4 amount
-//        String interest = Pages.accountPaymentInfoPage().getInterest();
-//        TestRailAssert.assertTrue(interest.equals("0.00"),
-//                new CustomStepResult("'Interest' is not valid", "'Interest' is valid"));
-//        String escrow = Pages.accountPaymentInfoPage().getEscrow();
-//        TestRailAssert.assertTrue(escrow.equals("0.00"),
-//                new CustomStepResult("'Escrow' is not valid", "'Escrow' is valid"));
+        String principal = Pages.accountPaymentInfoPage().getDisabledPrincipal();
+        TestRailAssert.assertTrue(Double.parseDouble(principal) == transaction420Amount,
+                new CustomStepResult("Principal is not valid", "Principal is valid"));
+        String totalTransactionInterest = Pages.accountPaymentInfoPage().getInterestTotal();
+        TestRailAssert.assertTrue(totalTransactionInterest.equals("0.00"),
+                new CustomStepResult("'Interest' is not valid", "'Interest' is valid"));
+        String totalTransactionEscrow = Pages.accountPaymentInfoPage().getEscrowTotal();
+        TestRailAssert.assertTrue(totalTransactionEscrow.equals("0.00"),
+                new CustomStepResult("'Escrow' is not valid", "'Escrow' is valid"));
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getStatus().equals("420 Force To Prin"),
                 new CustomStepResult("Status is not valid", "Status is valid"));
 
@@ -236,9 +234,9 @@ public class C25383_Process420ForceToPrinLoanTransactionTest extends BaseTest {
         double amountValue = AccountActions.retrievingAccountData().getAmountValue(1);
         TestRailAssert.assertTrue(amountValue == transaction420Amount,
                 new CustomStepResult("Amount is not valid", "Amount is valid"));
-//        double principalValue = AccountActions.retrievingAccountData().getBalanceValue(1);
-//        TestRailAssert.assertTrue(Double.parseDouble(principal) == principalValue,
-//                new CustomStepResult("Principal is not valid", "Principal is valid"));
+        double principalValue = AccountActions.retrievingAccountData().getBalanceValue(1);
+        TestRailAssert.assertTrue(Double.parseDouble(principal) == principalValue,
+                new CustomStepResult("Principal is not valid", "Principal is valid"));
         TestRailAssert.assertTrue(AccountActions.retrievingAccountData().getInterestMinusValue(1) == 0.00,
                 new CustomStepResult("Interest is not valid", "Interest is valid"));
         TestRailAssert.assertTrue(AccountActions.retrievingAccountData().getEscrowMinusValue(1) == 0.00,
