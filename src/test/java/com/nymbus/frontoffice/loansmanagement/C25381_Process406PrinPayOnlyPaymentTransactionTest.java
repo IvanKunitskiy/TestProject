@@ -37,11 +37,18 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
     private final String loanProductInitials = "TLP";
     private String clientRootId;
     private Transaction transaction_109;
-    private String accruedInterest;
     private Transaction transaction_406;
-    private String dateLastPayment;
     private String nextPaymentBilledDueDate;
     private double currentBalance;
+    private double transaction406Amount;
+    private String paymentDueType;
+    private String interest;
+    private String principal;
+    private String escrow;
+    private String paymentAmount;
+    private String amountDue;
+    private String dueDate;
+    private String paymentDueStatus;
 
     @BeforeMethod
     public void preCondition() {
@@ -74,11 +81,11 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         transaction_109.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
         transaction_109.getTransactionDestination().setAmount(transaction109Amount);
 
-        int transaction406Amount = transaction109Amount - Random.genInt(1, 20);
+        transaction406Amount = transaction109Amount - Random.genInt(1, 20);
         transaction_406 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
         transaction_406.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
         transaction_406.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
-        transaction_406.getTransactionSource().setAmount(transaction109Amount - Random.genInt(1, 20));
+        transaction_406.getTransactionSource().setAmount(transaction406Amount);
         transaction_406.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
         transaction_406.getTransactionDestination().setTransactionCode(TransactionCode.PRIN_PAYM_ONLY_406.getTransCode());
         transaction_406.getTransactionDestination().setAmount(transaction406Amount);
@@ -100,6 +107,10 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+
+        // TODO: delete
+//        Pages.aSideMenuPage().clickClientMenuItem();
+//        Actions.clientPageActions().searchAndOpenIndividualClientByID("23170");
 
         // Create account
         AccountActions.createAccount().createCHKAccount(chkAccount);
@@ -129,12 +140,24 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         // Create nonTellerTransactions
         Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
 
+        // Get Account Details data
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
-        accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
-        dateLastPayment = Pages.accountDetailsPage().getDateLastPayment();
         nextPaymentBilledDueDate = Pages.accountDetailsPage().getNextPaymentBilledDueDate();
         currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu());
+
+        // Get Payment Info data
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+        Pages.accountPaymentInfoPage().clickPaymentDueRecord();
+
+        paymentDueType = Pages.accountPaymentInfoPage().getDisabledPaymentDueType();
+        interest = Pages.accountPaymentInfoPage().getDisabledInterest();
+        principal = Pages.accountPaymentInfoPage().getDisabledPrincipal();
+        escrow = Pages.accountPaymentInfoPage().getDisabledEscrow();
+        paymentAmount = Pages.accountPaymentInfoPage().getDisabledPaymentAmount();
+        amountDue = Pages.accountPaymentInfoPage().getDisabledAmountDue();
+        dueDate = Pages.accountPaymentInfoPage().getDisabledDueDate();
+        paymentDueStatus = Pages.accountPaymentInfoPage().getPaymentDueStatus();
 
         Actions.loginActions().doLogOutProgrammatically();
     }
@@ -156,7 +179,6 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         Actions.transactionActions().doLoginTeller();
 
         logInfo("Step 4: Commit 406 transaction with the following fields:\n" +
-                "\n" +
                 "    Sources -> Misc Debit:\n" +
                 "        \"Account Number\" - active CHK or SAV account from preconditions\n" +
                 "        \"Transaction Code\" - \"114 - Loan Payment\"\n" +
@@ -165,8 +187,7 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
                 "    Destinations -> Misc Credit:\n" +
                 "        Account number - Loan account from preconditions\n" +
                 "        \"Transaction Code\" - \"406 - Prin Paym Only\"\n" +
-                "        \"Amount\" - specify the same amount\n" +
-                "\n");
+                "        \"Amount\" - specify the same amount\n");
         int currentIndex = 0;
         Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction_406.getTransactionSource(), currentIndex);
         Actions.transactionActions().setMiscCreditDestination(transaction_406.getTransactionDestination(), currentIndex);
@@ -186,13 +207,13 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
                 "- Current Balance");
         TestRailAssert.assertTrue(Pages.accountDetailsPage().getNextPaymentBilledDueDate().equals(nextPaymentBilledDueDate),
                 new CustomStepResult("'Next Payment Billed Due Date' is not valid", "'Next Payment Billed Due Date' is valid"));
-        TestRailAssert.assertTrue(Pages.accountDetailsPage().getNextPaymentBilledDueDate().equals(dateLastPayment),
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getDateLastPayment().isEmpty(),
                 new CustomStepResult("'Date Last Payment' is not valid", "'Date Last Payment' is valid"));
         double actualCurrentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
         System.out.println(actualCurrentBalance);
         System.out.println(currentBalance);
-        System.out.println(transaction_406.getTransactionDestination().getAmount());
-        TestRailAssert.assertTrue(actualCurrentBalance == currentBalance - transaction_406.getTransactionDestination().getAmount(),
+        System.out.println(transaction406Amount);
+        TestRailAssert.assertTrue(actualCurrentBalance == currentBalance - transaction406Amount,
                 new CustomStepResult("'Date Last Payment' is not valid", "'Date Last Payment' is valid"));
 
         logInfo("Step 8: Open 'Payment Info' tab");
@@ -200,13 +221,31 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
 
         logInfo("Step 9: Click on the Payment Due record in the 'Payments Due' section and pay attention to the Payment Due Details");
         Pages.accountPaymentInfoPage().clickPaymentDueRecord();
-        // None of the Payment Due fields is affected by "406 - Prin Paym Only" transaction
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDisabledPaymentDueType().equals(paymentDueType),
+                new CustomStepResult("'Payment Due Type' is not valid", "'Payment Due Type' is valid"));
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDisabledInterest().equals(interest),
+                new CustomStepResult("'Interest' is not valid", "'Interest' is valid"));
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDisabledPrincipal().equals(principal),
+                new CustomStepResult("'Principal' is not valid", "'Principal' is valid"));
+        TestRailAssert.assertTrue( Pages.accountPaymentInfoPage().getDisabledEscrow().equals(escrow),
+                new CustomStepResult("'Escrow' is not valid", "'Escrow' is valid"));
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDisabledPaymentAmount().equals(paymentAmount),
+                new CustomStepResult("'Payment amount' is not valid", "'Payment amount' is valid"));
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDisabledAmountDue().equals(amountDue),
+                new CustomStepResult("'Amount due' is not valid", "'Amount due' is valid"));
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDisabledDueDate().equals(dueDate),
+                new CustomStepResult("'Due Date' is not valid", "'Due Date' is valid"));
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getPaymentDueStatus().equals(paymentDueStatus),
+                new CustomStepResult("Status is not valid", "Status is valid"));
 
         logInfo("Step 10: Pay attention at the 'Transactions'");
-        // "406 - Prin Paym Only" transaction is NOT displayed in the 'Transaction' list
+        TestRailAssert.assertTrue(!Pages.accountPaymentInfoPage().getStatus().equals("406 Prin Paym Only"),
+                new CustomStepResult("'Status' is not valid", "'Status' is valid"));
 
         logInfo("Step 11: Go to Transactions tab and verify generated transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
-        // "406 - Prin Paym Only" transaction is generated with Principal only portion amount == amount paid in step 4
+        double principalValue = AccountActions.retrievingAccountData().getBalanceValue(1);
+        TestRailAssert.assertTrue(principalValue == transaction406Amount,
+                new CustomStepResult("Principal is not valid", "Principal is valid"));
     }
 }
