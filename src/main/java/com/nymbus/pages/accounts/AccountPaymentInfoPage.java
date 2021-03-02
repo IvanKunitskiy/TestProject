@@ -138,7 +138,7 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By dueDate = By.xpath("//input[@id='duedate']");
     private final By paymentDueType = By.xpath("//input[@data-test-id='field-paymentDueTypeTitle']");
     private final By paymentAmount = By.xpath("//input[@data-test-id='field-amount']");
-    private final By paymentType = By.xpath("(//div[@id='paymenttype_paymentHistory_0']//span[contains(string(),\"Interest Only (Bill)\")])[2]");
+    private final By paymentType = By.xpath("(//div[@id='paymenttype_paymentHistory_0']//span[contains(string(),\"%s\")])[2]");
 
     @Step("Get 'Payment amount'")
     public String getPaymentAmount() {
