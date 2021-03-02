@@ -252,6 +252,20 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By principal = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[3]//span//span");
     private final By status = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[6]//span//span");
     private final By amountDueFromtTable = By.xpath("(//tr[@data-test-id='repeat-payment-0']//td[3]//span//span)[2]");
+    private final By interestTotal = By.xpath("//tr[@class='row-total']/td[2]/div");
+    private final By escrowTotal = By.xpath("//tr[@class='row-total']/td[4]/div");
+
+    @Step("Get 'Interest total' value")
+    public String getInterestTotal(){
+        waitForElementVisibility(interestTotal);
+        return getElementText(interestTotal).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Escrow total' value")
+    public String getEscrowTotal(){
+        waitForElementVisibility(escrowTotal);
+        return getElementText(escrowTotal).replaceAll("[^0-9.]", "");
+    }
 
     @Step("Get Principal value")
     public String getPrincipal(){
