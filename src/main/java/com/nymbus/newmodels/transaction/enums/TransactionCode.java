@@ -50,7 +50,8 @@ public enum TransactionCode {
     ADD_TO_IENC_409("409 - Add To IENC"),
     LOAN_PAYMENT_114("114 - Loan Payment"),
     PAYOFF_433("433 - Payoff"),
-    PAYMENT_416("416 - Payment");
+    PAYMENT_416("416 - Payment"),
+    FORCE_TO_PRIN_420("420 - Force To Prin");
 
 
     private final String transCode;
