@@ -167,7 +167,6 @@ public class C25383_Process420ForceToPrinLoanTransactionTest extends BaseTest {
                 "        \"Amount\" - specify the same amount\n");
         Actions.transactionActions().createTransaction(transaction_420);
         Actions.transactionActions().clickCommitButton();
-        Pages.tellerPage().closeModal();
 
         logInfo("Step 5: Close Transaction Receipt popup");
         Pages.tellerPage().closeModal();
