@@ -228,7 +228,7 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
                 new CustomStepResult("Status is not valid", "Status is valid"));
 
         logInfo("Step 10: Pay attention at the 'Transactions'");
-        TestRailAssert.assertTrue(!Pages.accountPaymentInfoPage().getStatus().equals("406 Prin Paym Only"),
+        TestRailAssert.assertTrue(!Pages.accountPaymentInfoPage().isTransactionStatusVisible(),
                 new CustomStepResult("'Status' is not valid", "'Status' is valid"));
 
         logInfo("Step 11: Go to Transactions tab and verify generated transaction");

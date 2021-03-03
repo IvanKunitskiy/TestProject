@@ -279,6 +279,11 @@ public class AccountPaymentInfoPage extends PageTools {
         return getElementText(status).trim();
     }
 
+    @Step("Check if Status value is visible")
+    public boolean isTransactionStatusVisible(){
+        return isElementVisible(status);
+    }
+
     @Step("Get Interest value")
     public String getInterest(){
         waitForElementVisibility(interest);
