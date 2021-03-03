@@ -221,7 +221,7 @@ public class C25384_Process421ForceToIntLoanTransactionTest extends BaseTest {
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDatePaymentPaidInFull().isEmpty(),
                 new CustomStepResult("Date Payment Paid In Full is not valid", "Date Payment Paid In Full is valid"));
         String expectedPaymentDueDate = DateTime.getDateMinusMonth(nextPaymentBilledDueDate, 1);
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDueDate().equals(expectedPaymentDueDate),
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDisabledDueDate().equals(expectedPaymentDueDate),
                 new CustomStepResult("'Due Date' is not valid", "'Due Date' is valid"));
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getPaymentDueStatus().equals("Partially Paid"),
                 new CustomStepResult("'Status' is not valid", "'Status' is valid"));
