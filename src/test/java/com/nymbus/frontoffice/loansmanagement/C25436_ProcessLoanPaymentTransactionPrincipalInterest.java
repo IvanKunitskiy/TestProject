@@ -45,6 +45,8 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
     private String accruedInterest;
     private int balance;
+    private String dailyInterestFactor;
+    private int period;
 
 
     @BeforeMethod
@@ -119,6 +121,10 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().closeModal();
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
+        String nextPaymentBilledDueDate = Pages.accountDetailsPage().getNextPaymentBilledDueDate();
+        Pages.aSideMenuPage().clickBackOfficeMenuItem();
 
         // Create nonTellerTransactions
         Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
@@ -126,6 +132,8 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
         accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
+        dailyInterestFactor = Pages.accountDetailsPage().getDailyInterestFactor();
+        period = DateTime.getDaysBetweenTwoDates(loanAccount.getDateOpened(), nextPaymentBilledDueDate, false);
         Pages.accountDetailsPage().clickPaymentInfoTab();
         transactionAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getAmountDueTable().replaceAll("[^0-9.]", ""));
         transaction.getTransactionSource().setAmount(transactionAmount);
@@ -172,8 +180,6 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
         String dateLastPayment = Pages.accountDetailsPage().getDateLastPayment();
         String nextDueDate1 = Pages.accountDetailsPage().getNextDueDate();
-        String currentBalance = Pages.accountDetailsPage().getCurrentBalance();
-        String currentEffectiveRate = Pages.accountDetailsPage().getCurrentEffectiveRate();
         Pages.accountDetailsPage().clickPaymentInfoTab();
 
         logInfo("Step 7: Check Payment Due record from preconditions");
@@ -181,13 +187,10 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         String amountDue = Pages.accountPaymentInfoPage().getAmountDue();
         TestRailAssert.assertTrue(amountDue.equals("$ 0.00"),
                 new CustomStepResult("Amount due is not valid", "Amount due is valid"));
-
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().paidStatusIsVisibility(),
                 new CustomStepResult("Paid is not visible", "Paid is visible"));
-
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().paymentStatusIsVisibility("Principal & Interest"),
                 new CustomStepResult("Payment Status is not visible", "Payment Status is visible"));
-
         String dueDate = Pages.accountPaymentInfoPage().getDueDate();
         TestRailAssert.assertTrue(dueDate.equals(loanAccount.getNextPaymentBilledDueDate()),
                 new CustomStepResult("Due date is not valid", "Due date is valid"));
@@ -197,18 +200,15 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         String expectedAmount = Pages.accountPaymentInfoPage().getAmountDue();
         TestRailAssert.assertTrue(amountDue.equals(expectedAmount),
                 new CustomStepResult("Amount due is not valid", "Amount due is valid"));
-
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().paidStatusIsVisibility(),
                 new CustomStepResult("Paid is not visible", "Paid is visible"));
         String datePaymentPaidInFull = Pages.accountPaymentInfoPage().getDatePaymentPaidInFull();
         TestRailAssert.assertTrue(datePaymentPaidInFull.equals(dateLastPayment),
                 new CustomStepResult("Date Payment Paid In Full is not valid",
                         "Date Payment Paid In Full is valid"));
-
         String dueDateSec = Pages.accountPaymentInfoPage().getDueDate();
         TestRailAssert.assertTrue(dueDateSec.equals(DateTime.getDateMinusMonth(nextDueDate1, 1)),
                 new CustomStepResult("Due date is not valid", "Due date is valid"));
-
         String typeDue = Pages.accountPaymentInfoPage().getTypeDue();
         String expectedType = "Principal & Interest";
         TestRailAssert.assertTrue(typeDue.equals(expectedType),
@@ -221,23 +221,14 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
                 new CustomStepResult("Amount is not valid", "Amount is valid"));
 
         logInfo("Step 9: Pay attention to the 'Transactions' section");
-        String disabledPrincipal = Pages.accountPaymentInfoPage().getDisabledPrincipal();
         String disabledEscrow = Pages.accountPaymentInfoPage().getDisabledEscrow();
         String paymentDate = Pages.accountPaymentInfoPage().getPaymentDate();
         TestRailAssert.assertTrue(paymentDate.equals(dateLastPayment),
                 new CustomStepResult("Payment date is not valid", "Payment date is valid"));
         String interest = Pages.accountPaymentInfoPage().getInterest();
-        String[] daysBaseYearBase = loanAccount.getDaysBaseYearBase().replaceAll("[^0-9/]", "").split("/");
-
-        int yearBase = Integer.parseInt(daysBaseYearBase[1]);
-        double sum = Double.parseDouble(currentBalance) * Double.parseDouble(currentEffectiveRate) / (3 * yearBase);
-        System.out.println(sum);
-        System.out.println(interest);
         int i = (int) Double.parseDouble(interest);
-        int sum1 = (int) sum;
-        System.out.println(i);
-        System.out.println(sum1);
-        TestRailAssert.assertTrue((i == sum1),
+        int res =(int) (Double.parseDouble(dailyInterestFactor) * period);
+        TestRailAssert.assertTrue((i == res),
                 new CustomStepResult("Interest is not valid", "Interest due is valid"));
         String amount = Pages.accountPaymentInfoPage().getAmount();
         String disabledAmount = Pages.accountPaymentInfoPage().getDisabledAmount();
@@ -255,7 +246,7 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         TestRailAssert.assertTrue(amountValue == transactionAmount,
                 new CustomStepResult("Amount is not valid", "Amount is valid"));
         double principalValue = AccountActions.retrievingAccountData().getBalanceValue(1);
-        TestRailAssert.assertTrue(principalValue == Double.parseDouble(disabledPrincipal),
+        TestRailAssert.assertTrue((int)principalValue + 1 == (int) (amountValue - i),
                 new CustomStepResult("Principal is not valid", "Principal is valid"));
         double interestValue = AccountActions.retrievingAccountData().getInterestMinusValue(1);
         TestRailAssert.assertTrue(interestValue == Double.parseDouble(interest),
@@ -278,19 +269,19 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         TestRailAssert.assertTrue(nextDueDate.equals(DateTime.getDatePlusMonth(loanAccount.getNextPaymentBilledDueDate(), 1)),
                 new CustomStepResult("'NextPaymentBilledDueDate' is not valid", "'NextPaymentBilledDueDate' is valid"));
         double paidInterest = Double.parseDouble(Pages.accountDetailsPage().getInterestPaidToDate());
-        TestRailAssert.assertTrue(paidInterest == 101.92, new CustomStepResult("Paid interest is not valid",
+        TestRailAssert.assertTrue(paidInterest == Double.parseDouble(interest), new CustomStepResult("Paid interest is not valid",
                 "Paid interest is  valid"));
         dateLastPayment = Pages.accountDetailsPage().getDateLastPayment();
         TestRailAssert.assertTrue(dateLastPayment.equals(transaction.getTransactionDate()),
                 new CustomStepResult("'DateLastPayment' is not valid", "'DateLastPayment' is valid"));
         String dateInterestPaidThru = Pages.accountDetailsPage().getDateInterestPaidThru();
-        TestRailAssert.assertTrue(dateInterestPaidThru.equals(DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(), 1)),
+        TestRailAssert.assertTrue(dateInterestPaidThru.equals(DateTime.getDateMinusDays(transaction.getTransactionDate(), 1)),
                 new CustomStepResult("'DateInterestPaidThru' is not valid", "'DateInterestPaidThru' is valid"));
-        currentBalance = Pages.accountDetailsPage().getCurrentBalance();
-        TestRailAssert.assertTrue(Double.parseDouble(currentBalance) == (balance - transactionAmount),
+        String currentBalance = Pages.accountDetailsPage().getCurrentBalance();
+        TestRailAssert.assertTrue(Double.parseDouble(currentBalance) == (balance - transactionAmount + Double.parseDouble(interest)),
                 new CustomStepResult("Current balance is not valid", "Current balance is valid"));
         String actualAccruedInterest = Pages.accountDetailsPage().getAccruedInterest();
-        TestRailAssert.assertTrue(Double.parseDouble(actualAccruedInterest) == (Double.parseDouble(accruedInterest) - transactionAmount),
+        TestRailAssert.assertTrue(Double.parseDouble(actualAccruedInterest) == (Double.parseDouble(accruedInterest) - Double.parseDouble(interest)),
                 new CustomStepResult("Accrued interest is not valid", "Accrued interest is valid"));
     }
 }
