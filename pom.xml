@@ -15,7 +15,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <testng>7.0.0</testng>
-        <selenide>5.5.1</selenide>
+        <selenide>5.19.0</selenide>
         <assertj>3.14.0</assertj>
         <logback>1.2.3</logback>
         <org.slf4j>1.7.25</org.slf4j>
