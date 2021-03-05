@@ -141,7 +141,7 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By paymentType = By.xpath("(//div[@id='paymenttype_paymentHistory_0']//span[contains(string(),\"%s\")])[2]");
 
     @Step("Get 'Payment amount'")
-    public String getPaymentAmount() {
+    public String getDisabledPaymentAmount() {
         waitForElementVisibility(paymentAmount);
         return getDisabledElementAttributeValue("value", paymentAmount).replaceAll("[^0-9.]", "");
     }
@@ -153,7 +153,7 @@ public class AccountPaymentInfoPage extends PageTools {
     }
 
     @Step("Get amount due")
-    public String getAmountDue() {
+    public String getDisabledAmountDue() {
         waitForElementVisibility(amountDue);
         return getDisabledElementAttributeValue("value",amountDue);
     }
@@ -175,13 +175,13 @@ public class AccountPaymentInfoPage extends PageTools {
     }
 
     @Step("Get Due date value")
-    public String getDueDate() {
+    public String getDisabledDueDate() {
         waitForElementVisibility(dueDate);
         return getDisabledElementAttributeValue("value", dueDate);
     }
 
     @Step("Get 'Payment due type' value")
-    public String getPaymentDueType(){
+    public String getDisabledPaymentDueType(){
         waitForElementVisibility(paymentDueType);
         return getDisabledElementAttributeValue("value", paymentDueType).trim();
     }
@@ -253,6 +253,13 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By amountDueFromtTable = By.xpath("(//tr[@data-test-id='repeat-payment-0']//td[3]//span//span)[2]");
     private final By interestTotal = By.xpath("//tr[@class='row-total']/td[2]/div");
     private final By escrowTotal = By.xpath("//tr[@class='row-total']/td[4]/div");
+    private final By principalTotal = By.xpath("//tr[@class='row-total']/td[3]/div");
+
+    @Step("Get 'Principal total' value")
+    public String getPrincipalTotal(){
+        waitForElementVisibility(principalTotal);
+        return getElementText(principalTotal).replaceAll("[^0-9.]", "");
+    }
 
     @Step("Get 'Interest total' value")
     public String getInterestTotal(){
@@ -276,6 +283,11 @@ public class AccountPaymentInfoPage extends PageTools {
     public String getStatus(){
         waitForElementVisibility(status);
         return getElementText(status).trim();
+    }
+
+    @Step("Check if Status value is visible")
+    public boolean isTransactionStatusVisible(){
+        return isElementVisible(status);
     }
 
     @Step("Get Interest value")

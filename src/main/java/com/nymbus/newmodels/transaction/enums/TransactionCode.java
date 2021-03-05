@@ -52,8 +52,9 @@ public enum TransactionCode {
     PAYOFF_433("433 - Payoff"),
     PAYMENT_416("416 - Payment"),
     INT_PAY_ONLY_407("407 - Int Pay Only"),
-    FORCE_TO_PRIN_420("420 - Force To Prin");
-
+    FORCE_TO_PRIN_420("420 - Force To Prin"),
+    FORCE_TO_INT_421("421 - Force To Int"),
+    PRIN_PAYM_ONLY_406("406 - Prin Pay Only");
 
     private final String transCode;
 }
