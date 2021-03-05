@@ -211,7 +211,7 @@ public class C25419_ProcessEc416LoanPaymentTransactionPrinIntBillTest extends Ba
         Pages.accountPaymentInfoPage().clickPaymentDueRecord();
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDatePaymentPaidInFull().isEmpty(),
                 new CustomStepResult("Date Payment Paid In Full is not valid", "Date Payment Paid In Full is valid"));
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDueDate().equals(Pages.accountPaymentInfoPage().getPaymentDate()),
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDisabledDueDate().equals(Pages.accountPaymentInfoPage().getPaymentDate()),
                 new CustomStepResult("'Due Date' is not valid", "'Due Date' is valid"));
         double interest = Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledInterest());
         double principal = Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledPrincipal());
