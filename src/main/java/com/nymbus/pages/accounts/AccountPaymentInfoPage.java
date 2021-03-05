@@ -253,6 +253,13 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By amountDueFromtTable = By.xpath("(//tr[@data-test-id='repeat-payment-0']//td[3]//span//span)[2]");
     private final By interestTotal = By.xpath("//tr[@class='row-total']/td[2]/div");
     private final By escrowTotal = By.xpath("//tr[@class='row-total']/td[4]/div");
+    private final By amountTotal = By.xpath("//tr[@class='row-total']/td[5]/div");
+
+    @Step("Get 'Amount total' value")
+    public String getAmountTotal(){
+        waitForElementVisibility(amountTotal);
+        return getElementText(amountTotal).replaceAll("[^0-9.]", "");
+    }
 
     @Step("Get 'Interest total' value")
     public String getInterestTotal(){
@@ -316,6 +323,7 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By paymentDueTypeFromRecordByIndex = By.xpath("//div[@ui-view='paymentsDue']//table/tbody/tr[%s]/td[2]//span/span");
     private final By amountDueFromRecordByIndex = By.xpath("//div[@ui-view='paymentsDue']//table/tbody/tr[%s]/td[3]//span/span");
     private final By statusFromRecordByIndex = By.xpath("//div[@ui-view='paymentsDue']//table/tbody/tr[%s]/td[4]//span/span");
+    private final By statusFromRecordByDueDate = By.xpath("//div[@ui-view='paymentsDue']//table/tbody/tr[%s]/td[4]//span/span");
 
     @Step("Get 'Due Date' from 'Payments Due' value by index : {index}")
     public String getDueDateFromRecordByIndex(int index){
@@ -340,4 +348,10 @@ public class AccountPaymentInfoPage extends PageTools {
         waitForElementVisibility(statusFromRecordByIndex, index);
         return getElementText(statusFromRecordByIndex, index).trim();
     }
+
+//    @Step("Get 'Status' from 'Payments Due' value by 'Due Date' : {index}")
+//    public String getStatusFromRecordByIndex(String dueDate){
+//        waitForElementVisibility(statusFromRecordByDueDate, index);
+//        return getElementText(statusFromRecordByDueDate, index).trim();
+//    }
 }
