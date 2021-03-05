@@ -163,8 +163,6 @@ public class C22911_PeriodicSavSavGeneration extends BaseTest {
         Pages.accountDetailsPage().clickTransactionsTab();
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
-        System.out.println(actualSavTransactionData.getAmount());
-        System.out.println(actualSavTransactionData.getBalance());
         TestRailAssert.assertTrue(actualSavTransactionData.equals(savingsAccTransactionData),
                 new CustomStepResult("Transaction data doesn't match!", "Transaction data is match!"));
 
