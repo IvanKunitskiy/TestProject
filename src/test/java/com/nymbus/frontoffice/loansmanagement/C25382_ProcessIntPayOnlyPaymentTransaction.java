@@ -200,7 +200,7 @@ public class C25382_ProcessIntPayOnlyPaymentTransaction extends BaseTest {
         logInfo("Step 8: Click on the Payment Due record in the \"Payments Due\" section and pay attention " +
                 "to the Payment Due Details");
         Pages.accountPaymentInfoPage().clickPaymentDueRecord();
-        String amountDue = Pages.accountPaymentInfoPage().getAmountDue();
+        String amountDue = Pages.accountPaymentInfoPage().getAmountDueTable();
         TestRailAssert.assertTrue(amountDue.equals("$ 0.00"),
                 new CustomStepResult("Amount due is not valid", "Amount due is valid"));
 
@@ -210,8 +210,7 @@ public class C25382_ProcessIntPayOnlyPaymentTransaction extends BaseTest {
         TestRailAssert.assertTrue(datePaymentPaidInFull.equals(dateLastPayment),
                 new CustomStepResult("Date Payment Paid In Full is not valid",
                         "Date Payment Paid In Full is valid"));
-
-        String dueDate = Pages.accountPaymentInfoPage().getDueDate();
+        String dueDate = Pages.accountPaymentInfoPage().getDisabledDueDate();
         TestRailAssert.assertTrue(dueDate.equals(dateLastPayment),
                 new CustomStepResult("Due date is not valid", "Due date is valid"));
 
