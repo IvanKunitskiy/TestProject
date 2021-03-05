@@ -1,11 +1,9 @@
 package com.nymbus.frontoffice.loansmanagement;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -35,19 +33,15 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C25419_ProcessEc416LoanPaymentTransactionPrinIntBillTest extends BaseTest {
     private Account loanAccount;
-    private Account checkAccount;
     private Transaction transaction_416;
-//    private double transaction416Amount = 1001.00;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
-    private String clientRootId;
     private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
-    private String accruedInterest;
-
     private final String TEST_RUN_NAME = "Loans Management";
     private String nextPaymentBilledDueDate;
-    private double currentBalance;
+    private double interest;
+    private int transaction109Amount;
 
     @BeforeMethod
     public void preCondition() {
@@ -58,7 +52,7 @@ public class C25419_ProcessEc416LoanPaymentTransactionPrinIntBillTest extends Ba
         IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up accounts
-        checkAccount = new Account().setCHKAccountData();
+        Account chkAccount = new Account().setCHKAccountData();
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
@@ -74,42 +68,39 @@ public class C25419_ProcessEc416LoanPaymentTransactionPrinIntBillTest extends Ba
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Set products
-        checkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
+        chkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
 
         // Create client
-//        ClientsActions.individualClientActions().createClient(client);
-//        ClientsActions.individualClientActions().setClientDetailsData(client);
-//        ClientsActions.individualClientActions().setDocumentation(client);
-
-        Pages.aSideMenuPage().clickClientMenuItem();
-        Actions.clientPageActions().searchAndOpenIndividualClientByID("62102");
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
 
         // Create account
-        AccountActions.createAccount().createCHKAccount(checkAccount);
+        AccountActions.createAccount().createCHKAccount(chkAccount);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createLoanAccount(loanAccount);
-        clientRootId = ClientsActions.createClient().getClientIdFromUrl();
+        String clientRootId = ClientsActions.createClient().getClientIdFromUrl();
 
         // Set up deposit transaction
         int depositTransactionAmount = 12000;
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
-        depositTransaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());
+        depositTransaction.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
         depositTransaction.getTransactionDestination().setAmount(depositTransactionAmount);
         depositTransaction.getTransactionSource().setAmount(depositTransactionAmount);
 
         // Set up 109 transaction
-        int transaction109Amount = 12000;
+        transaction109Amount = 12000;
         miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());
         miscDebitSource.setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
         miscDebitSource.setAmount(transaction109Amount);
-        miscCreditDestination.setAccountNumber(checkAccount.getAccountNumber());
+        miscCreditDestination.setAccountNumber(chkAccount.getAccountNumber());
         miscCreditDestination.setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
         miscCreditDestination.setAmount(transaction109Amount);
 
         // Set up 416 transaction
         transaction_416 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
         transaction_416.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
-        transaction_416.getTransactionSource().setAccountNumber(checkAccount.getAccountNumber());
+        transaction_416.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
         transaction_416.getTransactionDestination().setTransactionCode(TransactionCode.PAYMENT_416.getTransCode());
         transaction_416.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
 
@@ -134,21 +125,17 @@ public class C25419_ProcessEc416LoanPaymentTransactionPrinIntBillTest extends Ba
         Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
         Actions.loginActions().doLogOutProgrammatically();
 
-        // Get 'amount due' for 416 transaction amount
+        // Retrieve required values
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
         nextPaymentBilledDueDate = Pages.accountDetailsPage().getNextPaymentBilledDueDate();
-        currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu());
-        accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
-
-
         Pages.accountDetailsPage().clickPaymentInfoTab();
         double amountDue = Double.parseDouble(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1));
+        Pages.accountPaymentInfoPage().clickPaymentDueRecord();
+        interest = Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledInterest());
         transaction_416.getTransactionSource().setAmount(amountDue);
         transaction_416.getTransactionDestination().setAmount(amountDue);
-        System.out.println(amountDue);
-        Selenide.sleep(6000);
         Actions.loginActions().doLogOut();
 
         // Perform 416 transaction
@@ -195,32 +182,19 @@ public class C25419_ProcessEc416LoanPaymentTransactionPrinIntBillTest extends Ba
                 "- Date interest paid thru\n" +
                 "- Current Balance\n" +
                 "- Accrued Interest\n");
-        TestRailAssert.assertTrue(Pages.accountDetailsPage().getNextPaymentBilledDueDate().equals(loanAccount.getNextPaymentBilledDueDate()),
-                new CustomStepResult("'Next Payment Billed Due Date' is not valid", "'Next Payment Billed Due Date' is valid"));
-//        String dateTransactionPosted = DateTime.getLocalDateOfPattern("MM/dd/yyyy");
-//        TestRailAssert.assertTrue(Pages.accountDetailsPage().getDateLastPayment().equals(dateTransactionPosted),
-//                new CustomStepResult("'Date Last Payment' is not valid", "'Date Last Payment' is valid"));
-//        TestRailAssert.assertTrue(Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance()) == currentBalance - transaction420Amount,
-//                new CustomStepResult("'Current Balance' is not valid", "'Current Balance' is valid"));
-
         TestRailAssert.assertTrue(Pages.accountDetailsPage().getNextPaymentBilledDueDate().equals(nextPaymentBilledDueDate),
                 new CustomStepResult("'Next Payment Billed Due Date' is not valid", "'Next Payment Billed Due Date' is valid"));
-        TestRailAssert.assertTrue(Pages.accountDetailsPage().getInterestPaidToDate().equals(0.00),
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getInterestPaidToDate().equals("0.00"),
                 new CustomStepResult("'Interest Paid To Date' is not valid", "'Interest Paid To Date' is valid"));
-        String dateTransactionPosted = DateTime.getLocalDateOfPattern("MM/dd/yyyy");
-//        TestRailAssert.assertTrue(Pages.accountDetailsPage().getDateLastPayment().equals(dateBeforeTransactionPosted),
-//                new CustomStepResult("'Date Last Payment' is not valid", "'Date Last Payment' is valid"));
-        String dateInterestPaidThru = Pages.accountDetailsPage().getDateInterestPaidThru();
-        String dateBeforeTransactionPosted = DateTime.getDateMinusDays(dateTransactionPosted, 1);
-        TestRailAssert.assertTrue(dateInterestPaidThru.equals(dateBeforeTransactionPosted),
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getDateInterestPaidThru().isEmpty(),
                 new CustomStepResult("'Date interest paid thru' is not valid", "'Date interest paid thru' is valid"));
-        double actualAccruedInterest = Double.parseDouble(Pages.accountDetailsPage().getAccruedInterest());
-        double prevAccruedInterest = Double.parseDouble(accruedInterest);
-//        TestRailAssert.assertTrue(actualAccruedInterest == prevAccruedInterest - transaction421Amount,
-//                new CustomStepResult("'Accrued Interest' is not valid", "'Accrued Interest' is valid"));
-        TestRailAssert.assertTrue(Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance()) == currentBalance,
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getDateLastPayment().isEmpty(),
+                new CustomStepResult("'Date last payment' is not valid", "'Date last payment' is valid"));
+        TestRailAssert.assertTrue(Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance()) == transaction109Amount,
                 new CustomStepResult("'Current Balance' is not valid", "'Current Balance' is valid"));
-
+        double actualAccruedInterest = Double.parseDouble(Pages.accountDetailsPage().getAccruedInterest());
+        TestRailAssert.assertTrue(actualAccruedInterest == interest,
+                new CustomStepResult("'Accrued Interest' is not valid", "'Accrued Interest' is valid"));
 
         logInfo("Step 7: Open 'Payment Info' tab");
         Pages.accountDetailsPage().clickPaymentInfoTab();
@@ -253,9 +227,9 @@ public class C25419_ProcessEc416LoanPaymentTransactionPrinIntBillTest extends Ba
         double amountValue = AccountActions.retrievingAccountData().getAmountValue(1);
         TestRailAssert.assertTrue(amountValue == amountDue,
                 new CustomStepResult("Amount is not valid", "Amount is valid"));
-        TestRailAssert.assertTrue(AccountActions.retrievingAccountData().getBalanceValue(1) == interest,
+        TestRailAssert.assertTrue(AccountActions.retrievingAccountData().getBalanceValue(1) == principal,
                 new CustomStepResult("Principal is not valid", "Principal is valid"));
-        TestRailAssert.assertTrue(AccountActions.retrievingAccountData().getInterestMinusValue(1) == principal,
+        TestRailAssert.assertTrue(AccountActions.retrievingAccountData().getInterestMinusValue(1) == interest,
                 new CustomStepResult("Interest is not valid", "Interest is valid"));
     }
 }
