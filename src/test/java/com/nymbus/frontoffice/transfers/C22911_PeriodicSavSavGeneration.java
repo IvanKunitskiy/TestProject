@@ -20,7 +20,7 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
 import com.nymbus.newmodels.generation.transfers.TransferBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
-import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
+import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.testrail.CustomStepResult;
@@ -53,12 +53,13 @@ public class C22911_PeriodicSavSavGeneration extends BaseTest {
         Transaction depositSavingsTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
 
         // Set up accounts
-        savingsAccount = new Account().setCHKAccountData();
+        savingsAccount = new Account().setSavingsAccountData();
         savingsAccount2 = new Account().setSavingsAccountData();
 
         // Set up transfer
         TransferBuilder transferBuilder = new TransferBuilder();
         transfer = transferBuilder.getTransfer();
+        transfer.setAmount("2000.00");
         transfer.setFromAccount(savingsAccount);
         transfer.setToAccount(savingsAccount2);
         transfer.setNextDateOfTransfer(WebAdminActions.loginActions().getSystemDate());
@@ -69,7 +70,7 @@ public class C22911_PeriodicSavSavGeneration extends BaseTest {
 
         // Set products
         savingsAccount2.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
-        savingsAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
+        savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
 
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
@@ -77,7 +78,7 @@ public class C22911_PeriodicSavSavGeneration extends BaseTest {
         clientID = Pages.clientDetailsPage().getClientID();
 
         // Create Savings accounts and logout
-        AccountActions.createAccount().createCHKAccount(savingsAccount);
+        AccountActions.createAccount().createSavingsAccount(savingsAccount);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createSavingsAccount(savingsAccount2);
 
@@ -104,9 +105,9 @@ public class C22911_PeriodicSavSavGeneration extends BaseTest {
         Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
         savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-", amount, Double.parseDouble(transfer.getAmount()));
+                "-", amount - Double.parseDouble(transfer.getAmount()), Double.parseDouble(transfer.getAmount()));
         savingsAccTransactionData2 = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "+", amount, Double.parseDouble(transfer.getAmount()));
+                "+", amount + Double.parseDouble(transfer.getAmount()), Double.parseDouble(transfer.getAmount()));
     }
 
     private final String TEST_RUN_NAME = "Transfers";
@@ -139,16 +140,20 @@ public class C22911_PeriodicSavSavGeneration extends BaseTest {
         TransfersActions.addNewTransferActions().setTransferToAccount(transfer);
         Pages.newTransferPage().setNextDateOfTransfer(transfer.getNextDateOfTransfer());
         TransfersActions.addNewTransferActions().setTransferFrequency(transfer);
+        System.out.println(transfer.getAmount());
         Pages.newTransferPage().setAmount(transfer.getAmount());
         Pages.newTransferPage().clickSaveButton();
+        Actions.loginActions().doLogOut();
 
         logInfo("Step 5: Search for the Savings account#1 from the precondition (From Account) and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
-        Actions.transactionActions().goToTellerPage();
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
-        BalanceDataForCHKAcc actualSavBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
+        BalanceData actualSavBalanceData = AccountActions.retrievingAccountData().getBalanceData();
 
+        System.out.println(actualSavBalanceData.getCurrentBalance());
+        System.out.println((amount - Double.parseDouble(transfer.getAmount())));
         TestRailAssert.assertTrue(actualSavBalanceData.getCurrentBalance() == (amount - Double.parseDouble(transfer.getAmount())),
                 new CustomStepResult("Current balance doesn't match!", "Current balance is match!"));
         TestRailAssert.assertTrue(actualSavBalanceData.getAvailableBalance() == (amount - Double.parseDouble(transfer.getAmount())),
@@ -158,15 +163,16 @@ public class C22911_PeriodicSavSavGeneration extends BaseTest {
         Pages.accountDetailsPage().clickTransactionsTab();
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
+        System.out.println(actualSavTransactionData.getAmount());
+        System.out.println(actualSavTransactionData.getBalance());
         TestRailAssert.assertTrue(actualSavTransactionData.equals(savingsAccTransactionData),
                 new CustomStepResult("Transaction data doesn't match!", "Transaction data is match!"));
 
         logInfo("Step 7: Search for the Savings account#2 from the precondition (To Account) and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
-        Actions.transactionActions().goToTellerPage();
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount2.getAccountNumber());
-        actualSavBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
+        actualSavBalanceData = AccountActions.retrievingAccountData().getBalanceData();
 
         TestRailAssert.assertTrue(actualSavBalanceData.getCurrentBalance() == (amount + Double.parseDouble(transfer.getAmount())),
                 new CustomStepResult("Current balance doesn't match!", "Current balance is match!"));
