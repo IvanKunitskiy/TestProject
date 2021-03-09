@@ -293,6 +293,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
             + "//td//span[@key-name='transactioncustomerid']");
     private By name = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]"
             + "//td/div[@key-name='(databean)name']");
+    private By interest = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][1]//td/div[@key-name='interestearned']");
 
     @Step ("Get 'terminalId' {0} value")
     public String getCustomerIdValue(int index) {
@@ -304,6 +305,12 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getNameValue(int index) {
         waitForElementVisibility(name, index);
         return getElementText(name, index).trim();
+    }
+
+    @Step ("Get 'interest' {0} value")
+    public String getInterestValue(int index) {
+        waitForElementVisibility(interest, index);
+        return getElementText(interest, index).trim();
     }
 
     /**

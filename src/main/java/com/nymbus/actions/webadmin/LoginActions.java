@@ -69,6 +69,7 @@ public class LoginActions {
         SelenideTools.closeCurrentTab();
         SelenideTools.switchTo().window(0);
 
+        System.out.println(result);
         return result;
     }
 
