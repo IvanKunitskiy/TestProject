@@ -113,8 +113,12 @@ public class C25419_ProcessEc416LoanPaymentTransactionPrinIntBillTest extends Ba
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
 
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
         // Perform 109 transaction
         Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
         Actions.transactionActions().setMiscDebitSource(miscDebitSource, 0);
         Actions.transactionActions().setMiscCreditDestination(miscCreditDestination, 0);
         Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
