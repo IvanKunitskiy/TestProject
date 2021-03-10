@@ -46,7 +46,7 @@ public class C25323_LoanCreateAndFundPrincipalAndInterestTest extends BaseTest {
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         client = individualClientBuilder.buildClient();
 
-        // Set up CHK account
+        // Set up CHK and loan account
         Account checkingAccount = new Account().setCHKAccountData();
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
@@ -54,6 +54,7 @@ public class C25323_LoanCreateAndFundPrincipalAndInterestTest extends BaseTest {
         loanAccount.setPaymentAmountType(PaymentAmountType.PRINCIPAL_AND_INTEREST.getPaymentAmountType());
         String dateOpened = loanAccount.getDateOpened();
         loanAccount.setDateOpened(DateTime.getDateMinusDays(dateOpened, 1));
+        checkingAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
 
         // Set transaction data
         miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());

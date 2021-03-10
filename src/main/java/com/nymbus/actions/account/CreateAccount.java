@@ -191,7 +191,7 @@ public class CreateAccount {
         Pages.addAccountPage().setTerm(account.getTerm());
         setCommitmentTypeAmt(account);
         disableLocPaymentRecalculationFlagValueSwitch();
-        setCallClassCode(account);
+        setCallClassCodeByIndex(account, 1);
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
     }
@@ -442,6 +442,17 @@ public class CreateAccount {
                 account.setCallClassCode(listOfCallClassCode.get(new Random().nextInt(listOfCallClassCode.size())).trim());
             }
             Pages.addAccountPage().clickCallClassCodeSelectorOption(account.getCallClassCode());
+        }
+    }
+
+    public void setCallClassCodeByIndex(Account account, int index) {
+        Pages.addAccountPage().clickCallClassCodeSelectorButton();
+        List<String> listOfCallClassCode = Pages.addAccountPage().getCallClassCodeList();
+
+        if (listOfCallClassCode.size() > 0) {
+            int randomIndex = new Random().nextInt(listOfCallClassCode.size());
+            account.setCallClassCode(listOfCallClassCode.get(randomIndex).trim());
+            Pages.addAccountPage().clickCallClassCodeSelectorOptionByIndex(listOfCallClassCode.indexOf(account.getCallClassCode()));
         }
     }
 
