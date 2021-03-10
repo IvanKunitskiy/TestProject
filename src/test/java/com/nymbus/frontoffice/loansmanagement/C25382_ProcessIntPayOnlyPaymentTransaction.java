@@ -157,11 +157,8 @@ public class C25382_ProcessIntPayOnlyPaymentTransaction extends BaseTest {
                 "\"Amount\" - specify the same amount");
         int currentIndex = 0;
         System.out.println(currentIndex);
-        System.out.println(transaction.getTransactionDate());
         Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction.getTransactionSource(), currentIndex);
-        System.out.println(transaction.getTransactionDate());
         Actions.transactionActions().setMiscCreditDestination(transaction.getTransactionDestination(), currentIndex);
-        System.out.println(transaction.getTransactionDate());
         Pages.tellerPage().setEffectiveDate(transaction.getTransactionDate());
         Actions.transactionActions().clickCommitButton();
 
@@ -191,7 +188,13 @@ public class C25382_ProcessIntPayOnlyPaymentTransaction extends BaseTest {
         TestRailAssert.assertTrue(dateLastPayment.isEmpty(),
                 new CustomStepResult("'DateLastPayment' is not valid", "'DateLastPayment' is valid"));
         String dateInterestPaidThru = Pages.accountDetailsPage().getDateInterestPaidThru();
-        TestRailAssert.assertTrue(dateInterestPaidThru.equals(DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(), 1)),
+        String dailyInterestFactor = Pages.accountDetailsPage().getDailyInterestFactor();
+        System.out.println((int)(-transaction.getTransactionSource().getAmount()/Double.parseDouble(dailyInterestFactor)));
+        System.out.println(dateInterestPaidThru);
+        System.out.println(DateTime.getDateMinusDays(loanAccount.getDateOpened(),
+                ((int)(-transaction.getTransactionSource().getAmount()/Double.parseDouble(dailyInterestFactor))+1)));
+        TestRailAssert.assertTrue(dateInterestPaidThru.equals(DateTime.getDateMinusDays(loanAccount.getDateOpened(),
+                ((int)(-transaction.getTransactionSource().getAmount()/Double.parseDouble(dailyInterestFactor))+1))),
                 new CustomStepResult("'DateInterestPaidThru' is not valid", "'DateInterestPaidThru' is valid"));
         String currentBalance = Pages.accountDetailsPage().getCurrentBalance();
         TestRailAssert.assertTrue(Double.parseDouble(currentBalance) == 11200.92,
