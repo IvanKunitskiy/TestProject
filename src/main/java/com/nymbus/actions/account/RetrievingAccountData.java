@@ -91,7 +91,7 @@ public class RetrievingAccountData {
 
         balanceData.setCurrentBalance(getCurrentBalance());
         balanceData.setAvailableBalance(getAvailableBalance());
-        balanceData.setAggregateBalanceYearToDate(getAggregateBalanceYearToDate());
+        //balanceData.setAggregateBalanceYearToDate(getAggregateBalanceYearToDate());
         // balanceData.setTotalContributionsForLifeOfAccount(getTotalContributionsForLifeOfAccount());
 
         return balanceData;

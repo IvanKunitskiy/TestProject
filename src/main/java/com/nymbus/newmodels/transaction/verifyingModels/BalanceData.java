@@ -8,21 +8,21 @@ import java.util.Objects;
 public class BalanceData {
     private double currentBalance = 0;
     private double availableBalance = 0;
-    private double aggregateBalanceYearToDate = 0;
+    //private double aggregateBalanceYearToDate = 0;
     // private double totalContributionsForLifeOfAccount = 0;
 
 
     public void addAmount(double amount) {
         this.availableBalance += amount;
         this.currentBalance += amount;
-        this.aggregateBalanceYearToDate += amount;
+        //this.aggregateBalanceYearToDate += amount;
         // this.totalContributionsForLifeOfAccount += amount;
     }
 
     public void subtractAmount(double amount) {
         this.availableBalance -= amount;
         this.currentBalance -= amount;
-        this.aggregateBalanceYearToDate -= amount;
+        //this.aggregateBalanceYearToDate -= amount;
         // this.totalContributionsForLifeOfAccount -= amount;
     }
 
@@ -40,12 +40,11 @@ public class BalanceData {
         if (o == null || getClass() != o.getClass()) return false;
         BalanceData that = (BalanceData) o;
         return currentBalance == that.currentBalance
-                && availableBalance == that.availableBalance
-                && aggregateBalanceYearToDate == that.aggregateBalanceYearToDate;
+                && availableBalance == that.availableBalance;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(currentBalance, availableBalance, aggregateBalanceYearToDate);
+        return Objects.hash(currentBalance, availableBalance);
     }
 }
