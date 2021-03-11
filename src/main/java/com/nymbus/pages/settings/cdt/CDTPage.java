@@ -13,7 +13,7 @@ public class CDTPage extends PageTools {
     private By searchButton = By.xpath("//button[span[text()='Search']]");
     private By noResultsDiv = By.xpath("//div[@class='xwidget_grid_nodata']");
     private By addNewLink = By.xpath("//a[text()='Add New']");
-    private By results = By.xpath("//td[@class='xwidget_grid_cell xwidget_grid_cell_name']");
+    private By results = By.xpath("//td[@data-column-id='name']");
 
 
     @Step("Get results")

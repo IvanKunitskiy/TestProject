@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
 import com.nymbus.newmodels.account.product.RateType;
@@ -31,7 +32,8 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Petro")
-public class C25419_ProcessEc416LoanPaymentTransactionPrinIntBillTest extends BaseTest {
+public class C25437_ProcessEc416LoanPaymentTransactionPrincipalInterestTest extends BaseTest {
+
     private Account loanAccount;
     private Transaction transaction_416;
     private final String loanProductName = "Test Loan Product";
@@ -56,6 +58,7 @@ public class C25419_ProcessEc416LoanPaymentTransactionPrinIntBillTest extends Ba
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
+        loanAccount.setPaymentAmountType(PaymentAmountType.PRINCIPAL_AND_INTEREST.getPaymentAmountType());
 
         // Login to the system
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -129,7 +132,7 @@ public class C25419_ProcessEc416LoanPaymentTransactionPrinIntBillTest extends Ba
         Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
         Actions.loginActions().doLogOutProgrammatically();
 
-        // Retrieve required values
+        // Retrieve amount due value
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
@@ -137,13 +140,10 @@ public class C25419_ProcessEc416LoanPaymentTransactionPrinIntBillTest extends Ba
         Pages.accountDetailsPage().clickPaymentInfoTab();
         double amountDue = Double.parseDouble(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1));
         Pages.accountPaymentInfoPage().clickPaymentDueRecord();
-        interest = Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledInterest());
         transaction_416.getTransactionSource().setAmount(amountDue);
         transaction_416.getTransactionDestination().setAmount(amountDue);
-        Actions.loginActions().doLogOut();
 
         // Perform 416 transaction
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.transactionActions().goToTellerPage();
         Actions.transactionActions().doLoginTeller();
         Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction_416.getTransactionSource(), 0);
@@ -151,12 +151,21 @@ public class C25419_ProcessEc416LoanPaymentTransactionPrinIntBillTest extends Ba
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
+
+        // Retrieve interest value
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+        Pages.accountPaymentInfoPage().clickPaymentDueRecord();
+        interest = Double.parseDouble(Pages.accountPaymentInfoPage().getInterest());
+        Actions.loginActions().doLogOut();
     }
 
-    @TestRailIssue(issueID = 25419, testRunName = TEST_RUN_NAME)
-    @Test(description = "C25419, Process EC 416 loan payment transaction. Prin&Int (bill)")
+    @TestRailIssue(issueID = 25437, testRunName = TEST_RUN_NAME)
+    @Test(description = "C25437, Process EC 416 loan payment transaction. Principal & Interest")
     @Severity(SeverityLevel.CRITICAL)
-    public void processEc416LoanPaymentTransactionPrinIntBill() {
+    public void processEc416LoanPaymentTransactionPrincipalInterest() {
 
         logInfo("Step 1: Log in to the system");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -217,8 +226,8 @@ public class C25419_ProcessEc416LoanPaymentTransactionPrinIntBillTest extends Ba
                 new CustomStepResult("Date Payment Paid In Full is not valid", "Date Payment Paid In Full is valid"));
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDisabledDueDate().equals(Pages.accountPaymentInfoPage().getPaymentDate()),
                 new CustomStepResult("'Due Date' is not valid", "'Due Date' is valid"));
-        double interest = Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledInterest());
-        double principal = Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledPrincipal());
+        interest = Double.parseDouble(Pages.accountPaymentInfoPage().getInterest());
+        double principal = Double.parseDouble(Pages.accountPaymentInfoPage().getPrincipal());
 
         logInfo("Step 10: Pay attention to the 'Transactions' section below 'Payment Due Details'");
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getAmountTotal().equals("0.00"),
@@ -236,4 +245,5 @@ public class C25419_ProcessEc416LoanPaymentTransactionPrinIntBillTest extends Ba
         TestRailAssert.assertTrue(AccountActions.retrievingAccountData().getInterestMinusValue(1) == interest,
                 new CustomStepResult("Interest is not valid", "Interest is valid"));
     }
+
 }

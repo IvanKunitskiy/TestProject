@@ -56,6 +56,7 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         IndividualClient client = individualClientBuilder.buildClient();
         checkAccount = new Account().setCHKAccountData();
+        checkAccount.setDateOpened(DateTime.getDateMinusMonth(checkAccount.getDateOpened(), 1));
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setPaymentAmountType(PaymentAmountType.PRINCIPAL_AND_INTEREST.getPaymentAmountType());
         loanAccount.setProduct(loanProductName);
@@ -63,6 +64,9 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
         transaction = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
+        String dateOpened = loanAccount.getDateOpened();
+        loanAccount.setDateOpened(DateTime.getDateMinusDays(dateOpened, 1));
+        checkAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
 
         // Login to the system
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -198,7 +202,7 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         logInfo("Step 8: Click on the Payment Due record and check fields in the \"Payment Due Details\" section");
         Pages.accountPaymentInfoPage().clickPaymentDueRecord();
         String expectedAmount = Pages.accountPaymentInfoPage().getDisabledAmount();
-        TestRailAssert.assertTrue(amountDue.equals(expectedAmount),
+        TestRailAssert.assertTrue(transactionAmount == Double.parseDouble(expectedAmount),
                 new CustomStepResult("Amount due is not valid", "Amount due is valid"));
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().paidStatusIsVisibility(),
                 new CustomStepResult("Paid is not visible", "Paid is visible"));
@@ -227,7 +231,7 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
                 new CustomStepResult("Payment date is not valid", "Payment date is valid"));
         String interest = Pages.accountPaymentInfoPage().getInterest();
         int i = (int) Double.parseDouble(interest);
-        int res =(int) (Double.parseDouble(dailyInterestFactor) * period);
+        int res = (int) (Double.parseDouble(dailyInterestFactor) * period);
         TestRailAssert.assertTrue((i == res),
                 new CustomStepResult("Interest is not valid", "Interest due is valid"));
         String amount = Pages.accountPaymentInfoPage().getAmount();
@@ -246,7 +250,7 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         TestRailAssert.assertTrue(amountValue == transactionAmount,
                 new CustomStepResult("Amount is not valid", "Amount is valid"));
         double principalValue = AccountActions.retrievingAccountData().getBalanceValue(1);
-        TestRailAssert.assertTrue((int)principalValue + 1 == (int) (amountValue - i),
+        TestRailAssert.assertTrue((int) principalValue + 1 == (int) (amountValue - i),
                 new CustomStepResult("Principal is not valid", "Principal is valid"));
         double interestValue = AccountActions.retrievingAccountData().getInterestMinusValue(1);
         TestRailAssert.assertTrue(interestValue == Double.parseDouble(interest),
