@@ -159,7 +159,7 @@ public class RetrievingAccountData {
     }
 
     public double getAccruedInterest() {
-        String accruedInterestValue = Pages.accountDetailsPage().getAccruedInterest();
+        String accruedInterestValue = Pages.accountDetailsPage().getAccruedInterestThisStatementCycle();
         return Double.parseDouble(accruedInterestValue);
     }
 

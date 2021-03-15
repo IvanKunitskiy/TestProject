@@ -88,6 +88,7 @@ public class C22668_CommitCDRedemptionTest extends BaseTest {
         // Set transaction with amount value
         Actions.clientPageActions().searchAndOpenClientByName(cdAccount.getAccountNumber());
         accruedInterest = AccountActions.retrievingAccountData().getAccruedInterest();
+        //accruedInterest = Double.parseDouble(Pages.accountDetailsPage().getAccruedInterestThisStatementCycle());
         double transactionAmount = AccountActions.retrievingAccountData().getCurrentBalanceWithAccruedInterest();
         withdrawTransaction.getTransactionSource().setAmount(transactionAmount);
         withdrawTransaction.getTransactionDestination().setAmount(transactionAmount);
