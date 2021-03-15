@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Dmytro")
-public class C25378_ProcessLoanPaymentTransaction extends BaseTest {
+public class C25378_ProcessLoanPaymentTransactionTest extends BaseTest {
     private Account loanAccount;
     private Account checkAccount;
     private Transaction transaction;
@@ -57,6 +57,11 @@ public class C25378_ProcessLoanPaymentTransaction extends BaseTest {
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
+        loanAccount.setNextPaymentBilledDueDate(DateTime.getLocalDatePlusMonthsWithPatternAndLastDay(loanAccount.getDateOpened(), 1, "MM/dd/yyyy"));
+        String dateOpened = loanAccount.getDateOpened();
+        loanAccount.setDateOpened(DateTime.getDateMinusDays(dateOpened, 1));
+        checkAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
+
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
         transaction = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
 

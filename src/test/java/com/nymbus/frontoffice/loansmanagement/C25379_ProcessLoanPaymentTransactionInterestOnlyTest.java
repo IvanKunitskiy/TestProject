@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Dmytro")
-public class C25379_ProcessLoanPaymentTransactionInterestOnly extends BaseTest {
+public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTest {
     private Account loanAccount;
     private Account checkAccount;
     private Transaction transaction;

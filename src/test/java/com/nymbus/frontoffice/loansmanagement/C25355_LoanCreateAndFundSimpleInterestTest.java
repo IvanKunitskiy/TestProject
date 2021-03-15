@@ -52,6 +52,9 @@ public class C25355_LoanCreateAndFundSimpleInterestTest extends BaseTest {
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         loanAccount.setPaymentAmountType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
         loanAccount.setNextPaymentBilledDueDate(DateTime.getLocalDatePlusMonthsWithPatternAndLastDay(loanAccount.getDateOpened(), 1, "MM/dd/yyyy"));
+        String dateOpened = loanAccount.getDateOpened();
+        loanAccount.setDateOpened(DateTime.getDateMinusDays(dateOpened, 1));
+        checkingAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
 
         // Set transaction data
         miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());
