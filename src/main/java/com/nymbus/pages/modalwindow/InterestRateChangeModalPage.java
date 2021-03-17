@@ -14,6 +14,8 @@ public class InterestRateChangeModalPage extends PageTools {
     private final By accrueThruDate = By.xpath("//input[@data-test-id='field-dateaccruethru']");
     private final By commitTransactionButton = By.xpath("//button/span[text()='Commit Transaction']");
     private final By cancelButton = By.xpath("//button/span[text()='Cancel']");
+    private final By addBackDatedRateChangeButton = By.xpath("//button[span[text()='Add Back Dated Rate Change']]");
+    private final By closeButton = By.xpath("//div[@class='modal-content']//button[@ng-click='close()']");
 
     @Step("Set 'Begin earn date' value")
     public void setBeginEarnDate(String date) {
@@ -38,6 +40,12 @@ public class InterestRateChangeModalPage extends PageTools {
         type(value, newCurrentEffectiveRate);
     }
 
+    @Step("Click 'Add Back Dated Rate Change' button")
+    public void clickAddBackDatedRateChangeButton() {
+        waitForElementVisibility(addBackDatedRateChangeButton);
+        click(addBackDatedRateChangeButton);
+    }
+
     @Step("Wait for modal window visibility")
     public void waitForModalWindowVisibility() {
         waitForElementVisibility(modalWindow);
@@ -58,6 +66,12 @@ public class InterestRateChangeModalPage extends PageTools {
     public void clickCancelButton() {
         waitForElementVisibility(cancelButton);
         jsClick(cancelButton);
+    }
+
+    @Step("Click 'Close' button")
+    public void clickCloseButton() {
+        waitForElementVisibility(closeButton);
+        click(closeButton);
     }
 
 }
