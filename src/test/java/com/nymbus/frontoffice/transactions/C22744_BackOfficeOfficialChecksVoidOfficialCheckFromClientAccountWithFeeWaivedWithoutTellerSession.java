@@ -184,12 +184,13 @@ public class C22744_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         FullCheck fullCheckFromBankOffice = Actions.backOfficeActions().getFullCheckFromBankOffice();
 
         logInfo("Step 4: Click [Void] button");
+        Assert.assertFalse(Pages.fullCheckPage().checkVoidIsDisabled(),"Void button is not disabled");
         Pages.fullCheckPage().clickVoid();
         Assert.assertTrue(Pages.fullCheckPage().checkConfirmation(), "Confirmation is not present");
-        Assert.assertFalse(Pages.fullCheckPage().checkVoidIsDisabled(),"Void button is not disabled");
 
         logInfo("Step 5: Select Yes option and verify the Status field");
         Pages.fullCheckPage().clickYes();
+        Assert.assertTrue(Pages.fullCheckPage().checkVoidIsDisabled(),"Void button is not disabled");
         Assert.assertEquals(Pages.fullCheckPage().getStatus(),"Void", "Status doesn't match");
 
 

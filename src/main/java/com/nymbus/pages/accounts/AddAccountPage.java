@@ -412,7 +412,6 @@ public class AddAccountPage extends PageTools {
         type("", dateOpenedField);
         click(dateOpenedField);
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
-        System.out.println(dateOpenedValue);
         typeWithoutWipe(dateOpenedValue, dateOpenedField);
     }
 

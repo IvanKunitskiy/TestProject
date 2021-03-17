@@ -4,7 +4,9 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -153,6 +155,8 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
         Pages.confirmModalPage().clickNo();
+        Pages.confirmModalPage().clickNo();
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         Actions.loginActions().doLogOut();
 
     }
