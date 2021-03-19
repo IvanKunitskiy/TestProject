@@ -56,7 +56,7 @@ public class C22579_ViewNewSavingsAccountTest extends BaseTest {
     private final String TEST_RUN_NAME = "Deposit Accounts Management";
 
     @TestRailIssue(issueID = 22579, testRunName = TEST_RUN_NAME)
-    @Test(description = "C22579, View New Savings Account")
+    @Test(description = "C22579, View New Savings Account", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void viewNewSavingsAccount() {
 

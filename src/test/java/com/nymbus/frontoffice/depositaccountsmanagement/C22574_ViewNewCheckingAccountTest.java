@@ -52,7 +52,7 @@ public class C22574_ViewNewCheckingAccountTest extends BaseTest {
     private final String TEST_RUN_NAME = "Deposit Accounts Management";
 
     @TestRailIssue(issueID = 22574, testRunName = TEST_RUN_NAME)
-    @Test(description = "C22574, View new checking account")
+    @Test(description = "C22574, View new checking account", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void viewNewCheckingAccount() {
 

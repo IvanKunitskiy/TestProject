@@ -54,6 +54,9 @@ public class C21747_TellerScreenAccountQuickViewDetailsLoanAccountTest extends B
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
+        String dateOpened = loanAccount.getDateOpened();
+        loanAccount.setDateOpened(DateTime.getDateMinusDays(dateOpened, 1));
+        checkingAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
 
         // Set transaction data
         final int TRANSACTION_AMOUNT = 12000;
