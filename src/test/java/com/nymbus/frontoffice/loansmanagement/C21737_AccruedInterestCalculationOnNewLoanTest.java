@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Dmytro")
-public class C21737_AccruedInterestCalculationOnNewLoan extends BaseTest {
+public class C21737_AccruedInterestCalculationOnNewLoanTest extends BaseTest {
 
     private Account loanAccount;
     private final String loanProductName = "Test Loan Product";
@@ -61,6 +61,10 @@ public class C21737_AccruedInterestCalculationOnNewLoan extends BaseTest {
         loanAccount.setPaymentAmountType(PaymentAmountType.PRINCIPAL_AND_INTEREST.getPaymentAmountType());
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
+        loanAccount.setNextPaymentBilledDueDate(DateTime.getLocalDatePlusMonthsWithPatternAndLastDay(loanAccount.getDateOpened(), 1, "MM/dd/yyyy"));
+        String dateOpened = loanAccount.getDateOpened();
+        loanAccount.setDateOpened(DateTime.getDateMinusDays(dateOpened, 1));
+        checkingAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
 
         // Set transaction data
         miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());
