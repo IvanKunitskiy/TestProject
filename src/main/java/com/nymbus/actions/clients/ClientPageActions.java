@@ -84,4 +84,14 @@ public class ClientPageActions {
             Pages.clientDetailsPage().waitForNotificationInvisibility(i);
         }
     }
+
+    public void checkRejectedItems(int rejectedTransactionsItems){
+        if (rejectedTransactionsItems == 1) {
+            Assert.assertTrue(Pages.accountTransactionPage().isNoResultsVisible(), "Transaction is not visible");
+        } else {
+            int rejectedTransactionsItems1 = Pages.accountTransactionPage().getRejectedTransactionsItems();
+            Assert.assertTrue(rejectedTransactionsItems1 < rejectedTransactionsItems,
+                    "Transaction is not visible");
+        }
+    }
 }

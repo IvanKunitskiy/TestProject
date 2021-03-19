@@ -181,7 +181,7 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         logInfo("Step 4: Click [Void] button");
         Pages.fullCheckPage().clickVoid();
         Assert.assertTrue(Pages.fullCheckPage().checkConfirmation(), "Confirmation is not present");
-        Assert.assertFalse(Pages.fullCheckPage().checkVoidIsDisabled(),"Void button is not disabled");
+        Assert.assertFalse(Pages.fullCheckPage().isVoidDisabled(),"Void button is not disabled");
 
         logInfo("Step 5: Select Yes option and verify the Status field");
         Pages.fullCheckPage().clickYes();
