@@ -74,6 +74,7 @@ public class C22555_AssignNoteToAUserTest extends BaseTest {
         // Create user2 and set him a password
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Actions.usersActions().createUser(user2);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         Actions.loginActions().doLogOut();
         Selenide.open(Constants.WEB_ADMIN_URL);
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);

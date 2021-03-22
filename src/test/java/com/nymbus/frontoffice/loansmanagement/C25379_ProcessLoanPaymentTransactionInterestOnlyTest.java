@@ -175,6 +175,11 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
         String dateLastPayment = Pages.accountDetailsPage().getDateLastPayment();
         String nextDueDate1 = Pages.accountDetailsPage().getNextDueDate();
+        String currentBalanceForInterest = Pages.accountDetailsPage().getCurrentBalance();
+        String currentEffectiveRate = Pages.accountDetailsPage().getCurrentEffectiveRate();
+        String daysBaseYearBase = Pages.accountDetailsPage().getDaysBaseYearBase();
+        int yearBase = Integer.parseInt(daysBaseYearBase.split("/")[1].substring(0, 3));
+        int daysBase = Integer.parseInt(daysBaseYearBase.split("/")[0].substring(0, 3));
         Pages.accountDetailsPage().clickPaymentInfoTab();
 
         logInfo("Step 7: Check Payment Due record from preconditions");
@@ -215,7 +220,9 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
         TestRailAssert.assertTrue(typeDue.equals(expectedType),
                 new CustomStepResult("Date type is not valid", "Date type is valid"));
         String disInterest = Pages.accountPaymentInfoPage().getDisabledInterest();
-        TestRailAssert.assertTrue(disInterest.equals("101.92"),
+        double expectedAccruedInterest = Double.parseDouble(currentBalanceForInterest) * Double.parseDouble(currentEffectiveRate)/100/
+                yearBase * DateTime.getDaysBetweenTwoDates(DateTime.getDateMinusMonth(dueDateSec,1),dueDateSec,true);
+        TestRailAssert.assertTrue(disInterest.equals(String.format("%.2f", expectedAccruedInterest)),
                 new CustomStepResult("Interest is not valid", "Interest is valid"));
         String disAmount = Pages.accountPaymentInfoPage().getDisabledAmount();
         String disEscrow = Pages.accountPaymentInfoPage().getDisabledEscrow();
@@ -272,7 +279,7 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
         TestRailAssert.assertTrue(nextDueDate.equals(DateTime.getDatePlusMonth(loanAccount.getNextPaymentBilledDueDate(), 1)),
                 new CustomStepResult("'NextPaymentBilledDueDate' is not valid", "'NextPaymentBilledDueDate' is valid"));
         double paidInterest = Double.parseDouble(Pages.accountDetailsPage().getInterestPaidToDate());
-        TestRailAssert.assertTrue(paidInterest == 101.92, new CustomStepResult("Paid interest is not valid",
+        TestRailAssert.assertTrue(paidInterest == interestValue, new CustomStepResult("Paid interest is not valid",
                 "Paid interest is  valid"));
         dateLastPayment = Pages.accountDetailsPage().getDateLastPayment();
         TestRailAssert.assertTrue(dateLastPayment.equals(transaction.getTransactionDate()),

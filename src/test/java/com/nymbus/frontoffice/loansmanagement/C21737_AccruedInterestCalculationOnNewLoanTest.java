@@ -62,8 +62,6 @@ public class C21737_AccruedInterestCalculationOnNewLoanTest extends BaseTest {
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         loanAccount.setNextPaymentBilledDueDate(DateTime.getLocalDatePlusMonthsWithPatternAndLastDay(loanAccount.getDateOpened(), 1, "MM/dd/yyyy"));
-        String dateOpened = loanAccount.getDateOpened();
-        loanAccount.setDateOpened(DateTime.getDateMinusDays(dateOpened, 1));
         checkingAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
 
         // Set transaction data
@@ -180,8 +178,15 @@ public class C21737_AccruedInterestCalculationOnNewLoanTest extends BaseTest {
 
         logInfo("Step 10: Pay attention to the \"Accrued interest\" field");
         String accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
-        System.out.println(accruedInterest);
-        TestRailAssert.assertTrue(accruedInterest.equals("72.44"),
+        String currentBalance = Pages.accountDetailsPage().getCurrentBalance();
+        String currentEffectiveRate = Pages.accountDetailsPage().getCurrentEffectiveRate();
+        String daysBaseYearBase = Pages.accountDetailsPage().getDaysBaseYearBase();
+        int yearBase = Integer.parseInt(daysBaseYearBase.split("/")[1].substring(0, 3));
+        int daysBase = Integer.parseInt(daysBaseYearBase.split("/")[0].substring(0, 3));
+        double expectedAccruedInterest = Double.parseDouble(currentBalance) * Double.parseDouble(currentEffectiveRate)/100/
+                yearBase * daysBase/12;
+
+        TestRailAssert.assertTrue(accruedInterest.equals(String.format("%.2f", expectedAccruedInterest)),
                 new CustomStepResult("Accrued interests is equals",
                         "Accrued interests is not equals"));
     }

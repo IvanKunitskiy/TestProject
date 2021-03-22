@@ -4,7 +4,9 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -153,6 +155,8 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
         Pages.confirmModalPage().clickNo();
+        Pages.confirmModalPage().clickNo();
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         Actions.loginActions().doLogOut();
 
     }
@@ -177,7 +181,7 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         logInfo("Step 4: Click [Void] button");
         Pages.fullCheckPage().clickVoid();
         Assert.assertTrue(Pages.fullCheckPage().checkConfirmation(), "Confirmation is not present");
-        Assert.assertFalse(Pages.fullCheckPage().checkVoidIsDisabled(),"Void button is not disabled");
+        Assert.assertFalse(Pages.fullCheckPage().isVoidDisabled(),"Void button is not disabled");
 
         logInfo("Step 5: Select Yes option and verify the Status field");
         Pages.fullCheckPage().clickYes();

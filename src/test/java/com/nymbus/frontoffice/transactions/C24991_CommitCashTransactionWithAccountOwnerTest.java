@@ -113,6 +113,7 @@ public class C24991_CommitCashTransactionWithAccountOwnerTest extends BaseTest {
         Assert.assertTrue(Arrays.asList(lines).contains(expectedClientName), "Client name is incorrect!");
         Assert.assertTrue(Actions.balanceInquiryActions().isLineEndsWithChars(lines, clientIdStartLine, client.getIndividualType().getClientID()),
                 "Client ID is incorrect!");
+        Pages.verifyConductorModalPage().clickVerifyButton();
         Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
 
