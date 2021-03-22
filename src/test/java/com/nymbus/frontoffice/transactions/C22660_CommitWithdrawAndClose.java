@@ -87,7 +87,7 @@ public class C22660_CommitWithdrawAndClose extends BaseTest {
 
         // Set transaction with amount value
         Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
-        accruedInterest = AccountActions.retrievingAccountData().getAccruedInterest();
+        accruedInterest = Double.parseDouble(Pages.accountDetailsPage().getAccruedInterestThisStatementCycle());
         double transactionAmount = AccountActions.retrievingAccountData().getCurrentBalanceWithAccruedInterest();
         withdrawTransaction.getTransactionSource().setAmount(transactionAmount);
         withdrawTransaction.getTransactionDestination().setAmount(transactionAmount);

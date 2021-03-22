@@ -49,7 +49,8 @@ public class C25312_CommitDebitTransactionWithOfficialCheckAccount extends BaseT
         //Check balance
         if (balance.getCurrentBalance() < transactionAmount) {
             Transaction depositSavingsTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
-            Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+            //Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+            depositSavingsTransaction.getTransactionDestination().setAccountNumber(chkAccountNumber);
             Actions.transactionActions().goToTellerPage();
             Actions.transactionActions().doLoginTeller();
             Actions.transactionActions().createTransaction(depositSavingsTransaction);

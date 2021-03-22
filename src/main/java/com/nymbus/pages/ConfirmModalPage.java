@@ -31,7 +31,11 @@ public class ConfirmModalPage extends PageTools {
     @Step("Check reprint check visible")
     public String getReprintCheckNumber(){
         String text = getElementText(reprintCheck);
-        return text.substring(text.indexOf("#")+1);
+        String substring = text.substring(text.indexOf("#") + 1);
+        if (substring.endsWith("?")){
+            return substring.substring(0,substring.length()-1);
+        }
+        return substring;
     }
 
     @Step("Check is check visible")
@@ -48,6 +52,7 @@ public class ConfirmModalPage extends PageTools {
 
     @Step("Click on 'No' button")
     public void clickNo() {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         waitForElementClickable(noButton);
         jsClick(noButton);
     }

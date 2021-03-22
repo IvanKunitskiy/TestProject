@@ -13,7 +13,13 @@ public class ImageParser {
     private static BufferedImage getBufferedImage(String imageSource, int index) {
         try {
             index++;
-            String base64Image = imageSource.split(",")[index];
+            String[] split = imageSource.split(",");
+            String base64Image;
+            if (split.length<3){
+                base64Image = split[1];
+            } else {
+                base64Image = split[index];
+            }
             byte[] imageBytes = Base64.getDecoder().decode(base64Image);
             return ImageIO.read(new ByteArrayInputStream(imageBytes));
         } catch (IOException e) {
