@@ -177,7 +177,7 @@ public class AccountPaymentInfoPage extends PageTools {
     @Step("Get Due date value")
     public String getDisabledDueDate() {
         waitForElementVisibility(dueDate);
-        return getDisabledElementAttributeValue("value", dueDate);
+        return getDisabledElementAttributeValue("value", dueDate).trim();
     }
 
     @Step("Get 'Payment due type' value")
