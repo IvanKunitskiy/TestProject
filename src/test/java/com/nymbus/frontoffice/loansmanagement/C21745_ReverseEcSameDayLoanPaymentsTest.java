@@ -37,8 +37,6 @@ public class C21745_ReverseEcSameDayLoanPaymentsTest extends BaseTest {
     private Transaction transaction_416;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
-    private String accruedInterest;
-    private double amountDue;
     private String nextPaymentBilledDueDate;
     private double currentBalance;
     private int numberOfPaymentsReceived;
@@ -137,12 +135,11 @@ public class C21745_ReverseEcSameDayLoanPaymentsTest extends BaseTest {
         // Get accrued interest
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
-        accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
         nextPaymentBilledDueDate = Pages.accountDetailsPage().getNextPaymentBilledDueDate();
         currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu());
         numberOfPaymentsReceived = AccountActions.accountDetailsActions().getNumberOfPaymentsReceived();
         Pages.accountDetailsPage().clickPaymentInfoTab();
-        amountDue = Double.parseDouble(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1));
+        double amountDue = Double.parseDouble(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1));
 
         // assign amount to 416 transaction more than due date
         double transaction416Amount = amountDue + Random.genInt(10, 50);
@@ -184,6 +181,14 @@ public class C21745_ReverseEcSameDayLoanPaymentsTest extends BaseTest {
         logInfo("Step 6: Open loan account from preconditions on the 'Details' tab");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
+
+        // Get values from Payments Due record after performing transaction
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+        Pages.accountPaymentInfoPage().clickPaymentDueRecord();
+        double interest = Double.parseDouble(Pages.accountPaymentInfoPage().getInterest());
+        double principal = Double.parseDouble(Pages.accountPaymentInfoPage().getPrincipal());
+        double escrow = Double.parseDouble(Pages.accountPaymentInfoPage().getEscrow());
+
         Pages.accountDetailsPage().clickDetailsTab();
 
         logInfo("Step 7: Pay attention to the following fields:\n" +
@@ -193,12 +198,11 @@ public class C21745_ReverseEcSameDayLoanPaymentsTest extends BaseTest {
                 "- Current Balance");
         TestRailAssert.assertTrue(Pages.accountDetailsPage().getNextPaymentBilledDueDate().equals(nextPaymentBilledDueDate),
                 new CustomStepResult("'Next Payment Billed Due Date' is not valid", "'Next Payment Billed Due Date' is valid"));
-        System.out.println(Pages.accountDetailsPage().getInterestPaidToDate());
-//        TestRailAssert.assertTrue(Pages.accountDetailsPage().getInterestPaidToDate().equals("0.00"),
-//                new CustomStepResult("'Interest Paid To Date' is not valid", "'Interest Paid To Date' is valid"));
-        // TODO: check failing
+        double interestPaidToDate = Double.parseDouble(Pages.accountDetailsPage().getInterestPaidToDate());
+        TestRailAssert.assertTrue(interestPaidToDate == interest,
+                new CustomStepResult("'Interest Paid To Date' is not valid", "'Interest Paid To Date' is valid"));
         double actualCurrentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
-        TestRailAssert.assertTrue(actualCurrentBalance == currentBalance,
+        TestRailAssert.assertTrue(actualCurrentBalance == currentBalance - principal,
                 new CustomStepResult("'Current Balance' is not valid", "'Current Balance' is valid"));
         int currentNumberOfPaymentsReceived = Integer.parseInt(Pages.accountDetailsPage().getNumberOfPaymentsReceived());
         TestRailAssert.assertTrue(currentNumberOfPaymentsReceived == numberOfPaymentsReceived + 1,
@@ -206,12 +210,12 @@ public class C21745_ReverseEcSameDayLoanPaymentsTest extends BaseTest {
 
         logInfo("Step 8: Go to the 'Transactions' tab and verify payment portions");
         Pages.accountDetailsPage().clickTransactionsTab();
-        // TODO: verify payment portions
-        // principal, interest, escrow part = principal, interest, escrow part from paid Payments Due record
-//        TestRailAssert.assertTrue(AccountActions.retrievingAccountData().getBalanceValue(1) == principal,
-//                new CustomStepResult("Principal is not valid", "Principal is valid"));
-//        TestRailAssert.assertTrue(AccountActions.retrievingAccountData().getInterestMinusValue(1) == interest,
-//                new CustomStepResult("Interest is not valid", "Interest is valid"));
+        TestRailAssert.assertTrue(AccountActions.retrievingAccountData().getBalanceValue(1) == principal,
+                new CustomStepResult("Principal is not valid", "Principal is valid"));
+        TestRailAssert.assertTrue(AccountActions.retrievingAccountData().getInterestMinusValue(1) == interest,
+                new CustomStepResult("Interest is not valid", "Interest is valid"));
+        TestRailAssert.assertTrue(AccountActions.retrievingAccountData().getEscrowMinusValue(1) == escrow,
+                new CustomStepResult("Escrow is not valid", "Escrow is valid"));
 
         logInfo("Step 9: Go to 'Journal' page in the 'Menu' on the left side of the screen");
         Actions.journalActions().goToJournalPage();
@@ -235,6 +239,16 @@ public class C21745_ReverseEcSameDayLoanPaymentsTest extends BaseTest {
                 "- Interest paid to date\n" +
                 "- # payments received\n" +
                 "- Current Balance");
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getNextPaymentBilledDueDate().equals(nextPaymentBilledDueDate),
+                new CustomStepResult("'Next Payment Billed Due Date' is not valid", "'Next Payment Billed Due Date' is valid"));
+        TestRailAssert.assertTrue(Double.parseDouble(Pages.accountDetailsPage().getInterestPaidToDate()) == interestPaidToDate - interest,
+                new CustomStepResult("'Interest Paid To Date' is not valid", "'Interest Paid To Date' is valid"));
+        actualCurrentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
+        TestRailAssert.assertTrue(actualCurrentBalance == currentBalance,
+                new CustomStepResult("'Current Balance' is not valid", "'Current Balance' is valid"));
+        currentNumberOfPaymentsReceived = AccountActions.accountDetailsActions().getNumberOfPaymentsReceived();
+        TestRailAssert.assertTrue(currentNumberOfPaymentsReceived == numberOfPaymentsReceived,
+                new CustomStepResult("'Date interest paid thru' is not valid", "'Date interest paid thru' is valid"));
 
         logInfo("Step 14: Open account from preconditions on the 'Payment Info' tab");
         Pages.accountDetailsPage().clickPaymentInfoTab();
