@@ -112,7 +112,7 @@ public class RetrievingAccountData {
         ClosedAccountData closedAccountData = new ClosedAccountData();
         closedAccountData.setCurrentBalance(getCurrentBalance());
         closedAccountData.setAvailableBalance(getAvailableBalanceFromHeaderMenu());
-        closedAccountData.setAccruedInterest(getAccruedInterest());
+        closedAccountData.setAccruedInterest(Double.parseDouble(Pages.accountDetailsPage().getAccruedInterest()));
         closedAccountData.setAccountStatus(getAccountStatus());
         closedAccountData.setDateClosed(Pages.accountDetailsPage().getDateClosed());
 
@@ -155,11 +155,11 @@ public class RetrievingAccountData {
     }
 
     public double getCurrentBalanceWithAccruedInterest() {
-        return  getCurrentBalance() + getAccruedInterest();
+        return  getCurrentBalance() + Double.parseDouble(Pages.accountDetailsPage().getAccruedInterest());
     }
 
     public double getAccruedInterest() {
-        String accruedInterestValue = Pages.accountDetailsPage().getAccruedInterest();
+        String accruedInterestValue = Pages.accountDetailsPage().getAccruedInterestThisStatementCycle();
         return Double.parseDouble(accruedInterestValue);
     }
 

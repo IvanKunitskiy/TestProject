@@ -121,9 +121,9 @@ public class FullCheckPage extends PageTools {
     }
 
     @Step("Check 'Void' is disabled")
-    public boolean checkVoidIsDisabled(){
+    public boolean isVoidDisabled(){
         waitForElementVisibility(voidButton);
-        return isElementClickable(voidButton);
+        return getElementAttributeValue("disabled", voidButton).equals("disabled");
     }
 
 

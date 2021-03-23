@@ -40,7 +40,9 @@ public class BackOfficeActions {
     }
 
     public void clickToRejectTransaction(String number, String effectiveDate) {
-        Pages.backOfficePage().inputProofDate(effectiveDate);
+        String replace = effectiveDate.replace('-', '/');
+        replace = replace.substring(5) + "-" + replace.substring(0,4);
+        Pages.backOfficePage().inputProofDate(replace);
         Pages.backOfficePage().inputReasonBadCode();
         Pages.backOfficePage().clickFilterButton();
         Pages.backOfficePage().clickToAccountNumber(number);
