@@ -40,7 +40,7 @@ public class SelenideConfig {
         }
         Configuration.browserCapabilities = getBrowserCapabilities();
 
-       Configuration.holdBrowserOpen = true;
+//        Configuration.holdBrowserOpen = true;
 
 //        Configuration.startMaximized = true;
         Configuration.browserSize = "1920x1080";
