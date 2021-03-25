@@ -284,6 +284,14 @@ public class AccountDetailsPage extends PageTools {
         return currentBalanceValue.replaceAll("[^0-9.-]", "");
     }
 
+    private final By numberOfPaymentsReceived = By.xpath("//tr[@data-test-id='field-numberofpaymentsreceived']/td//span/span");
+
+    @Step("Get 'Number Of Payments Received' value from header menu")
+    public String getNumberOfPaymentsReceived() {
+        waitForElementVisibility(numberOfPaymentsReceived);
+        return getElementText(numberOfPaymentsReceived).trim();
+    }
+
     @Step("Get 'Accrued Interest' value")
     public String getAccruedInterest() {
         waitForElementVisibility(accruedInterest);

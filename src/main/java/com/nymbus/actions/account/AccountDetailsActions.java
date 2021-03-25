@@ -19,6 +19,14 @@ public class AccountDetailsActions {
         }
     }
 
+    public int getNumberOfPaymentsReceived() {
+        String numberOfPaymentsReceived = Pages.accountDetailsPage().getNumberOfPaymentsReceived();
+        if (numberOfPaymentsReceived.isEmpty()) {
+            return 0;
+        }
+        return Integer.parseInt(numberOfPaymentsReceived);
+    }
+
     /**
      * Common account records verification
      */
