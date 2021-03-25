@@ -58,7 +58,7 @@ public class C22594_ViewNewCDIRAAccountTest extends BaseTest {
     private final String TEST_RUN_NAME = "Deposit Accounts Management";
 
     @TestRailIssue(issueID = 22594, testRunName = TEST_RUN_NAME)
-    @Test(description = "C22594, View New CD IRA Account")
+    @Test(description = "C22594, View New CD IRA Account", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void viewNewCDIRAAccount() {
 

@@ -140,6 +140,7 @@ public class C22718_CDTTellerSessionCommitOutgoingWireWithWaivedFee extends Base
         logInfo("Step 8: Open account on the Transactions tab and verify the committed transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
         savingsAccTransactionData.setBalance(expectedSavingsBalanceData.getCurrentBalance());
+        savingsAccTransactionData.setAmount(expectedSavingsBalanceData.getCurrentBalance());
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");

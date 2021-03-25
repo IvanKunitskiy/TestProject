@@ -67,7 +67,7 @@
         <test name="Loans management">
             <classes>
                 <class name="com.nymbus.frontoffice.loansmanagement.C25436_ProcessLoanPaymentTransactionPrincipalInterest"/>
-                <class name="com.nymbus.frontoffice.loansmanagement.C25379_ProcessLoanPaymentTransactionInterestOnly"/>
+                <class name="com.nymbus.frontoffice.loansmanagement.C25379_ProcessLoanPaymentTransactionInterestOnlyTest"/>
                 <class name="com.nymbus.frontoffice.loansmanagement.C25479_ProcessLoanPrepaymentTransaction"/>
                 <class name="com.nymbus.frontoffice.loansmanagement.C25316_LoanEditsManuallyChangePaymentOnNewLoanPIBillTest"/>
                 <class name="com.nymbus.frontoffice.loansmanagement.C21728_ViewEditNewLoanAccountTest"/>

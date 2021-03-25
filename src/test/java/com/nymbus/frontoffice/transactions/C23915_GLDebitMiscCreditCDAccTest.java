@@ -112,7 +112,7 @@ public class C23915_GLDebitMiscCreditCDAccTest extends BaseTest {
                 .calculateNextInterestAmount(balanceData.getCurrentBalance(),
                                          cdAccount.getInterestRate(), transactionData.getEffectiveDate(),
                                          Pages.accountDetailsPage().getDateNextInterest(),
-                                        false, cdAccount.getInterestType());
+                                        true, cdAccount.getInterestType());
         String actualPaymentAmount = Pages.accountDetailsPage().getNextInterestPaymentAmount();
         Assert.assertEquals(actualPaymentAmount, expectedPaymentAmount, "Payment amount doesn't match!");
 

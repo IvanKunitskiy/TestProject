@@ -136,7 +136,7 @@ public class AccountDetailsPage extends PageTools {
     private By termInMonthOrDays = By.xpath("//tr[@data-config-name='terminmonthsordays']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By dailyInterestAccrual = By.xpath("//tr[@data-test-id='field-dailyinterestfactor']//span/span");
     private By overdraftChargedOff = By.xpath("//tr[@data-config-name='overdraftchargedoff']//span[contains(@class, 'dnTextFixedWidthText')]");
-    private By currentEffectiveRate = By.xpath("//tr[@data-test-id='field-currenteffectiverate']//span[contains(@class, 'dnTextFixedWidthText ng-binding')]");
+    private By currentEffectiveRate = By.xpath("(//tr[@data-test-id='field-currenteffectiverate']//td[2]//span)[2]");
     private By daysBase = By.xpath("//tr[@data-test-id='field-daybaseforinterestrate']//td//span/span");
     private By loanClassCode = By.xpath("//tr[@data-config-name='classtype']//span[contains(@class, 'dnTextFixedWidthText')]");
     private By lateFeeDue = By.xpath("//tr[@data-config-name='latefeedue']//span[contains(@class, 'dnTextFixedWidthText')]");
@@ -282,6 +282,14 @@ public class AccountDetailsPage extends PageTools {
         waitForElementVisibility(currentBalance1);
         String currentBalanceValue = getElementText(currentBalance1).trim();
         return currentBalanceValue.replaceAll("[^0-9.-]", "");
+    }
+
+    private final By numberOfPaymentsReceived = By.xpath("//tr[@data-test-id='field-numberofpaymentsreceived']/td//span/span");
+
+    @Step("Get 'Number Of Payments Received' value from header menu")
+    public String getNumberOfPaymentsReceived() {
+        waitForElementVisibility(numberOfPaymentsReceived);
+        return getElementText(numberOfPaymentsReceived).trim();
     }
 
     @Step("Get 'Accrued Interest' value")

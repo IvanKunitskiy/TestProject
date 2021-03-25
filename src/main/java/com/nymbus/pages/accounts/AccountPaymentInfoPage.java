@@ -177,7 +177,7 @@ public class AccountPaymentInfoPage extends PageTools {
     @Step("Get Due date value")
     public String getDisabledDueDate() {
         waitForElementVisibility(dueDate);
-        return getDisabledElementAttributeValue("value", dueDate);
+        return getDisabledElementAttributeValue("value", dueDate).trim();
     }
 
     @Step("Get 'Payment due type' value")
@@ -254,11 +254,18 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By interestTotal = By.xpath("//tr[@class='row-total']/td[2]/div");
     private final By escrowTotal = By.xpath("//tr[@class='row-total']/td[4]/div");
     private final By principalTotal = By.xpath("//tr[@class='row-total']/td[3]/div");
+    private final By amountTotal = By.xpath("//tr[@class='row-total']/td[5]/div");
 
     @Step("Get 'Principal total' value")
     public String getPrincipalTotal(){
         waitForElementVisibility(principalTotal);
         return getElementText(principalTotal).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Amount total' value")
+    public String getAmountTotal(){
+        waitForElementVisibility(amountTotal);
+        return getElementText(amountTotal).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Interest total' value")

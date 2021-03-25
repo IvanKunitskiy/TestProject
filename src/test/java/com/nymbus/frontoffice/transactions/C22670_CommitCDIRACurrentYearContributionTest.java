@@ -125,7 +125,7 @@ public class C22670_CommitCDIRACurrentYearContributionTest extends BaseTest {
                 Double.parseDouble(cdAccount.getInterestRate()),
                 transactionData.getEffectiveDate(),
                 Pages.accountDetailsPage().getDateNextInterest(),
-                false);
+                true);
         String actualPaymentAmount = Pages.accountDetailsPage().getNextInterestPaymentAmount();
         Assert.assertEquals(actualPaymentAmount, expectedPaymentAmount, "Payment amount doesn't match!");
 

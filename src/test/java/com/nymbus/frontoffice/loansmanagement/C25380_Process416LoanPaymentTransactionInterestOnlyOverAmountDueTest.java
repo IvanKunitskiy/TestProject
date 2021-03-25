@@ -56,11 +56,15 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         loanAccount.setPaymentAmountType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
         loanAccount.setCommitmentTypeAmt(CommitmentTypeAmt.NONE.getCommitmentTypeAmt());
+        loanAccount.setNextPaymentBilledDueDate(DateTime.getLocalDatePlusMonthsWithPatternAndLastDay(loanAccount.getDateOpened(), 1, "MM/dd/yyyy"));
+        String dateOpened = loanAccount.getDateOpened();
+        loanAccount.setDateOpened(DateTime.getDateMinusDays(dateOpened, 1));
+        chkAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
 
         // Chk acc transaction
+        double transactionAmount = 1001.00;
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
         depositTransaction.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
-        double transactionAmount = 1001.00;
         depositTransaction.getTransactionDestination().setAmount(transactionAmount);
         depositTransaction.getTransactionSource().setAmount(transactionAmount);
 
@@ -121,7 +125,7 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
         Actions.transactionActions().doLoginTeller();
         Actions.transactionActions().createTransaction(transaction_109);
         Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
-        Actions.transactionActions().clickCommitButton();
+        Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().closeModal();
 
         // Perform non-teller transaction
@@ -139,7 +143,7 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
         transaction_416.getTransactionDestination().setAmount(transaction416Amount);
         transaction_416.getTransactionSource().setAmount(transaction416Amount);
 
-        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogOut();
     }
 
     private final String TEST_RUN_NAME = "Loans Management";

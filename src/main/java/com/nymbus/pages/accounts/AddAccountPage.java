@@ -77,6 +77,7 @@ public class AddAccountPage extends PageTools {
     private final By nextRateChangeDate = By.xpath("//input[@id='armdatenextirchange']");
     private final By escrowPayment = By.xpath("//input[@data-test-id='field-escrowpayment']");
     private final By dateFirstPaymentDue = By.xpath("//input[@data-test-id='field-datefirstpaymentdue']");
+    private final By callClassCodeSelectorOptionByIndex = By.xpath("//div[@id='callclasscode']//ul[@role='listbox']/li[%s]//span");
 
     /**
      * Account holders and signers
@@ -408,7 +409,7 @@ public class AddAccountPage extends PageTools {
         waitForElementVisibility(dateOpenedField);
         waitForElementClickable(dateOpenedField);
         scrollToPlaceElementInCenter(dateOpenedField);
-        typeWithoutWipe("", dateOpenedField);
+        type("", dateOpenedField);
         click(dateOpenedField);
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         typeWithoutWipe(dateOpenedValue, dateOpenedField);
@@ -519,6 +520,13 @@ public class AddAccountPage extends PageTools {
         waitForElementVisibility(callClassCodeSelectorOption, callClassCodeOption);
         waitForElementClickable(callClassCodeSelectorOption, callClassCodeOption);
         click(callClassCodeSelectorOption, callClassCodeOption);
+    }
+
+    @Step("Click the 'Call Class Code' option")
+    public void clickCallClassCodeSelectorOptionByIndex(int index) {
+        waitForElementVisibility(callClassCodeSelectorOptionByIndex, index);
+        waitForElementClickable(callClassCodeSelectorOptionByIndex, index);
+        click(callClassCodeSelectorOptionByIndex, index);
     }
 
     @Step("Returning list of 'Call Class Code' options")

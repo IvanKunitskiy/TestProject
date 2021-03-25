@@ -107,7 +107,7 @@ public class C22672_TellerCommitTransactionOnDormantAccountTest extends BaseTest
         logInfo("Step 9: Open Account on the Transactions History tab and verify the committed transaction");
         AccountActions.retrievingAccountData().goToTransactionsTab();
         int offset = AccountActions.retrievingAccountData().getOffset();
-        TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset, 1);
+        TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualTransactionData, transactionData, "Transaction data doesn't match!");
 
         logInfo("Step 10: Go to Account Maintenance-> Maintenance History page.\n" +

@@ -53,6 +53,10 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
+        loanAccount.setNextPaymentBilledDueDate(DateTime.getLocalDatePlusMonthsWithPatternAndLastDay(loanAccount.getDateOpened(), 1, "MM/dd/yyyy"));
+        String dateOpened = loanAccount.getDateOpened();
+        loanAccount.setDateOpened(DateTime.getDateMinusDays(dateOpened, 1));
+        checkingAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
 
         // Set transaction data
         miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());
@@ -118,6 +122,7 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
                 "- NEW Current Effective Rate != Old Current Effective Rate\n" +
                 "- Begin Earn Date = Date in the past but > = Date Opened\n" +
                 "- Accrue Thru Date = Today (set Current date - 1 day by default)");
+        Pages.interestRateChangeModalPage().clickAddBackDatedRateChangeButton();
         int oldCurrentEffectiveRate = Integer.parseInt(loanAccount.getCurrentEffectiveRate());
         double newCurrentEffectiveRate = oldCurrentEffectiveRate + Random.genInt(1, 10);
         int days = 1;
@@ -135,9 +140,8 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
 
         logInfo("Step 6: Pay attention at the interest amount in 'Alert Message' pop up");
         String[] daysBaseYearBase = loanAccount.getDaysBaseYearBase().replaceAll("[^0-9/]", "").split("/");
-
         int yearBase = Integer.parseInt(daysBaseYearBase[1]);
-        double adjustmentAmount = currentBalance * (newCurrentEffectiveRate / 100) / (yearBase * days);
+        double adjustmentAmount = currentBalance * (newCurrentEffectiveRate / 100 - (double) oldCurrentEffectiveRate / 100) / yearBase * (days + 1);
         adjustmentAmount = roundAmountToTwoDecimals(adjustmentAmount);
         double interestEarned = accruedInterest + adjustmentAmount;
 
@@ -148,6 +152,7 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
         Pages.alertMessageModalPage().clickOkButton();
 
         logInfo("Step 7: Go to 'Transactions' tab and pay attention at the generated transaction");
+        Pages.interestRateChangeModalPage().clickCloseButton();
         Pages.accountDetailsPage().clickTransactionsTab();
         String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
         checkTransactionCode(transactionCode, newCurrentEffectiveRate, oldCurrentEffectiveRate);

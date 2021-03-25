@@ -183,6 +183,7 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
 
         logInfo("Step 8: Click [NO] on \"Reprint check #X?\" popup");
         Pages.confirmModalPage().clickNo();
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         Assert.assertEquals(Pages.cashierPage().getPayeeName(), name, "Name doesn't match");
         SelenideTools.openUrlInNewWindow(Constants.URL.substring(0,Constants.URL.indexOf("com")+3)
                 +"/settings/#/view/bank.data.officialcheck.control");
