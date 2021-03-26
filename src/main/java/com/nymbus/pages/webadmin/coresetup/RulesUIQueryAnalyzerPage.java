@@ -561,6 +561,8 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private final By dateAssessed = By.xpath("//table/tbody//tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]//td/div[@key-name='dateassessed']");
     private final By paymentDueType = By.xpath("//table/tbody//tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]//td/span[@key-name='paymentduetype']/following-sibling::span[3]/span");
     private final By paymentDueStatus = By.xpath("//table/tbody//tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]//td/span[@key-name='paymentduestatus']/following-sibling::span[3]/span");
+    private final By interest = By.xpath("//table/tbody//tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][1]//td/div[@key-name='interest']");
+    private final By principal = By.xpath("//table/tbody//tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][1]//td/div[@key-name='principal']");
 
     @Step("Get 'Account id' value")
     public String getAccountIdByIndex(int index) {
@@ -575,6 +577,16 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     @Step("Get 'Escrow' value")
     public String getEscrowByIndex(int index) {
         return getElementText(escrow, index).trim();
+    }
+
+    @Step("Get 'Interest' value")
+    public String getInterestByIndex(int index) {
+        return getElementText(interest, index).trim();
+    }
+
+    @Step("Get 'Principal' value")
+    public String getPrincipalByIndex(int index) {
+        return getElementText(principal, index).trim();
     }
 
     @Step("Get 'Amount' value")
