@@ -245,22 +245,25 @@ public class WebAdminTransactionActions {
 
     public WebTransactionData getTransactionInfo(UserCredentials userCredentials){
         SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL +
-                "RulesUIQuery.ct?waDbName=nymbusdev12DS&dqlQuery=count%3A+10%0D%0Aselect%3A+accountnumber%2C+effectiveentrydate%2C+rejectstatus%2C+amount%2C+transactionheaderid%2C+transactioncode%2C+accounttype%0D%0Afrom%3A+bank.data.transaction.item%0D%0Awhere%3A+%0D%0A-+accountnumber%3A%0D%0A+++not+exists%3A+%0D%0A++++++from%3A+bank.data.sphold%0D%0A++++++where%3A+%0D%0A++++++-+recordcode->code%3A+%5Btpcode.2%2C+tpcode.4%2C+tpcode.6%2C+tpcode.7%5D%0D%0A++++++-+accountid%3A+%28field%29%28%2F%29%2Faccountnumber%0D%0A-+.accounttype->code%3A+%5Btatyp1.1%2C+tatyp1.2%5D%0D%0A-+.accountnumber->dateclosed%3A+%7Bnull%7D%0D%0A-+.accountnumber->currentbalance%3A+%7Bgreater%3A+0%7D%0D%0A-+effectiveentrydate%3A+%7Ble%3A+%28currentday%29%7D%0D%0A-+.rejectstatus->name%3A+Rejected%0D%0A-+amount%3A+%7Bgreater%3A+0%7D%0D%0A-+accountnumber%3A+%7Bnot+null%7D%0D%0A-+.rootid->%5Btransactionitemid%5Dbank.data.transaction.rejectreentry.item%5Breasonrejected%5D->%5Brootid%5Dbank.data.descriptor%5Bname%5D%3A+bad+code%0D%0A-+.transactionheaderid->.transactionsource->name%3A+%5BACH%2C+Bill+pay%5D%0D%0AorderBy%3A+-id%0D%0Aextra%3A+%0D%0A-+%24CurBal%3A+.accountnumber->currentbalance%0D%0Aformats%3A+%0D%0A-+->bank.data.actmst%3A+%24%7Baccountnumber%7D&source=");
+                "RulesUIQuery.ct?waDbName=coreDS&dqlQuery=count%3A+100%0D%0Aselect%3A+accountnumber%2C+effectiveentrydate%2C+rejectstatus%2C+amount%2C+transactionheaderid%2C+transactioncode%2C+accounttype%0D%0Afrom%3A+bank.data.transaction.item%0D%0Awhere%3A+%0D%0A-+accountnumber%3A%0D%0A+++not+exists%3A+%0D%0A++++++from%3A+bank.data.sphold%0D%0A++++++where%3A+%0D%0A++++++-+.recordcode->code%3A+%5Btpcode.2%2C+tpcode.4%2C+tpcode.6%2C+tpcode.7%5D%0D%0A++++++-+accountid%3A+%28field%29%28%2F%29%2Faccountnumber%0D%0A-+.accounttype->code%3A+%5Btatyp1.1%2C+tatyp1.2%5D%0D%0A-+.accountnumber->dateclosed%3A+%7Bnull%7D%0D%0A-+.accountnumber->currentbalance%3A+%7Bgreater%3A+0%7D%0D%0A-+effectiveentrydate%3A+%7Ble%3A+%28currentday%29%7D%0D%0A-+.rejectstatus->name%3A+Rejected%0D%0A-+amount%3A+%7Bgreater%3A+0%7D%0D%0A-+accountnumber%3A+%7Bnot+null%7D%0D%0A-+.rootid->%5Btransactionitemid%5Dbank.data.transaction.rejectreentry.item%5Breasonrejected%5D->%5Brootid%5Dbank.data.descriptor%5Bname%5D%3A+bad+code%0D%0A-+.transactionheaderid->.transactionsource->name%3A+%5BACH%2C+Bill+pay%5D%0D%0A%0D%0AorderBy%3A+-effectiveentrydate%0D%0Aextra%3A+%0D%0A-+%24CurBal%3A+.accountnumber->currentbalance%0D%0A-+%24DateOpened%3A+.accountnumber->dateopened%0D%0Aformats%3A+%0D%0A-+->bank.data.actmst%3A+%24%7Baccountnumber%7D&source=");
         SelenideTools.switchToLastTab();
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        int index = 1;
+        int index = 2;
 
         WebTransactionData webTransactionData = new WebTransactionData();
         webTransactionData.setNumber(WebAdminPages.rulesUIQueryAnalyzerPage().getAccountNumberSecByIndex(index));
         webTransactionData.setAmount(Double.parseDouble(WebAdminPages.rulesUIQueryAnalyzerPage().getAmount(index)));
         String balance = WebAdminPages.rulesUIQueryAnalyzerPage().getBalanceByIndex(index);
         webTransactionData.setEffectiveDate(WebAdminPages.rulesUIQueryAnalyzerPage().getEffectiveDate(index));
-        while (webTransactionData.getAmount() > Double.parseDouble(balance)) {
+        String dateOpened = WebAdminPages.rulesUIQueryAnalyzerPage().getDateOpened(index);
+        while (webTransactionData.getAmount() > Double.parseDouble(balance)||
+                DateTime.isDateAfter(dateOpened,webTransactionData.getEffectiveDate(),"yyyy-MM-dd")) {
             index++;
             webTransactionData.setNumber(WebAdminPages.rulesUIQueryAnalyzerPage().getAccountNumberSecByIndex(index));
             webTransactionData.setAmount(Double.parseDouble(WebAdminPages.rulesUIQueryAnalyzerPage().getAmount(index)));
             balance = WebAdminPages.rulesUIQueryAnalyzerPage().getBalanceByIndex(index);
             webTransactionData.setEffectiveDate(WebAdminPages.rulesUIQueryAnalyzerPage().getEffectiveDate(index));
+            dateOpened = WebAdminPages.rulesUIQueryAnalyzerPage().getDateOpened(index);
         }
         Assert.assertTrue(webTransactionData.getAmount() < Double.parseDouble(balance), "Balance is less then amount");
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
