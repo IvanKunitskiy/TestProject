@@ -12,16 +12,16 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
 
     private By searchRegion = By.xpath("//td[@class='mainPanel' and //form[contains(@action, 'RulesUIQuery')]]");
     private By searchResultTable = By.xpath("//table[@id='searchResultTable']");
-    private By listOfSearchResult = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow ']");
-    private By firstNameByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[11]/div");
-    private By lastNameByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[12]/div");
-    private By accountNumberByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[2]/span/span");
-    private By accountNumberSecByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[3]/span/span");
-    private By accountNumberTwelveByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[12]/span/span");
-    private By balance = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[2]/div");
-    private By dormantAccountNumberByIndex = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[2]/div");
+    private By listOfSearchResult = By.xpath("//table[@id='searchResultTable']//tr");
+    private By firstNameByIndex = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[11]/div");
+    private By lastNameByIndex = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[12]/div");
+    private By accountNumberByIndex = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[2]/span/span");
+    private By accountNumberSecByIndex = By.xpath("//table[@id='searchResultTable']//tr[%s]//span[@key-name='accountnumber']/../span/span");
+    private By accountNumberTwelveByIndex = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[12]/span/span");
+    private By balance = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[2]/div");
+    private By dormantAccountNumberByIndex = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[2]/div");
     private By foundNumberOfRecords = By.xpath("//div[@class='panelContent']/div[@id='dqlSearch']/div/span[contains(text(), 'Found')]");
-    private By printBalanceOnReceiptValue = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[10]/div[@key-name='long']");
+    private By printBalanceOnReceiptValue = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[10]/div[@key-name='long']");
 
     @Step("Wait for 'Rules UI Query Analyzer' page loaded")
     public void waitForPageLoad() {
@@ -103,11 +103,12 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      * Transaction item region
      */
 
-    private By glDateTimePosted = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//div[@key-name='gldatetimeposted']");
-    private By effectiveEntryDate =  By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//div[@key-name='effectiveentrydate']");
-    private By glFunctionValue = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//div[@key-name='glfunction']");
-    private By transactionHeaderId = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//*[@key-name='transactionheaderid']");
-    private By glTransactionItemPostingStatus = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]" +
+    private By glDateTimePosted = By.xpath("//*[@id='searchResultTable']//tr[%s]//div[@key-name='gldatetimeposted']");
+    private By effectiveEntryDate =  By.xpath("//*[@id='searchResultTable']//tr[%s]//div[@key-name='effectiveentrydate']");
+    private By dateOpened =  By.xpath("//*[@id='searchResultTable']//tr[%s]//div[@key-name='$DateOpened']");
+    private By glFunctionValue = By.xpath("//*[@id='searchResultTable']//tr[%s]//div[@key-name='glfunction']");
+    private By transactionHeaderId = By.xpath("//*[@id='searchResultTable']//tr[%s]//*[@key-name='transactionheaderid']");
+    private By glTransactionItemPostingStatus = By.xpath("//*[@id='searchResultTable']//tr[%s]" +
             "//*[@key-name='gltransactionitempostingstatus']//..//span[5]/span");
     private By glTransactionItemPostingStatusByTrancode = By.xpath("//td[span[span[contains(text(), '%s')]]]/preceding-sibling::td[6]/span[contains(@class, 'high_title')]/span");
 
@@ -121,6 +122,12 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getEffectiveDate(int index) {
         waitForElementVisibility(effectiveEntryDate, index);
         return getElementText(effectiveEntryDate, index).trim();
+    }
+
+    @Step("Get date opened {0}")
+    public String getDateOpened(int index) {
+        waitForElementVisibility(dateOpened, index);
+        return getElementText(dateOpened, index).trim();
     }
 
     @Step("Get glfunction {0} value")
@@ -150,8 +157,8 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     /**
      * GL interface region
      */
-    private By amountField = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//*[@key-name='amount']");
-    private By glInterfaceTransactionHeaderId= By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//*[@key-name='parenttransaction']");
+    private By amountField = By.xpath("//*[@id='searchResultTable']//tr[%s]//*[@key-name='amount']");
+    private By glInterfaceTransactionHeaderId= By.xpath("//*[@id='searchResultTable']//tr[%s]//*[@key-name='parenttransaction']");
     private By deletedWhen = By.xpath("//*[@id='searchResultTable']//tr[contains(@class, 'searchResultRow restore')][%s]//td[8]//div");
     private By deletedBy = By.xpath("//*[@id='searchResultTable']//tr[contains(@class, 'searchResultRow restore')][%s]//td[9]//div");
     private By listOfSearchResultInterfaceTable = By.xpath("//table[@id='searchResultTable']//tr[contains(@class, 'searchResultRow restore')]");
@@ -197,8 +204,8 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     /**
      * Data BcFile region
      */
-    private By systemDateField = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][1]//*[@key-name='date']");
-    private By referenceField = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow ']//td[3]//span[contains(@class, 'high_title')]/span");
+    private By systemDateField = By.xpath("//*[@id='searchResultTable']//tr[2]//*[@key-name='date']");
+    private By referenceField = By.xpath("//*[@id='searchResultTable']//tr//td[3]//span[contains(@class, 'high_title')]/span");
     
     @Attachment
     @Step ("Get current date - 1 in system")
@@ -234,9 +241,9 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     /**
      * Warehouse transaction section
      */
-    private By accountNumber = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]" +
+    private By accountNumber = By.xpath("//*[@id='searchResultTable']//tr[%s]" +
             "//td[10]/span[last()]/span");
-    private By terminalId = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow ']//td[@class='fieldsCell']//div");
+    private By terminalId = By.xpath("//table[@id='searchResultTable']//tr//td[@class='fieldsCell']//div");
 
     @Step ("Get 'accountNumber' {0} value")
     public String getAccountNumberWithWarehouseTransaction(int index) {
@@ -247,7 +254,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     /**
      *  terminalId section
      */
-    private By terminalIdNumber = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]" +
+    private By terminalIdNumber = By.xpath("//*[@id='searchResultTable']//tr[%s]" +
             "//td[@class='fieldsCell']//div");
 
     @Step ("Get 'terminalId' {0} value")
@@ -265,7 +272,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     /**
      *  foreign fee section
      */
-    private By foreignFeeValue = By.xpath("//*[@id='searchResultTable']//tr[@class='searchResultRow '][%s]" +
+    private By foreignFeeValue = By.xpath("//*[@id='searchResultTable']//tr[%s]" +
             "//td[last()]/div");
 
     @Step ("Get 'terminalId' {0} value")
@@ -277,7 +284,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     /**
      *  waive AT usage fee acronym
      */
-    private By waiveATUsageFeeAcronymValue = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]"
+    private By waiveATUsageFeeAcronymValue = By.xpath("//table[@id='searchResultTable']//tr[%s]"
             + "//td[last()]/div");
 
     @Step ("Get 'Waive AT Usage Fee Acronym' {0} value")
@@ -289,9 +296,9 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     /**
      *  transaction header section
      */
-    private By customerId = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]"
+    private By customerId = By.xpath("//table[@id='searchResultTable']//tr[%s]"
             + "//td//span[@key-name='transactioncustomerid']");
-    private By name = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]"
+    private By name = By.xpath("//table[@id='searchResultTable']//tr[%s]"
             + "//td/div[@key-name='(databean)name']");
 
     @Step ("Get 'terminalId' {0} value")
@@ -310,10 +317,10 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      * notices section
      */
 
-    private By noticeBankBranch = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[2]/span[5]/span");
-    private By noticeAccountId = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[3]/span[5]/span");
-    private By noticeAccountType = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[4]/span[5]/span");
-    private By noticeDate = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[5]/div");
+    private By noticeBankBranch = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[2]/span[5]/span");
+    private By noticeAccountId = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[3]/span[5]/span");
+    private By noticeAccountType = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[4]/span[5]/span");
+    private By noticeDate = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[5]/div");
 
     @Step ("Get 'Bank Branch' {0} value")
     public String getNoticeBankBranchValue(int index) {
@@ -389,15 +396,15 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     * Transactions
     */
 
-    private By trBankBranch = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//td[2]/span[contains(@class, 'high_title')]/span");
-    private By trAccountNumber = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//td[3]/span[contains(@class, 'high_title')]/span");
-    private By trAmount = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//td[4]/div[@key-name='amount']");
-    private By trEffectiveDate = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//td[5]/div[@key-name='effectiveentrydate']");
-    private By trCode = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//td[6]/span[contains(@class, 'high_title')]/span");
-    private By trHeaderId = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//td[7]/span[contains(@class, 'high_title')]/span");
-    private By trEftDescription = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//td/div[@key-name='uniqueeftdescription']");
-    private By trItemType = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]//td[6]/span[contains(@class, 'high_title')]/span");
-    private By trCheckNumber = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow ']//td/div[@key-name='checknumber']");
+    private By trBankBranch = By.xpath("//table[@id='searchResultTable']//tr[%s]//td[2]/span[contains(@class, 'high_title')]/span");
+    private By trAccountNumber = By.xpath("//table[@id='searchResultTable']//tr[%s]//td[3]/span[contains(@class, 'high_title')]/span");
+    private By trAmount = By.xpath("//table[@id='searchResultTable']//tr[%s]//td[4]/div[@key-name='amount']");
+    private By trEffectiveDate = By.xpath("//table[@id='searchResultTable']//tr[%s]//td[5]/div[@key-name='effectiveentrydate']");
+    private By trCode = By.xpath("//table[@id='searchResultTable']//tr[%s]//td[6]/span[contains(@class, 'high_title')]/span");
+    private By trHeaderId = By.xpath("//table[@id='searchResultTable']//tr[%s]//td[7]/span[contains(@class, 'high_title')]/span");
+    private By trEftDescription = By.xpath("//table[@id='searchResultTable']//tr[%s]//td/div[@key-name='uniqueeftdescription']");
+    private By trItemType = By.xpath("//table[@id='searchResultTable']//tr[%s]//td[6]/span[contains(@class, 'high_title')]/span");
+    private By trCheckNumber = By.xpath("//table[@id='searchResultTable']//tr//td/div[@key-name='checknumber']");
 
     @Step ("Get transaction 'Bank branch' {0} value")
     public String getTransactionBankBranchValueByIndex(int index) {
@@ -456,7 +463,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     /**
      * CDT template
      */
-    private By templateName = By.xpath("//tr[@class='searchResultRow ']/td[7]/div");
+    private By templateName = By.xpath("//tr/td[7]/div");
 
     @Step ("Get list of CDT template names")
     public List<String> getListOfCdtTemplateNames() {
@@ -468,7 +475,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      * Loan Accounts
      */
 
-    private By loanAccountId = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow '][%s]/td[5]/span[contains(@class, 'high_title')]/span");
+    private By loanAccountId = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[5]/span[contains(@class, 'high_title')]/span");
     private By activeConvertedLoanAccountId = By.xpath("//table[contains(@class, 'searchResultPanel')]/tbody/" +
             "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]/" +
             "td[@class='fieldsCell'][10]/span/span");
