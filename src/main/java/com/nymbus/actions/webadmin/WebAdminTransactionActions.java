@@ -251,7 +251,7 @@ public class WebAdminTransactionActions {
         SelenideTools.switchToLastTab();
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        String transactionNumber = WebAdminPages.rulesUIQueryAnalyzerPage().getInterestValue(2);
+        String transactionNumber = WebAdminPages.rulesUIQueryAnalyzerPage().getInterestEarnedValueByIndex(1);
         WebAdminActions.loginActions().doLogoutProgrammatically();
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
