@@ -106,6 +106,7 @@ public class LoginActions {
     public String getSystemDate() {
         if (systemDate == null) {
             String systemDateFromWebAdmin = getSystemDateFromWebAdmin();
+            System.out.println(systemDateFromWebAdmin);
             systemDate = DateTime.getLocalDateWithFormatPlusDays(systemDateFromWebAdmin, "yyyy-MM-dd", "MM/dd/yyyy", 1);
         }
         return systemDate;

@@ -206,7 +206,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      */
     private By systemDateField = By.xpath("//*[@id='searchResultTable']//tr[2]//*[@key-name='date']");
     private By referenceField = By.xpath("//*[@id='searchResultTable']//tr//td[3]//span[contains(@class, 'high_title')]/span");
-
+    
     @Attachment
     @Step ("Get current date - 1 in system")
     public String getDateInSystem() {
