@@ -265,7 +265,6 @@ public class WebAdminTransactionActions {
         SelenideTools.switchToLastTab();
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        System.out.println(account.getAccountNumber());
         PaymentDueData paymentDueData = new PaymentDueData();
         paymentDueData.setAccountId(Integer.parseInt(WebAdminPages.rulesUIQueryAnalyzerPage().getAccountIdByIndex(1)));
 
