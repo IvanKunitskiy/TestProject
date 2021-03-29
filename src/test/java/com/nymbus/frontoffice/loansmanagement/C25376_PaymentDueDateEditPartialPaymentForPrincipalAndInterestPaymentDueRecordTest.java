@@ -24,6 +24,8 @@ import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -92,7 +94,7 @@ public class C25376_PaymentDueDateEditPartialPaymentForPrincipalAndInterestPayme
         depositTransaction.setTransactionDate(loanAccount.getDateOpened());
         transaction.getTransactionSource().setAccountNumber(checkAccount.getAccountNumber());
         transaction.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
-        transaction.getTransactionDestination().setTransactionCode(TransactionCode.INT_PAY_ONLY_407.getTransCode());
+        transaction.getTransactionDestination().setTransactionCode(TransactionCode.PAYMENT_416.getTransCode());
         transaction.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
         balance = 12000;
         miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());
@@ -144,6 +146,8 @@ public class C25376_PaymentDueDateEditPartialPaymentForPrincipalAndInterestPayme
             balance = Double.parseDouble(Pages.accountDetailsPage().getAvailableBalance());
             Actions.loginActions().doLogOutProgrammatically();
         }
+        transaction.getTransactionSource().setAmount(actualPaymentDueData.getAmount());
+        transaction.getTransactionDestination().setAmount(actualPaymentDueData.getAmount());
     }
 
     private final String TEST_RUN_NAME = "Loans Management";
@@ -179,8 +183,28 @@ public class C25376_PaymentDueDateEditPartialPaymentForPrincipalAndInterestPayme
         Pages.tellerPage().setEffectiveDate(transaction.getTransactionDate());
         Actions.transactionActions().clickCommitButton();
 
+        logInfo("Step 5: Close Transaction Receipt popup");
+        Pages.tellerPage().closeModal();
 
+        logInfo("Step 6: Open loan account from preconditions");
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
 
+        logInfo("Step 7: Open \"Payment Info\" tab");
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+
+        logInfo("Step 8: Check Payment Due record in the \"Payments Due\" section");
+        String paymentDueType = Pages.accountPaymentInfoPage().getPaymentDueTypeFromRecordByIndex(1);
+        TestRailAssert.assertTrue(paymentDueType.equals("Prin & Int (Bill)"),
+                new CustomStepResult("'paymentduetype' is not valid", "'paymentduetype' is valid"));
+
+        String paymentStatus = Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1);
+        TestRailAssert.assertTrue(paymentStatus.equals("Partially Paid"),
+                new CustomStepResult("'paymentstatus' is not valid", "'paymentstatus' is valid"));
+
+        String paymentAmount = Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1);
+        TestRailAssert.assertTrue(paymentAmount.equals(String.valueOf(transaction.getTransactionSource().getAmount())),
+                new CustomStepResult("'paymentdue' is not valid", "'paymentdue' is valid"));
 
 
 
