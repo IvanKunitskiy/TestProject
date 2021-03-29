@@ -5,6 +5,7 @@ import com.nymbus.core.utils.DateTime;
 import com.nymbus.models.TempClient;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
+import com.nymbus.newmodels.account.loanaccount.PaymentDueData;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 
