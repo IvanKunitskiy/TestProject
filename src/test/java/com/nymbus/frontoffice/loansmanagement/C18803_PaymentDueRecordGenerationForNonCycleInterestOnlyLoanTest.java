@@ -16,7 +16,6 @@ import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
-import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitMiscCreditBuilder;
 import com.nymbus.newmodels.generation.tansactions.factory.DestinationFactory;
 import com.nymbus.newmodels.generation.tansactions.factory.SourceFactory;
 import com.nymbus.newmodels.transaction.Transaction;
@@ -38,7 +37,6 @@ public class C18803_PaymentDueRecordGenerationForNonCycleInterestOnlyLoanTest ex
 
     private Account loanAccount;
     private Account checkAccount;
-    private Transaction transaction;
     private double transactionAmount = 1001.00;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
@@ -62,7 +60,6 @@ public class C18803_PaymentDueRecordGenerationForNonCycleInterestOnlyLoanTest ex
         loanAccount.setEscrow("$ 0.00");
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
-        transaction = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
         checkAccount.setDateOpened(loanAccount.getDateOpened());
 
         // Login to the system
@@ -94,10 +91,6 @@ public class C18803_PaymentDueRecordGenerationForNonCycleInterestOnlyLoanTest ex
         depositTransaction.getTransactionDestination().setAmount(transactionAmount);
         depositTransaction.getTransactionSource().setAmount(transactionAmount);
         depositTransaction.setTransactionDate(loanAccount.getDateOpened());
-        transaction.getTransactionSource().setAccountNumber(checkAccount.getAccountNumber());
-        transaction.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
-        transaction.getTransactionDestination().setTransactionCode(TransactionCode.INT_PAY_ONLY_407.getTransCode());
-        transaction.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
         balance = 12000;
         miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());
         miscDebitSource.setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
