@@ -46,7 +46,6 @@ public class C18803_PaymentDueRecordGenerationForNonCycleInterestOnlyLoanTest ex
     private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
     private int balance;
-    private String amountDue;
 
 
     @BeforeMethod
@@ -58,7 +57,6 @@ public class C18803_PaymentDueRecordGenerationForNonCycleInterestOnlyLoanTest ex
         checkAccount = new Account().setCHKAccountData();
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setPaymentAmountType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
-        //loanAccount.setNextPaymentBilledDueDate(DateTime.getDatePlusMonth(loanAccount.getDateOpened(), 2));
         loanAccount.setPaymentBilledLeadDays(String.valueOf(1));
         loanAccount.setProduct(loanProductName);
         loanAccount.setEscrow("$ 0.00");
