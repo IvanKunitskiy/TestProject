@@ -40,9 +40,6 @@ public class C25373_PaymentDueDateEditPartialPaymentForPrincipalAndInterestPayme
     private Transaction transaction_416;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
-    private String nextPaymentBilledDueDate;
-    private double currentBalance;
-    private int numberOfPaymentsReceived;
     private double transaction416Amount;
     private final int diff = Random.genInt(1, 5);
 
@@ -83,7 +80,12 @@ public class C25373_PaymentDueDateEditPartialPaymentForPrincipalAndInterestPayme
         // Log in
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
+        // Check that a Loan product exist with the following editable fields (Readonly? = NO) and create if not exist
+        Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
+        Actions.loginActions().doLogOut();
+
         // Set CHK product
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         chkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
 
         // Create client
@@ -114,17 +116,11 @@ public class C25373_PaymentDueDateEditPartialPaymentForPrincipalAndInterestPayme
         Pages.accountDetailsPage().clickPaymentInfoTab();
         double amountDue = Double.parseDouble(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1));
 
-        System.out.println(amountDue);
-
         // assign amount to 416 transaction more than due date
         transaction416Amount = amountDue - diff;
         transaction_416.getTransactionDestination().setAmount(transaction416Amount);
         transaction_416.getTransactionSource().setAmount(transaction416Amount);
-
-        System.out.println(transaction416Amount);
-
         Actions.loginActions().doLogOut();
-
     }
 
     private final String TEST_RUN_NAME = "Loans Management";
@@ -182,13 +178,10 @@ public class C25373_PaymentDueDateEditPartialPaymentForPrincipalAndInterestPayme
         Pages.accountPaymentInfoPage().clickSavePaymentDueDetailsButton();
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1).equals("Partially Paid"),
                 new CustomStepResult("'Status' is not valid", "'Status' is valid"));
-//        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().isAmountCantBeLessNotificationVisible(),
-//                new CustomStepResult("'Notification' is not appeared", "'Status' is appeared"));
 
         logInfo("Step 11: Edit this record one more time and change 'Payment Amount' to the value > paid amount from step 4 and click 'save'");
         Pages.accountPaymentInfoPage().clickPaymentDueRecord();
         Pages.accountPaymentInfoPage().clickTheEditPaymentDueDetailsButton();
-        System.out.println(Functions.getStringValueWithOnlyDigits(transaction416Amount + diff + 1));
         Pages.accountPaymentInfoPage().typePaymentAmount(Functions.getStringValueWithOnlyDigits(transaction416Amount + diff + 1));
         Pages.accountPaymentInfoPage().clickSavePaymentDueDetailsButton();
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1).equals("Partially Paid"),
@@ -197,7 +190,6 @@ public class C25373_PaymentDueDateEditPartialPaymentForPrincipalAndInterestPayme
         logInfo("Step 12: Edit this record one more time and change 'Payment Amount' to the value = paid amount from step 4 and click 'Save' button");
         Pages.accountPaymentInfoPage().clickPaymentDueRecord();
         Pages.accountPaymentInfoPage().clickTheEditPaymentDueDetailsButton();
-        System.out.println(Functions.getStringValueWithOnlyDigits(transaction416Amount));
         Pages.accountPaymentInfoPage().typePaymentAmount(Functions.getStringValueWithOnlyDigits(transaction416Amount));
         Pages.accountPaymentInfoPage().clickSavePaymentDueDetailsButton();
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1).equals("Paid"),
@@ -209,12 +201,9 @@ public class C25373_PaymentDueDateEditPartialPaymentForPrincipalAndInterestPayme
         SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
         SelenideTools.switchTo().window(1);
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-
         String principalNextPaymentDate = WebAdminActions.webAdminUsersActions().getPrincipalNextPaymentDate(loanAccount.getAccountNumber());
-
-        System.out.println(principalNextPaymentDate);
-
-        TestRailAssert.assertTrue(principalNextPaymentDate.equals(DateTime.getDatePlusMonth(loanAccount.getNextPaymentBilledDueDate(), 1)),
+        String dateWithFormat = DateTime.getDateWithFormat(principalNextPaymentDate, "yyyy-MM-dd", "MM/dd/yyyy");
+        TestRailAssert.assertTrue(dateWithFormat.equals(DateTime.getDatePlusMonth(loanAccount.getNextPaymentBilledDueDate(), 1)),
                 new CustomStepResult("'principalnextpaymentdate' is not valid", "'principalnextpaymentdate' is valid"));
     }
 }
