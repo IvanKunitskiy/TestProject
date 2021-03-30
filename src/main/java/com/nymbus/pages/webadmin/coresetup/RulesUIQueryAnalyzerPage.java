@@ -550,6 +550,17 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         return getElementText(currentDateDue).trim();
     }
 
+    private By principalNextPaymentDateByIndex = By.xpath("//table[contains(@class, 'searchResultPanel' )]//" +
+            "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][1]/" +
+            "td/div[@key-name='principalnextpaymentdate']");
+
+    @Step("Get 'principalnextpaymentdate' value")
+    public String getPrincipalNextPaymentDateByIndex(int index) {
+        waitForElementVisibility(principalNextPaymentDateByIndex, index);
+        return  getElementText(principalNextPaymentDateByIndex, index);
+    }
+
+
     /**
      * Payment Due
      */
