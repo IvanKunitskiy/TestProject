@@ -290,7 +290,6 @@ public class WebAdminTransactionActions {
         SelenideTools.switchToLastTab();
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         String principalNextDate = WebAdminActions.webAdminUsersActions().getPrincipalNextPaymentDate(account.getAccountNumber());
-        //String principalNextDate = WebAdminPages.rulesUIQueryAnalyzerPage().getPrincipalNextDate();
         principalNextDate = DateTime.getDateWithFormat(principalNextDate, "yyyy-MM-dd", "MM/dd/yyyy");
         String dateExpected = DateTime.getDatePlusMonth(account.getDateOpened(),2);
         TestRailAssert.assertTrue(principalNextDate.equals(dateExpected),
