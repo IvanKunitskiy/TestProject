@@ -300,6 +300,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
             + "//td//span[@key-name='transactioncustomerid']");
     private By name = By.xpath("//table[@id='searchResultTable']//tr[%s]"
             + "//td/div[@key-name='(databean)name']");
+    private By interestValue = By.xpath("//table[@id='searchResultTable']//tr[%s]//td/div[@key-name='interest']");
 
     @Step ("Get 'terminalId' {0} value")
     public String getCustomerIdValue(int index) {
@@ -311,6 +312,18 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getNameValue(int index) {
         waitForElementVisibility(name, index);
         return getElementText(name, index).trim();
+    }
+
+    @Step ("Get 'interest' {0} value")
+    public String getInterestValue(int index) {
+        waitForElementVisibility(interest, index);
+        return getElementText(interest, index).trim();
+    }
+
+    @Step ("Get 'interest' {0} value")
+    public String getInterest(int index) {
+        waitForElementVisibility(interestValue, index);
+        return getElementText(interestValue, index).trim();
     }
 
     /**
@@ -393,8 +406,8 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     }
 
     /**
-    * Transactions
-    */
+     * Transactions
+     */
 
     private By trBankBranch = By.xpath("//table[@id='searchResultTable']//tr[%s]//td[2]/span[contains(@class, 'high_title')]/span");
     private By trAccountNumber = By.xpath("//table[@id='searchResultTable']//tr[%s]//td[3]/span[contains(@class, 'high_title')]/span");
@@ -530,6 +543,12 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getPrincipalNextDue() {
         waitForElementVisibility(principalNext);
         return getElementText(principalNext).trim();
+    }
+
+    @Step("Get 'Principal' value")
+    public String getPrincipalValue(int index) {
+        waitForElementVisibility(principal,index);
+        return getElementText(principal, index).trim();
     }
 
     @Step("Get 'Interest next' value")
