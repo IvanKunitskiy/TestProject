@@ -166,7 +166,26 @@ public class AccountPaymentInfoPage extends PageTools {
         type(amount, paymentAmount);
     }
 
+    @Step("Type 'Interest' value")
+    public void typeInterest(String amount) {
+        waitForElementVisibility(disInterest);
+        waitForElementClickable(disInterest);
+        type(amount, disInterest);
+    }
 
+    @Step("Type 'Principal' value")
+    public void typePrincipal(String amount) {
+        waitForElementVisibility(disPrincipal);
+        waitForElementClickable(disPrincipal);
+        type(amount, disPrincipal);
+    }
+
+    @Step("Type 'Escrow' value")
+    public void typeEscrow(String amount) {
+        waitForElementVisibility(disEscrow);
+        waitForElementClickable(disEscrow);
+        type(amount, disEscrow);
+    }
 
     @Step("Get 'Status' value")
     public String getPaymentDueStatus() {
