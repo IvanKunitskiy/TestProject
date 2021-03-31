@@ -232,6 +232,8 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         String interest = Pages.accountPaymentInfoPage().getInterest();
         int i = (int) Double.parseDouble(interest);
         int res = (int) (Double.parseDouble(dailyInterestFactor) * period);
+        System.out.println(i);
+        System.out.println(res);
         TestRailAssert.assertTrue((i == res),
                 new CustomStepResult("Interest is not valid", "Interest due is valid"));
         String amount = Pages.accountPaymentInfoPage().getAmount();

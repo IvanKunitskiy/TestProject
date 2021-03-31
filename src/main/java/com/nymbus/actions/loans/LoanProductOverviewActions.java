@@ -8,11 +8,11 @@ import com.nymbus.pages.Pages;
 public class LoanProductOverviewActions {
 
     public void expandAllRows() {
-        do {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        while (Pages.loanProductPage().isLoadMoreResultsButtonVisible()){
             Pages.loanProductPage().clickLoadMoreResultsButton();
             SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         }
-        while (Pages.loanProductPage().isLoadMoreResultsButtonVisible());
     }
 
     public void navigateToLoanProductOverviewPage() {

@@ -143,7 +143,7 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
     @Test(description = "C25379, Process 416 loan payment transaction. Interest Only (bill)")
     @Severity(SeverityLevel.CRITICAL)
     public void process416LoanPaymentTransaction() {
-        logInfo("Log in to the system");
+        logInfo("Step 1: Log in to the system");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Go to 'Teller' screen");

@@ -134,7 +134,7 @@ public class C25376_PaymentDueDateEditPartialPaymentForPrincipalAndInterestPayme
         Actions.loginActions().doLogOutProgrammatically();
 
         // Check account balance
-        while (actualPaymentDueData.getAmount()>balance){
+        while (actualPaymentDueData.getAmount() > balance) {
             Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
             Actions.transactionActions().goToTellerPage();
             Actions.transactionActions().doLoginTeller();
@@ -146,8 +146,8 @@ public class C25376_PaymentDueDateEditPartialPaymentForPrincipalAndInterestPayme
             balance = Double.parseDouble(Pages.accountDetailsPage().getAvailableBalance());
             Actions.loginActions().doLogOutProgrammatically();
         }
-        transaction.getTransactionSource().setAmount(actualPaymentDueData.getAmount());
-        transaction.getTransactionDestination().setAmount(actualPaymentDueData.getAmount());
+        transaction.getTransactionSource().setAmount(actualPaymentDueData.getAmount()/2);
+        transaction.getTransactionDestination().setAmount(actualPaymentDueData.getAmount()/2);
     }
 
     private final String TEST_RUN_NAME = "Loans Management";
@@ -203,9 +203,40 @@ public class C25376_PaymentDueDateEditPartialPaymentForPrincipalAndInterestPayme
                 new CustomStepResult("'paymentstatus' is not valid", "'paymentstatus' is valid"));
 
         String paymentAmount = Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1);
-        TestRailAssert.assertTrue(paymentAmount.equals(String.valueOf(transaction.getTransactionSource().getAmount())),
+        TestRailAssert.assertTrue(paymentAmount.equals(String.format("%.2f",transaction.getTransactionSource().getAmount())),
                 new CustomStepResult("'paymentdue' is not valid", "'paymentdue' is valid"));
 
+        logInfo("Step 9: Select P&I payment due record from and click on the \"Edit\" button in the \"Payment Due Details\" section");
+        Pages.accountPaymentInfoPage().clickPaymentDueRecord();
+        Pages.accountPaymentInfoPage().clickEditPaymentDueButton();
+
+        logInfo("Step 10: Change \"Principal\", \"Interest\", \"Escrow\" to the value < paid amount from step 4 and click \"Save\"");
+        Pages.accountPaymentInfoPage().inputPrincipal(transaction.getTransactionSource().getAmount()/2 + "");
+        Pages.accountPaymentInfoPage().clickSaveButton();
+
+        logInfo("Step 11: Edit this record one more time and change \"Principal\", \"Interest\", \"Escrow\" to " +
+                "the value > paid amount from step 4 and click \"Save\"");
+
+
+
+        logInfo("Step 12: Edit this record one more time and change \"Principal\", \"Interest\", \"Escrow\" " +
+                "to the value = paid amount from step 4 and click \"Save\"");
+
+
+        logInfo("Step 13: Log in to the WebAdmin");
+        logInfo("Step 14: Go to RulesUI Query Analyzer");
+        logInfo("Step 15: Search with DQL:\n" +
+                "\n" +
+                "count: 10\n" +
+                "from: bank.data.actloan\n" +
+                "select: rootid, createdwhen, createdby, accountid, nextduedate, principalnextpaymentdate\n" +
+                "where:\n" +
+                "- .accountid->accountnumber: accountnumber_from_precondition\n" +
+                "\n" +
+                "deletedIncluded: true\n" +
+                "\n" +
+                "and verify that \"principalnextpaymentdate\" was changed after manually editing the Payment Due record");
+        WebAdminActions.webAdminTransactionActions().checkErrorPrincipalNextPaymentDate(userCredentials, loanAccount);
 
 
     }

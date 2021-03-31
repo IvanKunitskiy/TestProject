@@ -11,12 +11,19 @@ public class AccountPaymentInfoPage extends PageTools {
      */
 
     private final By editPaymentHistoryButton = By.xpath("//button[@data-test-id='action-edit-payment-info']");
+    private final By editPaymentDueButton = By.xpath("(//button[@data-test-id='action-edit-payment-info'])[3]");
     private final By saveButton = By.xpath("//button[@data-test-id='action-save-payment-info']");
 
     @Step("Click 'Edit' button")
     public void clickEditPaymentHistoryButton() {
         waitForElementClickable(editPaymentHistoryButton);
         click(editPaymentHistoryButton);
+    }
+
+    @Step("Click 'Edit' button")
+    public void clickEditPaymentDueButton() {
+        waitForElementClickable(editPaymentDueButton);
+        click(editPaymentDueButton);
     }
 
     @Step("Click 'Save' button")
@@ -155,16 +162,16 @@ public class AccountPaymentInfoPage extends PageTools {
     @Step("Get amount due")
     public String getDisabledAmountDue() {
         waitForElementVisibility(amountDue);
-        return getDisabledElementAttributeValue("value",amountDue);
+        return getDisabledElementAttributeValue("value", amountDue);
     }
 
     @Step("Check Paid status visibility")
-    public boolean paidStatusIsVisibility(){
+    public boolean paidStatusIsVisibility() {
         return isElementVisible(paidStatus);
     }
 
     @Step("Check payment status visibility")
-    public boolean paymentStatusIsVisibility(String type){
+    public boolean paymentStatusIsVisibility(String type) {
         return isElementVisible(paymentType, type);
     }
 
@@ -181,7 +188,7 @@ public class AccountPaymentInfoPage extends PageTools {
     }
 
     @Step("Get 'Payment due type' value")
-    public String getDisabledPaymentDueType(){
+    public String getDisabledPaymentDueType() {
         waitForElementVisibility(paymentDueType);
         return getDisabledElementAttributeValue("value", paymentDueType).trim();
     }
@@ -192,10 +199,22 @@ public class AccountPaymentInfoPage extends PageTools {
         return getDisabledElementAttributeValue("value", disInterest).replaceAll("[^0-9.]", "");
     }
 
+    @Step("Input value to 'Interest'")
+    public void inputInterest(String interest) {
+        waitForElementVisibility(disInterest);
+        type(interest, disInterest);
+    }
+
     @Step("Get principal value")
     public String getDisabledPrincipal() {
         waitForElementVisibility(disPrincipal);
         return getDisabledElementAttributeValue("value", disPrincipal).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Input value to 'Principal'")
+    public void inputPrincipal(String principal) {
+        waitForElementVisibility(disPrincipal);
+        type(principal, disPrincipal);
     }
 
     @Step("Get escrow value")
@@ -257,72 +276,72 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By amountTotal = By.xpath("//tr[@class='row-total']/td[5]/div");
 
     @Step("Get 'Principal total' value")
-    public String getPrincipalTotal(){
+    public String getPrincipalTotal() {
         waitForElementVisibility(principalTotal);
         return getElementText(principalTotal).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Amount total' value")
-    public String getAmountTotal(){
+    public String getAmountTotal() {
         waitForElementVisibility(amountTotal);
         return getElementText(amountTotal).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Interest total' value")
-    public String getInterestTotal(){
+    public String getInterestTotal() {
         waitForElementVisibility(interestTotal);
         return getElementText(interestTotal).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Escrow total' value")
-    public String getEscrowTotal(){
+    public String getEscrowTotal() {
         waitForElementVisibility(escrowTotal);
         return getElementText(escrowTotal).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get Principal value")
-    public String getPrincipal(){
+    public String getPrincipal() {
         waitForElementVisibility(principal);
         return getElementText(principal).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get Status value")
-    public String getStatus(){
+    public String getStatus() {
         waitForElementVisibility(status);
         return getElementText(status).trim();
     }
 
     @Step("Check if Status value is visible")
-    public boolean isTransactionStatusVisible(){
+    public boolean isTransactionStatusVisible() {
         return isElementVisible(status);
     }
 
     @Step("Get Interest value")
-    public String getInterest(){
+    public String getInterest() {
         waitForElementVisibility(interest);
         return getElementText(interest).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get Escrow value")
-    public String getEscrow(){
+    public String getEscrow() {
         waitForElementVisibility(escrow);
         return getElementText(escrow).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get Amount value")
-    public String getAmount(){
+    public String getAmount() {
         waitForElementVisibility(amount);
         return getElementText(amount).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get payment date value")
-    public String getPaymentDate(){
+    public String getPaymentDate() {
         waitForElementVisibility(paymentDate);
         return getElementText(paymentDate);
     }
 
     @Step("Get Amount value")
-    public String getAmountDueTable(){
+    public String getAmountDueTable() {
         waitForElementVisibility(amountDueFromtTable);
         return getElementText(amountDueFromtTable).replaceAll("[^0-9.]", "");
     }
@@ -337,25 +356,25 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By statusFromRecordByIndex = By.xpath("//div[@ui-view='paymentsDue']//table/tbody/tr[%s]/td[4]//span/span");
 
     @Step("Get 'Due Date' from 'Payments Due' value by index : {index}")
-    public String getDueDateFromRecordByIndex(int index){
+    public String getDueDateFromRecordByIndex(int index) {
         waitForElementVisibility(dueDateFromRecordByIndex, index);
         return getElementText(dueDateFromRecordByIndex, index).trim();
     }
 
     @Step("Get 'Payment Due Type' from 'Payments Due' value by index : {index}")
-    public String getPaymentDueTypeFromRecordByIndex(int index){
+    public String getPaymentDueTypeFromRecordByIndex(int index) {
         waitForElementVisibility(paymentDueTypeFromRecordByIndex, index);
         return getElementText(paymentDueTypeFromRecordByIndex, index).trim();
     }
 
     @Step("Get 'Amount Due' from 'Payments Due' value by index : {index}")
-    public String getAmountDueFromRecordByIndex(int index){
+    public String getAmountDueFromRecordByIndex(int index) {
         waitForElementVisibility(amountDueFromRecordByIndex, index);
         return getElementText(amountDueFromRecordByIndex, index).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Status' from 'Payments Due' value by index : {index}")
-    public String getStatusFromRecordByIndex(int index){
+    public String getStatusFromRecordByIndex(int index) {
         waitForElementVisibility(statusFromRecordByIndex, index);
         return getElementText(statusFromRecordByIndex, index).trim();
     }

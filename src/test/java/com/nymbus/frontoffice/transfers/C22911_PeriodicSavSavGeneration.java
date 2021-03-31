@@ -152,8 +152,6 @@ public class C22911_PeriodicSavSavGeneration extends BaseTest {
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         BalanceData actualSavBalanceData = AccountActions.retrievingAccountData().getBalanceData();
 
-        System.out.println(actualSavBalanceData.getCurrentBalance());
-        System.out.println((amount - Double.parseDouble(transfer.getAmount())));
         TestRailAssert.assertTrue(actualSavBalanceData.getCurrentBalance() == (amount - Double.parseDouble(transfer.getAmount())),
                 new CustomStepResult("Current balance doesn't match!", "Current balance is match!"));
         TestRailAssert.assertTrue(actualSavBalanceData.getAvailableBalance() == (amount - Double.parseDouble(transfer.getAmount())),
