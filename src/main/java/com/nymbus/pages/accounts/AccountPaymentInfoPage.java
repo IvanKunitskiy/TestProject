@@ -8,6 +8,15 @@ import org.openqa.selenium.By;
 
 public class AccountPaymentInfoPage extends PageTools {
 
+    //Notification
+
+    private final By amountCantBeLessNotification = By.xpath("//div[@class='toast-message' and @aria-label='Amount can't be less than already paid']");
+
+    @Step("Is 'Amount can't be less than already paid' notification visible")
+    public boolean isAmountCantBeLessNotificationVisible() {
+        return isElementVisible(amountCantBeLessNotification);
+    }
+
     /**
      * Payment history
      */
@@ -164,13 +173,24 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By dueDate = By.xpath("//input[@id='duedate']");
     private final By paymentDueType = By.xpath("//input[@data-test-id='field-paymentDueTypeTitle']");
     private final By paymentAmount = By.xpath("//input[@data-test-id='field-amount']");
-    private final By paymentType = By.xpath("(//div[@id='paymenttype_paymentHistory_0']//span[contains(string(),\"%s\")])[2]");
+    private final By paymentType = By.xpath("(//div[@id='paymenttype_paymentHistory_0']//span[contains(string(),'%s')])[2]");
+    private final By editPaymentDueDetailsButton = By.xpath("//div[@ui-view='paymentsDue']//button[@data-test-id='action-edit-payment-info']");
+    private final By savePaymentDueDetailsButton = By.xpath("(//button[@data-test-id='action-save-payment-info'])[2]");
 
     @Step("Get 'Payment amount'")
     public String getDisabledPaymentAmount() {
         waitForElementVisibility(paymentAmount);
         return getDisabledElementAttributeValue("value", paymentAmount).replaceAll("[^0-9.]", "");
     }
+
+    @Step("Type 'Payment amount' value")
+    public void typePaymentAmount(String amount) {
+        waitForElementVisibility(paymentAmount);
+        waitForElementClickable(paymentAmount);
+        type(amount, paymentAmount);
+    }
+
+
 
     @Step("Get 'Status' value")
     public String getPaymentDueStatus() {
@@ -276,6 +296,18 @@ public class AccountPaymentInfoPage extends PageTools {
     public String getDueStatus() {
         waitForElementVisibility(dueStatus);
         return getElementText(dueStatus);
+    }
+
+    @Step("Click the 'Edit' button")
+    public void clickTheEditPaymentDueDetailsButton() {
+        waitForElementVisibility(editPaymentDueDetailsButton);
+        click(editPaymentDueDetailsButton);
+    }
+
+    @Step("Click the 'Save' button")
+    public void clickSavePaymentDueDetailsButton() {
+        waitForElementVisibility(savePaymentDueDetailsButton);
+        click(savePaymentDueDetailsButton);
     }
 
     /**
@@ -393,7 +425,8 @@ public class AccountPaymentInfoPage extends PageTools {
     }
 
     @Step("Get 'Status' from 'Payments Due' value by index : {index}")
-    public String getStatusFromRecordByIndex(int index) {
+    public String getStatusFromRecordByIndex(int index){
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         waitForElementVisibility(statusFromRecordByIndex, index);
         return getElementText(statusFromRecordByIndex, index).trim();
     }

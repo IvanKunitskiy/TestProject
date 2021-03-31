@@ -286,12 +286,11 @@ public class WebAdminTransactionActions {
     }
 
     public void checkErrorPrincipalNextPaymentDate(UserCredentials userCredentials, Account account) {
-        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL +
-                "RulesUIQuery.ct?waDbName=coreDS&dqlQuery=count%3A+10%0D%0Afrom%3A+bank.data.actloan%0D%0Aselect%3A+rootid%2C+createdwhen%2C+createdby%2C+accountid%2C+nextduedate%2C+principalnextpaymentdate%0D%0Awhere%3A%0D%0A-+.accountid->accountnumber%3A+" +
-                account.getAccountNumber() + "%0D%0A%0D%0AdeletedIncluded%3A+true&source=");
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
         SelenideTools.switchToLastTab();
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        String principalNextDate = WebAdminPages.rulesUIQueryAnalyzerPage().getPrincipalNextDate();
+        String principalNextDate = WebAdminActions.webAdminUsersActions().getPrincipalNextPaymentDate(account.getAccountNumber());
+        //String principalNextDate = WebAdminPages.rulesUIQueryAnalyzerPage().getPrincipalNextDate();
         principalNextDate = DateTime.getDateWithFormat(principalNextDate, "yyyy-MM-dd", "MM/dd/yyyy");
         String dateExpected = DateTime.getDatePlusMonth(account.getDateOpened(),2);
         TestRailAssert.assertTrue(principalNextDate.equals(dateExpected),
