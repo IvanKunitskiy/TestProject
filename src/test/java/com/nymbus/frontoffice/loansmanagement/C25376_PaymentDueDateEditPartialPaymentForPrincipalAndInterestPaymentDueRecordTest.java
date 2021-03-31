@@ -5,6 +5,8 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.loanaccount.PaymentDueData;
@@ -208,20 +210,56 @@ public class C25376_PaymentDueDateEditPartialPaymentForPrincipalAndInterestPayme
 
         logInfo("Step 9: Select P&I payment due record from and click on the \"Edit\" button in the \"Payment Due Details\" section");
         Pages.accountPaymentInfoPage().clickPaymentDueRecord();
+        String disabledPrincipal = Pages.accountPaymentInfoPage().getDisabledPrincipal();
         Pages.accountPaymentInfoPage().clickEditPaymentDueButton();
 
         logInfo("Step 10: Change \"Principal\", \"Interest\", \"Escrow\" to the value < paid amount from step 4 and click \"Save\"");
         Pages.accountPaymentInfoPage().inputPrincipal(transaction.getTransactionSource().getAmount()/2 + "");
-        Pages.accountPaymentInfoPage().clickSaveButton();
+        Pages.accountPaymentInfoPage().clickSaveSecButton();
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().errorMessagesIsVisible(),
+                new CustomStepResult("'error' is not valid", "'error' is valid"));
+        paymentStatus = Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1);
+        TestRailAssert.assertTrue(paymentStatus.equals("Partially Paid"),
+                new CustomStepResult("'paymentstatus' is not valid", "'paymentstatus' is valid"));
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        Pages.accountPaymentInfoPage().clickPaymentDueRecord();
+        String actualDisabledPrincipal = Pages.accountPaymentInfoPage().getDisabledPrincipal();
+        TestRailAssert.assertTrue(actualDisabledPrincipal.equals(disabledPrincipal),
+                new CustomStepResult("'principal' is not valid", "'principal' is valid"));
+
 
         logInfo("Step 11: Edit this record one more time and change \"Principal\", \"Interest\", \"Escrow\" to " +
                 "the value > paid amount from step 4 and click \"Save\"");
-
-
+        Pages.accountPaymentInfoPage().clickEditPaymentDueButton();
+        String principal = transaction.getTransactionSource().getAmount() / 2 + transaction.getTransactionSource().getAmount() + "";
+        System.out.println(principal);
+        Pages.accountPaymentInfoPage().inputPrincipal(principal);
+        Pages.accountPaymentInfoPage().clickSaveSecButton();
+        paymentStatus = Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1);
+        TestRailAssert.assertTrue(paymentStatus.equals("Partially Paid"),
+                new CustomStepResult("'paymentstatus' is not valid", "'paymentstatus' is valid"));
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        Pages.accountPaymentInfoPage().clickPaymentDueRecord();
+        actualDisabledPrincipal = Pages.accountPaymentInfoPage().getDisabledPrincipal();
+        System.out.println(actualDisabledPrincipal);
+        System.out.println(principal);
+        TestRailAssert.assertTrue(actualDisabledPrincipal.equals(principal),
+                new CustomStepResult("'principal' is not valid", "'principal' is valid"));
 
         logInfo("Step 12: Edit this record one more time and change \"Principal\", \"Interest\", \"Escrow\" " +
                 "to the value = paid amount from step 4 and click \"Save\"");
-
+        Pages.accountPaymentInfoPage().clickEditPaymentDueButton();
+        principal = Pages.accountPaymentInfoPage().getPrincipal();
+        Pages.accountPaymentInfoPage().inputPrincipal(principal);
+        Pages.accountPaymentInfoPage().clickSaveSecButton();
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        Pages.accountPaymentInfoPage().clickPaymentDueRecord();
+        paymentStatus = Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1);
+        TestRailAssert.assertTrue(paymentStatus.equals("Paid"),
+                new CustomStepResult("'paymentstatus' is not valid", "'paymentstatus' is valid"));
+        actualDisabledPrincipal = Pages.accountPaymentInfoPage().getDisabledPrincipal();
+        TestRailAssert.assertTrue(actualDisabledPrincipal.equals(principal),
+                new CustomStepResult("'principal' is not valid", "'principal' is valid"));
 
         logInfo("Step 13: Log in to the WebAdmin");
         logInfo("Step 14: Go to RulesUI Query Analyzer");
@@ -237,7 +275,5 @@ public class C25376_PaymentDueDateEditPartialPaymentForPrincipalAndInterestPayme
                 "\n" +
                 "and verify that \"principalnextpaymentdate\" was changed after manually editing the Payment Due record");
         WebAdminActions.webAdminTransactionActions().checkErrorPrincipalNextPaymentDate(userCredentials, loanAccount);
-
-
     }
 }

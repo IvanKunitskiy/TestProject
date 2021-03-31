@@ -1,6 +1,8 @@
 package com.nymbus.pages.accounts;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -13,6 +15,8 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By editPaymentHistoryButton = By.xpath("//button[@data-test-id='action-edit-payment-info']");
     private final By editPaymentDueButton = By.xpath("(//button[@data-test-id='action-edit-payment-info'])[3]");
     private final By saveButton = By.xpath("//button[@data-test-id='action-save-payment-info']");
+    private final By saveButtonSecond = By.xpath("(//button[@data-test-id='action-save-payment-info'])[2]");
+    private final By errorMessage = By.xpath("//div[contains(@class, 'toast-error')]");
 
     @Step("Click 'Edit' button")
     public void clickEditPaymentHistoryButton() {
@@ -30,6 +34,21 @@ public class AccountPaymentInfoPage extends PageTools {
     public void clickSaveButton() {
         waitForElementClickable(saveButton);
         click(saveButton);
+    }
+
+    @Step("Click 'Save' button")
+    public void clickSaveSecButton() {
+        waitForElementClickable(saveButtonSecond);
+        click(saveButtonSecond);
+    }
+
+    @Step("Check error message")
+    public boolean errorMessagesIsVisible(){
+        if(isElementVisible(errorMessage)){
+            return true;
+        }
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        return isElementVisible(errorMessage);
     }
 
     @Step("Wait for 'Save' button invisibility")
