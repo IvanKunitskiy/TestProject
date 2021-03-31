@@ -232,7 +232,6 @@ public class C25376_PaymentDueDateEditPartialPaymentForPrincipalAndInterestPayme
                 "the value > paid amount from step 4 and click \"Save\"");
         Pages.accountPaymentInfoPage().clickEditPaymentDueButton();
         String principal = transaction.getTransactionSource().getAmount() / 2 + transaction.getTransactionSource().getAmount() + "";
-        System.out.println(principal);
         Pages.accountPaymentInfoPage().inputPrincipal(principal);
         Pages.accountPaymentInfoPage().clickSaveSecButton();
         paymentStatus = Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1);
@@ -241,8 +240,6 @@ public class C25376_PaymentDueDateEditPartialPaymentForPrincipalAndInterestPayme
         SelenideTools.sleep(Constants.MINI_TIMEOUT);
         Pages.accountPaymentInfoPage().clickPaymentDueRecord();
         actualDisabledPrincipal = Pages.accountPaymentInfoPage().getDisabledPrincipal();
-        System.out.println(actualDisabledPrincipal);
-        System.out.println(principal);
         TestRailAssert.assertTrue(actualDisabledPrincipal.equals(principal),
                 new CustomStepResult("'principal' is not valid", "'principal' is valid"));
 
