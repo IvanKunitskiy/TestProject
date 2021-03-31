@@ -6,6 +6,7 @@ import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.UserCredentials;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.loanaccount.PaymentDueData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.WebTransactionData;
 import com.nymbus.pages.webadmin.WebAdminPages;
@@ -205,10 +206,10 @@ public class WebAdminTransactionActions {
 
     public void verifyDeletedRecords() {
         int recordsCount = WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResultInterfaceTable();
-        Assert.assertTrue(recordsCount > 0,"Transaction items doesn't find!");
+        Assert.assertTrue(recordsCount > 0, "Transaction items doesn't find!");
         SoftAssert softAssert = new SoftAssert();
         String empty = "";
-        for (int i = 1; i <= recordsCount; i++ ) {
+        for (int i = 1; i <= recordsCount; i++) {
             softAssert.assertNotEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDeletedWhenValue(i), empty,
                     "Deleted When field is blank!");
             softAssert.assertNotEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDeletedBy(i), empty,
@@ -241,6 +242,45 @@ public class WebAdminTransactionActions {
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
         return transactionNumber;
+    }
+
+    public double getInterestEarned(UserCredentials userCredentials, Account account) {
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL +
+                "RulesUIQuery.ct?waDbName=coreDS&dqlQuery=count%3A+10%0D%0Aselect%3A+%28databean%29CREATEDBY%2C+%28databean%29CREATEDWHEN%2C+accountid%2C+interestearned%0D%0Afrom%3A+bank.data.actloan%0D%0Awhere%3A+%0D%0A-+.accountid->accountnumber%3A+" +
+                account.getAccountNumber() + "%0D%0AdeletedIncluded%3A+true&source=");
+        SelenideTools.switchToLastTab();
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        String transactionNumber = WebAdminPages.rulesUIQueryAnalyzerPage().getInterestEarnedValueByIndex(1);
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+
+        return Double.parseDouble(transactionNumber);
+    }
+
+    public PaymentDueData checkPaymentDue(UserCredentials userCredentials, Account account){
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL +
+                "RulesUIQuery.ct?waDbName=coreDS&dqlQuery=count%3A+10%0D%0A%23select%3A+accountid%2C+duedate%2C+principal%2C+interest%2C+escrow%2C+amount%2C+dateassessed%2C+paymentduetype%2C+paymentduestatus%0D%0Afrom%3A+bank.data.paymentdue%0D%0Awhere%3A+%0D%0A-+.accountid->accountnumber%3A+" +
+                account.getAccountNumber() +"%0D%0AorderBy%3A+-id%0D%0AdeletedIncluded%3A+true&source=");
+        SelenideTools.switchToLastTab();
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        PaymentDueData paymentDueData = new PaymentDueData();
+        paymentDueData.setAccountId(Integer.parseInt(WebAdminPages.rulesUIQueryAnalyzerPage().getAccountIdByIndex(1)));
+
+        paymentDueData.setDueDate(DateTime.getDateWithFormat(WebAdminPages.rulesUIQueryAnalyzerPage().getDueDateByIndex(1),
+                "yyyy-mm-dd","mm/dd/yyyy"));
+        paymentDueData.setPrincipal(Double.parseDouble(WebAdminPages.rulesUIQueryAnalyzerPage().getPrincipalValue(2)));
+        paymentDueData.setInterest(String.format("%.2f",Double.parseDouble(WebAdminPages.rulesUIQueryAnalyzerPage().getInterest(2))));
+        paymentDueData.setEscrow(Double.parseDouble(WebAdminPages.rulesUIQueryAnalyzerPage().getEscrowByIndex(1)));
+        paymentDueData.setAmount(Double.parseDouble(WebAdminPages.rulesUIQueryAnalyzerPage().getAmount(2)));
+        paymentDueData.setDateAssessed(DateTime.getDateWithFormat(WebAdminPages.rulesUIQueryAnalyzerPage().getDateAssessedByIndex(1),
+                "yyyy-mm-dd","mm/dd/yyyy"));
+        paymentDueData.setPaymentDueType(WebAdminPages.rulesUIQueryAnalyzerPage().getPaymentDueTypeByIndex(1));
+        paymentDueData.setPaymentDueStatus(WebAdminPages.rulesUIQueryAnalyzerPage().getPaymentDueStatusByIndex(1));
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+        return paymentDueData;
     }
 
     public WebTransactionData getTransactionInfo(UserCredentials userCredentials){
