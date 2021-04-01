@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.loanaccount.PaymentDueData;
@@ -33,7 +34,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Dmytro")
-public class C18803_PaymentDueRecordGenerationForNonCycleInterestOnlyLoanTest extends BaseTest {
+public class C18804_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestLoanTest extends BaseTest {
 
     private Account loanAccount;
     private Account checkAccount;
@@ -54,10 +55,11 @@ public class C18803_PaymentDueRecordGenerationForNonCycleInterestOnlyLoanTest ex
         IndividualClient client = individualClientBuilder.buildClient();
         checkAccount = new Account().setCHKAccountData();
         loanAccount = new Account().setLoanAccountData();
-        loanAccount.setPaymentAmountType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
+        loanAccount.setPaymentAmountType(PaymentAmountType.PRINCIPAL_AND_INTEREST.getPaymentAmountType());
         loanAccount.setPaymentBilledLeadDays(String.valueOf(1));
         loanAccount.setProduct(loanProductName);
         loanAccount.setEscrow("$ 0.00");
+        loanAccount.setCycleCode(Generator.genInt(1, 20)+"");
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
         checkAccount.setDateOpened(loanAccount.getDateOpened());
@@ -122,7 +124,7 @@ public class C18803_PaymentDueRecordGenerationForNonCycleInterestOnlyLoanTest ex
     private final String TEST_RUN_NAME = "Loans Management";
 
     @TestRailIssue(issueID = 18803, testRunName = TEST_RUN_NAME)
-    @Test(description = "C18803, Payment Due Record: generation for non cycle Interest only (bill) loan")
+    @Test(description = "C18803, Payment Due Record: generation for non cycle Principal and Interest loan")
     @Severity(SeverityLevel.CRITICAL)
     public void paymentDueRecordGenerationForNonCycleInterestOnlyLoan() {
         logInfo("Log in to the system");

@@ -4,7 +4,6 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.models.TempClient;
 import com.nymbus.newmodels.account.Account;
-import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.loanaccount.PaymentDueData;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
@@ -115,7 +114,7 @@ public class ClientPageActions {
         paymentDueData.setEscrow(0.00);
         paymentDueData.setAmount(Double.parseDouble(paymentDueData.getInterest()) + paymentDueData.getEscrow() + paymentDueData.getPrincipal());
         paymentDueData.setDateAssessed(WebAdminActions.loginActions().getSystemDate());
-        paymentDueData.setPaymentDueType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
+        paymentDueData.setPaymentDueType(loanAccount.getPaymentAmountType());
         paymentDueData.setPaymentDueStatus("Active");
 
         return paymentDueData;
