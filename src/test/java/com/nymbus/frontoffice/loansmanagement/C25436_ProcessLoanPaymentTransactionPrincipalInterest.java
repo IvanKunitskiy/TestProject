@@ -137,7 +137,7 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
         accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
         dailyInterestFactor = Pages.accountDetailsPage().getDailyInterestFactor();
-        period = DateTime.getDaysBetweenTwoDates(loanAccount.getDateOpened(), nextPaymentBilledDueDate, false);
+        period = DateTime.getDaysBetweenTwoDates(loanAccount.getDateOpened(), transaction.getTransactionDate(), true);
         Pages.accountDetailsPage().clickPaymentInfoTab();
         transactionAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getAmountDueTable().replaceAll("[^0-9.]", ""));
         transaction.getTransactionSource().setAmount(transactionAmount);
