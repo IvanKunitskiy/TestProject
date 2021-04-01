@@ -96,6 +96,7 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         logInfo("Step 9: Set 'Transactional Account' switcher to YES):");
         logInfo("Step 10: Select Date Opened as any date < Current Date");
         cdAccount.setInterestFrequency(InterestFrequency.ONE_TIME_PAY.getInterestFrequency());
+        cdAccount.setApplyInterestTo("CHK Acct");
         AccountActions.createAccount().selectValuesInFieldsRequiredForCDAccount(cdAccount);
 
         logInfo("Step 11: Submit the account creation by clicking [Save] button");

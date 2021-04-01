@@ -44,6 +44,7 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
 
         // Set the bank branch of the user to account
         regularSavingsAccount.setBankBranch(Actions.usersActions().getBankBranch());
+        regularSavingsAccount.setApplyInterestTo("Remain in Account");
 
         // Set the product to accounts
         regularSavingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
@@ -90,6 +91,7 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         logInfo("Step 7: Select any values in drop-down fields");
         logInfo("Step 8: Fill in text fields with valid data. NOTE: do not fill in Account Number field");
         logInfo("Step 9: Select Date Opened as any date < Current Date");
+        regularSavingsAccount.setApplyInterestTo("CHK Acct");
         AccountActions.createAccount().setValuesInFieldsRequiredForSavingsAccount(regularSavingsAccount);
 
         logInfo("Step 10: Submit the account creation by clicking [Save] button");

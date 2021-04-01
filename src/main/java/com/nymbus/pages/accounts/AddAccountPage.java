@@ -493,6 +493,11 @@ public class AddAccountPage extends PageTools {
         type(interestRateValue, interestRateInput);
     }
 
+    @Step("Is 'Interest Rate' enabled")
+    public String isInterestRateDisabled() {
+        return getElementAttributeValue("disabled", interestRateInput);
+    }
+
     @Step("Click the 'Account Analysis' option")
     public void clickAccountAnalysisSelectorOption(String callClassCodeOption) {
         waitForElementVisibility(accountAnalysisSelectorOption, callClassCodeOption);

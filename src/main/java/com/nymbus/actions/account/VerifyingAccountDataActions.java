@@ -247,7 +247,9 @@ public class VerifyingAccountDataActions {
         Assert.assertEquals(Pages.accountDetailsPage().getInterestRateValue(), account.getInterestRate(), "'Interest Rate' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getApplyInterestTo(), account.getApplyInterestTo(), "'Apply Interest To' value does not match");
         if (account.getCorrespondingAccount() != null) {
-            Assert.assertEquals(Pages.accountDetailsPage().getCorrespondingAccount(), account.getCorrespondingAccount(), "'Corresponding Account' value does not match");
+            Assert.assertEquals(Pages.accountDetailsPage().getCorrespondingAccount().replaceAll("[^0-9]", ""),
+                    account.getCorrespondingAccount(),
+                    "'Corresponding Account' value does not match");
         }
     }
 }
