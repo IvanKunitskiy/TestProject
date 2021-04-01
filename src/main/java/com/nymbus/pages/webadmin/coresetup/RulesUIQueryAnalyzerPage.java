@@ -300,6 +300,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
             + "//td//span[@key-name='transactioncustomerid']");
     private By name = By.xpath("//table[@id='searchResultTable']//tr[%s]"
             + "//td/div[@key-name='(databean)name']");
+    private By interestValue = By.xpath("//table[@id='searchResultTable']//tr[%s]//td/div[@key-name='interest']");
 
     @Step ("Get 'terminalId' {0} value")
     public String getCustomerIdValue(int index) {
@@ -311,6 +312,18 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getNameValue(int index) {
         waitForElementVisibility(name, index);
         return getElementText(name, index).trim();
+    }
+
+    @Step ("Get 'interest' {0} value")
+    public String getInterestValue(int index) {
+        waitForElementVisibility(interest, index);
+        return getElementText(interest, index).trim();
+    }
+
+    @Step ("Get 'interest' {0} value")
+    public String getInterest(int index) {
+        waitForElementVisibility(interestValue, index);
+        return getElementText(interestValue, index).trim();
     }
 
     /**
@@ -393,8 +406,8 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     }
 
     /**
-    * Transactions
-    */
+     * Transactions
+     */
 
     private By trBankBranch = By.xpath("//table[@id='searchResultTable']//tr[%s]//td[2]/span[contains(@class, 'high_title')]/span");
     private By trAccountNumber = By.xpath("//table[@id='searchResultTable']//tr[%s]//td[3]/span[contains(@class, 'high_title')]/span");
@@ -488,13 +501,14 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
             "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))]/td/div[@key-name='totalPast']");
     private By principalNext = By.xpath("//table[contains(@class, 'searchResultPanel' )]//" +
             "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))]/td/div[@key-name='principalNext']");
+    private By principalNextDate = By.xpath("//table[contains(@class, 'searchResultPanel' )]//" +
+            "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))]/td/div[@key-name='principalnextpaymentdate']");
     private By interestNext = By.xpath("//table[contains(@class, 'searchResultPanel' )]//" +
             "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))]/td/div[@key-name='interestNext']");
     private By totalNextDue = By.xpath("//table[contains(@class, 'searchResultPanel' )]//" +
             "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))]/td/div[@key-name='totalNext']");
     private By currentDateDue = By.xpath("//table[contains(@class, 'searchResultPanel' )]//" +
             "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))]/td/div[@key-name='nextDueDate']");
-
 
     @Step ("Get 'Loan account number' {index} value")
     public String getLoanAccountNumberValueByIndex(int index) {
@@ -532,6 +546,18 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         return getElementText(principalNext).trim();
     }
 
+    @Step("Get 'Principal next date' value")
+    public String getPrincipalNextDate() {
+        waitForElementVisibility(principalNextDate);
+        return getElementText(principalNextDate).trim();
+    }
+
+    @Step("Get 'Principal' value")
+    public String getPrincipalValue(int index) {
+        waitForElementVisibility(principal,index);
+        return getElementText(principal, index).trim();
+    }
+
     @Step("Get 'Interest next' value")
     public String getInterestNextDue() {
         waitForElementVisibility(interestNext);
@@ -549,6 +575,17 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         waitForElementVisibility(currentDateDue);
         return getElementText(currentDateDue).trim();
     }
+
+    private By principalNextPaymentDateByIndex = By.xpath("//table[contains(@class, 'searchResultPanel' )]//" +
+            "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][1]/" +
+            "td/div[@key-name='principalnextpaymentdate']");
+
+    @Step("Get 'principalnextpaymentdate' value")
+    public String getPrincipalNextPaymentDateByIndex(int index) {
+        waitForElementVisibility(principalNextPaymentDateByIndex, index);
+        return  getElementText(principalNextPaymentDateByIndex, index);
+    }
+
 
     /**
      * Payment Due

@@ -1,7 +1,11 @@
 package com.nymbus.actions.clients;
 
+import com.nymbus.actions.webadmin.WebAdminActions;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.models.TempClient;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
+import com.nymbus.newmodels.account.loanaccount.PaymentDueData;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 
@@ -93,5 +97,27 @@ public class ClientPageActions {
             Assert.assertTrue(rejectedTransactionsItems1 < rejectedTransactionsItems,
                     "Transaction is not visible");
         }
+    }
+
+    public PaymentDueData getPaymentDueInfo(Account loanAccount) {
+        PaymentDueData paymentDueData = new PaymentDueData();
+        paymentDueData.setDueDate(loanAccount.getNextPaymentBilledDueDate());
+        paymentDueData.setPrincipal(0.00);
+        String currentBalance = Pages.accountDetailsPage().getCurrentBalance();
+        String currentEffectiveRate = Pages.accountDetailsPage().getCurrentEffectiveRate();
+        String daysBaseYearBase = Pages.accountDetailsPage().getDaysBaseYearBase();
+        int yearBase = Integer.parseInt(daysBaseYearBase.split("/")[1].substring(0, 3));
+        int daysBase = Integer.parseInt(daysBaseYearBase.split("/")[0].substring(0, 3));
+        double interest = Double.parseDouble(currentBalance) * Double.parseDouble(currentEffectiveRate)/ 100 / yearBase *
+                DateTime.getDaysBetweenTwoDates(loanAccount.getDateOpened(),
+                        DateTime.getDatePlusMonth(loanAccount.getDateOpened(),1),false);
+        paymentDueData.setInterest(String.format("%.2f",interest));
+        paymentDueData.setEscrow(0.00);
+        paymentDueData.setAmount(Double.parseDouble(paymentDueData.getInterest()) + paymentDueData.getEscrow() + paymentDueData.getPrincipal());
+        paymentDueData.setDateAssessed(WebAdminActions.loginActions().getSystemDate());
+        paymentDueData.setPaymentDueType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
+        paymentDueData.setPaymentDueStatus("Active");
+
+        return paymentDueData;
     }
 }
