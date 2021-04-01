@@ -123,8 +123,8 @@ public class C18804_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestLoa
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 18803, testRunName = TEST_RUN_NAME)
-    @Test(description = "C18803, Payment Due Record: generation for non cycle Principal and Interest loan")
+    @TestRailIssue(issueID = 18804, testRunName = TEST_RUN_NAME)
+    @Test(description = "C18804, Payment Due Record: generation for non cycle Principal and Interest loan")
     @Severity(SeverityLevel.CRITICAL)
     public void paymentDueRecordGenerationForNonCycleInterestOnlyLoan() {
         logInfo("Log in to the system");

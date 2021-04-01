@@ -106,7 +106,6 @@ public class ClientPageActions {
         String currentEffectiveRate = Pages.accountDetailsPage().getCurrentEffectiveRate();
         String daysBaseYearBase = Pages.accountDetailsPage().getDaysBaseYearBase();
         int yearBase = Integer.parseInt(daysBaseYearBase.split("/")[1].substring(0, 3));
-        int daysBase = Integer.parseInt(daysBaseYearBase.split("/")[0].substring(0, 3));
         double interest = Double.parseDouble(currentBalance) * Double.parseDouble(currentEffectiveRate)/ 100 / yearBase *
                 DateTime.getDaysBetweenTwoDates(loanAccount.getDateOpened(),
                         DateTime.getDatePlusMonth(loanAccount.getDateOpened(),1),false);
