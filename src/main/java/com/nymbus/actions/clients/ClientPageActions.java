@@ -118,4 +118,20 @@ public class ClientPageActions {
 
         return paymentDueData;
     }
+
+    public PaymentDueData getPaymentDueInfoForCyclePrinAndInt(Account loanAccount) {
+        PaymentDueData paymentDueData = new PaymentDueData();
+        paymentDueData.setDueDate(loanAccount.getNextPaymentBilledDueDate());
+        paymentDueData.setPrincipal(0.00);
+        paymentDueData.setInterest(String.format("%.2f",0.00));
+        paymentDueData.setEscrow(0.00);
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+        Pages.accountPaymentInfoPage().clickPaymentDueRecord();
+        paymentDueData.setAmount(Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledAmount()));
+        paymentDueData.setDateAssessed(WebAdminActions.loginActions().getSystemDate());
+        paymentDueData.setPaymentDueType(loanAccount.getPaymentAmountType());
+        paymentDueData.setPaymentDueStatus("Active");
+
+        return paymentDueData;
+    }
 }

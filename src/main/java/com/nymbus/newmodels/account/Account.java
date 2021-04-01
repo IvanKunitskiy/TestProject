@@ -117,6 +117,7 @@ public class Account {
     private String maxRateLifetimeCap;
     private String rateRoundingFactor;
     private String originalInterestRate;
+    private boolean cycleLoan = false;
 
     public Account setLoanAccountData() {
         Account account = new Account();
@@ -314,6 +315,14 @@ public class Account {
         account.setUserDefinedField_4(Generator.genString(5));
 
         return account;
+    }
+
+    public boolean isCycleLoan() {
+        return cycleLoan;
+    }
+
+    public void setCycleLoan(boolean cycleLoan) {
+        this.cycleLoan = cycleLoan;
     }
 
     public String getEscrow() {

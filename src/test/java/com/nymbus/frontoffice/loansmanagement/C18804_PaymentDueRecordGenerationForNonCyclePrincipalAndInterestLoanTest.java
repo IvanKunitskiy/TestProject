@@ -61,6 +61,7 @@ public class C18804_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestLoa
         loanAccount.setEscrow("$ 0.00");
         loanAccount.setCycleCode(Generator.genInt(1, 20)+"");
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
+        loanAccount.setCycleLoan(true);
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
         checkAccount.setDateOpened(loanAccount.getDateOpened());
 
@@ -160,9 +161,9 @@ public class C18804_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestLoa
         logInfo("Step 5: Check bank.data.paymentdue");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
-        PaymentDueData paymentDueData = Actions.clientPageActions().getPaymentDueInfo(loanAccount);
+        PaymentDueData paymentDueData = Actions.clientPageActions().getPaymentDueInfoForCyclePrinAndInt(loanAccount);
         paymentDueData.setAccountId(Integer.parseInt(clientRootId));
-        PaymentDueData actualPaymentDueData = WebAdminActions.webAdminTransactionActions().checkPaymentDue(userCredentials, loanAccount);
+        PaymentDueData actualPaymentDueData = WebAdminActions.webAdminTransactionActions().checkPaymentDuePrinAndInt(userCredentials, loanAccount);
 
         TestRailAssert.assertTrue(paymentDueData.equals(actualPaymentDueData),
                 new CustomStepResult("Payment data is valid", "Payment data is not valid"));
@@ -174,10 +175,13 @@ public class C18804_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestLoa
         Pages.accountPaymentInfoPage().clickPaymentDueRecord();
         String dueDate = Pages.accountPaymentInfoPage().getDueDateFromRecordByIndex(1);
         actualPaymentDueData.setDueDate(dueDate);
-        actualPaymentDueData.setInterest(Pages.accountPaymentInfoPage().getDisabledInterest());
-        actualPaymentDueData.setPrincipal(Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledPrincipal()));
         actualPaymentDueData.setEscrow(Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledEscrow()));
         actualPaymentDueData.setPaymentDueStatus(Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1));
+
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().isInterestBlank(),
+                new CustomStepResult("Interest is valid", "Interest data is not valid"));
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().isPrincipalBlank(),
+                new CustomStepResult("Principal is valid", "Principal is not valid"));
 
         TestRailAssert.assertTrue(paymentDueData.equals(actualPaymentDueData),
                 new CustomStepResult("Payment data is valid", "Payment data is not valid"));

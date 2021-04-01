@@ -179,10 +179,15 @@ public class CreateAccount {
         Pages.addAccountPage().setPaymentAmount(account.getPaymentAmount());
         setPaymentAmountType(account);
         setPaymentFrequency(account);
-        disableCycleLoanSwitch();
+        if (account.isCycleLoan()){
+            enableCycleLoanSwitch();
+            setCycleCode(account);
+        } else{
+            disableCycleLoanSwitch();
+            Pages.addAccountPage().setPaymentBilledLeadDays(account.getPaymentBilledLeadDays());
+        }
         Pages.addAccountPage().setNextPaymentBilledDueDate(account.getNextPaymentBilledDueDate());
         Pages.addAccountPage().setDateFirstPaymentDue(account.getDateFirstPaymentDue());
-        Pages.addAccountPage().setPaymentBilledLeadDays(account.getPaymentBilledLeadDays());
         Pages.addAccountPage().setCurrentEffectiveRate(account.getCurrentEffectiveRate());
         setEscrowPayment(account);
         setInterestMethod(account);
