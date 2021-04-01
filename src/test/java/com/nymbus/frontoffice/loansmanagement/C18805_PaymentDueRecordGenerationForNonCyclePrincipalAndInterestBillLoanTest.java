@@ -60,6 +60,7 @@ public class C18805_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestBil
         loanAccount.setProduct(loanProductName);
         loanAccount.setEscrow("$ 0.00");
         loanAccount.setCycleCode(Generator.genInt(1, 20)+"");
+        loanAccount.setCycleLoan(true);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
         checkAccount.setDateOpened(loanAccount.getDateOpened());
@@ -160,7 +161,7 @@ public class C18805_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestBil
         logInfo("Step 5: Check bank.data.paymentdue");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
-        PaymentDueData paymentDueData = Actions.clientPageActions().getPaymentDueInfo(loanAccount);
+        PaymentDueData paymentDueData = Actions.clientPageActions().getPaymentDueInfoPrinAndIntBill(loanAccount);
         paymentDueData.setAccountId(Integer.parseInt(clientRootId));
         PaymentDueData actualPaymentDueData = WebAdminActions.webAdminTransactionActions().checkPaymentDue(userCredentials, loanAccount);
 

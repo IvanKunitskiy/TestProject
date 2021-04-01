@@ -119,6 +119,28 @@ public class ClientPageActions {
         return paymentDueData;
     }
 
+    public PaymentDueData getPaymentDueInfoPrinAndIntBill(Account loanAccount) {
+        PaymentDueData paymentDueData = new PaymentDueData();
+        paymentDueData.setDueDate(loanAccount.getNextPaymentBilledDueDate());
+        String currentBalance = Pages.accountDetailsPage().getCurrentBalance();
+        String currentEffectiveRate = Pages.accountDetailsPage().getCurrentEffectiveRate();
+        String daysBaseYearBase = Pages.accountDetailsPage().getDaysBaseYearBase();
+        int yearBase = Integer.parseInt(daysBaseYearBase.split("/")[1].substring(0, 3));
+        double interest = Double.parseDouble(currentBalance) * Double.parseDouble(currentEffectiveRate)/ 100 / yearBase *
+                Integer.parseInt(loanAccount.getCycleCode());
+        paymentDueData.setInterest(String.format("%.2f",interest));
+        paymentDueData.setEscrow(0.00);
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+        Pages.accountPaymentInfoPage().clickPaymentDueRecord();
+        paymentDueData.setAmount(Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledAmount()));
+        paymentDueData.setPrincipal(paymentDueData.getAmount() - Double.parseDouble(paymentDueData.getInterest()));
+        paymentDueData.setDateAssessed(WebAdminActions.loginActions().getSystemDate());
+        paymentDueData.setPaymentDueType(loanAccount.getPaymentAmountType());
+        paymentDueData.setPaymentDueStatus("Active");
+
+        return paymentDueData;
+    }
+
     public PaymentDueData getPaymentDueInfoForCyclePrinAndInt(Account loanAccount) {
         PaymentDueData paymentDueData = new PaymentDueData();
         paymentDueData.setDueDate(loanAccount.getNextPaymentBilledDueDate());
