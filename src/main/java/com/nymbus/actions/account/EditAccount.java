@@ -342,7 +342,6 @@ public class EditAccount {
         Pages.editAccountPage().setDateOfFirstDeposit(account.getDateOfFirstDeposit());
         Pages.editAccountPage().setBirthDate(account.getBirthDate());
         Pages.editAccountPage().setDateDeceased(account.getDateDeceased());
-        Pages.editAccountPage().setBankRoutingNumberInterestOnCDValue(account.getBankRoutingNumberInterestOnCD());
         account.setApplyInterestTo("CHK Acct");
         setApplyInterestTo(account);
         setCorrespondingAccount(account);
@@ -723,11 +722,12 @@ public class EditAccount {
         Assert.assertEquals(Pages.editAccountPage().getDateOfFirstDeposit(), account.getDateOfFirstDeposit(), "'Date Of First Deposit' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getBirthDate(), account.getBirthDate(), "'Birth Date' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getDateDeceased(), account.getDateDeceased(), "'Date Deceased' value does not match");
-        Assert.assertEquals(Pages.editAccountPage().getBankRoutingNumberInterestOnCD(), account.getBankRoutingNumberInterestOnCD(), "'Bank Routing Number' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), account.getInterestRate(), "'Interest Rate' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getApplyInterestTo(), account.getApplyInterestTo(), "'Apply Interest To' value does not match");
         if (account.getCorrespondingAccount() != null) {
-            Assert.assertEquals(Pages.editAccountPage().getCorrespondingAccount(), account.getCorrespondingAccount(), "'Corresponding Account' value does not match");
+            Assert.assertEquals(Pages.editAccountPage().getCorrespondingAccount().replaceAll("[^0-9]", ""),
+                    account.getCorrespondingAccount(),
+                    "'Corresponding Account' value does not match");
         }
     }
 
