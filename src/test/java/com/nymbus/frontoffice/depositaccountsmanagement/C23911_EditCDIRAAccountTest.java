@@ -42,6 +42,8 @@ public class C23911_EditCDIRAAccountTest extends BaseTest {
         cdIRAAccount = new Account().setCdIraAccountData();
         cdIRAAccount.setMaturityDate(DateTime.getDateWithNMonthAdded(cdIRAAccount.getDateOpened(), "MM/dd/yyyy", Integer.parseInt(cdIRAAccount.getTermType())));
         cdIRAAccount.setDateNextInterest(DateTime.getDateWithNMonthAdded(cdIRAAccount.getDateOpened(), "MM/dd/yyyy", 3)); // 3 month added as 'Interest Frequency' is set to 'Quarterly'
+        cdIRAAccount.setApplyInterestTo("CHK Acct");
+        cdIRAAccount.setCorrespondingAccount(checkingAccount.getAccountNumber());
 
         // Login to the system
         Selenide.open(Constants.URL);
