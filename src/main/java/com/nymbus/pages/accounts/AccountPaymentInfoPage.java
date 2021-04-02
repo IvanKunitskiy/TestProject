@@ -238,6 +238,11 @@ public class AccountPaymentInfoPage extends PageTools {
         return getDisabledElementAttributeValue("value", disInterest).replaceAll("[^0-9.]", "");
     }
 
+    public boolean isInterestBlank() {
+        waitForElementVisibility(disInterest);
+        return getDisabledElementAttributeValue("value", disInterest).equals("");
+    }
+
     @Step("Input value to 'Interest'")
     public void inputInterest(String interest) {
         waitForElementVisibility(disInterest);
@@ -248,6 +253,11 @@ public class AccountPaymentInfoPage extends PageTools {
     public String getDisabledPrincipal() {
         waitForElementVisibility(disPrincipal);
         return getDisabledElementAttributeValue("value", disPrincipal).replaceAll("[^0-9.]", "");
+    }
+
+    public boolean isPrincipalBlank() {
+        waitForElementVisibility(disPrincipal);
+        return getDisabledElementAttributeValue("value", disPrincipal).equals("");
     }
 
     @Step("Input value to 'Principal'")

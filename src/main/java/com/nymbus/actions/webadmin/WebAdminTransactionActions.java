@@ -285,6 +285,31 @@ public class WebAdminTransactionActions {
         return paymentDueData;
     }
 
+    public PaymentDueData checkPaymentDuePrinAndInt(UserCredentials userCredentials, Account account) {
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL +
+                "RulesUIQuery.ct?waDbName=coreDS&dqlQuery=count%3A+10%0D%0A%23select%3A+accountid%2C+duedate%2C+principal%2C+interest%2C+escrow%2C+amount%2C+dateassessed%2C+paymentduetype%2C+paymentduestatus%0D%0Afrom%3A+bank.data.paymentdue%0D%0Awhere%3A+%0D%0A-+.accountid->accountnumber%3A+" +
+                account.getAccountNumber() + "%0D%0AorderBy%3A+-id%0D%0AdeletedIncluded%3A+true&source=");
+        SelenideTools.switchToLastTab();
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        PaymentDueData paymentDueData = new PaymentDueData();
+        paymentDueData.setAccountId(Integer.parseInt(WebAdminPages.rulesUIQueryAnalyzerPage().getAccountIdByIndex(1)));
+
+        paymentDueData.setDueDate(DateTime.getDateWithFormat(WebAdminPages.rulesUIQueryAnalyzerPage().getDueDateByIndex(1),
+                "yyyy-mm-dd", "mm/dd/yyyy"));
+        paymentDueData.setPrincipal(0.00);
+        paymentDueData.setInterest("0.00");
+        paymentDueData.setEscrow(Double.parseDouble(WebAdminPages.rulesUIQueryAnalyzerPage().getEscrowByIndex(1)));
+        paymentDueData.setAmount(Double.parseDouble(WebAdminPages.rulesUIQueryAnalyzerPage().getAmount(2)));
+        paymentDueData.setDateAssessed(DateTime.getDateWithFormat(WebAdminPages.rulesUIQueryAnalyzerPage().getDateAssessedByIndex(1),
+                "yyyy-mm-dd", "mm/dd/yyyy"));
+        paymentDueData.setPaymentDueType(WebAdminPages.rulesUIQueryAnalyzerPage().getPaymentDueTypeByIndex(1));
+        paymentDueData.setPaymentDueStatus(WebAdminPages.rulesUIQueryAnalyzerPage().getPaymentDueStatusByIndex(1));
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+        return paymentDueData;
+    }
+
     public void checkErrorPrincipalNextPaymentDate(UserCredentials userCredentials, Account account) {
         SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
         SelenideTools.switchToLastTab();

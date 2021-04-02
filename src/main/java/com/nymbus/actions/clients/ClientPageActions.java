@@ -4,7 +4,6 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.models.TempClient;
 import com.nymbus.newmodels.account.Account;
-import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.loanaccount.PaymentDueData;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
@@ -107,7 +106,6 @@ public class ClientPageActions {
         String currentEffectiveRate = Pages.accountDetailsPage().getCurrentEffectiveRate();
         String daysBaseYearBase = Pages.accountDetailsPage().getDaysBaseYearBase();
         int yearBase = Integer.parseInt(daysBaseYearBase.split("/")[1].substring(0, 3));
-        int daysBase = Integer.parseInt(daysBaseYearBase.split("/")[0].substring(0, 3));
         double interest = Double.parseDouble(currentBalance) * Double.parseDouble(currentEffectiveRate)/ 100 / yearBase *
                 DateTime.getDaysBetweenTwoDates(loanAccount.getDateOpened(),
                         DateTime.getDatePlusMonth(loanAccount.getDateOpened(),1),false);
@@ -115,7 +113,45 @@ public class ClientPageActions {
         paymentDueData.setEscrow(0.00);
         paymentDueData.setAmount(Double.parseDouble(paymentDueData.getInterest()) + paymentDueData.getEscrow() + paymentDueData.getPrincipal());
         paymentDueData.setDateAssessed(WebAdminActions.loginActions().getSystemDate());
-        paymentDueData.setPaymentDueType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
+        paymentDueData.setPaymentDueType(loanAccount.getPaymentAmountType());
+        paymentDueData.setPaymentDueStatus("Active");
+
+        return paymentDueData;
+    }
+
+    public PaymentDueData getPaymentDueInfoPrinAndIntBill(Account loanAccount) {
+        PaymentDueData paymentDueData = new PaymentDueData();
+        paymentDueData.setDueDate(loanAccount.getNextPaymentBilledDueDate());
+        String currentBalance = Pages.accountDetailsPage().getCurrentBalance();
+        String currentEffectiveRate = Pages.accountDetailsPage().getCurrentEffectiveRate();
+        String daysBaseYearBase = Pages.accountDetailsPage().getDaysBaseYearBase();
+        int yearBase = Integer.parseInt(daysBaseYearBase.split("/")[1].substring(0, 3));
+        double interest = Double.parseDouble(currentBalance) * Double.parseDouble(currentEffectiveRate)/ 100 / yearBase *
+                Integer.parseInt(loanAccount.getCycleCode());
+        paymentDueData.setInterest(String.format("%.2f",interest));
+        paymentDueData.setEscrow(0.00);
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+        Pages.accountPaymentInfoPage().clickPaymentDueRecord();
+        paymentDueData.setAmount(Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledAmount()));
+        paymentDueData.setPrincipal(paymentDueData.getAmount() - Double.parseDouble(paymentDueData.getInterest()));
+        paymentDueData.setDateAssessed(WebAdminActions.loginActions().getSystemDate());
+        paymentDueData.setPaymentDueType(loanAccount.getPaymentAmountType());
+        paymentDueData.setPaymentDueStatus("Active");
+
+        return paymentDueData;
+    }
+
+    public PaymentDueData getPaymentDueInfoForCyclePrinAndInt(Account loanAccount) {
+        PaymentDueData paymentDueData = new PaymentDueData();
+        paymentDueData.setDueDate(loanAccount.getNextPaymentBilledDueDate());
+        paymentDueData.setPrincipal(0.00);
+        paymentDueData.setInterest(String.format("%.2f",0.00));
+        paymentDueData.setEscrow(0.00);
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+        Pages.accountPaymentInfoPage().clickPaymentDueRecord();
+        paymentDueData.setAmount(Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledAmount()));
+        paymentDueData.setDateAssessed(WebAdminActions.loginActions().getSystemDate());
+        paymentDueData.setPaymentDueType(loanAccount.getPaymentAmountType());
         paymentDueData.setPaymentDueStatus("Active");
 
         return paymentDueData;
