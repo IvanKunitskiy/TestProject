@@ -165,7 +165,7 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
         Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction.getTransactionSource(), currentIndex);
         Actions.transactionActions().setMiscCreditDestination(transaction.getTransactionDestination(), currentIndex);
         Pages.tellerPage().setEffectiveDate(transaction.getTransactionDate());
-        Actions.transactionActions().clickCommitButton();
+        Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
 
         logInfo("Step 5: Close Transaction Receipt popup");
         Pages.tellerPage().closeModal();

@@ -42,6 +42,7 @@ public class C23907_EditSavingsIRAAccountTest extends BaseTest {
         // Set the bank branch of the user to account
         savingsIRAAccount.setBankBranch(Actions.usersActions().getBankBranch());
         savingsIRAAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.IRA, RateType.TIER));
+        savingsIRAAccount.setApplyInterestTo("Remain in Account");
 
         // Create a client
         ClientsActions.individualClientActions().createClient(client);
