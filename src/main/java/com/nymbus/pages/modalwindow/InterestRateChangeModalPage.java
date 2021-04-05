@@ -17,6 +17,14 @@ public class InterestRateChangeModalPage extends PageTools {
     private final By addBackDatedRateChangeButton = By.xpath("//button[span[text()='Add Back Dated Rate Change']]");
     private final By closeButton = By.xpath("//div[@class='modal-content']//button[@ng-click='close()']");
 
+    @Step("Set 'Accrue thru date' value")
+    public String getAccrueThruDate() {
+        waitForElementVisibility(accrueThruDate);
+        waitForElementClickable(accrueThruDate);
+        return getDisabledElementAttributeValue("value", accrueThruDate).trim();
+    }
+
+
     @Step("Set 'Begin earn date' value")
     public void setBeginEarnDate(String date) {
         waitForElementVisibility(beginEarnDate);
