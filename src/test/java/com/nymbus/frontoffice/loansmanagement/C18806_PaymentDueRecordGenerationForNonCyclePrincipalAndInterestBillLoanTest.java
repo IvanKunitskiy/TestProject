@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Dmytro")
-public class C18805_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestBillLoanTest extends BaseTest {
+public class C18806_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestBillLoanTest extends BaseTest {
 
     private Account loanAccount;
     private Account checkAccount;
@@ -164,9 +164,6 @@ public class C18805_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestBil
         PaymentDueData paymentDueData = Actions.clientPageActions().getPaymentDueInfoPrinAndIntBill(loanAccount);
         paymentDueData.setAccountId(Integer.parseInt(clientRootId));
         PaymentDueData actualPaymentDueData = WebAdminActions.webAdminTransactionActions().checkPaymentDue(userCredentials, loanAccount);
-
-        System.out.println(paymentDueData);
-        System.out.println(actualPaymentDueData);
 
         TestRailAssert.assertTrue(paymentDueData.equals(actualPaymentDueData),
                 new CustomStepResult("Payment data is valid", "Payment data is not valid"));
