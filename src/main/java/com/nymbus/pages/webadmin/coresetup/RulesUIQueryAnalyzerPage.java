@@ -509,6 +509,12 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
             "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))]/td/div[@key-name='totalNext']");
     private By currentDateDue = By.xpath("//table[contains(@class, 'searchResultPanel' )]//" +
             "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))]/td/div[@key-name='nextDueDate']");
+    private By principalNextPaymentDateByIndex = By.xpath("//table[contains(@class, 'searchResultPanel' )]//" +
+            "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][1]/" +
+            "td/div[@key-name='principalnextpaymentdate']");
+    private By interestNextPaymentDateByIndex = By.xpath("//table[contains(@class, 'searchResultPanel' )]//" +
+            "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]/" +
+            "td/div[@key-name='interestnextpaymentdate']");
 
     @Step ("Get 'Loan account number' {index} value")
     public String getLoanAccountNumberValueByIndex(int index) {
@@ -576,14 +582,16 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         return getElementText(currentDateDue).trim();
     }
 
-    private By principalNextPaymentDateByIndex = By.xpath("//table[contains(@class, 'searchResultPanel' )]//" +
-            "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][1]/" +
-            "td/div[@key-name='principalnextpaymentdate']");
-
     @Step("Get 'principalnextpaymentdate' value")
     public String getPrincipalNextPaymentDateByIndex(int index) {
         waitForElementVisibility(principalNextPaymentDateByIndex, index);
         return  getElementText(principalNextPaymentDateByIndex, index);
+    }
+
+    @Step("Get 'interestnextpaymentdate' value")
+    public String getInterestNextPaymentDateByIndex(int index) {
+        waitForElementVisibility(interestNextPaymentDateByIndex, index);
+        return  getElementText(interestNextPaymentDateByIndex, index);
     }
 
 
