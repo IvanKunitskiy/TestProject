@@ -165,9 +165,6 @@ public class C18805_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestBil
         paymentDueData.setAccountId(Integer.parseInt(clientRootId));
         PaymentDueData actualPaymentDueData = WebAdminActions.webAdminTransactionActions().checkPaymentDue(userCredentials, loanAccount);
 
-        System.out.println(paymentDueData);
-        System.out.println(actualPaymentDueData);
-
         TestRailAssert.assertTrue(paymentDueData.equals(actualPaymentDueData),
                 new CustomStepResult("Payment data is valid", "Payment data is not valid"));
 
