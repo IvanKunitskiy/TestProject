@@ -45,6 +45,7 @@ public class Actions {
     private static AddNewLoanActions addNewLoanActions;
     private static CallClassCodesActions callClassCodesActions;
     private static LoanPayoffActions loanPayoffActions;
+    private static LoansActions loansActions;
 
     /**
      * Modal Window Actions
@@ -70,6 +71,16 @@ public class Actions {
             usersActions = new UsersActions();
         }
         return usersActions;
+    }
+
+    /**
+     * This function returns an instance of `LoansActions`
+     */
+    public static LoansActions loansActions() {
+        if (loansActions == null) {
+            loansActions = new LoansActions();
+        }
+        return loansActions;
     }
 
     /**

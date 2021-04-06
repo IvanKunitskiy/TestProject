@@ -10,6 +10,7 @@ public enum Tool {
     REG_DD_CALCULATOR("Reg DD Calculator"),
     QUOTE_PAYOFF("Quote Payoff"),
     LOAN_PAYOFF_CHARGES("Loan Payoff Charges"),
+    LOAN_PARTICIPATIONS("Loan Participations"),
     LOAN_PAYOFF_PREPAYMENT_PENALTY("Loan Payoff Prepayment Penalty");
 
     private final String tool;
