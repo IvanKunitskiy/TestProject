@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Dmytro")
-public class C18806_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestBillLoanTest extends BaseTest {
+public class C18806_PaymentDueRecordGenerationForNonCycleInterestOnlyBillLoanTest extends BaseTest {
 
     private Account loanAccount;
     private Account checkAccount;
@@ -55,7 +55,7 @@ public class C18806_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestBil
         IndividualClient client = individualClientBuilder.buildClient();
         checkAccount = new Account().setCHKAccountData();
         loanAccount = new Account().setLoanAccountData();
-        loanAccount.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
+        loanAccount.setPaymentAmountType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
         loanAccount.setPaymentBilledLeadDays(String.valueOf(1));
         loanAccount.setProduct(loanProductName);
         loanAccount.setEscrow("$ 0.00");
@@ -124,8 +124,8 @@ public class C18806_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestBil
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 18805, testRunName = TEST_RUN_NAME)
-    @Test(description = "C18805, Payment Due Record: generation for non cycle Principal and Interest (Bill) loan")
+    @TestRailIssue(issueID = 18806, testRunName = TEST_RUN_NAME)
+    @Test(description = "C18806, Payment Due Record: generation for non cycle Interest only (Bill) loan")
     @Severity(SeverityLevel.CRITICAL)
     public void paymentDueRecordGenerationForNonCycleInterestOnlyLoan() {
         logInfo("Log in to the system");
@@ -161,7 +161,7 @@ public class C18806_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestBil
         logInfo("Step 5: Check bank.data.paymentdue");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
-        PaymentDueData paymentDueData = Actions.clientPageActions().getPaymentDueInfoPrinAndIntBill(loanAccount);
+        PaymentDueData paymentDueData = Actions.clientPageActions().getPaymentDueInfoIntOnlyBill(loanAccount);
         paymentDueData.setAccountId(Integer.parseInt(clientRootId));
         PaymentDueData actualPaymentDueData = WebAdminActions.webAdminTransactionActions().checkPaymentDue(userCredentials, loanAccount);
 
