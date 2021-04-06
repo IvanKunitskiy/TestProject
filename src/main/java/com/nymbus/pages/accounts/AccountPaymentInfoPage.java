@@ -409,7 +409,7 @@ public class AccountPaymentInfoPage extends PageTools {
 
     @Step("Get 'Status' from 'Payments Due' value by index : {index}")
     public String getStatusFromRecordByIndex(int index){
-        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
         waitForElementVisibility(statusFromRecordByIndex, index);
         return getElementText(statusFromRecordByIndex, index).trim();
     }

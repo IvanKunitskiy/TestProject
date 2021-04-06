@@ -135,8 +135,6 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
         Assert.assertTrue(Pages.interestRateChangeModalPage().getAccrueThruDate().equals(dateMinusDays),
                 "'Current effective rate' row count is incorrect!");
 
-        Pages.interestRateChangeModalPage().setAccrueThruDate(DateTime.getDateWithFormatPlusDays(loanAccount.getDateOpened(), "MM/dd/yyyy", "MM/dd/yyyy", days));
-
         logInfo("Step 5: Click on the 'Commit Transaction' button");
         Pages.interestRateChangeModalPage().clickCommitTransactionButton();
 

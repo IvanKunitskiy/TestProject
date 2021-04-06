@@ -19,11 +19,8 @@ public class InterestRateChangeModalPage extends PageTools {
 
     @Step("Set 'Accrue thru date' value")
     public String getAccrueThruDate() {
-        waitForElementVisibility(accrueThruDate);
-        waitForElementClickable(accrueThruDate);
-        return getDisabledElementAttributeValue("value", accrueThruDate).trim();
+        return getDisabledElementAttributeValue("value", accrueThruDate);
     }
-
 
     @Step("Set 'Begin earn date' value")
     public void setBeginEarnDate(String date) {
