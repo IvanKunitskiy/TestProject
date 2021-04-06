@@ -36,6 +36,7 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
 
         // Set up IRA account
         savingsIRAAccount = new Account().setSavingsIraAccountData();
+        savingsIRAAccount.setApplyInterestTo("Remain in Account");
 
         // Login to the system
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
