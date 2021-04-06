@@ -179,7 +179,6 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
         String currentEffectiveRate = Pages.accountDetailsPage().getCurrentEffectiveRate();
         String daysBaseYearBase = Pages.accountDetailsPage().getDaysBaseYearBase();
         int yearBase = Integer.parseInt(daysBaseYearBase.split("/")[1].substring(0, 3));
-        int daysBase = Integer.parseInt(daysBaseYearBase.split("/")[0].substring(0, 3));
         Pages.accountDetailsPage().clickPaymentInfoTab();
 
         logInfo("Step 7: Check Payment Due record from preconditions");
@@ -220,9 +219,11 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
         TestRailAssert.assertTrue(typeDue.equals(expectedType),
                 new CustomStepResult("Date type is not valid", "Date type is valid"));
         String disInterest = Pages.accountPaymentInfoPage().getDisabledInterest();
+        String effectiveDate = Pages.accountPaymentInfoPage().getPiPaymentsEffectiveDate();
         double expectedAccruedInterest = Double.parseDouble(currentBalanceForInterest) * Double.parseDouble(currentEffectiveRate)/100/
-                yearBase * DateTime.getDaysBetweenTwoDates(DateTime.getDateMinusMonth(dueDateSec,1),dueDateSec,true);
-        TestRailAssert.assertTrue(disInterest.equals(String.format("%.2f", expectedAccruedInterest)),
+                yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate,dueDateSec,true);
+        String expectedInterest = expectedAccruedInterest + "";
+        TestRailAssert.assertTrue(disInterest.equals(expectedInterest.substring(0,expectedInterest.indexOf(".")+3)),
                 new CustomStepResult("Interest is not valid", "Interest is valid"));
         String disAmount = Pages.accountPaymentInfoPage().getDisabledAmount();
         String disEscrow = Pages.accountPaymentInfoPage().getDisabledEscrow();
