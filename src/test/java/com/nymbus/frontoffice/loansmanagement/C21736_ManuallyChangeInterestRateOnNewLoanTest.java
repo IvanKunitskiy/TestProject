@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.loansmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
@@ -110,7 +111,7 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
         logInfo("Step 1: Log in to the system");
         Actions.loginActions().doLogin(userCredentials.getPassword(), userCredentials.getPassword());
 
-        logInfo("Step 2: Open loan account from preconditions");
+        logInfo("Step 2: Open loan account from preconditions -> Maintenance -> Tools -> Interest Rate Change");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
         double currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
         double accruedInterest = Double.parseDouble(Pages.accountDetailsPage().getAccruedInterest());
@@ -118,27 +119,31 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
         AccountActions.accountMaintenanceActions().setTool(Tool.INTEREST_RATE_CHANGE);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
 
-        logInfo("Step 3: Set:\n" +
+        logInfo("Step 3: Click [Add Back Dated Rate Change] button");
+        Pages.interestRateChangeModalPage().clickAddBackDatedRateChangeButton();
+
+        logInfo("Step 4: Set:\n" +
                 "- NEW Current Effective Rate != Old Current Effective Rate\n" +
                 "- Begin Earn Date = Date in the past but > = Date Opened\n" +
                 "- Accrue Thru Date = Today (set Current date - 1 day by default)");
-        Pages.interestRateChangeModalPage().clickAddBackDatedRateChangeButton();
         int oldCurrentEffectiveRate = Integer.parseInt(loanAccount.getCurrentEffectiveRate());
         double newCurrentEffectiveRate = oldCurrentEffectiveRate + Random.genInt(1, 10);
         int days = 1;
         Pages.interestRateChangeModalPage().setNewCurrentEffectiveRateValue(String.valueOf(newCurrentEffectiveRate));
-        Pages.interestRateChangeModalPage().setAccrueThruDate(DateTime.getDateWithFormatPlusDays(loanAccount.getDateOpened(), "MM/dd/yyyy", "MM/dd/yyyy", days));
         Pages.interestRateChangeModalPage().setBeginEarnDate(loanAccount.getDateOpened());
+        String dateMinusDays = DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 1);
+        Assert.assertTrue(Pages.interestRateChangeModalPage().getAccrueThruDate().equals(dateMinusDays),
+                "'Current effective rate' row count is incorrect!");
 
-        logInfo("Step 4: Click on the 'Commit Transaction' button");
+        logInfo("Step 5: Click on the 'Commit Transaction' button");
         Pages.interestRateChangeModalPage().clickCommitTransactionButton();
 
-        logInfo("Step 5: Specify supervisor login name and password and click 'Enter'");
+        logInfo("Step 6: Specify supervisor login name and password and click 'Enter'");
         Pages.supervisorModalPage().inputLogin(userCredentials.getUserName());
         Pages.supervisorModalPage().inputPassword(userCredentials.getPassword());
         Pages.supervisorModalPage().clickEnter();
 
-        logInfo("Step 6: Pay attention at the interest amount in 'Alert Message' pop up");
+        logInfo("Step 7: Pay attention at the interest amount in 'Alert Message' pop up");
         String[] daysBaseYearBase = loanAccount.getDaysBaseYearBase().replaceAll("[^0-9/]", "").split("/");
         int yearBase = Integer.parseInt(daysBaseYearBase[1]);
         double adjustmentAmount = currentBalance * (newCurrentEffectiveRate / 100 - (double) oldCurrentEffectiveRate / 100) / yearBase * (days + 1);
@@ -151,17 +156,17 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
         Assert.assertTrue(alertMessageModalText.contains(String.format("%.2f", interestEarned)), "'Interest Earned' is calculated incorrect");
         Pages.alertMessageModalPage().clickOkButton();
 
-        logInfo("Step 7: Go to 'Transactions' tab and pay attention at the generated transaction");
+        logInfo("Step 8: Go to 'Transactions' tab and pay attention at the generated transaction");
         Pages.interestRateChangeModalPage().clickCloseButton();
         Pages.accountDetailsPage().clickTransactionsTab();
         String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
         checkTransactionCode(transactionCode, newCurrentEffectiveRate, oldCurrentEffectiveRate);
 
-        logInfo("Step 8: Go to Account Maintenance -> Maintenance History page");
+        logInfo("Step 9: Go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
-        logInfo("Step 9: Look through the Maintenance History records and make sure that there is information about interest rate change");
+        logInfo("Step 10: Look through the Maintenance History records and make sure that there is information about interest rate change");
         AccountActions.accountMaintenanceActions().expandAllRows();
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Current effective rate") >= 1,
                 "'Current effective rate' row count is incorrect!");
