@@ -1,8 +1,8 @@
 package com.nymbus.actions.account;
 
 import com.nymbus.actions.Actions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
@@ -179,10 +179,15 @@ public class CreateAccount {
         Pages.addAccountPage().setPaymentAmount(account.getPaymentAmount());
         setPaymentAmountType(account);
         setPaymentFrequency(account);
-        disableCycleLoanSwitch();
+        if (account.isCycleLoan()){
+            enableCycleLoanSwitch();
+            setCycleCode(account);
+        } else{
+            disableCycleLoanSwitch();
+            Pages.addAccountPage().setPaymentBilledLeadDays(account.getPaymentBilledLeadDays());
+        }
         Pages.addAccountPage().setNextPaymentBilledDueDate(account.getNextPaymentBilledDueDate());
         Pages.addAccountPage().setDateFirstPaymentDue(account.getDateFirstPaymentDue());
-        Pages.addAccountPage().setPaymentBilledLeadDays(account.getPaymentBilledLeadDays());
         Pages.addAccountPage().setCurrentEffectiveRate(account.getCurrentEffectiveRate());
         setEscrowPayment(account);
         setInterestMethod(account);
@@ -235,7 +240,6 @@ public class CreateAccount {
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
         setBankBranch(account);
-        setCorrespondingAccount(account);
         setInterestFrequencyCode(account);
         setApplyInterestTo(account);
         setInterestType(account);
@@ -268,7 +272,7 @@ public class CreateAccount {
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
         setBankBranch(account);
-        Pages.addAccountPage().setInterestRate(account.getInterestRate());
+        setInterestRate(account);
         setStatementCycle(account);
         setChargeOrAnalyze(account);
         setAccountAnalysis(account);
@@ -355,14 +359,16 @@ public class CreateAccount {
     }
 
     public void setCorrespondingAccount(Account account) {
-        Pages.addAccountPage().clickCorrespondingAccountSelectorButton();
-        List<String> listOfCorrespondingAccount = Pages.addAccountPage().getCorrespondingAccountList();
+        if (account.getApplyInterestTo().equals("CHK Acct")) {
+            Pages.addAccountPage().clickCorrespondingAccountSelectorButton();
+            List<String> listOfCorrespondingAccount = Pages.addAccountPage().getCorrespondingAccountList();
 
-        if (listOfCorrespondingAccount.size() > 0) {
-            if (account.getCorrespondingAccount() == null) {
-                account.setCorrespondingAccount(listOfCorrespondingAccount.get(new Random().nextInt(listOfCorrespondingAccount.size())).trim());
+            if (listOfCorrespondingAccount.size() > 0) {
+                if (account.getCorrespondingAccount() == null) {
+                    account.setCorrespondingAccount(listOfCorrespondingAccount.get(new Random().nextInt(listOfCorrespondingAccount.size())).trim());
+                }
+                Pages.addAccountPage().clickCorrespondingAccountSelectorOption(account.getCorrespondingAccount().replaceAll("[^0-9]", ""));
             }
-            Pages.addAccountPage().clickCorrespondingAccountSelectorOption(account.getCorrespondingAccount().replaceAll("[^0-9]", ""));
         }
     }
 
@@ -724,12 +730,14 @@ public class CreateAccount {
 
     public String getDateOpenedValue(Account account) {
         String dateOpened = Pages.addAccountPage().getDateOpened();
+        int counter = 0;
 
-        if (dateOpened.isEmpty()) {
+        while (dateOpened.isEmpty() && counter < 10) {
             SelenideTools.refresh();
             AccountActions.createAccount().setProductType(account);
             AccountActions.createAccount().setProduct(account);
             dateOpened = Pages.addAccountPage().getDateOpened();
+            counter++;
         }
         return dateOpened;
     }
@@ -769,12 +777,18 @@ public class CreateAccount {
         }
     }
 
+    public void setInterestRate(Account account) {
+        if (!Boolean.parseBoolean(Pages.addAccountPage().isInterestRateDisabled())) {
+            Pages.addAccountPage().setInterestRate(account.getInterestRate());
+        }
+    }
+
     /**
      * Verify common fields that are prefilled for all account types
      */
 
     private void verifyAccountPrefilledFields(Account account, IndividualClient client) {
-        Assert.assertEquals(getDateOpenedValue(account), DateTime.getLocalDateTimeByPattern("MM/dd/yyyy"), "'Date' is prefilled with wrong value");
+        Assert.assertEquals(getDateOpenedValue(account), WebAdminActions.loginActions().getSystemDate(), "'Date' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getAccountType(), client.getIndividualType().getClientType().getClientType(), "'Account type' is prefilled with wrong value");
         final String accountHolderName = client.getIndividualType().getFirstName() + " " + client.getIndividualType().getLastName() + " (" + client.getIndividualType().getClientID() + ")";
         Assert.assertEquals(Pages.addAccountPage().getAccountHolderName(), accountHolderName, "'Name' is prefilled with wrong value");

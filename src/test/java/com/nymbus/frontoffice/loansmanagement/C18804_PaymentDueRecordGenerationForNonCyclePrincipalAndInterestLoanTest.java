@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.loanaccount.PaymentDueData;
@@ -33,7 +34,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Dmytro")
-public class C18803_PaymentDueRecordGenerationForNonCycleInterestOnlyLoanTest extends BaseTest {
+public class C18804_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestLoanTest extends BaseTest {
 
     private Account loanAccount;
     private Account checkAccount;
@@ -54,11 +55,13 @@ public class C18803_PaymentDueRecordGenerationForNonCycleInterestOnlyLoanTest ex
         IndividualClient client = individualClientBuilder.buildClient();
         checkAccount = new Account().setCHKAccountData();
         loanAccount = new Account().setLoanAccountData();
-        loanAccount.setPaymentAmountType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
+        loanAccount.setPaymentAmountType(PaymentAmountType.PRINCIPAL_AND_INTEREST.getPaymentAmountType());
         loanAccount.setPaymentBilledLeadDays(String.valueOf(1));
         loanAccount.setProduct(loanProductName);
         loanAccount.setEscrow("$ 0.00");
+        loanAccount.setCycleCode(Generator.genInt(1, 20)+"");
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
+        loanAccount.setCycleLoan(true);
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
         checkAccount.setDateOpened(loanAccount.getDateOpened());
 
@@ -121,8 +124,8 @@ public class C18803_PaymentDueRecordGenerationForNonCycleInterestOnlyLoanTest ex
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 18803, testRunName = TEST_RUN_NAME)
-    @Test(description = "C18803, Payment Due Record: generation for non cycle Interest only (bill) loan")
+    @TestRailIssue(issueID = 18804, testRunName = TEST_RUN_NAME)
+    @Test(description = "C18804, Payment Due Record: generation for non cycle Principal and Interest loan")
     @Severity(SeverityLevel.CRITICAL)
     public void paymentDueRecordGenerationForNonCycleInterestOnlyLoan() {
         logInfo("Log in to the system");
@@ -158,9 +161,9 @@ public class C18803_PaymentDueRecordGenerationForNonCycleInterestOnlyLoanTest ex
         logInfo("Step 5: Check bank.data.paymentdue");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
-        PaymentDueData paymentDueData = Actions.clientPageActions().getPaymentDueInfo(loanAccount);
+        PaymentDueData paymentDueData = Actions.clientPageActions().getPaymentDueInfoForCyclePrinAndInt(loanAccount);
         paymentDueData.setAccountId(Integer.parseInt(clientRootId));
-        PaymentDueData actualPaymentDueData = WebAdminActions.webAdminTransactionActions().checkPaymentDue(userCredentials, loanAccount);
+        PaymentDueData actualPaymentDueData = WebAdminActions.webAdminTransactionActions().checkPaymentDuePrinAndInt(userCredentials, loanAccount);
 
         TestRailAssert.assertTrue(paymentDueData.equals(actualPaymentDueData),
                 new CustomStepResult("Payment data is valid", "Payment data is not valid"));
@@ -172,10 +175,13 @@ public class C18803_PaymentDueRecordGenerationForNonCycleInterestOnlyLoanTest ex
         Pages.accountPaymentInfoPage().clickPaymentDueRecord();
         String dueDate = Pages.accountPaymentInfoPage().getDueDateFromRecordByIndex(1);
         actualPaymentDueData.setDueDate(dueDate);
-        actualPaymentDueData.setInterest(Pages.accountPaymentInfoPage().getDisabledInterest());
-        actualPaymentDueData.setPrincipal(Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledPrincipal()));
         actualPaymentDueData.setEscrow(Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledEscrow()));
         actualPaymentDueData.setPaymentDueStatus(Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1));
+
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().isInterestBlank(),
+                new CustomStepResult("Interest is valid", "Interest data is not valid"));
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().isPrincipalBlank(),
+                new CustomStepResult("Principal is valid", "Principal is not valid"));
 
         TestRailAssert.assertTrue(paymentDueData.equals(actualPaymentDueData),
                 new CustomStepResult("Payment data is valid", "Payment data is not valid"));
