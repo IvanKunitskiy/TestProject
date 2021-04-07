@@ -5,7 +5,6 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
 public class BankControlPage extends PageTools {
-    private final By miscellaneousButton = By.xpath("//a[contains(string(),'Miscellaneous')]");
     private final By editButton = By.xpath("//button[contains(string(),'Edit')]");
     private final By saveButton = By.xpath("//button[contains(string(),'Save Changes')]");
     private final By applyCTROnlineAlert = By.xpath("//div[@data-field-id='CTROnlineAlert']//span");
@@ -13,10 +12,22 @@ public class BankControlPage extends PageTools {
     private final By applyCtrOnlineAlertText = By.xpath("(//div[@data-field-id='CTROnlineAlert']//input)[2]");
     private final By CTRLimit = By.xpath("//div[@data-field-id='CTRLimit']//input");
 
-    @Step("Click the 'Miscellaneous' button")
+    /*
+     ** Tabs
+     */
+    private final By miscellaneousTab = By.xpath("//a[contains(string(),'Miscellaneous')]");
+    private final By loansTab = By.xpath("//a[text()='Loans']");
+
+    @Step("Click the 'Loans' tab")
+    public void clickLoansTab() {
+        waitForElementClickable(loansTab);
+        click(loansTab);
+    }
+
+    @Step("Click the 'Miscellaneous' tab")
     public void clickMiscellaneousButton() {
-        waitForElementClickable(miscellaneousButton);
-        click(miscellaneousButton);
+        waitForElementClickable(miscellaneousTab);
+        click(miscellaneousTab);
     }
 
     @Step("Click the 'Edit button' button")

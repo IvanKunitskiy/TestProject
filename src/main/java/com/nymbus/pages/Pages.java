@@ -31,10 +31,7 @@ import com.nymbus.pages.clients.transfers.ViewTransferPage;
 import com.nymbus.pages.creditcards.CardsManagementPage;
 import com.nymbus.pages.journal.JournalDetailsPage;
 import com.nymbus.pages.journal.JournalPage;
-import com.nymbus.pages.loans.AddNewLoanProductPage;
-import com.nymbus.pages.loans.LoanProductOverviewPage;
-import com.nymbus.pages.loans.LoanProductPage;
-import com.nymbus.pages.loans.LoansPage;
+import com.nymbus.pages.loans.*;
 import com.nymbus.pages.modalwindow.*;
 import com.nymbus.pages.reportgenerator.ReportGeneratorPage;
 import com.nymbus.pages.teller.*;
@@ -115,6 +112,7 @@ public class Pages extends AllureLogger {
     private static LoanPayoffChargesModalPage loanPayoffChargesModalPage;
     private static LoanPayoffPrepaymentPenaltyModalPage loanPayoffPrepaymentPenaltyModalPage;
     private static QuotePayoffModalPage quotePayoffModalPage;
+    private static LoanParticipantsPage loanParticipantsPage;
 
     /**
      * Modal Windows
@@ -841,5 +839,15 @@ public class Pages extends AllureLogger {
             quotePayoffModalPage = new QuotePayoffModalPage();
         }
         return quotePayoffModalPage;
+    }
+
+    /**
+     * This function return an instance of `LoanParticipantsPage`
+     */
+    public static LoanParticipantsPage loanParticipantsPage(){
+        if (loanParticipantsPage == null){
+            loanParticipantsPage = new LoanParticipantsPage();
+        }
+        return loanParticipantsPage;
     }
 }
