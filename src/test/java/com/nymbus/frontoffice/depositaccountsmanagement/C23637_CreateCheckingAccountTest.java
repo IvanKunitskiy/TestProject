@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -35,6 +36,7 @@ public class C23637_CreateCheckingAccountTest extends BaseTest {
 
         // Set up account
         checkingAccount = new Account().setCHKAccountData();
+        checkingAccount.setDateOpened(DateTime.getDateMinusDays(checkingAccount.getDateOpened(),-Constants.DAYS_BEFORE_SYSTEM_DATE));
 
         // Login to the system
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -70,33 +72,36 @@ public class C23637_CreateCheckingAccountTest extends BaseTest {
 
         logInfo("Step 4: Select 'Product Type' = 'CHK Account'");
         AccountActions.createAccount().setProductType(checkingAccount);
+
+        logInfo("Step 5: Select any product (e.g. CHK Weiland Account)");
         AccountActions.createAccount().setProduct(checkingAccount);
 
-        logInfo("Step 5: Look through the fields. Check that fields are prefilled by default");
+        logInfo("Step 6: Look through the fields. Check that fields are prefilled by default");
         AccountActions.createAccount().verifyChkAccountPrefilledFields(checkingAccount, client);
 
-        logInfo("Step 6: Select any values in drop-down fields");
-        logInfo("Step 7: Fill in text fields with valid data. NOTE: do not fill in Account Number field");
-        logInfo("Step 8: Select any date ≤ Current Date in DBC ODP Opt In/Out Status Date field");
+        logInfo("Step 7: Select any values in drop-down fields");
+        logInfo("Step 8: Fill in text fields with valid data. NOTE: do not fill in Account Number field");
+        logInfo("Step 9: Select any date ≤ Current Date in DBC ODP Opt In/Out Status Date field");
+        logInfo("Step 10: Set 'Apply Seasonal Address' switcher - to NO");
         AccountActions.createAccount().setValuesInFieldsRequiredForCheckingAccount(checkingAccount);
 
-        logInfo("Step 9: Submit the account creation by clicking [Save] button");
+        logInfo("Step 11: Submit the account creation by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
 
-        logInfo("Step 10: Pay attention to the fields that were filled in during account creation");
+        logInfo("Step 12: Pay attention to the fields that were filled in during account creation");
         AccountActions.accountDetailsActions().clickMoreButton();
         AccountActions.accountDetailsActions().verifyChkAccountRecords(checkingAccount);
 
-        logInfo("Step 11: Click [Edit] button and pay attention to the fields that were filled in during account creation");
+        logInfo("Step 13: Click [Edit] button and pay attention to the fields that were filled in during account creation");
         Pages.accountDetailsPage().clickEditButton();
         AccountActions.editAccount().verifyChkAccountFieldsAfterCreationInEditMode(checkingAccount);
 
-        logInfo("Step 12: Do not make any changes and go to Account Maintenance -> Maintenance History page");
+        logInfo("Step 14: Do not make any changes and go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
-        logInfo("Step 13: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
+        logInfo("Step 15: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         AccountActions.accountMaintenanceActions().verifyChkAccountRecords(checkingAccount);
     }
 }
