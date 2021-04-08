@@ -23,6 +23,8 @@ import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -54,7 +56,7 @@ public class C18912_CommercialParticipationLoanLoanParticipationToolTest extends
         loanAccount.setPaymentBilledLeadDays(String.valueOf(1));
         loanAccount.setProduct(loanProductName);
         loanAccount.setEscrow("$ 0.00");
-        loanAccount.setCycleCode(Generator.genInt(1, 20)+"");
+        loanAccount.setCycleCode(Generator.genInt(1, 20) + "");
         loanAccount.setCycleLoan(true);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
@@ -75,15 +77,7 @@ public class C18912_CommercialParticipationLoanLoanParticipationToolTest extends
         Pages.aSideMenuPage().clickClientMenuItem();
 
         //Create Loan Participant
-        Pages.aSideMenuPage().clickLoansMenuItem();
-        Pages.loansPage().waitForLoanPageLoaded();
-        Pages.loansPage().clickViewAllLoanProductsLink();
-        if (!Pages.loanParticipantsPage().isTestCodeExists()){
-            Pages.loanParticipantsPage().clickAddNew();
-
-
-        }
-
+        Actions.loansActions().createAutotestParticipant();
 
         // Set products
         checkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
@@ -144,16 +138,69 @@ public class C18912_CommercialParticipationLoanLoanParticipationToolTest extends
         logInfo("Step 2: Open loan account from preconditions -> Maintenance -> Tools -> Loan Participations");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
+        String accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
         Pages.accountDetailsPage().clickMaintenanceTab();
         AccountActions.accountMaintenanceActions().setTool(Tool.LOAN_PARTICIPATIONS);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
+
+        logInfo("Step 3: Note left part of the screen");
+        Pages.accountMaintenancePage().checkLeftParticipant();
+
+        logInfo("Step 4: Note right part of the screen");
+        Pages.accountMaintenancePage().checkRightParticipant();
+
+        logInfo("Step 5: Click \"+ Add New Participation\"");
+        Pages.accountMaintenancePage().clickAddNewButton();
+        TestRailAssert.assertTrue(Pages.accountMaintenancePage().isStatusDisabled(), new CustomStepResult(
+                "Status is disabled", "Status is enabled"));
+
+        logInfo("Step 6: Specify:\n" +
+                "- Participant = any Participant from the drop-down box\n" +
+                "- Percentage Sold = any Percentage\n" +
+                "- Servicing Fee = any Percentage\n" +
+                "- Sold Date = in the past\n" +
+                "Please note if sold date is not selected current date will be set\n" +
+                "and click Save Changes");
+        Pages.accountMaintenancePage().selectParticipant();
+        String percent = "20";
+        Pages.accountMaintenancePage().inputPercentageSold(percent);
+        String servicingFee = "5";
+        Pages.accountMaintenancePage().inputServicingFee(servicingFee);
+        Pages.accountMaintenancePage().inputSoldDate(loanAccount.getDateOpened());
+        Pages.accountMaintenancePage().clickSaveButton();
+
+        logInfo("Step 7: \t\n" +
+                "Select Participant in left part of the screen");
+        Pages.accountMaintenancePage().clickAutotestRecord();
+        Pages.accountMaintenancePage().checkPendingStatus();
+        TestRailAssert.assertTrue(Pages.accountMaintenancePage().checkServicingFee(servicingFee), new CustomStepResult(
+                "Servicing Fee is correct", "Servicing Fee is not correct"));
+        TestRailAssert.assertTrue(Pages.accountMaintenancePage().checkPercentageSold(percent), new CustomStepResult(
+                "Percentage sold is correct", "Percentage sold is not correct"));
+        TestRailAssert.assertTrue(Pages.accountMaintenancePage().checkPartBalance(""), new CustomStepResult(
+                "Part Balance is correct", "Part Balance is not correct"));
+        TestRailAssert.assertTrue(Pages.accountMaintenancePage().checkSoldDate(loanAccount.getDateOpened()), new CustomStepResult(
+                "Sold date is correct", "Sold date is not correct"));
+        TestRailAssert.assertTrue(Pages.accountMaintenancePage().checkRepurchaseDate(""), new CustomStepResult(
+                "Repurchase date is correct", "Repurchase date is not correct"));
+        TestRailAssert.assertTrue(Pages.accountMaintenancePage().checkRepurchaseAmount(""), new CustomStepResult(
+                "Repurchase amount is correct", "Repurchase amount is not correct"));
+        TestRailAssert.assertTrue(Pages.accountMaintenancePage().checkPartAccruedInterest("0.00"), new CustomStepResult(
+                "Participant accrued interest is correct", "Participant accrued interest is not correct"));
+        TestRailAssert.assertTrue(Pages.accountMaintenancePage().checkFIOwnedAccruedInterest(accruedInterest), new CustomStepResult(
+                "FI owned accrued interest is correct", "FI owned accrued interest is not correct"));
+        TestRailAssert.assertTrue(Pages.accountMaintenancePage().checkPartServicingFee("0.00"), new CustomStepResult(
+                "Part Servicing Fee is correct", "Part Servicing Fee is not correct"));
+        TestRailAssert.assertTrue(Pages.accountMaintenancePage().isRepurchaseButtonDisabled(), new CustomStepResult(
+                "Repurchase button is disabled", "Repurchase button is enabled"));
+
+        logInfo("Step 8: Click \"Sell\" button");
+        Pages.accountMaintenancePage().clickSellButton();
 
 
 
 
     }
-
-
 
 
 }

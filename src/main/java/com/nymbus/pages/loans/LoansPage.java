@@ -23,8 +23,8 @@ public class LoansPage extends PageTools {
 
     @Step("Click the 'View all' loan products link")
     public void clickViewAllParticipantLink() {
-        waitForElementClickable(viewAllLoanProductsLink);
-        click(viewAllLoanProductsLink);
+        waitForElementClickable(viewAllPartsButton);
+        click(viewAllPartsButton);
     }
 
     /**
