@@ -14,6 +14,12 @@ public class DocumentsPage extends PageTools {
     private By deleteButton = By.xpath("//button/span[contains(text(), 'Delete')]");
     private By restoreTooltip = By.xpath("//div[@id='toast-container']/div/div/div[contains(text(), 'The document has been removed. Click to restore.')]");
     private By saveChangesButton = By.xpath("//button[contains(text(), 'Save Changes')]");
+    private By documentIdentificationIcon = By.xpath("//tr[contains(@data-test-id, 'repeat-documents')]/td/i");
+
+    @Step("Get Document Identification Icon Count")
+    public int getDocumentIdentificationIconCount() {
+        return getElements(documentIdentificationIcon).size();
+    }
 
     @Step("Check that document with 'Document Type' is present in the list")
     public boolean isDocumentTypePresentInTheList(String type) {

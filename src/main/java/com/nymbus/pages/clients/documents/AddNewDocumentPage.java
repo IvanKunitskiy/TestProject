@@ -21,6 +21,7 @@ public class AddNewDocumentPage extends PageTools {
     private By zoomInButton = By.xpath("//button[contains(text(), 'Zoom In')]");
     private By resetButton = By.xpath("//button[contains(text(), 'Reset')]");
     private By replaceDocumentInput = By.xpath("//input[@type='file']");
+    private By modalWindow = By.xpath("//div[@class='modal-content']");
 
     private By idTypeSelectorButton = By.xpath("//div[@data-test-id='field-type']");
     private By idTypeList = By.xpath("//li[contains(@role, 'option')]/div/span");
@@ -41,6 +42,11 @@ public class AddNewDocumentPage extends PageTools {
     private By docTypeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By docTypeSelectorButton = By.xpath("//div[@data-test-id='field-categoryid']");
     private By docTypeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+
+    @Step("Wait for modal invisibility")
+    public void waitForModalInvisibility() {
+        waitForElementInvisibility(modalWindow);
+    }
 
     @Step("Click 'Add New Document' button")
     public void clickResetButton() {
