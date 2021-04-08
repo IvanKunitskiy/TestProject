@@ -14,6 +14,6 @@ public class AlertMessageModalPage extends PageTools {
     }
 
     public String getAlertMessageModalText() {
-        return getElementText(alertMessageText);
+        return getElementText(alertMessageText).trim();
     }
 }

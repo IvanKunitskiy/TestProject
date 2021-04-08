@@ -3,8 +3,11 @@ package com.nymbus.frontoffice.loansmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -89,6 +92,7 @@ public class C18953_CommercialParticipationLoanSellRepurchaseTest extends BaseTe
         TestRailAssert.assertTrue(Pages.loanParticipantsPage().getLoanParticipantCount() > 0,
                 new CustomStepResult("'Loan Participant' list is empty", "'Loan Participant' exist in the system"));
         loanParticipant = Pages.loanParticipantsPage().getLoanParticipantNameByIndex(1);
+        Pages.aSideMenuPage().clickClientMenuItem();
 
         // Check that a Loan product exist with the following editable fields (Readonly? = NO) and create if not exist
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
@@ -139,5 +143,62 @@ public class C18953_CommercialParticipationLoanSellRepurchaseTest extends BaseTe
         Pages.accountDetailsPage().clickMaintenanceTab();
         AccountActions.accountMaintenanceActions().setTool(Tool.LOAN_PARTICIPATIONS);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
+
+        logInfo("Steep 3: Click Add New Participation");
+        Pages.participationsModalPage().clickAddNewParticipationsButton();
+
+        logInfo("Step 4: Specify:\n" +
+                "- Participant = any Participant from the drop-down box\n" +
+                "- Percentage Sold = f.e. 20%\n" +
+                "- Sold Date = in the past (f.e. Date Opened of Loan account)\n" +
+                "and click 'Save Changes'");
+        Actions.participationsActions().setParticipant(loanParticipant);
+        Pages.participationsModalPage().setPercentageSold("20");
+        Pages.participationsModalPage().setSoldDate(loanAccount.getDateOpened());
+
+        logInfo("Step 5: Select Participant in left part of the screen and click 'Sell' button");
+        Pages.participationsModalPage().clickParticipantRowByIndex(1);
+        Pages.participationsModalPage().clickSellButton();
+        String alertMessageModalText = Pages.alertMessageModalPage().getAlertMessageModalText();
+        TestRailAssert.assertTrue(alertMessageModalText.equals("The Sell will post transactions that can be viewed on Transaction History"),
+                new CustomStepResult("'Modal text' is not valid", "'Modal text' is valid"));
+        Pages.alertMessageModalPage().clickOkButton();
+        TestRailAssert.assertTrue(Pages.participationsModalPage().getParticipantStatusByIndex(1).equals("Sold"),
+                new CustomStepResult("'Status' is not valid", "'Status' is valid"));
+
+        logInfo("Step 6: Close 'Participations' tool");
+        Pages.participationsModalPage().clickCloseButton();
+
+        logInfo("Step 7: Go to the 'Transactions' tab and verify generated transaction");
+        Pages.accountDetailsPage().clickTransactionsTab();
+        Pages.transactionsPage().isTransactionWithDescriptionVisibleInList(TransactionCode.PARTICIPATION_SELL_471.getTransCode());
+
+        logInfo("Step 8: Log in to Webadmin -> RulesUI Query Analyzer and search with DQL:\n" +
+                "count: 10\n" +
+                "from: bank.data.actmst.participant\n" +
+                "where:\n" +
+                "- .accountid->accountnumber: loan account number from preconditions\n" +
+                "orderBy: -id\n" +
+                "deletedIncluded: true");
+        logInfo("Step 9: Check bank.data.actmst.participant -> interestearned value");
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        String interestearned = WebAdminActions.webAdminUsersActions().getParticipantInterestearnedValueByIndex(loanAccount.getAccountNumber(), 1);
+
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+
+        // TODO: Check bank.data.actmst.participant -> interestearned value
+
+        logInfo("Step 10: Go back to loan account from preconditions -> Maintenance -> Tools -> 'Loan Participations' tool");
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
+        Pages.accountDetailsPage().clickMaintenanceTab();
+        AccountActions.accountMaintenanceActions().setTool(Tool.LOAN_PARTICIPATIONS);
+        Pages.accountMaintenancePage().clickToolsLaunchButton();
+
+        logInfo("Step 11: Select Participant record in the left part of the screen and click the 'Repurchase' button");
     }
 }
