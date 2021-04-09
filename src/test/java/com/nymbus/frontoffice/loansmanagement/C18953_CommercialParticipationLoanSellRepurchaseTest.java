@@ -55,7 +55,6 @@ public class C18953_CommercialParticipationLoanSellRepurchaseTest extends BaseTe
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
-        loanAccount.setCallClassCode("223322 - John sotkaa");
 
         // Set up CHK account
         Account checkingAccount = new Account().setCHKAccountData();
