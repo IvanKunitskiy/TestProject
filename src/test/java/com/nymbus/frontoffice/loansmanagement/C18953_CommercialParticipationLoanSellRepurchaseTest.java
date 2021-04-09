@@ -7,6 +7,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -37,13 +38,10 @@ public class C18953_CommercialParticipationLoanSellRepurchaseTest extends BaseTe
 
     private String loanParticipant;
     private Account loanAccount;
-    private IndividualClient client;
     private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
-    private double escrowPaymentValue;
-    private String clientRootId;
 
     @BeforeMethod
     public void preCondition() {
@@ -51,12 +49,13 @@ public class C18953_CommercialParticipationLoanSellRepurchaseTest extends BaseTe
         // Set up client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up loan account
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
+        loanAccount.setCallClassCode("223322 - John sotkaa");
 
         // Set up CHK account
         Account checkingAccount = new Account().setCHKAccountData();
@@ -80,7 +79,6 @@ public class C18953_CommercialParticipationLoanSellRepurchaseTest extends BaseTe
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().clickViewSettingsLink();
         SettingsPage.bankControlPage().clickLoansTab();
-        System.out.println(SettingsPage.bankControlLoansPage().getCommercialParticipation());
         TestRailAssert.assertTrue(SettingsPage.bankControlLoansPage().getCommercialParticipation().equals("on"),
                 new CustomStepResult("'Commercial Participation' is not valid", "'Commercial Participation' is valid"));
 
@@ -88,7 +86,6 @@ public class C18953_CommercialParticipationLoanSellRepurchaseTest extends BaseTe
         Pages.aSideMenuPage().clickLoansMenuItem();
         Pages.loansPage().waitForLoanPageLoaded();
         Pages.loansPage().clickViewAllLoanParticipants();
-        System.out.println(Pages.loanParticipantsPage().getLoanParticipantNameByIndex(1));
         TestRailAssert.assertTrue(Pages.loanParticipantsPage().getLoanParticipantCount() > 0,
                 new CustomStepResult("'Loan Participant' list is empty", "'Loan Participant' exist in the system"));
         loanParticipant = Pages.loanParticipantsPage().getLoanParticipantNameByIndex(1);
@@ -98,11 +95,8 @@ public class C18953_CommercialParticipationLoanSellRepurchaseTest extends BaseTe
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
         Actions.loginActions().doLogOut();
 
-        // Get escrow payment value for the loan product
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        escrowPaymentValue = Actions.loanProductOverviewActions().getLoanProductEscrowPaymentValue(loanProductName);
-
         // Set the product
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
 
         // Create a client
@@ -115,7 +109,6 @@ public class C18953_CommercialParticipationLoanSellRepurchaseTest extends BaseTe
         AccountActions.createAccount().createCHKAccount(checkingAccount);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createLoanAccount(loanAccount);
-        clientRootId = ClientsActions.createClient().getClientIdFromUrl();
 
         // Perform transaction
         Actions.transactionActions().goToTellerPage();
@@ -149,12 +142,13 @@ public class C18953_CommercialParticipationLoanSellRepurchaseTest extends BaseTe
 
         logInfo("Step 4: Specify:\n" +
                 "- Participant = any Participant from the drop-down box\n" +
-                "- Percentage Sold = f.e. 20%\n" +
+                "- Percentage Sold = f.e. 20\n" +
                 "- Sold Date = in the past (f.e. Date Opened of Loan account)\n" +
                 "and click 'Save Changes'");
         Actions.participationsActions().setParticipant(loanParticipant);
         Pages.participationsModalPage().setPercentageSold("20");
         Pages.participationsModalPage().setSoldDate(loanAccount.getDateOpened());
+        Pages.participationsModalPage().clickSaveButton();
 
         logInfo("Step 5: Select Participant in left part of the screen and click 'Sell' button");
         Pages.participationsModalPage().clickParticipantRowByIndex(1);
@@ -163,15 +157,33 @@ public class C18953_CommercialParticipationLoanSellRepurchaseTest extends BaseTe
         TestRailAssert.assertTrue(alertMessageModalText.equals("The Sell will post transactions that can be viewed on Transaction History"),
                 new CustomStepResult("'Modal text' is not valid", "'Modal text' is valid"));
         Pages.alertMessageModalPage().clickOkButton();
+        Pages.participationsModalPage().waitForSoldStatusVisibleByIndex(1);
         TestRailAssert.assertTrue(Pages.participationsModalPage().getParticipantStatusByIndex(1).equals("Sold"),
                 new CustomStepResult("'Status' is not valid", "'Status' is valid"));
 
         logInfo("Step 6: Close 'Participations' tool");
+        double participantBalance = Double.parseDouble(Pages.participationsModalPage().getParticipantBalance());
         Pages.participationsModalPage().clickCloseButton();
+
+        // Get data
+        Pages.accountDetailsPage().clickDetailsTab();
+        double currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu());
+        double participationPercentSold = Integer.parseInt(Pages.accountDetailsPage().getParticipationPercentSold()) / (double) 100;
+        double currentEffectiveRate = Double.parseDouble(Pages.accountDetailsPage().getCurrentEffectiveRate());
+        String yearBase = Pages.accountDetailsPage().getDaysBaseYearBase().split("/")[1].replaceAll("[^0-9]", "");
 
         logInfo("Step 7: Go to the 'Transactions' tab and verify generated transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
-        Pages.transactionsPage().isTransactionWithDescriptionVisibleInList(TransactionCode.PARTICIPATION_SELL_471.getTransCode());
+        String effectiveDateValue = Pages.accountTransactionPage().getEffectiveDateValue(1);
+        String postingDateValue = Pages.accountTransactionPage().getPostingDateValue(1);
+        String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
+        double amountValue = AccountActions.retrievingAccountData().getAmountValue(1);
+        TestRailAssert.assertTrue(transactionCode.equals(TransactionCode.PARTICIPATION_SELL_471.getTransCode()),
+                new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
+        TestRailAssert.assertTrue(effectiveDateValue.equals(loanAccount.getDateOpened()),
+                new CustomStepResult("'Effective date' is not valid", "'Effective date' is valid"));
+        TestRailAssert.assertTrue(amountValue == currentBalance * participationPercentSold,
+                new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
 
         logInfo("Step 8: Log in to Webadmin -> RulesUI Query Analyzer and search with DQL:\n" +
                 "count: 10\n" +
@@ -185,20 +197,65 @@ public class C18953_CommercialParticipationLoanSellRepurchaseTest extends BaseTe
         SelenideTools.switchTo().window(1);
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
+        int days = DateTime.getDaysBetweenTwoDates(effectiveDateValue, postingDateValue, true);
         String interestearned = WebAdminActions.webAdminUsersActions().getParticipantInterestearnedValueByIndex(loanAccount.getAccountNumber(), 1);
+        double actualInterestEarned = participantBalance * (currentEffectiveRate / 100) / Double.parseDouble(yearBase) * days;
+        double interestEarnedRounded = Functions.roundToTwoDecimalPlaces(Double.parseDouble(interestearned));
+        double actualInterestEarnedRounded = Functions.roundToTwoDecimalPlaces(actualInterestEarned);
+        TestRailAssert.assertTrue(interestEarnedRounded == actualInterestEarnedRounded,
+                new CustomStepResult("'interestearned' is not valid", "'interestearned' is valid"));
 
         WebAdminActions.loginActions().doLogoutProgrammatically();
         SelenideTools.closeCurrentTab();
         SelenideTools.switchTo().window(0);
 
-        // TODO: Check bank.data.actmst.participant -> interestearned value
-
         logInfo("Step 10: Go back to loan account from preconditions -> Maintenance -> Tools -> 'Loan Participations' tool");
+        Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
         Pages.accountDetailsPage().clickMaintenanceTab();
         AccountActions.accountMaintenanceActions().setTool(Tool.LOAN_PARTICIPATIONS);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
 
         logInfo("Step 11: Select Participant record in the left part of the screen and click the 'Repurchase' button");
+        Pages.participationsModalPage().clickParticipantRowByIndex(1);
+        Pages.participationsModalPage().clickRepurchaseButton();
+        Pages.alertMessageModalPage().clickOkButton();
+        Pages.participationsModalPage().waitForRepurchaseStatusVisibleByIndex(1);
+
+        logInfo("Step 12: Close 'Participations' tool");
+        Pages.participationsModalPage().clickCloseButton();
+
+        logInfo("Step 13: Go to the 'Transactions' tab and verify generated transaction");
+        Pages.accountDetailsPage().clickTransactionsTab();
+        TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(1).equals(TransactionCode.PARTICIPATION_REPURCHASE_472.getTransCode()),
+                new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
+        TestRailAssert.assertTrue(Pages.accountTransactionPage().getEffectiveDateValue(1).equals(DateTime.getLocalDateOfPattern("MM/dd/yyyy")),
+                new CustomStepResult("'Effective date' is not valid", "'Effective date' is valid"));
+        TestRailAssert.assertTrue(AccountActions.retrievingAccountData().getAmountValue(1) == participantBalance,
+                new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
+
+        logInfo("Step 14: Log in to Webadmin -> RulesUI Query Analyzer and search with DQL:\n" +
+                "count: 10\n" +
+                "from: bank.data.actmst.participant\n" +
+                "where:\n" +
+                "- .accountid->accountnumber: loan account number from preconditions\n" +
+                "orderBy: -id\n" +
+                "deletedIncluded: true");
+        logInfo("Step 15: Check bank.data.actmst.participant -> interestearned and participantbalance values");
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        interestearned = WebAdminActions.webAdminUsersActions().getParticipantInterestearnedValueByIndex(loanAccount.getAccountNumber(), 1);
+        String participantbalance = WebAdminActions.webAdminUsersActions().getParticipantBalanceValueByIndex(loanAccount.getAccountNumber(), 1);
+
+        TestRailAssert.assertTrue(Double.parseDouble(interestearned) == 0.00,
+                new CustomStepResult("'interestearned' is not valid", "'interestearned' is valid"));
+        TestRailAssert.assertTrue(Double.parseDouble(participantbalance) == 0.00,
+                new CustomStepResult("'interestearned' is not valid", "'interestearned' is valid"));
+
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
     }
 }

@@ -650,10 +650,16 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      * Participants
      */
     private final By interestEarnedByIndex = By.xpath("//table//tr[%s]//td/div[@key-name='interestearned']");
+    private final By participantBalanceByIndex = By.xpath("//table//tr[%s]//td/div[@key-name='participantbalance']");
 
     public String getParticipantInterestEarnedByIndex(int index) {
         waitForElementVisibility(interestEarnedByIndex, index);
         return getElementText(interestEarnedByIndex, index);
+    }
+
+    public String getParticipantBalanceByIndex(int index) {
+        waitForElementVisibility(participantBalanceByIndex, index);
+        return getElementText(participantBalanceByIndex, index);
     }
 
 }

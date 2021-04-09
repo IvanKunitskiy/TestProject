@@ -497,6 +497,14 @@ public class WebAdminUsersActions {
         return WebAdminPages.rulesUIQueryAnalyzerPage().getParticipantInterestEarnedByIndex(index);
     }
 
+    public String getParticipantBalanceValueByIndex(String accountNumber, int index) {
+        SelenideTools.openUrl(getParticipants(accountNumber));
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getParticipantInterestEarnedByIndex(index);
+    }
+
     public String getPrincipalNextPaymentDate(String accountNumber) {
         SelenideTools.openUrl(getPrincipalNextPaymentUrl(accountNumber));
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();

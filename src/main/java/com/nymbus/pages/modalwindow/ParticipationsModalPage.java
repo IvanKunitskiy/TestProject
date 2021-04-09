@@ -20,7 +20,24 @@ public class ParticipationsModalPage extends PageTools {
     private final By participantRow = By.xpath("//table//tr[contains(@class, 'previewableItem')][%s]");
     private final By sellButton = By.xpath("//button[text()='Sell']");
     private final By participantStatusByIndex = By.xpath("//table//tr[%s]/td[4]");
+    private final By participantSoldStatusByIndex = By.xpath("//table//tr[%s]/td[4]//span[text()='Sold']");
+    private final By participantRepurchaseStatusByIndex = By.xpath("//table//tr[%s]/td[4]//span[text()='Repurchased']");
     private final By closeButton = By.xpath("//div[@class='modal-content']//button[contains(@class, 'close')]");
+    private final By repurchaseButton = By.xpath("//button[text()='Repurchase']");
+    private final By saveButton = By.xpath("//button[span[text()='Save Changes']]");
+    private final By participantBalance = By.xpath("(//tr/td/dn-field-view//span/span)[9]");
+
+    @Step("Get 'Participant Balance' value")
+    public String getParticipantBalance() {
+        waitForElementVisibility(participantBalance);
+        return getElementText(participantBalance).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Click the 'Save' button")
+    public void clickSaveButton() {
+        waitForElementClickable(saveButton);
+        click(saveButton);
+    }
 
     @Step("Click the 'Close' button")
     public void clickCloseButton() {
@@ -29,15 +46,33 @@ public class ParticipationsModalPage extends PageTools {
     }
 
     @Step("Click the participant row")
+    public void waitForSoldStatusVisibleByIndex(int index) {
+        waitForElementVisibility(participantSoldStatusByIndex, index);
+    }
+
+    @Step("Click the participant row")
+    public void waitForRepurchaseStatusVisibleByIndex(int index) {
+        waitForElementVisibility(participantRepurchaseStatusByIndex, index);
+    }
+
+    @Step("Click the participant row")
     public String getParticipantStatusByIndex(int index) {
         waitForElementClickable(participantStatusByIndex, index);
         return getElementText(participantStatusByIndex, index).trim();
     }
 
-    @Step("Click the sell button")
+    @Step("Click the 'Repurchase' button")
+    public void clickRepurchaseButton() {
+        waitForElementClickable(repurchaseButton);
+        click(repurchaseButton);
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+    }
+
+    @Step("Click the 'Sell' button")
     public void clickSellButton() {
         waitForElementClickable(sellButton);
         click(sellButton);
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
     }
 
     @Step("Click the participant row")
