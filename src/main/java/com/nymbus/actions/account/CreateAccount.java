@@ -279,6 +279,14 @@ public class CreateAccount {
         setAccountAnalysis(account);
         Pages.addAccountPage().setOptInOutDateValue(account.getOptInOutDate());
         setCallClassCode(account);
+        applySeasonalAddresToNo();
+
+    }
+
+    private void applySeasonalAddresToNo() {
+        if (Pages.addAccountPage().getApplySeasonalAddress().toLowerCase().equals("yes")){
+            Pages.addAccountPage().clickApplySeasonalAddressSwitch();
+        }
     }
 
     public void selectValuesInFieldsRequiredForCDAccount(Account account) {

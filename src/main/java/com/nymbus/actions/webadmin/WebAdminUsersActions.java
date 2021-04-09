@@ -384,6 +384,21 @@ public class WebAdminUsersActions {
                 "deletedIncluded%3A+true&source=";
     }
 
+    private String getInterestNextPaymentUrl(String accountNumber) {
+        return Constants.WEB_ADMIN_URL +
+                "RulesUIQuery.ct?" +
+                "waDbName=coreDS&" +
+                "dqlQuery=count%3A+10%0D%0A" +
+                "from%3A+bank.data.actloan%0D%0A" +
+                "select%3A+rootid%2C+createdwhen%2C+createdby%2C+accountid%2C+nextduedate%2C+interestnextpaymentdate%0D%0A" +
+                "where%3A%0D%0A" +
+                "-+.accountid" +
+                "-%3Eaccountnumber%3A+" +
+                accountNumber +
+                "%0D%0A%0D%0A" +
+                "deletedIncluded%3A+true&source=";
+    }
+
     private String getParticipants(String accountNumber) {
         return Constants.WEB_ADMIN_URL +
                 "RulesUIQuery.ct?" +
@@ -511,6 +526,14 @@ public class WebAdminUsersActions {
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
 
         return WebAdminPages.rulesUIQueryAnalyzerPage().getPrincipalNextPaymentDateByIndex(1);
+    }
+
+    public String getInterestNextPaymentDate(String accountNumber) {
+        SelenideTools.openUrl(getInterestNextPaymentUrl(accountNumber));
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getInterestNextPaymentDateByIndex(1);
     }
 
     public void queryPaymentDueData(String accountNumber) {

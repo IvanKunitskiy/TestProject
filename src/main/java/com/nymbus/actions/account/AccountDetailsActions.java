@@ -1,6 +1,5 @@
 package com.nymbus.actions.account;
 
-import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
@@ -37,7 +36,7 @@ public class AccountDetailsActions {
         Assert.assertEquals(Pages.accountDetailsPage().getCurrentOfficerValue(), account.getCurrentOfficer(), "'Current Officer' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getProductValue(), account.getProduct(), "'Product' value does not match");
         Assert.assertEquals(Pages.accountDetailsPage().getBankBranchValue(), account.getBankBranch(), "'Bank Branch' value does not match");
-        Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), WebAdminActions.loginActions().getSystemDate(), "'Date Opened' value does not match");
+        Assert.assertEquals(Pages.accountDetailsPage().getDateOpenedValue(), account.getDateOpened(), "'Date Opened' value does not match");
         if (account.getCallClassCode() != null) {
             Assert.assertEquals(Pages.accountDetailsPage().getCallClassCode(), account.getCallClassCode(), "'Call Class' value does not match");
         }

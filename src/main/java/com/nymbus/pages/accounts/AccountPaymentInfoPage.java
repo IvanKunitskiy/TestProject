@@ -190,7 +190,26 @@ public class AccountPaymentInfoPage extends PageTools {
         type(amount, paymentAmount);
     }
 
+    @Step("Type 'Interest' value")
+    public void typeInterest(String amount) {
+        waitForElementVisibility(disInterest);
+        waitForElementClickable(disInterest);
+        type(amount, disInterest);
+    }
 
+    @Step("Type 'Principal' value")
+    public void typePrincipal(String amount) {
+        waitForElementVisibility(disPrincipal);
+        waitForElementClickable(disPrincipal);
+        type(amount, disPrincipal);
+    }
+
+    @Step("Type 'Escrow' value")
+    public void typeEscrow(String amount) {
+        waitForElementVisibility(disEscrow);
+        waitForElementClickable(disEscrow);
+        type(amount, disEscrow);
+    }
 
     @Step("Get 'Status' value")
     public String getPaymentDueStatus() {
@@ -436,7 +455,7 @@ public class AccountPaymentInfoPage extends PageTools {
 
     @Step("Get 'Status' from 'Payments Due' value by index : {index}")
     public String getStatusFromRecordByIndex(int index){
-        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
         waitForElementVisibility(statusFromRecordByIndex, index);
         return getElementText(statusFromRecordByIndex, index).trim();
     }
