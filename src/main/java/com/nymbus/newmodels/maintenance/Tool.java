@@ -12,6 +12,8 @@ public enum Tool {
     LOAN_PAYOFF_CHARGES("Loan Payoff Charges"),
     LOAN_PARTICIPATIONS("Loan Participations"),
     LOAN_PAYOFF_PREPAYMENT_PENALTY("Loan Payoff Prepayment Penalty");
+    LOAN_PAYOFF_PREPAYMENT_PENALTY("Loan Payoff Prepayment Penalty"),
+    LOAN_PARTICIPATIONS("Loan Participations");
 
     private final String tool;
 }

@@ -16,10 +16,22 @@ public class BankControlPage extends PageTools {
     private final By commercialParticipationLite = By.xpath("//input[@name='field[CommercialParticipationLite]']");
     private final By commercialParticipationLiteButton = By.xpath("//div[@data-rootid='43830316']//input/..");
 
-    @Step("Click the 'Miscellaneous' button")
+    /*
+     ** Tabs
+     */
+    private final By miscellaneousTab = By.xpath("//a[contains(string(),'Miscellaneous')]");
+    private final By loansTab = By.xpath("//a[text()='Loans']");
+
+    @Step("Click the 'Loans' tab")
+    public void clickLoansTab() {
+        waitForElementClickable(loansTab);
+        click(loansTab);
+    }
+
+    @Step("Click the 'Miscellaneous' tab")
     public void clickMiscellaneousButton() {
-        waitForElementClickable(miscellaneousButton);
-        click(miscellaneousButton);
+        waitForElementClickable(miscellaneousTab);
+        click(miscellaneousTab);
     }
 
     @Step("Click the 'Miscellaneous' button")

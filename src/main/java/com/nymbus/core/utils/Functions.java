@@ -96,4 +96,9 @@ public class Functions {
 
         return Double.parseDouble(df.format(value));
     }
+
+    public double roundAmountToTwoDecimals(double amount) {
+        DecimalFormat df = new DecimalFormat("#.##");
+        return Double.parseDouble(df.format(amount));
+    }
 }

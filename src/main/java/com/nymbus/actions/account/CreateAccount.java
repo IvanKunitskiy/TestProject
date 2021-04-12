@@ -272,12 +272,21 @@ public class CreateAccount {
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
         setBankBranch(account);
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         setInterestRate(account);
         setStatementCycle(account);
         setChargeOrAnalyze(account);
         setAccountAnalysis(account);
         Pages.addAccountPage().setOptInOutDateValue(account.getOptInOutDate());
         setCallClassCode(account);
+        applySeasonalAddresToNo();
+
+    }
+
+    private void applySeasonalAddresToNo() {
+        if (Pages.addAccountPage().getApplySeasonalAddress().toLowerCase().equals("yes")){
+            Pages.addAccountPage().clickApplySeasonalAddressSwitch();
+        }
     }
 
     public void selectValuesInFieldsRequiredForCDAccount(Account account) {

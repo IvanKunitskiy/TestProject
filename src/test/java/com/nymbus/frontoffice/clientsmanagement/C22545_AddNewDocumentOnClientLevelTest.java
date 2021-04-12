@@ -13,6 +13,8 @@ import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.client.other.DocumentFactory;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -66,7 +68,10 @@ public class C22545_AddNewDocumentOnClientLevelTest extends BaseTest {
         logInfo("Step 4: Click [Add New Document] button");
         Pages.documentsPage().clickAddNewDocumentButton();
 
-        logInfo("Step 5: Drag & drop some file (e.g. picture or PDF), fill in all the displayed fields with some valid data and click [Save Changes] button");
+        logInfo("Step 5: Drag & drop some file (e.g. picture or PDF), fill in all the text fields with some valid data, but skip calendar date picker fields");
+        logInfo("Step 6: Fill in 'issue date' and 'expiration date' fields by expanding calendar date picker, use mouse to select date.\n" +
+                "Note: Skip this step if date field is not supposed to exist (e.g. for logo)");
+        logInfo("Step 7: Click [Save Changes] button");
         Pages.addNewDocumentPage().uploadNewDocument(Functions.getFilePathByName("clientDocument.png"));
         DocumentActions.createDocumentActions().setIDType(companyIDDocument);
         Pages.addNewDocumentPage().typeValueToIDNumberField(companyIDDocument.getIdNumber());
@@ -75,6 +80,11 @@ public class C22545_AddNewDocumentOnClientLevelTest extends BaseTest {
         Pages.addNewDocumentPage().setIssueDateValue(companyIDDocument.getIssueDate());
         Pages.addNewDocumentPage().setExpirationDateValue(companyIDDocument.getExpirationDate());
         Pages.addNewDocumentPage().clickSaveChangesButton();
+        Pages.addNewDocumentPage().waitForModalInvisibility();
+
+        logInfo("Step 8: Make sure that Document identification icon is present for any document");
+        TestRailAssert.assertTrue(Pages.documentsPage().getDocumentIdentificationIconCount() == 4,
+                new CustomStepResult("Icons are not available for all documents", "Icons are available for all documents"));
 
         logInfo("Step 6: Open Clients profile on Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();

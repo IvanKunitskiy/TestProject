@@ -158,6 +158,10 @@ public class AccountDetailsPage extends PageTools {
     private final By rateRoundingMethod = By.xpath("//tr[@data-test-id='field-armroundingindicator']/td/dn-field-view/div/div/span/span");
     private final By originalInterestRate = By.xpath("//tr[@data-test-id='field-armoriginalinterestrate']/td/dn-field-view/div/div/span/span");
     private final By nextPaymentBilledDueDate = By.xpath("//tr[@data-test-id='field-nextduedate']//span/span");
+    private final By numberOfPaymentsReceived = By.xpath("//tr[@data-test-id='field-numberofpaymentsreceived']/td//span/span");
+    private final By participationPercentSold = By.xpath("//tr[@data-test-id='field-participationpercentsold']//span/span");
+    private final By participantBalance = By.xpath("//tr[@data-test-id='field-participantcurrentbalance']//span/span");
+
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -169,6 +173,12 @@ public class AccountDetailsPage extends PageTools {
     /**
      * Details tab
      */
+
+    @Step("Get 'Participation Percent Sold'")
+    public String getParticipationPercentSold() {
+        waitForElementVisibility(participationPercentSold);
+        return getElementText(participationPercentSold).replaceAll("[^0-9]", "");
+    }
 
     @Step("Get 'Next Payment Billed Due Date'")
     public String getNextPaymentBilledDueDate() {
@@ -277,14 +287,18 @@ public class AccountDetailsPage extends PageTools {
         return currentBalanceValue.replaceAll("[^0-9.-]", "");
     }
 
+    @Step("Get 'Participant Balance' value")
+    public String getParticipantBalance() {
+        waitForElementVisibility(participantBalance);
+        return getElementText(participantBalance).replaceAll("[^0-9.-]", "");
+    }
+
     @Step("Get 'CurrentBalance' value from header menu")
     public String getCurrentBalanceFromHeaderMenu() {
         waitForElementVisibility(currentBalance1);
         String currentBalanceValue = getElementText(currentBalance1).trim();
         return currentBalanceValue.replaceAll("[^0-9.-]", "");
     }
-
-    private final By numberOfPaymentsReceived = By.xpath("//tr[@data-test-id='field-numberofpaymentsreceived']/td//span/span");
 
     @Step("Get 'Number Of Payments Received' value from header menu")
     public String getNumberOfPaymentsReceived() {
