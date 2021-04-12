@@ -158,7 +158,6 @@ public class AccountMaintenancePage extends PageTools {
     @Step("Check 'Status' is disabled")
     public boolean isStatusDisabled() {
         waitForElementVisibility(participantStatus);
-        System.out.println(getElementAttributeValue("disabled", participantStatus));
         return Boolean.parseBoolean(getElementAttributeValue("disabled", participantStatus));
     }
 
@@ -246,25 +245,25 @@ public class AccountMaintenancePage extends PageTools {
     public boolean checkPartAccruedInterest(String interest){
         waitForElementVisibility(partAccruedInterest);
         System.out.println(getElementText(partAccruedInterest));
-        return getElementText(partAccruedInterest).equals(interest);
+        return getElementText(partAccruedInterest).replaceAll("[^0-9.]", "").equals(interest);
     }
 
     @Step("Check FI owned accrued interest")
     public boolean checkFIOwnedAccruedInterest(String interest){
         waitForElementVisibility(fiOwnedInterest);
-        return getElementText(fiOwnedInterest).equals(interest);
+        return getElementText(fiOwnedInterest).replaceAll("[^0-9.]", "").equals(interest);
     }
 
     @Step("Check participant servicing fee")
     public boolean checkPartServicingFee(String fee){
         waitForElementVisibility(partServicingFee);
-        return getElementText(partServicingFee).equals(fee);
+        return getElementText(partServicingFee).replaceAll("[^0-9.]", "").equals(fee);
     }
 
     @Step("Check repurchase button disabled")
     public boolean isRepurchaseButtonDisabled(){
         waitForElementVisibility(repurchaseButton);
-        return getDisabledElementAttributeValue("disabled", repurchaseButton).equals("disabled");
+        return Boolean.parseBoolean(getDisabledElementAttributeValue("disabled", repurchaseButton));
     }
 
     @Step("Click Sell button")
