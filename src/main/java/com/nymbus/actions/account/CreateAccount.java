@@ -272,6 +272,7 @@ public class CreateAccount {
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         setCurrentOfficer(account);
         setBankBranch(account);
+        Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         setInterestRate(account);
         setStatementCycle(account);
         setChargeOrAnalyze(account);

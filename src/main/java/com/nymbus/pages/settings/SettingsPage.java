@@ -1,5 +1,6 @@
 package com.nymbus.pages.settings;
 
+import com.nymbus.pages.settings.bankcontrol.BankControlLoansPage;
 import com.nymbus.pages.settings.bankcontrol.BankControlPage;
 import com.nymbus.pages.settings.callclasscodes.CallClassCodesPage;
 import com.nymbus.pages.settings.callclasscodes.CallCodePage;
@@ -45,6 +46,7 @@ public class SettingsPage {
     private static CallClassCodesPage callClassCodesPage;
     private static CallCodePage callCodePage;
     private static EditCallCodePage editCallCodePage;
+    private static BankControlLoansPage bankControlLoansPage;
 
     /**
      * This function return an instance of `MainPage`
@@ -244,5 +246,15 @@ public class SettingsPage {
             editCallCodePage = new EditCallCodePage();
         }
         return editCallCodePage;
+    }
+
+    /**
+     * This function return an instance of `BankControlLoansPage`
+     */
+    public static BankControlLoansPage bankControlLoansPage() {
+        if (bankControlLoansPage == null) {
+            bankControlLoansPage = new BankControlLoansPage();
+        }
+        return bankControlLoansPage;
     }
 }
