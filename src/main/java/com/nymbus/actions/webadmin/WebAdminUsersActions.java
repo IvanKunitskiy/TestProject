@@ -517,7 +517,7 @@ public class WebAdminUsersActions {
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
 
-        return WebAdminPages.rulesUIQueryAnalyzerPage().getParticipantInterestEarnedByIndex(index);
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getParticipantBalanceByIndex(index);
     }
 
     public String getPrincipalNextPaymentDate(String accountNumber) {
