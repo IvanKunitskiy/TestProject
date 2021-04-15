@@ -7,6 +7,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
@@ -151,7 +152,6 @@ public class C18961_CommercialParticipationLoanParticipantInterestAndBalanceAreC
     @Severity(SeverityLevel.CRITICAL)
     public void commercialParticipationLoanParticipantInterestAndBalanceAreChangedAfterAdditionalLoanFunding() {
 
-
         logInfo("Step 1: Log in to the system");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
@@ -250,7 +250,7 @@ public class C18961_CommercialParticipationLoanParticipantInterestAndBalanceAreC
         String effectiveDate475Value = Pages.accountTransactionPage().getEffectiveDateValue(2);
         TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(2).equals(TransactionCode.ADDITIONAL_SELL_475.getTransCode()),
                 new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
-        TestRailAssert.assertTrue(Pages.accountTransactionPage().getEffectiveDateValue(2).equals(loanAccount.getDateOpened()),
+        TestRailAssert.assertTrue(effectiveDate475Value.equals(loanAccount.getDateOpened()),
                 new CustomStepResult("'Effective date' is not valid", "'Effective date' is valid"));
         TestRailAssert.assertTrue(transaction475Amount == transaction410Amount * participationPercentSold,
                 new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
@@ -272,22 +272,15 @@ public class C18961_CommercialParticipationLoanParticipantInterestAndBalanceAreC
         String participantbalance = WebAdminActions.webAdminUsersActions().getParticipantBalanceValueByIndex(loanAccount.getAccountNumber(), 1);
 
         logInfo("Step 16: Check bank.data.actmst.participant -> interestearned and participantbalance values");
-        TestRailAssert.assertTrue(Double.parseDouble(participantbalance) == transaction471Amount + transaction475Amount,
-                new CustomStepResult("'interestearned' is not valid", "'interestearned' is valid"));
-
         double effectiveRate = currentEffectiveRate / 100;
         double yearBaseValue = Double.parseDouble(yearBase);
         int days = DateTime.getDaysBetweenTwoDates(effectiveDate475Value, postingDate475Value, true);
         double expectedInterestEarned = (transaction475Amount * effectiveRate / yearBaseValue * days) + Double.parseDouble(previousInterestearned);
 
-        System.out.println(transaction475Amount);
-        System.out.println(effectiveRate);
-        System.out.println(yearBaseValue);
-        System.out.println(days);
-        System.out.println(expectedInterestEarned);
-        System.out.println(Double.parseDouble(previousInterestearned));
-
-        TestRailAssert.assertTrue(Double.parseDouble(participantbalance) == expectedInterestEarned,
+        TestRailAssert.assertTrue(Double.parseDouble(participantbalance) == transaction471Amount + transaction475Amount,
+                new CustomStepResult("'interestearned' is not valid", "'interestearned' is valid"));
+        TestRailAssert.assertTrue(Functions.getDoubleWithFormatAndFloorRounding(Double.parseDouble(interestearned), "##.##") ==
+                        Functions.getDoubleWithFormatAndFloorRounding(expectedInterestEarned, "##.##"),
                 new CustomStepResult("'participantbalance' is not valid", "'participantbalance' is valid"));
     }
 }
