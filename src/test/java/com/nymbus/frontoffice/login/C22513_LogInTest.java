@@ -1,10 +1,12 @@
 package com.nymbus.frontoffice.login;
 
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.testrail.TestRailIssue;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.pages.Pages;
-import io.qameta.allure.*;
+import com.nymbus.testrail.TestRailIssue;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Owner;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -45,9 +47,11 @@ public class C22513_LogInTest extends BaseTest {
         Pages.navigationPage().clickAccountButton();
 
         Assert.assertTrue(Pages.navigationPage().getUserFullName().contains(Constants.FIRST_NAME),
-                "User's first name is not visible. Found: " + Pages.navigationPage().getUserFullName());
+                "User's first name is not visible. Found: " + Pages.navigationPage().getUserFullName()
+                        + " expected: " + Constants.FIRST_NAME);
 
         Assert.assertTrue(Pages.navigationPage().getUserFullName().contains(Constants.LAST_NAME),
-                "User's last name is not visible. Found: " + Pages.navigationPage().getUserFullName());
+                "User's last name is not visible. Found: " + Pages.navigationPage().getUserFullName()
+                        + " expected: " + Constants.LAST_NAME);
     }
 }
