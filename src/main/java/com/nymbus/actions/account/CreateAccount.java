@@ -202,7 +202,8 @@ public class CreateAccount {
     }
 
     private void setEscrowPayment(Account account) {
-        if (account.getEscrow() !=null && !Pages.addAccountPage().getEscrowPaymentValue().equals(account.getEscrow())){
+        String escrowPaymentValue = Pages.addAccountPage().getEscrowPaymentValue();
+        if (account.getEscrow() !=null && escrowPaymentValue != null && !escrowPaymentValue.equals(account.getEscrow())){
             Pages.addAccountPage().setEscrowPaymentValue(account.getEscrow());
         }
     }
@@ -284,7 +285,7 @@ public class CreateAccount {
     }
 
     private void applySeasonalAddresToNo() {
-        if (Pages.addAccountPage().getApplySeasonalAddress().toLowerCase().equals("yes")){
+        if (Pages.addAccountPage().getApplySeasonalAddress().equalsIgnoreCase("yes")){
             Pages.addAccountPage().clickApplySeasonalAddressSwitch();
         }
     }

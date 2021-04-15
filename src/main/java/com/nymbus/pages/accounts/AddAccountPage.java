@@ -1273,7 +1273,10 @@ public class AddAccountPage extends PageTools {
 
     @Step("Get the 'Escrow payment' value")
     public String getEscrowPaymentValue() {
-        return getElementAttributeValue("value", escrowPayment).replaceAll("[^0-9.]", "");
+        if (!getElementsWithZeroOption(escrowPayment).isEmpty()) {
+            return getElementAttributeValue("value", escrowPayment).replaceAll("[^0-9.]", "");
+        }
+        return null;
     }
 
     @Step("Set the 'Escrow payment' value")

@@ -52,8 +52,8 @@ public class C25479_ProcessLoanPrepaymentTransaction extends BaseTest {
         checkAccount = new Account().setCHKAccountData();
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setNextPaymentBilledDueDate(DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(),
-                - Integer.parseInt(loanAccount.getPaymentBilledLeadDays()) - 1));
-        loanAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getNextPaymentBilledDueDate(),1));
+                -Integer.parseInt(loanAccount.getPaymentBilledLeadDays()) - 1));
+        loanAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getNextPaymentBilledDueDate(), 1));
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         String dateOpened = loanAccount.getDateOpened();
@@ -203,7 +203,7 @@ public class C25479_ProcessLoanPrepaymentTransaction extends BaseTest {
                 new CustomStepResult("Date Payment Paid In Full is not valid",
                         "Date Payment Paid In Full is valid"));
         String dueDate = Pages.accountPaymentInfoPage().getDisabledDueDate();
-        TestRailAssert.assertTrue(dueDate.equals(DateTime.getDateMinusMonth(nextPaymentBilledDueDate,1)),
+        TestRailAssert.assertTrue(dueDate.equals(DateTime.getDateMinusMonth(nextPaymentBilledDueDate, 1)),
                 new CustomStepResult("Due date is not valid", "Due date is valid"));
 
         String typeDue = Pages.accountPaymentInfoPage().getTypeDue();
@@ -215,7 +215,7 @@ public class C25479_ProcessLoanPrepaymentTransaction extends BaseTest {
         double expectedAccruedInterest = Double.parseDouble(currentBalanceForInterest) * Double.parseDouble(currentEffectiveRate) / 100 /
                 yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate, dueDate, true);
         String expectedInterest = expectedAccruedInterest + "";
-        expectedInterest = expectedInterest.substring(0,expectedInterest.indexOf(".")+3);
+        expectedInterest = expectedInterest.substring(0, expectedInterest.indexOf(".") + 3);
         TestRailAssert.assertTrue(disInterest.equals(expectedInterest),
                 new CustomStepResult("Interest is not valid", "Interest is valid"));
         String disAmount = Pages.accountPaymentInfoPage().getDisabledAmount();
@@ -237,7 +237,12 @@ public class C25479_ProcessLoanPrepaymentTransaction extends BaseTest {
         String amount = Pages.accountPaymentInfoPage().getAmount();
         String escrow = Pages.accountPaymentInfoPage().getEscrow();
         String principal = Pages.accountPaymentInfoPage().getPrincipal();
-        double sum = Double.parseDouble(interest) + Double.parseDouble(escrow) + Double.parseDouble(principal);
+        double sum;
+        if (escrow.isEmpty()) {
+            sum = Double.parseDouble(interest) + Double.parseDouble(principal);
+        } else {
+            sum = Double.parseDouble(interest) + Double.parseDouble(escrow) + Double.parseDouble(principal);
+        }
         TestRailAssert.assertTrue(Double.parseDouble(amount) == sum,
                 new CustomStepResult("Amount sum is not valid", "Amount sum is valid"));
         TestRailAssert.assertTrue(Double.parseDouble(amount) == transactionAmount,
@@ -274,7 +279,7 @@ public class C25479_ProcessLoanPrepaymentTransaction extends BaseTest {
                 new CustomStepResult("Current balance is not valid", "Current balance is valid"));
         String actualAccruedInterest = Pages.accountDetailsPage().getAccruedInterest();
         String detailsInterest = Double.parseDouble(accruedInterest) - Double.parseDouble(interest) + "";
-        TestRailAssert.assertTrue(actualAccruedInterest.equals(detailsInterest.substring(0,detailsInterest.indexOf(".")+3)),
+        TestRailAssert.assertTrue(actualAccruedInterest.equals(detailsInterest.substring(0, detailsInterest.indexOf(".") + 3)),
                 new CustomStepResult("Accrued interest is not valid", "Accrued interest is valid"));
 
         logInfo("Step 12: Go to the \"Transaction\" tab and verify payment portions of 416 transaction");
@@ -288,9 +293,11 @@ public class C25479_ProcessLoanPrepaymentTransaction extends BaseTest {
         double interestValue = AccountActions.retrievingAccountData().getInterestMinusValue(1);
         TestRailAssert.assertTrue(interestValue == Double.parseDouble(interest),
                 new CustomStepResult("Interest is not valid", "Interest is valid"));
-        double escrowValue = AccountActions.retrievingAccountData().getEscrowMinusValue(1);
-        TestRailAssert.assertTrue(escrowValue == Double.parseDouble(escrow),
-                new CustomStepResult("Escrow is not valid", "Escrow is valid"));
+        if (!escrow.isEmpty()) {
+            double escrowValue = AccountActions.retrievingAccountData().getEscrowMinusValue(1);
+            TestRailAssert.assertTrue(escrowValue == Double.parseDouble(escrow),
+                    new CustomStepResult("Escrow is not valid", "Escrow is valid"));
+        }
     }
 
 }
