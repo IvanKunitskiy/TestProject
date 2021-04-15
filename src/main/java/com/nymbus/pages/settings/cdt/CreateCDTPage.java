@@ -8,7 +8,7 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
 public class CreateCDTPage extends PageTools {
-    private final By nameInput = By.xpath("//input[@placeholder=' ']");
+    private final By nameInput = By.xpath("//input[@name='field[(databean)name]']");
     private final By debitAccountTypeInput = By.xpath("//div[@data-field-id='debitaccounttype']//input");
     private final By accountType = By.xpath("//a[contains(string(),'%s')]");
     private final By creditAccountTypeInput = By.xpath("//div[@data-field-id='creditaccounttype']//input");

@@ -131,6 +131,16 @@ public class Pages extends AllureLogger {
     }
 
     /**
+     * This function return an instance of `LoanParticipantsPage`
+     */
+    public static LoanParticipantsPage loanParticipantsPage() {
+        if (loanParticipantsPage == null) {
+            loanParticipantsPage = new LoanParticipantsPage();
+        }
+        return loanParticipantsPage;
+    }
+
+    /**
      * This function return an instance of `NavigationPage`
      */
     public static NavigationPage navigationPage() {
@@ -840,16 +850,6 @@ public class Pages extends AllureLogger {
             quotePayoffModalPage = new QuotePayoffModalPage();
         }
         return quotePayoffModalPage;
-    }
-
-    /**
-     * This function return an instance of `LoanParticipantsPage`
-     */
-    public static LoanParticipantsPage loanParticipantsPage(){
-        if (loanParticipantsPage == null){
-            loanParticipantsPage = new LoanParticipantsPage();
-        }
-        return loanParticipantsPage;
     }
 
     /**
