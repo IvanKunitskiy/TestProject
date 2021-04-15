@@ -3,8 +3,12 @@ package com.nymbus.frontoffice.loansmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -144,14 +148,14 @@ public class C18912_CommercialParticipationLoanLoanParticipationToolTest extends
         Pages.accountMaintenancePage().clickToolsLaunchButton();
 
         logInfo("Step 3: Note left part of the screen");
-        Pages.accountMaintenancePage().checkLeftParticipant();
+        Pages.participationsModalPage().checkLeftParticipant();
 
         logInfo("Step 4: Note right part of the screen");
-        Pages.accountMaintenancePage().checkRightParticipant();
+        Pages.participationsModalPage().checkRightParticipant();
 
         logInfo("Step 5: Click \"+ Add New Participation\"");
-        Pages.accountMaintenancePage().clickAddNewButton();
-        TestRailAssert.assertTrue(Pages.accountMaintenancePage().isStatusDisabled(), new CustomStepResult(
+        Pages.participationsModalPage().clickAddNewButton();
+        TestRailAssert.assertTrue(Pages.participationsModalPage().isStatusDisabled(), new CustomStepResult(
                 "Status is disabled", "Status is enabled"));
 
         logInfo("Step 6: Specify:\n" +
@@ -161,45 +165,143 @@ public class C18912_CommercialParticipationLoanLoanParticipationToolTest extends
                 "- Sold Date = in the past\n" +
                 "Please note if sold date is not selected current date will be set\n" +
                 "and click Save Changes");
-        Pages.accountMaintenancePage().selectParticipant();
+        Pages.participationsModalPage().selectParticipant();
         String percent = "20";
-        Pages.accountMaintenancePage().inputPercentageSold(percent);
+        Pages.participationsModalPage().inputPercentageSold(percent);
         String servicingFee = "5";
-        Pages.accountMaintenancePage().inputServicingFee(servicingFee);
-        Pages.accountMaintenancePage().inputSoldDate(loanAccount.getDateOpened());
-        Pages.accountMaintenancePage().clickSaveButton();
+        Pages.participationsModalPage().inputServicingFee(servicingFee);
+        Pages.participationsModalPage().inputSoldDate(loanAccount.getDateOpened());
+        Pages.participationsModalPage().clickSaveButton();
 
         logInfo("Step 7: \t\n" +
                 "Select Participant in left part of the screen");
-        Pages.accountMaintenancePage().clickAutotestRecord();
-        Pages.accountMaintenancePage().checkPendingStatus();
-        TestRailAssert.assertTrue(Pages.accountMaintenancePage().checkServicingFee(servicingFee), new CustomStepResult(
+        Pages.participationsModalPage().clickAutotestRecord();
+        Pages.participationsModalPage().checkPendingStatus();
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkServicingFee(servicingFee), new CustomStepResult(
                 "Servicing Fee is correct", "Servicing Fee is not correct"));
-        TestRailAssert.assertTrue(Pages.accountMaintenancePage().checkPercentageSold(percent), new CustomStepResult(
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkPercentageSold(percent), new CustomStepResult(
                 "Percentage sold is correct", "Percentage sold is not correct"));
-        TestRailAssert.assertTrue(Pages.accountMaintenancePage().checkPartBalance(""), new CustomStepResult(
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkPartBalance(""), new CustomStepResult(
                 "Part Balance is correct", "Part Balance is not correct"));
-        TestRailAssert.assertTrue(Pages.accountMaintenancePage().checkSoldDate(loanAccount.getDateOpened()), new CustomStepResult(
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkSoldDate(loanAccount.getDateOpened()), new CustomStepResult(
                 "Sold date is correct", "Sold date is not correct"));
-        TestRailAssert.assertTrue(Pages.accountMaintenancePage().checkRepurchaseDate(""), new CustomStepResult(
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkRepurchaseDate(""), new CustomStepResult(
                 "Repurchase date is correct", "Repurchase date is not correct"));
-        TestRailAssert.assertTrue(Pages.accountMaintenancePage().checkRepurchaseAmount(""), new CustomStepResult(
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkRepurchaseAmount(""), new CustomStepResult(
                 "Repurchase amount is correct", "Repurchase amount is not correct"));
-        TestRailAssert.assertTrue(Pages.accountMaintenancePage().checkPartAccruedInterest("0.00"), new CustomStepResult(
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkPartAccruedInterest("0.00"), new CustomStepResult(
                 "Participant accrued interest is correct", "Participant accrued interest is not correct"));
-        TestRailAssert.assertTrue(Pages.accountMaintenancePage().checkFIOwnedAccruedInterest(accruedInterest), new CustomStepResult(
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkFIOwnedAccruedInterest(accruedInterest), new CustomStepResult(
                 "FI owned accrued interest is correct", "FI owned accrued interest is not correct"));
-        TestRailAssert.assertTrue(Pages.accountMaintenancePage().checkPartServicingFee("0.00"), new CustomStepResult(
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkPartServicingFee("0.00"), new CustomStepResult(
                 "Part Servicing Fee is correct", "Part Servicing Fee is not correct"));
-        TestRailAssert.assertTrue(Pages.accountMaintenancePage().isRepurchaseButtonDisabled(), new CustomStepResult(
+        TestRailAssert.assertTrue(Pages.participationsModalPage().isRepurchaseButtonDisabled(), new CustomStepResult(
                 "Repurchase button is disabled", "Repurchase button is enabled"));
 
         logInfo("Step 8: Click \"Sell\" button");
-        Pages.accountMaintenancePage().clickSellButton();
+        Pages.participationsModalPage().clickSellButton();
+        String alertMessageModalText = Pages.alertMessageModalPage().getAlertMessageModalText();
+        TestRailAssert.assertTrue(alertMessageModalText.equals("The Sell will post transactions that can be viewed on Transaction History"),
+                new CustomStepResult("'Modal text' is not valid", "'Modal text' is valid"));
+        Pages.alertMessageModalPage().clickOkButton();
+        Pages.participationsModalPage().waitForSoldStatusVisibleByIndex(1);
+        int partBalance = balance * Integer.parseInt(percent) / 100;
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkPartBalance(partBalance + ".00")
+                , new CustomStepResult("Part Balance is correct", "Part Balance is not correct"));
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkPercentageSold(percent), new CustomStepResult(
+                "Percentage sold is correct", "Percentage sold is not correct"));
+        TestRailAssert.assertTrue(Pages.participationsModalPage().getParticipantStatusByIndex(1).equals("Sold"),
+                new CustomStepResult("'Status' is not valid", "'Status' is valid"));
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkPartCurrentBalance(partBalance + ".00"),
+                new CustomStepResult("Part Current Balance is correct", "Part Current Balance is not correct"));
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkFiOwnedBalance((balance - partBalance) + ".00"),
+                new CustomStepResult("Part Current Balance is correct", "Part Current Balance is not correct"));
 
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
+        String interestEarned = WebAdminActions.webAdminUsersActions().getParticipantInterestEarnedValueByIndexFromInterest(
+                clientRootId, 1);
+        String serviceFeeEarned = WebAdminActions.webAdminUsersActions().getParticipantServiceFeeEarnedValueByIndexFromInterest(
+                clientRootId, 1);
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
 
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkPartAccruedInterest(String.format("%.2f",Double.parseDouble(interestEarned))),
+                new CustomStepResult(
+                "Participant accrued interest is correct", "Participant accrued interest is not correct"));
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkFIOwnedAccruedInterest(
+                String.format("%.2f",Double.parseDouble(accruedInterest)-Double.parseDouble(interestEarned))), new CustomStepResult(
+                "FI owned accrued interest is correct", "FI owned accrued interest is not correct"));
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkPartServicingFee(String.format("%.2f",Double.parseDouble(serviceFeeEarned)))
+                , new CustomStepResult(
+                "Part Servicing Fee is correct", "Part Servicing Fee is not correct"));
+        double participantBalance = Double.parseDouble(Pages.participationsModalPage().getParticipantBalance());
 
+        logInfo("Step 9: Go to the \"Transactions\" tab and verify generated transaction");
+        Pages.participationsModalPage().clickCloseButton();// Get data
+        Pages.accountDetailsPage().clickDetailsTab();
+        double currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu());
+        double participationPercentSold = Integer.parseInt(Pages.accountDetailsPage().getParticipationPercentSold()) / (double) 100;
+        double currentEffectiveRate = Double.parseDouble(Pages.accountDetailsPage().getCurrentEffectiveRate());
+        String yearBase = Pages.accountDetailsPage().getDaysBaseYearBase().split("/")[1].replaceAll("[^0-9]", "");
+        Pages.accountDetailsPage().clickTransactionsTab();
+
+        String effectiveDateValue = Pages.accountTransactionPage().getEffectiveDateValue(1);
+        String postingDateValue = Pages.accountTransactionPage().getPostingDateValue(1);
+        String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
+        double amountValue = AccountActions.retrievingAccountData().getAmountValue(1);
+        TestRailAssert.assertTrue(transactionCode.equals(TransactionCode.PARTICIPATION_SELL_471.getTransCode()),
+                new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
+        TestRailAssert.assertTrue(effectiveDateValue.equals(loanAccount.getDateOpened()),
+                new CustomStepResult("'Effective date' is not valid", "'Effective date' is valid"));
+        TestRailAssert.assertTrue(amountValue == currentBalance * participationPercentSold,
+                new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
+
+        logInfo("Step 10: Go back to loan account from preconditions -> Maintenance -> Tools -> \"Loan Participations\" tool");
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
+        Pages.accountDetailsPage().clickMaintenanceTab();
+        AccountActions.accountMaintenanceActions().setTool(Tool.LOAN_PARTICIPATIONS);
+        Pages.accountMaintenancePage().clickToolsLaunchButton();
+
+        logInfo("Step 11: Select Participant record in the left part of the screen and click the \"Repurchase\" button");
+        Pages.participationsModalPage().clickParticipantRowByIndex(1);
+        Pages.participationsModalPage().clickRepurchaseButton();
+        alertMessageModalText = Pages.alertMessageModalPage().getAlertMessageModalText();
+        TestRailAssert.assertTrue(alertMessageModalText.equals("The Repurchase will post transactions that can be viewed on Transaction History"),
+                new CustomStepResult("'Modal text' is not valid", "'Modal text' is valid"));
+        Pages.alertMessageModalPage().clickOkButton();
+        Pages.participationsModalPage().waitForRepurchaseStatusVisibleByIndex(1);
+        TestRailAssert.assertTrue(Pages.participationsModalPage().getParticipantStatusByIndex(1).equals("Repurchased"),
+                new CustomStepResult("'Status' is not valid", "'Status' is valid"));
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkPartBalance("0.00"), new CustomStepResult(
+                "Part Balance is correct", "Part Balance is not correct"));
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkRepurchaseDate(DateTime.getDatePlusMonth(loanAccount.getDateOpened(),1)),
+                new CustomStepResult(
+                "Repurchase date is correct", "Repurchase date is not correct"));
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkRepurchaseAmount(partBalance + ".00"), new CustomStepResult(
+                "Repurchase amount is correct", "Repurchase amount is not correct"));
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkPartPercentageSold("0"), new CustomStepResult(
+                "Percentage sold is correct", "Percentage sold is not correct"));
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkPartCurrentBalance("0.00"),
+                new CustomStepResult("Part Current Balance is correct", "Part Current Balance is not correct"));
+        TestRailAssert.assertTrue(Pages.participationsModalPage().checkFiOwnedBalance(balance + ".00"),
+                new CustomStepResult("Part Current Balance is correct", "Part Current Balance is not correct"));
+        TestRailAssert.assertTrue(Pages.participationsModalPage().isRepurchaseButtonDisabled(), new CustomStepResult(
+                "Repurchase button is disabled", "Repurchase button is enabled"));
+        Pages.participationsModalPage().clickCloseButton();
+
+        logInfo("Step 12: Go to the \"Transactions\" tab and verify generated transaction");
+        Pages.accountDetailsPage().clickTransactionsTab();
+        TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(1).equals(TransactionCode.PARTICIPATION_REPURCHASE_472.getTransCode()),
+                new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
+        TestRailAssert.assertTrue(Pages.accountTransactionPage().getEffectiveDateValue(1).equals(DateTime.getLocalDateOfPattern("MM/dd/yyyy")),
+                new CustomStepResult("'Effective date' is not valid", "'Effective date' is valid"));
+        TestRailAssert.assertTrue(AccountActions.retrievingAccountData().getAmountValue(1) == participantBalance,
+                new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
     }
 
 

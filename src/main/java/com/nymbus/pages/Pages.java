@@ -113,7 +113,6 @@ public class Pages extends AllureLogger {
     private static LoanPayoffPrepaymentPenaltyModalPage loanPayoffPrepaymentPenaltyModalPage;
     private static QuotePayoffModalPage quotePayoffModalPage;
     private static LoanParticipantsPage loanParticipantsPage;
-    private static LoanParticipantsPage loanParticipantsPage;
     private static ParticipationsModalPage participationsModalPage;
 
     /**
@@ -851,16 +850,6 @@ public class Pages extends AllureLogger {
             quotePayoffModalPage = new QuotePayoffModalPage();
         }
         return quotePayoffModalPage;
-    }
-
-    /**
-     * This function return an instance of `LoanParticipantsPage`
-     */
-    public static LoanParticipantsPage loanParticipantsPage(){
-        if (loanParticipantsPage == null){
-            loanParticipantsPage = new LoanParticipantsPage();
-        }
-        return loanParticipantsPage;
     }
 
     /**

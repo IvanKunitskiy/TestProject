@@ -411,6 +411,17 @@ public class WebAdminUsersActions {
                 "%0D%0AorderBy%3A+-id%0D%0AdeletedIncluded%3A+true&source=";
     }
 
+    private String getParticipantInterestAndFee(String accountNumber){
+        return Constants.WEB_ADMIN_URL +
+                "RulesUIQuery.ct?" +
+                "waDbName=coreDS&" +
+                "dqlQuery=count%3A+50%0D%0A" +
+                "from%3A+bank.data.actmst.participant%0D%0" +
+                "Awhere%3A+%0D%0A-+accountid%3A+" +
+                accountNumber +
+                "%0D%0AdeletedIncluded%3A+true&source=";
+    }
+
     public AccountData getLoanAccountData(String accountNumber) {
         return getLoanAccountDataFromQueryByUrl(getLoanAccountDataUrl(accountNumber));
     }
@@ -510,6 +521,22 @@ public class WebAdminUsersActions {
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
 
         return WebAdminPages.rulesUIQueryAnalyzerPage().getParticipantInterestEarnedByIndex(index);
+    }
+
+    public String getParticipantInterestEarnedValueByIndexFromInterest(String accountNumber, int index) {
+        SelenideTools.openUrl(getParticipantInterestAndFee(accountNumber));
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getParticipantInterestEarnedByIndex(index);
+    }
+
+    public String getParticipantServiceFeeEarnedValueByIndexFromInterest(String accountNumber, int index) {
+        SelenideTools.openUrl(getParticipantInterestAndFee(accountNumber));
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getParticipantServiceFeeEarnedByIndex(index);
     }
 
     public String getParticipantBalanceValueByIndex(String accountNumber, int index) {

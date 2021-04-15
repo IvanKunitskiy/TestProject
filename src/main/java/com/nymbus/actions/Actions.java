@@ -47,6 +47,7 @@ public class Actions {
     private static CallClassCodesActions callClassCodesActions;
     private static LoanPayoffActions loanPayoffActions;
     private static ParticipationsActions participationsActions;
+    private static LoansActions loansActions;
 
     /**
      * Modal Window Actions
