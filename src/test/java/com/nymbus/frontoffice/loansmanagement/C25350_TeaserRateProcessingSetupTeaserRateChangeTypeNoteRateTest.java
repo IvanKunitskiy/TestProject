@@ -69,13 +69,6 @@ public class C25350_TeaserRateProcessingSetupTeaserRateChangeTypeNoteRateTest ex
         // Log in
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        //Check "Commercial Participation - Lite" = Yes
-        Actions.loansActions().clickCommercialParticipationLiteYes();
-        Pages.aSideMenuPage().clickClientMenuItem();
-
-        //Create Loan Participant
-        Actions.loansActions().createAutotestParticipant();
-
         // Set products
         checkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
 
@@ -131,6 +124,8 @@ public class C25350_TeaserRateProcessingSetupTeaserRateChangeTypeNoteRateTest ex
     public void commercialParticipationLoanLoanParticipationTool() {
         logInfo("Log in to the system");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        logInfo("Open Loan account from preconditions");
 
 
 

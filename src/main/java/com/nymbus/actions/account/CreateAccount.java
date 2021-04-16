@@ -179,6 +179,7 @@ public class CreateAccount {
         Pages.addAccountPage().setPaymentAmount(account.getPaymentAmount());
         setPaymentAmountType(account);
         setPaymentFrequency(account);
+        SelenideTools.sleep(2000);
         if (account.isCycleLoan()){
             enableCycleLoanSwitch();
             setCycleCode(account);
