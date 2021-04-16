@@ -657,9 +657,9 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     /**
      * Participants
      */
-    private final By interestEarnedByIndex = By.xpath("//table//tr[%s]//td/div[@key-name='interestearned']");
-    private final By participantBalanceByIndex = By.xpath("//table//tr[%s]//td/div[@key-name='participantbalance']");
-    private final By serviceFeeEarnedByIndex = By.xpath("//table//tr[%s]//td/div[@key-name='servicefeeearned']");
+    private final By interestEarnedByIndex = By.xpath("(//table//tr//td/div[@key-name='interestearned'])[%s]");
+    private final By participantBalanceByIndex = By.xpath("(//table//tr//td/div[@key-name='participantbalance'])[%s]");
+    private final By serviceFeeEarnedByIndex = By.xpath("(//table//tr//td/div[@key-name='servicefeeearned'])[%s]");
 
     @Step("Get 'Participant Interest Earned' value")
     public String getParticipantInterestEarnedByIndex(int index) {
