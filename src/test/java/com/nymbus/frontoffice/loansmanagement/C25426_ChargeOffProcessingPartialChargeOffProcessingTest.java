@@ -1,7 +1,26 @@
 package com.nymbus.frontoffice.loansmanagement;
 
 import com.nymbus.actions.Actions;
+import com.nymbus.actions.account.AccountActions;
+import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
+import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
+import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
+import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
+import com.nymbus.newmodels.generation.tansactions.factory.DestinationFactory;
+import com.nymbus.newmodels.generation.tansactions.factory.SourceFactory;
+import com.nymbus.newmodels.transaction.TransactionDestination;
+import com.nymbus.newmodels.transaction.TransactionSource;
+import com.nymbus.newmodels.transaction.enums.TransactionCode;
+import com.nymbus.pages.Pages;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -12,9 +31,84 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C25426_ChargeOffProcessingPartialChargeOffProcessingTest extends BaseTest {
 
+    private Account loanAccount;
+    private Account checkingAccount;
+    private final String loanProductName = "Test Loan Product";
+    private final String loanProductInitials = "TLP";
+    private TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
+    private TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
+    private String cdtTemplateName;
+    private TransactionSource tellerTransactionSource = new TransactionSource();
+    private TransactionDestination tellerTransactionDestination = new TransactionDestination();
+
     @BeforeMethod
     public void preCondition() {
 
+        // Set up client
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
+        IndividualClient client = individualClientBuilder.buildClient();
+
+        // Set up accounts
+        loanAccount = new Account().setLoanAccountData();
+        loanAccount.setProduct(loanProductName);
+        loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
+
+        checkingAccount = new Account().setCHKAccountData();
+        checkingAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
+
+        // Set up loan -> CHK transaction
+        int transactionAmount = 12000;
+        System.out.println("--------> " + loanAccount.getAccountNumber());
+        miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());
+        miscDebitSource.setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
+        miscDebitSource.setAmount(transactionAmount);
+        miscCreditDestination.setAccountNumber(checkingAccount.getAccountNumber());
+        miscCreditDestination.setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
+        miscCreditDestination.setAmount(transactionAmount);
+
+        double tellerOperationAmount = 10.00;
+        tellerTransactionSource.setAccountNumber("0-0-Dummy");
+        tellerTransactionSource.setTransactionCode(TransactionCode.GL_DEBIT_860.getTransCode());
+        tellerTransactionSource.setAmount(tellerOperationAmount);
+        tellerTransactionDestination.setAccountNumber(loanAccount.getAccountNumber());
+        tellerTransactionDestination.setTransactionCode(TransactionCode.CHARGE_OFF_429.getTransCode());
+        tellerTransactionDestination.setAmount(tellerOperationAmount);
+
+        // Login to the system
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        // Check that a Loan product exist with the following editable fields (Readonly? = NO) and create if not exist
+        Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
+        Actions.loginActions().doLogOut();
+
+        // Get escrow payment value for the loan product
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
+
+        // Create a client
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+        client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
+
+        // Create checking account and logout
+        AccountActions.createAccount().createCHKAccount(checkingAccount);
+        Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
+        AccountActions.createAccount().createLoanAccount(loanAccount);
+
+        // Perform transaction
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
+        Actions.transactionActions().setMiscDebitSource(miscDebitSource, 0);
+        Actions.transactionActions().setMiscCreditDestination(miscCreditDestination, 0);
+        Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
+        Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
+        Pages.tellerPage().closeModal();
+        Actions.loginActions().doLogOutProgrammatically();
+
+        cdtTemplateName = get429TemplateNameByIndex(1);
+        System.out.println(cdtTemplateName);
     }
 
     private final String TEST_RUN_NAME = "Loans Management";
@@ -28,5 +122,39 @@ public class C25426_ChargeOffProcessingPartialChargeOffProcessingTest extends Ba
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Go to the 'Cashier Defined Transactions' page" );
+        Pages.aSideMenuPage().clickCashierDefinedTransactions();
+        Actions.transactionActions().doLoginTeller();
+
+        logInfo("Step 3: Select template from precondition 2 in the 'Teller Operations' drop-down");
+        Actions.cashierDefinedActions().setTellerOperation(cdtTemplateName);
+
+        logInfo("Step 4: Fill in the following fields and click the [Commit Transaction] :\n" +
+                "Sources:\n" +
+                "'Account Number' - any GL account (use %%% for selecting)\n" +
+                "'Amount'< 'Current Balance' of loan account\n" +
+                "Destinations:\n" +
+                "'Account number' - Loan account from precondition 1\n" +
+                "'Amount' - specify the same amount");
+        int index = 1;
+        Actions.cashierDefinedActions().setTransactionSource(tellerTransactionSource, index);
+        Actions.cashierDefinedActions().setTransactionDestination(tellerTransactionDestination, index);
+        Actions.cashierDefinedActions().clickCommitButton();
+        Pages.alertMessageModalPage().clickOkButton();
+
+        logInfo("Step 5: Open loan account from preconditions");
+    }
+
+    public String get429TemplateNameByIndex(int index) {
+        final String TRN_CODE = "429";
+
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        String cdtTemplateName = WebAdminActions.webAdminUsersActions().getCdtTemplateByIndex(index, TRN_CODE);
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+
+        return cdtTemplateName;
     }
 }

@@ -476,12 +476,19 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     /**
      * CDT template
      */
-    private By templateName = By.xpath("//tr/td[7]/div");
+    private final By templateName = By.xpath("//tr/td[7]/div");
+    private final By templateNameByIndex = By.xpath("//table[@id='searchResultTable']/tbody/tr[@class='searchResultRow '][%s]/td[3]/div");
 
     @Step ("Get list of CDT template names")
     public List<String> getListOfCdtTemplateNames() {
         waitForElementVisibility(templateName);
         return getElementsText(templateName);
+    }
+
+    @Step ("Get template name by index")
+    public String getCdtTemplateNameByIndex(int index) {
+        waitForElementVisibility(templateNameByIndex, index);
+        return getElementText(templateNameByIndex, index).trim();
     }
 
     /**

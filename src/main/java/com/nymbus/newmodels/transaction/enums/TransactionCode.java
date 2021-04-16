@@ -56,7 +56,9 @@ public enum TransactionCode {
     FORCE_TO_INT_421("421 - Force To Int"),
     PRIN_PAYM_ONLY_406("406 - Prin Pay Only"),
     PARTICIPATION_SELL_471("471 - Participation Sell"),
-    PARTICIPATION_REPURCHASE_472("472 - Participation Repurchase");
+    PARTICIPATION_REPURCHASE_472("472 - Participation Repurchase"),
+    GL_DEBIT_860("860 - G/L Debit"),
+    CHARGE_OFF_429("429 - Charge Off");
 
     private final String transCode;
 }

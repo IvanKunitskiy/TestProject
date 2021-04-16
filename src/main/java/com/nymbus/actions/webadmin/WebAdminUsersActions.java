@@ -267,6 +267,18 @@ public class WebAdminUsersActions {
                 + "orderBy%3A+id&source=";
     }
 
+    private String getCdtTemplatesUrl(String transactionCode) {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=coreDS&"
+                + "dqlQuery=count%3A+10%0D%0A"
+                + "select%3A+%28databean%29BEANTYPE%2C+%28databean%29NAME%2C+creditaccounttype%2C+credittrancode%2C+debitdescription%0D%0A"
+                + "from%3A+bank.data.cdtfrm%0D%0A"
+                + "where%3A+%0D%0A-+.credittrancode-%3Ecode%3A+" + transactionCode + "+%0D%0A"
+                + "orderBy%3A+-id%0D%0A"
+                + "extra%3A+%0D%0A-+%24TrnCode%3A+.credittrancode-%3Ecode%0D%0A&source=";
+    }
+
      private String getLoanAccountUrl() {
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?"
@@ -453,6 +465,10 @@ public class WebAdminUsersActions {
 
     public boolean checkCdtTemplatePresent(String templateName) {
         return checkCdtTemplatePresentByName(getCdtTemplatesUrl(), templateName);
+    }
+
+    public String getCdtTemplateByIndex(int index, String transactionCode) {
+        return getCdtTemplateByIndex(getCdtTemplatesUrl(transactionCode), index);
     }
 
     public String getAccountWithDormantStatus(int index) {
@@ -668,6 +684,15 @@ public class WebAdminUsersActions {
         SelenideTools.switchTo().window(0);
 
         return accountNumber;
+    }
+
+    private String getCdtTemplateByIndex(String url, int index) {
+        SelenideTools.openUrl(url);
+
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getCdtTemplateNameByIndex(index);
     }
 
     private boolean checkCdtTemplatePresentByName(String url, String templateName) {
