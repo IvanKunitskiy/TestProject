@@ -179,13 +179,15 @@ public class CreateAccount {
         Pages.addAccountPage().setPaymentAmount(account.getPaymentAmount());
         setPaymentAmountType(account);
         setPaymentFrequency(account);
-        SelenideTools.sleep(2000);
         if (account.isCycleLoan()){
             enableCycleLoanSwitch();
             setCycleCode(account);
         } else{
             disableCycleLoanSwitch();
             Pages.addAccountPage().setPaymentBilledLeadDays(account.getPaymentBilledLeadDays());
+        }
+        if (account.isCurrentEffectiveRateIsTeaser()){
+            enableTeaserLoanSwitch();
         }
         Pages.addAccountPage().setNextPaymentBilledDueDate(account.getNextPaymentBilledDueDate());
         Pages.addAccountPage().setDateFirstPaymentDue(account.getDateFirstPaymentDue());
@@ -763,6 +765,13 @@ public class CreateAccount {
     public void enableCycleLoanSwitch() {
         if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("no")) {
             Pages.addAccountPage().clickCycleLoanSwitch();
+            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        }
+    }
+
+    public void enableTeaserLoanSwitch() {
+        if (Pages.addAccountPage().getTeaserLoanValue().equalsIgnoreCase("no")) {
+            Pages.addAccountPage().clickTeaserLoanSwitch();
             SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         }
     }

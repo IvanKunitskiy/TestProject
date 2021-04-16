@@ -17,6 +17,7 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
 import com.nymbus.newmodels.generation.tansactions.factory.DestinationFactory;
 import com.nymbus.newmodels.generation.tansactions.factory.SourceFactory;
+import com.nymbus.newmodels.maintenance.Tool;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
@@ -56,6 +57,7 @@ public class C25350_TeaserRateProcessingSetupTeaserRateChangeTypeNoteRateTest ex
         loanAccount.setCycleCode(Generator.genInt(1, 20) + "");
         loanAccount.setCycleLoan(true);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
+        loanAccount.setCurrentEffectiveRateIsTeaser(true);
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
         checkAccount.setDateOpened(loanAccount.getDateOpened());
 
@@ -126,6 +128,19 @@ public class C25350_TeaserRateProcessingSetupTeaserRateChangeTypeNoteRateTest ex
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Open Loan account from preconditions");
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
+
+        logInfo("Step 3: Go to the \"Maintenance\" screen");
+        Pages.accountDetailsPage().clickMaintenanceTab();
+
+        logInfo("Step 4: Click to the \"Tools\" dropdown and select the \"Teaser Rate Setup\" widget after that " +
+                "click to the \"Launch\" button");
+        AccountActions.accountMaintenanceActions().setTool(Tool.TEASER_RATE_SETUP);
+        Pages.accountMaintenancePage().clickToolsLaunchButton();
+
+        logInfo("Step 5: Check the list of required and optional fields by default");
+
 
 
 

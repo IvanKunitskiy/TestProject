@@ -65,7 +65,9 @@ public class AddAccountPage extends PageTools {
     private final By autoRenewableSwitchValue = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span");
     private final By paymentAmount = By.xpath("//input[@data-test-id='field-paymentamount']");
     private final By cycleLoanValue = By.xpath("//dn-switch[@id='cycleloan']/div/div/span[2]");
+    private final By teaserLoanValue = By.xpath("//dn-switch[@id='CurrentEffectiveRateTeaserYN']/div/div/span[2]");
     private final By cycleLoanSwitch = By.xpath("//dn-switch[@id='cycleloan']");
+    private final By teaserLoanSwitch = By.xpath("//dn-switch[@id='CurrentEffectiveRateTeaserYN']");
     private final By nextPaymentBilledDueDate = By.xpath("//input[@data-test-id='field-nextduedate']");
     private final By paymentBilledLeadDays = By.xpath("//input[@data-test-id='field-noticedays']");
     private final By currentEffectiveRate = By.xpath("//input[@data-test-id='field-currenteffectiverate']");
@@ -1240,11 +1242,23 @@ public class AddAccountPage extends PageTools {
         return getElementText(cycleLoanValue).trim();
     }
 
+    @Step("Get the 'Teaser Loan' value")
+    public String getTeaserLoanValue() {
+        return getElementText(teaserLoanValue).trim();
+    }
+
     @Step("Click the 'Cycle Loan' switch")
     public void clickCycleLoanSwitch() {
         waitForElementClickable(cycleLoanSwitch);
         scrollToPlaceElementInCenter(cycleLoanSwitch);
         click(cycleLoanSwitch);
+    }
+
+    @Step("Click the 'Teaser Loan' switch")
+    public void clickTeaserLoanSwitch() {
+        waitForElementClickable(teaserLoanSwitch);
+        scrollToPlaceElementInCenter(teaserLoanSwitch);
+        click(teaserLoanSwitch);
     }
 
     @Step("Get the 'LOC Payment Recalculation Flag' value")
