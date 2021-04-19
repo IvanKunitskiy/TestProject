@@ -21,6 +21,8 @@ import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -32,14 +34,16 @@ import org.testng.annotations.Test;
 public class C25426_ChargeOffProcessingPartialChargeOffProcessingTest extends BaseTest {
 
     private Account loanAccount;
-    private Account checkingAccount;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
-    private TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
-    private TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
+    private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
+    private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
+    private final TransactionSource tellerTransactionSource = new TransactionSource();
+    private final TransactionDestination tellerTransactionDestination = new TransactionDestination();
     private String cdtTemplateName;
-    private TransactionSource tellerTransactionSource = new TransactionSource();
-    private TransactionDestination tellerTransactionDestination = new TransactionDestination();
+    private int transactionAmount;
+    private double currentBalance;
+    private double chargedOffAmount;
 
     @BeforeMethod
     public void preCondition() {
@@ -54,12 +58,11 @@ public class C25426_ChargeOffProcessingPartialChargeOffProcessingTest extends Ba
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
 
-        checkingAccount = new Account().setCHKAccountData();
+        Account checkingAccount = new Account().setCHKAccountData();
         checkingAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
 
         // Set up loan -> CHK transaction
-        int transactionAmount = 12000;
-        System.out.println("--------> " + loanAccount.getAccountNumber());
+        transactionAmount = 12000;
         miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());
         miscDebitSource.setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
         miscDebitSource.setAmount(transactionAmount);
@@ -105,10 +108,15 @@ public class C25426_ChargeOffProcessingPartialChargeOffProcessingTest extends Ba
         Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().closeModal();
-        Actions.loginActions().doLogOutProgrammatically();
 
         cdtTemplateName = get429TemplateNameByIndex(1);
-        System.out.println(cdtTemplateName);
+
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
+        currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu());
+        chargedOffAmount = Double.parseDouble(Pages.accountDetailsPage().getChargedOffAmount());
+
+        Actions.loginActions().doLogOutProgrammatically();
     }
 
     private final String TEST_RUN_NAME = "Loans Management";
@@ -130,18 +138,47 @@ public class C25426_ChargeOffProcessingPartialChargeOffProcessingTest extends Ba
 
         logInfo("Step 4: Fill in the following fields and click the [Commit Transaction] :\n" +
                 "Sources:\n" +
-                "'Account Number' - any GL account (use %%% for selecting)\n" +
+                "'Account Number' - any GL account\n" +
                 "'Amount'< 'Current Balance' of loan account\n" +
                 "Destinations:\n" +
                 "'Account number' - Loan account from precondition 1\n" +
                 "'Amount' - specify the same amount");
-        int index = 1;
+        int index = 0;
         Actions.cashierDefinedActions().setTransactionSource(tellerTransactionSource, index);
         Actions.cashierDefinedActions().setTransactionDestination(tellerTransactionDestination, index);
         Actions.cashierDefinedActions().clickCommitButton();
         Pages.alertMessageModalPage().clickOkButton();
 
         logInfo("Step 5: Open loan account from preconditions");
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
+
+        logInfo("Step 6: Go to the 'Transactions' tab and verify generated transaction");
+        Pages.accountDetailsPage().clickTransactionsTab();
+
+        String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
+        TestRailAssert.assertTrue(transactionCode.equals(TransactionCode.CHARGE_OFF_429.getTransCode()),
+                new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
+        double amountValue = AccountActions.retrievingAccountData().getAmountValue(1);
+        TestRailAssert.assertTrue(amountValue == tellerTransactionSource.getAmount(),
+                new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
+        TestRailAssert.assertTrue(Pages.transactionsPage().isTransactionWithDescriptionVisibleInList(cdtTemplateName),
+                new CustomStepResult("Transaction with description is not available in the list",
+                        "Transaction with description is available in the list"));
+
+        logInfo("Step 7: Go to the 'Details' tab and verify the following fields:\n" +
+                "'Current Balance'\n" +
+                "'Account Status'\n" +
+                "'Charged Off Amount'");
+        Pages.accountDetailsPage().clickDetailsTab();
+        double actualCurrentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu());
+        TestRailAssert.assertTrue(actualCurrentBalance == currentBalance - tellerTransactionSource.getAmount(),
+                new CustomStepResult("Account 'current balance' is not valid", "Account 'current balance' is not valid"));
+        double actualChargedOffAmount = Double.parseDouble(Pages.accountDetailsPage().getChargedOffAmount());
+        TestRailAssert.assertTrue(actualChargedOffAmount == chargedOffAmount + tellerTransactionSource.getAmount(),
+                new CustomStepResult("Account 'charged off amount' is not valid", "Account 'charged off amount' is not valid"));
+        TestRailAssert.assertTrue(Pages.accountDetailsPage().getAccountStatus().equals("Active"),
+                new CustomStepResult("Account 'status' is not valid", "Account 'status' is not valid"));
     }
 
     public String get429TemplateNameByIndex(int index) {
