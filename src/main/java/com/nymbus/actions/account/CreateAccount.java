@@ -186,6 +186,9 @@ public class CreateAccount {
             disableCycleLoanSwitch();
             Pages.addAccountPage().setPaymentBilledLeadDays(account.getPaymentBilledLeadDays());
         }
+        if (account.isCurrentEffectiveRateIsTeaser()){
+            enableTeaserLoanSwitch();
+        }
         Pages.addAccountPage().setNextPaymentBilledDueDate(account.getNextPaymentBilledDueDate());
         Pages.addAccountPage().setDateFirstPaymentDue(account.getDateFirstPaymentDue());
         Pages.addAccountPage().setCurrentEffectiveRate(account.getCurrentEffectiveRate());
@@ -202,7 +205,8 @@ public class CreateAccount {
     }
 
     private void setEscrowPayment(Account account) {
-        if (account.getEscrow() !=null && !Pages.addAccountPage().getEscrowPaymentValue().equals(account.getEscrow())){
+        String escrowPaymentValue = Pages.addAccountPage().getEscrowPaymentValue();
+        if (account.getEscrow() !=null && escrowPaymentValue != null && !escrowPaymentValue.equals(account.getEscrow())){
             Pages.addAccountPage().setEscrowPaymentValue(account.getEscrow());
         }
     }
@@ -284,7 +288,7 @@ public class CreateAccount {
     }
 
     private void applySeasonalAddresToNo() {
-        if (Pages.addAccountPage().getApplySeasonalAddress().toLowerCase().equals("yes")){
+        if (Pages.addAccountPage().getApplySeasonalAddress().equalsIgnoreCase("yes")){
             Pages.addAccountPage().clickApplySeasonalAddressSwitch();
         }
     }
@@ -761,6 +765,13 @@ public class CreateAccount {
     public void enableCycleLoanSwitch() {
         if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("no")) {
             Pages.addAccountPage().clickCycleLoanSwitch();
+            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        }
+    }
+
+    public void enableTeaserLoanSwitch() {
+        if (Pages.addAccountPage().getTeaserLoanValue().equalsIgnoreCase("no")) {
+            Pages.addAccountPage().clickTeaserLoanSwitch();
             SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         }
     }

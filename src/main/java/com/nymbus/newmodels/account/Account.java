@@ -118,6 +118,7 @@ public class Account {
     private String rateRoundingFactor;
     private String originalInterestRate;
     private boolean cycleLoan = false;
+    private boolean currentEffectiveRateIsTeaser = false;
 
     public Account setLoanAccountData() {
         Account account = new Account();
@@ -1159,5 +1160,13 @@ public class Account {
 
     public void setOriginalInterestRate(String originalInterestRate) {
         this.originalInterestRate = originalInterestRate;
+    }
+
+    public boolean isCurrentEffectiveRateIsTeaser() {
+        return currentEffectiveRateIsTeaser;
+    }
+
+    public void setCurrentEffectiveRateIsTeaser(boolean currentEffectiveRateIsTeaser) {
+        this.currentEffectiveRateIsTeaser = currentEffectiveRateIsTeaser;
     }
 }

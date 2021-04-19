@@ -82,10 +82,10 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By disEscrow = By.xpath("//input[@id='escrow']");
     private final By disAmount = By.xpath("//input[@id='amount']");
     private final By dueTypeTittle = By.xpath("//input[@id='paymentDueTypeTitle']");
-    private final By dateDue = By.xpath("(//tr[@data-test-id='repeat-payment-0'])[3]//span//span");
-    private final By dueType = By.xpath("((//tr[@data-test-id='repeat-payment-0'])[3]//span//span)[2]");
-    private final By dueAmount = By.xpath("((//tr[@data-test-id='repeat-payment-0'])[3]//span//span)[3]");
-    private final By dueStatus = By.xpath("((//tr[@data-test-id='repeat-payment-0'])[3]//span//span)[4]");
+    private final By dateDue = By.xpath("//dn-field-view//span//span");
+    private final By dueType = By.xpath("(//dn-field-view//span//span)[2]");
+    private final By dueAmount = By.xpath("(//dn-field-view//span//span)[3]");
+    private final By dueStatus = By.xpath("(//dn-field-view//span//span)[4]");
 
     @Step("Get Pi Payments Payment 'Recalc Future Pymt' value")
     public String getPiPaymentsRecalcFuturePymt() {
