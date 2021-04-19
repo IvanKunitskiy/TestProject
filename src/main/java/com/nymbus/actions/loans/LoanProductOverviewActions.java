@@ -62,6 +62,10 @@ public class LoanProductOverviewActions {
         expandAllRows();
         Pages.loanProductPage().clickLoanProductByName(productName);
 
+        if (Pages.loanProductOverviewPage().getEscrowPaymentValue().isEmpty()) {
+            return 0;
+        }
+
         return Double.parseDouble(Pages.loanProductOverviewPage().getEscrowPaymentValue());
     }
 

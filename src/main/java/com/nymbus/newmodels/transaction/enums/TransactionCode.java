@@ -57,6 +57,8 @@ public enum TransactionCode {
     PRIN_PAYM_ONLY_406("406 - Prin Pay Only"),
     PARTICIPATION_SELL_471("471 - Participation Sell"),
     PARTICIPATION_REPURCHASE_472("472 - Participation Repurchase"),
+    ADD_ON_410("410 - Add-On"),
+    ADDITIONAL_SELL_475("475 - Additional Sell"),
     GL_DEBIT_860("860 - G/L Debit"),
     CHARGE_OFF_429("429 - Charge Off");
 
