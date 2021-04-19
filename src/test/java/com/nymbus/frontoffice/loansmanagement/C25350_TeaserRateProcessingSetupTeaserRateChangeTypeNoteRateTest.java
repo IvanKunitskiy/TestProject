@@ -127,10 +127,10 @@ public class C25350_TeaserRateProcessingSetupTeaserRateChangeTypeNoteRateTest ex
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 18912, testRunName = TEST_RUN_NAME)
-    @Test(description = "C18912, Commercial Participation Loan - Loan Participation tool")
+    @TestRailIssue(issueID = 25350, testRunName = TEST_RUN_NAME)
+    @Test(description = "C25350, Teaser Rate Processing - Setup (Teaser Rate Change Type = Note Rate)")
     @Severity(SeverityLevel.CRITICAL)
-    public void commercialParticipationLoanLoanParticipationTool() {
+    public void teaserRateProcessing() {
         logInfo("Log in to the system");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
