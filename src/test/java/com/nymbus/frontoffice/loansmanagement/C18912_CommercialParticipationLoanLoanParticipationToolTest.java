@@ -245,12 +245,9 @@ public class C18912_CommercialParticipationLoanLoanParticipationToolTest extends
         Pages.accountDetailsPage().clickDetailsTab();
         double currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu());
         double participationPercentSold = Integer.parseInt(Pages.accountDetailsPage().getParticipationPercentSold()) / (double) 100;
-        double currentEffectiveRate = Double.parseDouble(Pages.accountDetailsPage().getCurrentEffectiveRate());
-        String yearBase = Pages.accountDetailsPage().getDaysBaseYearBase().split("/")[1].replaceAll("[^0-9]", "");
         Pages.accountDetailsPage().clickTransactionsTab();
 
         String effectiveDateValue = Pages.accountTransactionPage().getEffectiveDateValue(1);
-        String postingDateValue = Pages.accountTransactionPage().getPostingDateValue(1);
         String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
         double amountValue = AccountActions.retrievingAccountData().getAmountValue(1);
         TestRailAssert.assertTrue(transactionCode.equals(TransactionCode.PARTICIPATION_SELL_471.getTransCode()),
