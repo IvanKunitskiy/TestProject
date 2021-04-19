@@ -225,7 +225,7 @@ public class C25350_TeaserRateProcessingSetupTeaserRateChangeTypeNoteRateTest ex
         String rateChangeLeadDaysFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getRateChangeLeadDaysFromTeaser(index);
         TestRailAssert.assertTrue(rateChangeLeadDaysFromTeaser.equals(rateChangeLeadDays), new CustomStepResult(
                 "Rate Change Lead Days is equals", "Rate Change Lead Days is not equals"));
-        String rateChangeTypeFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getRateChangeTypeFromTeaser();
+        String rateChangeTypeFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getRateChangeTypeFromTeaser(index);
         TestRailAssert.assertTrue(rateChangeTypeFromTeaser.equals("Note Rate"), new CustomStepResult(
                 "Rate Change Type is equals", "Rate Change Type is not equals"));
 

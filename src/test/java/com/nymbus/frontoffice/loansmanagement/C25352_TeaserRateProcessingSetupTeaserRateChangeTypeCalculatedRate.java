@@ -127,10 +127,10 @@ public class C25352_TeaserRateProcessingSetupTeaserRateChangeTypeCalculatedRate 
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 18912, testRunName = TEST_RUN_NAME)
-    @Test(description = "C18912, Commercial Participation Loan - Loan Participation tool")
+    @TestRailIssue(issueID = 25352, testRunName = TEST_RUN_NAME)
+    @Test(description = "C25352, Teaser Rate Processing - Setup (Teaser Rate Change Type = Calculated Rate)")
     @Severity(SeverityLevel.CRITICAL)
-    public void commercialParticipationLoanLoanParticipationTool() {
+    public void teaserRateProcessing() {
         logInfo("Log in to the system");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
@@ -163,18 +163,14 @@ public class C25352_TeaserRateProcessingSetupTeaserRateChangeTypeCalculatedRate 
         TestRailAssert.assertTrue(Pages.teaserModalPage().getCountRequiredStars() == 3, new CustomStepResult(
                 "Required fields is equals", "Required fields is not equals"));
 
-        logInfo("Step 6: Select \"Note Rate\" in the \"Teaser Rate Change Type\" drop-down");
+        logInfo("Step 6: Select \"Calculated Rate\" in the \"Teaser Rate Change Type\" drop-down");
         Pages.teaserModalPage().clickChangeRateArrow();
-        Pages.teaserModalPage().clickNoteRateOption();
+        Pages.teaserModalPage().clickCalculatedRateOption();
 
         logInfo("Step 7: Check the fields in the \"Teaser Rate Setup\" widget after selecting \"Teaser Rate Change Type\"");
         TestRailAssert.assertTrue(Pages.teaserModalPage().getCountRequiredStars() == 5, new CustomStepResult(
                 "Required fields is equals", "Required fields is not equals"));
-        Pages.teaserModalPage().checkRateRoundingFactorIsDisabled();
-        Pages.teaserModalPage().checkMaxRateChangeIsDisabled();
-        Pages.teaserModalPage().checkMinRateIsDisabled();
-        Pages.teaserModalPage().checkMaxRateIsDisabled();
-        Pages.teaserModalPage().checkRateMarginIsDisabled();
+        Pages.teaserModalPage().noteRateIsDisabled();
 
         logInfo("Step 8: Fill the following required fields:\n" +
                 "- Effective Date = in the past but not later than \"Date Opened\" of the loan account\n" +
@@ -185,13 +181,15 @@ public class C25352_TeaserRateProcessingSetupTeaserRateChangeTypeCalculatedRate 
         Pages.teaserModalPage().inputEffectiveDate(effectiveDate);
         String expirationDate = DateTime.getDatePlusMonth(loanAccount.getDateOpened(), 1);
         Pages.teaserModalPage().inputExpirationDate(expirationDate);
-        String noteRate = Integer.parseInt(loanAccount.getCurrentEffectiveRate()) + 1 + "";
-        Pages.teaserModalPage().inputNoteRate(noteRate);
         String rateChangeLeadDays = "1";
         Pages.teaserModalPage().inputRateChangeLeadDays(rateChangeLeadDays);
+        Pages.teaserModalPage().clickRateIndexArrow();
+        Pages.teaserModalPage().clickRateIndexOption();
 
         logInfo("Step 9: Click to the \"Done\" button on \"Teaser Rate Setup\" pop-up");
         Pages.teaserModalPage().clickDoneButton();
+        String rateIndexValue = Pages.teaserModalPage().getRateIndexValue();
+
 
         logInfo("Step 10: Log in to the webadmin -> RulesUI Query Analyzer");
         logInfo("Step 11: Search with DQL:\n" +
@@ -219,14 +217,14 @@ public class C25352_TeaserRateProcessingSetupTeaserRateChangeTypeCalculatedRate 
         expirationDateFromTeaser = DateTime.getDateWithFormat(expirationDateFromTeaser, "yyyy-MM-dd", "MM/dd/yyyy");
         TestRailAssert.assertTrue(expirationDateFromTeaser.equals(expirationDate), new CustomStepResult(
                 "Expiration Date is equals", "Expiration Date is not equals"));
-        String noteRateFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getNoteRateFromTeaser(index);
-        TestRailAssert.assertTrue(noteRateFromTeaser.equals("0." + noteRate), new CustomStepResult(
+        String noteRateFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getRateIndexFromTeaser(index);
+        TestRailAssert.assertTrue(noteRateFromTeaser.equals(rateIndexValue), new CustomStepResult(
                 "Note Rate is equals", "Note Rate is not equals"));
         String rateChangeLeadDaysFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getRateChangeLeadDaysFromTeaser(index);
         TestRailAssert.assertTrue(rateChangeLeadDaysFromTeaser.equals(rateChangeLeadDays), new CustomStepResult(
                 "Rate Change Lead Days is equals", "Rate Change Lead Days is not equals"));
-        String rateChangeTypeFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getRateChangeTypeFromTeaser();
-        TestRailAssert.assertTrue(rateChangeTypeFromTeaser.equals("Note Rate"), new CustomStepResult(
+        String rateChangeTypeFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getRateChangeTypeFromTeaser(1);
+        TestRailAssert.assertTrue(rateChangeTypeFromTeaser.equals("Calculated Rate"), new CustomStepResult(
                 "Rate Change Type is equals", "Rate Change Type is not equals"));
 
     }

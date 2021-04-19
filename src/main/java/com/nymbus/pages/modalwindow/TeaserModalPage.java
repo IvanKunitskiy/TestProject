@@ -18,9 +18,12 @@ public class TeaserModalPage extends PageTools {
     private final By rateRoundingFactorLabel = By.xpath("//label[text()=' Rate Rounding Factor ']");
     private final By rateMarginLabel = By.xpath("//label[text()=' Rate Margin ']");
     private final By rateRoundingMethodLabel = By.xpath("//label[text()=' Rate Rounding Method ']");
-    private final By rateIndexArrow = By.xpath("//div[@id='ratechangetype']//b");
+    private final By rateChangeTypeArrow = By.xpath("//div[@id='ratechangetype']//b");
+    private final By rateIndexArrow = By.xpath("//div[@id='rateindex']//b");
     private final By rateIndexInput = By.xpath("//div[@id='rateindex']");
     private final By noteRateOption = By.xpath("//span[text()='Note Rate']");
+    private final By calculatedRateOption = By.xpath("(//span[text()='Calculated Rate'])[1]");
+    private final By rateIndexOption = By.xpath("//li[@ng-if='$select.open']");
     private final By requiredStars = By.xpath("//i[@class='nyb-icon-required']");
     private final By rateMarginInput = By.xpath("//input[@id='ratemargin']");
     private final By minRateInput = By.xpath("//input[@id='minrate']");
@@ -33,6 +36,7 @@ public class TeaserModalPage extends PageTools {
     private final By noteRateInput = By.xpath("//input[@id='noterate']");
     private final By rateChangeLeadDaysInput = By.xpath("//input[@id='ratechangeleaddays']");
     private final By doneButton = By.xpath("//button[text()='Done']");
+    private final By rateIndexValue = By.xpath("//div[@id='rateindex']/a/span/span");
 
 
     @Step("Check Rate Rounding Method label")
@@ -97,6 +101,13 @@ public class TeaserModalPage extends PageTools {
 
     @Step("Clock Rate Change Type arrow")
     public void clickChangeRateArrow() {
+        waitForElementVisibility(rateChangeTypeArrow);
+        waitForElementClickable(rateChangeTypeArrow);
+        click(rateChangeTypeArrow);
+    }
+
+    @Step("Clock Rate Index arrow")
+    public void clickRateIndexArrow() {
         waitForElementVisibility(rateIndexArrow);
         waitForElementClickable(rateIndexArrow);
         click(rateIndexArrow);
@@ -107,6 +118,20 @@ public class TeaserModalPage extends PageTools {
         waitForElementVisibility(noteRateOption);
         waitForElementClickable(noteRateOption);
         click(noteRateOption);
+    }
+
+    @Step("Clock Calculated Rate Option arrow")
+    public void clickCalculatedRateOption() {
+        waitForElementVisibility(calculatedRateOption);
+        waitForElementClickable(calculatedRateOption);
+        click(calculatedRateOption);
+    }
+
+    @Step("Clock Rate Index Option arrow")
+    public void clickRateIndexOption() {
+        waitForElementVisibility(rateIndexOption);
+        waitForElementClickable(rateIndexOption);
+        click(rateIndexOption);
     }
 
     @Step("Get count required stars")
@@ -175,6 +200,12 @@ public class TeaserModalPage extends PageTools {
         type(noteRate, noteRateInput);
     }
 
+    @Step("Note Rate is disabled")
+    public void noteRateIsDisabled() {
+        waitForElementVisibility(noteRateInput);
+        getDisabledElementAttributeValue("disabled",noteRateInput);
+    }
+
     @Step("Input Rate Change Lead Days value")
     public void inputRateChangeLeadDays(String rateChangeLeadDays) {
         waitForElementVisibility(rateChangeLeadDaysInput);
@@ -185,6 +216,12 @@ public class TeaserModalPage extends PageTools {
     public void clickDoneButton() {
         waitForElementVisibility(doneButton);
         click(doneButton);
+    }
+
+    @Step("Get Rate Index Value")
+    public String getRateIndexValue(){
+        waitForElementVisibility(rateIndexValue);
+        return getElementText(rateIndexValue);
     }
 
 
