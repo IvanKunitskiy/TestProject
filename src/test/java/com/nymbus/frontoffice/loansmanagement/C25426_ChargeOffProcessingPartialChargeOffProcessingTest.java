@@ -41,7 +41,6 @@ public class C25426_ChargeOffProcessingPartialChargeOffProcessingTest extends Ba
     private final TransactionSource tellerTransactionSource = new TransactionSource();
     private final TransactionDestination tellerTransactionDestination = new TransactionDestination();
     private String cdtTemplateName;
-    private int transactionAmount;
     private double currentBalance;
     private double chargedOffAmount;
 
@@ -62,7 +61,7 @@ public class C25426_ChargeOffProcessingPartialChargeOffProcessingTest extends Ba
         checkingAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
 
         // Set up loan -> CHK transaction
-        transactionAmount = 12000;
+        int transactionAmount = 12000;
         miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());
         miscDebitSource.setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
         miscDebitSource.setAmount(transactionAmount);
