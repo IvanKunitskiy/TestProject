@@ -161,7 +161,7 @@ public class AccountDetailsPage extends PageTools {
     private final By numberOfPaymentsReceived = By.xpath("//tr[@data-test-id='field-numberofpaymentsreceived']/td//span/span");
     private final By participationPercentSold = By.xpath("//tr[@data-test-id='field-participationpercentsold']//span/span");
     private final By participantBalance = By.xpath("//tr[@data-test-id='field-participantcurrentbalance']//span/span");
-
+    private final By amountChargedOff = By.xpath("//tr[@data-config-name='amountchargedoff']//span/span");
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -213,6 +213,13 @@ public class AccountDetailsPage extends PageTools {
         waitForElementVisibility(averageBalance);
         return getElementText(averageBalance).replaceAll("[^0-9.-]", "");
     }
+
+    @Step("Get 'Amount charged off' value")
+    public String getChargedOffAmount() {
+        waitForElementVisibility(amountChargedOff);
+        return getElementText(amountChargedOff).replaceAll("[^0-9.]", "");
+    }
+
 
     @Step("Get 'Collected Balance' value")
     public String getCollectedBalanceValue() {
