@@ -37,4 +37,19 @@ public class LoansActions {
             Pages.loanParticipantsPage().clickSaveButton();
         }
     }
+
+    public void checkTeaserFields(){
+        Pages.teaserModalPage().checkEffectiveDateLabel();
+        Pages.teaserModalPage().checkTeaserRateLabel();
+        Pages.teaserModalPage().checkMaxRateChangeUpDownLabel();
+        Pages.teaserModalPage().checkNoteRateLabel();
+        Pages.teaserModalPage().checkMaxRateLabel();
+        Pages.teaserModalPage().checkTeaserRateChangeLabel();
+        Pages.teaserModalPage().checkMinRateLabel();
+        Pages.teaserModalPage().checkRateRoundingFactorLabel();
+        Pages.teaserModalPage().checkRateChangeLeadDaysLabel();
+        Pages.teaserModalPage().checkRateIndexLabel();
+        Pages.teaserModalPage().checkRateMarginLabel();
+        Pages.teaserModalPage().checkRateRoundingMethodLabel();
+    }
 }

@@ -3,6 +3,7 @@ package com.nymbus.actions.webadmin;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.SelenideTools;
+import com.nymbus.newmodels.UserCredentials;
 import com.nymbus.pages.webadmin.WebAdminPages;
 import org.testng.Assert;
 
@@ -28,6 +29,15 @@ public class LoginActions {
                 + "select%3A+name%2C+reference%0D%0A"
                 + "from%3A+bank.data.bcfile%0D%0A"
                 + "where%3A+%0D%0A-+code%3A+FinancialInstitutionType+&source=";
+    }
+
+    private String getTeaserUrl(String clientRootId){
+        return Constants.WEB_ADMIN_URL
+                +  "RulesUIQuery.ct?waDbName=fnbuatcoreDS&dqlQuery=count%3A+10%0D%0A" +
+                "from%3A+bank.data.actloan.teaser%0D%0A" +
+                "where%3A+%0D%0A-+accountid%3A+"
+                + clientRootId +
+                "%0D%0AorderBy%3A+-id%0D%0AdeletedIncluded%3A+true&source=";
     }
 
     private String getLogoutUrl() {
@@ -84,6 +94,12 @@ public class LoginActions {
         SelenideTools.switchToLastTab();
 
         return result;
+    }
+
+    public void openTeaserUrlByCLientId(String clientId, UserCredentials userCredentials){
+        SelenideTools.openUrlInNewWindow(getTeaserUrl(clientId));
+        SelenideTools.switchToLastTab();
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
     }
 
     public void openWebAdminPageInNewWindow() {

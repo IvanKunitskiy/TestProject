@@ -5,10 +5,8 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
-import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -31,11 +29,13 @@ import com.nymbus.pages.webadmin.WebAdminPages;
 import com.nymbus.testrail.CustomStepResult;
 import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Loans Management")
+@Owner("Dmytro")
 public class C25350_TeaserRateProcessingSetupTeaserRateChangeTypeNoteRateTest extends BaseTest {
 
     private Account loanAccount;
@@ -147,18 +147,7 @@ public class C25350_TeaserRateProcessingSetupTeaserRateChangeTypeNoteRateTest ex
         Pages.accountMaintenancePage().clickToolsLaunchButton();
 
         logInfo("Step 5: Check the list of required and optional fields by default");
-        Pages.teaserModalPage().checkEffectiveDateLabel();
-        Pages.teaserModalPage().checkTeaserRateLabel();
-        Pages.teaserModalPage().checkMaxRateChangeUpDownLabel();
-        Pages.teaserModalPage().checkNoteRateLabel();
-        Pages.teaserModalPage().checkMaxRateLabel();
-        Pages.teaserModalPage().checkTeaserRateChangeLabel();
-        Pages.teaserModalPage().checkMinRateLabel();
-        Pages.teaserModalPage().checkRateRoundingFactorLabel();
-        Pages.teaserModalPage().checkRateChangeLeadDaysLabel();
-        Pages.teaserModalPage().checkRateIndexLabel();
-        Pages.teaserModalPage().checkRateMarginLabel();
-        Pages.teaserModalPage().checkRateRoundingMethodLabel();
+        Actions.loansActions().checkTeaserFields();
 
         TestRailAssert.assertTrue(Pages.teaserModalPage().getCountRequiredStars() == 3, new CustomStepResult(
                 "Required fields is equals", "Required fields is not equals"));
@@ -204,30 +193,26 @@ public class C25350_TeaserRateProcessingSetupTeaserRateChangeTypeNoteRateTest ex
                 "deletedIncluded: true\n" +
                 "\n" +
                 "Check that all value of fields correspond to the values \u200B\u200Badded by the user");
-        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL +
-                "RulesUIQuery.ct?waDbName=fnbuatcoreDS&dqlQuery=count%3A+10%0D%0Afrom%3A+bank.data.actloan.teaser%0D%0A" +
-                "where%3A+%0D%0A-+accountid%3A+" + clientRootId + "%0D%0AorderBy%3A+-id%0D%0AdeletedIncluded%3A+true&source=");
-        SelenideTools.switchToLastTab();
-        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        WebAdminActions.loginActions().openTeaserUrlByCLientId(clientRootId, userCredentials);
 
         int index = 2;
         String effectiveDateFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getEffectiveDateFromTeaser(index);
         effectiveDateFromTeaser = DateTime.getDateWithFormat(effectiveDateFromTeaser, "yyyy-MM-dd", "MM/dd/yyyy");
-        TestRailAssert.assertTrue(effectiveDateFromTeaser.equals(effectiveDate), new CustomStepResult(
-                "Effective Date is equals", "Effective Date is not equals"));
+        TestRailAssert.assertTrue(effectiveDateFromTeaser.equals(effectiveDate),
+                new CustomStepResult("Effective Date is equals", "Effective Date is not equals"));
         String expirationDateFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getExpirationDateFromTeaser(index);
         expirationDateFromTeaser = DateTime.getDateWithFormat(expirationDateFromTeaser, "yyyy-MM-dd", "MM/dd/yyyy");
-        TestRailAssert.assertTrue(expirationDateFromTeaser.equals(expirationDate), new CustomStepResult(
-                "Expiration Date is equals", "Expiration Date is not equals"));
+        TestRailAssert.assertTrue(expirationDateFromTeaser.equals(expirationDate),
+                new CustomStepResult("Expiration Date is equals", "Expiration Date is not equals"));
         String noteRateFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getNoteRateFromTeaser(index);
-        TestRailAssert.assertTrue(noteRateFromTeaser.equals("0." + noteRate), new CustomStepResult(
-                "Note Rate is equals", "Note Rate is not equals"));
+        TestRailAssert.assertTrue(noteRateFromTeaser.equals("0." + noteRate),
+                new CustomStepResult("Note Rate is equals", "Note Rate is not equals"));
         String rateChangeLeadDaysFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getRateChangeLeadDaysFromTeaser(index);
-        TestRailAssert.assertTrue(rateChangeLeadDaysFromTeaser.equals(rateChangeLeadDays), new CustomStepResult(
-                "Rate Change Lead Days is equals", "Rate Change Lead Days is not equals"));
-        String rateChangeTypeFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getRateChangeTypeFromTeaser(index);
-        TestRailAssert.assertTrue(rateChangeTypeFromTeaser.equals("Note Rate"), new CustomStepResult(
-                "Rate Change Type is equals", "Rate Change Type is not equals"));
+        TestRailAssert.assertTrue(rateChangeLeadDaysFromTeaser.equals(rateChangeLeadDays),
+                new CustomStepResult("Rate Change Lead Days is equals", "Rate Change Lead Days is not equals"));
+        String rateChangeTypeFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getRateChangeTypeFromTeaser(index - 1);
+        TestRailAssert.assertTrue(rateChangeTypeFromTeaser.equals("Note Rate"),
+                new CustomStepResult("Rate Change Type is equals", "Rate Change Type is not equals"));
 
     }
 

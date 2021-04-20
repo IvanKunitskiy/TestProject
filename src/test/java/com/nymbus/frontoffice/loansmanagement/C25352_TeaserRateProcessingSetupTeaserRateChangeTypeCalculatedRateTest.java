@@ -5,10 +5,8 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
-import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -31,11 +29,13 @@ import com.nymbus.pages.webadmin.WebAdminPages;
 import com.nymbus.testrail.CustomStepResult;
 import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Loans Management")
+@Owner("Dmytro")
 public class C25352_TeaserRateProcessingSetupTeaserRateChangeTypeCalculatedRateTest extends BaseTest {
 
     private Account loanAccount;
@@ -147,35 +147,24 @@ public class C25352_TeaserRateProcessingSetupTeaserRateChangeTypeCalculatedRateT
         Pages.accountMaintenancePage().clickToolsLaunchButton();
 
         logInfo("Step 5: Check the list of required and optional fields by default");
-        Pages.teaserModalPage().checkEffectiveDateLabel();
-        Pages.teaserModalPage().checkTeaserRateLabel();
-        Pages.teaserModalPage().checkMaxRateChangeUpDownLabel();
-        Pages.teaserModalPage().checkNoteRateLabel();
-        Pages.teaserModalPage().checkMaxRateLabel();
-        Pages.teaserModalPage().checkTeaserRateChangeLabel();
-        Pages.teaserModalPage().checkMinRateLabel();
-        Pages.teaserModalPage().checkRateRoundingFactorLabel();
-        Pages.teaserModalPage().checkRateChangeLeadDaysLabel();
-        Pages.teaserModalPage().checkRateIndexLabel();
-        Pages.teaserModalPage().checkRateMarginLabel();
-        Pages.teaserModalPage().checkRateRoundingMethodLabel();
+        Actions.loansActions().checkTeaserFields();
 
-        TestRailAssert.assertTrue(Pages.teaserModalPage().getCountRequiredStars() == 3, new CustomStepResult(
-                "Required fields is equals", "Required fields is not equals"));
+        TestRailAssert.assertTrue(Pages.teaserModalPage().getCountRequiredStars() == 3,
+                new CustomStepResult("Required fields is equals", "Required fields is not equals"));
 
-        logInfo("Step 6: Select \"Calculated Rate\" in the \"Teaser Rate Change Type\" drop-down");
+        logInfo("Step 6: Select 'Calculated Rate' in the 'Teaser Rate Change Type' drop-down");
         Pages.teaserModalPage().clickChangeRateArrow();
         Pages.teaserModalPage().clickCalculatedRateOption();
 
-        logInfo("Step 7: Check the fields in the \"Teaser Rate Setup\" widget after selecting \"Teaser Rate Change Type\"");
-        TestRailAssert.assertTrue(Pages.teaserModalPage().getCountRequiredStars() == 5, new CustomStepResult(
-                "Required fields is equals", "Required fields is not equals"));
+        logInfo("Step 7: Check the fields in the 'Teaser Rate Setup' widget after selecting 'Teaser Rate Change Type'");
+        TestRailAssert.assertTrue(Pages.teaserModalPage().getCountRequiredStars() == 5,
+                new CustomStepResult("Required fields is equals", "Required fields is not equals"));
         Pages.teaserModalPage().noteRateIsDisabled();
 
         logInfo("Step 8: Fill the following required fields:\n" +
-                "- Effective Date = in the past but not later than \"Date Opened\" of the loan account\n" +
+                "- Effective Date = in the past but not later than 'Date Opened' of the loan account\n" +
                 "- Teaser Rate Expire Date = current date or in the future\n" +
-                "- Note Rate = Greater or Less than \"Current effective rate\" on loan account\n" +
+                "- Note Rate = Greater or Less than 'Current effective rate' on loan account\n" +
                 "- Rate Change Lead Days => 0 (e.g. 1)");
         String effectiveDate = DateTime.getDateMinusDays(loanAccount.getDateOpened(), -1);
         Pages.teaserModalPage().inputEffectiveDate(effectiveDate);
@@ -186,7 +175,7 @@ public class C25352_TeaserRateProcessingSetupTeaserRateChangeTypeCalculatedRateT
         Pages.teaserModalPage().clickRateIndexArrow();
         Pages.teaserModalPage().clickRateIndexOption();
 
-        logInfo("Step 9: Click to the \"Done\" button on \"Teaser Rate Setup\" pop-up");
+        logInfo("Step 9: Click to the 'Done' button on 'Teaser Rate Setup' pop-up");
         Pages.teaserModalPage().clickDoneButton();
         String rateIndexValue = Pages.teaserModalPage().getRateIndexValue();
 
@@ -202,11 +191,7 @@ public class C25352_TeaserRateProcessingSetupTeaserRateChangeTypeCalculatedRateT
                 "deletedIncluded: true\n" +
                 "\n" +
                 "Check that all value of fields correspond to the values \u200B\u200Badded by the user");
-        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL +
-                "RulesUIQuery.ct?waDbName=fnbuatcoreDS&dqlQuery=count%3A+10%0D%0Afrom%3A+bank.data.actloan.teaser%0D%0A" +
-                "where%3A+%0D%0A-+accountid%3A+" + clientRootId + "%0D%0AorderBy%3A+-id%0D%0AdeletedIncluded%3A+true&source=");
-        SelenideTools.switchToLastTab();
-        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        WebAdminActions.loginActions().openTeaserUrlByCLientId(clientRootId, userCredentials);
 
         int index = 2;
         String effectiveDateFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getEffectiveDateFromTeaser(index);
