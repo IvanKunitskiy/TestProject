@@ -36,7 +36,7 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class C25352_TeaserRateProcessingSetupTeaserRateChangeTypeCalculatedRate extends BaseTest {
+public class C25352_TeaserRateProcessingSetupTeaserRateChangeTypeCalculatedRateTest extends BaseTest {
 
     private Account loanAccount;
     private Account checkAccount;
