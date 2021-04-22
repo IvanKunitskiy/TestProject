@@ -6,6 +6,7 @@ import com.nymbus.core.utils.Generator;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.data.entity.User;
 import com.nymbus.data.entity.verifyingmodels.TellerSessionVerifyingModel;
+import com.nymbus.newmodels.UserCredentials;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.AccountData;
 import com.nymbus.newmodels.client.basicinformation.type.ClientType;
@@ -432,6 +433,15 @@ public class WebAdminUsersActions {
                 "Awhere%3A+%0D%0A-+accountid%3A+" +
                 accountNumber +
                 "%0D%0AdeletedIncluded%3A+true&source=";
+    }
+
+    private String getTeaserUrl(String clientRootId){
+        return Constants.WEB_ADMIN_URL
+                +  "RulesUIQuery.ct?waDbName=fnbuatcoreDS&dqlQuery=count%3A+10%0D%0A" +
+                "from%3A+bank.data.actloan.teaser%0D%0A" +
+                "where%3A+%0D%0A-+accountid%3A+"
+                + clientRootId +
+                "%0D%0AorderBy%3A+-id%0D%0AdeletedIncluded%3A+true&source=";
     }
 
     public AccountData getLoanAccountData(String accountNumber) {
@@ -969,5 +979,11 @@ public class WebAdminUsersActions {
         SelenideTools.switchTo().window(0);
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         return accountNumber;
+    }
+
+    public void openTeaserUrlByCLientId(String clientId, UserCredentials userCredentials){
+        SelenideTools.openUrlInNewWindow(getTeaserUrl(clientId));
+        SelenideTools.switchToLastTab();
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
     }
 }
