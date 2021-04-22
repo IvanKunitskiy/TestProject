@@ -143,5 +143,28 @@ public class C19059_AddNewReservePremiumWithNegativeAmountTest extends BaseTest 
                 "'GL Offset' = any value\n" +
                 "'IRS Reportable Points Paid' = No\n" +
                 "and 'Commit Transaction'");
+        Pages.reservePremiumProcessingModalPage().setEffectiveDate(DateTime.getLocalDateOfPattern("MM/dd/yyyy"));
+        Pages.reservePremiumProcessingModalPage().setReservePremiumAmount("-300000");
+        Actions.reservePremiumProcessingModalPageActions().setDeferredYesNoSwitchValueToYes();
+        Actions.reservePremiumProcessingModalPageActions().setRandomReservePremiumCode();
+        Pages.reservePremiumProcessingModalPage().setReservePremiumTerm("3");
+        Pages.reservePremiumProcessingModalPage().setReservePremiumDeferringStartDate(DateTime.getLocalDateOfPattern("MM/dd/yyyy"));
+        Pages.reservePremiumProcessingModalPage().setGlOffset(Generator.genString(5));
+        Actions.reservePremiumProcessingModalPageActions().setIrsReportablePointsPaidSwitchValueToNo();
+        Pages.reservePremiumProcessingModalPage().clickCommitTransactionButton();
+
+        logInfo("Step 6: Select created Reserve/Premium");
+        // TODO
+
+        logInfo("Step 7: Open account from preconditions on the 'Transactions' tab");
+        Pages.reservePremiumProcessingModalPage().clickCloseButton();
+        Pages.accountDetailsPage().clickTransactionsTab();
+
+        logInfo("Step 8: Verify committed transaction");
+        /**
+         * TODO:
+         * 455X - Add R/P Expense is generated with amount = "Reserve/Premium Amount" and
+         * transaction description = "Add R/P Expense - Reserve/Premium Code"
+         */
     }
 }
