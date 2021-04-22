@@ -695,7 +695,8 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private final By expirationDate = By.xpath("(//div[@key-name='expirationdate'])[%s]");
     private final By noteRate = By.xpath("(//div[@key-name='noterate'])[%s]");
     private final By rateChangeLeadDays = By.xpath("(//div[@key-name='ratechangeleaddays'])[%s]");
-    private final By rateChangeType = By.xpath("//span[@key-name='ratechangetype']/../span/span");
+    private final By rateChangeType = By.xpath("(//span[@key-name='ratechangetype']/../span/span)[%s]");
+    private final By rateIndex = By.xpath("(//span[@key-name='rateindex']/../span/span)[1]");
 
     @Step("Get Effective Date value")
     public String getEffectiveDateFromTeaser(int index) {
@@ -722,10 +723,18 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     }
 
     @Step("Get RateChangeType value")
-    public String getRateChangeTypeFromTeaser() {
-        waitForElementVisibility(rateChangeType);
-        return getElementText(rateChangeType);
+    public String getRateChangeTypeFromTeaser(int index) {
+        waitForElementVisibility(rateChangeType, index);
+        return getElementText(rateChangeType, index);
     }
+
+    @Step("Get Rate Index value")
+    public String getRateIndexFromTeaser(int index) {
+        waitForElementVisibility(rateIndex, index);
+        return getElementText(rateIndex, index);
+    }
+
+
 
 
 
