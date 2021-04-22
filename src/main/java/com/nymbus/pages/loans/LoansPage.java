@@ -43,4 +43,17 @@ public class LoansPage extends PageTools {
     public void clickViewAllLoanParticipants() {
         click(viewAllLoanParticipantsLink);
     }
+
+    /**
+     * Loan Reserve
+     */
+
+    private By viewAllLoanReserveLink = By.xpath("(//article[contains(string(),'Loan Reserve')]//a)[2]");
+
+    @Step("Click the 'View all' loan reserve link")
+    public void clickViewAllLoanReserveLink() {
+        click(viewAllLoanReserveLink);
+    }
+
+
 }
