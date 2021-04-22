@@ -131,10 +131,10 @@ public class C25350_TeaserRateProcessingSetupTeaserRateChangeTypeNoteRateTest ex
     @Test(description = "C25350, Teaser Rate Processing - Setup (Teaser Rate Change Type = Note Rate)")
     @Severity(SeverityLevel.CRITICAL)
     public void teaserRateProcessing() {
-        logInfo("Log in to the system");
+        logInfo("Step 1: Log in to the system");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        logInfo("Open Loan account from preconditions");
+        logInfo("Step 2: Open Loan account from preconditions");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
 
@@ -148,7 +148,6 @@ public class C25350_TeaserRateProcessingSetupTeaserRateChangeTypeNoteRateTest ex
 
         logInfo("Step 5: Check the list of required and optional fields by default");
         Actions.loansActions().checkTeaserFields();
-
         TestRailAssert.assertTrue(Pages.teaserModalPage().getCountRequiredStars() == 3, new CustomStepResult(
                 "Required fields is equals", "Required fields is not equals"));
 
