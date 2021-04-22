@@ -180,7 +180,6 @@ public class C25422_ChargeOffProcessingChargeOffReversalForPartiallyChargedOffLo
 
         logInfo("Step 7: Go to the 'Transactions' tab and verify generated transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
-
         String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
         TestRailAssert.assertTrue(transactionCode.equals(TransactionCode.CHARGE_OFF_REVERSAL_430.getTransCode()),
                 new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
@@ -201,7 +200,6 @@ public class C25422_ChargeOffProcessingChargeOffReversalForPartiallyChargedOffLo
                 new CustomStepResult("Account 'charged off amount' is not valid", "Account 'charged off amount' is not valid"));
         TestRailAssert.assertTrue(Pages.accountDetailsPage().getAccountStatus().equals("Active"),
                 new CustomStepResult("Account 'status' is not valid", "Account 'status' is not valid"));
-
     }
 
     private String get429TemplateName() {
