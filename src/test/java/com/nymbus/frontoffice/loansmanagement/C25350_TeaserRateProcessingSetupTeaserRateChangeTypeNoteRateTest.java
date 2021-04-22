@@ -141,8 +141,8 @@ public class C25350_TeaserRateProcessingSetupTeaserRateChangeTypeNoteRateTest ex
         logInfo("Step 3: Go to the \"Maintenance\" screen");
         Pages.accountDetailsPage().clickMaintenanceTab();
 
-        logInfo("Step 4: Click to the \"Tools\" dropdown and select the \"Teaser Rate Setup\" widget after that " +
-                "click to the \"Launch\" button");
+        logInfo("Step 4: Click to the 'Tools' dropdown and select the 'Teaser Rate Setup' widget after that " +
+                "click to the 'Launch' button");
         AccountActions.accountMaintenanceActions().setTool(Tool.TEASER_RATE_SETUP);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
 
@@ -152,13 +152,13 @@ public class C25350_TeaserRateProcessingSetupTeaserRateChangeTypeNoteRateTest ex
         TestRailAssert.assertTrue(Pages.teaserModalPage().getCountRequiredStars() == 3, new CustomStepResult(
                 "Required fields is equals", "Required fields is not equals"));
 
-        logInfo("Step 6: Select \"Note Rate\" in the \"Teaser Rate Change Type\" drop-down");
+        logInfo("Step 6: Select 'Note Rate' in the 'Teaser Rate Change Type' drop-down");
         Pages.teaserModalPage().clickChangeRateArrow();
         Pages.teaserModalPage().clickNoteRateOption();
 
         logInfo("Step 7: Check the fields in the \"Teaser Rate Setup\" widget after selecting \"Teaser Rate Change Type\"");
-        TestRailAssert.assertTrue(Pages.teaserModalPage().getCountRequiredStars() == 5, new CustomStepResult(
-                "Required fields is equals", "Required fields is not equals"));
+        TestRailAssert.assertTrue(Pages.teaserModalPage().getCountRequiredStars() == 5,
+                new CustomStepResult("Required fields is equals", "Required fields is not equals"));
         Pages.teaserModalPage().checkRateRoundingFactorIsDisabled();
         Pages.teaserModalPage().checkMaxRateChangeIsDisabled();
         Pages.teaserModalPage().checkMinRateIsDisabled();
@@ -193,7 +193,7 @@ public class C25350_TeaserRateProcessingSetupTeaserRateChangeTypeNoteRateTest ex
                 "deletedIncluded: true\n" +
                 "\n" +
                 "Check that all value of fields correspond to the values \u200B\u200Badded by the user");
-        WebAdminActions.loginActions().openTeaserUrlByCLientId(clientRootId, userCredentials);
+        WebAdminActions.webAdminUsersActions().openTeaserUrlByCLientId(clientRootId, userCredentials);
 
         int index = 2;
         String effectiveDateFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getEffectiveDateFromTeaser(index);

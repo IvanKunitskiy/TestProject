@@ -138,11 +138,11 @@ public class C25352_TeaserRateProcessingSetupTeaserRateChangeTypeCalculatedRateT
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
 
-        logInfo("Step 3: Go to the \"Maintenance\" screen");
+        logInfo("Step 3: Go to the 'Maintenance' screen");
         Pages.accountDetailsPage().clickMaintenanceTab();
 
-        logInfo("Step 4: Click to the \"Tools\" dropdown and select the \"Teaser Rate Setup\" widget after that " +
-                "click to the \"Launch\" button");
+        logInfo("Step 4: Click to the 'Tools' dropdown and select the 'Teaser Rate Setup' widget after that " +
+                "click to the 'Launch' button");
         AccountActions.accountMaintenanceActions().setTool(Tool.TEASER_RATE_SETUP);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
 
@@ -191,26 +191,26 @@ public class C25352_TeaserRateProcessingSetupTeaserRateChangeTypeCalculatedRateT
                 "deletedIncluded: true\n" +
                 "\n" +
                 "Check that all value of fields correspond to the values \u200B\u200Badded by the user");
-        WebAdminActions.loginActions().openTeaserUrlByCLientId(clientRootId, userCredentials);
+        WebAdminActions.webAdminUsersActions().openTeaserUrlByCLientId(clientRootId, userCredentials);
 
         int index = 2;
         String effectiveDateFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getEffectiveDateFromTeaser(index);
         effectiveDateFromTeaser = DateTime.getDateWithFormat(effectiveDateFromTeaser, "yyyy-MM-dd", "MM/dd/yyyy");
-        TestRailAssert.assertTrue(effectiveDateFromTeaser.equals(effectiveDate), new CustomStepResult(
-                "Effective Date is equals", "Effective Date is not equals"));
+        TestRailAssert.assertTrue(effectiveDateFromTeaser.equals(effectiveDate),
+                new CustomStepResult("Effective Date is equals", "Effective Date is not equals"));
         String expirationDateFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getExpirationDateFromTeaser(index);
         expirationDateFromTeaser = DateTime.getDateWithFormat(expirationDateFromTeaser, "yyyy-MM-dd", "MM/dd/yyyy");
-        TestRailAssert.assertTrue(expirationDateFromTeaser.equals(expirationDate), new CustomStepResult(
-                "Expiration Date is equals", "Expiration Date is not equals"));
+        TestRailAssert.assertTrue(expirationDateFromTeaser.equals(expirationDate),
+                new CustomStepResult("Expiration Date is equals", "Expiration Date is not equals"));
         String noteRateFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getRateIndexFromTeaser(index);
-        TestRailAssert.assertTrue(noteRateFromTeaser.equals(rateIndexValue), new CustomStepResult(
-                "Note Rate is equals", "Note Rate is not equals"));
+        TestRailAssert.assertTrue(noteRateFromTeaser.equals(rateIndexValue),
+                new CustomStepResult("Note Rate is equals", "Note Rate is not equals"));
         String rateChangeLeadDaysFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getRateChangeLeadDaysFromTeaser(index);
-        TestRailAssert.assertTrue(rateChangeLeadDaysFromTeaser.equals(rateChangeLeadDays), new CustomStepResult(
-                "Rate Change Lead Days is equals", "Rate Change Lead Days is not equals"));
+        TestRailAssert.assertTrue(rateChangeLeadDaysFromTeaser.equals(rateChangeLeadDays),
+                new CustomStepResult("Rate Change Lead Days is equals", "Rate Change Lead Days is not equals"));
         String rateChangeTypeFromTeaser = WebAdminPages.rulesUIQueryAnalyzerPage().getRateChangeTypeFromTeaser(1);
-        TestRailAssert.assertTrue(rateChangeTypeFromTeaser.equals("Calculated Rate"), new CustomStepResult(
-                "Rate Change Type is equals", "Rate Change Type is not equals"));
+        TestRailAssert.assertTrue(rateChangeTypeFromTeaser.equals("Calculated Rate"),
+                new CustomStepResult("Rate Change Type is equals", "Rate Change Type is not equals"));
 
     }
 
