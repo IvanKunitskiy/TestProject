@@ -20,12 +20,20 @@ public class ReservePremiumProcessingModalActions {
         }
     }
 
-    public void setRandomReservePremiumCode() {
-        Pages.reservePremiumProcessingModalPage().clickReservePremiumCode();
-        List<String> theListOfReservePremiumCode = Pages.reservePremiumProcessingModalPage().getTheListOfReservePremiumCode();
+    public void setRandomReservePremiumCode(String query) {
+        Pages.reservePremiumProcessingModalPage().clickReservePremiumCode(query);
+
+        List<String> theListOfReservePremiumCode = Pages.reservePremiumProcessingModalPage().getListOfReservePremiumCode();
         Assert.assertTrue(theListOfReservePremiumCode.size() > 0, "There are no 'Reserve premium code options available");
-        String option = theListOfReservePremiumCode.get(new Random().nextInt(theListOfReservePremiumCode.size())).trim();
-        Pages.reservePremiumProcessingModalPage().clickReservePremiumCodeOptionByName(option);
+        Pages.reservePremiumProcessingModalPage().clickReservePremiumCodeOptionByName(query);
     }
 
+    public void setGlOffset(String query) {
+        Pages.reservePremiumProcessingModalPage().setGlOffset(query);
+
+        List<String> listOfGlOffset = Pages.reservePremiumProcessingModalPage().getListOfGlOffset();
+        Assert.assertTrue(listOfGlOffset.size() > 0, "There are no 'Gl Offset' options available");
+        String option = listOfGlOffset.get(new Random().nextInt(listOfGlOffset.size())).trim();
+        Pages.reservePremiumProcessingModalPage().clickGlOffsetByTextOptionByName(option);
+    }
 }

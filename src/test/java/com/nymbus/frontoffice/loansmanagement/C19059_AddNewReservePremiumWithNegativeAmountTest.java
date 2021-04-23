@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.LoanReserve;
@@ -21,6 +22,8 @@ import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -31,13 +34,11 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C19059_AddNewReservePremiumWithNegativeAmountTest extends BaseTest {
 
-    private IndividualClient client;
     private Account loanAccount;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
     private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
-    private double escrowPaymentValue;
 
     @BeforeMethod
     public void preCondition() {
@@ -45,7 +46,7 @@ public class C19059_AddNewReservePremiumWithNegativeAmountTest extends BaseTest 
         // Set up client
         IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
-        client = individualClientBuilder.buildClient();
+        IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up accounts
         loanAccount = new Account().setLoanAccountData();
@@ -63,6 +64,7 @@ public class C19059_AddNewReservePremiumWithNegativeAmountTest extends BaseTest 
         miscCreditDestination.setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
         miscCreditDestination.setAmount(transactionAmount);
 
+        // Loan reserve
         LoanReserve loanReserve = new LoanReserve();
         loanReserve.setReservePremiumAmortizationCode(Generator.getRandomStringNumber(7));
         loanReserve.setBalanceDefinition("Deferred Costs");
@@ -74,11 +76,8 @@ public class C19059_AddNewReservePremiumWithNegativeAmountTest extends BaseTest 
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
         Actions.loginActions().doLogOut();
 
-        // Get escrow payment value for the loan product
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        escrowPaymentValue = Actions.loanProductOverviewActions().getLoanProductEscrowPaymentValue(loanProductName);
-
         // Set the product
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
 
         // Create a client
@@ -143,28 +142,43 @@ public class C19059_AddNewReservePremiumWithNegativeAmountTest extends BaseTest 
                 "'GL Offset' = any value\n" +
                 "'IRS Reportable Points Paid' = No\n" +
                 "and 'Commit Transaction'");
+        String reservePremiumAmount = "300000";
         Pages.reservePremiumProcessingModalPage().setEffectiveDate(DateTime.getLocalDateOfPattern("MM/dd/yyyy"));
-        Pages.reservePremiumProcessingModalPage().setReservePremiumAmount("-300000");
+        Pages.reservePremiumProcessingModalPage().setReservePremiumAmount("-" + reservePremiumAmount);
         Actions.reservePremiumProcessingModalPageActions().setDeferredYesNoSwitchValueToYes();
-        Actions.reservePremiumProcessingModalPageActions().setRandomReservePremiumCode();
+        Actions.reservePremiumProcessingModalPageActions().setRandomReservePremiumCode("DE");
         Pages.reservePremiumProcessingModalPage().setReservePremiumTerm("3");
         Pages.reservePremiumProcessingModalPage().setReservePremiumDeferringStartDate(DateTime.getLocalDateOfPattern("MM/dd/yyyy"));
-        Pages.reservePremiumProcessingModalPage().setGlOffset(Generator.genString(5));
         Actions.reservePremiumProcessingModalPageActions().setIrsReportablePointsPaidSwitchValueToNo();
         Pages.reservePremiumProcessingModalPage().clickCommitTransactionButton();
 
         logInfo("Step 6: Select created Reserve/Premium");
-        // TODO
+        Pages.reservePremiumProcessingModalPage().clickReservePremiumRecordFromTableByIndex(1);
+        TestRailAssert.assertTrue(Pages.reservePremiumProcessingModalPage().getAdjustmentAmount().isEmpty(),
+                new CustomStepResult("'Adjustment Amount' is not valid", "'Adjustment Amount' is valid"));
+        double reservePremiumOriginalAmount = Double.parseDouble(Pages.reservePremiumProcessingModalPage().getReservePremiumOriginalAmount());
+        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(reservePremiumOriginalAmount).equals(reservePremiumAmount),
+                new CustomStepResult("'Reserve/Premium Original Amount' is not valid", "'Reserve/Premium Original Amount' is valid"));
+        double reservePremiumUnamortized = Double.parseDouble(Pages.reservePremiumProcessingModalPage().getReservePremiumUnamortized());
+        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(reservePremiumUnamortized).equals(reservePremiumAmount),
+                new CustomStepResult("'Reserve/Premium Unamortized' is not valid", "'Reserve/Premium Unamortized' is valid"));
+        String reservePremiumMaturityDate = Pages.reservePremiumProcessingModalPage().getReservePremiumMaturityDate();
+        String reservePremiumDeferringStartDateValue = Pages.reservePremiumProcessingModalPage().getReservePremiumDeferringStartDateValue();
+        int reservePremiumTermValue = Integer.parseInt(Pages.reservePremiumProcessingModalPage().getReservePremiumTermValue());
+        String calculatedReservePremiumMaturityDate = DateTime.getDatePlusMonth(reservePremiumDeferringStartDateValue, reservePremiumTermValue);
+        TestRailAssert.assertTrue(reservePremiumMaturityDate.equals(calculatedReservePremiumMaturityDate),
+                new CustomStepResult("'Reserve/Premium Maturity Date' is not valid", "'Reserve/Premium Maturity Date' is valid"));
 
         logInfo("Step 7: Open account from preconditions on the 'Transactions' tab");
         Pages.reservePremiumProcessingModalPage().clickCloseButton();
         Pages.accountDetailsPage().clickTransactionsTab();
 
         logInfo("Step 8: Verify committed transaction");
-        /**
-         * TODO:
-         * 455X - Add R/P Expense is generated with amount = "Reserve/Premium Amount" and
-         * transaction description = "Add R/P Expense - Reserve/Premium Code"
-         */
+        String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
+        TestRailAssert.assertTrue(transactionCode.equals(TransactionCode.ADD_RP_EXPENSE_455X.getTransCode()),
+                new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
+        double transactionAmount = AccountActions.retrievingAccountData().getAmountValue(1);
+        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(transactionAmount).equals(reservePremiumAmount),
+                new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
     }
 }

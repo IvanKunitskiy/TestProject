@@ -58,7 +58,8 @@ public enum TransactionCode {
     PARTICIPATION_SELL_471("471 - Participation Sell"),
     PARTICIPATION_REPURCHASE_472("472 - Participation Repurchase"),
     ADD_ON_410("410 - Add-On"),
-    ADDITIONAL_SELL_475("475 - Additional Sell");
+    ADDITIONAL_SELL_475("475 - Additional Sell"),
+    ADD_RP_EXPENSE_455X("455X - Add R/P Expense");
 
     private final String transCode;
 }
