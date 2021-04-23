@@ -476,12 +476,19 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     /**
      * CDT template
      */
-    private By templateName = By.xpath("//tr/td[7]/div");
+    private final By templateName = By.xpath("//tr/td[7]/div");
+    private final By templateNameByIndex = By.xpath("//table[@id='searchResultTable']/tbody/tr[@class='searchResultRow '][%s]/td[3]/div");
 
     @Step("Get list of CDT template names")
     public List<String> getListOfCdtTemplateNames() {
         waitForElementVisibility(templateName);
         return getElementsText(templateName);
+    }
+
+    @Step ("Get template name by index")
+    public String getCdtTemplateNameByIndex(int index) {
+        waitForElementVisibility(templateNameByIndex, index);
+        return getElementText(templateNameByIndex, index).trim();
     }
 
     /**
@@ -688,7 +695,8 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private final By expirationDate = By.xpath("(//div[@key-name='expirationdate'])[%s]");
     private final By noteRate = By.xpath("(//div[@key-name='noterate'])[%s]");
     private final By rateChangeLeadDays = By.xpath("(//div[@key-name='ratechangeleaddays'])[%s]");
-    private final By rateChangeType = By.xpath("//span[@key-name='ratechangetype']/../span/span");
+    private final By rateChangeType = By.xpath("(//span[@key-name='ratechangetype']/../span/span)[%s]");
+    private final By rateIndex = By.xpath("(//span[@key-name='rateindex']/../span/span)[1]");
 
     @Step("Get Effective Date value")
     public String getEffectiveDateFromTeaser(int index) {
@@ -715,10 +723,18 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     }
 
     @Step("Get RateChangeType value")
-    public String getRateChangeTypeFromTeaser() {
-        waitForElementVisibility(rateChangeType);
-        return getElementText(rateChangeType);
+    public String getRateChangeTypeFromTeaser(int index) {
+        waitForElementVisibility(rateChangeType, index);
+        return getElementText(rateChangeType, index);
     }
+
+    @Step("Get Rate Index value")
+    public String getRateIndexFromTeaser(int index) {
+        waitForElementVisibility(rateIndex, index);
+        return getElementText(rateIndex, index);
+    }
+
+
 
 
 
