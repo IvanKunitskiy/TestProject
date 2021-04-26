@@ -32,15 +32,33 @@ public class LoansPage extends PageTools {
      */
 
     private By viewAllLoanProductsLink = By.xpath("//a[text()='View all'][parent::node()/preceding-sibling::div[@class='header']/h2[text()='Loan Product']]");
-    private By viewAllLoanParticipantsLink = By.xpath("//a[@href='#/search/bank.data.participant']");
 
     @Step("Click the 'View all' loan products link")
     public void clickViewAllLoanProductsLink() {
         click(viewAllLoanProductsLink);
     }
 
+    /**
+     * Loan Participants
+     */
+    private By viewAllLoanParticipantsLink = By.xpath("//a[@href='#/search/bank.data.participant']");
+
     @Step("Click the 'View all' Loan Participants link")
     public void clickViewAllLoanParticipants() {
         click(viewAllLoanParticipantsLink);
     }
+
+
+    /**
+     * Loan Reserve
+     */
+    private By viewAllLoanReserveLink = By.xpath("//a[@href='#/search/bank.data.bcfile.loan.reserve']");
+
+    @Step("Click the 'View all' Loan Reserves link")
+    public void clickViewAllLoanReserves() {
+        click(viewAllLoanReserveLink);
+    }
+
+
+
 }

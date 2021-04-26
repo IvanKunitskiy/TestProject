@@ -4,6 +4,7 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
@@ -17,18 +18,23 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
 import com.nymbus.newmodels.generation.tansactions.factory.DestinationFactory;
 import com.nymbus.newmodels.generation.tansactions.factory.SourceFactory;
+import com.nymbus.newmodels.maintenance.Tool;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class C19056_AddNewReservPremiumWithPositiveAmount extends BaseTest {
+@Epic("Frontoffice")
+@Feature("Loans Management")
+@Owner("Dmytro")
+public class C19056_AddNewReservPremiumWithPositiveAmountTest extends BaseTest {
 
     private Account loanAccount;
     private Account checkAccount;
@@ -113,6 +119,19 @@ public class C19056_AddNewReservPremiumWithPositiveAmount extends BaseTest {
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
+
+        //Create New Loan Reserve
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        String code = "autotest";
+        if (!Actions.loanReserveActions().isLoanReserveExists(code)) {
+            Pages.loansReservePage().clickAddNewButton();
+            Pages.loansReservePage().inputAuthorizationCode(code);
+            Pages.loansReservePage().inputAmortizationType("Straight Line");
+            Pages.loansReservePage().inputPremiumType("Loan costs");
+            Pages.loansReservePage().inputBalanceDefinition("Deferred Fees");
+            Pages.loansReservePage().clickSaveButton();
+        }
+        Actions.loginActions().doLogOut();
     }
 
     private final String TEST_RUN_NAME = "Loans Management";
@@ -121,8 +140,58 @@ public class C19056_AddNewReservPremiumWithPositiveAmount extends BaseTest {
     @Test(description = "C25352, Teaser Rate Processing - Setup (Teaser Rate Change Type = Calculated Rate)")
     @Severity(SeverityLevel.CRITICAL)
     public void teaserRateProcessing() {
-        logInfo("Log in to the system");
+        logInfo("Step 1: Log in to the system");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        logInfo("Step 2: Open account from preconditions on the 'Maintenance' page");
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
+        Pages.accountDetailsPage().clickMaintenanceTab();
+
+        logInfo("Step 3: Select 'Reserve/Premium Processing' in 'Tools' widget and click the [Launch] button");
+        AccountActions.accountMaintenanceActions().setTool(Tool.RESERVE_PREMIUM_PROCESSING);
+        Pages.accountMaintenancePage().clickToolsLaunchButton();
+
+        logInfo("Step 4: Click the [+ Add New Loan Reserve/Premium] button");
+        Pages.reservePremiumProcessingModalPage().clickAddNewButton();
+
+        logInfo("Step 5: Fill in all required fields:\n" +
+                "\n" +
+                "'Effective Date' < = Current Date\n" +
+                "'Reserve/Premium Amount' = any positive amount (e.g. $ 3,000.00)\n" +
+                "'Deferred Yes/No' = Yes\n" +
+                "'Reserve/Premium Code' = any existing code in the the drop down (e.g 'DE)\n" +
+                "'Reserve/Premium Term' > 0 (e.g. 3)\n" +
+                "'Reserve/Premium Deferring Start Date' > = Current Date\n" +
+                "'GL Offset' = any value\n" +
+                "'IRS Reportable Points Paid' = No\n" +
+                "and 'Commit Transaction'");
+        String origAmount = "30.00";
+        String term = "3";
+        Actions.loanReserveActions().inputLoanReserveFields(loanAccount, origAmount, term);
+
+        logInfo("Step 6: Select created Reserve/Premium");
+        Pages.reservePremiumProcessingModalPage().clickRecord("autotest");
+        String amount = Pages.reservePremiumProcessingModalPage().getAmount();
+        TestRailAssert.assertTrue(amount.equals(""),
+                new CustomStepResult("Amount is valid", "Amount is not valid"));
+        String originalAmount = Pages.reservePremiumProcessingModalPage().getOriginalAmount();
+        TestRailAssert.assertTrue(originalAmount.equals(origAmount),
+                new CustomStepResult("Original amount is valid", "Original amount is not valid"));
+        String unAmortizedAmount = Pages.reservePremiumProcessingModalPage().getUnAmortizedAmount();
+        TestRailAssert.assertTrue(unAmortizedAmount.equals(origAmount),
+                new CustomStepResult("UnAmortized amount is valid", "UnAmortized amount is not valid"));
+        String maturityDate = Pages.reservePremiumProcessingModalPage().getMaturityDate();
+        TestRailAssert.assertTrue(maturityDate.equals(DateTime.getDatePlusMonth(loanAccount.getDateOpened(),
+                2 + Integer.parseInt(term))),
+                new CustomStepResult("Maturity date is valid", "Maturity date is not valid"));
+
+        logInfo("Step 7: Open Account from preconditions on the 'Transaction' tab");
+        Pages.reservePremiumProcessingModalPage().clickCloseButton();
+        Pages.accountDetailsPage().clickTransactionsTab();
+
+        logInfo("Step 8: Verify generated transaction");
+
 
     }
 

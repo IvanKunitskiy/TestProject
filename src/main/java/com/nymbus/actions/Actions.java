@@ -12,6 +12,7 @@ import com.nymbus.actions.journal.JournalActions;
 import com.nymbus.actions.loans.AddNewLoanActions;
 import com.nymbus.actions.loans.LoanPayoffActions;
 import com.nymbus.actions.loans.LoanProductOverviewActions;
+import com.nymbus.actions.loans.LoanReserveActions;
 import com.nymbus.actions.modalwindow.DebitCardModalWindowActions;
 import com.nymbus.actions.modalwindow.ParticipationsActions;
 import com.nymbus.actions.settings.*;
@@ -48,6 +49,7 @@ public class Actions {
     private static LoanPayoffActions loanPayoffActions;
     private static ParticipationsActions participationsActions;
     private static LoansActions loansActions;
+    private static LoanReserveActions loanReserveActions;
 
     /**
      * Modal Window Actions
@@ -83,6 +85,16 @@ public class Actions {
             loansActions = new LoansActions();
         }
         return loansActions;
+    }
+
+    /**
+     * This function returns an instance of `LoanReserveActions`
+     */
+    public static LoanReserveActions loanReserveActions() {
+        if (loanReserveActions == null) {
+            loanReserveActions = new LoanReserveActions();
+        }
+        return loanReserveActions;
     }
 
     /**
