@@ -115,6 +115,9 @@ public class Pages extends AllureLogger {
     private static LoanParticipantsPage loanParticipantsPage;
     private static ParticipationsModalPage participationsModalPage;
     private static TeaserModalPage teaserModalPage;
+    private static LoanReservePage loanReservePage;
+    private static AddNewLoanReservePage addNewLoanReservePage;
+    private static ReservePremiumProcessingModalPage reservePremiumProcessingModalPage;
 
     /**
      * Modal Windows
@@ -871,5 +874,35 @@ public class Pages extends AllureLogger {
             teaserModalPage = new TeaserModalPage();
         }
         return teaserModalPage;
+    }
+
+    /**
+     * This function return an instance of `LoanReservePage`
+     */
+    public static LoanReservePage loanReservePage(){
+        if (loanReservePage == null){
+            loanReservePage = new LoanReservePage();
+        }
+        return loanReservePage;
+    }
+
+    /**
+     * This function return an instance of `AddNewLoanReservePage`
+     */
+    public static AddNewLoanReservePage addNewLoanReservePage(){
+        if (addNewLoanReservePage == null){
+            addNewLoanReservePage = new AddNewLoanReservePage();
+        }
+        return addNewLoanReservePage;
+    }
+
+    /**
+     * This function return an instance of `ReservePremiumProcessingModalPage`
+     */
+    public static ReservePremiumProcessingModalPage reservePremiumProcessingModalPage(){
+        if (reservePremiumProcessingModalPage == null){
+            reservePremiumProcessingModalPage = new ReservePremiumProcessingModalPage();
+        }
+        return reservePremiumProcessingModalPage;
     }
 }
