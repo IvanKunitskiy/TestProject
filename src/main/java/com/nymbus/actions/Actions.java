@@ -15,6 +15,7 @@ import com.nymbus.actions.loans.LoanProductOverviewActions;
 import com.nymbus.actions.loans.LoanReserveActions;
 import com.nymbus.actions.modalwindow.DebitCardModalWindowActions;
 import com.nymbus.actions.modalwindow.ParticipationsActions;
+import com.nymbus.actions.modalwindow.ReservePremiumProcessingModalActions;
 import com.nymbus.actions.settings.*;
 import com.nymbus.actions.teller.TellerActions;
 import com.nymbus.actions.transaction.NonTellerTransactionActions;
@@ -50,6 +51,7 @@ public class Actions {
     private static ParticipationsActions participationsActions;
     private static LoansActions loansActions;
     private static LoanReserveActions loanReserveActions;
+    private static ReservePremiumProcessingModalActions reservePremiumProcessingModalPageActions;
 
     /**
      * Modal Window Actions
@@ -319,5 +321,15 @@ public class Actions {
             participationsActions = new ParticipationsActions();
         }
         return participationsActions;
+    }
+
+    /**
+     * This function returns an instance of `ReservePremiumProcessingModalActions`
+     */
+    public static ReservePremiumProcessingModalActions reservePremiumProcessingModalPageActions() {
+        if (reservePremiumProcessingModalPageActions == null) {
+            reservePremiumProcessingModalPageActions = new ReservePremiumProcessingModalActions();
+        }
+        return reservePremiumProcessingModalPageActions;
     }
 }

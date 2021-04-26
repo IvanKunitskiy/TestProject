@@ -61,7 +61,8 @@ public enum TransactionCode {
     ADDITIONAL_SELL_475("475 - Additional Sell"),
     GL_DEBIT_860("860 - G/L Debit"),
     CHARGE_OFF_429("429 - Charge Off"),
-    CHARGE_OFF_REVERSAL_430("430 - Charge Off Reversal");
+    CHARGE_OFF_REVERSAL_430("430 - Charge Off Reversal"),
+    ADD_RP_EXPENSE_455X("455X - Add R/P Expense");
 
     private final String transCode;
 }
