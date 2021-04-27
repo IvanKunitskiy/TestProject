@@ -35,13 +35,14 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Dmytro")
-public class C19056_AddNewReservPremiumWithPositiveAmountTest extends BaseTest {
+public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest {
 
     private Account loanAccount;
     private Account checkAccount;
     private double transactionAmount = 1001.00;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
+    private String clientRootId;
     private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
     private int balance;
@@ -86,6 +87,7 @@ public class C19056_AddNewReservPremiumWithPositiveAmountTest extends BaseTest {
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkAccount);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createLoanAccount(loanAccount);
+        clientRootId = ClientsActions.createClient().getClientIdFromUrl();
 
         // Set up transactions with account number
         depositTransaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());
