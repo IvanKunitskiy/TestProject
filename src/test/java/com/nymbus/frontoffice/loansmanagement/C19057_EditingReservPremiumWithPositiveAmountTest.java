@@ -35,7 +35,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Dmytro")
-public class C19056_AddNewReservPremiumWithPositiveAmountTest extends BaseTest {
+public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest {
 
     private Account loanAccount;
     private Account checkAccount;
