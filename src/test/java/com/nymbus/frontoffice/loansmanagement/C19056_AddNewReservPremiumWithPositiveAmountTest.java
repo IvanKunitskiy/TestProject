@@ -122,14 +122,7 @@ public class C19056_AddNewReservPremiumWithPositiveAmountTest extends BaseTest {
         //Create New Loan Reserve
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         String code = "autotest";
-        if (!Actions.loanReserveActions().isLoanReserveExists(code)) {
-            Pages.loansReservePage().clickAddNewButton();
-            Pages.loansReservePage().inputAuthorizationCode(code);
-            Pages.loansReservePage().inputAmortizationType("Straight Line");
-            Pages.loansReservePage().inputPremiumType("Loan costs");
-            Pages.loansReservePage().inputBalanceDefinition("Deferred Fees");
-            Pages.loansReservePage().clickSaveButton();
-        }
+        Actions.loanReserveActions().checkAndCreateNewCode(code);
         Actions.loginActions().doLogOut();
     }
 
