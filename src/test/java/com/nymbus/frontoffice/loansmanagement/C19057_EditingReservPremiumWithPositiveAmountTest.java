@@ -135,8 +135,8 @@ public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest 
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 25352, testRunName = TEST_RUN_NAME)
-    @Test(description = "C25352, Teaser Rate Processing - Setup (Teaser Rate Change Type = Calculated Rate)")
+    @TestRailIssue(issueID = 19057, testRunName = TEST_RUN_NAME)
+    @Test(description = "Editing 'Reserve/Premium' with positive amount")
     @Severity(SeverityLevel.CRITICAL)
     public void teaserRateProcessing() {
         logInfo("Step 1: Log in to the system");
