@@ -159,7 +159,7 @@ public class C19060_EditingReservePremiumWithNegativeAmountTest extends BaseTest
         Pages.reservePremiumProcessingModalPage().setAdjustmentAmount(ADJUSTMENT_AMOUNT);
         double reservePremiumAmount = Double.parseDouble(Pages.reservePremiumProcessingModalPage().getReservePremiumAmount());
         TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(reservePremiumAmount).equals(AMOUNT),
-                new CustomStepResult("'Reserve/Premium Amount' is not valid", "'Reserve/Premium Amount' is valid"));
+                new CustomStepResult("'Reserve/Premium Amount' is valid", "'Reserve/Premium Amount' is not valid"));
         Pages.reservePremiumProcessingModalPage().clickCommitTransactionButton();
         Pages.reservePremiumProcessingModalPage().clickCloseButton();
 
@@ -169,9 +169,9 @@ public class C19060_EditingReservePremiumWithNegativeAmountTest extends BaseTest
         logInfo("Step 7: Verify committed transaction");
         String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
         TestRailAssert.assertTrue(transactionCode.equals(TransactionCode.SUB_RP_EXPENSE_456X.getTransCode()),
-                new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
+                new CustomStepResult("'Transaction code' is valid", "'Transaction code' is not valid"));
         double transactionAmount = AccountActions.retrievingAccountData().getAmountValue(1);
-        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(transactionAmount).equals(ADJUSTMENT_AMOUNT),
-                new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
+        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(transactionAmount).equals(AMOUNT),
+                new CustomStepResult("'Amount' is valid", "'Amount' is not valid"));
     }
 }
