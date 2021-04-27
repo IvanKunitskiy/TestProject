@@ -16,12 +16,14 @@ import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.factory.DestinationFactory;
 import com.nymbus.newmodels.generation.tansactions.factory.SourceFactory;
+import com.nymbus.newmodels.maintenance.Tool;
 import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -121,5 +123,33 @@ public class C19061_ReservePremiumRealTimeAmortizationTest extends BaseTest {
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
         Pages.accountDetailsPage().clickMaintenanceTab();
 
+        logInfo("Step 3: Select 'Reserve/Premium Processing' in 'Tools' widget and click the [Launch] button");
+        AccountActions.accountMaintenanceActions().setTool(Tool.RESERVE_PREMIUM_PROCESSING);
+        Pages.accountMaintenancePage().clickToolsLaunchButton();
+
+        logInfo("Step 4: Click the [+ Add New Loan Reserve/Premium] button");
+        Pages.reservePremiumProcessingModalPage().clickAddNewLoanReservePremiumButton();
+
+        logInfo("Step 5: Fill in all required fields:\n" +
+                "'Effective Date' < = Current Date\n" +
+                "'Reserve/Premium Amount' = any positive amount (e.g. $ 3,000.00)\n" +
+                "'Deferred Yes/No' = No\n" +
+                "'Reserve/Premium Code' = any existing code in the the drop down (e.g 'DE)\n" +
+                "'GL Offset' = any value\n" +
+                "'IRS Reportable Points Paid' = No\n" +
+                "and 'Commit Transaction'");
+        String reservePremiumAmount = "300000";
+        Pages.reservePremiumProcessingModalPage().setEffectiveDate(DateTime.getLocalDateOfPattern("MM/dd/yyyy"));
+        Pages.reservePremiumProcessingModalPage().setReservePremiumAmount(reservePremiumAmount);
+        Actions.reservePremiumProcessingModalPageActions().setDeferredYesNoSwitchValueToNo();
+        Actions.reservePremiumProcessingModalPageActions().setRandomReservePremiumCode("DE");
+        Pages.reservePremiumProcessingModalPage().clickCommitTransactionButton();
+
+        logInfo("Step 6: Select created Reserve/Premium");
+        Pages.reservePremiumProcessingModalPage().clickReservePremiumRecordFromTableByIndex(1);
+
+        logInfo("Step 7: Verify 'Reserve/Premium Unamortized' value");
+        // TODO: Verify "Reserve/Premium Unamortized" value
+        Assert.fail();
     }
 }
