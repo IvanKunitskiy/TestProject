@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Dmytro")
-public class C25479_ProcessLoanPrepaymentTransaction extends BaseTest {
+public class C25479_ProcessLoanPrepaymentTransactionTest extends BaseTest {
     private Account loanAccount;
     private Account checkAccount;
     private Transaction transaction;
@@ -213,9 +213,9 @@ public class C25479_ProcessLoanPrepaymentTransaction extends BaseTest {
         String effectiveDate = Pages.accountPaymentInfoPage().getPiPaymentsEffectiveDate();
 
         double expectedAccruedInterest = Double.parseDouble(currentBalanceForInterest) * Double.parseDouble(currentEffectiveRate) / 100 /
-                yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate, dueDate, true);
-        String expectedInterest = expectedAccruedInterest + "";
-        expectedInterest = expectedInterest.substring(0, expectedInterest.indexOf(".") + 3);
+                yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate, dueDate, false);
+        //String expectedInterest = expectedAccruedInterest + "";
+        String expectedInterest = String.format("%.2f", expectedAccruedInterest);
         TestRailAssert.assertTrue(disInterest.equals(expectedInterest),
                 new CustomStepResult("Interest is not valid", "Interest is valid"));
         String disAmount = Pages.accountPaymentInfoPage().getDisabledAmount();

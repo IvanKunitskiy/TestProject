@@ -1,5 +1,6 @@
 package com.nymbus.actions.loans;
 
+import com.nymbus.actions.Actions;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.SelenideTools;
@@ -31,14 +32,14 @@ public class LoanReserveActions {
     }
 
     public void inputLoanReserveFields(Account loanAccount, String origAmount, String term){
-        Pages.reservePremiumProcessingModalPage().inputEffectiveDate(loanAccount.getDateOpened());
-        Pages.reservePremiumProcessingModalPage().inputOriginalAmount(origAmount);
-        Pages.reservePremiumProcessingModalPage().inputReserveId("autotest");
-        Pages.reservePremiumProcessingModalPage().inputTermInMonth(term);
-        Pages.reservePremiumProcessingModalPage().inputDeferringStartDate(DateTime.getDatePlusMonth(loanAccount.getDateOpened(),
+        Pages.reservePremiumProcessingModalPage().setEffectiveDate(loanAccount.getDateOpened());
+        Pages.reservePremiumProcessingModalPage().setReservePremiumAmount(origAmount);
+        Actions.reservePremiumProcessingModalPageActions().setRandomReservePremiumCode("autotest");
+        Pages.reservePremiumProcessingModalPage().setReservePremiumTerm(term);
+        Pages.reservePremiumProcessingModalPage().setReservePremiumDeferringStartDate(DateTime.getDatePlusMonth(loanAccount.getDateOpened(),
                 2));
-        Pages.reservePremiumProcessingModalPage().inputGLAccount("Dumm");
-        Pages.reservePremiumProcessingModalPage().clickCommitButton();
+        Actions.reservePremiumProcessingModalPageActions().setGlOffset("Dumm");
+        Pages.reservePremiumProcessingModalPage().clickCommitTransactionButton();
     }
 
 }

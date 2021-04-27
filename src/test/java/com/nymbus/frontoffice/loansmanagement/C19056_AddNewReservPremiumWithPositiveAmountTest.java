@@ -153,7 +153,7 @@ public class C19056_AddNewReservPremiumWithPositiveAmountTest extends BaseTest {
         Pages.accountMaintenancePage().clickToolsLaunchButton();
 
         logInfo("Step 4: Click the [+ Add New Loan Reserve/Premium] button");
-        Pages.reservePremiumProcessingModalPage().clickAddNewButton();
+        Pages.reservePremiumProcessingModalPage().clickAddNewLoanReservePremiumButton();
 
         logInfo("Step 5: Fill in all required fields:\n" +
                 "\n" +
@@ -171,17 +171,17 @@ public class C19056_AddNewReservPremiumWithPositiveAmountTest extends BaseTest {
         Actions.loanReserveActions().inputLoanReserveFields(loanAccount, origAmount, term);
 
         logInfo("Step 6: Select created Reserve/Premium");
-        Pages.reservePremiumProcessingModalPage().clickRecord("autotest");
-        String amount = Pages.reservePremiumProcessingModalPage().getAmount();
+        Pages.reservePremiumProcessingModalPage().clickReservePremiumRecordFromTableByIndex(1);
+        String amount = Pages.reservePremiumProcessingModalPage().getAdjustmentAmount();
         TestRailAssert.assertTrue(amount.equals(""),
                 new CustomStepResult("Amount is valid", "Amount is not valid"));
-        String originalAmount = Pages.reservePremiumProcessingModalPage().getOriginalAmount();
+        String originalAmount = Pages.reservePremiumProcessingModalPage().getReservePremiumOriginalAmount();
         TestRailAssert.assertTrue(originalAmount.equals(origAmount),
                 new CustomStepResult("Original amount is valid", "Original amount is not valid"));
-        String unAmortizedAmount = Pages.reservePremiumProcessingModalPage().getUnAmortizedAmount();
+        String unAmortizedAmount = Pages.reservePremiumProcessingModalPage().getReservePremiumUnamortized();
         TestRailAssert.assertTrue(unAmortizedAmount.equals(origAmount),
                 new CustomStepResult("UnAmortized amount is valid", "UnAmortized amount is not valid"));
-        String maturityDate = Pages.reservePremiumProcessingModalPage().getMaturityDate();
+        String maturityDate = Pages.reservePremiumProcessingModalPage().getReservePremiumMaturityDate();
         TestRailAssert.assertTrue(maturityDate.equals(DateTime.getDatePlusMonth(loanAccount.getDateOpened(),
                 2 + Integer.parseInt(term))),
                 new CustomStepResult("Maturity date is valid", "Maturity date is not valid"));
