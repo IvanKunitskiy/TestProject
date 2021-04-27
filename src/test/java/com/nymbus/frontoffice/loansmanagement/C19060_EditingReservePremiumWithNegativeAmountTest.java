@@ -171,7 +171,7 @@ public class C19060_EditingReservePremiumWithNegativeAmountTest extends BaseTest
         TestRailAssert.assertTrue(transactionCode.equals(TransactionCode.SUB_RP_EXPENSE_456X.getTransCode()),
                 new CustomStepResult("'Transaction code' is valid", "'Transaction code' is not valid"));
         double transactionAmount = AccountActions.retrievingAccountData().getAmountValue(1);
-        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(transactionAmount).equals(AMOUNT),
+        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(transactionAmount).equals(ADJUSTMENT_AMOUNT),
                 new CustomStepResult("'Amount' is valid", "'Amount' is not valid"));
     }
 }
