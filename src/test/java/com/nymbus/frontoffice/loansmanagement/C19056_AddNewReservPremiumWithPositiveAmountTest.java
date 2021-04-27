@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
@@ -166,7 +167,7 @@ public class C19056_AddNewReservPremiumWithPositiveAmountTest extends BaseTest {
                 "'GL Offset' = any value\n" +
                 "'IRS Reportable Points Paid' = No\n" +
                 "and 'Commit Transaction'");
-        String origAmount = "30.00";
+        String origAmount = "3000";
         String term = "3";
         Actions.loanReserveActions().inputLoanReserveFields(loanAccount, origAmount, term);
 
@@ -175,12 +176,16 @@ public class C19056_AddNewReservPremiumWithPositiveAmountTest extends BaseTest {
         String amount = Pages.reservePremiumProcessingModalPage().getAdjustmentAmount();
         TestRailAssert.assertTrue(amount.equals(""),
                 new CustomStepResult("Amount is valid", "Amount is not valid"));
-        String originalAmount = Pages.reservePremiumProcessingModalPage().getReservePremiumOriginalAmount();
-        TestRailAssert.assertTrue(originalAmount.equals(origAmount),
-                new CustomStepResult("Original amount is valid", "Original amount is not valid"));
-        String unAmortizedAmount = Pages.reservePremiumProcessingModalPage().getReservePremiumUnamortized();
-        TestRailAssert.assertTrue(unAmortizedAmount.equals(origAmount),
-                new CustomStepResult("UnAmortized amount is valid", "UnAmortized amount is not valid"));
+        double originalAmount = Double.parseDouble(Pages.reservePremiumProcessingModalPage().getReservePremiumOriginalAmount());
+        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(originalAmount).equals(origAmount),
+                new CustomStepResult("Original amount is valid",
+                        String.format("'Original Amount' is not valid. Expected %s, found - %s",
+                        origAmount, Functions.getStringValueWithOnlyDigits(originalAmount))));
+        double unAmortizedAmount = Double.parseDouble(Pages.reservePremiumProcessingModalPage().getReservePremiumUnamortized());
+        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(unAmortizedAmount).equals(origAmount),
+                new CustomStepResult("UnAmortized amount is valid",
+                        String.format("'UnAmortized Amount' is not valid. Expected %s, found - %s",
+                                origAmount, Functions.getStringValueWithOnlyDigits(unAmortizedAmount))));
         String maturityDate = Pages.reservePremiumProcessingModalPage().getReservePremiumMaturityDate();
         TestRailAssert.assertTrue(maturityDate.equals(DateTime.getDatePlusMonth(loanAccount.getDateOpened(),
                 2 + Integer.parseInt(term))),
@@ -191,8 +196,17 @@ public class C19056_AddNewReservPremiumWithPositiveAmountTest extends BaseTest {
         Pages.accountDetailsPage().clickTransactionsTab();
 
         logInfo("Step 8: Verify generated transaction");
-
-
+        String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
+        String transCode = TransactionCode.ADD_RP_INCOME_451I.getTransCode();
+        TestRailAssert.assertTrue(transactionCode.equals(transCode),
+                new CustomStepResult("'Transaction code' is valid",
+                        String.format("'Transaction code' is not valid. Expected %s, found - %s",
+                                transCode, transactionCode)));
+        double transactionAmount = AccountActions.retrievingAccountData().getAmountValue(1);
+        String stringValueWithOnlyDigits = Functions.getStringValueWithOnlyDigits(transactionAmount);
+        TestRailAssert.assertTrue(stringValueWithOnlyDigits.equals(origAmount),
+                new CustomStepResult("'Amount' is valid", String.format("'Amount' is not valid. Expected %s, found - %s",
+                        origAmount, stringValueWithOnlyDigits)));
     }
 
 }
