@@ -29,11 +29,19 @@ public class ReservePremiumProcessingModalPage extends PageTools {
     private final By glOffsetOptionByText = By.xpath("//div[@role='option']/div/div[contains(text(), '%s')]");
     private final By listOfGlOffset = By.xpath("//div[@id='gloffsetaccountid']//div[@role='option']/div/div");
     private final By reservePremiumRecordFromTableByIndex = By.xpath("//div[@class='row']/table//tr[contains(@class, 'previewableItem')][%s]");
+    private final By editButton = By.xpath("//button[span[text()='Edit']]");
+    private final By adjustmentAmountInput = By.xpath("//input[@data-test-id='field-adjustmentamount']");
 
     @Step("Click the Reserve/Premium record from table by index")
     public void clickReservePremiumRecordFromTableByIndex(int index) {
         waitForElementClickable(reservePremiumRecordFromTableByIndex, index);
         click(reservePremiumRecordFromTableByIndex, index);
+    }
+
+    @Step("Click the 'Edit' button")
+    public void clickEditButton() {
+        waitForElementClickable(editButton);
+        click(editButton);
     }
 
     @Step("Click the 'Close' button")
@@ -107,6 +115,12 @@ public class ReservePremiumProcessingModalPage extends PageTools {
         type(value, reservePremiumTerm);
     }
 
+    @Step("Set 'Adjustment Amount' value")
+    public void setAdjustmentAmount(String value) {
+        waitForElementClickable(adjustmentAmountInput);
+        type(value, adjustmentAmountInput);
+    }
+
     @Step("Set 'Gl Offset' value")
     public void setGlOffset(String value) {
         waitForElementClickable(glOffset);
@@ -155,6 +169,12 @@ public class ReservePremiumProcessingModalPage extends PageTools {
     private final By reservePremiumMaturityDate = By.xpath("//tr/td[label[text()='Reserve/Premium Maturity Date']]/following-sibling::td/dn-field-view//span/span");
     private final By reservePremiumDeferringStartDateValue = By.xpath("//tr/td[label[text()='Reserve/Premium Deferring Start Date']]/following-sibling::td/dn-field-view//span/span");
     private final By reservePremiumTermValue = By.xpath("//tr/td[label[text()='Reserve/Premium Term']]/following-sibling::td/dn-field-view//span/span");
+    private final By reservePremiumAmountValue = By.xpath("//input[@data-test-id='field-originalamount']");
+
+    @Step("Get 'Reserve/Premium Maturity Date' value")
+    public String getReservePremiumAmount() {
+        return getDisabledElementAttributeValue("value", reservePremiumAmountValue).replaceAll("[^0-9.]", "");
+    }
 
     @Step("Get 'Reserve/Premium Maturity Date' value")
     public String getReservePremiumMaturityDate() {

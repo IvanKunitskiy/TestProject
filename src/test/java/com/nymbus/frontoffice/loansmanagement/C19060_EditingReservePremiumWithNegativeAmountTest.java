@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.LoanReserve;
@@ -21,6 +22,8 @@ import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -36,6 +39,7 @@ public class C19060_EditingReservePremiumWithNegativeAmountTest extends BaseTest
     private final String loanProductInitials = "TLP";
     private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
+    private final String AMOUNT = "300000";
 
     @BeforeMethod
     public void preCondition() {
@@ -114,7 +118,6 @@ public class C19060_EditingReservePremiumWithNegativeAmountTest extends BaseTest
         AccountActions.accountMaintenanceActions().setTool(Tool.RESERVE_PREMIUM_PROCESSING);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
         Pages.reservePremiumProcessingModalPage().clickAddNewLoanReservePremiumButton();
-        final String AMOUNT = "300000";
         Pages.reservePremiumProcessingModalPage().setEffectiveDate(DateTime.getLocalDateOfPattern("MM/dd/yyyy"));
         Pages.reservePremiumProcessingModalPage().setReservePremiumAmount("-" + AMOUNT);
         Actions.reservePremiumProcessingModalPageActions().setDeferredYesNoSwitchValueToYes();
@@ -147,5 +150,28 @@ public class C19060_EditingReservePremiumWithNegativeAmountTest extends BaseTest
 
         logInfo("Step 4: Select existing 'Reserve/Premium' record and click on the 'Edit' button");
         Pages.reservePremiumProcessingModalPage().clickReservePremiumRecordFromTableByIndex(1);
+        Pages.reservePremiumProcessingModalPage().clickEditButton();
+
+        logInfo("Step 5: Change 'Reserve/Premium Term' to any other value, differ from original\n" +
+                "Enter the positive amount in 'Adjustment Amount' field (Adjustment amount < Reserve/Premium Amount)");
+        Pages.reservePremiumProcessingModalPage().setReservePremiumTerm("6");
+        final String ADJUSTMENT_AMOUNT = "1500";
+        Pages.reservePremiumProcessingModalPage().setAdjustmentAmount(ADJUSTMENT_AMOUNT);
+        double reservePremiumAmount = Double.parseDouble(Pages.reservePremiumProcessingModalPage().getReservePremiumAmount());
+        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(reservePremiumAmount).equals(AMOUNT),
+                new CustomStepResult("'Reserve/Premium Amount' is not valid", "'Reserve/Premium Amount' is valid"));
+        Pages.reservePremiumProcessingModalPage().clickCommitTransactionButton();
+        Pages.reservePremiumProcessingModalPage().clickCloseButton();
+
+        logInfo("Step 6: Open account from preconditions on the 'Transactions' tab");
+        Pages.accountDetailsPage().clickTransactionsTab();
+
+        logInfo("Step 7: Verify committed transaction");
+        String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
+        TestRailAssert.assertTrue(transactionCode.equals(TransactionCode.SUB_RP_EXPENSE_456X.getTransCode()),
+                new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
+        double transactionAmount = AccountActions.retrievingAccountData().getAmountValue(1);
+        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(transactionAmount).equals(ADJUSTMENT_AMOUNT),
+                new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
     }
 }
