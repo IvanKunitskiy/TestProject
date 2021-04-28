@@ -101,7 +101,7 @@ public class C19060_EditingReservePremiumWithNegativeAmountTest extends BaseTest
 
         Pages.aSideMenuPage().clickLoansMenuItem();
         Pages.loansPage().waitForLoanPageLoaded();
-        Pages.loansPage().clickViewAllLoanReserveLink();
+        Pages.loansPage().clickViewAllLoanReserves();
         Pages.loanReservePage().clickAddNewButton();
         Pages.addNewLoanReservePage().typeReservePremiumAmortizationCodeField(loanReserve.getReservePremiumAmortizationCode());
         Pages.addNewLoanReservePage().clickBalanceDefinitionSelectorButton();
