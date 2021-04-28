@@ -3,11 +3,12 @@ package com.nymbus.frontoffice.loansmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
-import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Functions;
+import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
-import com.nymbus.newmodels.account.loanaccount.PaymentDueData;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
 import com.nymbus.newmodels.account.product.RateType;
@@ -18,6 +19,7 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
 import com.nymbus.newmodels.generation.tansactions.factory.DestinationFactory;
 import com.nymbus.newmodels.generation.tansactions.factory.SourceFactory;
+import com.nymbus.newmodels.maintenance.Tool;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
@@ -33,14 +35,13 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Dmytro")
-public class C18803_PaymentDueRecordGenerationForNonCycleInterestOnlyLoanTest extends BaseTest {
+public class C19056_AddNewReservPremiumWithPositiveAmountTest extends BaseTest {
 
     private Account loanAccount;
     private Account checkAccount;
     private double transactionAmount = 1001.00;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
-    private String clientRootId;
     private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
     private int balance;
@@ -58,6 +59,7 @@ public class C18803_PaymentDueRecordGenerationForNonCycleInterestOnlyLoanTest ex
         loanAccount.setPaymentBilledLeadDays(String.valueOf(1));
         loanAccount.setProduct(loanProductName);
         loanAccount.setEscrow("$ 0.00");
+        loanAccount.setCycleCode(Generator.genInt(1, 20) + "");
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
         checkAccount.setDateOpened(loanAccount.getDateOpened());
@@ -84,7 +86,6 @@ public class C18803_PaymentDueRecordGenerationForNonCycleInterestOnlyLoanTest ex
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkAccount);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createLoanAccount(loanAccount);
-        clientRootId = ClientsActions.createClient().getClientIdFromUrl();
 
         // Set up transactions with account number
         depositTransaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());
@@ -117,68 +118,86 @@ public class C18803_PaymentDueRecordGenerationForNonCycleInterestOnlyLoanTest ex
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
+
+        //Create New Loan Reserve
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        String code = "autotest";
+        Actions.loanReserveActions().checkAndCreateNewCode(code);
+        Actions.loginActions().doLogOut();
     }
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 18803, testRunName = TEST_RUN_NAME)
-    @Test(description = "C18803, Payment Due Record: generation for non cycle Interest only (bill) loan")
+    @TestRailIssue(issueID = 19056, testRunName = TEST_RUN_NAME)
+    @Test(description = "C19056, Add new 'Reserve/Premium' with positive amount")
     @Severity(SeverityLevel.CRITICAL)
-    public void paymentDueRecordGenerationForNonCycleInterestOnlyLoan() {
+    public void teaserRateProcessing() {
         logInfo("Step 1: Log in to the system");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        logInfo("Step 2: Run this special request in the Swagger for generating Payment Due record only " +
-                "after creating loan account:\n" +
-                "{\n" +
-                "\"actions\": [\n" +
-                "\"request\",\n" +
-                "\"generatePaymentDue\"\n" +
-                "],\n" +
-                "\"beans\": [\n" +
-                "{\n" +
-                "\"fields\": {},\n" +
-                "\"rootId\": 143572457, // loan->accountid\n" +
-                "\"type\": \"bank.data.actmst\"\n" +
-                "}\n" +
-                "],\n" +
-                "\"ruleType\": \"methods\"\n" +
-                "}");
-        Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
-
-        logInfo("Step 3: Log in to the webadmin -> RulesUI Query Analyzer");
-        logInfo("Step 4: Search with DQL:\n" +
-                "\n" +
-                "count: 10\n" +
-                "from: bank.data.paymentdue\n" +
-                "where:\n" +
-                "- .accountid->accountnumber: (accountnumber of created loan account)\n" +
-                "orderBy: -id\n" +
-                "deleteincluded: true");
-        logInfo("Step 5: Check bank.data.paymentdue");
+        logInfo("Step 2: Open account from preconditions on the 'Maintenance' page");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
-        PaymentDueData paymentDueData = Actions.clientPageActions().getPaymentDueInfo(loanAccount);
-        paymentDueData.setAccountId(Integer.parseInt(clientRootId));
-        PaymentDueData actualPaymentDueData = WebAdminActions.webAdminTransactionActions().checkPaymentDue(userCredentials, loanAccount);
+        Pages.accountDetailsPage().clickMaintenanceTab();
 
-        TestRailAssert.assertTrue(paymentDueData.equals(actualPaymentDueData),
-                new CustomStepResult("Payment data is valid", "Payment data is not valid"));
+        logInfo("Step 3: Select 'Reserve/Premium Processing' in 'Tools' widget and click the [Launch] button");
+        AccountActions.accountMaintenanceActions().setTool(Tool.RESERVE_PREMIUM_PROCESSING);
+        Pages.accountMaintenancePage().clickToolsLaunchButton();
 
-        logInfo("Step 6: Open account from precondition on \"Payment info\" tab");
-        Pages.accountDetailsPage().clickPaymentInfoTab();
+        logInfo("Step 4: Click the [+ Add New Loan Reserve/Premium] button");
+        Pages.reservePremiumProcessingModalPage().clickAddNewLoanReservePremiumButton();
 
-        logInfo("Step 7: Verify that generated PD record is displayed");
-        Pages.accountPaymentInfoPage().clickPaymentDueRecord();
-        String dueDate = Pages.accountPaymentInfoPage().getDueDateFromRecordByIndex(1);
-        actualPaymentDueData.setDueDate(dueDate);
-        actualPaymentDueData.setInterest(Pages.accountPaymentInfoPage().getDisabledInterest());
-        actualPaymentDueData.setPrincipal(Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledPrincipal()));
-        actualPaymentDueData.setEscrow(Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledEscrow()));
-        actualPaymentDueData.setPaymentDueStatus(Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1));
+        logInfo("Step 5: Fill in all required fields:\n" +
+                "\n" +
+                "'Effective Date' < = Current Date\n" +
+                "'Reserve/Premium Amount' = any positive amount (e.g. $ 3,000.00)\n" +
+                "'Deferred Yes/No' = Yes\n" +
+                "'Reserve/Premium Code' = any existing code in the the drop down (e.g 'DE)\n" +
+                "'Reserve/Premium Term' > 0 (e.g. 3)\n" +
+                "'Reserve/Premium Deferring Start Date' > = Current Date\n" +
+                "'GL Offset' = any value\n" +
+                "'IRS Reportable Points Paid' = No\n" +
+                "and 'Commit Transaction'");
+        String origAmount = "3000";
+        String term = "3";
+        Actions.loanReserveActions().inputLoanReserveFields(loanAccount, origAmount, term);
 
-        TestRailAssert.assertTrue(paymentDueData.equals(actualPaymentDueData),
-                new CustomStepResult("Payment data is valid", "Payment data is not valid"));
+        logInfo("Step 6: Select created Reserve/Premium");
+        Pages.reservePremiumProcessingModalPage().clickReservePremiumRecordFromTableByIndex(1);
+        String amount = Pages.reservePremiumProcessingModalPage().getAdjustmentAmount();
+        TestRailAssert.assertTrue(amount.equals(""),
+                new CustomStepResult("Amount is valid", "Amount is not valid"));
+        double originalAmount = Double.parseDouble(Pages.reservePremiumProcessingModalPage().getReservePremiumOriginalAmount());
+        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(originalAmount).equals(origAmount),
+                new CustomStepResult("Original amount is valid",
+                        String.format("'Original Amount' is not valid. Expected %s, found - %s",
+                        origAmount, Functions.getStringValueWithOnlyDigits(originalAmount))));
+        double unAmortizedAmount = Double.parseDouble(Pages.reservePremiumProcessingModalPage().getReservePremiumUnamortized());
+        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(unAmortizedAmount).equals(origAmount),
+                new CustomStepResult("UnAmortized amount is valid",
+                        String.format("'UnAmortized Amount' is not valid. Expected %s, found - %s",
+                                origAmount, Functions.getStringValueWithOnlyDigits(unAmortizedAmount))));
+        String maturityDate = Pages.reservePremiumProcessingModalPage().getReservePremiumMaturityDate();
+        TestRailAssert.assertTrue(maturityDate.equals(DateTime.getDatePlusMonth(loanAccount.getDateOpened(),
+                2 + Integer.parseInt(term))),
+                new CustomStepResult("Maturity date is valid", "Maturity date is not valid"));
+
+        logInfo("Step 7: Open Account from preconditions on the 'Transaction' tab");
+        Pages.reservePremiumProcessingModalPage().clickCloseButton();
+        Pages.accountDetailsPage().clickTransactionsTab();
+
+        logInfo("Step 8: Verify generated transaction");
+        String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
+        String transCode = TransactionCode.ADD_RP_INCOME_451I.getTransCode();
+        TestRailAssert.assertTrue(transactionCode.equals(transCode),
+                new CustomStepResult("'Transaction code' is valid",
+                        String.format("'Transaction code' is not valid. Expected %s, found - %s",
+                                transCode, transactionCode)));
+        double transactionAmount = AccountActions.retrievingAccountData().getAmountValue(1);
+        String stringValueWithOnlyDigits = Functions.getStringValueWithOnlyDigits(transactionAmount);
+        TestRailAssert.assertTrue(stringValueWithOnlyDigits.equals(origAmount),
+                new CustomStepResult("'Amount' is valid", String.format("'Amount' is not valid. Expected %s, found - %s",
+                        origAmount, stringValueWithOnlyDigits)));
     }
 
 }

@@ -32,13 +32,14 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Petro")
-public class C19059_AddNewReservePremiumWithNegativeAmountTest extends BaseTest {
+public class C19060_EditingReservePremiumWithNegativeAmountTest extends BaseTest {
 
     private Account loanAccount;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
     private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
+    private final String AMOUNT = "300000";
 
     @BeforeMethod
     public void preCondition() {
@@ -69,10 +70,8 @@ public class C19059_AddNewReservePremiumWithNegativeAmountTest extends BaseTest 
         loanReserve.setReservePremiumAmortizationCode(Generator.getRandomStringNumber(7));
         loanReserve.setBalanceDefinition("Deferred Costs");
 
-        // Login to the system
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-
         // Check that a Loan product exist with the following editable fields (Readonly? = NO) and create if not exist
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
         Actions.loginActions().doLogOut();
 
@@ -109,12 +108,30 @@ public class C19059_AddNewReservePremiumWithNegativeAmountTest extends BaseTest 
         Pages.addNewLoanReservePage().clickBalanceDefinitionSelectorOption(loanReserve.getBalanceDefinition());
         Pages.addNewLoanReservePage().clickSaveChangesButton();
         Actions.loginActions().doLogOutProgrammatically();
+
+        // Loan account with "Reserve/Premium Amount < 0" exists (455X - Add R/P Expense is generated during adding R/P to the account)
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
+        Pages.accountDetailsPage().clickMaintenanceTab();
+        AccountActions.accountMaintenanceActions().setTool(Tool.RESERVE_PREMIUM_PROCESSING);
+        Pages.accountMaintenancePage().clickToolsLaunchButton();
+        Pages.reservePremiumProcessingModalPage().clickAddNewLoanReservePremiumButton();
+        Pages.reservePremiumProcessingModalPage().setEffectiveDate(DateTime.getLocalDateOfPattern("MM/dd/yyyy"));
+        Pages.reservePremiumProcessingModalPage().setReservePremiumAmount("-" + AMOUNT);
+        Actions.reservePremiumProcessingModalPageActions().setDeferredYesNoSwitchValueToYes();
+        Actions.reservePremiumProcessingModalPageActions().setRandomReservePremiumCode("DE");
+        Pages.reservePremiumProcessingModalPage().setReservePremiumTerm("3");
+        Pages.reservePremiumProcessingModalPage().setReservePremiumDeferringStartDate(DateTime.getLocalDateOfPattern("MM/dd/yyyy"));
+        Actions.reservePremiumProcessingModalPageActions().setIrsReportablePointsPaidSwitchValueToNo();
+        Pages.reservePremiumProcessingModalPage().clickCommitTransactionButton();
+        Pages.reservePremiumProcessingModalPage().clickCloseButton();
+        Actions.loginActions().doLogOut();
     }
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 19059, testRunName = TEST_RUN_NAME)
-    @Test(description="C19059, Add new 'Reserve/Premium' with negative amount")
+    @TestRailIssue(issueID = 19060, testRunName = TEST_RUN_NAME)
+    @Test(description="C19060, Editing 'Reserve/Premium' with negative amount")
     @Severity(SeverityLevel.CRITICAL)
     public void addNewReservePremiumWithNegativeAmount() {
 
@@ -129,56 +146,30 @@ public class C19059_AddNewReservePremiumWithNegativeAmountTest extends BaseTest 
         AccountActions.accountMaintenanceActions().setTool(Tool.RESERVE_PREMIUM_PROCESSING);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
 
-        logInfo("Step 4: Click the [+ Add New Loan Reserve/Premium] button");
-        Pages.reservePremiumProcessingModalPage().clickAddNewLoanReservePremiumButton();
-
-        logInfo("Step 5: Fill in all required fields:\n" +
-                "'Effective Date' < = Current Date\n" +
-                "'Reserve/Premium Amount' = any negative amount (e.g. $ - 3,000.00)\n" +
-                "'Deferred Yes/No' = Yes\n" +
-                "'Reserve/Premium Code' = any existing code in the the drop down (e.g 'DE)\n" +
-                "'Reserve/Premium Term' > 0 (e.g. 3)\n" +
-                "'Reserve/Premium Deferring Start Date' > = Current Date\n" +
-                "'GL Offset' = any value\n" +
-                "'IRS Reportable Points Paid' = No\n" +
-                "and 'Commit Transaction'");
-        String reservePremiumAmount = "300000";
-        Pages.reservePremiumProcessingModalPage().setEffectiveDate(DateTime.getLocalDateOfPattern("MM/dd/yyyy"));
-        Pages.reservePremiumProcessingModalPage().setReservePremiumAmount("-" + reservePremiumAmount);
-        Actions.reservePremiumProcessingModalPageActions().setDeferredYesNoSwitchValueToYes();
-        Actions.reservePremiumProcessingModalPageActions().setRandomReservePremiumCode("DE");
-        Pages.reservePremiumProcessingModalPage().setReservePremiumTerm("3");
-        Pages.reservePremiumProcessingModalPage().setReservePremiumDeferringStartDate(DateTime.getLocalDateOfPattern("MM/dd/yyyy"));
-        Actions.reservePremiumProcessingModalPageActions().setIrsReportablePointsPaidSwitchValueToNo();
-        Pages.reservePremiumProcessingModalPage().clickCommitTransactionButton();
-
-        logInfo("Step 6: Select created Reserve/Premium");
+        logInfo("Step 4: Select existing 'Reserve/Premium' record and click on the 'Edit' button");
         Pages.reservePremiumProcessingModalPage().clickReservePremiumRecordFromTableByIndex(1);
-        TestRailAssert.assertTrue(Pages.reservePremiumProcessingModalPage().getAdjustmentAmount().isEmpty(),
-                new CustomStepResult("'Adjustment Amount' is not valid", "'Adjustment Amount' is valid"));
-        double reservePremiumOriginalAmount = Double.parseDouble(Pages.reservePremiumProcessingModalPage().getReservePremiumOriginalAmount());
-        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(reservePremiumOriginalAmount).equals(reservePremiumAmount),
-                new CustomStepResult("'Reserve/Premium Original Amount' is not valid", "'Reserve/Premium Original Amount' is valid"));
-        double reservePremiumUnamortized = Double.parseDouble(Pages.reservePremiumProcessingModalPage().getReservePremiumUnamortized());
-        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(reservePremiumUnamortized).equals(reservePremiumAmount),
-                new CustomStepResult("'Reserve/Premium Unamortized' is not valid", "'Reserve/Premium Unamortized' is valid"));
-        String reservePremiumMaturityDate = Pages.reservePremiumProcessingModalPage().getReservePremiumMaturityDate();
-        String reservePremiumDeferringStartDateValue = Pages.reservePremiumProcessingModalPage().getReservePremiumDeferringStartDateValue();
-        int reservePremiumTermValue = Integer.parseInt(Pages.reservePremiumProcessingModalPage().getReservePremiumTermValue());
-        String calculatedReservePremiumMaturityDate = DateTime.getDatePlusMonth(reservePremiumDeferringStartDateValue, reservePremiumTermValue);
-        TestRailAssert.assertTrue(reservePremiumMaturityDate.equals(calculatedReservePremiumMaturityDate),
-                new CustomStepResult("'Reserve/Premium Maturity Date' is not valid", "'Reserve/Premium Maturity Date' is valid"));
+        Pages.reservePremiumProcessingModalPage().clickEditButton();
 
-        logInfo("Step 7: Open account from preconditions on the 'Transactions' tab");
+        logInfo("Step 5: Change 'Reserve/Premium Term' to any other value, differ from original\n" +
+                "Enter the positive amount in 'Adjustment Amount' field (Adjustment amount < Reserve/Premium Amount)");
+        Pages.reservePremiumProcessingModalPage().setReservePremiumTerm("6");
+        final String ADJUSTMENT_AMOUNT = "1500";
+        Pages.reservePremiumProcessingModalPage().setAdjustmentAmount(ADJUSTMENT_AMOUNT);
+        double reservePremiumAmount = Double.parseDouble(Pages.reservePremiumProcessingModalPage().getReservePremiumAmount());
+        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(reservePremiumAmount).equals(AMOUNT),
+                new CustomStepResult("'Reserve/Premium Amount' is valid", "'Reserve/Premium Amount' is not valid"));
+        Pages.reservePremiumProcessingModalPage().clickCommitTransactionButton();
         Pages.reservePremiumProcessingModalPage().clickCloseButton();
+
+        logInfo("Step 6: Open account from preconditions on the 'Transactions' tab");
         Pages.accountDetailsPage().clickTransactionsTab();
 
-        logInfo("Step 8: Verify committed transaction");
+        logInfo("Step 7: Verify committed transaction");
         String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
-        TestRailAssert.assertTrue(transactionCode.equals(TransactionCode.ADD_RP_EXPENSE_455X.getTransCode()),
-                new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
+        TestRailAssert.assertTrue(transactionCode.equals(TransactionCode.SUB_RP_EXPENSE_456X.getTransCode()),
+                new CustomStepResult("'Transaction code' is valid", "'Transaction code' is not valid"));
         double transactionAmount = AccountActions.retrievingAccountData().getAmountValue(1);
-        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(transactionAmount).equals(reservePremiumAmount),
-                new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
+        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(transactionAmount).equals(ADJUSTMENT_AMOUNT),
+                new CustomStepResult("'Amount' is valid", "'Amount' is not valid"));
     }
 }
