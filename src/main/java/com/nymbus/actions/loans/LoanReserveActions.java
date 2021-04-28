@@ -42,4 +42,15 @@ public class LoanReserveActions {
         Pages.reservePremiumProcessingModalPage().clickCommitTransactionButton();
     }
 
+    public void checkAndCreateNewCode(String code){
+        if (!Actions.loanReserveActions().isLoanReserveExists(code)) {
+            Pages.loansReservePage().clickAddNewButton();
+            Pages.loansReservePage().inputAuthorizationCode(code);
+            Pages.loansReservePage().inputAmortizationType("Straight Line");
+            Pages.loansReservePage().inputPremiumType("Loan costs");
+            Pages.loansReservePage().inputBalanceDefinition("Deferred Fees");
+            Pages.loansReservePage().clickSaveButton();
+        }
+    }
+
 }
