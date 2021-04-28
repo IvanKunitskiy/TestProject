@@ -151,7 +151,7 @@ public class C19061_ReservePremiumRealTimeAmortizationTest extends BaseTest {
         logInfo("Step 7: Verify 'Reserve/Premium Unamortized' value");
         String reservePremiumUnamortized = Pages.reservePremiumProcessingModalPage().getReservePremiumUnamortized();
         TestRailAssert.assertTrue(reservePremiumUnamortized.equals("0.00"),
-                new CustomStepResult("'Reserve/Premium Original Amount' is not valid", "'Reserve/Premium Original Amount' is valid"));
+                new CustomStepResult("'Reserve/Premium Original Amount' is valid", "'Reserve/Premium Original Amount' is not valid"));
 
         logInfo("Step 8: Open account from preconditions on the 'Transactions' tab");
         Pages.reservePremiumProcessingModalPage().clickCloseButton();
@@ -160,9 +160,9 @@ public class C19061_ReservePremiumRealTimeAmortizationTest extends BaseTest {
         logInfo("Step 9: Verify committed transaction");
         String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
         TestRailAssert.assertTrue(transactionCode.equals(TransactionCode.ADD_RP_INCOME_451I.getTransCode()),
-                new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
+                new CustomStepResult("'Transaction code' is valid", "'Transaction code' is not valid"));
         double transactionAmount = AccountActions.retrievingAccountData().getAmountValue(1);
         TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(transactionAmount).equals(reservePremiumAmount),
-                new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
+                new CustomStepResult("'Amount' is valid", "'Amount' is not valid"));
     }
 }
