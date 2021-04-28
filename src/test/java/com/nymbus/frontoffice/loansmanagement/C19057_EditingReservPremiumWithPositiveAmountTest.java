@@ -144,7 +144,7 @@ public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest 
     private final String TEST_RUN_NAME = "Loans Management";
 
     @TestRailIssue(issueID = 19057, testRunName = TEST_RUN_NAME)
-    @Test(description = "C19057,Editing 'Reserve/Premium' with positive amount")
+    @Test(description = "C19057, Editing 'Reserve/Premium' with positive amount")
     @Severity(SeverityLevel.CRITICAL)
     public void teaserRateProcessing() {
         logInfo("Step 1: Log in to the system");
@@ -159,13 +159,13 @@ public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest 
         AccountActions.accountMaintenanceActions().setTool(Tool.RESERVE_PREMIUM_PROCESSING);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
 
-        logInfo("Step 4: Select existing \"Reserve/Premium\" record and click on the \"Edit\" button");
+        logInfo("Step 4: Select existing 'Reserve/Premium' record and click on the 'Edit' button");
         Pages.reservePremiumProcessingModalPage().clickReservePremiumRecordFromTableByIndex(1);
         Pages.reservePremiumProcessingModalPage().clickEditButton();
 
-        logInfo("Step 5: Fill in the following fields and \"Commit Transaction\"\n" +
-                "1. Change \"Reserve/Premium Term\" to any other value, differ from original\n" +
-                "2. Enter the negative amount in \"Adjustment Amount\" field (Adjustment amount < Reserve/Premium Amount)");
+        logInfo("Step 5: Fill in the following fields and 'Commit Transaction'\n" +
+                "1. Change 'Reserve/Premium Term' to any other value, differ from original\n" +
+                "2. Enter the negative amount in 'Adjustment Amount' field (Adjustment amount < Reserve/Premium Amount)");
         String term ="6";
         Pages.reservePremiumProcessingModalPage().setReservePremiumTerm(term);
         final String ADJUSTMENT_AMOUNT = "-1500";
@@ -189,7 +189,7 @@ public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest 
                 new CustomStepResult("Maturity date is valid", "Maturity date is not valid"));
         Pages.reservePremiumProcessingModalPage().clickCloseButton();
 
-        logInfo("Step 6: Open account from preconditions on the \"Transactions\" tab");
+        logInfo("Step 6: Open account from preconditions on the 'Transactions' tab");
         Pages.reservePremiumProcessingModalPage().clickCloseButton();
         Pages.accountDetailsPage().clickTransactionsTab();
 
