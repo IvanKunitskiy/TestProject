@@ -128,7 +128,7 @@ public class C18804_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestLoa
     @Test(description = "C18804, Payment Due Record: generation for non cycle Principal and Interest loan")
     @Severity(SeverityLevel.CRITICAL)
     public void paymentDueRecordGenerationForNonCycleInterestOnlyLoan() {
-        logInfo("Log in to the system");
+        logInfo("Step 1: Log in to the system");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Run this special request in the Swagger for generating Payment Due record only " +

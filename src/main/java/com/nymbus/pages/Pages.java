@@ -104,6 +104,7 @@ public class Pages extends AllureLogger {
     private static CashierDefinedActionsPage cashierDefinedActionsPage;
     private static AlertMessageModalPage alertMessageModalPage;
     private static LoanProductPage loanProductPage;
+    private static LoansReservePage loansReservePage;
     private static AddNewLoanProductPage addNewLoanProductPage;
     private static LoanProductOverviewPage loanProductOverviewPage;
     private static AccountPaymentInfoPage accountPaymentInfoPage;
@@ -115,9 +116,9 @@ public class Pages extends AllureLogger {
     private static LoanParticipantsPage loanParticipantsPage;
     private static ParticipationsModalPage participationsModalPage;
     private static TeaserModalPage teaserModalPage;
+    private static ReservePremiumProcessingModalPage reservePremiumProcessingModalPage;
     private static LoanReservePage loanReservePage;
     private static AddNewLoanReservePage addNewLoanReservePage;
-    private static ReservePremiumProcessingModalPage reservePremiumProcessingModalPage;
 
     /**
      * Modal Windows
@@ -766,6 +767,7 @@ public class Pages extends AllureLogger {
         }
         return alertMessageModalPage;
     }
+
     /**
      * This function return an instance of `LoanProductPage`
      */
@@ -774,6 +776,16 @@ public class Pages extends AllureLogger {
             loanProductPage = new LoanProductPage();
         }
         return loanProductPage;
+    }
+
+    /**
+     * This function return an instance of `LoanProductPage`
+     */
+    public static LoansReservePage loansReservePage(){
+        if (loansReservePage == null){
+            loansReservePage = new LoansReservePage();
+        }
+        return loansReservePage;
     }
 
     /**
@@ -877,6 +889,16 @@ public class Pages extends AllureLogger {
     }
 
     /**
+     * This function return an instance of `TeaserModalPage`
+     */
+    public static ReservePremiumProcessingModalPage reservePremiumProcessingModalPage(){
+        if (reservePremiumProcessingModalPage == null){
+            reservePremiumProcessingModalPage = new ReservePremiumProcessingModalPage();
+        }
+        return reservePremiumProcessingModalPage;
+    }
+
+    /**
      * This function return an instance of `LoanReservePage`
      */
     public static LoanReservePage loanReservePage(){
@@ -894,15 +916,5 @@ public class Pages extends AllureLogger {
             addNewLoanReservePage = new AddNewLoanReservePage();
         }
         return addNewLoanReservePage;
-    }
-
-    /**
-     * This function return an instance of `ReservePremiumProcessingModalPage`
-     */
-    public static ReservePremiumProcessingModalPage reservePremiumProcessingModalPage(){
-        if (reservePremiumProcessingModalPage == null){
-            reservePremiumProcessingModalPage = new ReservePremiumProcessingModalPage();
-        }
-        return reservePremiumProcessingModalPage;
     }
 }

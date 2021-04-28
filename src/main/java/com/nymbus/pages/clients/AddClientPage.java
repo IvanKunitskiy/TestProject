@@ -2,6 +2,7 @@ package com.nymbus.pages.clients;
 
 import com.codeborne.selenide.Selenide;
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -641,7 +642,7 @@ public class AddClientPage extends PageTools {
         waitForElementVisibility(birthDateField);
         waitForElementClickable(birthDateField);
         typeWithoutWipe("", birthDateField);
-        SelenideTools.sleep(1);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         typeWithoutWipe(birthDateValue, birthDateField);
     }
 
