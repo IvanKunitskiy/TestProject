@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.LoanReserve;
@@ -21,9 +22,10 @@ import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -67,10 +69,8 @@ public class C19061_ReservePremiumRealTimeAmortizationTest extends BaseTest {
         loanReserve.setReservePremiumAmortizationCode(Generator.getRandomStringNumber(7));
         loanReserve.setBalanceDefinition("Deferred Costs");
 
-        // Login to the system
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-
         // Check that a Loan product exist with the following editable fields (Readonly? = NO) and create if not exist
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
         Actions.loginActions().doLogOut();
 
@@ -149,7 +149,20 @@ public class C19061_ReservePremiumRealTimeAmortizationTest extends BaseTest {
         Pages.reservePremiumProcessingModalPage().clickReservePremiumRecordFromTableByIndex(1);
 
         logInfo("Step 7: Verify 'Reserve/Premium Unamortized' value");
-        // TODO: Verify "Reserve/Premium Unamortized" value
-        Assert.fail();
+        String reservePremiumUnamortized = Pages.reservePremiumProcessingModalPage().getReservePremiumUnamortized();
+        TestRailAssert.assertTrue(reservePremiumUnamortized.equals("0.00"),
+                new CustomStepResult("'Reserve/Premium Original Amount' is not valid", "'Reserve/Premium Original Amount' is valid"));
+
+        logInfo("Step 8: Open account from preconditions on the 'Transactions' tab");
+        Pages.reservePremiumProcessingModalPage().clickCloseButton();
+        Pages.accountDetailsPage().clickTransactionsTab();
+
+        logInfo("Step 9: Verify committed transaction");
+        String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
+        TestRailAssert.assertTrue(transactionCode.equals(TransactionCode.ADD_RP_INCOME_451I.getTransCode()),
+                new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
+        double transactionAmount = AccountActions.retrievingAccountData().getAmountValue(1);
+        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(transactionAmount).equals(reservePremiumAmount),
+                new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
     }
 }
