@@ -8,6 +8,7 @@ import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.loanaccount.InterestMethod;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -35,7 +36,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Dmytro")
-public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest {
+public class C19577_LoanSkipPaymentPostSkipPaymentWithFeeTest extends BaseTest {
 
     private Account loanAccount;
     private Account checkAccount;
@@ -57,6 +58,7 @@ public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest 
         checkAccount = new Account().setCHKAccountData();
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setPaymentAmountType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
+        loanAccount.setInterestMethod(InterestMethod.AMORTIZED.name());
         loanAccount.setPaymentBilledLeadDays(String.valueOf(1));
         loanAccount.setProduct(loanProductName);
         loanAccount.setEscrow("$ 0.00");
@@ -119,32 +121,12 @@ public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest 
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
-
-        //Create New Loan Reserve
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        String code = "autotest";
-        Actions.loanReserveActions().checkAndCreateNewCode(code);
-        Actions.loginActions().doLogOut();
-
-        //Create Reserve/Premium
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        Pages.aSideMenuPage().clickClientMenuItem();
-        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
-        Pages.accountDetailsPage().clickMaintenanceTab();
-        AccountActions.accountMaintenanceActions().setTool(Tool.RESERVE_PREMIUM_PROCESSING);
-        Pages.accountMaintenancePage().clickToolsLaunchButton();
-        Pages.reservePremiumProcessingModalPage().clickAddNewLoanReservePremiumButton();
-        String term = "3";
-        Actions.loanReserveActions().inputLoanReserveFields(loanAccount, AMOUNT, term);
-        Pages.reservePremiumProcessingModalPage().clickCloseButton();
-        Actions.loginActions().doLogOut();
-
     }
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 19057, testRunName = TEST_RUN_NAME)
-    @Test(description = "C19057,Editing 'Reserve/Premium' with positive amount")
+    @TestRailIssue(issueID = 19577, testRunName = TEST_RUN_NAME)
+    @Test(description = "C19577,Loan Skip Payment: Post Skip Payment with Fee")
     @Severity(SeverityLevel.CRITICAL)
     public void teaserRateProcessing() {
         logInfo("Step 1: Log in to the system");
@@ -155,7 +137,7 @@ public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest 
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
         Pages.accountDetailsPage().clickMaintenanceTab();
 
-        logInfo("Step 3: Select 'Reserve/Premium Processing' in 'Tools' widget and click the [Launch] button");
+        logInfo("Step 3: Launch \"Loan Skip Payment\" tool");
         AccountActions.accountMaintenanceActions().setTool(Tool.RESERVE_PREMIUM_PROCESSING);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
 
