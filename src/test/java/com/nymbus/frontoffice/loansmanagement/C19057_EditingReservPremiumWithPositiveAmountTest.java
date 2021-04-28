@@ -45,6 +45,7 @@ public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest 
     private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
     private int balance;
+    private final String AMOUNT = "3000";
 
 
     @BeforeMethod
@@ -119,18 +120,25 @@ public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest 
         Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
 
-//        //Create New Loan Reserve
-//        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-//        String code = "autotest";
-//        if (!Actions.loanReserveActions().isLoanReserveExists(code)) {
-//            Pages.loansReservePage().clickAddNewButton();
-//            Pages.loansReservePage().inputAuthorizationCode(code);
-//            Pages.loansReservePage().inputAmortizationType("Straight Line");
-//            Pages.loansReservePage().inputPremiumType("Loan costs");
-//            Pages.loansReservePage().inputBalanceDefinition("Deferred Fees");
-//            Pages.loansReservePage().clickSaveButton();
-//        }
-//        Actions.loginActions().doLogOut();
+        //Create New Loan Reserve
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        String code = "autotest";
+        Actions.loanReserveActions().checkAndCreateNewCode(code);
+        Actions.loginActions().doLogOut();
+
+        //Create Reserve/Premium
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
+        Pages.accountDetailsPage().clickMaintenanceTab();
+        AccountActions.accountMaintenanceActions().setTool(Tool.RESERVE_PREMIUM_PROCESSING);
+        Pages.accountMaintenancePage().clickToolsLaunchButton();
+        Pages.reservePremiumProcessingModalPage().clickAddNewLoanReservePremiumButton();
+        String term = "3";
+        Actions.loanReserveActions().inputLoanReserveFields(loanAccount, AMOUNT, term);
+        Pages.reservePremiumProcessingModalPage().clickCloseButton();
+        Actions.loginActions().doLogOut();
+
     }
 
     private final String TEST_RUN_NAME = "Loans Management";
@@ -151,60 +159,52 @@ public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest 
         AccountActions.accountMaintenanceActions().setTool(Tool.RESERVE_PREMIUM_PROCESSING);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
 
-        logInfo("Step 4: Click the [+ Add New Loan Reserve/Premium] button");
-        Pages.reservePremiumProcessingModalPage().clickAddNewLoanReservePremiumButton();
-
-        logInfo("Step 5: Fill in all required fields:\n" +
-                "\n" +
-                "'Effective Date' < = Current Date\n" +
-                "'Reserve/Premium Amount' = any positive amount (e.g. $ 3,000.00)\n" +
-                "'Deferred Yes/No' = Yes\n" +
-                "'Reserve/Premium Code' = any existing code in the the drop down (e.g 'DE)\n" +
-                "'Reserve/Premium Term' > 0 (e.g. 3)\n" +
-                "'Reserve/Premium Deferring Start Date' > = Current Date\n" +
-                "'GL Offset' = any value\n" +
-                "'IRS Reportable Points Paid' = No\n" +
-                "and 'Commit Transaction'");
-        String origAmount = "3000";
-        String term = "3";
-        Actions.loanReserveActions().inputLoanReserveFields(loanAccount, origAmount, term);
-
-        logInfo("Step 6: Select created Reserve/Premium");
+        logInfo("Step 4: Select existing \"Reserve/Premium\" record and click on the \"Edit\" button");
         Pages.reservePremiumProcessingModalPage().clickReservePremiumRecordFromTableByIndex(1);
-        String amount = Pages.reservePremiumProcessingModalPage().getAdjustmentAmount();
-        TestRailAssert.assertTrue(amount.equals(""),
-                new CustomStepResult("Amount is valid", "Amount is not valid"));
+        Pages.reservePremiumProcessingModalPage().clickEditButton();
+
+        logInfo("Step 5: Fill in the following fields and \"Commit Transaction\"\n" +
+                "1. Change \"Reserve/Premium Term\" to any other value, differ from original\n" +
+                "2. Enter the negative amount in \"Adjustment Amount\" field (Adjustment amount < Reserve/Premium Amount)");
+        String term ="6";
+        Pages.reservePremiumProcessingModalPage().setReservePremiumTerm(term);
+        final String ADJUSTMENT_AMOUNT = "-1500";
+        Pages.reservePremiumProcessingModalPage().setAdjustmentAmount(ADJUSTMENT_AMOUNT);
+        Pages.reservePremiumProcessingModalPage().clickCommitTransactionButton();
+        Pages.reservePremiumProcessingModalPage().clickReservePremiumRecordFromTableByIndex(1);
         double originalAmount = Double.parseDouble(Pages.reservePremiumProcessingModalPage().getReservePremiumOriginalAmount());
-        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(originalAmount).equals(origAmount),
+        String decreasedAmount = Integer.parseInt(AMOUNT) + Integer.parseInt(ADJUSTMENT_AMOUNT) + "";
+        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(originalAmount).equals(decreasedAmount),
                 new CustomStepResult("Original amount is valid",
                         String.format("'Original Amount' is not valid. Expected %s, found - %s",
-                        origAmount, Functions.getStringValueWithOnlyDigits(originalAmount))));
+                                decreasedAmount, Functions.getStringValueWithOnlyDigits(originalAmount))));
         double unAmortizedAmount = Double.parseDouble(Pages.reservePremiumProcessingModalPage().getReservePremiumUnamortized());
-        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(unAmortizedAmount).equals(origAmount),
+        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(unAmortizedAmount).equals(decreasedAmount),
                 new CustomStepResult("UnAmortized amount is valid",
                         String.format("'UnAmortized Amount' is not valid. Expected %s, found - %s",
-                                origAmount, Functions.getStringValueWithOnlyDigits(unAmortizedAmount))));
+                                decreasedAmount, Functions.getStringValueWithOnlyDigits(unAmortizedAmount))));
         String maturityDate = Pages.reservePremiumProcessingModalPage().getReservePremiumMaturityDate();
         TestRailAssert.assertTrue(maturityDate.equals(DateTime.getDatePlusMonth(loanAccount.getDateOpened(),
                 2 + Integer.parseInt(term))),
                 new CustomStepResult("Maturity date is valid", "Maturity date is not valid"));
+        Pages.reservePremiumProcessingModalPage().clickCloseButton();
 
-        logInfo("Step 7: Open Account from preconditions on the 'Transaction' tab");
+        logInfo("Step 6: Open account from preconditions on the \"Transactions\" tab");
         Pages.reservePremiumProcessingModalPage().clickCloseButton();
         Pages.accountDetailsPage().clickTransactionsTab();
 
-        logInfo("Step 8: Verify generated transaction");
+        logInfo("Step 7: Verify committed transaction");
         String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
-        String transCode = TransactionCode.ADD_RP_INCOME_451I.getTransCode();
+        String transCode = TransactionCode.ADD_RP_INCOME_452I.getTransCode();
         TestRailAssert.assertTrue(transactionCode.equals(transCode),
                 new CustomStepResult("'Transaction code' is valid",
                         String.format("'Transaction code' is not valid. Expected %s, found - %s",
                                 transCode, transactionCode)));
         double transactionAmount = AccountActions.retrievingAccountData().getAmountValue(1);
         String stringValueWithOnlyDigits = Functions.getStringValueWithOnlyDigits(transactionAmount);
-        TestRailAssert.assertTrue(stringValueWithOnlyDigits.equals(origAmount),
+        TestRailAssert.assertTrue(stringValueWithOnlyDigits.equals(decreasedAmount),
                 new CustomStepResult("'Amount' is valid", String.format("'Amount' is not valid. Expected %s, found - %s",
-                        origAmount, stringValueWithOnlyDigits)));
+                        decreasedAmount, stringValueWithOnlyDigits)));
     }
 
 }
