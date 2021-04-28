@@ -14,6 +14,12 @@ public class ReservePremiumProcessingModalActions {
         }
     }
 
+    public void setDeferredYesNoSwitchValueToNo() {
+        if (Pages.reservePremiumProcessingModalPage().getDeferredYesNoSwitchValue().equalsIgnoreCase("yes")) {
+            Pages.reservePremiumProcessingModalPage().clickDeferredYesNoSwitch();
+        }
+    }
+
     public void setIrsReportablePointsPaidSwitchValueToNo() {
         if (Pages.reservePremiumProcessingModalPage().getIrsReportablePointsPaidSwitchValue().equalsIgnoreCase("yes")) {
             Pages.reservePremiumProcessingModalPage().clickIrsReportablePointsPaidSwitch();
