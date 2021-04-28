@@ -119,18 +119,18 @@ public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest 
         Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
 
-        //Create New Loan Reserve
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        String code = "autotest";
-        if (!Actions.loanReserveActions().isLoanReserveExists(code)) {
-            Pages.loansReservePage().clickAddNewButton();
-            Pages.loansReservePage().inputAuthorizationCode(code);
-            Pages.loansReservePage().inputAmortizationType("Straight Line");
-            Pages.loansReservePage().inputPremiumType("Loan costs");
-            Pages.loansReservePage().inputBalanceDefinition("Deferred Fees");
-            Pages.loansReservePage().clickSaveButton();
-        }
-        Actions.loginActions().doLogOut();
+//        //Create New Loan Reserve
+//        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+//        String code = "autotest";
+//        if (!Actions.loanReserveActions().isLoanReserveExists(code)) {
+//            Pages.loansReservePage().clickAddNewButton();
+//            Pages.loansReservePage().inputAuthorizationCode(code);
+//            Pages.loansReservePage().inputAmortizationType("Straight Line");
+//            Pages.loansReservePage().inputPremiumType("Loan costs");
+//            Pages.loansReservePage().inputBalanceDefinition("Deferred Fees");
+//            Pages.loansReservePage().clickSaveButton();
+//        }
+//        Actions.loginActions().doLogOut();
     }
 
     private final String TEST_RUN_NAME = "Loans Management";
