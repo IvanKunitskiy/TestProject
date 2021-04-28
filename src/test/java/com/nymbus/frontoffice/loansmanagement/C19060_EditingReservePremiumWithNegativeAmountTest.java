@@ -70,10 +70,8 @@ public class C19060_EditingReservePremiumWithNegativeAmountTest extends BaseTest
         loanReserve.setReservePremiumAmortizationCode(Generator.getRandomStringNumber(7));
         loanReserve.setBalanceDefinition("Deferred Costs");
 
-        // Login to the system
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-
         // Check that a Loan product exist with the following editable fields (Readonly? = NO) and create if not exist
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
         Actions.loginActions().doLogOut();
 
@@ -103,7 +101,7 @@ public class C19060_EditingReservePremiumWithNegativeAmountTest extends BaseTest
 
         Pages.aSideMenuPage().clickLoansMenuItem();
         Pages.loansPage().waitForLoanPageLoaded();
-        Pages.loansPage().clickViewAllLoanReserveLink();
+        Pages.loansPage().clickViewAllLoanReserves();
         Pages.loanReservePage().clickAddNewButton();
         Pages.addNewLoanReservePage().typeReservePremiumAmortizationCodeField(loanReserve.getReservePremiumAmortizationCode());
         Pages.addNewLoanReservePage().clickBalanceDefinitionSelectorButton();
@@ -132,8 +130,8 @@ public class C19060_EditingReservePremiumWithNegativeAmountTest extends BaseTest
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 19059, testRunName = TEST_RUN_NAME)
-    @Test(description="C19059, Add new 'Reserve/Premium' with negative amount")
+    @TestRailIssue(issueID = 19060, testRunName = TEST_RUN_NAME)
+    @Test(description="C19060, Editing 'Reserve/Premium' with negative amount")
     @Severity(SeverityLevel.CRITICAL)
     public void addNewReservePremiumWithNegativeAmount() {
 
