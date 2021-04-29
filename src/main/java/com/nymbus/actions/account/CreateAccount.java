@@ -179,14 +179,14 @@ public class CreateAccount {
         Pages.addAccountPage().setPaymentAmount(account.getPaymentAmount());
         setPaymentAmountType(account);
         setPaymentFrequency(account);
-        if (account.isCycleLoan()){
+        if (account.isCycleLoan()) {
             enableCycleLoanSwitch();
             setCycleCode(account);
-        } else{
+        } else {
             disableCycleLoanSwitch();
             Pages.addAccountPage().setPaymentBilledLeadDays(account.getPaymentBilledLeadDays());
         }
-        if (account.isCurrentEffectiveRateIsTeaser()){
+        if (account.isCurrentEffectiveRateIsTeaser()) {
             enableTeaserLoanSwitch();
         }
         Pages.addAccountPage().setNextPaymentBilledDueDate(account.getNextPaymentBilledDueDate());
@@ -206,7 +206,7 @@ public class CreateAccount {
 
     private void setEscrowPayment(Account account) {
         String escrowPaymentValue = Pages.addAccountPage().getEscrowPaymentValue();
-        if (account.getEscrow() !=null && escrowPaymentValue != null && !escrowPaymentValue.equals(account.getEscrow())){
+        if (account.getEscrow() != null && escrowPaymentValue != null && !escrowPaymentValue.equals(account.getEscrow())) {
             Pages.addAccountPage().setEscrowPaymentValue(account.getEscrow());
         }
     }
@@ -288,7 +288,7 @@ public class CreateAccount {
     }
 
     private void applySeasonalAddresToNo() {
-        if (Pages.addAccountPage().getApplySeasonalAddress().equalsIgnoreCase("yes")){
+        if (Pages.addAccountPage().getApplySeasonalAddress().equalsIgnoreCase("yes")) {
             Pages.addAccountPage().clickApplySeasonalAddressSwitch();
         }
     }

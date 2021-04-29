@@ -65,6 +65,7 @@ public class C22614_ViewNewSafeBoxAccountTest extends BaseTest {
         // Create accounts and logout
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkingAccount);
         safeDepositBoxAccount.setCorrespondingAccount(checkingAccount.getAccountNumber());
+        safeDepositBoxAccount.setApplyInterestTo("CHK Acct");
         Pages.accountDetailsPage().clickAccountsLink();
         AccountActions.createAccount().createSafeDepositBoxAccount(safeDepositBoxAccount);
         Actions.loginActions().doLogOut();

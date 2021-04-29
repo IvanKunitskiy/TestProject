@@ -5,8 +5,10 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Functions;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -165,6 +167,7 @@ public class C22683_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
         Actions.transactionActions().setDepositDestination(depositDestination, 0);
 
         logInfo("Step 7: Click [Commit Transaction] button and confirm verify screen");
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         Actions.transactionActions().clickCommitButton();
 
         logInfo("Step 8: Verify Print Balances on Receipt checkbox");
