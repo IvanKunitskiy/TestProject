@@ -64,6 +64,7 @@ public enum TransactionCode {
     CHARGE_OFF_REVERSAL_430("430 - Charge Off Reversal"),
     ADD_RP_EXPENSE_455X("455X - Add R/P Expense"),
     ADD_RP_INCOME_451I("451I - Add R/P Income"),
+    ADD_RP_INCOME_452I("452I - Sub R/P Income"),
     SUB_RP_EXPENSE_456X("456X - Sub R/P Expense");
 
     private final String transCode;
