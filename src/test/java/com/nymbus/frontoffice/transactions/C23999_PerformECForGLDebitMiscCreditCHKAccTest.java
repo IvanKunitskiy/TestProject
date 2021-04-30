@@ -162,17 +162,17 @@ public class C23999_PerformECForGLDebitMiscCreditCHKAccTest extends BaseTest {
                 "Transaction items doesn't find !");
 
         logInfo("Step 12: Check gltransactionitempostingstatus value for Deposit (Misc Credit) item");
-        Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getGLTransactionItemPostingStatusValue(1), "Void",
+        Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getGLTransactionItemPostingStatusValue(2), "Void",
                 "Posted status doesn't match!");
-        String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(1);
+        String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(2);
 
         logInfo("Step 13: Go to bank.data.gl.interface and search for the record using deletedIncluded: true");
         WebAdminActions.webAdminTransactionActions().goToGLInterfaceWithDeletedItems(transactionHeader);
         Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResultInterfaceTable() > 0,
                 "Transaction items doesn't find!");
-        Assert.assertNotEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDeletedWhenValue(1), "",
+        Assert.assertNotEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDeletedWhenValue(2), "",
                 "Deleted When field is blank!");
-        Assert.assertNotEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDeletedBy(1), "",
+        Assert.assertNotEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDeletedBy(2), "",
                 "Deleted By field is blank!");
     }
 }
