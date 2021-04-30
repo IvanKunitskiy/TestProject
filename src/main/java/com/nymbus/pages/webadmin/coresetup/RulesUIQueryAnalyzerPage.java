@@ -241,8 +241,8 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     /**
      * Warehouse transaction section
      */
-    private By accountNumber = By.xpath("//*[@id='searchResultTable']//tr[%s]" +
-            "//td[10]/span[last()]/span");
+    private By accountNumber = By.xpath("//table[@id='searchResultTable']//tr[@class='searchResultRow ']" +
+            "//td[11]/span[last()]/span");
     private By terminalId = By.xpath("//table[@id='searchResultTable']//tr//td[@class='fieldsCell']//div");
 
     @Step("Get 'accountNumber' {0} value")
