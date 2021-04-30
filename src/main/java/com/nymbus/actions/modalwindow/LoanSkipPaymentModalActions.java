@@ -10,6 +10,12 @@ public class LoanSkipPaymentModalActions {
         }
     }
 
+    public void setFeeAddOnPaymentToggleToYes() {
+        if (Pages.loanSkipPaymentModalPage().getFeeAddOnPaymentToggleValue().equalsIgnoreCase("no")) {
+            Pages.loanSkipPaymentModalPage().clickFeeAddOnPaymentToggle();
+        }
+    }
+
     public void setExtendMaturityToggleToNo() {
         if (Pages.loanSkipPaymentModalPage().getExtendMaturityToggleValue().equalsIgnoreCase("yes")) {
             Pages.loanSkipPaymentModalPage().clickExtendMaturityToggle();
