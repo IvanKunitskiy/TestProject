@@ -7,12 +7,14 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.pages.webadmin.WebAdminPages;
 import com.nymbus.testrail.TestRailIssue;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Deposit Accounts Management")
+@Owner("Dmytro")
 public class C22603_SearchFilterTransactionHistoryWarehouseTest extends BaseTest {
     private String accountNumber;
 
@@ -31,7 +33,7 @@ public class C22603_SearchFilterTransactionHistoryWarehouseTest extends BaseTest
     private final String TEST_RUN_NAME = "Deposit Accounts Management";
 
     @TestRailIssue(issueID = 22603, testRunName = TEST_RUN_NAME)
-    @Test(description = "C22603, Account Transactions: Search / filter transaction history: Warehouse")
+    @Test(description = "C22603, Account Transactions: Search / filter transaction history: Warehouse", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void verifyWarehouseTransactions() {
         logInfo("Step 1: Log in to the system as the User from the precondition");
