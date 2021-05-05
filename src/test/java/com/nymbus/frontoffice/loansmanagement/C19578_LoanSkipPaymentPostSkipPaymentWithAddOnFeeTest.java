@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.loansmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
@@ -19,6 +20,8 @@ import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -104,6 +107,7 @@ public class C19578_LoanSkipPaymentPostSkipPaymentWithAddOnFeeTest extends BaseT
 
         logInfo("Step 2: Open account from preconditions on the 'Maintenance' page");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
+        double currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu());
         Pages.accountDetailsPage().clickMaintenanceTab();
 
         logInfo("Step 3: Loan Skip Payment");
@@ -112,11 +116,13 @@ public class C19578_LoanSkipPaymentPostSkipPaymentWithAddOnFeeTest extends BaseT
 
         logInfo("Step 4: Specify fields:\n" +
                 "'NBR of Payments to Skip' (should be in range from 1 to 6)\n" +
-                "Fee Amount = blank\n" +
+                "Fee Amount = any\n" +
                 "Fee Add-on Payment = NO\n" +
                 "Extend Maturity = NO");
         int nmbrToSkip = 3;
         Pages.loanSkipPaymentModalPage().typeNbrOfPaymentsToSkipInput(String.valueOf(nmbrToSkip));
+        double feeAmount = 10.000;
+        Pages.loanSkipPaymentModalPage().typeFeeAmount(String.valueOf(feeAmount));
         Actions.loanSkipPaymentModalActions().setExtendMaturityToggleToNo();
         Actions.loanSkipPaymentModalActions().setFeeAddOnPaymentToggleToYes();
         String currentDueDate = Pages.loanSkipPaymentModalPage().getCurrentDueDate();
@@ -132,5 +138,89 @@ public class C19578_LoanSkipPaymentPostSkipPaymentWithAddOnFeeTest extends BaseT
         Pages.accountDetailsPage().clickMaintenanceTab();
         AccountActions.accountMaintenanceActions().setTool(Tool.LOAN_SKIP_PAYMENT);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
+
+        logInfo("Step 7: Verify the following fields:\n" +
+                "'Current Due Date'\n" +
+                "'Maturity Date'\n" +
+                "'NBR Skips This Year'");
+        String actualCurrentDueDate = Pages.loanSkipPaymentModalPage().getCurrentDueDate();
+        TestRailAssert.assertTrue(actualCurrentDueDate.equals(DateTime.getDatePlusMonth(currentDueDate, nmbrToSkip)),
+                new CustomStepResult("'Current Due Date' is not valid", "'Current Due Date' is valid"));
+        TestRailAssert.assertTrue(Pages.loanSkipPaymentModalPage().getMaturityDate().equals(maturityDate),
+                new CustomStepResult("'Maturity Date' is not valid", "'Maturity Date' is valid"));
+        int actualNmbrSkipsThisYear = Integer.parseInt(Pages.loanSkipPaymentModalPage().getNbrSkipsThisYear());
+        TestRailAssert.assertTrue(actualNmbrSkipsThisYear == nmbrToSkip,
+                new CustomStepResult("'NBR Skips This Year' is not valid", "'NBR Skips This Year' is valid"));
+
+        logInfo("Step 8: Go to the 'Details' tab");
+        Pages.loanSkipPaymentModalPage().clickCancelButton();
+        Pages.accountDetailsPage().clickDetailsTab();
+
+        logInfo("Step 9: Verify 'Next Payment Billed Due Date' field and 'Current Balance'");
+        String nextPaymentBilledDueDate = Pages.accountDetailsPage().getNextPaymentBilledDueDate();
+        TestRailAssert.assertTrue(nextPaymentBilledDueDate.equals(DateTime.getDatePlusMonth(currentDueDate, nmbrToSkip)),
+                new CustomStepResult("'Next Payment Billed Due Date' is not valid", "'Next Payment Billed Due Date' is valid"));
+        String actualCurrentBalance = Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu();
+        TestRailAssert.assertTrue(Double.parseDouble(actualCurrentBalance) == currentBalance + feeAmount / 10,
+                new CustomStepResult("'Fee amount' is not valid", "'Fee amount' is valid"));
+
+        logInfo("Step 10: Go to the 'Transactions' tab");
+        Pages.accountDetailsPage().clickTransactionsTab();
+
+        logInfo("Step 11: Verify generated transactions");
+        // "482-Skip Fee Payment"
+        String transactionCode482 = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
+        TestRailAssert.assertTrue(transactionCode482.equals(TransactionCode.SKIP_FEE_PAYMENT_482.getTransCode()),
+                new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
+        double transactionAmount482 = AccountActions.retrievingAccountData().getAmountValue(1);
+        TestRailAssert.assertTrue(transactionAmount482 == feeAmount / 10,
+                new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
+
+        // "470-Skip Fee Add-On"
+        String transactionCode470 = Pages.accountTransactionPage().getTransactionCodeByIndex(2);
+        TestRailAssert.assertTrue(transactionCode470.equals(TransactionCode.SKIP_FEE_ADDON_470.getTransCode()),
+                new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
+        double transactionAmount470 = AccountActions.retrievingAccountData().getAmountValue(2);
+        TestRailAssert.assertTrue(transactionAmount470 == feeAmount / 10,
+                new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
+
+        // "483-Skip Fee Assessed"
+        String transactionCode483 = Pages.accountTransactionPage().getTransactionCodeByIndex(3);
+        TestRailAssert.assertTrue(transactionCode483.equals(TransactionCode.SKIP_FEE_ASSESSED_483.getTransCode()),
+                new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
+        double transactionAmount483 = AccountActions.retrievingAccountData().getAmountValue(3);
+        TestRailAssert.assertTrue(transactionAmount483 == feeAmount / 10,
+                new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
+
+        logInfo("Step 12: Go to the 'Payment Info' tab");
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+
+        logInfo("Step 13: Verify generated Payment Due records");
+        // "P&I Payment Due" record
+        String paymentDueType = Pages.accountPaymentInfoPage().getPaymentDueTypeFromRecordByIndex(1);
+        TestRailAssert.assertTrue(paymentDueType.equals(loanAccount.getPaymentAmountType()),
+                new CustomStepResult("'Payment Due Type' is not valid", "'Payment Due Type' is valid"));
+
+        double activePaymentAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getActivePaymentAmount());
+        double amountDue = Double.parseDouble(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1));
+        TestRailAssert.assertTrue(amountDue == activePaymentAmount,
+                new CustomStepResult("'Amount Due' is not valid", "'Amount Due' is valid"));
+
+        String status = Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1);
+        TestRailAssert.assertTrue(status.equals("Skip"),
+                new CustomStepResult("'Status' is not valid", "'Status' is valid"));
+
+        // "Loan Skip Payment Charges" Payment Due record
+        String dueDateFromRecordByIndex = Pages.accountPaymentInfoPage().getDueDateFromRecordByIndex(4);
+        TestRailAssert.assertTrue(dueDateFromRecordByIndex.equals(WebAdminActions.loginActions().getSystemDate()),
+                new CustomStepResult("'Due Date' is not valid", "'Due Date' is valid"));
+
+        String paidAmountDue = Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(4);
+        TestRailAssert.assertTrue(Double.parseDouble(paidAmountDue) == 0.00,
+                new CustomStepResult("'Amount Due' is not valid", "'Amount Due' is valid"));
+
+        String paidStatus = Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(4);
+        TestRailAssert.assertTrue(paidStatus.equals("Paid"),
+                new CustomStepResult("'Status' is not valid", "'Status' is valid"));
     }
 }

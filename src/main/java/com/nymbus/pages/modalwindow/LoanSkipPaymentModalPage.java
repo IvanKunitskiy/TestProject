@@ -12,6 +12,14 @@ public class LoanSkipPaymentModalPage extends PageTools {
     private final By extendMaturity = By.xpath("//dn-switch[@id='extendmaturitydate']");
     private final By extendMaturityValue = By.xpath("//dn-switch[@id='extendmaturitydate']/div/div/span[1]");
     private final By commitTransactionButton = By.xpath("//button[text()='Commit Transaction']");
+    private final By cancelButton = By.xpath("//button[text()='Cancel']");
+    private final By feeAmount = By.xpath("//input[@data-test-id='field-feeamount']");
+
+    @Step("Click 'Cancel' button")
+    public void clickCancelButton() {
+        waitForElementClickable(cancelButton);
+        click(cancelButton);
+    }
 
     @Step("Click tools 'Commit Transaction' toggle")
     public void clickCommitTransactionButton() {
@@ -23,6 +31,12 @@ public class LoanSkipPaymentModalPage extends PageTools {
     public void typeNbrOfPaymentsToSkipInput(String text) {
         waitForElementClickable(nbrOfPaymentsToSkipInput, text);
         type(text, nbrOfPaymentsToSkipInput);
+    }
+
+    @Step("Click tools 'Fee amount' button")
+    public void typeFeeAmount(String text) {
+        waitForElementClickable(feeAmount, text);
+        type(text, feeAmount);
     }
 
     @Step("Click tools 'Fee Add-on Payment' toggle")
