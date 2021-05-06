@@ -83,7 +83,7 @@ public class C22765_SavAtmBalanceInquiryForeignTest extends BaseTest {
         debitCard.setChargeForCardReplacement(true);
         debitCard.setTranslationTypeAllowed(TranslationTypeAllowed.BOTH_PIN_AND_SIGNATURE);
 
-        double foreignFeeValue = Actions.nonTellerTransactionActions().getForeignATMFeeBalanceInquiry(1);
+        double foreignFeeValue = Actions.nonTellerTransactionActions().getForeignATMFeeBalanceInquiry(2);
 
         // Log in
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());

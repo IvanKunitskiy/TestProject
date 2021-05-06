@@ -79,7 +79,7 @@ public class C25372_TransferFromSavToDdaForeignTest extends BaseTest {
         nonTellerTransactionData.setTerminalId(terminalId);
 
         // Ge the value of ForeignATMFee bank control setting
-        double foreignFeeValue = Actions.nonTellerTransactionActions().getForeignFee(1);
+        double foreignFeeValue = Actions.nonTellerTransactionActions().getForeignFee(2);
         transactionWithForeignFeeAmount = foreignTransactionValue + foreignFeeValue;
 
         // Set up debit card and bin control

@@ -78,7 +78,7 @@ public class C22763_208ATMDepositONUSTest extends BaseTest {
         // Log in and create client
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(1);
+        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(2);
 
         // Set products
         savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));

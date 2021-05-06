@@ -155,7 +155,7 @@ public class RetrievingAccountData {
     }
 
     public double getCurrentBalanceWithAccruedInterest() {
-        return  getCurrentBalance() + Double.parseDouble(Pages.accountDetailsPage().getAccruedInterest());
+        return  getCurrentBalance() + Double.parseDouble(Pages.accountDetailsPage().getAccruedInterestThisStatementCycle());
     }
 
     public double getAccruedInterest() {
