@@ -30,11 +30,13 @@ import com.nymbus.pages.Pages;
 import com.nymbus.testrail.CustomStepResult;
 import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Loans Management")
+@Owner("Dmytro")
 public class C18912_CommercialParticipationLoanLoanParticipationToolTest extends BaseTest {
 
     private Account loanAccount;

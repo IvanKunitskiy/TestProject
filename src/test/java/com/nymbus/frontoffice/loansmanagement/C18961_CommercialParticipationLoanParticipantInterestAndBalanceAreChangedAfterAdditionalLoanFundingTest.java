@@ -180,7 +180,7 @@ public class C18961_CommercialParticipationLoanParticipantInterestAndBalanceAreC
         Pages.participationsModalPage().clickParticipantRowByIndex(1);
         Pages.participationsModalPage().clickSellButton();
         String alertMessageModalText = Pages.alertMessageModalPage().getAlertMessageModalText();
-        TestRailAssert.assertTrue(alertMessageModalText.equals("The Sell will post transactions that can be viewed on Transaction History"),
+        TestRailAssert.assertTrue(alertMessageModalText.equalsIgnoreCase("The Sell will post transactions that can be viewed on Transaction History"),
                 new CustomStepResult("'Modal text' is not valid", "'Modal text' is valid"));
         Pages.alertMessageModalPage().clickOkButton();
         Pages.participationsModalPage().waitForSoldStatusVisibleByIndex(1);
@@ -197,7 +197,7 @@ public class C18961_CommercialParticipationLoanParticipantInterestAndBalanceAreC
 
         logInfo("Step 7: Go to the 'Transactions' tab and verify generated transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
-        String effectiveDate471Value = Pages.accountTransactionPage().getEffectiveDateValue(1);
+        String effectiveDate471Value = Pages.accountTransactionPage().getEffectiveDateValue(1, 1);
         String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
         double transaction471Amount = AccountActions.retrievingAccountData().getAmountValue(1);
         TestRailAssert.assertTrue(transactionCode.equals(TransactionCode.PARTICIPATION_SELL_471.getTransCode()),
@@ -240,14 +240,14 @@ public class C18961_CommercialParticipationLoanParticipantInterestAndBalanceAreC
 
         TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(1).equals(TransactionCode.ADD_ON_410.getTransCode()),
                 new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
-        TestRailAssert.assertTrue(Pages.accountTransactionPage().getEffectiveDateValue(1).equals(loanAccount.getDateOpened()),
+        TestRailAssert.assertTrue(Pages.accountTransactionPage().getEffectiveDateValue(1, 1).equals(loanAccount.getDateOpened()),
                 new CustomStepResult("'Effective date' is not valid", "'Effective date' is valid"));
         TestRailAssert.assertTrue(AccountActions.retrievingAccountData().getAmountValue(1) == (double) transaction410Amount,
                 new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
 
         double transaction475Amount = AccountActions.retrievingAccountData().getAmountValue(2);
         String postingDate475Value = Pages.accountTransactionPage().getPostingDateValue(2);
-        String effectiveDate475Value = Pages.accountTransactionPage().getEffectiveDateValue(2);
+        String effectiveDate475Value = Pages.accountTransactionPage().getEffectiveDateValue(2, 1);
         TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(2).equals(TransactionCode.ADDITIONAL_SELL_475.getTransCode()),
                 new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
         TestRailAssert.assertTrue(effectiveDate475Value.equals(loanAccount.getDateOpened()),
@@ -274,13 +274,13 @@ public class C18961_CommercialParticipationLoanParticipantInterestAndBalanceAreC
         logInfo("Step 16: Check bank.data.actmst.participant -> interestearned and participantbalance values");
         double effectiveRate = currentEffectiveRate / 100;
         double yearBaseValue = Double.parseDouble(yearBase);
-        int days = DateTime.getDaysBetweenTwoDates(effectiveDate475Value, postingDate475Value, true);
+        int days = DateTime.getDaysBetweenTwoDates(effectiveDate475Value, postingDate475Value, false);
         double expectedInterestEarned = (transaction475Amount * effectiveRate / yearBaseValue * days) + Double.parseDouble(previousInterestearned);
 
         TestRailAssert.assertTrue(Double.parseDouble(participantbalance) == transaction471Amount + transaction475Amount,
-                new CustomStepResult("'interestearned' is not valid", "'interestearned' is valid"));
+                new CustomStepResult("'participantbalance' is not valid", "'participantbalance' is valid"));
         TestRailAssert.assertTrue(Functions.getDoubleWithFormatAndFloorRounding(Double.parseDouble(interestearned), "##.##") ==
                         Functions.getDoubleWithFormatAndFloorRounding(expectedInterestEarned, "##.##"),
-                new CustomStepResult("'participantbalance' is not valid", "'participantbalance' is valid"));
+                new CustomStepResult("'interestearned' is not valid", "'interestearned' is valid"));
     }
 }
