@@ -14,6 +14,7 @@ import com.nymbus.actions.loans.LoanPayoffActions;
 import com.nymbus.actions.loans.LoanProductOverviewActions;
 import com.nymbus.actions.loans.LoanReserveActions;
 import com.nymbus.actions.modalwindow.DebitCardModalWindowActions;
+import com.nymbus.actions.modalwindow.LoanSkipPaymentModalActions;
 import com.nymbus.actions.modalwindow.ParticipationsActions;
 import com.nymbus.actions.modalwindow.ReservePremiumProcessingModalActions;
 import com.nymbus.actions.settings.*;
@@ -52,6 +53,7 @@ public class Actions {
     private static LoansActions loansActions;
     private static LoanReserveActions loanReserveActions;
     private static ReservePremiumProcessingModalActions reservePremiumProcessingModalPageActions;
+    private static LoanSkipPaymentModalActions loanSkipPaymentModalActions;
 
     /**
      * Modal Window Actions
@@ -331,5 +333,15 @@ public class Actions {
             reservePremiumProcessingModalPageActions = new ReservePremiumProcessingModalActions();
         }
         return reservePremiumProcessingModalPageActions;
+    }
+
+    /**
+     * This function returns an instance of `ReservePremiumProcessingModalActions`
+     */
+    public static LoanSkipPaymentModalActions loanSkipPaymentModalActions() {
+        if (loanSkipPaymentModalActions == null) {
+            loanSkipPaymentModalActions = new LoanSkipPaymentModalActions();
+        }
+        return loanSkipPaymentModalActions;
     }
 }
