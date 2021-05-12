@@ -141,11 +141,11 @@ public class C19576_LoanSkipPaymentPostSkipPaymentTest extends BaseTest {
                 "'NBR Skips This Year'");
         String actualCurrentDueDate = Pages.loanSkipPaymentModalPage().getCurrentDueDate();
         TestRailAssert.assertTrue(actualCurrentDueDate.equals(DateTime.getDatePlusMonth(currentDueDate, nmbrToSkip)),
-                new CustomStepResult("'Current Due Date' is not valid", "'Current Due Date' is valid"));
+                new CustomStepResult("'Current Due Date' is valid", "'Current Due Date' is not valid"));
         TestRailAssert.assertTrue(Pages.loanSkipPaymentModalPage().getMaturityDate().equals(maturityDate),
-                new CustomStepResult("'Maturity Date' is not valid", "'Maturity Date' is valid"));
-        int actualNmbrSkipsThisYear = Integer.valueOf(Pages.loanSkipPaymentModalPage().getNbrSkipsThisYear());
+                new CustomStepResult("'Maturity Date' is valid", "'Maturity Date' is not valid"));
+        int actualNmbrSkipsThisYear = Integer.parseInt(Pages.loanSkipPaymentModalPage().getNbrSkipsThisYear());
         TestRailAssert.assertTrue(actualNmbrSkipsThisYear == nmbrToSkip,
-                new CustomStepResult("'NBR Skips This Year' is not valid", "'NBR Skips This Year' is valid"));
+                new CustomStepResult("'NBR Skips This Year' is valid", "'NBR Skips This Year' is not valid"));
     }
 }
