@@ -4,6 +4,7 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -59,6 +60,10 @@ public class C25437_ProcessEc416LoanPaymentTransactionPrincipalInterestTest exte
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         loanAccount.setPaymentAmountType(PaymentAmountType.PRINCIPAL_AND_INTEREST.getPaymentAmountType());
+
+        String dateOpened = loanAccount.getDateOpened();
+        loanAccount.setDateOpened(DateTime.getDateMinusDays(dateOpened, 1));
+        chkAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
 
         // Login to the system
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
