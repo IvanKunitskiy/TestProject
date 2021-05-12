@@ -179,6 +179,7 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
         logInfo("Step 6: Open loan account from preconditions on the 'Payment Info' tab");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
+        String nextPaymentBilledDueDate = Pages.accountDetailsPage().getNextPaymentBilledDueDate();
         Pages.accountDetailsPage().clickPaymentInfoTab();
 
         logInfo("Step 7: Check Payment Due record from preconditions");
@@ -197,7 +198,7 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDisabledPaymentDueType().equals(loanAccount.getPaymentAmountType()),
                 new CustomStepResult("'Payment Due Type' is not valid", "'Payment Due Type' is valid"));
         String disabledInterest = Pages.accountPaymentInfoPage().getDisabledInterest();
-        TestRailAssert.assertTrue(disabledInterest.equals(accruedInterest),
+        TestRailAssert.assertTrue(disabledInterest.equals(Pages.accountPaymentInfoPage().getInterestTotal()),
                 new CustomStepResult("'Interest' is not valid", "'Interest' is valid"));
         String principal = Pages.accountPaymentInfoPage().getDisabledPrincipal();
         TestRailAssert.assertTrue(principal.equals("0.00"),
@@ -207,7 +208,7 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
                 new CustomStepResult("'Payment Amount' is not valid", "'Payment Amount' is valid"));
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDisabledAmountDue().equals("$ 0.00"),
                 new CustomStepResult("'Amount due' is not valid", "'Amount due' is valid"));
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDatePaymentPaidInFull().equals(loanAccount.getNextPaymentBilledDueDate()),
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDatePaymentPaidInFull().equals(DateTime.getDateMinusMonth(nextPaymentBilledDueDate, 1)),
                 new CustomStepResult("Date Payment Paid In Full is not valid", "Date Payment Paid In Full is valid"));
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDisabledDueDate().equals(loanAccount.getNextPaymentBilledDueDate()),
                 new CustomStepResult("'Due Date' is not valid", "'Due Date' is valid"));

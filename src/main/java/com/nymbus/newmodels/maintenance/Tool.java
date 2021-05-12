@@ -13,7 +13,8 @@ public enum Tool {
     LOAN_PAYOFF_PREPAYMENT_PENALTY("Loan Payoff Prepayment Penalty"),
     LOAN_PARTICIPATIONS("Loan Participations"),
     TEASER_RATE_SETUP("Teaser Rate Setup"),
-    RESERVE_PREMIUM_PROCESSING("Reserve/Premium Processing");
+    RESERVE_PREMIUM_PROCESSING("Reserve/Premium Processing"),
+    LOAN_SKIP_PAYMENT("Loan Skip Payment");
 
     private final String tool;
 }

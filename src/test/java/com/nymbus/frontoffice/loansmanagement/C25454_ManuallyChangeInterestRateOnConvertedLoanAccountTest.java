@@ -46,8 +46,6 @@ public class C25454_ManuallyChangeInterestRateOnConvertedLoanAccountTest extends
         logInfo("Step 2: Open loan account from preconditions -> Maintenance -> Tools -> Interest Rate Change");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(activeLoanAccountId);
 
-        String currentEffectiveRate = Pages.accountDetailsPage().getCurrentEffectiveRate();
-        System.out.println("currentEffectiveRate : " + currentEffectiveRate);
         int yearBase = Integer.parseInt(Pages.accountDetailsPage().getDaysBaseYearBase().split("/")[1].substring(0, 3));
         double currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
         String accountNumber = Pages.accountDetailsPage().getAccountNumberValue();
@@ -56,19 +54,19 @@ public class C25454_ManuallyChangeInterestRateOnConvertedLoanAccountTest extends
         Pages.accountMaintenancePage().clickChooseToolSelectorButton();
         Pages.accountMaintenancePage().clickChooseToolOption("Interest Rate Change");
         Pages.accountMaintenancePage().clickToolsLaunchButton();
+        String currentEffectiveRate = Pages.interestRateChangeModalPage().getCurrentEffectiveRate();
+        Pages.interestRateChangeModalPage().clickAddBackDatedRateChangeButton();
 
         logInfo("Step 3: Specify the following parameters:\n" +
                 "- NEW Current Effective Rate != old Current Effective Rate\n" +
                 "- Begin Earn Date = date in the past\n" +
                 "- Accrue Thru Date = yesterday (by default value is set to Current date - 1 day)");
         int beginEarnDateDays = 4;
-        int accrueThruDateDays = 1;
         double oldCurrentEffectiveRate = Double.parseDouble(currentEffectiveRate);
         double newCurrentEffectiveRate = oldCurrentEffectiveRate + Random.genInt(1, 10);
 
         Pages.interestRateChangeModalPage().setNewCurrentEffectiveRateValue(String.valueOf(newCurrentEffectiveRate));
         Pages.interestRateChangeModalPage().setBeginEarnDate(DateTime.getDateMinusDays(DateTime.getLocalDateWithPattern("MM/dd/yyyy"), beginEarnDateDays));
-        Pages.interestRateChangeModalPage().setAccrueThruDate(DateTime.getDateMinusDays(DateTime.getLocalDateWithPattern("MM/dd/yyyy"), accrueThruDateDays));
 
         logInfo("Step 4: Click on the 'Commit Transaction' button");
         Pages.interestRateChangeModalPage().clickCommitTransactionButton();
@@ -83,12 +81,12 @@ public class C25454_ManuallyChangeInterestRateOnConvertedLoanAccountTest extends
         double interestEarned = getInterestEarned(accountNumber);
         String alertMessageModalText = Pages.alertMessageModalPage().getAlertMessageModalText();
 
-        Assert.assertTrue(alertMessageModalText.contains(String.format("%.2f", adjustmentAmount)), "'Adjustment Amount' is calculated incorrect");
-        Assert.assertTrue(alertMessageModalText.contains(String.format("%.2f", interestEarned)), "'Interest Earned' is calculated incorrect");
+        Assert.assertTrue(alertMessageModalText.contains(String.valueOf(adjustmentAmount)), "'Adjustment Amount' is calculated incorrect");
         Assert.assertTrue(alertMessageModalText.contains(String.format("%.2f", interestEarned)), "'Interest Earned' is calculated incorrect");
         Pages.alertMessageModalPage().clickOkButton();
 
         logInfo("Step 7: Go to 'Transactions' tab and pay attention at the generated transaction");
+        Pages.interestRateChangeModalPage().clickCloseButton();
         Pages.accountDetailsPage().clickTransactionsTab();
         String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
         checkTransactionCode(transactionCode, newCurrentEffectiveRate, oldCurrentEffectiveRate);

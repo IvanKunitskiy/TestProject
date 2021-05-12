@@ -65,7 +65,10 @@ public enum TransactionCode {
     ADD_RP_EXPENSE_455X("455X - Add R/P Expense"),
     ADD_RP_INCOME_451I("451I - Add R/P Income"),
     ADD_RP_INCOME_452I("452I - Sub R/P Income"),
-    SUB_RP_EXPENSE_456X("456X - Sub R/P Expense");
+    SUB_RP_EXPENSE_456X("456X - Sub R/P Expense"),
+    SKIP_FEE_ASSESSED_483("483 - Skip Fee Assessed"),
+    SKIP_FEE_ADDON_470("470 - Skip Fee Add-On"),
+    SKIP_FEE_PAYMENT_482("482 - Skip Fee Payment");
 
     private final String transCode;
 }
