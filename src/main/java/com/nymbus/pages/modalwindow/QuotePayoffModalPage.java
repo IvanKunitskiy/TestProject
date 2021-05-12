@@ -96,7 +96,7 @@ public class QuotePayoffModalPage extends PageTools {
     private By interestBase = By.xpath("//span[text()='Interest Base']/../following-sibling::div/span");
     private By interestPaidToDate = By.xpath("//span[text()='Interest Paid to Date']/../following-sibling::div/span");
     private By otherCharges = By.xpath("//span[text()='Other Charges']/../following-sibling::div/span");
-    private By payoffCharges = By.xpath("//span[text()='Payoff Charges']/../following-sibling::div/span");
+    private By payoffCharges = By.xpath("//span[text()='Payoff']/../following-sibling::div/span");
 
     @Step("Get 'Payoff Date' value")
     public String getPayoffDate() {

@@ -161,9 +161,6 @@ public class C25426_ChargeOffProcessingPartialChargeOffProcessingTest extends Ba
         double amountValue = AccountActions.retrievingAccountData().getAmountValue(1);
         TestRailAssert.assertTrue(amountValue == tellerTransactionSource.getAmount(),
                 new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
-        TestRailAssert.assertTrue(Pages.transactionsPage().isTransactionWithDescriptionVisibleInList(cdtTemplateName),
-                new CustomStepResult("Transaction with description is not available in the list",
-                        "Transaction with description is available in the list"));
 
         logInfo("Step 7: Go to the 'Details' tab and verify the following fields:\n" +
                 "'Current Balance'\n" +
