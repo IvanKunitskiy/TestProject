@@ -15,7 +15,11 @@ public class IOUtils {
             file.append("          ");
             file.append("Analysis Charges AutoTest\n");
         }
-        file.append("000001111100");
+        if (Constants.getEnvironment().equals("dev4")){
+            file.append("000001001000");
+        } else {
+            file.append("000001111100");
+        }
         file.append("          ");
         file.append("4000000009.95");
         file.append("          ");

@@ -288,8 +288,14 @@ public class CreateAccount {
     }
 
     private void applySeasonalAddresToNo() {
-        if (Pages.addAccountPage().getApplySeasonalAddress().equalsIgnoreCase("yes")) {
-            Pages.addAccountPage().clickApplySeasonalAddressSwitch();
+        if (Constants.getEnvironment().equals("dev4")){
+            if (Pages.addAccountPage().isApplySeasonalAddressYes()) {
+                Pages.addAccountPage().clickApplySeasonalAddressSwitch();
+            }
+        } else {
+            if (Pages.addAccountPage().getApplySeasonalAddress().equalsIgnoreCase("yes")) {
+                Pages.addAccountPage().clickApplySeasonalAddressSwitch();
+            }
         }
     }
 
@@ -435,7 +441,8 @@ public class CreateAccount {
 
         if (listOfAccountAnalysis.size() > 0) {
             if (account.getAccountAnalysis() == null) {
-                account.setAccountAnalysis(listOfAccountAnalysis.get(new Random().nextInt(listOfAccountAnalysis.size())).trim());
+                //account.setAccountAnalysis(listOfAccountAnalysis.get(new Random().nextInt(listOfAccountAnalysis.size())).trim());
+                account.setAccountAnalysis(listOfAccountAnalysis.get(0));
             }
             Pages.addAccountPage().clickAccountAnalysisSelectorOption(account.getAccountAnalysis());
         }

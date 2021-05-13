@@ -57,8 +57,9 @@ public class AddAccountPage extends PageTools {
     private final By userDefinedFieldInput_3 = By.xpath("//input[@id='userdefinedfield3']");
     private final By userDefinedFieldInput_4 = By.xpath("//input[@id='userdefinedfield4']");
     private final By discountPeriods = By.xpath("//input[@id='discountperiods']");
-    private final By applySeasonalAddress = By.xpath("//dn-switch[@id='useseasonaladdress']//span[@ng-if='model']");
-    private final By applySeasonalAddressSwitch = By.xpath("//dn-switch[@id='useseasonaladdress']");
+    private final By applySeasonalAddress = By.xpath("//*[@id='useseasonaladdress']//span[@ng-if='model']");
+    private final By applySeasonalAddressSwitch = By.xpath("//*[@id='useseasonaladdress']");
+    private final By applySeasonalAddressYes = By.xpath("//*[@id='useseasonaladdress']//span[text()='YES']");
     private final By applySeasonalAddressValue = By.xpath("//dn-switch[@id='useseasonaladdress']/div/div/span");
     private final By dateOfFirstDeposit = By.xpath("//input[@id='datefirstdeposit']");
     private final By autoRenewableSwitch = By.xpath("//dn-switch[@id='autorenewablecode']");
@@ -1235,6 +1236,12 @@ public class AddAccountPage extends PageTools {
         waitForElementVisibility(applySeasonalAddress);
         waitForElementClickable(applySeasonalAddress);
         return getElementText(applySeasonalAddress);
+    }
+
+    @Step("Check the 'Apply Seasonal Address' value")
+    public boolean isApplySeasonalAddressYes() {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        return isElementVisible(applySeasonalAddress);
     }
 
     @Step("Get the 'Cycle Loan' value")

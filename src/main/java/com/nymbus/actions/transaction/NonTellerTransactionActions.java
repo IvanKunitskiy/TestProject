@@ -134,7 +134,7 @@ public class NonTellerTransactionActions {
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         WebAdminActions.webAdminTransactionActions().goToForeignATMFeeBalanceInquiryUrl();
-        String foreignFeeValue = WebAdminPages.rulesUIQueryAnalyzerPage().getForeignFeeValue(1);
+        String foreignFeeValue = WebAdminPages.rulesUIQueryAnalyzerPage().getForeignFeeValue(2);
         WebAdminActions.loginActions().doLogoutProgrammatically();
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
@@ -145,7 +145,7 @@ public class NonTellerTransactionActions {
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         WebAdminActions.webAdminTransactionActions().goToWaiveATUsageFeeAcronymUrl();
-        String waiveATUsageFeeAcronymValue = WebAdminPages.rulesUIQueryAnalyzerPage().getWaiveATUsageFeeAcronymValue(1);
+        String waiveATUsageFeeAcronymValue = WebAdminPages.rulesUIQueryAnalyzerPage().getWaiveATUsageFeeAcronymValue(2);
         WebAdminActions.loginActions().doLogoutProgrammatically();
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 

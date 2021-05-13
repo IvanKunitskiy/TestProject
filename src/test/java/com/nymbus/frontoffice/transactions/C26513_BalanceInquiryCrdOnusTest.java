@@ -51,7 +51,7 @@ public class C26513_BalanceInquiryCrdOnusTest extends BaseTest {
         Account chkAccount = new Account().setCHKAccountData();
 
         // Get terminal ID
-        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(1);
+        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(2);
 
         // Set up nonTeller transaction data (api request data)
         nonTellerTransactionData = new NonTellerTransactionData();

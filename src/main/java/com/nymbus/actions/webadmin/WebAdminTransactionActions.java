@@ -237,9 +237,9 @@ public class WebAdminTransactionActions {
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         goToTransactionUrl(account.getAccountNumber());
-        String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(1);
+        String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(2);
         goToTransactionHeaderUrl(transactionHeader);
-        String transactionNumber = WebAdminPages.rulesUIQueryAnalyzerPage().getNameValue(1);
+        String transactionNumber = WebAdminPages.rulesUIQueryAnalyzerPage().getNameValue(2);
         WebAdminActions.loginActions().doLogoutProgrammatically();
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 

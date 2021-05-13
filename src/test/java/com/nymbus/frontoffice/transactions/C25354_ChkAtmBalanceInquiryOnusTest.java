@@ -67,7 +67,7 @@ public class C25354_ChkAtmBalanceInquiryOnusTest extends BaseTest {
         transactionAmount = glDebitMiscCreditTransaction.getTransactionDestination().getAmount();
 
         // Get terminal ID
-        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(1);
+        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(2);
 
         // Set up nonTeller transaction data
         // Payload to be sent in step 2
