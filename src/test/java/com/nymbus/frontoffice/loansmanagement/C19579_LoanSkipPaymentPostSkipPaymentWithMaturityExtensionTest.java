@@ -106,7 +106,6 @@ public class C19579_LoanSkipPaymentPostSkipPaymentWithMaturityExtensionTest exte
 
         logInfo("Step 2: Open loan account from preconditions on \"Maintenance\" page");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
-        double currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu());
         Pages.accountDetailsPage().clickMaintenanceTab();
 
         logInfo("Step 3: Launch \"Loan Skip Payment\" tool");
