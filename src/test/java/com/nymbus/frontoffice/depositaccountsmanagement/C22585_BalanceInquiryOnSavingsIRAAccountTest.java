@@ -1,11 +1,9 @@
 package com.nymbus.frontoffice.depositaccountsmanagement;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -46,17 +44,15 @@ public class C22585_BalanceInquiryOnSavingsIRAAccountTest extends BaseTest {
 
         // Set up account
         iraAccount = new Account().setSavingsIraAccountData();
+        iraAccount.setApplyInterestTo("Remain in Account");
 
         // Set up instruction and transaction
         HoldInstruction instruction = new InstructionConstructor(new HoldInstructionBuilder()).constructInstruction(HoldInstruction.class);
         instruction.setAmount(10);
         Transaction transaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();
 
-        // Log in
-        Selenide.open(Constants.URL);
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-
         // Set the product of the user to account
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         iraAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.IRA, RateType.TIER));
 
         // Create a client

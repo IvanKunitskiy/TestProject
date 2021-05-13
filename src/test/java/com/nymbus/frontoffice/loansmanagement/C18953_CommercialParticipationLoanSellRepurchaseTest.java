@@ -173,7 +173,7 @@ public class C18953_CommercialParticipationLoanSellRepurchaseTest extends BaseTe
 
         logInfo("Step 7: Go to the 'Transactions' tab and verify generated transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
-        String effectiveDateValue = Pages.accountTransactionPage().getEffectiveDateValue(1);
+        String effectiveDateValue = Pages.accountTransactionPage().getEffectiveDateValue(1, 1);
         String postingDateValue = Pages.accountTransactionPage().getPostingDateValue(1);
         String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
         double amountValue = AccountActions.retrievingAccountData().getAmountValue(1);

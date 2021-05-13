@@ -26,11 +26,10 @@ import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Petro")
-public class C19579_LoanSkipPaymentPostSkipPaymentWithMaturityExtensionTest extends BaseTest {
+public class C19576_LoanSkipPaymentPostSkipPaymentTest extends BaseTest {
 
     private Account loanAccount;
     private final String loanProductName = "Test Loan Product";
@@ -42,7 +41,7 @@ public class C19579_LoanSkipPaymentPostSkipPaymentWithMaturityExtensionTest exte
     public void preCondition() {
 
         // Set up client
-        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
+        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         IndividualClient client = individualClientBuilder.buildClient();
 
@@ -97,39 +96,38 @@ public class C19579_LoanSkipPaymentPostSkipPaymentWithMaturityExtensionTest exte
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 19579, testRunName = TEST_RUN_NAME)
-    @Test(description = "C19579, Loan Skip Payment: Post Skip Payment with Maturity Extension")
+    @TestRailIssue(issueID = 19576, testRunName = TEST_RUN_NAME)
+    @Test(description="C19576, Loan Skip Payment: Post Skip Payment")
     @Severity(SeverityLevel.CRITICAL)
-    public void loanSkipPaymentPostSkipPaymentWithMaturityExtensionTest() {
-        logInfo("Step 1: Log into the system");
+    public void loanSkipPaymentPostSkipPayment() {
+
+        logInfo("Step 1: Log in to the system");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        logInfo("Step 2: Open loan account from preconditions on \"Maintenance\" page");
+        logInfo("Step 2: Open account from preconditions on the 'Maintenance' page");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
-        double currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu());
         Pages.accountDetailsPage().clickMaintenanceTab();
 
-        logInfo("Step 3: Launch \"Loan Skip Payment\" tool");
+        logInfo("Step 3: Loan Skip Payment");
         AccountActions.accountMaintenanceActions().setTool(Tool.LOAN_SKIP_PAYMENT);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
 
         logInfo("Step 4: Specify fields:\n" +
-                "\"NBR of Payments to Skip\" (should be in range from 1 to 6)\n" +
+                "'NBR of Payments to Skip' (should be in range from 1 to 6)\n" +
                 "Fee Amount = blank\n" +
                 "Fee Add-on Payment = NO\n" +
-                "Extend Maturity = YES");
+                "Extend Maturity = NO");
         int nmbrToSkip = 3;
         Pages.loanSkipPaymentModalPage().typeNbrOfPaymentsToSkipInput(String.valueOf(nmbrToSkip));
+        Actions.loanSkipPaymentModalActions().setExtendMaturityToggleToNo();
         Actions.loanSkipPaymentModalActions().setFeeAddOnPaymentToggleToNo();
-        Actions.loanSkipPaymentModalActions().setExtendMaturityToggleToYes();
         String currentDueDate = Pages.loanSkipPaymentModalPage().getCurrentDueDate();
         String maturityDate = Pages.loanSkipPaymentModalPage().getMaturityDate();
-
 
         logInfo("Step 5: Click the [Commit Transaction] button");
         Pages.loanSkipPaymentModalPage().clickCommitTransactionButton();
 
-        logInfo("Step 6: Launch \"Loan Skip Payment\" tool again");
+        logInfo("Step 6: Launch the 'Loan Skip Payment' tool again");
         Actions.loginActions().doLogOut();
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
@@ -138,20 +136,16 @@ public class C19579_LoanSkipPaymentPostSkipPaymentWithMaturityExtensionTest exte
         Pages.accountMaintenancePage().clickToolsLaunchButton();
 
         logInfo("Step 7: Verify the following fields:\n" +
-                "\"Current Due Date\"\n" +
-                "\"Maturity Date\"\n" +
-                "\"NBR Skips This Year\"");
+                "'Current Due Date'\n" +
+                "'Maturity Date'\n" +
+                "'NBR Skips This Year'");
         String actualCurrentDueDate = Pages.loanSkipPaymentModalPage().getCurrentDueDate();
         TestRailAssert.assertTrue(actualCurrentDueDate.equals(DateTime.getDatePlusMonth(currentDueDate, nmbrToSkip)),
-                new CustomStepResult("'Current Due Date' is  valid", "'Current Due Date' is not valid"));
-
+                new CustomStepResult("'Current Due Date' is valid", "'Current Due Date' is not valid"));
+        TestRailAssert.assertTrue(Pages.loanSkipPaymentModalPage().getMaturityDate().equals(maturityDate),
+                new CustomStepResult("'Maturity Date' is valid", "'Maturity Date' is not valid"));
         int actualNmbrSkipsThisYear = Integer.parseInt(Pages.loanSkipPaymentModalPage().getNbrSkipsThisYear());
         TestRailAssert.assertTrue(actualNmbrSkipsThisYear == nmbrToSkip,
-                new CustomStepResult("'NBR Skips This Year' is  valid", "'NBR Skips This Year' is not valid"));
-
-        String actualMaturityDate = Pages.loanSkipPaymentModalPage().getMaturityDate();
-        TestRailAssert.assertTrue(actualMaturityDate.equals(DateTime.getDatePlusMonth(maturityDate, nmbrToSkip)),
-                new CustomStepResult("'Maturity Date' is  valid", "'Maturity Date' is not valid"));
-
+                new CustomStepResult("'NBR Skips This Year' is valid", "'NBR Skips This Year' is not valid"));
     }
 }

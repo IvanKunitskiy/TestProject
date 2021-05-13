@@ -16,6 +16,13 @@ public class InterestRateChangeModalPage extends PageTools {
     private final By cancelButton = By.xpath("//button/span[text()='Cancel']");
     private final By addBackDatedRateChangeButton = By.xpath("//button[span[text()='Add Back Dated Rate Change']]");
     private final By closeButton = By.xpath("//div[@class='modal-content']//button[@ng-click='close()']");
+    private final By currentEffectiveRate = By.xpath("(//div[@class='ng-scope']/span[@uib-tooltip-html='text']/span)[2]");
+
+    @Step("Get 'Current Effective Rate'")
+    public String getCurrentEffectiveRate() {
+        waitForElementVisibility(currentEffectiveRate);
+        return getElementText(currentEffectiveRate).replaceAll("[^0-9.]", "");
+    }
 
     @Step("Set 'Accrue thru date' value")
     public String getAccrueThruDate() {

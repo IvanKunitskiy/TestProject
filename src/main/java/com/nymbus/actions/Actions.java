@@ -336,7 +336,7 @@ public class Actions {
     }
 
     /**
-     * This function returns an instance of `ReservePremiumProcessingModalActions`
+     * This function returns an instance of `LoanSkipPaymentModalActions`
      */
     public static LoanSkipPaymentModalActions loanSkipPaymentModalActions() {
         if (loanSkipPaymentModalActions == null) {

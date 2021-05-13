@@ -919,7 +919,6 @@ public class Pages extends AllureLogger {
         return addNewLoanReservePage;
     }
 
-
     /**
      * This function return an instance of `LoanSkipPaymentModalPage`
      */
