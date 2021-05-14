@@ -1,5 +1,6 @@
 package com.nymbus.frontoffice.transactions;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -172,7 +173,6 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         String checkNumber = Pages.confirmModalPage().getReprintCheckNumber();
         check.setCheckNumber(checkNumber);
         fullCheck.setCheckNumber(checkNumber);
-
         logInfo("Step 6: Click [Yes] button on a \"Reprint check #X?\" popup");
         Pages.confirmModalPage().clickYes();
         Assert.assertTrue(Pages.confirmModalPage().checkIsCheck(),"Is check is not visible");
@@ -185,6 +185,7 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         Pages.confirmModalPage().clickNo();
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         Assert.assertEquals(Pages.cashierPage().getPayeeName(), name, "Name doesn't match");
+
         SelenideTools.openUrlInNewWindow(Constants.URL.substring(0,Constants.URL.indexOf("com")+3)
                 +"/settings/#/view/bank.data.officialcheck.control");
         int number = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());

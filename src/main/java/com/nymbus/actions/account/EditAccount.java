@@ -1,5 +1,6 @@
 package com.nymbus.actions.account;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
@@ -8,6 +9,8 @@ import org.testng.Assert;
 
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EditAccount {
 
@@ -724,9 +727,13 @@ public class EditAccount {
         Assert.assertEquals(Pages.editAccountPage().getInterestRateValueInEditMode(), account.getInterestRate(), "'Interest Rate' value does not match");
         Assert.assertEquals(Pages.editAccountPage().getApplyInterestTo(), account.getApplyInterestTo(), "'Apply Interest To' value does not match");
         if (account.getCorrespondingAccount() != null) {
-            Assert.assertEquals(Pages.editAccountPage().getCorrespondingAccount().replaceAll("[^0-9]", ""),
+            Pattern pattern = Pattern.compile("[0-9]{12}+");
+            Matcher matcher = pattern.matcher(Pages.editAccountPage().getCorrespondingAccount());
+            if(matcher.find()){
+                Assert.assertEquals(matcher.group(),
                     account.getCorrespondingAccount(),
                     "'Corresponding Account' value does not match");
+            }
         }
     }
 
