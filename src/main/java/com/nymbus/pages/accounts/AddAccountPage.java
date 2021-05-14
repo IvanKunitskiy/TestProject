@@ -57,9 +57,10 @@ public class AddAccountPage extends PageTools {
     private final By userDefinedFieldInput_3 = By.xpath("//input[@id='userdefinedfield3']");
     private final By userDefinedFieldInput_4 = By.xpath("//input[@id='userdefinedfield4']");
     private final By discountPeriods = By.xpath("//input[@id='discountperiods']");
-    private final By applySeasonalAddress = By.xpath("//dn-switch[@id='useseasonaladdress']//span[@ng-if='model']");
-    private final By applySeasonalAddressSwitch = By.xpath("//dn-switch[@id='useseasonaladdress']");
-    private final By applySeasonalAddressValue = By.xpath("//dn-switch[@id='useseasonaladdress']/div/div/span");
+    private final By applySeasonalAddressWithHandleOn = By.xpath("//*[@id='useseasonaladdress']//div[contains(@class, 'bootstrap-switch-on')]//span[contains(@class, 'bootstrap-switch-handle-on')]");
+    private final By applySeasonalAddressWithHandleOff = By.xpath("//*[@id='useseasonaladdress']//div[contains(@class, 'bootstrap-switch-off')]//span[contains(@class, 'bootstrap-switch-handle-off')]");
+    private final By applySeasonalAddressSwitch = By.xpath("//*[@id='useseasonaladdress']");
+    private final By applySeasonalAddressValue = By.xpath("//*[@id='useseasonaladdress']/div/div/span");
     private final By dateOfFirstDeposit = By.xpath("//input[@id='datefirstdeposit']");
     private final By autoRenewableSwitch = By.xpath("//dn-switch[@id='autorenewablecode']");
     private final By autoRenewableSwitchValue = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span");
@@ -1232,9 +1233,15 @@ public class AddAccountPage extends PageTools {
 
     @Step("Get the 'Apply Seasonal Address' value")
     public String getApplySeasonalAddress() {
-        waitForElementVisibility(applySeasonalAddress);
-        waitForElementClickable(applySeasonalAddress);
-        return getElementText(applySeasonalAddress);
+        if(isElementVisible(applySeasonalAddressWithHandleOn)) {
+            waitForElementVisibility(applySeasonalAddressWithHandleOn);
+            waitForElementClickable(applySeasonalAddressWithHandleOn);
+            return getElementText(applySeasonalAddressWithHandleOn);
+        } else {
+            waitForElementVisibility(applySeasonalAddressWithHandleOff);
+            waitForElementClickable(applySeasonalAddressWithHandleOff);
+            return getElementText(applySeasonalAddressWithHandleOff);
+        }
     }
 
     @Step("Get the 'Cycle Loan' value")
