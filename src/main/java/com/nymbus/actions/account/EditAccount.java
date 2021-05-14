@@ -347,10 +347,7 @@ public class EditAccount {
         Pages.editAccountPage().setDateDeceased(account.getDateDeceased());
         account.setApplyInterestTo("CHK Acct");
         setApplyInterestTo(account);
-        Selenide.sleep(15000);
         setCorrespondingAccount(account);
-        Selenide.sleep(10000);
-        System.out.println("---------------------Get corresponding account " + Pages.editAccountPage().getCorrespondingAccount());
         if (!Pages.editAccountPage().getTransactionalAccountInEditMode().equalsIgnoreCase("yes")) {
             Pages.editAccountPage().clickTransactionalAccountSwitch();
         }
