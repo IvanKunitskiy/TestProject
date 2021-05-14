@@ -51,8 +51,8 @@ public class EditAccountPage extends PageTools {
     private By interestFrequency = By.xpath("//div[@id='interestfrequency']//span[contains(@class, 'ng-scope')]");
     private By interestFrequencyCode = By.xpath("//div[@id='interestfrequencycode']//span[contains(@class, 'ng-scope')]");
     private By correspondingAccount = By.xpath("//div[@id='correspondingaccountid']//span[contains(@class, 'ng-scope')]");
-    private By newAccountSwitch = By.xpath("//dn-switch[@id='newaccount']");
-    private By transactionalAccountSwitch = By.xpath("//dn-switch[@id='transactionalaccount']");
+    private By newAccountSwitch = By.xpath("//*[@id='newaccount']");
+    private By transactionalAccountSwitch = By.xpath("//*[@id='transactionalaccount']");
     private By iraDistributionFrequency = By.xpath("//div[@id='iradistributionfrequency']//span[contains(@class, 'ng-scope')]");
     private By iraDistributionCode = By.xpath("//div[@id='iradistributioncode']//span[contains(@class, 'ng-scope')]");
     private By iraDistributionAmount = By.xpath("//input[@id='iradistributionamount']");
