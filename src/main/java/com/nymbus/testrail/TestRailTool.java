@@ -3,6 +3,7 @@ package com.nymbus.testrail;
 import com.nymbus.core.utils.Constants;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,8 +27,8 @@ public class TestRailTool {
 
     Map<String, Long> listSections = new HashMap<String, Long>();
 
-    //Id of run created in the testrail
-    private long idRun = 1153;
+    private long runId = Constants.TEST_RAIL_RUN_ID;
+    private String runName = Constants.TEST_RAIL_RUN_NAME;
 
     private APIClient client;
 
@@ -47,8 +48,17 @@ public class TestRailTool {
      *
      * @return id test cycle
      */
-    public long getIdRun() {
-        return idRun;
+    public long getRunId() {
+        return runId;
+    }
+
+    /**
+     * The method returns name of created Run which was created by method createRun. Default value equal - Test Run
+     *
+     * @return id test cycle
+     */
+    public String getRunName() {
+        return runName;
     }
 
     /**
@@ -104,21 +114,21 @@ public class TestRailTool {
     /**
      * The method create Run by name "runName" in project with id is equal projectID
      *
-     * @param runName   Run name
      * @param projectID project id
      */
-    public void createRun(String runName, int projectID) {
+    public void createRun(int projectID) {
 
         getProjectSections(projectID, Constants.SUITE_ID);
 
-//        ArrayList<Long> listCases = getCasesSectionById(listSections.get(runName));
+        runName = String.format("[Automated %s]  %s  %s", Constants.SUITE_NAME, Constants.DOMAIN_NAME.toUpperCase(),
+                Constants.CURRENT_TIME);
 
         Map createTestRunBody = new HashMap();
         createTestRunBody.put("suite_id", Constants.SUITE_ID);
-        createTestRunBody.put("name", runName + " (" + Constants.BROWSER + ") ".toUpperCase() + Constants.CURRENT_TIME);
-        createTestRunBody.put("assignedto_id", "55");
+        createTestRunBody.put("name", runName);
+        createTestRunBody.put("assignedto_id", "4");
         createTestRunBody.put("include_all", false);
-//        createTestRunBody.put("case_ids", listCases);
+
 
         try {
             Thread.sleep(1500);
@@ -131,18 +141,18 @@ public class TestRailTool {
 
             JSONObject responseBody = (JSONObject) client.sendPost(String.format(CREATE_RUN_URL, projectID), createTestRunBody);
 
-            idRun = (Long) responseBody.get("id");
+            runId = (Long) responseBody.get("id");
+            Constants.TEST_RAIL_RUN_ID = runId;
 
         } catch (IOException | APIException e) {
             e.printStackTrace();
         }
     }
 
-    public void updateTestRun(long caseID){
+    public void updateTestRun(long caseID) {
         initRequest();
         try {
-
-            JSONArray getTestsByRunId = (JSONArray) client.sendGet(String.format(GET_TESTS, idRun));
+            JSONArray getTestsByRunId = (JSONArray) client.sendGet(String.format(GET_TESTS, runId));
 
             ArrayList<Long> listOfTestCases = getListOfTestCasesIDFromTestRun(getTestsByRunId);
             listOfTestCases.add(caseID);
@@ -151,7 +161,7 @@ public class TestRailTool {
             data.put("include_all", false);
             data.put("case_ids", listOfTestCases);
 
-            JSONObject r = (JSONObject) client.sendPost(String.format(UPDATE_TEST_RUN, idRun), data);
+            JSONObject r = (JSONObject) client.sendPost(String.format(UPDATE_TEST_RUN, runId), data);
 
         } catch (IOException | APIException e) {
             e.printStackTrace();
@@ -191,15 +201,15 @@ public class TestRailTool {
         return casesId;
     }
 
-    private ArrayList<Long> getListOfTestCasesIDFromTestRun(JSONArray array){
+    private ArrayList<Long> getListOfTestCasesIDFromTestRun(JSONArray array) {
         ArrayList<Long> listOfTestCasesID = new ArrayList<>();
 
-        if(array.size() == 0)
+        if (array.size() == 0)
             return new ArrayList<>();
 
         for (int i = 0; i < array.size(); i++) {
             JSONObject testCase = (JSONObject) array.get(i);
-            listOfTestCasesID.add((Long)testCase.get("case_id"));
+            listOfTestCasesID.add((Long) testCase.get("case_id"));
         }
 
         return listOfTestCasesID;

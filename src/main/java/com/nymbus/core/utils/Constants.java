@@ -25,8 +25,8 @@ public class Constants {
     //    public static String LAST_NAME = "autotest";
     public static String LAST_NAME = "autestthredone";
 
-    public static String NOT_TELLER_USERNAME ="autotesttell";
-    public static String NOT_TELLER_PASSWORD ="autotesttell";
+    public static String NOT_TELLER_USERNAME = "autotesttell";
+    public static String NOT_TELLER_PASSWORD = "autotesttell";
 
     public static String BROWSER = System.getProperty("browserName", "chrome");
 
@@ -40,10 +40,11 @@ public class Constants {
     public final static int SUITE_ID = 81;
 
     public final static String TEST_RAIL_USER = "pkyriushkin";
-    public final static String TEST_RAIL_PASSWORD = "Xu&|75sSg8F!!!!";
+    public final static String TEST_RAIL_PASSWORD = "@!Xu&|75sSg8F!";
     public final static String TEST_RAIL_URL = "https://testrail.nymbus.com/testrail";
 
     public static String CURRENT_TIME;
+
     static {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDateTime now = LocalDateTime.now();
@@ -53,8 +54,14 @@ public class Constants {
 
     public final static boolean SEND_RESULT_TO_TESTRAIL = Boolean.parseBoolean(System.getProperty("sendResultToRestRail", "false"));
 
+    public final static String TEST_RAIL_RUN_NAME = System.getProperty("testRunName");
+    public static long TEST_RAIL_RUN_ID = Integer.parseInt(System.getProperty("testRunId", "0"));
+    public final static String DOMAIN_NAME = getEnvironment();
+    public final static String SUITE_NAME = System.getProperty("suiteXmlFile", "All Tests");
+
 
     public static Stack<UserCredentials> USERS = new Stack<>();
+
     static {
         USERS.push(new UserCredentials("autotestfirst", "autotestfirst"));
         USERS.push(new UserCredentials("autotestsecond", "autotestsecond"));
@@ -162,7 +169,7 @@ public class Constants {
     }
 
     public static String getEnvironment() {
-        return System.getProperty("domain", "dev6");
+        return System.getProperty("domain", "dev12");
     }
 
     /**
