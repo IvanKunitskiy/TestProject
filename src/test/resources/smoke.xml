@@ -40,7 +40,6 @@
             <classes>
                 <class name="com.nymbus.frontoffice.transactions.C22760_108ATMDepositONUSTest"/>
                 <class name="com.nymbus.frontoffice.transactions.C22698_CDTTellerSessionCommitSimpleCDTWithFee"/>
-                <class name="com.nymbus.frontoffice.transactions.C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee"/>
                 <class name="com.nymbus.frontoffice.transactions.C22649_CommitCashTransactionWithNewConsumerTest"/>
                 <class name="com.nymbus.frontoffice.transactions.C22634_GLDebit_MiscCredit_SavingsAcc_Test"/>
             </classes>

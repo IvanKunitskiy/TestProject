@@ -107,7 +107,7 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Get terminal ID
-        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(1);
+        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(2);
 
         // Set products
         checkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));

@@ -179,14 +179,14 @@ public class CreateAccount {
         Pages.addAccountPage().setPaymentAmount(account.getPaymentAmount());
         setPaymentAmountType(account);
         setPaymentFrequency(account);
-        if (account.isCycleLoan()){
+        if (account.isCycleLoan()) {
             enableCycleLoanSwitch();
             setCycleCode(account);
-        } else{
+        } else {
             disableCycleLoanSwitch();
             Pages.addAccountPage().setPaymentBilledLeadDays(account.getPaymentBilledLeadDays());
         }
-        if (account.isCurrentEffectiveRateIsTeaser()){
+        if (account.isCurrentEffectiveRateIsTeaser()) {
             enableTeaserLoanSwitch();
         }
         Pages.addAccountPage().setNextPaymentBilledDueDate(account.getNextPaymentBilledDueDate());
@@ -206,7 +206,7 @@ public class CreateAccount {
 
     private void setEscrowPayment(Account account) {
         String escrowPaymentValue = Pages.addAccountPage().getEscrowPaymentValue();
-        if (account.getEscrow() !=null && escrowPaymentValue != null && !escrowPaymentValue.equals(account.getEscrow())){
+        if (account.getEscrow() != null && escrowPaymentValue != null && !escrowPaymentValue.equals(account.getEscrow())) {
             Pages.addAccountPage().setEscrowPaymentValue(account.getEscrow());
         }
     }
@@ -288,8 +288,14 @@ public class CreateAccount {
     }
 
     private void applySeasonalAddresToNo() {
-        if (Pages.addAccountPage().getApplySeasonalAddress().equalsIgnoreCase("yes")){
-            Pages.addAccountPage().clickApplySeasonalAddressSwitch();
+        if (Constants.getEnvironment().equals("dev4")) {
+            if (Pages.addAccountPage().isApplySeasonalAddressYes()) {
+                Pages.addAccountPage().clickApplySeasonalAddressSwitch();
+            }
+        } else {
+            if (Pages.addAccountPage().getApplySeasonalAddress().equalsIgnoreCase("yes")) {
+                Pages.addAccountPage().clickApplySeasonalAddressSwitch();
+            }
         }
     }
 
@@ -435,7 +441,8 @@ public class CreateAccount {
 
         if (listOfAccountAnalysis.size() > 0) {
             if (account.getAccountAnalysis() == null) {
-                account.setAccountAnalysis(listOfAccountAnalysis.get(new Random().nextInt(listOfAccountAnalysis.size())).trim());
+                //account.setAccountAnalysis(listOfAccountAnalysis.get(new Random().nextInt(listOfAccountAnalysis.size())).trim());
+                account.setAccountAnalysis(listOfAccountAnalysis.get(0));
             }
             Pages.addAccountPage().clickAccountAnalysisSelectorOption(account.getAccountAnalysis());
         }
@@ -756,9 +763,16 @@ public class CreateAccount {
     }
 
     public void disableCycleLoanSwitch() {
-        if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("yes")) {
-            Pages.addAccountPage().clickCycleLoanSwitch();
-            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        if (Constants.getEnvironment().equals("dev4")) {
+            if (Pages.addAccountPage().isCycleLoanValueYes()) {
+                Pages.addAccountPage().clickCycleLoanSwitch();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
+        } else {
+            if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("yes")) {
+                Pages.addAccountPage().clickCycleLoanSwitch();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
         }
     }
 
@@ -777,9 +791,16 @@ public class CreateAccount {
     }
 
     public void disableLocPaymentRecalculationFlagValueSwitch() {
-        if (Pages.addAccountPage().getLocPaymentRecalculationFlagValue().equalsIgnoreCase("yes")) {
-            Pages.addAccountPage().clickLocPaymentRecalculationFlagValue();
-            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        if (Constants.getEnvironment().equals("dev4")) {
+            if (Pages.addAccountPage().isLocPaymentRecalculationFlagYesValue()) {
+                Pages.addAccountPage().clickLocPaymentRecalculationFlagValue();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
+        } else {
+            if (Pages.addAccountPage().getLocPaymentRecalculationFlagValue().equalsIgnoreCase("yes")) {
+                Pages.addAccountPage().clickLocPaymentRecalculationFlagValue();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
         }
     }
 
@@ -791,9 +812,16 @@ public class CreateAccount {
     }
 
     public void disableAdjustableRateSwitch() {
-        if (Pages.addAccountPage().getAdjustableRateValue().equalsIgnoreCase("yes")) {
-            Pages.addAccountPage().clickAdjustableRate();
-            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        if (Constants.getEnvironment().equals("dev4")) {
+            if (Pages.addAccountPage().isAdjustableRateValueYesVisible()) {
+                Pages.addAccountPage().clickAdjustableRate();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
+        } else {
+            if (Pages.addAccountPage().getAdjustableRateValue().equalsIgnoreCase("yes")) {
+                Pages.addAccountPage().clickAdjustableRate();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
         }
     }
 
@@ -830,7 +858,11 @@ public class CreateAccount {
         Assert.assertEquals(Pages.addAccountPage().getInterestFrequency(), account.getInterestFrequency(), "'Interest Frequency' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getInterestType(), account.getInterestType(), "'Interest Type' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getApplyInterestTo(), "Remain in Account", "'Apply interest to' is prefilled with wrong value");
-        Assert.assertEquals(Pages.addAccountPage().getAutoRenewable(), "YES", "'Auto Renewable' is prefilled with wrong value");
+        if (Constants.getEnvironment().equals("dev4")) {
+            Assert.assertTrue(Pages.addAccountPage().isAutoRenewableYes(), "'Auto Renewable' is prefilled with wrong value");
+        } else {
+            Assert.assertEquals(Pages.addAccountPage().getAutoRenewable(), "YES", "'Auto Renewable' is prefilled with wrong value");
+        }
         Assert.assertEquals(Pages.addAccountPage().getTransactionalAccount().toLowerCase(), "no", "'Transactional Account' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' is prefilled with wrong value");
     }
@@ -851,7 +883,11 @@ public class CreateAccount {
 
     public void verifySavingsAccountPrefilledFields(Account account, IndividualClient client) {
         verifyAccountPrefilledFields(account, client);
-        Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' is prefilled with wrong value");
+        if (Constants.getEnvironment().equals("dev4")) {
+            Assert.assertTrue(Pages.addAccountPage().isApplySeasonalAddressYes(), "'Apply Seasonal Address' is prefilled with wrong value");
+        } else {
+            Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' is prefilled with wrong value");
+        }
     }
 
     /**

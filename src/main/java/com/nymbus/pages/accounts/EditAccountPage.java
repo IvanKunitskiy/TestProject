@@ -52,8 +52,8 @@ public class EditAccountPage extends PageTools {
     private By interestFrequency = By.xpath("//div[@id='interestfrequency']//span[contains(@class, 'ng-scope')]");
     private By interestFrequencyCode = By.xpath("//div[@id='interestfrequencycode']//span[contains(@class, 'ng-scope')]");
     private By correspondingAccount = By.xpath("//div[@id='correspondingaccountid']//span[contains(@class, 'ng-scope')]");
-    private By newAccountSwitch = By.xpath("//dn-switch[@id='newaccount']");
-    private By transactionalAccountSwitch = By.xpath("//dn-switch[@id='transactionalaccount']");
+    private By newAccountSwitch = By.xpath("//*[@id='newaccount']");
+    private By transactionalAccountSwitch = By.xpath("//*[@id='transactionalaccount']");
     private By iraDistributionFrequency = By.xpath("//div[@id='iradistributionfrequency']//span[contains(@class, 'ng-scope')]");
     private By iraDistributionCode = By.xpath("//div[@id='iradistributioncode']//span[contains(@class, 'ng-scope')]");
     private By iraDistributionAmount = By.xpath("//input[@id='iradistributionamount']");
@@ -72,7 +72,7 @@ public class EditAccountPage extends PageTools {
     private By bankRoutingNumberInterestOnCD = By.xpath("//input[@id='bankroutingnumberinterestoncd']");
     private By applySeasonalAddress = By.xpath("//*[@id='useseasonaladdress']");
     private By bankruptcyJudgement = By.xpath("//div[@id='bankruptcyjudgementcode']//span[contains(@class, 'ng-scope')]");
-    private By exemptFromRegCC = By.xpath("//dn-switch[@id='exemptfromregcc']");
+    private By exemptFromRegCC = By.xpath("//*[@id='exemptfromregcc']");
     private By callClassCodeNotValid = By.xpath("//div[@data-test-id='field-callclasscode']/a[contains(@uib-tooltip-html, 'is no longer a valid value')]");
     private By adjustableRate = By.xpath("//dn-switch[@id='adjustablerate_checkbox']");
     private By adjustableRateValue = By.xpath("//dn-switch[@id='adjustablerate_checkbox']/div/div/span[2]");

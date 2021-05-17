@@ -79,7 +79,7 @@ public class C22768_SavAtmBalanceInquiryOnusTest extends BaseTest {
         debitCard.setChargeForCardReplacement(true);
         debitCard.setTranslationTypeAllowed(TranslationTypeAllowed.BOTH_PIN_AND_SIGNATURE);
 
-        ATMRequiredValueModel requiredFieldsData = Actions.nonTellerTransactionActions().getATMRequiredValue(1, 1, 1);
+        ATMRequiredValueModel requiredFieldsData = Actions.nonTellerTransactionActions().getATMRequiredValue(2, 2, 2);
         Assert.assertTrue(requiredFieldsData.getAcronymValue()!= null && !requiredFieldsData.getAcronymValue().isEmpty(),
                         "WaiveATUsageFeeAcronym is incorrect!");
 

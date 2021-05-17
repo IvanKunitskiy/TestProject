@@ -3,9 +3,9 @@ package com.nymbus.frontoffice.loansmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
-import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
@@ -35,7 +35,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Dmytro")
-public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest {
+public class C19577_LoanSkipPaymentPostSkipPaymentWithFeeTest extends BaseTest {
 
     private Account loanAccount;
     private Account checkAccount;
@@ -47,6 +47,7 @@ public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest 
     private int balance;
     private final String AMOUNT = "3000";
 
+
     @BeforeMethod
     public void precondition() {
         // Set up Client and Accounts
@@ -55,7 +56,7 @@ public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest 
         IndividualClient client = individualClientBuilder.buildClient();
         checkAccount = new Account().setCHKAccountData();
         loanAccount = new Account().setLoanAccountData();
-        loanAccount.setPaymentAmountType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
+        loanAccount.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
         loanAccount.setPaymentBilledLeadDays(String.valueOf(1));
         loanAccount.setProduct(loanProductName);
         loanAccount.setEscrow("$ 0.00");
@@ -118,32 +119,12 @@ public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest 
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
-
-        //Create New Loan Reserve
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        String code = "autotest";
-        Actions.loanReserveActions().checkAndCreateNewCode(code);
-        Actions.loginActions().doLogOut();
-
-        //Create Reserve/Premium
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        Pages.aSideMenuPage().clickClientMenuItem();
-        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
-        Pages.accountDetailsPage().clickMaintenanceTab();
-        AccountActions.accountMaintenanceActions().setTool(Tool.RESERVE_PREMIUM_PROCESSING);
-        Pages.accountMaintenancePage().clickToolsLaunchButton();
-        Pages.reservePremiumProcessingModalPage().clickAddNewLoanReservePremiumButton();
-        String term = "3";
-        Actions.loanReserveActions().inputLoanReserveFields(loanAccount, AMOUNT, term);
-        Pages.reservePremiumProcessingModalPage().clickCloseButton();
-        Actions.loginActions().doLogOut();
-
     }
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 19057, testRunName = TEST_RUN_NAME)
-    @Test(description = "C19057, Editing 'Reserve/Premium' with positive amount")
+    @TestRailIssue(issueID = 19577, testRunName = TEST_RUN_NAME)
+    @Test(description = "C19577,Loan Skip Payment: Post Skip Payment with Fee")
     @Severity(SeverityLevel.CRITICAL)
     public void teaserRateProcessing() {
         logInfo("Step 1: Log in to the system");
@@ -152,58 +133,96 @@ public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest 
         logInfo("Step 2: Open account from preconditions on the 'Maintenance' page");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
+        double currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu());
         Pages.accountDetailsPage().clickMaintenanceTab();
 
-        logInfo("Step 3: Select 'Reserve/Premium Processing' in 'Tools' widget and click the [Launch] button");
-        AccountActions.accountMaintenanceActions().setTool(Tool.RESERVE_PREMIUM_PROCESSING);
+        logInfo("Step 3: Launch \"Loan Skip Payment\" tool");
+        AccountActions.accountMaintenanceActions().setTool(Tool.LOAN_SKIP_PAYMENT);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
 
-        logInfo("Step 4: Select existing 'Reserve/Premium' record and click on the 'Edit' button");
-        Pages.reservePremiumProcessingModalPage().clickReservePremiumRecordFromTableByIndex(1);
-        Pages.reservePremiumProcessingModalPage().clickEditButton();
+        logInfo("Step 4: Specify fields:\n" +
+                "\n" +
+                "\"NBR of Payments to Skip\" (should be in range from 1 to 6)\n" +
+                "Fee Amount = any valid amount\n" +
+                "Fee Add-on Payment = NO\n" +
+                "Extend Maturity = NO");
+        int nmbrToSkip = 3;
+        Pages.loanSkipPaymentModalPage().typeNbrOfPaymentsToSkipInput(String.valueOf(nmbrToSkip));
+        double feeAmount = 10.000;
+        Pages.loanSkipPaymentModalPage().typeFeeAmount(String.valueOf(feeAmount));
+        Actions.loanSkipPaymentModalActions().setExtendMaturityToggleToNo();
+        Actions.loanSkipPaymentModalActions().setFeeAddOnPaymentToggleToNo();
+        String currentDueDate = Pages.loanSkipPaymentModalPage().getCurrentDueDate();
+        String maturityDate = Pages.loanSkipPaymentModalPage().getMaturityDate();
 
-        logInfo("Step 5: Fill in the following fields and 'Commit Transaction'\n" +
-                "1. Change 'Reserve/Premium Term' to any other value, differ from original\n" +
-                "2. Enter the negative amount in 'Adjustment Amount' field (Adjustment amount < Reserve/Premium Amount)");
-        String term ="6";
-        Pages.reservePremiumProcessingModalPage().setReservePremiumTerm(term);
-        final String ADJUSTMENT_AMOUNT = "-1500";
-        Pages.reservePremiumProcessingModalPage().setAdjustmentAmount(ADJUSTMENT_AMOUNT);
-        Pages.reservePremiumProcessingModalPage().clickCommitTransactionButton();
-        Pages.reservePremiumProcessingModalPage().clickReservePremiumRecordFromTableByIndex(1);
-        double originalAmount = Double.parseDouble(Pages.reservePremiumProcessingModalPage().getReservePremiumOriginalAmount());
-        String decreasedAmount = Integer.parseInt(AMOUNT) + Integer.parseInt(ADJUSTMENT_AMOUNT) + "";
-        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(originalAmount).equals(decreasedAmount),
-                new CustomStepResult("Original amount is valid",
-                        String.format("'Original Amount' is not valid. Expected %s, found - %s",
-                                decreasedAmount, Functions.getStringValueWithOnlyDigits(originalAmount))));
-        double unAmortizedAmount = Double.parseDouble(Pages.reservePremiumProcessingModalPage().getReservePremiumUnamortized());
-        TestRailAssert.assertTrue(Functions.getStringValueWithOnlyDigits(unAmortizedAmount).equals(decreasedAmount),
-                new CustomStepResult("UnAmortized amount is valid",
-                        String.format("'UnAmortized Amount' is not valid. Expected %s, found - %s",
-                                decreasedAmount, Functions.getStringValueWithOnlyDigits(unAmortizedAmount))));
-        String maturityDate = Pages.reservePremiumProcessingModalPage().getReservePremiumMaturityDate();
-        TestRailAssert.assertTrue(maturityDate.equals(DateTime.getDatePlusMonth(loanAccount.getDateOpened(),
-                2 + Integer.parseInt(term))),
-                new CustomStepResult("Maturity date is valid", "Maturity date is not valid"));
-        Pages.reservePremiumProcessingModalPage().clickCloseButton();
+        logInfo("Step 5: Click the [Commit Transaction] button");
+        Pages.loanSkipPaymentModalPage().clickCommitTransactionButton();
 
-        logInfo("Step 6: Open account from preconditions on the 'Transactions' tab");
-        Pages.reservePremiumProcessingModalPage().clickCloseButton();
+        logInfo("Step 6: Launch the 'Loan Skip Payment' tool again");
+        Actions.loginActions().doLogOut();
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
+        Pages.accountDetailsPage().clickMaintenanceTab();
+        AccountActions.accountMaintenanceActions().setTool(Tool.LOAN_SKIP_PAYMENT);
+        Pages.accountMaintenancePage().clickToolsLaunchButton();
+
+        logInfo("Step 7: Verify the following fields:\n" +
+                "'Current Due Date'\n" +
+                "'Maturity Date'\n" +
+                "'NBR Skips This Year'");
+        String actualCurrentDueDate = Pages.loanSkipPaymentModalPage().getCurrentDueDate();
+        TestRailAssert.assertTrue(actualCurrentDueDate.equals(DateTime.getDatePlusMonth(currentDueDate, nmbrToSkip)),
+                new CustomStepResult("'Current Due Date' is  valid", "'Current Due Date' is not valid"));
+        TestRailAssert.assertTrue(Pages.loanSkipPaymentModalPage().getMaturityDate().equals(maturityDate),
+                new CustomStepResult("'Maturity Date' is  valid", "'Maturity Date' is not valid"));
+        int actualNmbrSkipsThisYear = Integer.parseInt(Pages.loanSkipPaymentModalPage().getNbrSkipsThisYear());
+        TestRailAssert.assertTrue(actualNmbrSkipsThisYear == nmbrToSkip,
+                new CustomStepResult("'NBR Skips This Year' is  valid", "'NBR Skips This Year' is not valid"));
+
+        logInfo("Step 8: Go to the 'Transactions' tab");
+        Pages.loanSkipPaymentModalPage().clickCancelButton();
         Pages.accountDetailsPage().clickTransactionsTab();
 
-        logInfo("Step 7: Verify committed transaction");
-        String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
-        String transCode = TransactionCode.ADD_RP_INCOME_452I.getTransCode();
-        TestRailAssert.assertTrue(transactionCode.equals(transCode),
-                new CustomStepResult("'Transaction code' is valid",
-                        String.format("'Transaction code' is not valid. Expected %s, found - %s",
-                                transCode, transactionCode)));
-        double transactionAmount = AccountActions.retrievingAccountData().getAmountValue(1);
-        String stringValueWithOnlyDigits = Functions.getStringValueWithOnlyDigits(transactionAmount);
-        TestRailAssert.assertTrue(stringValueWithOnlyDigits.equals(decreasedAmount),
-                new CustomStepResult("'Amount' is valid", String.format("'Amount' is not valid. Expected %s, found - %s",
-                        decreasedAmount, stringValueWithOnlyDigits)));
+        logInfo("Step 9: Verify generated transactions");
+        // "482-Skip Fee Payment"
+        String transactionCode482 = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
+        TestRailAssert.assertTrue(transactionCode482.equals(TransactionCode.SKIP_FEE_ASSESSED_483.getTransCode()),
+                new CustomStepResult("'Transaction code' is  valid", "'Transaction code' is not valid"));
+        double transactionAmount482 = AccountActions.retrievingAccountData().getAmountValue(1);
+        TestRailAssert.assertTrue(transactionAmount482 == feeAmount / 10,
+                new CustomStepResult("'Amount' is  valid", "'Amount' is not valid"));
+
+        logInfo("Step 10: Go to the 'Payment Info' tab");
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+
+        logInfo("Step 11: Verify generated Payment Due records");
+        // "P&I Payment Due" record
+        String paymentDueType = Pages.accountPaymentInfoPage().getPaymentDueTypeFromRecordByIndex(1);
+        TestRailAssert.assertTrue(paymentDueType.equals(loanAccount.getPaymentAmountType()),
+                new CustomStepResult("'Payment Due Type' is  valid", "'Payment Due Type' is not valid"));
+
+        double activePaymentAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getActivePaymentAmount());
+        double amountDue = Double.parseDouble(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1));
+        TestRailAssert.assertTrue(amountDue == activePaymentAmount,
+                new CustomStepResult("'Amount Due' is valid", "'Amount Due' is not valid"));
+
+        String status = Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1);
+        TestRailAssert.assertTrue(status.equals("Skip"),
+                new CustomStepResult("'Status' is valid", "'Status' is not valid"));
+
+        // "Loan Skip Payment Charges" Payment Due record
+        String dueDateFromRecordByIndex = Pages.accountPaymentInfoPage().getDueDateFromRecordByIndex(3);
+        TestRailAssert.assertTrue(dueDateFromRecordByIndex.equals(WebAdminActions.loginActions().getSystemDate()),
+                new CustomStepResult("'Due Date' is valid", "'Due Date' is not valid"));
+
+        String paidAmountDue = Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(3);
+        TestRailAssert.assertTrue(Double.parseDouble(paidAmountDue) == feeAmount / 10,
+                new CustomStepResult("'Amount Due' is valid", "'Amount Due' is not valid"));
+
+        String paidStatus = Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(3);
+        TestRailAssert.assertTrue(paidStatus.equals("Active"),
+                new CustomStepResult("'Status' is valid", "'Status' is not valid"));
+
     }
 
 }

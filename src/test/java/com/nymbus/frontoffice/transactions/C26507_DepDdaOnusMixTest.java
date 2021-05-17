@@ -70,7 +70,7 @@ public class C26507_DepDdaOnusMixTest extends BaseTest {
         double transactionAmount = glDebitMiscCreditTransaction.getTransactionDestination().getAmount();
 
         // Get terminal ID
-        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(1);
+        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(2);
 
         // Set up nonTeller transaction data
         depDdaOnusMixTransactionData = new NonTellerTransactionData();

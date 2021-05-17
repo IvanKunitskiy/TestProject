@@ -71,7 +71,7 @@ public class C26510_WithdrawalFndFastCash80FrgnTest extends BaseTest {
         glDebitMiscCreditTransaction.getTransactionDestination().setTransactionCode("109 - Deposit");
 
         // Get "Foreign ATM Fee Balance Inquiry" value
-        atmFee = Actions.nonTellerTransactionActions().getForeignFee(1);
+        atmFee = Actions.nonTellerTransactionActions().getForeignFee(2);
         double requestTransactionAmount = 80.00;
         transactionAmountWithFee = requestTransactionAmount + atmFee;
 

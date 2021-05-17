@@ -154,7 +154,7 @@ public class C22669_JournalPerformEcForCdRedemptionBalanceIenpTest extends BaseT
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         WebAdminActions.webAdminTransactionActions().goToTransactionUrl(cdAccount.getAccountNumber());
-        String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(1);
+        String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(2);
 
         logInfo("Step 8: Check gltransactionitempostingstatus value Debit Item with 315 - Redeemed CD trancode");
         String tranCodeDescriptionValue = TransactionCode.REDEEMED_CD_315.getTransCode().replaceAll("315\\s+-\\s", "");
