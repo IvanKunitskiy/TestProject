@@ -1,5 +1,6 @@
 package com.nymbus.pages.accounts;
 
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.nymbus.core.base.PageTools;
 import com.nymbus.core.utils.SelenideTools;
@@ -69,7 +70,7 @@ public class EditAccountPage extends PageTools {
     private By mailCode = By.xpath("//div[@id='mailingcode']//span[contains(@class, 'ng-scope')]");
     private By bankAccountNumberInterestOnCD = By.xpath("//input[@id='bankaccountnumberinterestoncd']");
     private By bankRoutingNumberInterestOnCD = By.xpath("//input[@id='bankroutingnumberinterestoncd']");
-    private By applySeasonalAddress = By.xpath("//dn-switch[@id='useseasonaladdress']");
+    private By applySeasonalAddress = By.xpath("//*[@id='useseasonaladdress']");
     private By bankruptcyJudgement = By.xpath("//div[@id='bankruptcyjudgementcode']//span[contains(@class, 'ng-scope')]");
     private By exemptFromRegCC = By.xpath("//dn-switch[@id='exemptfromregcc']");
     private By callClassCodeNotValid = By.xpath("//div[@data-test-id='field-callclasscode']/a[contains(@uib-tooltip-html, 'is no longer a valid value')]");
@@ -1520,6 +1521,7 @@ public class EditAccountPage extends PageTools {
 
     @Step("Set 'Date Of First Deposit' value")
     public void setDateOfFirstDeposit(String date) {
+        Selenide.sleep(3);
         waitForElementVisibility(dateOfFirstDeposit);
         waitForElementClickable(dateOfFirstDeposit);
         typeWithoutWipe("", dateOfFirstDeposit);
@@ -1529,6 +1531,7 @@ public class EditAccountPage extends PageTools {
 
     @Step("Set 'Birth Date' value")
     public void setBirthDate(String date) {
+        Selenide.sleep(3);
         waitForElementVisibility(birthDate);
         waitForElementClickable(birthDate);
         typeWithoutWipe("", birthDate);
@@ -1538,6 +1541,7 @@ public class EditAccountPage extends PageTools {
 
     @Step("Set 'Date Deceased' value")
     public void setDateDeceased(String date) {
+        Selenide.sleep(3);
         waitForElementVisibility(dateDeceased);
         waitForElementClickable(dateDeceased);
         typeWithoutWipe("", dateDeceased);

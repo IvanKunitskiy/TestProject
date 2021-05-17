@@ -17,17 +17,10 @@ public class TestListener extends TestListenerAdapter implements IInvokedMethodL
     private Map<String, Long> cycleNames = new HashMap<>();
     TestRailTool testRailTool;
 
-//    @Override
-//    public void onTestSkipped(ITestResult tr) {
-//        super.onTestSkipped(tr);
-//        Method method = tr.getMethod().getConstructorOrMethod().getMethod();
-//      //TODO adaptation for test rail
-//        setUpTestCycle(method, TestResult.BLOCKED);
-//    }
-
     @Override
     public void beforeInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
         if (Constants.SEND_RESULT_TO_TESTRAIL) {
+            testRailTool = new TestRailTool();
             Method method = iInvokedMethod.getTestMethod().getConstructorOrMethod().getMethod();
             setUpTestCycle(method);
             addTestCaseToTestRun(method);
@@ -37,19 +30,17 @@ public class TestListener extends TestListenerAdapter implements IInvokedMethodL
     private void setUpTestCycle(Method method) {
         for (Annotation a : method.getDeclaredAnnotations()) {
             if (a instanceof TestRailIssue) {
-                TestRailIssue annotation = (TestRailIssue) a;
-                String cycleName = "Regression Q4";
-                if (cycleNames.get(cycleName) == null) {
-                    testRailTool = new TestRailTool();
-//                    testRailTool.createRun(cycleName, Constants.PROJECT_ID);
-                    cycleNames.put(cycleName, testRailTool.getIdRun());
+                String cycleName = Constants.TEST_RAIL_RUN_NAME;
+                if (cycleNames.get(cycleName) == null && Constants.TEST_RAIL_RUN_ID == 0) {
+                    testRailTool.createRun(Constants.PROJECT_ID);
+                    cycleNames.put(cycleName, testRailTool.getRunId());
                 }
             }
         }
 
     }
 
-    private void addTestCaseToTestRun(Method method){
+    private void addTestCaseToTestRun(Method method) {
         for (Annotation a : method.getDeclaredAnnotations()) {
             if (a instanceof TestRailIssue) {
                 TestRailIssue annotation = (TestRailIssue) a;
@@ -89,9 +80,9 @@ public class TestListener extends TestListenerAdapter implements IInvokedMethodL
                     }
 
                     if (annotation.customResults.size() > 0) {
-                        testRailTool.setTestExecutionStatus(testRailTool.getIdRun(), annotation.issueID(), executionStatus.getValue(), annotation.customResults);
+                        testRailTool.setTestExecutionStatus(testRailTool.getRunId(), annotation.issueID(), executionStatus.getValue(), annotation.customResults);
                     } else {
-                        testRailTool.setTestExecutionStatus(testRailTool.getIdRun(), annotation.issueID(), executionStatus.getValue());
+                        testRailTool.setTestExecutionStatus(testRailTool.getRunId(), annotation.issueID(), executionStatus.getValue());
                     }
 
                 }
@@ -114,5 +105,4 @@ public class TestListener extends TestListenerAdapter implements IInvokedMethodL
             return value;
         }
     }
-
 }
