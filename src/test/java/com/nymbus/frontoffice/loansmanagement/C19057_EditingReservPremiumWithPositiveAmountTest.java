@@ -47,7 +47,6 @@ public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest 
     private int balance;
     private final String AMOUNT = "3000";
 
-
     @BeforeMethod
     public void precondition() {
         // Set up Client and Accounts

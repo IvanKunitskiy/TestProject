@@ -791,14 +791,17 @@ public class CreateAccount {
     }
 
     public void disableLocPaymentRecalculationFlagValueSwitch() {
-        if (Pages.addAccountPage().isLocPaymentRecalculationFlagYesValue()) {
-            Pages.addAccountPage().clickLocPaymentRecalculationFlagValue();
-            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        if (Constants.getEnvironment().equals("dev4")) {
+            if (Pages.addAccountPage().isLocPaymentRecalculationFlagYesValue()) {
+                Pages.addAccountPage().clickLocPaymentRecalculationFlagValue();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
+        } else {
+            if (Pages.addAccountPage().getLocPaymentRecalculationFlagValue().equalsIgnoreCase("yes")) {
+                Pages.addAccountPage().clickLocPaymentRecalculationFlagValue();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
         }
-//        if (Pages.addAccountPage().getLocPaymentRecalculationFlagValue().equalsIgnoreCase("yes")) {
-//            Pages.addAccountPage().clickLocPaymentRecalculationFlagValue();
-//            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
-//        }
     }
 
     public void enableLocPaymentRecalculationFlagValueSwitch() {
@@ -809,13 +812,16 @@ public class CreateAccount {
     }
 
     public void disableAdjustableRateSwitch() {
-//        if (Pages.addAccountPage().getAdjustableRateValue().equalsIgnoreCase("yes")) {
-//            Pages.addAccountPage().clickAdjustableRate();
-//            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
-//        }
-        if (Pages.addAccountPage().isAdjustableRateValueYesVisible()) {
-            Pages.addAccountPage().clickAdjustableRate();
-            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        if (Constants.getEnvironment().equals("dev4")) {
+            if (Pages.addAccountPage().isAdjustableRateValueYesVisible()) {
+                Pages.addAccountPage().clickAdjustableRate();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
+        } else {
+            if (Pages.addAccountPage().getAdjustableRateValue().equalsIgnoreCase("yes")) {
+                Pages.addAccountPage().clickAdjustableRate();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
         }
     }
 
