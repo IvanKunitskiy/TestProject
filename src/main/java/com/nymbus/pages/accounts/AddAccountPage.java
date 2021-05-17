@@ -43,7 +43,8 @@ public class AddAccountPage extends PageTools {
     private final By iraDistributionAmountField = By.xpath("//input[@id='iradistributionamount']");
     private final By dateNextIRADistribution = By.xpath("//input[@id='datenextiradistribution']");
     private final By termType = By.xpath("//input[@id='terminmonthsordays']");
-    private final By autoRenewable = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span[contains(@class, 'ng-scope')]");
+    private final By autoRenewable = By.xpath("//*[@id='autorenewablecode']/div/div/span[contains(@class, 'ng-scope')]");
+    private final By autoRenewableYes = By.xpath("//*[@id='autorenewablecode']/div/div/span");
     private final By interestFrequency = By.xpath("//div[@id='interestfrequencycode']/a/span/span[contains(@class, 'ng-scope')]");
     private final By interestRate = By.xpath("//input[@id='interestrate']");
     private final By interestType = By.xpath("//div[@id='interesttype']/a/span/span[contains(@class, 'ng-scope')]");
@@ -741,6 +742,12 @@ public class AddAccountPage extends PageTools {
         return getElementAttributeValue("value", termType);
     }
 
+    @Step("Check the 'Auto Renewable Yes' value")
+    public boolean isAutoRenewableYes() {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        return isElementVisible(autoRenewableYes);
+    }
+
     @Step("Returning the 'Auto Renewable' value")
     public String getAutoRenewable() {
         waitForElementVisibility(autoRenewable);
@@ -1243,7 +1250,7 @@ public class AddAccountPage extends PageTools {
     @Step("Check the 'Apply Seasonal Address' value")
     public boolean isApplySeasonalAddressYes() {
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
-        return isElementVisible(applySeasonalAddress);
+        return isElementVisible(applySeasonalAddressYes);
     }
 
     @Step("Check the 'Cycle Loan Yes' value")

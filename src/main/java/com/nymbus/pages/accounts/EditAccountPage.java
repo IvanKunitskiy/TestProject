@@ -70,9 +70,9 @@ public class EditAccountPage extends PageTools {
     private By mailCode = By.xpath("//div[@id='mailingcode']//span[contains(@class, 'ng-scope')]");
     private By bankAccountNumberInterestOnCD = By.xpath("//input[@id='bankaccountnumberinterestoncd']");
     private By bankRoutingNumberInterestOnCD = By.xpath("//input[@id='bankroutingnumberinterestoncd']");
-    private By applySeasonalAddress = By.xpath("//dn-switch[@id='useseasonaladdress']");
+    private By applySeasonalAddress = By.xpath("//*[@id='useseasonaladdress']");
     private By bankruptcyJudgement = By.xpath("//div[@id='bankruptcyjudgementcode']//span[contains(@class, 'ng-scope')]");
-    private By exemptFromRegCC = By.xpath("//dn-switch[@id='exemptfromregcc']");
+    private By exemptFromRegCC = By.xpath("//*[@id='exemptfromregcc']");
     private By callClassCodeNotValid = By.xpath("//div[@data-test-id='field-callclasscode']/a[contains(@uib-tooltip-html, 'is no longer a valid value')]");
     private By adjustableRate = By.xpath("//dn-switch[@id='adjustablerate_checkbox']");
     private By adjustableRateValue = By.xpath("//dn-switch[@id='adjustablerate_checkbox']/div/div/span[2]");
