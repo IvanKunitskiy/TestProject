@@ -89,7 +89,7 @@ public class C26516_WithdrawalDDAInternationalSurchargeFRGNTest extends BaseTest
         debitCard.getAccounts().add(chkAccount.getAccountNumber());
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
-        foreignFeeValue = Actions.nonTellerTransactionActions().getForeignFee(1);
+        foreignFeeValue = Actions.nonTellerTransactionActions().getForeignFee(2);
 
         // Log in
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());

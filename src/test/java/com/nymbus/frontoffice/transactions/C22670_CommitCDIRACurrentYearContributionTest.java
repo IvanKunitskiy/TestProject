@@ -125,7 +125,7 @@ public class C22670_CommitCDIRACurrentYearContributionTest extends BaseTest {
                 Double.parseDouble(cdAccount.getInterestRate()),
                 transactionData.getEffectiveDate(),
                 Pages.accountDetailsPage().getDateNextInterest(),
-                true);
+                false);
         String actualPaymentAmount = Pages.accountDetailsPage().getNextInterestPaymentAmount();
         Assert.assertEquals(actualPaymentAmount, expectedPaymentAmount, "Payment amount doesn't match!");
 
@@ -146,31 +146,31 @@ public class C22670_CommitCDIRACurrentYearContributionTest extends BaseTest {
                 "Transaction items doesn't find !");
 
         logInfo("Step 12: Check gldatetimeposted value for Deposit (Misc Credit) item");
-        Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDatePosted(1), webAdminTransactionData.getPostingDate(),
+        Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getDatePosted(2), webAdminTransactionData.getPostingDate(),
                 "Posted date doesn't match!");
 
         logInfo("Step 13: Check glfunction value for Deposit item");
-        Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getGLFunctionValue(1),
+        Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getGLFunctionValue(2),
                 webAdminTransactionData.getGlFunctionValue().getGlFunctionValue(),
                 "Function value  doesn't match!");
 
         logInfo("Step 14: Go to bank.data.gl.interface and verify that there is a record for Deposit (Misc Credit) transaction item");
-        String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(1);
-        webAdminTransactionData.setAmount(WebAdminPages.rulesUIQueryAnalyzerPage().getAmount(1));
+        String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(2);
+        webAdminTransactionData.setAmount(WebAdminPages.rulesUIQueryAnalyzerPage().getAmount(2));
         WebAdminActions.webAdminTransactionActions().goToGLInterface(transactionHeader);
         Assert.assertTrue(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult() > 0,
                 "Transaction items doesn't find!");
-        Assert.assertEquals( WebAdminPages.rulesUIQueryAnalyzerPage().getGLFunctionValue(1),
+        Assert.assertEquals( WebAdminPages.rulesUIQueryAnalyzerPage().getGLFunctionValue(2),
                 webAdminTransactionData.getGlFunctionValue().getGlFunctionValue(),
                 "Function value doesn't match!");
 
         logInfo("Step 15: Verify that amount and glfunction values are the same as on b.d.transaction.item level");
-        Assert.assertEquals( WebAdminPages.rulesUIQueryAnalyzerPage().getAmount(1),
+        Assert.assertEquals( WebAdminPages.rulesUIQueryAnalyzerPage().getAmount(2),
                 webAdminTransactionData.getAmount(),
                 "Amount value doesn't match!");
 
         logInfo("Step 16: Verify that transactionheaderid from b.d.transaction.item is written to parenttransaction field on bank.data.gl.interface");
-        Assert.assertEquals( WebAdminPages.rulesUIQueryAnalyzerPage().getGLInterfaceTransactionHeaderIdValue(1),
+        Assert.assertEquals( WebAdminPages.rulesUIQueryAnalyzerPage().getGLInterfaceTransactionHeaderIdValue(2),
                 transactionHeader,
                 "HeaderId value doesn't match!");
     }

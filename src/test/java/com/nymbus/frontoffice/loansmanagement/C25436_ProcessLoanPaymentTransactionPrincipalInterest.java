@@ -137,7 +137,7 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
         accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
         dailyInterestFactor = Pages.accountDetailsPage().getDailyInterestFactor();
-        period = DateTime.getDaysBetweenTwoDates(loanAccount.getDateOpened(), transaction.getTransactionDate(), true);
+        period = DateTime.getDaysBetweenTwoDates(loanAccount.getDateOpened(), transaction.getTransactionDate(), false);
         Pages.accountDetailsPage().clickPaymentInfoTab();
         transactionAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getAmountDueTable().replaceAll("[^0-9.]", ""));
         transaction.getTransactionSource().setAmount(transactionAmount);
@@ -233,7 +233,8 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         int i = (int) Double.parseDouble(interest);
         int res = (int) (Double.parseDouble(dailyInterestFactor) * period);
         TestRailAssert.assertTrue((i == res),
-                new CustomStepResult("Interest is not valid", "Interest due is valid"));
+                new CustomStepResult("Interest is valid", String.format("Interest due is not valid. Actual %s, Expected %s",
+                        i, res)));
         String amount = Pages.accountPaymentInfoPage().getAmount();
         String disabledAmount = Pages.accountPaymentInfoPage().getDisabledAmount();
         TestRailAssert.assertTrue(amount.equals(disabledAmount),

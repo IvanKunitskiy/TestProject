@@ -214,8 +214,10 @@ public class C18912_CommercialParticipationLoanLoanParticipationToolTest extends
                 "Percentage sold is correct", "Percentage sold is not correct"));
         TestRailAssert.assertTrue(Pages.participationsModalPage().getParticipantStatusByIndex(1).equals("Sold"),
                 new CustomStepResult("'Status' is not valid", "'Status' is valid"));
-        TestRailAssert.assertTrue(Pages.participationsModalPage().checkPartCurrentBalance(partBalance + ".00"),
-                new CustomStepResult("Part Current Balance is correct", "Part Current Balance is not correct"));
+        boolean expectedPartBalance = Pages.participationsModalPage().checkPartCurrentBalance(partBalance + ".00");
+        TestRailAssert.assertTrue(expectedPartBalance,
+                new CustomStepResult("Part Current Balance is correct",
+                        String.format("Part Current Balance is not correct. Expected %s", expectedPartBalance)));
         TestRailAssert.assertTrue(Pages.participationsModalPage().checkFiOwnedBalance((balance - partBalance) + ".00"),
                 new CustomStepResult("Part Current Balance is correct", "Part Current Balance is not correct"));
 
@@ -234,9 +236,11 @@ public class C18912_CommercialParticipationLoanLoanParticipationToolTest extends
         TestRailAssert.assertTrue(Pages.participationsModalPage().checkPartAccruedInterest(String.format("%.2f",Double.parseDouble(interestEarned))),
                 new CustomStepResult(
                 "Participant accrued interest is correct", "Participant accrued interest is not correct"));
+        String expectedFI = String.format("%.2f", Double.parseDouble(accruedInterest) - Double.parseDouble(interestEarned));
         TestRailAssert.assertTrue(Pages.participationsModalPage().checkFIOwnedAccruedInterest(
-                String.format("%.2f",Double.parseDouble(accruedInterest)-Double.parseDouble(interestEarned))), new CustomStepResult(
-                "FI owned accrued interest is correct", "FI owned accrued interest is not correct"));
+                expectedFI), new CustomStepResult(
+                "FI owned accrued interest is correct", String.format("FI owned accrued interest is not correct. " +
+                        "Expected %s", expectedFI)));
         TestRailAssert.assertTrue(Pages.participationsModalPage().checkPartServicingFee(String.format("%.2f",Double.parseDouble(serviceFeeEarned)))
                 , new CustomStepResult(
                 "Part Servicing Fee is correct", "Part Servicing Fee is not correct"));

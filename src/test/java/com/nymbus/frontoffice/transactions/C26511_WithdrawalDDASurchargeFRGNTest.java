@@ -90,7 +90,7 @@ public class C26511_WithdrawalDDASurchargeFRGNTest extends BaseTest {
         debitCard.getAccounts().add(chkAccount.getAccountNumber());
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
-        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(1);
+        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(2);
 
         // Log in
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());

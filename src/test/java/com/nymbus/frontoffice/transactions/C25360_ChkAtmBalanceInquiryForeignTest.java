@@ -72,7 +72,7 @@ public class C25360_ChkAtmBalanceInquiryForeignTest extends BaseTest {
         nonTellerTransactionData = new NonTellerTransactionData();
 
         // Get the value of ForeignATMFee bank control setting
-        foreignFeeBalanceInquiryValue = Actions.nonTellerTransactionActions().getForeignATMFeeBalanceInquiry(1);
+        foreignFeeBalanceInquiryValue = Actions.nonTellerTransactionActions().getForeignATMFeeBalanceInquiry(2);
 
         // Set up debit card and bin control
         DebitCardConstructor debitCardConstructor = new DebitCardConstructor();

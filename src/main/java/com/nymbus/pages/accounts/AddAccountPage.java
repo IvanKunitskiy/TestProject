@@ -43,11 +43,12 @@ public class AddAccountPage extends PageTools {
     private final By iraDistributionAmountField = By.xpath("//input[@id='iradistributionamount']");
     private final By dateNextIRADistribution = By.xpath("//input[@id='datenextiradistribution']");
     private final By termType = By.xpath("//input[@id='terminmonthsordays']");
-    private final By autoRenewable = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span[contains(@class, 'ng-scope')]");
+    private final By autoRenewable = By.xpath("//*[@id='autorenewablecode']/div/div/span[contains(@class, 'ng-scope')]");
+    private final By autoRenewableYes = By.xpath("//*[@id='autorenewablecode']/div/div/span");
     private final By interestFrequency = By.xpath("//div[@id='interestfrequencycode']/a/span/span[contains(@class, 'ng-scope')]");
     private final By interestRate = By.xpath("//input[@id='interestrate']");
     private final By interestType = By.xpath("//div[@id='interesttype']/a/span/span[contains(@class, 'ng-scope')]");
-    private final By transactionalAccountSwitch = By.xpath("//dn-switch[@id='transactionalaccount']");
+    private final By transactionalAccountSwitch = By.xpath("//*[@id='transactionalaccount']");
     private final By transactionalAccount = By.xpath("//dn-switch[@id='transactionalaccount']/div/div/span[contains(@class, 'ng-scope')]");
     private final By applyInterestTo = By.xpath("//div[@id='codetoapplyinterestto']/a/span/span[contains(@class, 'ng-scope')]");
     private final By mailCode = By.xpath("//div[@id='mailingcode']/a/span/span[contains(@class, 'ng-scope')]");
@@ -61,22 +62,26 @@ public class AddAccountPage extends PageTools {
     private final By applySeasonalAddressWithHandleOff = By.xpath("//*[@id='useseasonaladdress']//div[contains(@class, 'bootstrap-switch-off')]//span[contains(@class, 'bootstrap-switch-handle-off')]");
     private final By applySeasonalAddressSwitch = By.xpath("//*[@id='useseasonaladdress']");
     private final By applySeasonalAddressValue = By.xpath("//*[@id='useseasonaladdress']/div/div/span");
+    private final By applySeasonalAddress = By.xpath("//*[@id='useseasonaladdress']//span[@ng-if='model']");
+    private final By applySeasonalAddressYes = By.xpath("//*[@id='useseasonaladdress']//span[text()='YES']");
     private final By dateOfFirstDeposit = By.xpath("//input[@id='datefirstdeposit']");
     private final By autoRenewableSwitch = By.xpath("//dn-switch[@id='autorenewablecode']");
     private final By autoRenewableSwitchValue = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span");
     private final By paymentAmount = By.xpath("//input[@data-test-id='field-paymentamount']");
     private final By cycleLoanValue = By.xpath("//dn-switch[@id='cycleloan']/div/div/span[2]");
-    private final By teaserLoanValue = By.xpath("//dn-switch[@id='CurrentEffectiveRateTeaserYN']/div/div/span[2]");
-    private final By cycleLoanSwitch = By.xpath("//dn-switch[@id='cycleloan']");
-    private final By teaserLoanSwitch = By.xpath("//dn-switch[@id='CurrentEffectiveRateTeaserYN']");
+    private final By cycleLoanValueYes = By.xpath("//*[@id='cycleloan']/div/div/span[1]");
+    private final By teaserLoanValue = By.xpath("//*[@id='CurrentEffectiveRateTeaserYN']/div/div/span[2]");
+    private final By cycleLoanSwitch = By.xpath("//*[@id='cycleloan']");
+    private final By teaserLoanSwitch = By.xpath("//*[@id='CurrentEffectiveRateTeaserYN']");
     private final By nextPaymentBilledDueDate = By.xpath("//input[@data-test-id='field-nextduedate']");
     private final By paymentBilledLeadDays = By.xpath("//input[@data-test-id='field-noticedays']");
     private final By currentEffectiveRate = By.xpath("//input[@data-test-id='field-currenteffectiverate']");
     private final By term = By.xpath("//input[@data-test-id='field-termofloanmonths']");
-    private final By locPaymentRecalculationFlag = By.xpath("//dn-switch[@id='locpaymentrecalc']");
-    private final By locPaymentRecalculationFlagValue = By.xpath("//dn-switch[@id='locpaymentrecalc']/div/div/span[2]");
-    private final By adjustableRate = By.xpath("//dn-switch[@id='adjustablerate_checkbox']");
-    private final By adjustableRateValue = By.xpath("//dn-switch[@id='adjustablerate_checkbox']/div/div/span[1]");
+    private final By locPaymentRecalculationFlag = By.xpath("//*[@id='locpaymentrecalc']");
+    private final By locPaymentRecalculationFlagValue = By.xpath("//*[@id='locpaymentrecalc']/div/div/span[2]");
+    private final By locPaymentRecalculationFlagYes = By.xpath("//*[@id='locpaymentrecalc']/div/div/span[1]");
+    private final By adjustableRate = By.xpath("//*[@id='adjustablerate_checkbox']");
+    private final By adjustableRateValue = By.xpath("//*[@id='adjustablerate_checkbox']/div/div/span[1]");
     private final By nextRateChangeDate = By.xpath("//input[@id='armdatenextirchange']");
     private final By escrowPayment = By.xpath("//input[@data-test-id='field-escrowpayment']");
     private final By dateFirstPaymentDue = By.xpath("//input[@data-test-id='field-datefirstpaymentdue']");
@@ -739,6 +744,12 @@ public class AddAccountPage extends PageTools {
         return getElementAttributeValue("value", termType);
     }
 
+    @Step("Check the 'Auto Renewable Yes' value")
+    public boolean isAutoRenewableYes() {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        return isElementVisible(autoRenewableYes);
+    }
+
     @Step("Returning the 'Auto Renewable' value")
     public String getAutoRenewable() {
         waitForElementVisibility(autoRenewable);
@@ -1244,6 +1255,18 @@ public class AddAccountPage extends PageTools {
         }
     }
 
+    @Step("Check the 'Apply Seasonal Address' value")
+    public boolean isApplySeasonalAddressYes() {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        return isElementVisible(applySeasonalAddressYes);
+    }
+
+    @Step("Check the 'Cycle Loan Yes' value")
+    public boolean isCycleLoanValueYes() {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        return isElementVisible(cycleLoanValueYes);
+    }
+
     @Step("Get the 'Cycle Loan' value")
     public String getCycleLoanValue() {
         return getElementText(cycleLoanValue).trim();
@@ -1268,6 +1291,12 @@ public class AddAccountPage extends PageTools {
         click(teaserLoanSwitch);
     }
 
+    @Step("Get the 'LOC Payment Recalculation Flag Yes' value")
+    public boolean isLocPaymentRecalculationFlagYesValue() {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        return isElementVisible(locPaymentRecalculationFlagYes);
+    }
+
     @Step("Get the 'LOC Payment Recalculation Flag' value")
     public String getLocPaymentRecalculationFlagValue() {
         return getElementText(locPaymentRecalculationFlagValue).trim();
@@ -1278,6 +1307,12 @@ public class AddAccountPage extends PageTools {
         waitForElementClickable(locPaymentRecalculationFlag);
         scrollToPlaceElementInCenter(locPaymentRecalculationFlag);
         click(locPaymentRecalculationFlag);
+    }
+
+    @Step("Get the 'Adjustable Rate Yes' value")
+    public boolean isAdjustableRateValueYesVisible() {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        return isElementVisible(adjustableRateValue);
     }
 
     @Step("Get the 'Adjustable Rate' value")

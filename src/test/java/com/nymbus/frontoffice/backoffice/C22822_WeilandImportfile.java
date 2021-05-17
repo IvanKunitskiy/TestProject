@@ -185,8 +185,13 @@ public class C22822_WeilandImportfile extends BaseTest {
                 "Import table does not match");
         Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(15,"Analysis Charges AutoTest"),
                 "Import table does not match");
-        Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(16,"1111100"),
-                "Import table does not match");
+        if (Constants.getEnvironment().equals("dev4")){
+            Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(16,"1001000"),
+                    "Import table does not match");
+        } else {
+            Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(16,"1111100"),
+                    "Import table does not match");
+        }
         Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(17,String.valueOf(amount*5)),
                 "Import table does not match");
         Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(18,"Analysis Charges AutoTest"),

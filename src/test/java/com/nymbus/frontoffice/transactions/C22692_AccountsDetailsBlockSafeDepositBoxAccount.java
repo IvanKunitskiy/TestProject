@@ -61,6 +61,7 @@ public class C22692_AccountsDetailsBlockSafeDepositBoxAccount extends BaseTest {
 
 
         // Create account
+        safeDBAccount.setApplyInterestTo("CHK Acct");
         AccountActions.createAccount().createSafeDepositBoxAccount(safeDBAccount);
 
         Actions.loginActions().doLogOut();

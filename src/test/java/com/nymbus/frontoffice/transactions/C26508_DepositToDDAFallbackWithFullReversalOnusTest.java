@@ -82,7 +82,7 @@ public class C26508_DepositToDDAFallbackWithFullReversalOnusTest extends BaseTes
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Get terminal ID
-        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(1);
+        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(2);
 
         // Set product
         chkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));

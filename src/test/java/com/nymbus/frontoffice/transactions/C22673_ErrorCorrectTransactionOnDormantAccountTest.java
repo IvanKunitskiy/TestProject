@@ -36,7 +36,7 @@ public class C22673_ErrorCorrectTransactionOnDormantAccountTest extends BaseTest
         transaction.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_209.getTransCode());
 
         // Get the dormant account from Web Admin
-        accountNumberWithDormantStatus = WebAdminActions.webAdminUsersActions().getAccountWithDormantStatus(1);
+        accountNumberWithDormantStatus = WebAdminActions.webAdminUsersActions().getAccountWithDormantStatus(2);
 
         // Transaction misc
         transaction.getTransactionDestination().setAccountNumber(accountNumberWithDormantStatus);

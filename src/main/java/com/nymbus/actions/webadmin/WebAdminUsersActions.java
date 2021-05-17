@@ -641,7 +641,7 @@ public class WebAdminUsersActions {
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
 
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
-        String printBalanceOnReceiptCode = WebAdminPages.rulesUIQueryAnalyzerPage().getPrintBalanceOnReceiptByIndex(1);
+        String printBalanceOnReceiptCode = WebAdminPages.rulesUIQueryAnalyzerPage().getPrintBalanceOnReceiptByIndex(2);
 
         WebAdminActions.loginActions().doLogoutProgrammatically();
         SelenideTools.closeCurrentTab();

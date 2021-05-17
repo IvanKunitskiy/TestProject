@@ -71,10 +71,10 @@ public class C26514_BalanceInquiryFndFrgnTest extends BaseTest {
         transactionAmount = glDebitMiscCreditTransaction.getTransactionDestination().getAmount();
 
         // Get terminal ID
-        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(1);
+        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(2);
 
         // Get "Foreign ATM Fee Balance Inquiry" value
-        foreignFeeBalanceInquiry = Actions.nonTellerTransactionActions().getForeignATMFeeBalanceInquiry(1);
+        foreignFeeBalanceInquiry = Actions.nonTellerTransactionActions().getForeignATMFeeBalanceInquiry(2);
 
         // Set up nonTeller transaction data
         nonTellerTransactionData = new NonTellerTransactionData();

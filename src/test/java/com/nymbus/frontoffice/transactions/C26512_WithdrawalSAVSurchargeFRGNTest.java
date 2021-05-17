@@ -90,11 +90,11 @@ public class C26512_WithdrawalSAVSurchargeFRGNTest extends BaseTest {
         debitCard.getAccounts().add(savingAccount.getAccountNumber());
         debitCard.setNameOnCard(client.getNameForDebitCard());
 
-        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(1);
+        String terminalId = Actions.nonTellerTransactionActions().getTerminalID(2);
 
         // Log in
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        foreignFeeValue = Actions.nonTellerTransactionActions().getForeignFee(1);
+        foreignFeeValue = Actions.nonTellerTransactionActions().getForeignFee(2);
 
         // Set product
         savingAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));

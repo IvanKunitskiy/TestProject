@@ -287,8 +287,11 @@ public class ParticipationsModalPage extends PageTools {
     public boolean checkFIOwnedAccruedInterest(String interest) {
         waitForElementVisibility(fiOwnedInterest);
         String accinterest = getElementText(fiOwnedInterest).replaceAll("[^0-9.]", "");
+        System.out.println(accinterest);
         if (!accinterest.equals(interest)) {
-            return accinterest.equals(Double.parseDouble(interest) - 0.01 + "");
+            String newInterest = (Double.parseDouble(interest) - 0.01f) + "";
+            System.out.println(newInterest);
+            return accinterest.equals(newInterest);
         }
         return true;
     }

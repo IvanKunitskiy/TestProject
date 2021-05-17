@@ -78,7 +78,7 @@ public class C25367_108ATMDepositForeignTest extends BaseTest {
 
         // Log in and create client
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        foreignFeeValue = Actions.nonTellerTransactionActions().getForeignFee(1);
+        foreignFeeValue = Actions.nonTellerTransactionActions().getForeignFee(2);
 
         // Set product
         checkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
