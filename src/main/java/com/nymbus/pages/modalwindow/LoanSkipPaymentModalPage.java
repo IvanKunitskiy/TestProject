@@ -29,7 +29,7 @@ public class LoanSkipPaymentModalPage extends PageTools {
 
     @Step("Click tools 'NBR of Payments to Skip' button")
     public void typeNbrOfPaymentsToSkipInput(String text) {
-        waitForElementVisibility(nbrOfPaymentsToSkipInput);
+       waitForElementVisibility(nbrOfPaymentsToSkipInput);
         waitForElementClickable(nbrOfPaymentsToSkipInput);
         type(text, nbrOfPaymentsToSkipInput);
     }
