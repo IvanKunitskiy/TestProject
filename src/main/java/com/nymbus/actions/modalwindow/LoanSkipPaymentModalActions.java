@@ -21,4 +21,10 @@ public class LoanSkipPaymentModalActions {
             Pages.loanSkipPaymentModalPage().clickExtendMaturityToggle();
         }
     }
+
+    public void setExtendMaturityToggleToYes() {
+        if (Pages.loanSkipPaymentModalPage().getExtendMaturityToggleValue().equalsIgnoreCase("no")) {
+            Pages.loanSkipPaymentModalPage().clickExtendMaturityToggle();
+        }
+    }
 }
