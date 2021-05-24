@@ -140,6 +140,17 @@ public class WebAdminTransactionActions {
                 + "&source=";
     }
 
+    private String getTransactionHeaderByRootUrl(String rootId) {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?"
+                + "waDbName=coreDS&"
+                + "dqlQuery=count%3A+10%0D%0A"
+                + "from%3A+bank.data.transaction.header%0D%0A"
+                + "where%3A+%0D%0A-+rootid%3A+"
+                + rootId  //%0D%0A
+                + "&source=";
+    }
+
     public void goToWaiveATUsageFeeAcronymUrl() {
         Selenide.open(getWaiveATUsageFeeAcronymUrl());
 
@@ -178,6 +189,12 @@ public class WebAdminTransactionActions {
 
     public void goToTransactionHeaderUrl(String transactionHeader) {
         Selenide.open(getTransactionHeaderUrl(transactionHeader));
+
+        waitForSearchResults();
+    }
+
+    public void goToTransactionHeaderByRootUrl(String root) {
+        Selenide.open(getTransactionHeaderByRootUrl(root));
 
         waitForSearchResults();
     }
@@ -346,5 +363,26 @@ public class WebAdminTransactionActions {
         Assert.assertTrue(webTransactionData.getAmount() < Double.parseDouble(balance), "Balance is less then amount");
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
         return webTransactionData;
+    }
+
+    public String getTransactionStatusFromHeader(UserCredentials userCredentials, String clientRootId){
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        WebAdminActions.webAdminTransactionActions().goToTransactionHeaderByRootUrl(clientRootId);
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionStatus(2);
+    }
+
+    public String getTransactionStatusFromHeader(UserCredentials userCredentials, Account account) {
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        goToTransactionUrl(account.getAccountNumber());
+        String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(2);
+        goToTransactionHeaderUrl(transactionHeader);
+        String transactionStatus = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionStatus(2);
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+
+        return transactionStatus;
     }
 }

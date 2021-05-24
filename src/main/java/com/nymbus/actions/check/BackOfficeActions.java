@@ -28,7 +28,7 @@ public class BackOfficeActions {
         check.setDocumentType(Pages.fullCheckPage().getDocumentType());
         check.setDocumentID(Pages.fullCheckPage().getDocumentID());
         check.setCheckType(Pages.fullCheckPage().getCheckType());
-        check.setPurchaser(Pages.fullCheckPage().getPurchaser());
+        check.setPurchaseAccount(Pages.fullCheckPage().getPurchaser());
         check.setBranch(Pages.fullCheckPage().getBranch());
         check.setInitials(Pages.fullCheckPage().getInitials());
         String amount = Pages.fullCheckPage().getAmount();

@@ -75,25 +75,25 @@ public class FullCheckPage extends PageTools {
     @Step("Get 'Remitter' text")
     public String getRemitter(){
         waitForElementVisibility(remitter);
-        return getDisabledElementAttributeValue("text",remitter);
+        return getDisabledElementAttributeValue("value",remitter);
     }
 
     @Step("Get 'Phone' text")
     public String getPhone(){
         waitForElementVisibility(phone);
-        return getDisabledElementAttributeValue("text",phone);
+        return getDisabledElementAttributeValue("value",phone);
     }
 
     @Step("Get 'Document type' text")
     public String getDocumentType(){
         waitForElementVisibility(documentType);
-        return getDisabledElementAttributeValue("text",documentType);
+        return getDisabledElementAttributeValue("value",documentType);
     }
 
     @Step("Get 'Document Id' text")
     public String getDocumentID(){
         waitForElementVisibility(documentID);
-        return getDisabledElementAttributeValue("text",documentID);
+        return getDisabledElementAttributeValue("value",documentID);
     }
 
     @Step("Get 'Branch' text")

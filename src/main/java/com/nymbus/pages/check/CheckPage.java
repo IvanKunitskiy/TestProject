@@ -9,7 +9,7 @@ public class CheckPage extends PageTools {
     private By payee = By.xpath("(//tr[contains(string(),'%s')]/td)[3]/span");
     private By purchaser = By.xpath("(//tr[contains(string(),'%s')]/td)[2]/span");
     private By initials = By.xpath("(//tr[contains(string(),'%s')]/td)[5]/span");
-    private By amount = By.xpath("(//tr[contains(string(),'%s')]/td)[9]/span");
+    private By amount = By.xpath("(//tr[contains(string(),'%s')]/td)[8]/label");
     private By status = By.xpath("(//tr[contains(string(),'%s')]/td)[7]/span");
     private By date = By.xpath("(//tr[contains(string(),'%s')]/td)[4]/span");
 
@@ -40,7 +40,7 @@ public class CheckPage extends PageTools {
     @Step("Get 'Amount' text")
     public String getAmount(String number) {
         waitForElementVisibility(amount, number);
-        return getElementText(amount, number);
+        return getElementText(amount, number).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get 'Status' text")
