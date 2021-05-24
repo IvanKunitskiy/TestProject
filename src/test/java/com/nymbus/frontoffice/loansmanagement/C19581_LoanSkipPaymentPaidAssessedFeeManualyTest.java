@@ -1,5 +1,6 @@
 package com.nymbus.frontoffice.loansmanagement;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -124,23 +125,16 @@ public class C19581_LoanSkipPaymentPaidAssessedFeeManualyTest extends BaseTest {
 
         logInfo("Step 2: Open 'Teller' screen");
         Actions.transactionActions().goToTellerPage();
-//        Actions.transactionActions().doLoginTeller();
+        Selenide.refresh();
+        Actions.transactionActions().doLoginTeller();
 
-        logInfo("Step 3: Fill in the following fields and click the [Commit Transaction] :\n" +
-                "Sources -> GL Debit:\n" +
-                "\"Account Number\" - Any (use %%% to select)\n" +
-                "\"Transaction Code\" - \"860 - G/L Debit\"\n" +
-                "\"Amount\" - \"Transactions\" tab -> Amount of \"483-Skip Fee Assessed\" transaction\n" +
-                "\"Notes\" - any (e.g. Test)\n" +
-                "Destinations -> Misc Credit:\n" +
-                "\"Account number\" - Loan account from precondition\n" +
-                "\"Transaction Code\" - \"482 - Skip Fee Payment\"\n" +
-                "\"Amount\" - specify the same amount");
+        logInfo("Step 3: Fill in the following fields and click the [Commit Transaction]");
         logInfo("Step 4: Close Transaction Receipt popup");
         int tempIndex = 1;
 
         Pages.tellerPage().clickGLDebitButton();
-        Actions.transactionActions().fillSourceAccountNumber(checkingAccount.getAccountNumber(), tempIndex);
+        Selenide.sleep(1000000);
+        Actions.transactionActions().fillSourceAccountNumber("%%%", tempIndex);
         Actions.transactionActions().fillSourceAccountCode(TransactionCode.GL_DEBIT.getTransCode(), tempIndex);
         Actions.transactionActions().fillSourceAmount(String.format("%.2f", FEE_AMOUNT), tempIndex);
         Pages.tellerPage().clickSourceDetailsArrow(tempIndex);
