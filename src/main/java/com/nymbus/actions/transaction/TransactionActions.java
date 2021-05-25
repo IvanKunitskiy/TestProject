@@ -1,5 +1,6 @@
 package com.nymbus.actions.transaction;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.UserCredentials;
@@ -15,6 +16,7 @@ import com.nymbus.newmodels.transaction.enums.SourceType;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
 import org.testng.asserts.SoftAssert;
+import sun.jvm.hotspot.debugger.Page;
 
 import java.util.HashMap;
 import java.util.List;
@@ -379,6 +381,13 @@ public class TransactionActions {
         Pages.tellerPage().typeAccountNumber(tempIndex, accountNumber);
 
         Pages.tellerPage().clickOnAutocompleteDropDownItem(accountNumber);
+    }
+
+    public void fillSourceAccountNumberWithFirstInLine( int tempIndex ) {
+        Pages.tellerPage().clickAccountNumberDiv(tempIndex);
+        Pages.tellerPage().typeAccountNumberFieldWithRandoName( "%%%" );
+        String account = Pages.tellerPage().getFirstAutocompleteDropDownItem();
+        Pages.tellerPage().clickOnAutocompleteDropDownItem( account );
     }
 
     private void fillSourceCheckAccountNumber(String accountNumber, int tempIndex) {

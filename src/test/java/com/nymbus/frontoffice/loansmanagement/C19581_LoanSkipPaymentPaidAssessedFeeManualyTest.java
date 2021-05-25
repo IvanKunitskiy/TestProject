@@ -133,8 +133,7 @@ public class C19581_LoanSkipPaymentPaidAssessedFeeManualyTest extends BaseTest {
         int tempIndex = 1;
 
         Pages.tellerPage().clickGLDebitButton();
-        Selenide.sleep(1000000);
-        Actions.transactionActions().fillSourceAccountNumber("%%%", tempIndex);
+        Actions.transactionActions().fillSourceAccountNumberWithFirstInLine( tempIndex );
         Actions.transactionActions().fillSourceAccountCode(TransactionCode.GL_DEBIT.getTransCode(), tempIndex);
         Actions.transactionActions().fillSourceAmount(String.format("%.2f", FEE_AMOUNT), tempIndex);
         Pages.tellerPage().clickSourceDetailsArrow(tempIndex);

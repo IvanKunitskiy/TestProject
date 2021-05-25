@@ -92,6 +92,12 @@ public class TellerPage extends PageTools {
     private By popupLoadingSpinner = By.xpath("//*[@id='printReceipt']/dn-loading-spinner");
     private By popupImg = By.xpath("//*[@id='printReceipt']//img[@id='receiptTemplate'][contains(@src, 'base64')]");
 
+    @Step("Get first autocomplete account item")
+    public String getFirstAutocompleteDropDownItem() {
+        waitForElementVisibility(firtsAutocompleteItemInDropDown);
+        return getElementText(firtsAutocompleteItemInDropDown);
+    }
+
     @Step("Get modal header text")
     public String getModalText() {
         waitForElementVisibility(modalHeaderText);
@@ -194,6 +200,8 @@ public class TellerPage extends PageTools {
             "//*[@data-name='amount']//input");
 
     private By autocompleteItemInDropDown = By.xpath("//div[@ng-show='$select.openAutocomplete && $select.open']//span[contains(text(), '%s')]");
+    private By firtsAutocompleteItemInDropDown = By.xpath("(//div[@ng-show='$select.openAutocomplete && $select.open']//span)[1]");
+
 
     private By transactionSourceDetailsArrow = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]" +
             "//a[contains(@class, 'detail-icon')]");
@@ -288,6 +296,12 @@ public class TellerPage extends PageTools {
         waitForElementClickable(accountNumberField, i);
         jsType(number, accountNumberField, i);
         jsRiseOnchange(accountNumberField, i);
+    }
+
+    @Step("Fill in with account name")
+    public void typeAccountNumberFieldWithRandoName(String name) {
+        waitForElementClickable(accountNumberInput);
+        type(name, accountNumberInput);
     }
 
     @Step("Set {0} 'Check Account number' value {1}")
