@@ -217,7 +217,8 @@ public class C25479_ProcessLoanPrepaymentTransactionTest extends BaseTest {
         //String expectedInterest = expectedAccruedInterest + "";
         String expectedInterest = String.format("%.2f", expectedAccruedInterest);
         TestRailAssert.assertTrue(disInterest.equals(expectedInterest),
-                new CustomStepResult("Interest is not valid", "Interest is valid"));
+                new CustomStepResult("Interest is not valid", String.format("Interest is valid. Actual %s, Expected %s",
+                        disInterest, expectedInterest)));
         String disAmount = Pages.accountPaymentInfoPage().getDisabledAmount();
         String disEscrow = Pages.accountPaymentInfoPage().getDisabledEscrow();
         String disPrincipal = Pages.accountPaymentInfoPage().getDisabledPrincipal();

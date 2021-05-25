@@ -101,4 +101,8 @@ public class Functions {
         DecimalFormat df = new DecimalFormat("#.##");
         return Double.parseDouble(df.format(amount));
     }
+
+    public static String getDoubleWithTwoDecimalPlaces(double value){
+        return String.format("%.2f",value);
+    }
 }

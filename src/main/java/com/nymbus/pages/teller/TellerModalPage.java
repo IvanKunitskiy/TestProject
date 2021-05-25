@@ -13,6 +13,7 @@ public class TellerModalPage extends PageTools {
     private By location = By.xpath("//div[@ng-model='viewModel.location']//a//span[@class='select2-chosen']/span");
     private By enterButton = By.xpath("//div[@class='modal-content']//button[contains(@class, 'btn-primary')]");
     private By blankTellerField = By.xpath("//div[@ng-model='viewModel.otherTeller']//a/span[1]");
+    private By bankBranch = By.xpath("//div[@ng-model='viewModel.location']//a/span/span");
 
     @Step("Is blank teller field visible")
     public boolean isBlankTellerFieldVisible() {
@@ -29,6 +30,12 @@ public class TellerModalPage extends PageTools {
     public String getCashDrawerName() {
         waitForElementVisibility(cashDrawerName);
         return getElementText(cashDrawerName).trim();
+    }
+
+    @Step("Get 'Bank Branch' name")
+    public String getBankBranch() {
+        waitForElementVisibility(bankBranch);
+        return getElementText(bankBranch).trim();
     }
 
     @Step("Get 'Proof date' value")
