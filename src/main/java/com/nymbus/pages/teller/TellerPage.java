@@ -299,9 +299,9 @@ public class TellerPage extends PageTools {
     }
 
     @Step("Fill in with account name")
-    public void typeAccountNumberFieldWithRandoName(String name) {
+    public void typeAccountNumberFieldWithRandomName(String name) {
         waitForElementClickable(accountNumberInput);
-        type(name, accountNumberInput);
+        jsType(name, accountNumberInput);
     }
 
     @Step("Set {0} 'Check Account number' value {1}")

@@ -2,8 +2,10 @@ package com.nymbus.frontoffice.loansmanagement;
 
 import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
+import com.nymbus.actions.LoginActions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
@@ -20,11 +22,16 @@ import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.pages.webadmin.WebAdminPages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.checkerframework.checker.units.qual.A;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import javax.swing.*;
 
 @Epic("Frontoffice")
 @Feature("Loans Management")
@@ -104,7 +111,9 @@ public class C19581_LoanSkipPaymentPaidAssessedFeeManualyTest extends BaseTest {
         AccountActions.accountMaintenanceActions().setTool(Tool.LOAN_SKIP_PAYMENT);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
         Pages.loanSkipPaymentModalPage().typeNbrOfPaymentsToSkipInput(String.valueOf(3));
+        System.out.println(FEE_AMOUNT);
         Pages.loanSkipPaymentModalPage().typeFeeAmount(String.valueOf(FEE_AMOUNT));
+        Selenide.sleep(10000);
         Actions.loanSkipPaymentModalActions().setExtendMaturityToggleToNo();
         Actions.loanSkipPaymentModalActions().setFeeAddOnPaymentToggleToNo();
         Pages.loanSkipPaymentModalPage().clickCommitTransactionButton();
@@ -133,16 +142,17 @@ public class C19581_LoanSkipPaymentPaidAssessedFeeManualyTest extends BaseTest {
         int tempIndex = 1;
 
         Pages.tellerPage().clickGLDebitButton();
-        Actions.transactionActions().fillSourceAccountNumberWithFirstInLine( tempIndex );
+        Actions.transactionActions().fillSourceAccountNumber("0-0", tempIndex );
         Actions.transactionActions().fillSourceAccountCode(TransactionCode.GL_DEBIT.getTransCode(), tempIndex);
-        Actions.transactionActions().fillSourceAmount(String.format("%.2f", FEE_AMOUNT), tempIndex);
+        Selenide.sleep(6000);
+        Actions.transactionActions().fillSourceAmount(String.format("%.2f", 1.000), tempIndex);
         Pages.tellerPage().clickSourceDetailsArrow(tempIndex);
         Pages.tellerPage().typeSourceNotesValue(tempIndex, "Test");
 
         Pages.tellerPage().clickMiscCreditButton();
         Actions.transactionActions().fillDestinationAccountNumber(loanAccount.getAccountNumber(), tempIndex);
         Actions.transactionActions().fillDestinationAccountCode(TransactionCode.SKIP_FEE_PAYMENT_482.getTransCode(), tempIndex);
-        Actions.transactionActions().fillDestinationAmount(String.format("%.2f", FEE_AMOUNT), tempIndex);
+        Actions.transactionActions().fillDestinationAmount(String.format("%.2f", 1.000), tempIndex);
 
         Pages.tellerPage().clickCommitButton();
         Pages.tellerPage().closeModal();
@@ -152,13 +162,38 @@ public class C19581_LoanSkipPaymentPaidAssessedFeeManualyTest extends BaseTest {
         logInfo("Step 5: Open loan account from preconditions");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
-        Pages.accountDetailsPage().clickTransactionsTab();
 
         logInfo("Step 6: Go to the 'Transactions' tab");
+        Pages.accountDetailsPage().clickTransactionsTab();
 
         logInfo("Step 7: Verify generated transaction");
+        // "482-Skip Fee Payment"
+        String transactionCode482 = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
+        TestRailAssert.assertTrue(transactionCode482.equals(TransactionCode.SKIP_FEE_PAYMENT_482.getTransCode()),
+                new CustomStepResult("'Transaction code' is  valid", "'Transaction code' is not valid"));
+        double transactionAmount482 = AccountActions.retrievingAccountData().getAmountValue(1);
+        TestRailAssert.assertTrue(transactionAmount482 == FEE_AMOUNT / 10,
+                new CustomStepResult("'Amount' is  valid", "'Amount' is not valid"));
+
         logInfo("Step 8: Go to the 'Payment Info' tab and check 'Loan Skip Payment Charges' Payment Due record");
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+
+        // "Loan Skip Payment Charges" Payment Due record
+        String dueDateFromRecordByIndex = Pages.accountPaymentInfoPage().getDueDateFromRecordByIndex(4);
+        TestRailAssert.assertTrue(dueDateFromRecordByIndex.equals(WebAdminActions.loginActions().getSystemDate()),
+                new CustomStepResult("'Due Date' is valid", "'Due Date' is not valid"));
+
+        String paidAmountDue = Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(4);
+        TestRailAssert.assertTrue(Double.parseDouble(paidAmountDue) == 0.00,
+                new CustomStepResult("'Amount Due' is valid", "'Amount Due' is not valid"));
+
+        String paidStatus = Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(4);
+        TestRailAssert.assertTrue(paidStatus.equals("Paid"),
+                new CustomStepResult("'Status' is valid", "'Status' is not valid"));
+
         logInfo("Step 9: Log in to the webadmin -> RulesUI Query Analyzer");
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+
         logInfo("Step 10: Search with DQL:\n" +
                 "from: bank.data.actloan\n" +
                 "select: (databean)CREATEDBY, (databean)CREATEDWHEN, accountid, skipfeeearned, skipfeepaid\n" +
