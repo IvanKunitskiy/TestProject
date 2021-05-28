@@ -9,20 +9,21 @@ public class IOUtils {
     public void createWeilandFile(List<String> accounts, double amount){
         StringBuilder file = new StringBuilder();
         for (String account : accounts) {
+            file.append("0000");
             file.append(account);
-            file.append("          ");
+            file.append("           ");
             file.append("530000000").append(amount);
-            file.append("          ");
+            file.append("                               ");
             file.append("Analysis Charges AutoTest\n");
         }
         if (Constants.getEnvironment().equals("dev4")){
-            file.append("000001001000");
+            file.append("0000000001001000");
         } else {
-            file.append("000001111100");
+            file.append("0000000001111100");
         }
         file.append("          ");
-        file.append("4000000009.95");
-        file.append("          ");
+        file.append("40000000009.95");
+        file.append("                               ");
         file.append("Analysis Charges AutoTest\n");
         String withoutPoints = file.toString().replace(".", "");
 

@@ -58,11 +58,6 @@ public class C22822_WeilandImportfile extends BaseTest {
         Account chkAccount3 = new Account().setCHKAccountData();
         Account chkAccount4 = new Account().setCHKAccountData();
         Account chkAccount5 = new Account().setCHKAccountData();
-        chkAccountNumber = chkAccount.getAccountNumber();
-        chkAccountNumber2 = chkAccount2.getAccountNumber();
-        chkAccountNumber3 = chkAccount3.getAccountNumber();
-        chkAccountNumber4 = chkAccount4.getAccountNumber();
-        chkAccountNumber5 = chkAccount5.getAccountNumber();
         systemDate = WebAdminActions.loginActions().getSystemDate();
 
         // Set up instruction
@@ -79,6 +74,16 @@ public class C22822_WeilandImportfile extends BaseTest {
         chkAccount3.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, "MSBC"));
         chkAccount4.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, "MSBC"));
         chkAccount5.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, "MSBC"));
+        chkAccount.setAccountNumber("12400"+ chkAccount.getAccountNumber().substring(0,6));
+        chkAccount2.setAccountNumber("12400"+ chkAccount2.getAccountNumber().substring(0,6));
+        chkAccount3.setAccountNumber("12400"+ chkAccount3.getAccountNumber().substring(0,6));
+        chkAccount4.setAccountNumber("12400"+ chkAccount4.getAccountNumber().substring(0,6));
+        chkAccount5.setAccountNumber("12400"+ chkAccount5.getAccountNumber().substring(0,6));
+        chkAccountNumber = chkAccount.getAccountNumber();
+        chkAccountNumber2 = chkAccount2.getAccountNumber();
+        chkAccountNumber3 = chkAccount3.getAccountNumber();
+        chkAccountNumber4 = chkAccount4.getAccountNumber();
+        chkAccountNumber5 = chkAccount5.getAccountNumber();
 
         //Create file
         List<String> accounts = Arrays.asList(chkAccountNumber, chkAccountNumber2, chkAccountNumber3,

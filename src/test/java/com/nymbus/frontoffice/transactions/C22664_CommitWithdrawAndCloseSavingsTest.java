@@ -44,6 +44,7 @@ public class C22664_CommitWithdrawAndCloseSavingsTest extends BaseTest {
 
         Account savingsAcc = new Account().setSavingsAccountData();
         savingsAcc.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), 10));
+        savingsAcc.setInterestRate("30");
 
         TransactionConstructor constructor = new TransactionConstructor(new GLDebitMiscCreditBuilder());
 
@@ -72,8 +73,6 @@ public class C22664_CommitWithdrawAndCloseSavingsTest extends BaseTest {
 
         // Set up transaction with account number
         transaction.getTransactionDestination().setAccountNumber(savingsAcc.getAccountNumber());
-        transaction.getTransactionDestination().setAmount(200);
-        transaction.getTransactionSource().setAmount(200);
 
         // perform transaction
         Actions.transactionActions().goToTellerPage();
@@ -90,7 +89,9 @@ public class C22664_CommitWithdrawAndCloseSavingsTest extends BaseTest {
         // Set transaction with amount value
         Actions.clientPageActions().searchAndOpenClientByName(savingsAcc.getAccountNumber());
         accruedInterest = AccountActions.retrievingAccountData().getAccruedInterest();
+        System.out.println(accruedInterest);
         double transactionAmount = AccountActions.retrievingAccountData().getCurrentBalanceWithAccruedInterest();
+        System.out.println(transactionAmount);
         withdrawTransaction.getTransactionSource().setAmount(transactionAmount);
         withdrawTransaction.getTransactionDestination().setAmount(transactionAmount);
         transactionData = new TransactionData(withdrawTransaction.getTransactionDate(), withdrawTransaction.getTransactionDate(), "-", 0.00,
@@ -113,20 +114,20 @@ public class C22664_CommitWithdrawAndCloseSavingsTest extends BaseTest {
         Actions.transactionActions().doLoginTeller();
 
         logInfo("Step 3: Select the following fund types: \n" +
-                "- Source: Misc Debit \n" +
+                "- Source: Withdrawal \n" +
                 "- Destination: any (e.g. GL credit)");
-        logInfo("Step 4: Specify misc debit line item with the following values: \n" +
+        logInfo("Step 4: Specify Withdrawal line item with the following values: \n" +
                 "- CHK account from preconditions \n" +
                 "- 227 Withdraw&Close trancode \n" +
                 "and verify the Available Balance value in Account Details section");
         logInfo("Step 5: Specify Amount == account's current balance + IENP (e.g. $105)");
         int currentIndex = 0;
-        Actions.transactionActions().setMiscDebitSourceForWithDraw(withdrawTransaction.getTransactionSource(), currentIndex);
+        Actions.transactionActions().setWithDrawalSource(withdrawTransaction.getTransactionSource(), currentIndex);
         double availableBalance = Actions.transactionActions().getAvailableBalance();
         Assert.assertEquals(availableBalance, withdrawTransaction.getTransactionSource().getAmount(),
                 "Available balance is incorrect!");
 
-        logInfo("Step 6: Specify details for selected destination line item correctly (Amount should be the same as it was set in Debit Item)");
+        logInfo("Step 6: Specify details for selected destination line item correctly (Amount should be the same as it was set in Withdrawal Item)");
         Actions.transactionActions().setGLCreditDestination(withdrawTransaction.getTransactionDestination(), currentIndex);
         transactionData.setEffectiveDate(Pages.tellerPage().getEffectiveDate());
 
