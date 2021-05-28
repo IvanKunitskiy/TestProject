@@ -1,6 +1,7 @@
 package com.nymbus.pages.accounts;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -11,6 +12,7 @@ public class AccountDetailsPage extends PageTools {
      * Tab buttons
      */
     private By maintenanceTab = By.xpath("//a[contains(text(), 'Maintenance')]");
+    private By loanInsurancePoliciesTab = By.xpath("//a[contains(text(), 'Loan Insurance Policies')]");
     private By transactionsTab = By.xpath("//a[contains(text(), 'Transactions')]");
     private By instructionsTab = By.xpath("//a[contains(text(), 'Instructions')]");
     private By detailsTab = By.xpath("//a[contains(text(), 'Details')]");
@@ -886,10 +888,18 @@ public class AccountDetailsPage extends PageTools {
      */
     @Step("Click the 'Maintenance' tab")
     public void clickMaintenanceTab() {
-        SelenideTools.sleep(5);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         waitForElementVisibility(maintenanceTab);
         waitForElementClickable(maintenanceTab);
         click(maintenanceTab);
+    }
+
+    @Step("Click the 'Loan Insurance Policies' tab")
+    public void clickLoanInsurancePoliciesTab() {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        waitForElementVisibility(loanInsurancePoliciesTab);
+        waitForElementClickable(loanInsurancePoliciesTab);
+        click(loanInsurancePoliciesTab);
     }
 
     @Step("Click the 'Transactions' tab")

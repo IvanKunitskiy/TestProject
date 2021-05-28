@@ -120,6 +120,7 @@ public class Pages extends AllureLogger {
     private static LoanReservePage loanReservePage;
     private static AddNewLoanReservePage addNewLoanReservePage;
     private static LoanSkipPaymentModalPage loanSkipPaymentModalPage;
+    private static AccountLoanInsurancePoliciesPage accountLoanInsurancePoliciesPage;
 
     /**
      * Modal Windows
@@ -927,5 +928,15 @@ public class Pages extends AllureLogger {
             loanSkipPaymentModalPage = new LoanSkipPaymentModalPage();
         }
         return loanSkipPaymentModalPage;
+    }
+
+    /**
+     * This function return an instance of `AccountLoanInsurancePoliciesPage`
+     */
+    public static AccountLoanInsurancePoliciesPage accountLoanInsurancePoliciesPage(){
+        if (accountLoanInsurancePoliciesPage == null){
+            accountLoanInsurancePoliciesPage = new AccountLoanInsurancePoliciesPage();
+        }
+        return accountLoanInsurancePoliciesPage;
     }
 }
