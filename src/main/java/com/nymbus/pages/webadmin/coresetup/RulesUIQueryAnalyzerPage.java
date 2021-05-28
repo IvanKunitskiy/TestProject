@@ -16,6 +16,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private By firstNameByIndex = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[11]/div");
     private By lastNameByIndex = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[12]/div");
     private By accountNumberByIndex = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[2]/span/span");
+    private By skipFeePaid = By.xpath("//table[@id='searchResultTable']//tr[2]//td[6]//div");
     private By accountNumberSecByIndex = By.xpath("//table[@id='searchResultTable']//tr[%s]//span[@key-name='accountnumber']/../span/span");
     private By accountNumberTwelveByIndex = By.xpath("//table[@id='searchResultTable']//tr[contains(@class, 'searchResultRow ') and " +
             "not(contains(@class, 'searchResultRowHeader'))][%s]//td[12]/span/span");
@@ -63,6 +64,13 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getAccountNumberByIndex(int index) {
         waitForElementVisibility(accountNumberByIndex, index);
         return getElementText(accountNumberByIndex, index);
+    }
+
+    @Step("Get skip fee paid value")
+    public String getSkipFeePaid() {
+        waitForElementVisibility(skipFeePaid);
+        System.out.println(skipFeePaid + " ------------------");
+        return getElementText(skipFeePaid);
     }
 
     @Step("Get account number value")

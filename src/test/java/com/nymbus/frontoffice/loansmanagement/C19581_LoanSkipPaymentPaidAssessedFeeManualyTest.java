@@ -7,6 +7,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -179,21 +180,15 @@ public class C19581_LoanSkipPaymentPaidAssessedFeeManualyTest extends BaseTest {
         Pages.accountDetailsPage().clickPaymentInfoTab();
 
         // "Loan Skip Payment Charges" Payment Due record
-        String dueDateFromRecordByIndex = Pages.accountPaymentInfoPage().getDueDateFromRecordByIndex(4);
-        TestRailAssert.assertTrue(dueDateFromRecordByIndex.equals(WebAdminActions.loginActions().getSystemDate()),
-                new CustomStepResult("'Due Date' is valid", "'Due Date' is not valid"));
-
-        String paidAmountDue = Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(4);
+        String paidAmountDue = Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(3);
         TestRailAssert.assertTrue(Double.parseDouble(paidAmountDue) == 0.00,
                 new CustomStepResult("'Amount Due' is valid", "'Amount Due' is not valid"));
 
-        String paidStatus = Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(4);
+        String paidStatus = Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(3);
         TestRailAssert.assertTrue(paidStatus.equals("Paid"),
                 new CustomStepResult("'Status' is valid", "'Status' is not valid"));
 
         logInfo("Step 9: Log in to the webadmin -> RulesUI Query Analyzer");
-        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
-
         logInfo("Step 10: Search with DQL:\n" +
                 "from: bank.data.actloan\n" +
                 "select: (databean)CREATEDBY, (databean)CREATEDWHEN, accountid, skipfeeearned, skipfeepaid\n" +
@@ -203,6 +198,9 @@ public class C19581_LoanSkipPaymentPaidAssessedFeeManualyTest extends BaseTest {
                 "deletedIncluded: true\n" +
                 "\n" +
                 "and verify the amount of paid fee (bank.data.actloan -> \"skipfeepaid\")");
-    }
+        String skipFeePayment = WebAdminActions.webAdminUsersActions().getAccountsWithFeeSkipPayment(loanAccount.getAccountNumber());
+        TestRailAssert.assertTrue(Double.parseDouble(skipFeePayment) == 1.0,
+                new CustomStepResult("'skipfeepaid' is valid", "'skipfeepaid' is not valid"));
 
+    }
 }
