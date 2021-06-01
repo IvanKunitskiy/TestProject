@@ -220,8 +220,9 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
                 new CustomStepResult("Date type is not valid", "Date type is valid"));
         String disInterest = Pages.accountPaymentInfoPage().getDisabledInterest();
         String effectiveDate = Pages.accountPaymentInfoPage().getPiPaymentsEffectiveDate();
-        double expectedAccruedInterest = Double.parseDouble(currentBalanceForInterest) * Double.parseDouble(currentEffectiveRate)/100/
-                yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate,dueDateSec,false);
+
+        double expectedAccruedInterest = Double.parseDouble(currentBalanceForInterest) * Double.parseDouble(currentEffectiveRate) / 100 /
+                yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate,dueDateSec,false) - 0.01;
         String expected = String.format("%.2f", expectedAccruedInterest);
         TestRailAssert.assertTrue(disInterest.equals(expected),
                 new CustomStepResult("Interest is valid",
