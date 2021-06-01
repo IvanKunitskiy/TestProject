@@ -2,12 +2,10 @@ package com.nymbus.frontoffice.loansmanagement;
 
 import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
-import com.nymbus.actions.LoginActions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -114,7 +112,6 @@ public class C19581_LoanSkipPaymentPaidAssessedFeeManualyTest extends BaseTest {
         Pages.loanSkipPaymentModalPage().typeNbrOfPaymentsToSkipInput(String.valueOf(3));
         System.out.println(FEE_AMOUNT);
         Pages.loanSkipPaymentModalPage().typeFeeAmount(String.valueOf(FEE_AMOUNT));
-        Selenide.sleep(10000);
         Actions.loanSkipPaymentModalActions().setExtendMaturityToggleToNo();
         Actions.loanSkipPaymentModalActions().setFeeAddOnPaymentToggleToNo();
         Pages.loanSkipPaymentModalPage().clickCommitTransactionButton();
@@ -145,7 +142,6 @@ public class C19581_LoanSkipPaymentPaidAssessedFeeManualyTest extends BaseTest {
         Pages.tellerPage().clickGLDebitButton();
         Actions.transactionActions().fillSourceAccountNumber("0-0", tempIndex );
         Actions.transactionActions().fillSourceAccountCode(TransactionCode.GL_DEBIT.getTransCode(), tempIndex);
-        Selenide.sleep(6000);
         Actions.transactionActions().fillSourceAmount(String.format("%.2f", 1.000), tempIndex);
         Pages.tellerPage().clickSourceDetailsArrow(tempIndex);
         Pages.tellerPage().typeSourceNotesValue(tempIndex, "Test");
