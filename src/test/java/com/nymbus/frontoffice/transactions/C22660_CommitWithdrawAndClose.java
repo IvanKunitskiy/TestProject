@@ -110,21 +110,21 @@ public class C22660_CommitWithdrawAndClose extends BaseTest {
         transactionData.setPostingDate(Pages.tellerModalPage().getProofDateValue());
         Actions.transactionActions().doLoginTeller();
 
-        logInfo("Step 3: Select the following fund types: \n" +
-                "- Source: Misc Debit \n" +
+        logInfo("Step 3: Select the following fund types:\n" +
+                "- Source: Withdrawal\n" +
                 "- Destination: any (e.g. GL credit)");
-        logInfo("Step 4: Specify misc debit line item with the following values: \n" +
+        logInfo("Step 4: Specify misc Withdrawal line item with the following values: \n" +
                 "- CHK account from preconditions \n" +
                 "- 127 Withdraw&Close trancode \n" +
                 "and verify the Available Balance value in Account Details section");
         logInfo("Step 5: Specify Amount == account's current balance + IENP (e.g. $105)");
         int currentIndex = 0;
-        Actions.transactionActions().setMiscDebitSourceForWithDraw(withdrawTransaction.getTransactionSource(), currentIndex);
+        Actions.transactionActions().setWithDrawalSource(withdrawTransaction.getTransactionSource(), currentIndex);
         double availableBalance = Actions.transactionActions().getAvailableBalance();
         Assert.assertEquals(availableBalance, withdrawTransaction.getTransactionSource().getAmount(),
                 "Available balance is incorrect!");
 
-        logInfo("Step 6: Specify details for selected destination line item correctly (Amount should be the same as it was set in Debit Item)");
+        logInfo("Step 6: Specify details for selected destination line item correctly (Amount should be the same as it was set in Withdrawal Item)");
         Actions.transactionActions().setGLCreditDestination(withdrawTransaction.getTransactionDestination(), currentIndex);
         transactionData.setEffectiveDate(Pages.tellerPage().getEffectiveDate());
         

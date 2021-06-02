@@ -9,10 +9,7 @@ import com.nymbus.actions.clients.ClientsSearchResultsPageActions;
 import com.nymbus.actions.clients.maintenance.MaintenanceHistoryPageActions;
 import com.nymbus.actions.clients.maintenance.MaintenancePageActions;
 import com.nymbus.actions.journal.JournalActions;
-import com.nymbus.actions.loans.AddNewLoanActions;
-import com.nymbus.actions.loans.LoanPayoffActions;
-import com.nymbus.actions.loans.LoanProductOverviewActions;
-import com.nymbus.actions.loans.LoanReserveActions;
+import com.nymbus.actions.loans.*;
 import com.nymbus.actions.modalwindow.DebitCardModalWindowActions;
 import com.nymbus.actions.modalwindow.LoanSkipPaymentModalActions;
 import com.nymbus.actions.modalwindow.ParticipationsActions;
@@ -54,6 +51,8 @@ public class Actions {
     private static LoanReserveActions loanReserveActions;
     private static ReservePremiumProcessingModalActions reservePremiumProcessingModalPageActions;
     private static LoanSkipPaymentModalActions loanSkipPaymentModalActions;
+    private static InsuranceCompaniesActions insuranceCompaniesActions;
+    private static LoanInsurancePlanSetupActions loanInsurancePlanSetupActions;
 
     /**
      * Modal Window Actions
@@ -343,5 +342,25 @@ public class Actions {
             loanSkipPaymentModalActions = new LoanSkipPaymentModalActions();
         }
         return loanSkipPaymentModalActions;
+    }
+
+    /**
+     * This function returns an instance of `InsuranceCompaniesActions`
+     */
+    public static InsuranceCompaniesActions insuranceCompaniesActions() {
+        if (insuranceCompaniesActions == null) {
+            insuranceCompaniesActions = new InsuranceCompaniesActions();
+        }
+        return insuranceCompaniesActions;
+    }
+
+    /**
+     * This function returns an instance of `LoanInsurancePlanSetupActions`
+     */
+    public static LoanInsurancePlanSetupActions loanInsurancePlanSetupActions() {
+        if (loanInsurancePlanSetupActions == null) {
+            loanInsurancePlanSetupActions = new LoanInsurancePlanSetupActions();
+        }
+        return loanInsurancePlanSetupActions;
     }
 }
