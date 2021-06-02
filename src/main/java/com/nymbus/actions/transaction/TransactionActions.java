@@ -381,12 +381,6 @@ public class TransactionActions {
         Pages.tellerPage().clickOnAutocompleteDropDownItem(accountNumber);
     }
 
-    private void fillSourceCheckAccountNumber(String accountNumber, int tempIndex) {
-        Pages.tellerPage().clickAccountNumberDiv(tempIndex);
-
-        Pages.tellerPage().typeCheckAccountNumber(tempIndex, accountNumber);
-    }
-
     public void waitForLoadSpinnerInvisibility() {
         Pages.tellerPage().waitForLoadingSpinnerVisibility();
 
