@@ -89,9 +89,7 @@ public class C22664_CommitWithdrawAndCloseSavingsTest extends BaseTest {
         // Set transaction with amount value
         Actions.clientPageActions().searchAndOpenClientByName(savingsAcc.getAccountNumber());
         accruedInterest = AccountActions.retrievingAccountData().getAccruedInterest();
-        System.out.println(accruedInterest);
         double transactionAmount = AccountActions.retrievingAccountData().getCurrentBalanceWithAccruedInterest();
-        System.out.println(transactionAmount);
         withdrawTransaction.getTransactionSource().setAmount(transactionAmount);
         withdrawTransaction.getTransactionDestination().setAmount(transactionAmount);
         transactionData = new TransactionData(withdrawTransaction.getTransactionDate(), withdrawTransaction.getTransactionDate(), "-", 0.00,
