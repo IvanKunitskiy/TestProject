@@ -69,7 +69,6 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     @Step("Get skip fee paid value")
     public String getSkipFeePaid() {
         waitForElementVisibility(skipFeePaid);
-        System.out.println(skipFeePaid + " ------------------");
         return getElementText(skipFeePaid);
     }
 
