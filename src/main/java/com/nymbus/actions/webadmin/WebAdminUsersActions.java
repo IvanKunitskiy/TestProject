@@ -30,7 +30,7 @@ public class WebAdminUsersActions {
                 + "dqlQuery=count%3A+20%0D%0A"
                 + "from%3A+bank.session.teller.parameters%0D%0A"
                 + "where%3A+%0D%0A-+.userid->Code%3A+"
-                +  userId
+                + userId
                 + "+%23user%27s+login%0D%0AorderBy%3A+-id&source=";
     }
 
@@ -42,7 +42,7 @@ public class WebAdminUsersActions {
                 + "from%3A+security.ofac.entry%0D%0A"
                 + "where%3A+%0D%0A"
                 + "-+.sdntype->name%3A+"
-                +  individualType
+                + individualType
                 + "&source=";
     }
 
@@ -54,16 +54,16 @@ public class WebAdminUsersActions {
 
     private String getAccountsWithYtdInterestPaidNotNullUrl() {
         return Constants.WEB_ADMIN_URL
-            + "RulesUIQuery.ct?"
-            + "waDbName=nymbusdev6DS&"
-            + "dqlQuery=count%3A+10%0D%0Aselect%3A+accountid%2C+interestpaidytd%0D%0A"
-            + "from%3A+bank.data.actchecking%0D%0A"
-            + "where%3A+%0D%0A"
-            + "-+interestpaidytd%3A+%7Bgreater%3A+0%7D%0D%0A"
-            + "-+.accountid-%3Edateclosed%3A+%7Bnull%7D%0D%0A"
-            + "formats%3A+%0D%0A"
-            + "-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A"
-            + "orderBy%3A+-id&source=";
+                + "RulesUIQuery.ct?"
+                + "waDbName=nymbusdev6DS&"
+                + "dqlQuery=count%3A+10%0D%0Aselect%3A+accountid%2C+interestpaidytd%0D%0A"
+                + "from%3A+bank.data.actchecking%0D%0A"
+                + "where%3A+%0D%0A"
+                + "-+interestpaidytd%3A+%7Bgreater%3A+0%7D%0D%0A"
+                + "-+.accountid-%3Edateclosed%3A+%7Bnull%7D%0D%0A"
+                + "formats%3A+%0D%0A"
+                + "-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A"
+                + "orderBy%3A+-id&source=";
     }
 
     private String getAccountsWithInterestPaidLastYearNotNullUrl() {
@@ -103,6 +103,17 @@ public class WebAdminUsersActions {
                 + "-+.accountid-%3Edateclosed%3A+%7Bnull%7D%0D%0Aformats%3A+%0D%0A"
                 + "-+-%3Ebank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A"
                 + "orderBy%3A+-id&source=";
+    }
+
+    private String getAccountsWithSkipfeePaymentUrl(String accNumber) {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?" +
+                "aDbName=fnbuatcoreDS&" +
+                "dqlQuery=count%3A+10%0D%0Afrom%3A+bank.data.actloan%0D%0Aselect%3A+%28databean%29CREATEDBY%2C+" +
+                "%28databean%29CREATEDWHEN%2C+accountid%2C+skipfeeearned%2C+skipfeepaid%0D%0Awhere%3A%0D%0A-" +
+                "+.accountid->accountnumber%3A+" + accNumber + "%0D%0AorderBy%3A+" +
+                "-id%0D%0AdeletedIncluded%3A+true&source=";
+
     }
 
     private String getAccountsWithDormantStatusUrl() {
@@ -280,7 +291,7 @@ public class WebAdminUsersActions {
                 + "extra%3A+%0D%0A-+%24TrnCode%3A+.credittrancode-%3Ecode%0D%0A&source=";
     }
 
-     private String getLoanAccountUrl() {
+    private String getLoanAccountUrl() {
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?"
                 + "waDbName=nymbusdev12DS&"
@@ -291,7 +302,7 @@ public class WebAdminUsersActions {
                 + "-+accountid%3A%0D%0A++++++"
                 + "from%3A+bank.data.actmst%0D%0A++++++"
                 + "where%3A%0D%0A++++++++"
-                +"-+dateclosed%3A+%7Bnull%7D%0D%0A++++++++"
+                + "-+dateclosed%3A+%7Bnull%7D%0D%0A++++++++"
                 + "-+.accounttype-%3E%28databean%29code%3A+tatyp1.4%0D%0A+"
                 + "-+.commitmenttype-%3E%28databean%29code%3A+tcmtt1.0+++++%0D%0A"
                 + "formats%3A+%0D%0A-"
@@ -300,9 +311,9 @@ public class WebAdminUsersActions {
                 + "extra%3A+%0D%0A"
                 + "-+%24CurBal%3A+bank.data.actloan%5Baccountid%5D-%3E%5Brootid%5D"
                 + "bank.data.actmst-%3Ecurrentbalance%0D%0A&source=";
-     }
+    }
 
-     private String getActiveConvertedLoanAccountFundedInPastUrl() {
+    private String getActiveConvertedLoanAccountFundedInPastUrl() {
         return Constants.WEB_ADMIN_URL +
                 "RulesUIQuery.ct?" +
                 "waDbName=coreDS&" +
@@ -317,7 +328,7 @@ public class WebAdminUsersActions {
                 "orderBy%3A+-id%0D%0A" +
                 "formats%3A+%0D%0A-+-%3E" +
                 "bank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A&source=";
-     }
+    }
 
     private String getInterestEarnedUrl(String accountNumber) {
         return Constants.WEB_ADMIN_URL +
@@ -376,7 +387,7 @@ public class WebAdminUsersActions {
                 "dqlQuery=count%3A+10%0D%0A%23" +
                 "select%3A+accountid%2C+duedate%2C+principal%2C+interest%2C+escrow%2C+amount%2C+dateassessed%2C+paymentduetype%2C+paymentduestatus%0D%0A" +
                 "from%3A+bank.data.paymentdue%0D%0A" +
-                "where%3A+%0D%0A-+.accountid-%3Eaccountnumber%3A+"+
+                "where%3A+%0D%0A-+.accountid-%3Eaccountnumber%3A+" +
                 accountNumber +
                 "%0D%0AorderBy%3A+-id%0D%0A" +
                 "deletedIncluded%3A+true&source=";
@@ -424,7 +435,7 @@ public class WebAdminUsersActions {
                 "%0D%0AorderBy%3A+-id%0D%0AdeletedIncluded%3A+true&source=";
     }
 
-    private String getParticipantInterestAndFee(String accountNumber){
+    private String getParticipantInterestAndFee(String accountNumber) {
         return Constants.WEB_ADMIN_URL +
                 "RulesUIQuery.ct?" +
                 "waDbName=coreDS&" +
@@ -435,9 +446,9 @@ public class WebAdminUsersActions {
                 "%0D%0AdeletedIncluded%3A+true&source=";
     }
 
-    private String getTeaserUrl(String clientRootId){
+    private String getTeaserUrl(String clientRootId) {
         return Constants.WEB_ADMIN_URL
-                +  "RulesUIQuery.ct?waDbName=fnbuatcoreDS&dqlQuery=count%3A+10%0D%0A" +
+                + "RulesUIQuery.ct?waDbName=fnbuatcoreDS&dqlQuery=count%3A+10%0D%0A" +
                 "from%3A+bank.data.actloan.teaser%0D%0A" +
                 "where%3A+%0D%0A-+accountid%3A+"
                 + clientRootId +
@@ -487,6 +498,10 @@ public class WebAdminUsersActions {
 
     public String getAccountsWithOverdraftChargedOffMoreThanZeroNull() {
         return getAccountFromQueryByUrl(getAccountsWithOverdraftChargedOffMoreThanZeroUrl());
+    }
+
+    public String getAccountsWithFeeSkipPayment(String accNumber) {
+        return getSkipFeePaymentForLoanAccount(getAccountsWithSkipfeePaymentUrl(accNumber));
     }
 
     public String getAccountWithYtdTaxesWithheldNotNull() {
@@ -673,6 +688,28 @@ public class WebAdminUsersActions {
         return accountNumber;
     }
 
+    private String getSkipFeePaymentForLoanAccount(String url) {
+
+        SelenideTools.openUrlInNewWindow(url);
+
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+
+        int amountOfRecordsFound = WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfFoundRecords();
+        String skipFeePayment = "";
+
+        if(amountOfRecordsFound > 0) {
+            WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+            skipFeePayment = WebAdminPages.rulesUIQueryAnalyzerPage().getSkipFeePaid();
+        }
+
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+
+        return skipFeePayment;
+    }
 
     private String getDormantAccountByIndexFromQueryByUrl(String url, int index) {
         SelenideTools.openUrlInNewWindow(url);
@@ -959,7 +996,7 @@ public class WebAdminUsersActions {
         SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL +
                 "rulesui2.sbs.bcfile.ct?formName=bank.data.bcfile&filter_(databean)code=UseGLAccountNumberForOfficialCheck");
         SelenideTools.switchTo().window(1);
-        WebAdminActions.loginActions().doLogin(userName,password);
+        WebAdminActions.loginActions().doLogin(userName, password);
         boolean useGLAccountsValue = WebAdminPages.usersPage().getUseGLAccountsValue();
         WebAdminActions.loginActions().doLogoutProgrammatically();
         SelenideTools.closeCurrentTab();
@@ -972,7 +1009,7 @@ public class WebAdminUsersActions {
         SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL +
                 "RulesUIQuery.ct?waDbName=nymbusdev12DS&dqlQuery=count%3A+100%0D%0Afrom%3A+bank.data.officialcheck.control%0D%0Awhere%3A+%0D%0A-+.checktype->name%3A+Interest+Check%0D%0Aformats%3A+%0D%0A-+->bank.data.actmst%3A+%24%7Baccountnumber%7D&source=");
         SelenideTools.switchTo().window(1);
-        WebAdminActions.loginActions().doLogin(userName,password);
+        WebAdminActions.loginActions().doLogin(userName, password);
         String accountNumber = WebAdminPages.usersPage().getInternalAccountNumber();
         WebAdminActions.loginActions().doLogoutProgrammatically();
         SelenideTools.closeCurrentTab();
@@ -981,7 +1018,7 @@ public class WebAdminUsersActions {
         return accountNumber;
     }
 
-    public void openTeaserUrlByCLientId(String clientId, UserCredentials userCredentials){
+    public void openTeaserUrlByCLientId(String clientId, UserCredentials userCredentials) {
         SelenideTools.openUrlInNewWindow(getTeaserUrl(clientId));
         SelenideTools.switchToLastTab();
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
