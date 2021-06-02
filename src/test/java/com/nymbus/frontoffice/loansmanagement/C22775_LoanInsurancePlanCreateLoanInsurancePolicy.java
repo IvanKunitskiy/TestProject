@@ -4,6 +4,7 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
@@ -22,6 +23,8 @@ import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -33,14 +36,10 @@ import org.testng.annotations.Test;
 public class C22775_LoanInsurancePlanCreateLoanInsurancePolicy extends BaseTest {
 
     private Account loanAccount;
-    private Account checkAccount;
-    private double transactionAmount = 1001.00;
-    private final String loanProductName = "Test Loan Product";
-    private final String loanProductInitials = "TLP";
     private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
-    private int balance;
-    private final String AMOUNT = "3000";
+    private final String code = "autotest";
+    private final String company = "Debt Protection";
 
 
     @BeforeMethod
@@ -49,10 +48,11 @@ public class C22775_LoanInsurancePlanCreateLoanInsurancePolicy extends BaseTest 
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         IndividualClient client = individualClientBuilder.buildClient();
-        checkAccount = new Account().setCHKAccountData();
+        Account checkAccount = new Account().setCHKAccountData();
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
         loanAccount.setPaymentBilledLeadDays(String.valueOf(1));
+        String loanProductName = "Test Loan Product";
         loanAccount.setProduct(loanProductName);
         loanAccount.setEscrow("$ 0.00");
         loanAccount.setCycleCode(Generator.genInt(1, 20) + "");
@@ -64,6 +64,7 @@ public class C22775_LoanInsurancePlanCreateLoanInsurancePolicy extends BaseTest 
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Check that a Loan product exist with the following editable fields (Readonly? = NO) and create if not exist
+        String loanProductInitials = "TLP";
         Actions.loanProductOverviewActions().checkLoanProductExistAndCreateIfFalse(loanProductName, loanProductInitials);
         Actions.loginActions().doLogOut();
 
@@ -85,10 +86,11 @@ public class C22775_LoanInsurancePlanCreateLoanInsurancePolicy extends BaseTest 
 
         // Set up transactions with account number
         depositTransaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());
+        double transactionAmount = 1001.00;
         depositTransaction.getTransactionDestination().setAmount(transactionAmount);
         depositTransaction.getTransactionSource().setAmount(transactionAmount);
         depositTransaction.setTransactionDate(loanAccount.getDateOpened());
-        balance = 12000;
+        int balance = 12000;
         miscDebitSource.setAccountNumber(loanAccount.getAccountNumber());
         miscDebitSource.setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
         miscDebitSource.setAmount(balance);
@@ -114,9 +116,15 @@ public class C22775_LoanInsurancePlanCreateLoanInsurancePolicy extends BaseTest 
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
+
+        //Check Insurance and Plan Setup
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        String glAccount = "2600800";
+        Actions.insuranceCompaniesActions().createInsuranceCompanyIfNotExists(code, glAccount);
+        Actions.loanInsurancePlanSetupActions().createLoanInsurancePlanSetupIfNotExists(code, company,
+                loanAccount.getDateOpened());
+        Actions.loginActions().doLogOutProgrammatically();
     }
-
-
 
 
     private final String TEST_RUN_NAME = "Loans Management";
@@ -132,15 +140,36 @@ public class C22775_LoanInsurancePlanCreateLoanInsurancePolicy extends BaseTest 
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
 
-        logInfo("Step 3: Go to \"Loan Insurance Policies\" screen");
+        logInfo("Step 3: Go to 'Loan Insurance Policies' screen");
         Pages.accountDetailsPage().clickLoanInsurancePoliciesTab();
 
-        logInfo("Step 4: Click \"Add New\"");
+        logInfo("Step 4: Click 'Add New'");
         Pages.accountLoanInsurancePoliciesPage().clickAddNewButton();
+        TestRailAssert.assertTrue(Pages.loanInsurancePolicyModalPage().getCountOfColumns()==18,
+                new CustomStepResult("All fields is exists", "Some fields not exists"));
+        TestRailAssert.assertTrue(Pages.loanInsurancePolicyModalPage().getDateIssuedDisabled()
+                        .equals(DateTime.getDatePlusMonth(loanAccount.getDateOpened(),1)),
+                new CustomStepResult("Date issued is disabled","Date issued is not disabled"));
+        TestRailAssert.assertTrue(Pages.loanInsurancePolicyModalPage().getMaturityDateDisabled()
+                        .equals(DateTime.getDatePlusMonth(loanAccount.getDateOpened(),12)),
+                new CustomStepResult("Date maturity is disabled","Date maturity is not disabled"));
+        TestRailAssert.assertTrue(Pages.loanInsurancePolicyModalPage().getPremiumDisabled().equals(""),
+                new CustomStepResult("Premium is disabled","Premium is not disabled"));
+        TestRailAssert.assertTrue(Pages.loanInsurancePolicyModalPage().getPremiumEarnedDisabled().equals("$ 0.00"),
+                new CustomStepResult("Premium Earned is disabled","Premium Earned is not disabled"));
+        TestRailAssert.assertTrue(Pages.loanInsurancePolicyModalPage().getPremiumRefundedDisabled().equals("$ 0.00"),
+                new CustomStepResult("Premium Refunded is disabled","Premium Refunded is not disabled"));
 
-        logInfo("Step 5: Select \"Insurance Company\" from precondition 1\n" +
-                "Then select any \"Type\" in the dropdown (Credit Life or Debt Protection)\n" +
-                "Then select any \"Plan\" in the dropdown");
+        logInfo("Step 5: Select 'Insurance Company' from precondition 1\n" +
+                "Then select any 'Type' in the dropdown (Credit Life or Debt Protection)\n" +
+                "Then select any 'Plan' in the dropdown");
+        Pages.loanInsurancePolicyModalPage().inputCompany(code);
+        Pages.loanInsurancePolicyModalPage().inputType(company);
+        Pages.loanInsurancePolicyModalPage().inputPlan(code);
 
+        logInfo("Step 6: Click 'Save'");
+        Pages.loanInsurancePolicyModalPage().clickSave();
+        TestRailAssert.assertTrue(Pages.accountLoanInsurancePoliciesPage().isCompanyVisible(),
+                new CustomStepResult("Item is created", "Item is not created"));
     }
 }

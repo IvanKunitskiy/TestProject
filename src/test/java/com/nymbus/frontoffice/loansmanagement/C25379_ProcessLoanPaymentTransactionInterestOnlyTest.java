@@ -221,11 +221,11 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
         String disInterest = Pages.accountPaymentInfoPage().getDisabledInterest();
         String effectiveDate = Pages.accountPaymentInfoPage().getPiPaymentsEffectiveDate();
         double expectedAccruedInterest = Double.parseDouble(currentBalanceForInterest) * Double.parseDouble(currentEffectiveRate)/100/
-                yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate,dueDateSec,false);
+                yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate,dueDateSec,false) - 0.01f;
         String expected = String.format("%.2f", expectedAccruedInterest);
         TestRailAssert.assertTrue(disInterest.equals(expected),
                 new CustomStepResult("Interest is valid",
-                        String.format("Interest is not valid. Expected %s, actual, %s",expected, disInterest)));
+                        String.format("Interest is not valid. Expected %s, actual %s",expected, disInterest)));
         String disAmount = Pages.accountPaymentInfoPage().getDisabledAmount();
         String disEscrow = Pages.accountPaymentInfoPage().getDisabledEscrow();
         String disPrincipal = Pages.accountPaymentInfoPage().getDisabledPrincipal();
@@ -294,6 +294,7 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
                 new CustomStepResult("Current balance is not valid", "Current balance is valid"));
         String actualAccruedInterest = Pages.accountDetailsPage().getAccruedInterest();
         TestRailAssert.assertTrue(Double.parseDouble(actualAccruedInterest) == (Double.parseDouble(accruedInterest) - transactionAmount),
-                new CustomStepResult("Accrued interest is not valid", "Accrued interest is valid"));
+                new CustomStepResult("Accrued interest is not valid", String.format("Accrued interest is valid. Actual %s, expected %s",
+                        Double.parseDouble(actualAccruedInterest),(Double.parseDouble(accruedInterest) - transactionAmount))));
     }
 }

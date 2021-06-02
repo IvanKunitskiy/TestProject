@@ -43,6 +43,7 @@
                 <class name="com.nymbus.frontoffice.transactions.C22649_CommitCashTransactionWithNewConsumerTest"/>
                 <class name="com.nymbus.frontoffice.transactions.C22634_GLDebit_MiscCredit_SavingsAcc_Test"/>
                 <class name="com.nymbus.frontoffice.transactions.C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee"/>
+                <class name="com.nymbus.frontoffice.transactions.C25238_PrintTellerReceiptWithBalanceForDebitItemsTest"/>
             </classes>
         </test>
 
