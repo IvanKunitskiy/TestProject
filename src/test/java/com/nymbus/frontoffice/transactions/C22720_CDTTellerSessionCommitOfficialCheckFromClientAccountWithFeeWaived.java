@@ -204,7 +204,6 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
         SelenideTools.switchToLastTab();
         int number = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());
         Assert.assertEquals(number, checkAccountNumber + 1, "Number doesn't match");
-        //SelenideTools.closeCurrentTab();
 
         logInfo("Step 11: Go to b.d.transaction.header again and check transactionstatusid value");
         transactionStatus = WebAdminActions.webAdminTransactionActions().getTransactionStatusFromHeader(userCredentials, savingsAccount);
