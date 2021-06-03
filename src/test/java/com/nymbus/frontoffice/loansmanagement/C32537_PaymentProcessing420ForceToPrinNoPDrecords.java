@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -29,6 +30,9 @@ import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import sun.jvm.hotspot.debugger.Page;
+
+import javax.net.ssl.SSLContext;
 
 @Epic("Frontoffice")
 @Feature("Loans Management")
@@ -119,6 +123,11 @@ public class C32537_PaymentProcessing420ForceToPrinNoPDrecords extends BaseTest 
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Go to the 'Teller' screen");
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
+        System.out.println("--------------------- " + Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance()));
+        double currentBalanceBefore = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
+
         Actions.transactionActions().goToTellerPage();
 
         logInfo("Step 3: Log in to the proof date");
@@ -134,7 +143,7 @@ public class C32537_PaymentProcessing420ForceToPrinNoPDrecords extends BaseTest 
                 "\"Transaction Code\" - \"420 - Force To Prin\"\n" +
                 "\"Amount\" - specify the same amount");
 
-        double PAYMENT_AMOUNT = 500.00;
+        double PAYMENT_AMOUNT = 120.00;
         // Set up 416 transaction
         transaction_420 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
         transaction_420.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
@@ -146,7 +155,6 @@ public class C32537_PaymentProcessing420ForceToPrinNoPDrecords extends BaseTest 
 
         // Perform 416 transaction
         Actions.transactionActions().goToTellerPage();
-        Actions.transactionActions().doLoginTeller();
         Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction_420.getTransactionSource(), 0);
         Actions.transactionActions().setMiscCreditDestination(transaction_420.getTransactionDestination(), 0);
         Actions.transactionActions().clickCommitButton();
@@ -160,11 +168,20 @@ public class C32537_PaymentProcessing420ForceToPrinNoPDrecords extends BaseTest 
         Pages.accountDetailsPage().clickTransactionsTab();
 
         Pages.accountTransactionPage().waitForTransactionSection();
-        TestRailAssert.assertTrue(Pages.accountTransactionPage().getAmountValue(1).equals(String.valueOf(PAYMENT_AMOUNT)),
+        TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(1)
+                        .equals(String.valueOf(TransactionCode.PRIN_PAYM_ONLY_406.getTransCode())),
+                new CustomStepResult("'Transaction Code' code is not valid", "'Transaction Code' code is valid"));
+        System.out.println(Double.parseDouble(Pages.accountTransactionPage().getBalanceValue(1)));
+
+        Pages.accountDetailsPage().clickDetailsTab();
+        double currentBalanceAfter = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
+        System.out.println(currentBalanceAfter);
+        System.out.println(currentBalanceBefore - PAYMENT_AMOUNT);
+        TestRailAssert.assertTrue(currentBalanceBefore - PAYMENT_AMOUNT == currentBalanceAfter,
                 new CustomStepResult("Payment Amount is not valid", "Payment Amount is valid"));
 
         logInfo("Step 7: Go to the \"Payment Info\" tab");
-        Pages.accountDetailsPage().clickPaymentInfoTab();
+//        Pages.accountDetailsPage().clickPaymentInfoTab();
 
         logInfo("Step 8: Verify the \"Payment Due\" section");
     }
