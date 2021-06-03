@@ -44,7 +44,7 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
     private Account savingsAccount;
     private double savingsTransactionAmount = 200.00;
     private double returnTransactionAmount = 100.00;
-    private double fee = 5.00;
+    private double fee = 0.00;
     private int checkAccountNumber;
     private Check check;
     private String name = "John";
@@ -118,21 +118,22 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
         //New Checks
         check = new Check();
         check.setDate(DateTime.getLocalDateOfPattern("MM/dd/yyyy"));
-        check.setCheckType("Cashier Check");
+        check.setCheckType("Cashiers Check");
         check.setPayee(name);
         check.setPurchaser(client.getInitials());
-        check.setInitials(client.getNameForDebitCard());
+        check.setInitials(userCredentials.getUserName() + " " + userCredentials.getUserName());
         check.setAmount(returnTransactionAmount);
         check.setStatus("Outstanding");
         fullCheck = new FullCheck();
         fullCheck.fromCheck(check);
         fullCheck.setFee(fee);
-        fullCheck.setCashPurchased("No");
-        fullCheck.setRemitter("exautotest exautotest");
+        fullCheck.setCashPurchased("NO");
+        fullCheck.setRemitter(client.getNameForDebitCard());
         fullCheck.setBranch(savingsAccount.getBankBranch());
         fullCheck.setDocumentType(client.getIndividualClientDetails().getDocuments().get(0).getIdType().getIdType());
         fullCheck.setDocumentID(client.getIndividualClientDetails().getDocuments().get(0).getIdNumber());
-        fullCheck.setPhone(client.getIndividualClientDetails().getPhones().get(0).getPhoneNumber());
+        fullCheck.setPhone(client.getIndividualClientDetails().getPhones().get(client.getIndividualClientDetails().getPhones().size() - 1).getPhoneNumber());
+        fullCheck.setPurchaseAccount("Savings Account " + savingsAccount.getAccountNumber());
 
         //Check CDT template
         boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.OFFICIAL_CHECK_FROM_SAVINGS);
@@ -155,6 +156,10 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
 
         logInfo("Step 2: Go to Cashier Defined Transactions page");
         Actions.transactionActions().loginTeller();
+        Actions.transactionActions().openProofDateLoginModalWindow();
+        String bankBranch = Pages.tellerModalPage().getBankBranch();
+        fullCheck.setBranch(bankBranch);
+        Actions.transactionActions().doLoginProofDate();
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
 
@@ -199,7 +204,7 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
         SelenideTools.switchToLastTab();
         int number = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());
         Assert.assertEquals(number, checkAccountNumber + 1, "Number doesn't match");
-        SelenideTools.closeCurrentTab();
+        //SelenideTools.closeCurrentTab();
 
         logInfo("Step 11: Go to b.d.transaction.header again and check transactionstatusid value");
         transactionStatus = WebAdminActions.webAdminTransactionActions().getTransactionStatusFromHeader(userCredentials, savingsAccount);
@@ -222,7 +227,7 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
         Pages.accountDetailsPage().clickTransactionsTab();
         savingsAccTransactionData.setBalance(returnTransactionAmount);
         AccountActions.retrievingAccountData().goToTransactionsTab();
-        TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getSecondTransactionDataWithBalanceSymbol();
+        TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
 
         logInfo("Step 14: Go to Back Office -> Official Checks and find generated Check from the related transaction\n" +
@@ -237,9 +242,10 @@ public class C22720_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFeeW
                 "Branch, Initials, Check Amount, Fee, Date Issued, Cash Purchased");
         Pages.checkPage().clickToCheck(checkNumber);
         FullCheck fullCheckFromBankOffice = Actions.backOfficeActions().getFullCheckFromBankOffice();
+        fullCheck.setCheckNumber(null);
+        fullCheck.setPayee(null);
+        fullCheck.setDate(null);
+        fullCheck.setPurchaser(null);
         Assert.assertEquals(fullCheckFromBankOffice, fullCheck, "Check details doesn't match");
-
     }
-
-
 }
