@@ -116,15 +116,15 @@ public class C22699_CDTTellerSessionCommitMoneyOrderWithFee extends BaseTest {
         Pages.aSideMenuPage().clickSettingsMenuItem();
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().clickViewControls();
-        checkAccountNumber = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());
+        checkAccountNumber = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumberForMoneyOrder());
 
         //New Checks
         check = new Check();
         check.setDate(DateTime.getLocalDateOfPattern("MM/dd/yyyy"));
-        check.setCheckType("Cashier Check");
+        check.setCheckType("Money Order");
         check.setPayee(name);
         check.setPurchaser(client.getInitials());
-        check.setInitials(client.getNameForDebitCard());
+        check.setInitials(userCredentials.getUserName() + " " + userCredentials.getUserName());
         check.setAmount(returnTransactionAmount);
         check.setStatus("Outstanding");
         fullCheck = new FullCheck();
@@ -171,7 +171,7 @@ public class C22699_CDTTellerSessionCommitMoneyOrderWithFee extends BaseTest {
                 "Specify Payee Info required fields: Name (any value) Payee Type (e.g. 'Person')");
         Actions.cashierDefinedActions().createOfficialTransaction(CashierDefinedTransactions.MONEY_ORDER_FROM_SAVINGS,
                 transaction, false, name);
-        expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
+        expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount()+ fee);
 
         logInfo("Step 5: Click [Commit Transaction] button and click [Verify] button");
         Actions.transactionActions().clickCommitButton();
@@ -201,7 +201,7 @@ public class C22699_CDTTellerSessionCommitMoneyOrderWithFee extends BaseTest {
         SelenideTools.openUrlInNewWindow(Constants.URL.substring(0,Constants.URL.indexOf("com")+3)
                 +"/settings/#/view/bank.data.officialcheck.control");
         SelenideTools.switchToLastTab();
-        int number = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());
+        int number = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumberForMoneyOrder());
         Assert.assertEquals( number, checkAccountNumber+1,"Number doesn't match");
 
         logInfo("Step 10: Go to b.d.transaction.header again and check transactionstatusid value");

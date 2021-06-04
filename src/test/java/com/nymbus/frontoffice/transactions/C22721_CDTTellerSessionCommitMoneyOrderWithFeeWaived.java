@@ -46,7 +46,7 @@ public class C22721_CDTTellerSessionCommitMoneyOrderWithFeeWaived extends BaseTe
     private Account savingsAccount;
     private double savingsTransactionAmount = 200.00;
     private double returnTransactionAmount = 100.00;
-    private double fee = 2.00;
+    private double fee = 0.00;
     private int checkAccountNumber;
     private Check check;
     private String name = "John";
@@ -116,15 +116,15 @@ public class C22721_CDTTellerSessionCommitMoneyOrderWithFeeWaived extends BaseTe
         Pages.aSideMenuPage().clickSettingsMenuItem();
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().clickViewControls();
-        checkAccountNumber = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());
+        checkAccountNumber = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumberForMoneyOrder());
 
         //New Checks
         check = new Check();
         check.setDate(DateTime.getLocalDateOfPattern("MM/dd/yyyy"));
-        check.setCheckType("Cashier Check");
+        check.setCheckType("Money Order");
         check.setPayee(name);
         check.setPurchaser(client.getInitials());
-        check.setInitials(client.getNameForDebitCard());
+        check.setInitials(userCredentials.getUserName() + " " + userCredentials.getUserName());
         check.setAmount(returnTransactionAmount);
         check.setStatus("Outstanding");
         fullCheck = new FullCheck();
@@ -203,7 +203,7 @@ public class C22721_CDTTellerSessionCommitMoneyOrderWithFeeWaived extends BaseTe
         SelenideTools.openUrlInNewWindow(Constants.URL.substring(0,Constants.URL.indexOf("com")+3)
                 +"/settings/#/view/bank.data.officialcheck.control");
         SelenideTools.switchToLastTab();
-        int number = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());
+        int number = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumberForMoneyOrder());
         Assert.assertEquals( number, checkAccountNumber+1,"Number doesn't match");
 
         logInfo("Step 11: Go to b.d.transaction.header again and check transactionstatusid value");
@@ -227,7 +227,7 @@ public class C22721_CDTTellerSessionCommitMoneyOrderWithFeeWaived extends BaseTe
         Pages.accountDetailsPage().clickTransactionsTab();
         savingsAccTransactionData.setBalance(returnTransactionAmount);
         AccountActions.retrievingAccountData().goToTransactionsTab();
-        TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getSecondTransactionDataWithBalanceSymbol();
+        TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
 
         logInfo("Step 14: Go to Back Office -> Official Checks and find generated Check from the related transaction\n" +
@@ -247,6 +247,7 @@ public class C22721_CDTTellerSessionCommitMoneyOrderWithFeeWaived extends BaseTe
         fullCheck.setDate(null);
         fullCheck.setPurchaser(null);
         Assert.assertEquals(fullCheckFromBankOffice,fullCheck,"Check details doesn't match");
-
+//[FullCheck{checkNumber='null', purchaser='null', payee='null', date='null', initials='autotest autotest', checkType='Money Order', status='Outstanding', amount=100.0, remitter='ebqautotest whtautotest', phone='5552413594', documentType='Passport', documentID='C24910136', branch='Clarence Office', fee=2.0, cashPurchased='NO', purchaseAccount='Savings Account 334340286852'}]
+//[FullCheck{checkNumber='null', purchaser='null', payee='null', date='null', initials='autotest autotest', checkType='Money Order', status='Outstanding', amount=100.0, remitter='ebqautotest whtautotest', phone='5552413594', documentType='Passport', documentID='C24910136', branch='Clarence Office', fee=0.0, cashPurchased='NO', purchaseAccount='Savings Account 334340286852'}]
     }
 }
