@@ -28,6 +28,7 @@ import com.nymbus.testrail.CustomStepResult;
 import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import sun.jvm.hotspot.debugger.Page;
@@ -181,9 +182,11 @@ public class C32537_PaymentProcessing420ForceToPrinNoPDrecords extends BaseTest 
                 new CustomStepResult("Payment Amount is not valid", "Payment Amount is valid"));
 
         logInfo("Step 7: Go to the \"Payment Info\" tab");
-//        Pages.accountDetailsPage().clickPaymentInfoTab();
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+        SelenideTools.sleep(100000000);
 
         logInfo("Step 8: Verify the \"Payment Due\" section");
+        Assert.assertFalse(Boolean.parseBoolean(Pages.accountPaymentInfoPage().getDueDateFromRecordByIndex(1)));
     }
 
 }
