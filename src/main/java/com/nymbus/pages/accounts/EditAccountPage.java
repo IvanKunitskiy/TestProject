@@ -286,6 +286,8 @@ public class EditAccountPage extends PageTools {
     private By transactionsGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Transactions')]");
     private By overdraftGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Overdraft')]");
     private By miscGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Misc')]");
+    private By distributionAndMiscGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Distribution and Misc')]");
+    private By termGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Term')]");
 
     /**
      * Click switch elements
@@ -1881,6 +1883,20 @@ public class EditAccountPage extends PageTools {
         waitForElementVisibility(miscGroup);
         waitForElementClickable(miscGroup);
         return isElementVisible(miscGroup);
+    }
+
+    @Step("Is 'Distribution and Misc' group visible")
+    public boolean isDistributionAndMiscGroupVisible() {
+        waitForElementVisibility(distributionAndMiscGroup);
+        waitForElementClickable(distributionAndMiscGroup);
+        return isElementVisible(distributionAndMiscGroup);
+    }
+
+    @Step("Is 'Term' group visible")
+    public boolean isTermGroupVisible() {
+        waitForElementVisibility(termGroup);
+        waitForElementClickable(termGroup);
+        return isElementVisible(termGroup);
     }
 
     @Step("Click the 'Misc' section link")

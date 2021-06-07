@@ -86,8 +86,8 @@ public class C23911_EditCDIRAAccountTest extends BaseTest {
         Pages.accountDetailsPage().clickEditButton();
 
         logInfo("Step 4: Look at the fields, verify that some of them are grouped in such sections:" +
-                "Balance and Interest, Transactions, Overdraft, Misc");
-        AccountActions.editAccount().verifyFieldGroupsAreVisible();
+                "Balance and Interest, Term, Distribution and Misc");
+        AccountActions.editAccount().verifyCDIraFieldGroupsAreVisible();
 
         logInfo("Step 5: Look at the fields and verify that such fields are disabled for editing");
         AccountActions.editAccount().verifyCdIraAccountFieldsAreDisabledForEditing();

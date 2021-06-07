@@ -456,6 +456,12 @@ public class EditAccount {
         Assert.assertTrue(Pages.editAccountPage().isMiscGroupVisible(), "'Misc' group is not visible");
     }
 
+    public void verifyCDIraFieldGroupsAreVisible() {
+        Assert.assertTrue(Pages.editAccountPage().isBalanceAndInterestGroupVisible(), "'Balance and Interest' group is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDistributionAndMiscGroupVisible(), "'Distribution and Misc' group is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isTermGroupVisible(), "'Term' group is not visible");
+    }
+
     /**
      * Common account fields verification
      */
