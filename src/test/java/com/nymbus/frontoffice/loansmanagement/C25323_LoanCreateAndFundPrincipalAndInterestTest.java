@@ -74,6 +74,7 @@ public class C25323_LoanCreateAndFundPrincipalAndInterestTest extends BaseTest {
         // Get escrow payment value for the loan product
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         escrowPaymentValue = Actions.loanProductOverviewActions().getLoanProductEscrowPaymentValue(loanProductName);
+        System.out.println("Escrow Payment Value: " + escrowPaymentValue + " ---------");
 
         // Set the product
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
@@ -184,6 +185,7 @@ public class C25323_LoanCreateAndFundPrincipalAndInterestTest extends BaseTest {
                 "'Frequency' is not valid");
         double paymentAmount = Double.parseDouble(loanAccount.getPaymentAmount());
         double actualPaymentAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getPiPaymentsAmount());
+        System.out.println("Payment Amount: " + paymentAmount + " -------------");
         Assert.assertEquals(actualPaymentAmount, paymentAmount - escrowPaymentValue, "'Amount' is not valid");
         double activePaymentAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getActivePaymentAmount());
         Assert.assertEquals(activePaymentAmount, paymentAmount, "'Active Payment Amount' is not valid");
