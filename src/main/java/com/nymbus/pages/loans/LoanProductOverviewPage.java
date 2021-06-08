@@ -8,7 +8,7 @@ public class LoanProductOverviewPage extends PageTools {
 
     private static By addNewButton = By.xpath("//div/a//span[text()='Add New']");
     private static By escrowPayment = By.xpath("//tr/td[@data-column-id='dataentryfieldnumber_name']" +
-            "[div[@data-field-id='dataentryfieldnumber_name']//span[text()='Escrow payment']]" +
+            "[div[@data-field-id='dataentryfieldnumber_name']//span[text()='Escrow balance']]" +
             "/following-sibling::td[1]/div//span[@class='xwidget_readonly_value']");
 
     @Step("Wait for 'Add New' button is clickable")

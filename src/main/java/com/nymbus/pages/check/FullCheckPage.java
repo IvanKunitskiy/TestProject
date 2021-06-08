@@ -1,6 +1,8 @@
 package com.nymbus.pages.check;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -56,6 +58,7 @@ public class FullCheckPage extends PageTools {
 
     @Step("Get 'Status' text")
     public String getStatus(){
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         waitForElementVisibility(status);
         return getElementText(status);
     }
