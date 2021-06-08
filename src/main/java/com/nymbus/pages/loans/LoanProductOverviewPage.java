@@ -16,6 +16,8 @@ public class LoanProductOverviewPage extends PageTools {
 
     @Step("Is 'Escrow payment' field visible")
     public boolean isEscrowPaymentVisible() {
+        waitForElementVisibility(escrowPayment);
+        waitForElementClickable(escrowPayment);
         return isElementVisible(escrowPayment);
     }
 
