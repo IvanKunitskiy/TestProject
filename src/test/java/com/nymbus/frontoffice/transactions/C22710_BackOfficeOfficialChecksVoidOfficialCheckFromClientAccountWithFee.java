@@ -40,7 +40,6 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
     private double savingsTransactionAmount = 200.00;
     private double returnTransactionAmount = 100.00;
     private double fee = 5.00;
-    private int checkAccountNumber;
     private Check check;
     private String name = "John";
     private FullCheck fullCheck;
@@ -109,7 +108,6 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         Pages.aSideMenuPage().clickSettingsMenuItem();
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().clickViewControls();
-        checkAccountNumber = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());
 
         //New Checks
         check = new Check();
@@ -192,7 +190,6 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         SelenideTools.sleep(Constants.MINI_TIMEOUT);
         Assert.assertEquals(Pages.fullCheckPage().getStatus(),"Void", "Status doesn't match");
 
-
         logInfo("Step 6: Go to account used in DEBIT item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
@@ -211,9 +208,5 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
-//[TransactionData(postingDate=06/07/2021, effectiveDate=06/07/2021, amountSymbol=-, balance=100.0, amount=100.0)]
-//[TransactionData(postingDate=06/07/2021, effectiveDate=06/07/2021, amountSymbol=+, balance=100.0, amount=5.0)]
     }
-
-
 }
