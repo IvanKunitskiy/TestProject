@@ -247,7 +247,5 @@ public class C22721_CDTTellerSessionCommitMoneyOrderWithFeeWaived extends BaseTe
         fullCheck.setDate(null);
         fullCheck.setPurchaser(null);
         Assert.assertEquals(fullCheckFromBankOffice,fullCheck,"Check details doesn't match");
-//[FullCheck{checkNumber='null', purchaser='null', payee='null', date='null', initials='autotest autotest', checkType='Money Order', status='Outstanding', amount=100.0, remitter='ebqautotest whtautotest', phone='5552413594', documentType='Passport', documentID='C24910136', branch='Clarence Office', fee=2.0, cashPurchased='NO', purchaseAccount='Savings Account 334340286852'}]
-//[FullCheck{checkNumber='null', purchaser='null', payee='null', date='null', initials='autotest autotest', checkType='Money Order', status='Outstanding', amount=100.0, remitter='ebqautotest whtautotest', phone='5552413594', documentType='Passport', documentID='C24910136', branch='Clarence Office', fee=0.0, cashPurchased='NO', purchaseAccount='Savings Account 334340286852'}]
     }
 }

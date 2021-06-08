@@ -178,7 +178,7 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         logInfo("Step 5: Click [Commit Transaction] button and click [Verify] button");
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
-        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
         Assert.assertTrue(Pages.confirmModalPage().checkReprintButton(), "Reprint check is not visible");
         String checkNumber = Pages.confirmModalPage().getReprintCheckNumber();
         check.setCheckNumber(checkNumber);
