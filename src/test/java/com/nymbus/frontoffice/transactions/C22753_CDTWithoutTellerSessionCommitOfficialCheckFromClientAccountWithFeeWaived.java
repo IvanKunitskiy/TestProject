@@ -48,7 +48,6 @@ public class C22753_CDTWithoutTellerSessionCommitOfficialCheckFromClientAccountW
     private String name = "John";
     private FullCheck fullCheck;
 
-
     @BeforeMethod
     public void prepareTransactionData() {
         // Set up Client and Accounts
