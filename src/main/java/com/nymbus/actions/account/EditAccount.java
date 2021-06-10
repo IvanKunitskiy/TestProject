@@ -303,6 +303,7 @@ public class EditAccount {
         Pages.editAccountPage().setNumberOfDebitCardsIssued(account.getNumberOfDebitCardsIssued());
         setReasonDebitCardChargeWaived(account);
         setBankruptcyJudgement(account);
+        verifyAccounTypeDropDownListAndChangeType();
         if (Pages.editAccountPage().getApplySeasonalAddressSwitchValue().equals("YES")) {
             Pages.editAccountPage().clickApplySeasonalAddressSwitch();
         }
@@ -316,6 +317,10 @@ public class EditAccount {
         Pages.editAccountPage().setFederalWHPercent(account.getFederalWHPercent());
         Pages.editAccountPage().setNumberOfDebitCardsIssued(account.getNumberOfDebitCardsIssued());
         setStatementCycle(account);
+        verifyAccounTypeDropDownListAndChangeType();
+        Pages.editAccountPage().setDateOfFirstDeposit(account.getDateOfFirstDeposit());
+        Pages.editAccountPage().setBirthDate(account.getBirthDate());
+        Pages.editAccountPage().setDateDeceased(account.getDateDeceased());
         if (Pages.editAccountPage().getExemptFromRegCCSwitchValue().equals("no")) {
             Pages.editAccountPage().clickExemptFromRegCCSwitch();
         }
@@ -379,7 +384,7 @@ public class EditAccount {
         setBankBranch(account);
         setMailCode(account);
         setCorrespondingAccount(account);
-      /*  setDiscountReason(account);*/
+        /*  setDiscountReason(account);*/
     }
 
     public void selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccountWithJs(Account account) {
@@ -670,7 +675,7 @@ public class EditAccount {
         verifyGeneralSavingsAccountFieldsAreDisabledForEditing();
         Assert.assertTrue(Pages.editAccountPage().isInterestRateDisabledInEditMode(), "'Interest Rate' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isInterestLastPaidDisabledInEditMode(), "'Interest Last Paid' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isAccruedInterestThisStatementCycleDisabledInEditMode(),"'Accrued Interest This Statement Cycle' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isAccruedInterestThisStatementCycleDisabledInEditMode(), "'Accrued Interest This Statement Cycle' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isLastDebitAmountFieldDisabledInEditMode(), "'Last Debit Amount' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isLastDepositAmountDisabledInEditMode(), "'Last Deposit Amount' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAmountLastIRADistributionDisabledInEditMode(), "'Amount last IRA distribution' field is not disabled");
@@ -735,10 +740,10 @@ public class EditAccount {
         if (account.getCorrespondingAccount() != null) {
             Pattern pattern = Pattern.compile("[0-9]{12}+");
             Matcher matcher = pattern.matcher(Pages.editAccountPage().getCorrespondingAccount());
-            if(matcher.find()){
+            if (matcher.find()) {
                 Assert.assertEquals(matcher.group(),
-                    account.getCorrespondingAccount(),
-                    "'Corresponding Account' value does not match");
+                        account.getCorrespondingAccount(),
+                        "'Corresponding Account' value does not match");
             }
         }
     }
@@ -770,5 +775,25 @@ public class EditAccount {
             Pages.editAccountPage().clickChangePaymentWithRateChangeSwitch();
             SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         }
+    }
+
+    public void verifyAccounTypeDropDownListAndChangeType() {
+        verifyAccountTypeDropDownList();
+        changeAccountTypeToSomeValue();
+    }
+
+    public void verifyAccountTypeDropDownList() {
+        Assert.assertFalse(Pages.editAccountPage().isAccountTypeFieldDisabledInEditMode(), "'Account Type' field is not disabled");
+        Pages.editAccountPage().clickAccountTypeField();
+        Assert.assertTrue(Pages.editAccountPage().isItemPresentInAccounTypeDropdown("Joint Account"));
+        Assert.assertTrue(Pages.editAccountPage().isItemPresentInAccounTypeDropdown("Officer"));
+        Assert.assertTrue(Pages.editAccountPage().isItemPresentInAccounTypeDropdown("Director"));
+        Assert.assertTrue(Pages.editAccountPage().isItemPresentInAccounTypeDropdown("Employee"));
+        Assert.assertTrue(Pages.editAccountPage().isItemPresentInAccounTypeDropdown("Individual"));
+    }
+
+    public void changeAccountTypeToSomeValue() {
+        Pages.editAccountPage().pickItemFromAccountTypeDropdown("Officer");
+        Assert.assertEquals(Pages.editAccountPage().getAccountTypeFieldValu(), "Officer");
     }
 }

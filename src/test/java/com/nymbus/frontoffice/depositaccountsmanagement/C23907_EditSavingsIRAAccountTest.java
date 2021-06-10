@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -43,6 +44,9 @@ public class C23907_EditSavingsIRAAccountTest extends BaseTest {
         savingsIRAAccount.setBankBranch(Actions.usersActions().getBankBranch());
         savingsIRAAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.IRA, RateType.TIER));
         savingsIRAAccount.setApplyInterestTo("Remain in Account");
+        savingsIRAAccount.setBirthDate(DateTime.getYesterdayDate("MM/dd/yyyy"));
+        savingsIRAAccount.setDateOfFirstDeposit(DateTime.getLocalDate());
+        savingsIRAAccount.setDateDeceased(DateTime.getLocalDate());
 
         // Create a client
         ClientsActions.individualClientActions().createClient(client);

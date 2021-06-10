@@ -75,29 +75,12 @@ public class C22573_EditCheckingAccountTest extends BaseTest {
 
         logInfo("Step 6: Select data in such dropdown fields that were not available in Add New mode");
         logInfo("Step 7: Look at the field 'Account Type' and verify that such field is not disabled for editing");
-        Assert.assertFalse(Pages.editAccountPage().isAccountTypeFieldDisabledInEditMode(), "'Account Type' field is not disabled");
-
         logInfo("Step 8: Click on the 'Account Type' drop-down and verify the account types that are present in the list");
-        Pages.editAccountPage().clickAccountTypeField();
-        System.out.println(Pages.editAccountPage().isItemPresentInAccounTypeDropdown("Joint Account") + " -------------");
-        Assert.assertTrue(Pages.editAccountPage().isItemPresentInAccounTypeDropdown("Joint Account"));
-        Assert.assertTrue(Pages.editAccountPage().isItemPresentInAccounTypeDropdown("Officer"));
-        Assert.assertTrue(Pages.editAccountPage().isItemPresentInAccounTypeDropdown("Director"));
-        Assert.assertTrue(Pages.editAccountPage().isItemPresentInAccounTypeDropdown("Employee"));
-        Assert.assertTrue(Pages.editAccountPage().isItemPresentInAccounTypeDropdown("Individual"));
-
         logInfo("Step 9: Change account type to some value from the drop-down list (e.g. Officer)");
-        Pages.editAccountPage().pickItemFromAccountTypeDropdown(String.format("%s", "Officer"));
-        Assert.assertEquals(Pages.editAccountPage().getAccountTypeFieldValu(), "Officer");
-
         logInfo("Step 10: Fill in such text fields that were not displayed in Add new mode");
         logInfo("Step 11: Select any other value in such fields");
-        AccountActions.editAccount().selectValuesInFieldsThatWereNotAvailableDuringCheckingAccountCreation(checkingAccount);
-
         logInfo("Step 12: Set Apply Seasonal Address switcher to NO");
-        if (Pages.editAccountPage().getApplySeasonalAddressSwitchValue().equals("YES")) {
-            Pages.editAccountPage().clickApplySeasonalAddressSwitch();
-        }
+        AccountActions.editAccount().selectValuesInFieldsThatWereNotAvailableDuringCheckingAccountCreation(checkingAccount);
 
         logInfo("Step 13: Click [-] icon next to any section (e.g. Transactions section) and verify that all fields within this section were hidden");
         Pages.editAccountPage().clickMiscSectionLink();

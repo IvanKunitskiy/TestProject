@@ -2060,7 +2060,7 @@ public class EditAccountPage extends PageTools {
     public void pickItemFromAccountTypeDropdown(String item){
         waitForElementVisibility(acccountTypeDropdownItem, item);
         waitForElementClickable(acccountTypeDropdownItem, item);
-        click(acccountTypeDropdownItem);
+        click(acccountTypeDropdownItem, item);
     }
 
     @Step("Click on 'Account Type' field")
