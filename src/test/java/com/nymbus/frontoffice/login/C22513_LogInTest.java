@@ -21,6 +21,8 @@ public class C22513_LogInTest extends BaseTest {
     @Test(description = "C22513, Log in")
     public void verifyLogin() {
 
+        logInfo("Step 1: Go to the Log-in page");
+        logInfo("Step 2: Do not fill in the 'Username' and the 'Password' fields and click [Enter] button");
         Pages.loginPage().waitForLoginForm();
         Pages.loginPage().typeUserName("");
         Pages.loginPage().typePassword("");
@@ -30,6 +32,8 @@ public class C22513_LogInTest extends BaseTest {
         Assert.assertTrue(Pages.loginPage().isPasswordFieldHasError(),
                 "Error messages for password field is not visible");
 
+        logInfo("Step 3: Fill in 'Username' and the 'Password' fields with valid data for User from the " +
+                "Precondition and click [Enter] button");
         Pages.loginPage().waitForLoginForm();
         Pages.loginPage().typeUserName(Constants.USERNAME);
         Pages.loginPage().typePassword(Constants.PASSWORD);
