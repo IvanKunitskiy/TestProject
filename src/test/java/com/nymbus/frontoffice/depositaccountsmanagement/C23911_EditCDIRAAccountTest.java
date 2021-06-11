@@ -45,9 +45,6 @@ public class C23911_EditCDIRAAccountTest extends BaseTest {
         cdIRAAccount.setApplyInterestTo("CHK Acct");
         cdIRAAccount.setCorrespondingAccount(checkingAccount.getAccountNumber());
 
-        System.out.println("Chk acc number: " + checkingAccount.getAccountNumber());
-        System.out.println("cdiRAAcc corresponding account: " + cdIRAAccount.getCorrespondingAccount());
-
         // Login to the system
         Selenide.open(Constants.URL);
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);

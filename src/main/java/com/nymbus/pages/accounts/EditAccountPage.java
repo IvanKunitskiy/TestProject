@@ -843,6 +843,11 @@ public class EditAccountPage extends PageTools {
         return Boolean.parseBoolean(getElementAttributeValue("disabled", iraDistributionAccountNumber));
     }
 
+    @Step("Check if 'IRA Distribution Account Number' field is visible edit mode")
+    public boolean isIRADistributionAccountNumberVisibleInEditMode() {
+        return isElementVisible(iraDistributionAccountNumber);
+    }
+
     @Step("Check if 'Bank Routing Number for IRA Distr' field is disabled edit mode")
     public boolean isBankRoutingNumberForIRADistrDisabledInEditMode() {
         return Boolean.parseBoolean(getElementAttributeValue("disabled", bankRoutingNumberForIRADistr));

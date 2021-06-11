@@ -1,6 +1,5 @@
 package com.nymbus.actions.account;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
@@ -303,7 +302,7 @@ public class EditAccount {
         Pages.editAccountPage().setNumberOfDebitCardsIssued(account.getNumberOfDebitCardsIssued());
         setReasonDebitCardChargeWaived(account);
         setBankruptcyJudgement(account);
-        verifyAccounTypeDropDownListAndChangeType();
+        verifyAccountTypeDropDownListAndChangeType();
         if (Pages.editAccountPage().getApplySeasonalAddressSwitchValue().equals("YES")) {
             Pages.editAccountPage().clickApplySeasonalAddressSwitch();
         }
@@ -317,7 +316,7 @@ public class EditAccount {
         Pages.editAccountPage().setFederalWHPercent(account.getFederalWHPercent());
         Pages.editAccountPage().setNumberOfDebitCardsIssued(account.getNumberOfDebitCardsIssued());
         setStatementCycle(account);
-        verifyAccounTypeDropDownListAndChangeType();
+        verifyAccountTypeDropDownListAndChangeType();
         Pages.editAccountPage().setDateOfFirstDeposit(account.getDateOfFirstDeposit());
         Pages.editAccountPage().setBirthDate(account.getBirthDate());
         Pages.editAccountPage().setDateDeceased(account.getDateDeceased());
@@ -353,6 +352,7 @@ public class EditAccount {
         account.setApplyInterestTo("CHK Acct");
         setApplyInterestTo(account);
         setCorrespondingAccount(account);
+        verifyAccountTypeDropDownListAndChangeType();
         if (!Pages.editAccountPage().getTransactionalAccountInEditMode().equalsIgnoreCase("yes")) {
             Pages.editAccountPage().clickTransactionalAccountSwitch();
         }
@@ -726,7 +726,9 @@ public class EditAccount {
         Assert.assertTrue(Pages.editAccountPage().isSpecialMailingInstructionsDisabledInEditMode(), "'Special Mailing Instructions' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAmountLastIRADistributionDisabledInEditMode(), "'Amount last IRA distribution' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isDateLastIRADistributionDisabledInEditMode(), "'Date last IRA distribution' field is not disabled");
-        Assert.assertTrue(Pages.editAccountPage().isIraDistributionAccountNumberDisabledInEditMode(), "'IRA Distribution Account Number' field is not disabled");
+        if(Pages.editAccountPage().isIRADistributionAccountNumberVisibleInEditMode()){
+            Assert.assertTrue(Pages.editAccountPage().isIraDistributionAccountNumberDisabledInEditMode(), "'IRA Distribution Account Number' field is not disabled");
+        }
         Assert.assertTrue(Pages.editAccountPage().isTotalContributionsDisabledInEditMode(), "'Total Contributions for Life of Account' field is not disabled");
     }
 
@@ -777,7 +779,7 @@ public class EditAccount {
         }
     }
 
-    public void verifyAccounTypeDropDownListAndChangeType() {
+    public void verifyAccountTypeDropDownListAndChangeType() {
         verifyAccountTypeDropDownList();
         changeAccountTypeToSomeValue();
     }
