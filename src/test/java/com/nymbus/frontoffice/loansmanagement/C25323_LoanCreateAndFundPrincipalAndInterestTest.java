@@ -185,7 +185,6 @@ public class C25323_LoanCreateAndFundPrincipalAndInterestTest extends BaseTest {
                 "'Frequency' is not valid");
         double paymentAmount = Double.parseDouble(loanAccount.getPaymentAmount());
         double actualPaymentAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getPiPaymentsAmount());
-        System.out.println("Payment Amount: " + paymentAmount + " -------------");
         Assert.assertEquals(actualPaymentAmount, paymentAmount - escrowPaymentValue, "'Amount' is not valid");
         double activePaymentAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getActivePaymentAmount());
         Assert.assertEquals(activePaymentAmount, paymentAmount, "'Active Payment Amount' is not valid");
