@@ -311,6 +311,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
             + "//td/div[@key-name='(databean)name']");
     private By interestValue = By.xpath("//table[@id='searchResultTable']//tr[%s]//td/div[@key-name='interest']");
     private By transactionStatus = By.xpath("(//table[@id='searchResultTable']//tr[%s]//td)[24]//span/span");
+    private By transactionEftDescription = By.xpath("(//div[@key-name='uniqueeftdescription'])[%s]");
 
 
     @Step("Get 'terminalId' {0} value")
@@ -341,6 +342,12 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getTransactionStatus(int index) {
         waitForElementVisibility(transactionStatus, index);
         return getElementText(transactionStatus, index).trim();
+    }
+
+    @Step("Get 'eft description' {0} value")
+    public String getEftDescription(int index) {
+        waitForElementVisibility(transactionEftDescription, index);
+        return getElementText(transactionEftDescription, index).trim();
     }
 
     /**

@@ -55,7 +55,8 @@ public class C22603_SearchFilterTransactionHistoryWarehouseTest extends BaseTest
 
         logInfo("Step 5: Look through the list of the transactions and make sure that there are no transactions \n" +
                 "were Effective Date is less than or equal to Current Date");
-        AccountActions.accountTransactionActions().verifyTransactionList(WebAdminActions.loginActions().getSystemDate(), false);
+        AccountActions.accountTransactionActions().verifyTransactionListWithACH(userCredentials,
+                WebAdminActions.loginActions().getSystemDate(), false, accountNumber);
 
         logInfo("Step 6: Remove the value from the 'Show Transactions from' drop-down search filter and click [Apply Filter] button");
         AccountActions.accountTransactionActions().clearFilterRegion();
