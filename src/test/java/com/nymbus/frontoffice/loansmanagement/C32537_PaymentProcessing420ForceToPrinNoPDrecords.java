@@ -45,12 +45,7 @@ public class C32537_PaymentProcessing420ForceToPrinNoPDrecords extends BaseTest 
     private Transaction transaction_420;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
-    private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
-    private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
     private final String TEST_RUN_NAME = "Loans Management";
-    private String nextPaymentBilledDueDate;
-    private double interest;
-    private int transaction109Amount;
 
     @BeforeMethod
     public void preConditions() {
@@ -126,7 +121,6 @@ public class C32537_PaymentProcessing420ForceToPrinNoPDrecords extends BaseTest 
         logInfo("Step 2: Go to the 'Teller' screen");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
-        System.out.println("--------------------- " + Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance()));
         double currentBalanceBefore = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
 
         Actions.transactionActions().goToTellerPage();
@@ -172,21 +166,19 @@ public class C32537_PaymentProcessing420ForceToPrinNoPDrecords extends BaseTest 
         TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(1)
                         .equals(String.valueOf(TransactionCode.PRIN_PAYM_ONLY_406.getTransCode())),
                 new CustomStepResult("'Transaction Code' code is not valid", "'Transaction Code' code is valid"));
-        System.out.println(Double.parseDouble(Pages.accountTransactionPage().getBalanceValue(1)));
 
         Pages.accountDetailsPage().clickDetailsTab();
         double currentBalanceAfter = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
-        System.out.println(currentBalanceAfter);
-        System.out.println(currentBalanceBefore - PAYMENT_AMOUNT);
+
         TestRailAssert.assertTrue(currentBalanceBefore - PAYMENT_AMOUNT == currentBalanceAfter,
                 new CustomStepResult("Payment Amount is not valid", "Payment Amount is valid"));
 
-        logInfo("Step 7: Go to the \"Payment Info\" tab");
+        logInfo("Step 7: Go to the 'Payment Info' tab");
         Pages.accountDetailsPage().clickPaymentInfoTab();
-        SelenideTools.sleep(100000000);
 
-        logInfo("Step 8: Verify the \"Payment Due\" section");
-        Assert.assertFalse(Boolean.parseBoolean(Pages.accountPaymentInfoPage().getDueDateFromRecordByIndex(1)));
+        logInfo("Step 8: Verify the 'Payment Due' section");
+        TestRailAssert.assertFalse(Pages.accountPaymentInfoPage().isDueDateFromRecordByIndexPresent(),
+                new CustomStepResult("'Payment Due' payment is present on the page", "'Payment Due' payment is not present on the page"));
     }
 
 }
