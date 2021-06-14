@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 
 public class OfficialControlPage extends PageTools {
     private By lastCheckNumber = By.xpath("//tr[contains(string(),'Cashiers Check')][2]/td[7]//span");
+    private By lastMoneyOrderNumber = By.xpath("//tr[contains(string(),'Money Order')][2]/td[7]//span");
 
 
     @Step("Return check number")
@@ -15,5 +16,12 @@ public class OfficialControlPage extends PageTools {
         SelenideTools.sleep(Constants.MINI_TIMEOUT);
         waitForElementVisibility(lastCheckNumber);
         return getElementText(lastCheckNumber);
+    }
+
+    @Step("Return check number")
+    public String checkAccountNumberForMoneyOrder() {
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        waitForElementVisibility(lastMoneyOrderNumber);
+        return getElementText(lastMoneyOrderNumber);
     }
 }

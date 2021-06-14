@@ -97,7 +97,7 @@ public class C28143_CreateClientIndividualCustomerTest extends BaseTest {
         logInfo("Step 14: Upload the signature or use signature pad and click [Save and Continue] button");
         ClientsActions.individualClientActions().setDocumentation(individualClient);
 
-        logInfo("Step 15: Click [View Member Profile] button");
+        logInfo("Step 15: Click [View Customer Profile] button");
         ClientsActions.individualClientActions().verifyClientData(individualClient);
     }
 }
