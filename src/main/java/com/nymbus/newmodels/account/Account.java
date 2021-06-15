@@ -64,6 +64,7 @@ public class Account {
     private String interestPaidYTD;
     private String iraDistributionFrequency;
     private String iraDistributionCode;
+    private String iraDistributionAccountNumber;
     private String iraDistributionAmount;
     private String dateNextIRADistribution;
     private String applyInterestTo;
@@ -1168,5 +1169,13 @@ public class Account {
 
     public void setCurrentEffectiveRateIsTeaser(boolean currentEffectiveRateIsTeaser) {
         this.currentEffectiveRateIsTeaser = currentEffectiveRateIsTeaser;
+    }
+
+    public String getIraDistributionAccountNumber() {
+        return iraDistributionAccountNumber;
+    }
+
+    public void setIraDistributionAccountNumber(String iraDistributionAccountNumber) {
+        this.iraDistributionAccountNumber = iraDistributionAccountNumber;
     }
 }

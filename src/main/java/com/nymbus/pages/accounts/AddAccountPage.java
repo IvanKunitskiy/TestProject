@@ -142,6 +142,10 @@ public class AddAccountPage extends PageTools {
     private final By iraDistributionCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private final By iraDistributionCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
+    private final By iraDistributionAccountNumber = By.xpath("//div[@data-test-id='field-iradistributionaccountid']//b/..");
+    private final By iraDistributionAccountNumberDiv = By.xpath("//div[@data-test-id='field-iradistributionaccountid']");
+    private final By iraDistributionAccountNumberOption = By.xpath("(//span[@ng-bind-html='item.name'])[1]");
+
     private final By applyInterestToSelectorButton = By.xpath("//div[@id='codetoapplyinterestto']");
     private final By applyInterestToList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private final By applyInterestToSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
@@ -308,11 +312,35 @@ public class AddAccountPage extends PageTools {
         click(iraDistributionCodeSelectorButton);
     }
 
+    @Step("Click the 'IRA Distribution Account number' selector button")
+    public void clickIRADistributionAccountNumberSelectorButton() {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        waitForElementVisibility(iraDistributionAccountNumber);
+        scrollToPlaceElementInCenter(iraDistributionAccountNumber);
+        waitForElementClickable(iraDistributionAccountNumber);
+        jsClick(iraDistributionAccountNumber);
+    }
+
+    @Step("Click the 'IRA Distribution Account number' selector button")
+    public boolean checkIRADistributionAccountNumberSelectorButtonIsDisabled() {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        waitForElementVisibility(iraDistributionAccountNumberDiv);
+        scrollToPlaceElementInCenter(iraDistributionAccountNumberDiv);
+        return getElementAttributeValue("disabled",iraDistributionAccountNumberDiv).equals("disabled");
+    }
+
     @Step("Click the 'IRA Distribution Frequency' option")
     public void clickIRADistributionFrequencySelectorOption(String iraDistributionFrequencyOption) {
         waitForElementVisibility(iraDistributionFrequencySelectorOption, iraDistributionFrequencyOption);
         waitForElementClickable(iraDistributionFrequencySelectorOption, iraDistributionFrequencyOption);
         click(iraDistributionFrequencySelectorOption, iraDistributionFrequencyOption);
+    }
+
+    @Step("Click the 'IRA Distribution Account number' option")
+    public void clickIRADistributionAccountNumberSelectorOption(String iraDistributionAccountNumber) {
+        waitForElementVisibility(iraDistributionAccountNumberOption, iraDistributionAccountNumber);
+        waitForElementClickable(iraDistributionAccountNumberOption, iraDistributionAccountNumber);
+        click(iraDistributionAccountNumberOption, iraDistributionAccountNumber);
     }
 
     @Step("Returning list of 'IRA Distribution Frequency' options")
