@@ -151,6 +151,17 @@ public class WebAdminTransactionActions {
                 + "&source=";
     }
 
+    private String getEftDescriptionUrl(String date, String accountNumber) {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?" +
+                "waDbName=fnbuatcoreDS&" +
+                "dqlQuery=count%3A+10%0D%0A" +
+                "from%3A+bank.data.transaction.item%0D%0A" +
+                "where%3A+%0D%0A-+effectiveentrydate%3A+%27" + date + "%27++%23" + //2021-06-10
+                "Date+for+transaction%0D%0A-+.accountnumber->accountnumber%3A+" + accountNumber + "%0D%0A%23+-+" + //41100095722
+                "amount%3A+14.03%0D%0Aextra%3A+%0D%0A-+%24stat%3A+.transactionheaderid->transactionstatusid&source=";
+    }
+
     public void goToWaiveATUsageFeeAcronymUrl() {
         Selenide.open(getWaiveATUsageFeeAcronymUrl());
 
@@ -195,6 +206,12 @@ public class WebAdminTransactionActions {
 
     public void goToTransactionHeaderByRootUrl(String root) {
         Selenide.open(getTransactionHeaderByRootUrl(root));
+
+        waitForSearchResults();
+    }
+
+    public void goToEftDescriptionURL(String date, String accountNumber) {
+        Selenide.open(getEftDescriptionUrl(date, accountNumber));
 
         waitForSearchResults();
     }
@@ -333,9 +350,9 @@ public class WebAdminTransactionActions {
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         String principalNextDate = WebAdminActions.webAdminUsersActions().getPrincipalNextPaymentDate(account.getAccountNumber());
         principalNextDate = DateTime.getDateWithFormat(principalNextDate, "yyyy-MM-dd", "MM/dd/yyyy");
-        String dateExpected = DateTime.getDatePlusMonth(account.getDateOpened(),2);
+        String dateExpected = DateTime.getDatePlusMonth(account.getDateOpened(), 2);
         TestRailAssert.assertTrue(principalNextDate.equals(dateExpected),
-                new CustomStepResult("'principalnextpaymentdate' is not valid","'principalnextpaymentdate' is valid" ));
+                new CustomStepResult("'principalnextpaymentdate' is not valid", "'principalnextpaymentdate' is valid"));
     }
 
     public WebTransactionData getTransactionInfo(UserCredentials userCredentials) {
@@ -365,11 +382,18 @@ public class WebAdminTransactionActions {
         return webTransactionData;
     }
 
-    public String getTransactionStatusFromHeader(UserCredentials userCredentials, String clientRootId){
+    public String getTransactionStatusFromHeader(UserCredentials userCredentials, String clientRootId) {
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         WebAdminActions.webAdminTransactionActions().goToTransactionHeaderByRootUrl(clientRootId);
         return WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionStatus(2);
+    }
+
+    public String getUniqueEftDescription(UserCredentials userCredentials, String date, String accountNumber) {
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        WebAdminActions.webAdminTransactionActions().goToEftDescriptionURL(date, accountNumber);
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getEftDescription(2);
     }
 
     public String getTransactionStatusFromHeader(UserCredentials userCredentials, Account account) {

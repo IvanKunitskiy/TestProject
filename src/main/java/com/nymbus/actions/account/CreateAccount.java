@@ -49,7 +49,7 @@ public class CreateAccount {
         setBankBranch(account);
         setMailCode(account);
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
-         Pages.addAccountPage().setInterestRate(account.getInterestRate());
+        Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
         //TODO ucom
         //setCallClassCode(account);
@@ -233,6 +233,7 @@ public class CreateAccount {
         setCallClassCode(account);
         setIRADistributionFrequency(account);
         setIRADistributionCode(account);
+        setIRADistributionAccountNumber(account);
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         Pages.addAccountPage().setIRADistributionAmountValue(account.getIraDistributionAmount());
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
@@ -375,6 +376,13 @@ public class CreateAccount {
             account.setIraDistributionCode(listOfIRADistributionCode.get(new Random().nextInt(listOfIRADistributionCode.size())).trim());
         }
         Pages.addAccountPage().clickIRADistributionCodeSelectorOption(account.getIraDistributionCode());
+    }
+
+    public void setIRADistributionAccountNumber(Account account) {
+        if (account.getIraDistributionAccountNumber() != null) {
+            Pages.addAccountPage().clickIRADistributionAccountNumberSelectorButton();
+            Pages.addAccountPage().clickIRADistributionAccountNumberSelectorOption(account.getIraDistributionAccountNumber());
+        }
     }
 
     public void setCorrespondingAccount(Account account) {
@@ -897,6 +905,11 @@ public class CreateAccount {
     public void verifySavingsIraAccountPrefilledFields(Account account, IndividualClient client) {
         verifyAccountPrefilledFields(account, client);
         verifyIraAccountPrefilledFields(account, client);
+        if (Constants.getEnvironment().equals("dev4")) {
+            Assert.assertTrue(Pages.addAccountPage().isApplySeasonalAddressYes(), "'Apply Seasonal Address' is prefilled with wrong value");
+        } else {
+            Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' is prefilled with wrong value");
+        }
     }
 
     /**
