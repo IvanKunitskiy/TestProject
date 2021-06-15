@@ -9,7 +9,7 @@ public class LoanProductOverviewActions {
 
     public void expandAllRows() {
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
-        while (Pages.loanProductPage().isLoadMoreResultsButtonVisible()){
+        while (Pages.loanProductPage().isLoadMoreResultsButtonVisible()) {
             Pages.loanProductPage().clickLoadMoreResultsButton();
             SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         }
@@ -61,6 +61,13 @@ public class LoanProductOverviewActions {
         navigateToLoanProductOverviewPage();
         expandAllRows();
         Pages.loanProductPage().clickLoanProductByName(productName);
+        if (!Pages.loanProductOverviewPage().isEscrowPaymentVisible()) {
+            if (Pages.loanProductOverviewPage().getEscrowBalanceValue().isEmpty()) {
+                return 0;
+            }
+
+            return Double.parseDouble(Pages.loanProductOverviewPage().getEscrowBalanceValue());
+        }
 
         if (Pages.loanProductOverviewPage().getEscrowPaymentValue().isEmpty()) {
             return 0;

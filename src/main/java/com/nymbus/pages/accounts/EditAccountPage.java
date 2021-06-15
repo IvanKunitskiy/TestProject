@@ -181,6 +181,7 @@ public class EditAccountPage extends PageTools {
     private By productField = By.xpath("//div[@id='accountclasstype']");
     private By accountNumberField = By.xpath("//input[@id='accountnumber']");
     private By accountTypeField = By.xpath("//div[@id='customertype']");
+    private By accountTypeFieldValue = By.xpath("//div[@id='customertype']//span[@ng-transclude]//span");
     private By originatingOfficerField = By.xpath("//div[@id='originatingofficer']");
     private By accountStatusField = By.xpath("//input[@id='accountstatus']");
     private By dateOpenedField = By.xpath("//input[@id='dateopened']");
@@ -283,9 +284,13 @@ public class EditAccountPage extends PageTools {
      * Groups
      */
     private By balanceAndInterestGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Balance and Interest')]");
-    private By transactionsGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Balance and Interest')]");
-    private By overdraftGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Balance and Interest')]");
-    private By miscGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Balance and Interest')]");
+    private By transactionsGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Transactions')]");
+    private By overdraftGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Overdraft')]");
+    private By miscGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Misc')]");
+    private By distributionAndMiscGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Distribution and Misc')]");
+    private By termGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Term')]");
+
+    private By acccountTypeDropdownItem = By.xpath("//div[@id='customertype']//li[contains(@id, 'ui-select-choices-row')]//span[contains(text(), '%s')]");
 
     /**
      * Click switch elements
@@ -836,6 +841,11 @@ public class EditAccountPage extends PageTools {
     @Step("Check if 'IRA Distribution Account Number' field is disabled edit mode")
     public boolean isIRADistributionAccountNumberDisabledInEditMode() {
         return Boolean.parseBoolean(getElementAttributeValue("disabled", iraDistributionAccountNumber));
+    }
+
+    @Step("Check if 'IRA Distribution Account Number' field is visible edit mode")
+    public boolean isIRADistributionAccountNumberVisibleInEditMode() {
+        return isElementVisible(iraDistributionAccountNumber);
     }
 
     @Step("Check if 'Bank Routing Number for IRA Distr' field is disabled edit mode")
@@ -1883,6 +1893,20 @@ public class EditAccountPage extends PageTools {
         return isElementVisible(miscGroup);
     }
 
+    @Step("Is 'Distribution and Misc' group visible")
+    public boolean isDistributionAndMiscGroupVisible() {
+        waitForElementVisibility(distributionAndMiscGroup);
+        waitForElementClickable(distributionAndMiscGroup);
+        return isElementVisible(distributionAndMiscGroup);
+    }
+
+    @Step("Is 'Term' group visible")
+    public boolean isTermGroupVisible() {
+        waitForElementVisibility(termGroup);
+        waitForElementClickable(termGroup);
+        return isElementVisible(termGroup);
+    }
+
     @Step("Click the 'Misc' section link")
     public void clickMiscSectionLink() {
         scrollToPlaceElementInCenter(miscGroup);
@@ -2029,4 +2053,31 @@ public class EditAccountPage extends PageTools {
         waitForElementClickable(saveAccountButton);
         click(saveAccountButton);
     }
+
+    @Step("Is {0} item present in 'Account Type' dropdown")
+    public boolean isItemPresentInAccounTypeDropdown(String item){
+        waitForElementVisibility(acccountTypeDropdownItem, item);
+        waitForElementClickable(acccountTypeDropdownItem, item);
+        return isElementVisible(acccountTypeDropdownItem, item);
+    }
+
+    @Step("Pick {0} item from 'Account Type' dropdown")
+    public void pickItemFromAccountTypeDropdown(String item){
+        waitForElementVisibility(acccountTypeDropdownItem, item);
+        waitForElementClickable(acccountTypeDropdownItem, item);
+        click(acccountTypeDropdownItem, item);
+    }
+
+    @Step("Click on 'Account Type' field")
+    public void clickAccountTypeField() {
+        waitForElementVisibility(accountTypeField);
+        scrollToPlaceElementInCenter(accountTypeField);
+        waitForElementClickable(accountTypeField);
+        click(accountTypeField);
+    }
+
+    public String getAccountTypeFieldValu() {
+        return getElementText(accountTypeFieldValue);
+    }
+
 }

@@ -74,6 +74,7 @@ public class C25323_LoanCreateAndFundPrincipalAndInterestTest extends BaseTest {
         // Get escrow payment value for the loan product
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         escrowPaymentValue = Actions.loanProductOverviewActions().getLoanProductEscrowPaymentValue(loanProductName);
+        System.out.println("Escrow Payment Value: " + escrowPaymentValue + " ---------");
 
         // Set the product
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
