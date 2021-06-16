@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 public class EditAccountPage extends PageTools {
 
+    private By accountHoldersAndSignersFormTitle = By.xpath("//label[contains(text(), 'Account Holders and Signers')]");
     private By accountTitle = By.xpath("//input[@id='accounttitlemailinginstructions']");
     private By bankBranch = By.xpath("//div[@id='bankbranch']//span[contains(@class, 'ng-scope')]");
     private By product = By.xpath("//div[@id='accountclasstype']//span[contains(@class, 'ng-scope')]");
@@ -80,7 +81,7 @@ public class EditAccountPage extends PageTools {
     private By changePaymentWithRateChange = By.xpath("//dn-switch[@id='changepaymentwithratechange']");
     private By changePaymentWithRateChangeValue = By.xpath("//dn-switch[@id='changepaymentwithratechange']/div/div/span[2]");
 
-    private By federalWHReasonSelectorButton = By.xpath("//div[@id='federalwithholdingreason']");
+    private By federalWHReasonSelectorButton = By.xpath("//div[@id='federalwithholdingreason']");//label[contains(text(), 'Account Holders and Signers')]
     private By federalWHReasonList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By federalWHReasonSelectorOption = By.xpath("//div[@id='federalwithholdingreason']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
@@ -124,7 +125,7 @@ public class EditAccountPage extends PageTools {
     private By bankBranchSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
     private By bankBranchList = By.xpath("//li[contains(@role, 'option')]/div/span");
 
-    private By itemInDropdown =  By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private By itemInDropdown = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
 
     private By correspondingAccountSelectorButton = By.xpath("//div[@id='correspondingaccountid']//span[contains(@class, 'select2-arrow')]");
     private By correspondingAccountList = By.xpath("//li[contains(@role, 'option')]/div/span");
@@ -279,6 +280,15 @@ public class EditAccountPage extends PageTools {
     private final By maxRateLifetimeCap = By.xpath("//input[@id='armlifetimecap']");
     private final By rateRoundingFactor = By.xpath("//input[@id='armroundingfactor']");
     private final By originalInterestRate = By.xpath("//input[@id='armoriginalinterestrate']");
+
+    /**
+     * Labels
+     */
+
+    private By averageBalanceLabel = By.xpath("//label[contains(text(), 'Average Balance')]");
+    private By interesRateLabel = By.xpath("//label[contains(text(), 'Interest Rate')]");
+    private By collectedBalanceLabel = By.xpath("//label[contains(text(), 'Collected Balance')]");
+    private By accruedInterestThisStatementCycleLabel = By.xpath("//label[contains(text(), 'Accrued Interest this statement cycle')]");
 
     /**
      * Groups
@@ -1133,14 +1143,199 @@ public class EditAccountPage extends PageTools {
         return Boolean.parseBoolean(getElementAttributeValue("disabled", accountTypeField));
     }
 
+    /*Check fields visability*/
+
+    @Step("Check if 'Average Balance' is visible")
+    public boolean isAverageBalanceFieldVisible() {
+        waitForElementClickable(averageBalanceLabel);
+        waitForElementVisibility(averageBalanceLabel);
+        return isElementVisible(averageBalanceLabel);
+    }
+
+    @Step("Check if 'Interest Rate' is visible")
+    public boolean isInterestRateFieldVisible() {
+        waitForElementClickable(interesRateLabel);
+        waitForElementVisibility(interesRateLabel);
+        return isElementVisible(interesRateLabel);
+    }
+
+    @Step("Check if 'Collected Balance' is visible")
+    public boolean isCollectedBalanceFieldVisible() {
+        waitForElementClickable(collectedBalanceLabel);
+        waitForElementVisibility(collectedBalanceLabel);
+        return isElementVisible(collectedBalanceLabel);
+    }
+
+    @Step("Check if 'Accrued Interest this statement cycle' is visible")
+    public boolean isAccruedInterestThisStatementCycleFieldVisible() {
+        waitForElementClickable(accruedInterestThisStatementCycleLabel);
+        waitForElementVisibility(accruedInterestThisStatementCycleLabel);
+        return isElementVisible(accruedInterestThisStatementCycleLabel);
+    }
+
+    @Step("Check if 'Low Balance This Statement Cycle' is visible")
+    public boolean isLowBalanceThisFieldVisible() {
+        waitForElementClickable();
+        waitForElementVisibility();
+        return isElementVisible();
+    }
+
+    @Step("Check if 'Balance Last Statement' is visible")
+    public boolean isBalanceLastStatementFieldVisible() {
+        waitForElementClickable();
+        waitForElementVisibility();
+        return isElementVisible();
+    }
+
+    @Step("Check if 'YTD average balance' is visible")
+    public boolean isYTDaveragebalanceFieldVisible() {
+        waitForElementClickable();
+        waitForElementVisibility();
+        return isElementVisible();
+    }
+
+    @Step("Check if 'Date Last Debit' is visible")
+    public boolean isDateLastDebitFieldVisible() {
+        waitForElementClickable();
+        waitForElementVisibility();
+        return isElementVisible();
+    }
+
+    @Step("Check if 'Date Last Check' is visible")
+    public boolean isDateLastCheckFieldVisible() {
+        waitForElementClickable();
+        waitForElementVisibility();
+        return isElementVisible();
+    }
+
+    @Step("Check if 'Date Last Deposit' is visible")
+    public boolean isDateLastDepositFieldVisible() {
+        waitForElementClickable();
+        waitForElementVisibility();
+        return isElementVisible();
+    }
+
+    @Step("Check if 'Annual Percentage Yield' is visible")
+    public boolean isAnnualPercentageYieldFieldVisible() {
+        waitForElementClickable();
+        waitForElementVisibility();
+        return isElementVisible();
+    }
+
+    @Step("Check if 'Interest Paid Year to date' is visible")
+    public boolean isInterestPaidYearFieldVisible() {
+        waitForElementClickable();
+        waitForElementVisibility();
+        return isElementVisible();
+    }
+
+    @Step("Check if 'Avg col bal lst stmt' is visible")
+    public boolean isAvgColBalLstStmtFieldVisible() {
+        waitForElementClickable();
+        waitForElementVisibility();
+        return isElementVisible();
+    }
+
+    @Step("Check if 'Date Last Statement' is visible")
+    public boolean isDateLastStatementFieldVisible() {
+        waitForElementClickable();
+        waitForElementVisibility();
+        return isElementVisible();
+    }
+
+    @Step("Check if 'Average col balance' is visible")
+    public boolean isAveragecolbalanceFieldVisible() {
+        waitForElementClickable();
+        waitForElementVisibility();
+        return isElementVisible();
+    }
+
+    @Step("Check if 'YTD avg col balance' is visible")
+    public boolean isYTDavgcolFieldVisible() {
+        waitForElementClickable();
+        waitForElementVisibility();
+        return isElementVisible();
+    }
+
+    @Step("Check if 'Previous Statement Date' is visible")
+    public boolean isPreviousStatementDateFieldVisible() {
+        waitForElementClickable();
+        waitForElementVisibility();
+        return isElementVisible();
+    }
+
+    @Step("Check if 'Previous Statement Balance' is visible")
+    public boolean isPreviousStatementBalanceFieldVisible() {
+        waitForElementClickable();
+        waitForElementVisibility();
+        return isElementVisible();
+    }
+
+    @Step("Check if 'Interest Paid Last ' is visible")
+    public boolean isInterestPaidLastFieldVisible() {
+        waitForElementClickable();
+        waitForElementVisibility();
+        return isElementVisible();
+    }
+
+
+    @Step("Check if 'Current Balance' is visible")
+    public boolean isCurrentBalanceFieldVisible() {
+        waitForElementClickable(currentBalance);
+        waitForElementVisibility(currentBalance);
+        return isElementVisible(currentBalance);
+    }
+
+    @Step("Check if 'Total Earnings' is visible")
+    public boolean isAvailableBalanceFieldVisible() {
+        waitForElementClickable(availableBalance);
+        waitForElementVisibility(availableBalance);
+        return isElementVisible(availableBalance);
+    }
+
+    @Step("Check if 'Account Type' field is visible")
+    public boolean isAccountTypeFieldVisible() {
+        waitForElementClickable(accountTypeField);
+        waitForElementClickable(accountTypeField);
+        return isElementVisible(accountTypeField);
+    }
+
+    @Step("Check if 'Account Number' field is visible")
+    public boolean isAccountNumberFieldVisible() {
+        waitForElementVisibility(accountNumberField);
+        waitForElementClickable(accountNumberField);
+        return isElementVisible(accountNumberField);
+    }
+
     @Step("Check if 'Account Number' field is disabled edit mode")
     public boolean isAccountNumberFieldDisabledInEditMode() {
         return Boolean.parseBoolean(getElementAttributeValue("disabled", accountNumberField));
     }
 
+    @Step("Check if 'Account Title' field is visible")
+    public boolean isAccountTitleFieldVisible() {
+        waitForElementVisibility(accountTitle);
+        waitForElementClickable(accountTitle);
+        return isElementVisible(accountTitle);
+    }
+
+    @Step("Check if 'Product' field is visible")
+    public boolean isProductFieldVisible() {
+        waitForElementVisibility(productField);
+        waitForElementClickable(productField);
+        return isElementVisible(productField);
+    }
+
     @Step("Check if 'Product' field is disabled edit mode")
     public boolean isProductFieldDisabledInEditMode() {
         return Boolean.parseBoolean(getElementAttributeValue("disabled", productField));
+    }
+
+    @Step("Check if 'Product type' field is visible")
+    public boolean isProductTypeFieldVisible() {
+        waitForElementVisibility(productTypeField);
+        waitForElementClickable(productTypeField);
+        return isElementVisible(productTypeField);
     }
 
     @Step("Check if 'Product type' field is disabled edit mode")
@@ -1181,6 +1376,78 @@ public class EditAccountPage extends PageTools {
     @Step("Check if 'Interest Last paid' field is disabled edit mode")
     public boolean isInterestLastPaidDisabledInEditMode() {
         return Boolean.parseBoolean(getElementAttributeValue("disabled", interestLastPaid));
+    }
+
+    @Step("Check if 'Account Holders and Signers' field is visible")
+    public boolean isAccountHoldersAndSignersFieldVisible() {
+        waitForElementClickable(accountHoldersAndSignersFormTitle);
+        waitForElementVisibility(accountHoldersAndSignersFormTitle);
+        return isElementVisible(accountHoldersAndSignersFormTitle);
+    }
+
+    @Step("Check if 'Account Status' field is visible")
+    public boolean isAccountStatusFieldVisible() {
+        waitForElementClickable(accountStatusField);
+        waitForElementVisibility(accountStatusField);
+        return isElementVisible(accountStatusField);
+    }
+
+    @Step("Check if 'Originating Officer' field is visible")
+    public boolean isOriginatingOfficerFieldVisible() {
+        waitForElementClickable(originatingOfficerField);
+        waitForElementVisibility(originatingOfficerField);
+        return isElementVisible(originatingOfficerField);
+    }
+
+    @Step("Check if 'Current Officer' header is visible")
+    public boolean isCurrentOfficerHeaderVisible() {
+        waitForElementClickable(currentOfficer);
+        waitForElementVisibility(currentOfficer);
+        return isElementVisible(currentOfficer);
+    }
+
+    @Step("Check if 'Bank Branch' field is visible")
+    public boolean isBankBranchFieldVisible() {
+        waitForElementClickable(bankBranch);
+        waitForElementVisibility(bankBranch);
+        return isElementVisible(bankBranch);
+    }
+
+    @Step("Check if 'Mail Code' field is visible")
+    public boolean isMailCodeFieldVisible() {
+        waitForElementClickable(mailCode);
+        waitForElementVisibility(mailCode);
+        return isElementVisible(mailCode);
+    }
+
+    @Step("Check if 'Apply Seasonal Address' switcher is visible")
+    public boolean isApplySeasonalAddressSwitcherVisible() {
+        waitForElementClickable(applySeasonalAddress);
+        waitForElementVisibility(applySeasonalAddress);
+        return isElementVisible(applySeasonalAddress);
+    }
+
+    @Step("Check if 'Special Mailing Instructions' field is visible")
+    public boolean isSpecialMailingInstructionsFieldVisible() {
+        waitForElementClickable(specialMailingInstructions);
+        waitForElementVisibility(specialMailingInstructions);
+        return isElementVisible(specialMailingInstructions);
+
+    }
+
+    @Step("Check if 'Date Opened' field is visible")
+    public boolean isDateOpenedFieldVisible() {
+        waitForElementClickable(dateOpenedField);
+        waitForElementVisibility(dateOpenedField);
+        return isElementVisible(dateOpenedField);
+    }
+
+    @Step("Check if 'Date Closed' field is visible")
+    public boolean isDateClosedFieldVisible() {
+        waitForElementClickable(dateClosedField);
+        waitForElementVisibility(dateClosedField);
+        return isElementVisible(dateClosedField);
+
     }
 
     @Step("Set 'Print Statement Next Update' option")
@@ -1464,9 +1731,9 @@ public class EditAccountPage extends PageTools {
     }
 
     public void clickDiscountReasonSelectorOption(String discountReasonOption) {
-        waitForElementVisibility(discountReasonSelectorOption,  discountReasonOption);
-        waitForElementClickable(discountReasonSelectorOption,  discountReasonOption);
-        click(discountReasonSelectorOption,  discountReasonOption);
+        waitForElementVisibility(discountReasonSelectorOption, discountReasonOption);
+        waitForElementClickable(discountReasonSelectorOption, discountReasonOption);
+        click(discountReasonSelectorOption, discountReasonOption);
     }
 
     @Step("Returning list of 'Discount reason' options")
@@ -1486,9 +1753,9 @@ public class EditAccountPage extends PageTools {
 
     @Step("Click the 'Mail Code' selector button")
     public void clickMailCodeSelectorOption(String mailCodeOption) {
-        waitForElementVisibility(mailCodeSelectorOption,  mailCodeOption);
-        waitForElementClickable(mailCodeSelectorOption,  mailCodeOption);
-        click(mailCodeSelectorOption,  mailCodeOption);
+        waitForElementVisibility(mailCodeSelectorOption, mailCodeOption);
+        waitForElementClickable(mailCodeSelectorOption, mailCodeOption);
+        click(mailCodeSelectorOption, mailCodeOption);
     }
 
     @Step("Returning list of 'Mail Code' options")
@@ -2055,14 +2322,14 @@ public class EditAccountPage extends PageTools {
     }
 
     @Step("Is {0} item present in 'Account Type' dropdown")
-    public boolean isItemPresentInAccounTypeDropdown(String item){
+    public boolean isItemPresentInAccounTypeDropdown(String item) {
         waitForElementVisibility(acccountTypeDropdownItem, item);
         waitForElementClickable(acccountTypeDropdownItem, item);
         return isElementVisible(acccountTypeDropdownItem, item);
     }
 
     @Step("Pick {0} item from 'Account Type' dropdown")
-    public void pickItemFromAccountTypeDropdown(String item){
+    public void pickItemFromAccountTypeDropdown(String item) {
         waitForElementVisibility(acccountTypeDropdownItem, item);
         waitForElementClickable(acccountTypeDropdownItem, item);
         click(acccountTypeDropdownItem, item);
