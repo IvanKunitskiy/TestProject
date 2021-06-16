@@ -251,6 +251,7 @@ public class CreateAccount {
         setCallClassCode(account);
         setIRADistributionFrequency(account);
         setIRADistributionCode(account);
+        setIRADistributionAccountNumber(account);
         Pages.addAccountPage().setIRADistributionAmountValue(account.getIraDistributionAmount());
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setDateNextIRADistributionValue(account.getDateNextIRADistribution());
