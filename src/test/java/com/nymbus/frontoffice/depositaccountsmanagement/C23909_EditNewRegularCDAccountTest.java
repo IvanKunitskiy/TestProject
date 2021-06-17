@@ -75,7 +75,7 @@ public class C23909_EditNewRegularCDAccountTest extends BaseTest {
 
         logInfo("Step 3: Look at the fields, verify that some of them are grouped in such sections:" +
                 "Balance and Interest, Transactions, Overdraft, Misc");
-        AccountActions.editAccount().verifyFieldGroupsAreVisible();
+        AccountActions.editAccount().verifyCDFieldGroupsAreVisible();
 
         logInfo("Step 4: Look at the fields and verify that such fields are disabled for editing");
         AccountActions.editAccount().verifyRegularCdAccountFieldsAreDisabledForEditing();
