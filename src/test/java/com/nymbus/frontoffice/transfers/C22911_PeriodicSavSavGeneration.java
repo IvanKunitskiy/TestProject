@@ -140,7 +140,6 @@ public class C22911_PeriodicSavSavGeneration extends BaseTest {
         TransfersActions.addNewTransferActions().setTransferToAccount(transfer);
         Pages.newTransferPage().setNextDateOfTransfer(transfer.getNextDateOfTransfer());
         TransfersActions.addNewTransferActions().setTransferFrequency(transfer);
-        System.out.println(transfer.getAmount());
         Pages.newTransferPage().setAmount(transfer.getAmount());
         Pages.newTransferPage().clickSaveButton();
         Actions.loginActions().doLogOut();
