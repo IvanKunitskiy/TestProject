@@ -92,7 +92,7 @@ public class C23907_EditSavingsIRAAccountTest extends BaseTest {
         logInfo("Step 11: Fill in such text fields that were not displayed in Add new mode");
         logInfo("Step 12: Select any other value in such fields");
         logInfo("Step 13: Set such switchers");
-        AccountActions.editAccount().selectValuesInFieldsThatWereNotAvailableDuringSavingsAccountCreation(savingsIRAAccount);
+        AccountActions.editAccount().selectValuesInFieldsThatWereNotAvailableDuringSavingsIraAccountCreation(savingsIRAAccount);
 
         logInfo("Step 14: Click [-] icon next to any section (e.g. Transactions section) and verify that all fields within this section were hidden");
         Pages.editAccountPage().clickMiscSectionLink();

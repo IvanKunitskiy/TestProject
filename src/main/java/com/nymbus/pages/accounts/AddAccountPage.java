@@ -44,7 +44,7 @@ public class AddAccountPage extends PageTools {
     private final By dateNextIRADistribution = By.xpath("//input[@id='datenextiradistribution']");
     private final By termType = By.xpath("//input[@id='terminmonthsordays']");
     private final By autoRenewable = By.xpath("//*[@id='autorenewablecode']/div/div/span[contains(@class, 'ng-scope')]");
-    private final By autoRenewableYes = By.xpath("//*[@id='autorenewablecode']/div/div/span");
+    private final By autoRenewableYes = By.xpath("//*[@id='autorenewablecode']/div/div/span[1]");
     private final By interestFrequency = By.xpath("//div[@id='interestfrequencycode']/a/span/span[contains(@class, 'ng-scope')]");
     private final By interestRate = By.xpath("//input[@id='interestrate']");
     private final By interestType = By.xpath("//div[@id='interesttype']/a/span/span[contains(@class, 'ng-scope')]");
