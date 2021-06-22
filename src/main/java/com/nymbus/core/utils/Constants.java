@@ -111,7 +111,7 @@ public class Constants {
             case "dev18":
                 return "https://dev18.nj1.nymbus.com/webadmin/";
             case "dev29":
-                return "https://dev29.development.nymbus.com/webadmin";
+                return "https://dev29.development.nymbus.com/webadmin/";
         }
     }
 
