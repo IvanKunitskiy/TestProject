@@ -93,7 +93,7 @@ public class Constants {
             case "dev18":
                 return "https://dev18.nj1.nymbus.com/frontoffice/#/crm/login";
             case "dev29":
-                return "https://dev29.development.nymbus.com/frontoffice";
+                return "https://dev29.development.nymbus.com/frontoffice/#/crm/login";
         }
     }
 
