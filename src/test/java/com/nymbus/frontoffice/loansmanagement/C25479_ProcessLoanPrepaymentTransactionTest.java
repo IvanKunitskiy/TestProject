@@ -213,7 +213,7 @@ public class C25479_ProcessLoanPrepaymentTransactionTest extends BaseTest {
         String effectiveDate = Pages.accountPaymentInfoPage().getPiPaymentsEffectiveDate();
 
         double expectedAccruedInterest = Double.parseDouble(currentBalanceForInterest) * Double.parseDouble(currentEffectiveRate) / 100 /
-                yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate, dueDate, false);
+                yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate, dueDate, false) - 0.01;
         //String expectedInterest = expectedAccruedInterest + "";
         String expectedInterest = String.format("%.2f", expectedAccruedInterest);
         TestRailAssert.assertTrue(disInterest.equals(expectedInterest),
