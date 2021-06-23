@@ -382,8 +382,13 @@ public class CreateAccount {
 
     public void setIRADistributionAccountNumber(Account account) {
         if (account.getIraDistributionAccountNumber() != null) {
-            Pages.addAccountPage().clickIRADistributionAccountNumberSelectorButton();
-            Pages.addAccountPage().clickIRADistributionAccountNumberSelectorOption(account.getIraDistributionAccountNumber());
+            if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev12")) {
+                Pages.addAccountPage().clickIRADistributionAccountNumberSelectorButton(account.getIraDistributionAccountNumber());
+                Pages.addAccountPage().clickIRADistributionAccountNumberSelectorOption(account.getIraDistributionAccountNumber());
+            } else {
+                Pages.addAccountPage().clickIRADistributionAccountNumberSelectorButton();
+                Pages.addAccountPage().clickIRADistributionAccountNumberSelectorOptionSpan(account.getIraDistributionAccountNumber());
+            }
         }
     }
 
