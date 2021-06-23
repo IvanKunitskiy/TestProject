@@ -151,6 +151,7 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
         Pages.accountDetailsPage().waitForFullProfileButton();
         AccountActions.accountDetailsActions().clickMoreButton();
         AccountActions.accountDetailsActions().verifySavingsIRAAccountRecords(savingsIRAAccount);
+        String savAcc = Pages.accountDetailsPage().getAccountNumberValue();
 
         logInfo("Step 18: Repeat steps 2-6\n" +
                 "Fill in all the same fields as in Step7\n" +
@@ -165,7 +166,7 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
         AccountActions.createAccount().setProductType(savingsIRAAccount);
         AccountActions.createAccount().setProduct(savingsIRAAccount);
         savingsIRAAccount.setIraDistributionCode("Savings Acct");
-        savingsIRAAccount.setIraDistributionAccountNumber("");
+        savingsIRAAccount.setIraDistributionAccountNumber(savAcc);
         AccountActions.createAccount().selectValuesInDropdownFieldsRequiredForSavingsIRAAccount(savingsIRAAccount);
 
         logInfo("Step 19: Fill in all other required fields and click [Save] button");
