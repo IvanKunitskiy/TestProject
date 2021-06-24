@@ -29,7 +29,7 @@ public class C22530_SearchByLastFourOfAccountNumberTest extends BaseTest {
     public void preCondition() {
 
         // Set up Client and Account
-        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         IndividualClient client = individualClientBuilder.buildClient();
         savingsAccount = new Account().setSavingsAccountData();
@@ -69,10 +69,12 @@ public class C22530_SearchByLastFourOfAccountNumberTest extends BaseTest {
         if (Pages.clientsSearchPage().getLookupResultOptionsCount() == 9) {
             Assert.assertTrue(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible(), "'Load more results' button is not visible in search lookup list");
         }
-        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), accountNumberQuery), "Search results are not relevant");
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(), accountNumberQuery),
+                "Search results are not relevant");
 
         logInfo("Step 3: Click the 'Search' button");
         Pages.clientsSearchPage().clickOnSearchButton();
-        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchResultsPage().getAccountNumbersFromSearchResults(), accountNumberQuery));
+        Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchResultsPage().getAccountNumbersFromSearchResults(),
+                accountNumberQuery));
     }
 }

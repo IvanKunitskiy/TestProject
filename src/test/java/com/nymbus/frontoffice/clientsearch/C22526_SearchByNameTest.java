@@ -55,7 +55,9 @@ public class C22526_SearchByNameTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Pages.navigationPage().waitForUserMenuVisible();
 
-        logInfo("Step 2: Click within search field and try to search for an existing client (by first name)");
+        logInfo("Step 2: Click within search field and try to search for an existing client by:\n" +
+                "- Client First Name (first 3 letters)\n" +
+                "Do not click [Search] button");
         String firstNameLetters = client.getIndividualType().getFirstName().substring(0, 3);
         Pages.clientsSearchPage().typeToClientsSearchInputField(firstNameLetters);
 
@@ -80,7 +82,8 @@ public class C22526_SearchByNameTest extends BaseTest {
             assertTrue(Pages.clientsSearchResultsPage().isLoadMoreResultsButtonVisible());
         }
 
-        logInfo("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
+        logInfo("Step 4: Clear the data from the field and try to search for an existing client by:\n" +
+                "- Client Last Name (first 3 letters)");
         Pages.clientsSearchPage().clickOnSearchInputFieldClearButton();
 
         try {
@@ -108,6 +111,8 @@ public class C22526_SearchByNameTest extends BaseTest {
             e.printStackTrace();
         }
 
+        logInfo("Step 5: Clear the data from the field and try to search for an existing client by:\n" +
+                "- Client full name (First Name and Last Name)");
         Pages.clientsSearchPage().typeToClientsSearchInputField(client.getNameForDebitCard());
 
         Pages.clientsSearchPage().getAllLookupResults().forEach(c -> assertTrue(c.contains(client.getIndividualType().getFirstName()) &&
