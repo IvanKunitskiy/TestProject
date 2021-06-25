@@ -317,9 +317,6 @@ public class EditAccount {
         Pages.editAccountPage().setNumberOfDebitCardsIssued(account.getNumberOfDebitCardsIssued());
         setStatementCycle(account);
         verifyAccountTypeDropDownListAndChangeType();
-        Pages.editAccountPage().setDateOfFirstDeposit(account.getDateOfFirstDeposit());
-        Pages.editAccountPage().setBirthDate(account.getBirthDate());
-        Pages.editAccountPage().setDateDeceased(account.getDateDeceased());
         if (Pages.editAccountPage().getExemptFromRegCCSwitchValue().equals("no")) {
             Pages.editAccountPage().clickExemptFromRegCCSwitch();
         }
@@ -332,6 +329,14 @@ public class EditAccount {
         if (Pages.editAccountPage().getApplySeasonalAddressSwitchValue().equals("yes")) {
             Pages.editAccountPage().clickApplySeasonalAddressSwitch();
         }
+    }
+
+    public void selectValuesInFieldsThatWereNotAvailableDuringSavingsIraAccountCreation(Account account) {
+        selectValuesInFieldsThatWereNotAvailableDuringSavingsAccountCreation(account);
+        Pages.editAccountPage().setDateOfFirstDeposit(account.getDateOfFirstDeposit());
+        Pages.editAccountPage().setBirthDate(account.getBirthDate());
+        Pages.editAccountPage().setDateDeceased(account.getDateDeceased());
+
     }
 
     public void fillInInputFieldsThatWereNotAvailableDuringCDAccountCreation(Account account) {
@@ -461,7 +466,7 @@ public class EditAccount {
         Assert.assertTrue(Pages.editAccountPage().isMiscGroupVisible(), "'Misc' group is not visible");
     }
 
-    public void verifyCDIraFieldGroupsAreVisible() {
+    public void verifyCDFieldGroupsAreVisible() {
         Assert.assertTrue(Pages.editAccountPage().isBalanceAndInterestGroupVisible(), "'Balance and Interest' group is not visible");
         Assert.assertTrue(Pages.editAccountPage().isDistributionAndMiscGroupVisible(), "'Distribution and Misc' group is not visible");
         Assert.assertTrue(Pages.editAccountPage().isTermGroupVisible(), "'Term' group is not visible");

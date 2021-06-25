@@ -436,6 +436,11 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By statusFromRecordByIndex = By.xpath("//div[@ui-view='paymentsDue']//table/tbody/tr[%s]/td[4]//span/span");
 
     @Step("Get 'Due Date' from 'Payments Due' value by index : {index}")
+
+    public boolean isDueDateFromRecordByIndexPresent() {
+        return isElementVisible(dueDateFromRecordByIndex, 1);
+    }
+
     public String getDueDateFromRecordByIndex(int index) {
         waitForElementVisibility(dueDateFromRecordByIndex, index);
         return getElementText(dueDateFromRecordByIndex, index).trim();

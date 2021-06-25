@@ -68,7 +68,9 @@ public class C22527_SearchByNumberTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Pages.navigationPage().waitForUserMenuVisible();
 
-        logInfo("Step 2: Click within search field and try to search for an existing client (by first name)");
+        logInfo("Step 2: Click within search field and try to search for an existing account by:\n" +
+                "- last 4 digits of account number\n" +
+                "Do not click [Search] button");
         String accountNumber = savingsAccount.getAccountNumber();
         String lastFourNumbers = accountNumber.substring(accountNumber.length() - 4);
         Pages.clientsSearchPage().typeToClientsSearchInputField(lastFourNumbers);
@@ -89,7 +91,8 @@ public class C22527_SearchByNumberTest extends BaseTest {
         clients = Pages.clientsSearchResultsPage().getAccountNumbersFromSearchResults();
         verifyResultsList(clients, lastFourNumbers);
 
-        logInfo("Step 4: Clear the data from the field and try to search for an existing client (by last name)");
+        logInfo("Step 4: Clear the data from the field and try to search for an existing account by:\n" +
+                "- full account number");
         Pages.clientsSearchPage().clickOnSearchInputFieldClearButton();
 
         try {
@@ -107,6 +110,12 @@ public class C22527_SearchByNumberTest extends BaseTest {
         Assert.assertEquals(clients.get(0), savingsAccount.getAccountNumber());
 
         logInfo("Step 5: Click [Search] button and pay attention to the search results list");
+        Pages.clientsSearchPage().clickOnSearchButton();
+        searchResults = Pages.clientsSearchResultsPage().getSearchResultsCount();
+
+        Assert.assertTrue(searchResults > 0);
+
+        Pages.clientsSearchResultsPage().getAccountNumbersFromSearchResults().forEach(c -> assertTrue(c.contains(accountNumber)));
         // TODO: Need to implement assertion for exist Client object
     }
 
