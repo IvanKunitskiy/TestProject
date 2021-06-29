@@ -11,12 +11,14 @@ import com.nymbus.newmodels.client.clientdetails.type.ClientStatus;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.testrail.TestRailIssue;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Backoffice")
+@Feature("Create clients")
+@Owner("Dmytro")
 public class C28143_CreateClientIndividualCustomerTest extends BaseTest {
     private IndividualClient individualClient;
 
@@ -55,7 +57,7 @@ public class C28143_CreateClientIndividualCustomerTest extends BaseTest {
                 "* Address Line 2- any alphanumeric value \n" +
                 "* City- any alphanumeric value \n" +
                 "* Zip Code - 5 digits, + additional field - 4 digits \n" +
-                "* Years in this address - any alphanumeric value");
+                "* Years in this address - any numeric value");
         logInfo("Step 6: Select data for such drop-down fields: \n" +
                 "- Tax Payer ID Type- Individual SSN \n" +
                 "- Issued By \n" +

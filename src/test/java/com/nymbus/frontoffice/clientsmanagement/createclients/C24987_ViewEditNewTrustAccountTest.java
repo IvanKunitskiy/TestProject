@@ -18,13 +18,15 @@ import com.nymbus.newmodels.generation.client.factory.basicinformation.AddressFa
 import com.nymbus.newmodels.generation.client.factory.clientdetails.contactinformation.PhoneFactory;
 import com.nymbus.pages.Pages;
 import com.nymbus.testrail.TestRailIssue;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
+@Epic("Backoffice")
+@Feature("Create clients")
+@Owner("Dmytro")
 public class C24987_ViewEditNewTrustAccountTest extends BaseTest {
     private String clientId;
     private TrustAccountUpdateModel updateModel = new TrustAccountUpdateModel();

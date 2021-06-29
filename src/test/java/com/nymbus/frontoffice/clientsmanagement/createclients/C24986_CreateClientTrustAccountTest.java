@@ -14,12 +14,14 @@ import com.nymbus.newmodels.client.verifyingmodels.TrustAccountPredefinedField;
 import com.nymbus.newmodels.generation.client.builder.OrganisationClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.organisation.TrustAccountBuilder;
 import com.nymbus.testrail.TestRailIssue;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Backoffice")
+@Feature("Create clients")
+@Owner("Dmytro")
 public class C24986_CreateClientTrustAccountTest extends BaseTest {
     private OrganisationClient organisationClient;
     private TrustAccountPredefinedField trustAccountPredefinedField;
