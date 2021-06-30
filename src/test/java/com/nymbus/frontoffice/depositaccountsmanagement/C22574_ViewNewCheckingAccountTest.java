@@ -12,6 +12,7 @@ import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
+import com.nymbus.pages.Pages;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -26,7 +27,6 @@ public class C22574_ViewNewCheckingAccountTest extends BaseTest {
 
     @BeforeMethod
     public void preCondition() {
-
         // Set up Client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
@@ -52,10 +52,9 @@ public class C22574_ViewNewCheckingAccountTest extends BaseTest {
     private final String TEST_RUN_NAME = "Deposit Accounts Management";
 
     @TestRailIssue(issueID = 22574, testRunName = TEST_RUN_NAME)
-    @Test(description = "C22574, View new checking account", enabled = false)
+    @Test(description = "C22574, View new checking account")
     @Severity(SeverityLevel.CRITICAL)
     public void viewNewCheckingAccount() {
-
         logInfo("Step 1: Log in to the system");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
@@ -111,6 +110,8 @@ public class C22574_ViewNewCheckingAccountTest extends BaseTest {
 
 
         logInfo("Step 6: Click [-] icon next to 'Balance and Interest' section and verify that all fields within this section were hidden");
+        Pages.editAccountPage().clickBalanceAndInterestSectionLink();
+
         logInfo("Step 7: Look at the fields and verify that such fields are in 'Transactions' section:\n" +
                 "- Number Of Checks This Statement Cycle\n" +
                 "- Date Last Activity/Contact\n" +
@@ -128,8 +129,10 @@ public class C22574_ViewNewCheckingAccountTest extends BaseTest {
                 "- Transit items deposited\n" +
                 "- ON-US items deposited\n" +
                 "- Service charges YTD");
+        AccountActions.editAccount().verifyTransactionsFieldsAreVisible();
 
         logInfo("Step 8: Click [-] icon next to 'Transactions' section and verify that all fields within this section were hidden");
+        Pages.editAccountPage().clickTransactionsSectionLink();
 
         logInfo("Step 9: Look at the fields and verify that such fields are in 'Overdraft' section:\n" +
                 "- Automatic Overdraft Status\n" +
@@ -159,8 +162,10 @@ public class C22574_ViewNewCheckingAccountTest extends BaseTest {
                 "- NSF fee, rtrn last year\n" +
                 "- Number refunded stmt cycle\n" +
                 "- Amount refunded stmt cycle");
+        AccountActions.editAccount().verifyOverdraftFieldsAreVisible();
 
         logInfo("Step 10: Click [-] icon next to 'Overdraft' section and verify that all fields within this section were hidden");
+        Pages.editAccountPage().clickOverdraftSectionLink();
 
         logInfo("Step 11: Look at the fields and verify that such fields are in 'Misc.' section:\n" +
                 "- Federal W/H reason\n" +
@@ -191,10 +196,15 @@ public class C22574_ViewNewCheckingAccountTest extends BaseTest {
                 "- Total Earnings for Life of Account\n" +
                 "- Verify ACH funds\n" +
                 "- Waive Service Charges");
+        AccountActions.editAccount().verifyMiscFieldsAreVisible();
 
         logInfo("Step 12: Click [-] icon next to 'Misc.' section and verify that all fields within this section were hidden");
+        Pages.editAccountPage().clickMiscSectionLink();
+
         logInfo("Step 13: Look at the fields on the page");
+
         logInfo("Step 14: Click [Expand All] button and verify that all fields within all sections are displayed");
+
         logInfo("Step 15: Click [Collapse All] button and verify that all fields within all sections were hidden");
 
     }
