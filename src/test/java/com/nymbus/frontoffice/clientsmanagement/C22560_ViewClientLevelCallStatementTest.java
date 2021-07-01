@@ -63,7 +63,7 @@ public class C22560_ViewClientLevelCallStatementTest extends BaseTest {
     private final String TEST_RUN_NAME = "Clients Management";
 
     @TestRailIssue(issueID = 22560, testRunName = TEST_RUN_NAME)
-    @Test(description = "C22560, View client level 'Call Statement'", enabled = false)
+    @Test(description = "C22560, View client level 'Call Statement'", enabled = true)
     @Severity(SeverityLevel.CRITICAL)
     public void viewClientLevelCallStatement() {
 
