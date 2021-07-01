@@ -4,10 +4,8 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.nymbus.core.base.PageTools;
 import com.nymbus.core.utils.SelenideTools;
-import com.nymbus.pages.Pages;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.testng.Assert;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -177,6 +175,9 @@ public class EditAccountPage extends PageTools {
     private final By rateRoundingMethodList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private final By rateRoundingMethodSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
 
+    private final By expandAllButton = By.xpath("//button//span[contains(text(), 'Expand All')]");
+    private final By collapseAllButton = By.xpath("//button//span[contains(text(), 'Collapse All')]");
+
     /**
      * Disabled fields in edit mode
      */
@@ -307,7 +308,7 @@ public class EditAccountPage extends PageTools {
     private By interestRateLabel = By.xpath("//label[contains(text(), 'Interest Rate')]");
     private By collectedBalanceLabel = By.xpath("//label[contains(text(), 'Collected Balance')]");
     private By accruedInterestThisStatementCycleLabel = By.xpath("//label[contains(text(), 'Accrued Interest this statement cycle')]");
-    private By lowBalanceThisStatementCycleLabel = By.xpath("//label[contains(text(), 'Low Balance This Statement Cycle')]");
+    private By lowBalanceThisStatementCycleLabel = By.xpath("//tr[@data-test-id='field-lowbalancethisstatementcycle']//td//label");
     private By balanceLastStatementLabel = By.xpath("//label[contains(text(), 'Balance Last Statement')]");
     private By ytdAverageBalanceLabel = By.xpath("//label[contains(text(), 'YTD average balance')]");
     private By dateLastDebitLabel = By.xpath("//label[contains(text(), 'Date Last Debit')]");
@@ -324,14 +325,14 @@ public class EditAccountPage extends PageTools {
     private By interestPaidLastLabel = By.xpath("//label[contains(text(), 'Interest Paid Last')]");
     private By numberOfChecksThisStatementCycleLabel = By.xpath("//label[contains(text(), 'Number Of Checks This Statement Cycle')]");
     private By dateLastActivityContactLabel = By.xpath("//label[contains(text(), 'Date Last Activity/Contact')]");
-    private By numberOfDepositsThisStatementCycleLabel = By.xpath("//tr[@data-test-id='field-numberofdepositsthisstatementcycle']");
+    private By numberOfDepositsThisStatementCycleLabel = By.xpath("//tr[@data-test-id='field-numberofdepositsthisstatementcycle']//td//label");
     private By lastDebitAmountLabel = By.xpath("//label[contains(text(), 'Last Debit Amount')]");
     private By lastCheckAmountLabel = By.xpath("//label[contains(text(), 'Last Check Amount')]");
     private By lastDepositAmountLabel = By.xpath("//label[contains(text(), 'Last Deposit Amount')]");
     private By numberRegDitemsLabel = By.xpath("//label[contains(text(), 'Number Reg D items (6)')]");
     private By regDViolationsLastMosLabel = By.xpath("//label[contains(text(), 'Reg D violations last 12 mos')]");
-    private By ytdChargesWaivedLabel = By.xpath("//label[contains(text(), 'YTD charges waived')]");
-    private By statementCycleLabel = By.xpath("//label[contains(text(), 'Statement Cycle')]");
+    private By ytdChargesWaivedLabel = By.xpath("//tr[@data-test-id='field-chargeswaivedytd']//td//label");
+    private By statementCycleLabel = By.xpath("//tr[@data-test-id='field-statementcycle']//td//label");
     private By chargeOrAnalyzeLabel = By.xpath("//label[contains(text(), 'Charge or analyze')]");
     private By accountAnalysisLabel = By.xpath("//label[contains(text(), 'Account analysis')]");
     private By transitItemsDepositedLabel = By.xpath("//label[contains(text(), 'Transit items deposited')]");
@@ -390,7 +391,7 @@ public class EditAccountPage extends PageTools {
     private By totalEarningsForLifeOfAccountLabel = By.xpath("//label[contains(text(), 'Total Earnings for Life of Account')]");
     private By verifyAchFundsLabel = By.xpath("//label[contains(text(), 'Verify ACH funds')]");
     private By waiveServiceChargesLabel = By.xpath("//label[contains(text(), 'Waive Service Charges')]");
-
+    private By numberOfDebitsThisStatementCycleLabel = By.xpath("//tr[@data-test-id='field-numberofwithdrawalsthisstatementcycle']//td//label");
     /**
      * Groups
      */
@@ -400,6 +401,11 @@ public class EditAccountPage extends PageTools {
     private By miscGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Misc')]");
     private By distributionAndMiscGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Distribution and Misc')]");
     private By termGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Term')]");
+
+    private By balanceAndInterestGroupOpened = By.xpath("//div[contains(@class, 'panel-open')]//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Balance and Interest')]");
+    private By transactionsGroupOpened = By.xpath("//div[contains(@class, 'panel-open')]//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Transactions')]");
+    private By overdraftGroupOpened = By.xpath("//div[contains(@class, 'panel-open')]//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Overdraft')]");
+    private By miscGroupOpened = By.xpath("//div[contains(@class, 'panel-open')]//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Misc')]");
 
     private By acccountTypeDropdownItem = By.xpath("//div[@id='customertype']//li[contains(@id, 'ui-select-choices-row')]//span[contains(text(), '%s')]");
 
@@ -1660,6 +1666,26 @@ public class EditAccountPage extends PageTools {
         return isElementVisible(amountRefundedStmtCycleLabel);
     }
 
+    @Step("Check if 'Misc Section Group' fields is hidden")
+    public boolean isMiscSectionGroupFieldsOpened() {
+        return isElementVisible(miscGroupOpened);
+    }
+
+    @Step("Check if 'Balance And Interest Section Group' fields is hidden")
+    public boolean isBalanceAndInterestSectionGroupFieldsOpened() {
+        return isElementVisible(balanceAndInterestGroupOpened);
+    }
+
+    @Step("Check if 'Transactions Section Group' fields is hidden")
+    public boolean isTransactionsSectionGroupFieldsOpened() {
+        return isElementVisible(transactionsGroupOpened);
+    }
+
+    @Step("Check if 'Overdraft Section Group' fields is hidden")
+    public boolean isOverdraftSectionGroupFieldsOpened() {
+        return isElementVisible(overdraftGroupOpened);
+    }
+
     @Step("Federal W/H reason' field is visible")
     public boolean isFederalWhReasonFieldVisible() {
         waitForElementClickable(federalWhReasonLabel);
@@ -1852,6 +1878,12 @@ public class EditAccountPage extends PageTools {
     public boolean isWaiveServiceChargesFieldVisible() {
         waitForElementClickable(waiveServiceChargesLabel);
         return isElementVisible(waiveServiceChargesLabel);
+    }
+
+    @Step("'Number of Debits This Statement Cycle' field is visible")
+    public boolean isNumberOfDebitsThisStatementCycleLabelVisible() {
+        waitForElementClickable(numberOfDebitsThisStatementCycleLabel);
+        return isElementVisible(numberOfDebitsThisStatementCycleLabel);
     }
 
     @Step("Check if 'Product type' field is disabled edit mode")
@@ -2865,6 +2897,22 @@ public class EditAccountPage extends PageTools {
         scrollToPlaceElementInCenter(accountTypeField);
         waitForElementClickable(accountTypeField);
         click(accountTypeField);
+    }
+
+    @Step("Click 'Expand All' button")
+    public void clickExpandAllButton() {
+        waitForElementVisibility(expandAllButton);
+        scrollToPlaceElementInCenter(expandAllButton);
+        waitForElementClickable(expandAllButton);
+        click(expandAllButton);
+    }
+
+    @Step("Click 'Collapse All' button")
+    public void clickCollapseAllButton() {
+        waitForElementVisibility(collapseAllButton);
+        scrollToPlaceElementInCenter(collapseAllButton);
+        waitForElementClickable(collapseAllButton);
+        click(collapseAllButton);
     }
 
     public String getAccountTypeFieldValu() {

@@ -15,6 +15,7 @@ import com.nymbus.newmodels.generation.client.builder.type.individual.Individual
 import com.nymbus.pages.Pages;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -202,10 +203,24 @@ public class C22574_ViewNewCheckingAccountTest extends BaseTest {
         Pages.editAccountPage().clickMiscSectionLink();
 
         logInfo("Step 13: Look at the fields on the page");
+        Assert.assertFalse(Pages.editAccountPage().isMiscSectionGroupFieldsOpened());
+        Assert.assertFalse(Pages.editAccountPage().isBalanceAndInterestSectionGroupFieldsOpened());
+        Assert.assertFalse(Pages.editAccountPage().isTransactionsSectionGroupFieldsOpened());
+        Assert.assertFalse(Pages.editAccountPage().isOverdraftSectionGroupFieldsOpened());
 
         logInfo("Step 14: Click [Expand All] button and verify that all fields within all sections are displayed");
+        Pages.editAccountPage().clickExpandAllButton();
+        Assert.assertTrue(Pages.editAccountPage().isMiscSectionGroupFieldsOpened());
+        Assert.assertTrue(Pages.editAccountPage().isBalanceAndInterestSectionGroupFieldsOpened());
+        Assert.assertTrue(Pages.editAccountPage().isTransactionsSectionGroupFieldsOpened());
+        Assert.assertTrue(Pages.editAccountPage().isOverdraftSectionGroupFieldsOpened());
 
         logInfo("Step 15: Click [Collapse All] button and verify that all fields within all sections were hidden");
+        Pages.editAccountPage().clickCollapseAllButton();
+        Assert.assertFalse(Pages.editAccountPage().isMiscSectionGroupFieldsOpened());
+        Assert.assertFalse(Pages.editAccountPage().isBalanceAndInterestSectionGroupFieldsOpened());
+        Assert.assertFalse(Pages.editAccountPage().isTransactionsSectionGroupFieldsOpened());
+        Assert.assertFalse(Pages.editAccountPage().isOverdraftSectionGroupFieldsOpened());
 
     }
 }

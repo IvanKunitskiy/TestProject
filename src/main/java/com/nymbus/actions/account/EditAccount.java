@@ -518,7 +518,7 @@ public class EditAccount {
         Assert.assertTrue(Pages.editAccountPage().isNumberOfChecksThisStatementCycleFieldVisible(), "'Number Of Checks This Statement Cycle' is not visible");
         Assert.assertTrue(Pages.editAccountPage().isDateLastActivityContactFieldVisible(), "'Date Last Activity/Contact' is not visible");
         Assert.assertTrue(Pages.editAccountPage().isNumberOfDepositsThisStatementCycleFieldVisible(), "'Number Of Deposits This Statement Cycle' is not visible");
-        Assert.assertTrue(Pages.editAccountPage().isLowBalanceThisStatementCycleFieldVisible(), "'Low Balance This Statement Cycle' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isNumberOfDebitsThisStatementCycleLabelVisible(), "'Number of Debits This Statement Cycle' is not visible");
         Assert.assertTrue(Pages.editAccountPage().isLastDebitAmountFieldVisible(), "'Last Debit Amount' is not visible");
         Assert.assertTrue(Pages.editAccountPage().isLastCheckAmountFieldVisible(), "'Last Check Amount' is not visible");
         Assert.assertTrue(Pages.editAccountPage().isLastDepositAmountFieldVisible(), "'Last Deposit Amount' is not visible");
