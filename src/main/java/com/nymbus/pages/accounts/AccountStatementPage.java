@@ -13,6 +13,7 @@ public class AccountStatementPage extends PageTools {
     private By pdfLoadSpinner = By.xpath("//div[@class='spinnerWrapper']");
 
     public File downloadCallStatementPdf() {
+        waitForElementVisibility(downloadButtonLink);
         return downloadFile(downloadButtonLink);
     }
 

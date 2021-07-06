@@ -3,8 +3,10 @@ package com.nymbus.frontoffice.clientsmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -19,6 +21,7 @@ import com.nymbus.newmodels.generation.debitcard.DebitCardConstructor;
 import com.nymbus.newmodels.generation.debitcard.builder.DebitCardBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.pages.Pages;
+import com.nymbus.pages.settings.SettingsPage;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -84,6 +87,12 @@ public class C22552_CreateNewDebitCard extends BaseTest {
 
         // Set created CHK account as related to credit card
         debitCard.getAccounts().add(checkingAccount.getAccountNumber());
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        SettingsPage.mainPage().clickViewSettingsLink();
+        SettingsPage.bankControlPage().clickDebitCardsTab();
+        int days = SettingsPage.bankControlPage().getDebitCardEffectiveDays();
+        String dateEffective = DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), - days);
+        debitCard.setDateEffective(dateEffective);
         Actions.loginActions().doLogOut();
     }
 
@@ -108,29 +117,29 @@ public class C22552_CreateNewDebitCard extends BaseTest {
         logInfo("Step 5: Select Bin Number from the precondition and make sure its description is populated automatically");
         logInfo("Step 6: Click [Next] button");
         Actions.debitCardModalWindowActions().fillDebitCard(debitCard);
-        String dateEffective = Pages.debitCardModalWindow().getDateEffective();
-        debitCard.setDateEffective(dateEffective);
 
         logInfo("Step 7: Look at the ATM Daily Limit Number (Amount and Number), Debit Purchase Daily Limit Number (Amount and Number)");
-        logInfo("Step 8: Look at the Expiration Date field");
+        logInfo("Step 8: Look at the Date Effective field\n" +
+                "Verify that Date Effective is set to Current Business Date + ‘DebitCardEffectiveDateDays’ bc setting numeric value for the new Debit Card");
+        logInfo("Step 9: Look at the Expiration Date field");
         Actions.debitCardModalWindowActions().verifyDebitCardFilledValues(debitCard);
 
-        logInfo("Step 9: Select account from preconditions in 'Account #1' field, specify all the displayed fields with valid data and click [Save and Finish] button");
+        logInfo("Step 10: Select account from preconditions in 'Account #1' field, specify all the displayed fields with valid data and click [Save and Finish] button");
         Pages.debitCardModalWindow().clickOnSaveAndFinishButton();
         Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
 
-        logInfo("Step 10: Click [View all cards] button in Cards Management tile and verify the displayed info");
+        logInfo("Step 11: Click [View all cards] button in Cards Management tile and verify the displayed info");
         Pages.clientDetailsPage().clickOnViewAllCardsButton();
         Actions.maintenancePageActions().verifyDebitCardDetails(debitCard);
         Actions.maintenancePageActions().setDataToDebitCard(debitCard);
 
-        logInfo("Step 11: Go to the Accounts tab and search for the account that was assigned to the card. Open account on Maintenance-> Maintenance History page");
+        logInfo("Step 12: Go to the Accounts tab and search for the account that was assigned to the card. Open account on Maintenance-> Maintenance History page");
         Pages.clientDetailsPage().clickAccountsTab();
         Pages.clientDetailsPage().openAccountByNumber(checkingAccount.getAccountNumber());
         Pages.accountDetailsPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
-        logInfo("Step 12: Look through Account's Maintenance History and verify that there are records about the newly created Debit Card");
+        logInfo("Step 13: Look through Account's Maintenance History and verify that there are records about the newly created Debit Card");
         Actions.maintenanceHistoryPageActions().verifyMaintenanceHistoryFields(debitCard, checkingAccount);
     }
 }

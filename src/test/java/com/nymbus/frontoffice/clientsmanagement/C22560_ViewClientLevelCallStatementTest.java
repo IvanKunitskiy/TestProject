@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.clientsmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
@@ -63,7 +64,7 @@ public class C22560_ViewClientLevelCallStatementTest extends BaseTest {
     private final String TEST_RUN_NAME = "Clients Management";
 
     @TestRailIssue(issueID = 22560, testRunName = TEST_RUN_NAME)
-    @Test(description = "C22560, View client level 'Call Statement'", enabled = false)
+    @Test(description = "C22560, View client level 'Call Statement'", enabled = true)
     @Severity(SeverityLevel.CRITICAL)
     public void viewClientLevelCallStatement() {
 
@@ -72,6 +73,7 @@ public class C22560_ViewClientLevelCallStatementTest extends BaseTest {
 
         logInfo("Step 2: Go to Clients and search for the client from the precondition");
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
+        client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
 
         logInfo("Step 3: Open Clients Profile on the Accounts tab");
         Pages.accountNavigationPage().clickAccountsTab();
@@ -84,7 +86,7 @@ public class C22560_ViewClientLevelCallStatementTest extends BaseTest {
         Pages.callStatementModalPage().clickOkButton();
 
         logInfo("Step 6: Look at the generated report");
-        // TODO: parse pdf file
-
+        AccountActions.callStatement().verifyCallStatementData(client,chkAccount,client.getIndividualType().getAddresses().get(0),
+                WebAdminActions.loginActions().getSystemDate());
     }
 }
