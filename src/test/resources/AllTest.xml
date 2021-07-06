@@ -6,7 +6,7 @@
         <listener class-name="com.nymbus.testrail.TestListener"/>
     </listeners>
 
-        <test name="Log In">
+        <!--test name="Log In">
             <packages>
                 <package name="com.nymbus.frontoffice.login.*"/>
             </packages>
@@ -34,7 +34,7 @@
             <packages>
                 <package name="com.nymbus.frontoffice.clientsearch.*"/>
             </packages>
-        </test>
+        </test-->
 
         <test name="Transactions">
             <packages>
@@ -48,7 +48,7 @@
             </packages>
         </test>
 
-        <test name="Deposit accounts management">
+        <!--test name="Deposit accounts management">
             <packages>
                 <package name="com.nymbus.frontoffice.depositaccountsmanagement.*"/>
             </packages>
@@ -64,6 +64,6 @@
             <packages>
                 <package name="com.nymbus.frontoffice.loansmanagement.*"/>
             </packages>
-        </test>
+        </test-->
 
 </suite>
