@@ -921,7 +921,7 @@ public class WebAdminUsersActions {
 
     public WebAdminTransactionFromQuery getTransactionCommittedOnCurrentDateQueryByUrl(String url) {
         WebAdminTransactionFromQuery transaction = new WebAdminTransactionFromQuery();
-        int tmpIndex = 1;
+        int tmpIndex = 6;
 
         SelenideTools.openUrl(url);
         WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
