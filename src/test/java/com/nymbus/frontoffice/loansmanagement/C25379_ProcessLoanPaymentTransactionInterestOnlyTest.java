@@ -1,5 +1,6 @@
 package com.nymbus.frontoffice.loansmanagement;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -189,7 +190,8 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
 
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().paidStatusIsVisibility(),
                 new CustomStepResult("Paid is not visible", "Paid is visible"));
-
+        System.out.println("-------------------" + Pages.accountPaymentInfoPage().paymentStatusIsVisibility("Interest Only (Bill)"));
+        Selenide.sleep(15000);
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().paymentStatusIsVisibility("Interest Only (Bill)"),
                 new CustomStepResult("Payment Status is not visible", "Payment Status is visible"));
 
