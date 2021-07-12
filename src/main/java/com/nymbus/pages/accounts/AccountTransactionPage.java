@@ -384,7 +384,7 @@ public class AccountTransactionPage extends PageTools {
     private By transactionsFromArrowButton = By.xpath("//*[@ng-model='transactionsFilter.statement']//span[contains(@class, 'select2-arrow')]");
     private By itemInDropDown = By.xpath("//div[contains(@class, 'select2-drop-active') and not(contains(@class, 'select2-display-none'))]" +
                                  "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private By applyFiltersButton = By.xpath("//button[@ng-click='applyFilter()']");
+    private By applyFiltersButton = By.xpath("//button[@data-test-id='action-applyFilter']");
     private By clearFilterButton = By.xpath("//*[@ng-model='transactionsFilter.statement']//abbr");
 
     @Step("Click 'Transaction from dropdown' arrow")
@@ -402,12 +402,14 @@ public class AccountTransactionPage extends PageTools {
     @Step("Click apply filter button")
     public void clickApplyFilterButton() {
         waitForElementClickable(applyFiltersButton);
+        scrollToElement(applyFiltersButton);
         click(applyFiltersButton);
     }
 
     @Step("Click clear filter button")
     public void clickClearFilterButton() {
         waitForElementClickable(clearFilterButton);
-        click(clearFilterButton);
+        scrollToElement(clearFilterButton);
+        jsClick(clearFilterButton);
     }
 }

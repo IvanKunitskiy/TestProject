@@ -18,7 +18,7 @@ public class BackOfficePage extends PageTools {
     private By cellImportTable = By.xpath("(//td)[%s]");
     private By postButton = By.xpath("//span[contains(text(),\"Post\")]");
     private By cellSpan = By.xpath("(//td)[%s]/span");
-    private By itemsToWorkButton = By.xpath("//li[14]/div[1]/div[2]/div[2]/div/a");
+    private By itemsToWorkButton = By.xpath("//h2[contains(text(), 'Items to Work')]//..//..//a[contains(text(), 'See more')]");
     private By accountNumber = By.xpath("//div[@class='reject-item-summary-column ng-binding' and contains(string(),'%s')]");
     private By date = By.xpath("//input[@data-test-id='field-']");
     private By reason = By.xpath("(//span[contains(string(),'Reason')])[1]");

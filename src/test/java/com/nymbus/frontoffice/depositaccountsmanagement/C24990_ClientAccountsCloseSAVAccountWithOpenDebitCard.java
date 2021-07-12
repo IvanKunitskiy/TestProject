@@ -18,7 +18,7 @@ import com.nymbus.newmodels.generation.debitcard.DebitCardConstructor;
 import com.nymbus.newmodels.generation.debitcard.builder.DebitCardBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
-import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitGLCreditTransactionBuilder;
+import com.nymbus.newmodels.generation.tansactions.builder.WithdrawalGLCreditCHKAccBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
@@ -40,7 +40,7 @@ public class C24990_ClientAccountsCloseSAVAccountWithOpenDebitCard extends BaseT
     private DebitCard debitCard;
     private IndividualClient client;
     private Account savingsAccount;
-    private Transaction miscDebitGLCreditTransaction;
+    private Transaction withdrawlGLCreditTransaction;
 
     @BeforeMethod
     public void preCondition() {
@@ -51,7 +51,7 @@ public class C24990_ClientAccountsCloseSAVAccountWithOpenDebitCard extends BaseT
 
         // Set up account
         savingsAccount = new Account().setSavingsAccountData();
-        miscDebitGLCreditTransaction = new TransactionConstructor(new MiscDebitGLCreditTransactionBuilder()).constructTransaction();
+        withdrawlGLCreditTransaction = new TransactionConstructor(new WithdrawalGLCreditCHKAccBuilder()).constructTransaction();
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
 
         // Set up debit card and bin control
@@ -80,8 +80,8 @@ public class C24990_ClientAccountsCloseSAVAccountWithOpenDebitCard extends BaseT
 
         // Set product
         savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
-        miscDebitGLCreditTransaction.getTransactionSource().setAccountNumber(savingsAccount.getAccountNumber());
-        miscDebitGLCreditTransaction.getTransactionSource().setTransactionCode("227 - Withdraw&Close");
+        withdrawlGLCreditTransaction.getTransactionSource().setAccountNumber(savingsAccount.getAccountNumber());
+        withdrawlGLCreditTransaction.getTransactionSource().setTransactionCode("227 - Withdraw&Close");
 
         // Create a client
         ClientsActions.individualClientActions().createClient(client);
@@ -155,7 +155,7 @@ public class C24990_ClientAccountsCloseSAVAccountWithOpenDebitCard extends BaseT
                 "Set the same amount for Destination item, any notes");
         logInfo("Step 6: Click [Commit Transaction] button and click [Verify] on Verify Client");
 
-        Actions.transactionActions().createMiscDebitGLCreditTransaction(miscDebitGLCreditTransaction);
+        Actions.transactionActions().createWithdrawalGlCreditTransaction(withdrawlGLCreditTransaction);
         Actions.transactionActions().clickCommitButton();
         Assert.assertTrue(Pages.tellerPage().errorMessagesIsVisible(), "Error messages not visible");
     }
