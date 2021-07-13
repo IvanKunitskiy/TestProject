@@ -93,7 +93,7 @@ public class C22581_SavingsAccountCallStatementTest extends BaseTest {
     private final String TEST_RUN_NAME = "Deposit Accounts Management";
 
     @TestRailIssue(issueID = 22581, testRunName = TEST_RUN_NAME)
-    @Test(description = "C22581, Client Accounts: Savings account call statement")
+    @Test(description = "C22581, Client Accounts: Savings account call statement", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void verifyCallStatementOnSavingsAccount() {
 

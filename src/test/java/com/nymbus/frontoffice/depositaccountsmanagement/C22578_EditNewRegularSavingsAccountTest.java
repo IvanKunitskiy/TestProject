@@ -58,7 +58,7 @@ public class C22578_EditNewRegularSavingsAccountTest extends BaseTest {
     private final String TEST_RUN_NAME = "Deposit Accounts Management";
 
     @TestRailIssue(issueID = 22578, testRunName = TEST_RUN_NAME)
-    @Test(description = "С22578, Edit New Regular Savings Account")
+    @Test(description = "С22578, Edit New Regular Savings Account", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void editNewRegularSavingsAccount() {
 

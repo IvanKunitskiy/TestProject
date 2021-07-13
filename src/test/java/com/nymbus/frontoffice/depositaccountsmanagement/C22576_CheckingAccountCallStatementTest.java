@@ -78,6 +78,11 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
         AccountActions.createAccount().createCHKAccount(chkAccount);
         client.getIndividualType().setClientID(Pages.clientDetailsPage().getClientID());
 
+        // Re-login in system for updating teller session
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+
+
         // Commit GLDebitMiscCredit transaction to account
         Actions.transactionActions().performGLDebitMiscCreditTransaction(creditTransaction);
 
@@ -93,7 +98,7 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
     private final String TEST_RUN_NAME = "Deposit Accounts Management";
 
     @TestRailIssue(issueID = 22576, testRunName = TEST_RUN_NAME)
-    @Test(description = "C22576, Checking account call statement")
+    @Test(description = "C22576, Checking account call statement", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void viewClientLevelCallStatement() {
 
