@@ -112,8 +112,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      */
 
     private By glDateTimePosted = By.xpath("//*[@id='searchResultTable']//tr[%s]//div[@key-name='gldatetimeposted']");
-    private By effectiveEntryDate = By.xpath("//table[@id='searchResultTable']//tr[contains(@class, 'searchResultRow ')" +
-            " and not(contains(@class, 'searchResultRowHeader'))][%s]//div[@key-name='effectiveentrydate']");
+    private By effectiveEntryDate = By.xpath("//table[@id='searchResultTable']//tr[contains(@class, 'searchResultRow ')][%s]//div[@key-name='effectiveentrydate']");
     private By dateOpened = By.xpath("//*[@id='searchResultTable']//tr[%s]//div[@key-name='$DateOpened']");
     private By glFunctionValue = By.xpath("//*[@id='searchResultTable']//tr[%s]//div[@key-name='glfunction']");
     private By transactionHeaderId = By.xpath("//*[@id='searchResultTable']//tr[%s]//*[@key-name='transactionheaderid']");
