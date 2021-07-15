@@ -288,7 +288,7 @@ public class C25479_ProcessLoanPrepaymentTransactionTest extends BaseTest {
         double amountValue = AccountActions.retrievingAccountData().getAmountValue(1);
         TestRailAssert.assertTrue(amountValue == transactionAmount,
                 new CustomStepResult("Amount is not valid", "Amount is valid"));
-        double principalValue = AccountActions.retrievingAccountData().getBalanceValue(1);
+        double principalValue = AccountActions.retrievingAccountData().getPrincipalValue(1);
         TestRailAssert.assertTrue(principalValue == Double.parseDouble(principal),
                 new CustomStepResult("Principal is not valid", "Principal is valid"));
         double interestValue = AccountActions.retrievingAccountData().getInterestMinusValue(1);

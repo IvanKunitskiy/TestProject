@@ -226,6 +226,20 @@ public class DateTime {
         return resultDate.withDayOfMonth(resultDate.lengthOfMonth()).format(DateTimeFormatter.ofPattern(pattern));
     }
 
+    public static String getDatePlusMonthPlusDays(String date, int month, int days) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Calendar calendar = Calendar.getInstance();
+
+        try {
+            calendar.setTime(simpleDateFormat.parse(date));
+            calendar.add(Calendar.MONTH, month);
+            calendar.add(Calendar.DAY_OF_MONTH, days);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return simpleDateFormat.format(calendar.getTime());
+    }
+
     public static String getExpirationDateOnDebitCard(String date) {
         LocalDate localDate = LocalDate.parse(date , DateTimeFormatter.ofPattern("MM/dd/yyyy"));
         return localDate.format(DateTimeFormatter.ofPattern("yyMM"));

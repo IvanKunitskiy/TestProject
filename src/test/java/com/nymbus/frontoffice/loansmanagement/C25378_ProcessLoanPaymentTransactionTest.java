@@ -1,5 +1,6 @@
 package com.nymbus.frontoffice.loansmanagement;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -31,6 +32,8 @@ import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.text.DateFormat;
+
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Dmytro")
@@ -59,7 +62,9 @@ public class C25378_ProcessLoanPaymentTransactionTest extends BaseTest {
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
-        loanAccount.setNextPaymentBilledDueDate(DateTime.getLocalDatePlusMonthsWithPatternAndLastDay(loanAccount.getDateOpened(), 1, "MM/dd/yyyy"));
+        loanAccount.setNextPaymentBilledDueDate(DateTime.getDateWithFormatPlusDays(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), "MM/dd/yyyy", "MM/dd/yyyy", 3));
+        System.out.println(loanAccount.getPaymentBilledLeadDays() + " -------");
+        System.out.println(loanAccount.getNextPaymentBilledDueDate() + " --------");
         String dateOpened = loanAccount.getDateOpened();
         loanAccount.setDateOpened(DateTime.getDateMinusDays(dateOpened, 1));
         checkAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
@@ -198,6 +203,7 @@ public class C25378_ProcessLoanPaymentTransactionTest extends BaseTest {
         TestRailAssert.assertTrue(dateLastPayment.equals(postingDateValue),
                 new CustomStepResult("'DateLastPayment' is not valid", "'DateLastPayment' is valid"));
         String dateInterestPaidThru = Pages.accountDetailsPage().getDateInterestPaidThru();
+        System.out.println(dateInterestPaidThru + " -----------");
         TestRailAssert.assertTrue(dateInterestPaidThru.equals(DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(), 1)),
                 new CustomStepResult("'DateInterestPaidThru' is not valid", "'DateInterestPaidThru' is valid"));
         String currentBalance = Pages.accountDetailsPage().getCurrentBalance();
@@ -228,7 +234,9 @@ public class C25378_ProcessLoanPaymentTransactionTest extends BaseTest {
                         "Date Payment Paid In Full is valid"));
 
         String dueDate = Pages.accountPaymentInfoPage().getDisabledDueDate();
-        TestRailAssert.assertTrue(dueDate.equals(DateTime.getDateMinusDays(nextPaymentBilledDueDate,30)),
+
+        System.out.println(DateTime.getDateMinusMonth(nextPaymentBilledDueDate, 1) + " -----------");
+        TestRailAssert.assertTrue(dueDate.equals(DateTime.getDateMinusMonth(nextPaymentBilledDueDate, 1)),
                 new CustomStepResult("Due date is not valid", "Due date is valid"));
 
         logInfo("Step 10: Pay attention to the 'Transactions' section");
@@ -255,7 +263,7 @@ public class C25378_ProcessLoanPaymentTransactionTest extends BaseTest {
         double amountValue = AccountActions.retrievingAccountData().getAmountValue(1);
         TestRailAssert.assertTrue(amountValue == transactionAmount,
                 new CustomStepResult("Amount is not valid", "Amount is valid"));
-        double principalValue = AccountActions.retrievingAccountData().getBalanceValue(1);
+        double principalValue = AccountActions.retrievingAccountData().getPrincipalValue(1);
         TestRailAssert.assertTrue(principalValue == Double.parseDouble(principal),
                 new CustomStepResult("Principal is not valid", "Principal is valid"));
         double interestValue = AccountActions.retrievingAccountData().getInterestMinusValue(1);

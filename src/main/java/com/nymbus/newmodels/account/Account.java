@@ -133,7 +133,7 @@ public class Account {
         account.setPaymentAmount("1001.00");
         account.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
         account.setPaymentFrequency(PaymentFrequency.MONTHLY.getPaymentFrequency());
-        account.setPaymentBilledLeadDays(String.valueOf(Generator.genInt(1, 30))); // less than number of days in Payment Frequency (e.g. Payment Frequency = Monthly, then range from 1 to 31)
+        account.setPaymentBilledLeadDays(String.valueOf(Generator.genInt(6, 30))); // less than number of days in Payment Frequency (e.g. Payment Frequency = Monthly, then range from 1 to 31)
         account.setNextPaymentBilledDueDate(DateTime.getDatePlusMonth(account.getDateOpened(), 1));
         account.setDateFirstPaymentDue(DateTime.getLocalDatePlusMonthsWithPatternAndLastDay(account.getDateOpened(), 1, "MM/dd/yyyy"));
         account.setCurrentEffectiveRate(String.valueOf(10));

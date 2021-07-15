@@ -792,9 +792,16 @@ public class CreateAccount {
     }
 
     public void enableCycleLoanSwitch() {
-        if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("no")) {
-            Pages.addAccountPage().clickCycleLoanSwitch();
-            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        if(Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev4")){
+            if (!(Pages.addAccountPage().isCycleLoanValueYes())) {
+                Pages.addAccountPage().clickCycleLoanSwitch();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
+        } else {
+            if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("no")) {
+                Pages.addAccountPage().clickCycleLoanSwitch();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
         }
     }
 
