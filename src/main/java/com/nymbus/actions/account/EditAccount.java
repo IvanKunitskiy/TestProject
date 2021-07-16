@@ -771,7 +771,7 @@ public class EditAccount {
     }
 
     public void enableAdjustableRateSwitch() {
-        if (Pages.editAccountPage().getAdjustableRateValue().equalsIgnoreCase("no")) {
+        if (Pages.editAccountPage().getAdjustableRateValue()) {
             Pages.editAccountPage().clickAdjustableRate();
             SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         }

@@ -146,14 +146,17 @@ public class C21736_ManuallyChangeInterestRateOnNewLoanTest extends BaseTest {
         logInfo("Step 7: Pay attention at the interest amount in 'Alert Message' pop up");
         String[] daysBaseYearBase = loanAccount.getDaysBaseYearBase().replaceAll("[^0-9/]", "").split("/");
         int yearBase = Integer.parseInt(daysBaseYearBase[1]);
-        double adjustmentAmount = currentBalance * (newCurrentEffectiveRate / 100 - (double) oldCurrentEffectiveRate / 100) / yearBase * (days + 1);
+        double adjustmentAmount = currentBalance * (newCurrentEffectiveRate / 100 - (double) oldCurrentEffectiveRate / 100) / yearBase * (
+                DateTime.getDaysBetweenTwoDates(loanAccount.getDateOpened(), WebAdminActions.loginActions().getSystemDate(),false));
         adjustmentAmount = roundAmountToTwoDecimals(adjustmentAmount);
         double interestEarned = accruedInterest + adjustmentAmount;
 
         String alertMessageModalText = Pages.alertMessageModalPage().getAlertMessageModalText();
 
-        Assert.assertTrue(alertMessageModalText.contains(String.format("%.2f", adjustmentAmount)), "'Adjustment Amount' is calculated incorrect");
-        Assert.assertTrue(alertMessageModalText.contains(String.format("%.2f", interestEarned)), "'Interest Earned' is calculated incorrect");
+        Assert.assertTrue(alertMessageModalText.contains(String.format("%.2f", adjustmentAmount)),
+                String.format("'Adjustment Amount' is calculated incorrect. Actual %s, expected %s",alertMessageModalText,String.format("%.2f", adjustmentAmount)));
+        Assert.assertTrue(alertMessageModalText.contains(String.format("%.2f", interestEarned)), String.format("'Interest Earned' is calculated incorrect. " +
+                "Expected %s, Actual %s.", alertMessageModalText,String.format("%.2f", interestEarned)));
         Pages.alertMessageModalPage().clickOkButton();
 
         logInfo("Step 8: Go to 'Transactions' tab and pay attention at the generated transaction");

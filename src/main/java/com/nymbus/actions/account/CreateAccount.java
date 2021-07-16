@@ -792,7 +792,8 @@ public class CreateAccount {
     }
 
     public void enableCycleLoanSwitch() {
-        if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("no")) {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        if (!Pages.addAccountPage().isCycleLoanValueYes()) {
             Pages.addAccountPage().clickCycleLoanSwitch();
             SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         }

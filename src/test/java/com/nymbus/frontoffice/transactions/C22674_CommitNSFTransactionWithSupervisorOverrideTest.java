@@ -16,6 +16,7 @@ import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
 import com.nymbus.newmodels.generation.tansactions.builder.WithdrawalGLDebitCHKAccBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
@@ -63,6 +64,7 @@ public class C22674_CommitNSFTransactionWithSupervisorOverrideTest extends BaseT
         depositTransaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());
         transaction.getTransactionSource().setAccountNumber(checkAccount.getAccountNumber());
         transaction.getTransactionSource().setAmount(transactionAmount);
+        transaction.getTransactionSource().setTransactionCode(TransactionCode.WITHDRAWAL_116.getTransCode());
         transaction.getTransactionDestination().setAmount(transactionAmount);
 
         // Perform deposit transaction
