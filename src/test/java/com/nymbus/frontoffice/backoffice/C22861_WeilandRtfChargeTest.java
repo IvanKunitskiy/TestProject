@@ -31,6 +31,7 @@ public class C22861_WeilandRtfChargeTest extends BaseTest {
 
     private String chkAccountNumber;
     private final String cdtTemplateName = "AUTOMATION_DEBIT_MEMO_GL_CREDIT";
+    private final String cdtTemplateNameForDev29 = "FORCE POST DEBIT CARD";
 
     @BeforeMethod
     public void preCondition() {
@@ -41,8 +42,13 @@ public class C22861_WeilandRtfChargeTest extends BaseTest {
                 "There are no records found with RDC charge code");
         Assert.assertEquals(WebAdminActions.webAdminUsersActions().getRemoteDepositReturnEFTDescription(),
                 "Returned Deposit Item - MSB", "Description is not equal to 'Returned Deposit Item - MSB'");
-        Assert.assertTrue(WebAdminActions.webAdminUsersActions().isCdtTemplateCommittedFromChkOnGlAccountCreated(cdtTemplateName),
-                "There is no CDT Template where Misc Debit trans is committed from CHK on GL account");
+        if(Constants.getEnvironment().equals("dev29")){
+            Assert.assertTrue(WebAdminActions.webAdminUsersActions().isCdtTemplateCommittedFromChkOnGlAccountCreated(cdtTemplateNameForDev29),
+                    "There is no CDT Template where Misc Debit trans is committed from CHK on GL account");
+        } else {
+            Assert.assertTrue(WebAdminActions.webAdminUsersActions().isCdtTemplateCommittedFromChkOnGlAccountCreated(cdtTemplateName),
+                    "There is no CDT Template where Misc Debit trans is committed from CHK on GL account");
+        }
         WebAdminActions.loginActions().doLogout();
 
         // Set up Client
@@ -97,7 +103,11 @@ public class C22861_WeilandRtfChargeTest extends BaseTest {
         Actions.transactionActions().doLoginTeller();
 
         logInfo("Step 3: Select CDT Template from the preconditions");
-        Actions.cashierDefinedActions().setTellerOperation(cdtTemplateName);
+        if(Constants.getEnvironment().equals("dev29")){
+            Actions.cashierDefinedActions().setTellerOperation(cdtTemplateNameForDev29);
+        } else {
+            Actions.cashierDefinedActions().setTellerOperation(cdtTemplateName);
+        }
 
         logInfo("Step 4: Select CHK account from the preconditions in Source\n" +
                 "and select any GL account in the Destination");
