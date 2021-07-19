@@ -20,6 +20,7 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccB
 import com.nymbus.newmodels.generation.tansactions.builder.WithdrawalGLDebitCHKAccBuilder;
 import com.nymbus.newmodels.generation.transfers.TransferBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
@@ -85,6 +86,7 @@ public class C22676_CommitNSFTransactionOnAccountWithToOnNSFTransfer extends Bas
         transaction.getTransactionSource().setAccountNumber(checkAccount.getAccountNumber());
         transaction.getTransactionSource().setAmount(returnTransactionAmount);
         transaction.getTransactionDestination().setAmount(returnTransactionAmount);
+        transaction.getTransactionSource().setTransactionCode(TransactionCode.WITHDRAWAL_116.getTransCode());
         depositSavingsTransaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
         depositSavingsTransaction.getTransactionDestination().setTransactionCode("209 - Deposit");
         depositSavingsTransaction.getTransactionDestination().setAmount(savingsTransactionAmount);

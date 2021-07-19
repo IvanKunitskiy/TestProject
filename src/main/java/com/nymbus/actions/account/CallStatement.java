@@ -62,9 +62,12 @@ public class CallStatement {
     public void verifyTransactionData(TellerLocation location, CashierDefinedTransactions transaction,
                                       String proofDate, IndividualClient client, Account account) {
         SelenideTools.sleep(Constants.SMALL_TIMEOUT);
+        SelenideTools.sleep(30);
         SelenideTools.switchToLastTab();
+        System.out.println(SelenideTools.getDriver().getWindowHandles().size());
         Pages.noticePage().checkPDFVisible();
         SelenideTools.sleep(30);
+
         File file = Pages.accountStatementPage().downloadCallStatementPdf();
         PDF pdf = new PDF(file);
 

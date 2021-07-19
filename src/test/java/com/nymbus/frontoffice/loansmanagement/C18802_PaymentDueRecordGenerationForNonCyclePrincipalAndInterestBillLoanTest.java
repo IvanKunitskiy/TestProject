@@ -136,7 +136,6 @@ public class C18802_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestBil
         logInfo("Step 2: Run this special request in the Swagger for generating Payment Due record only after creating loan account");
         String[] actions = { "request", "generatePaymentDue" };
         Actions.nonTellerTransactionActions().performPaymentDueRecordForNonCyclePrincipalAndInterestLoan(actions, clientRootId);
-
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
         double cBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu());
         String daysBaseYearBase = Pages.accountDetailsPage().getDaysBaseYearBase();

@@ -115,7 +115,6 @@ public class C24991_CommitCashTransactionWithAccountOwnerTest extends BaseTest {
                 "Client ID is incorrect!");
         Pages.verifyConductorModalPage().clickVerifyButton();
         Pages.tellerPage().closeModal();
-        Actions.loginActions().doLogOutProgrammatically();
 
         logInfo("Step 9: Go to the WebAdmin and log in");
         Selenide.open(Constants.WEB_ADMIN_URL);

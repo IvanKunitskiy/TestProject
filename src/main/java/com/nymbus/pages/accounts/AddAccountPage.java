@@ -68,10 +68,10 @@ public class AddAccountPage extends PageTools {
     private final By autoRenewableSwitch = By.xpath("//dn-switch[@id='autorenewablecode']");
     private final By autoRenewableSwitchValue = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span");
     private final By paymentAmount = By.xpath("//input[@data-test-id='field-paymentamount']");
-    private final By cycleLoanValue = By.xpath("//dn-switch[@id='cycleloan']/div/div/span[2]");
+    private final By cycleLoanValue = By.xpath("//*[@id='cycleloan']/div/div/span[2]");
     private final By cycleLoanValueYes = By.xpath("//*[@id='cycleloan']/div/div/span[1]");
     private final By teaserLoanValue = By.xpath("//*[@id='CurrentEffectiveRateTeaserYN']/div/div/span[2]");
-    private final By cycleLoanSwitch = By.xpath("//*[@id='cycleloan']");
+    private final By cycleLoanSwitch = By.xpath("//*[@id='cycleloan']/*");
     private final By teaserLoanSwitch = By.xpath("//*[@id='CurrentEffectiveRateTeaserYN']");
     private final By nextPaymentBilledDueDate = By.xpath("//input[@data-test-id='field-nextduedate']");
     private final By paymentBilledLeadDays = By.xpath("//input[@data-test-id='field-noticedays']");
@@ -197,6 +197,7 @@ public class AddAccountPage extends PageTools {
     private final By rateChangeFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
 
     private final By cycleCodeSelectorButton = By.xpath("//div[@id='cyclecode']");
+    private final By cycleCodeListDiv = By.xpath("//li[contains(@role, 'option')]/div");
     private final By cycleCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private final By cycleCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
 
@@ -1234,8 +1235,8 @@ public class AddAccountPage extends PageTools {
 
     @Step("Returning list of 'Cycle Code' options")
     public List<String> getCycleCodeList() {
-        waitForElementVisibility(cycleCodeList);
-        waitForElementClickable(cycleCodeList);
+        waitForElementVisibility(cycleCodeListDiv);
+        waitForElementClickable(cycleCodeListDiv);
         return getElementsText(cycleCodeList);
     }
 

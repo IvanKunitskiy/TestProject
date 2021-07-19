@@ -159,6 +159,9 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         Pages.confirmModalPage().clickNo();
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         Actions.loginActions().doLogOut();
 
     }
