@@ -135,10 +135,17 @@ public class C25443_QuotePayoffPullPayoffQuoteTest extends BaseTest {
                 new CustomStepResult("'Date' is not valid", "'Date' is valid"));
         String interest = Pages.quotePayoffModalPage().getInterestByRowIndex(1);
         String balance = Pages.quotePayoffModalPage().getBalanceByRowIndex(1);
-        String payoffCharges = Pages.quotePayoffModalPage().getPayoffCharges();
+        String lateCharges = Pages.quotePayoffModalPage().getLateChargeByRowIndex(1);
+        String otherCharges = Pages.quotePayoffModalPage().getOtherChargesByRowIndex(1);
+        String escrow = Pages.quotePayoffModalPage().getEscrowByRowIndex(1);
+        String insurance = Pages.quotePayoffModalPage().getInsuranceByRowIndex(1);
+        String skipFee = Pages.quotePayoffModalPage().getSkipFeesByRowIndex(1);
+
         String payoff = Pages.quotePayoffModalPage().getPayoff();
-        double expectedPayoff = Double.parseDouble(interest) + Double.parseDouble(balance) + Double.parseDouble(payoffCharges);
+        double expectedPayoff = Double.parseDouble(interest) + Double.parseDouble(balance) + Double.parseDouble(lateCharges)
+                + Double.parseDouble(otherCharges) + Double.parseDouble(escrow) + Double.parseDouble(insurance) + Double.parseDouble(skipFee);
         double actualPayoff = Double.parseDouble(Pages.quotePayoffModalPage().getPayoffByRowIndex(1));
+        System.out.println(getDoubleWithFormatAndFloorRounding(expectedPayoff, "###.##") + " --------");
         TestRailAssert.assertTrue(actualPayoff == getDoubleWithFormatAndFloorRounding(expectedPayoff, "###.##"),
                 new CustomStepResult("'Payoff' value is not valid", "'Payoff' value is valid"));
         TestRailAssert.assertTrue(balance.equals(currentBalance),
