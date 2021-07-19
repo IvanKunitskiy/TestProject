@@ -955,4 +955,12 @@ public class CreateAccount {
         Assert.assertEquals(Pages.addAccountPage().getOptInOutStatus(), "Client Has Not Responded", "'DBC ODP Opt In/Out Status' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' is prefilled with wrong value");
     }
+
+    public String getLoanAccountId() {
+            String url = SelenideTools.getCurrentUrl();
+            String[] arr = url.split("/");
+            int position = arr.length - 2;
+
+            return  arr[position];
+    }
 }

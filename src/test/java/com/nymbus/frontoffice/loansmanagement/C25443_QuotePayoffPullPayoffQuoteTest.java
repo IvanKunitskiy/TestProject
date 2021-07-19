@@ -145,7 +145,6 @@ public class C25443_QuotePayoffPullPayoffQuoteTest extends BaseTest {
         double expectedPayoff = Double.parseDouble(interest) + Double.parseDouble(balance) + Double.parseDouble(lateCharges)
                 + Double.parseDouble(otherCharges) + Double.parseDouble(escrow) + Double.parseDouble(insurance) + Double.parseDouble(skipFee);
         double actualPayoff = Double.parseDouble(Pages.quotePayoffModalPage().getPayoffByRowIndex(1));
-        System.out.println(getDoubleWithFormatAndFloorRounding(expectedPayoff, "###.##") + " --------");
         TestRailAssert.assertTrue(actualPayoff == getDoubleWithFormatAndFloorRounding(expectedPayoff, "###.##"),
                 new CustomStepResult("'Payoff' value is not valid", "'Payoff' value is valid"));
         TestRailAssert.assertTrue(balance.equals(currentBalance),
