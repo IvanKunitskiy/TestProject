@@ -132,7 +132,7 @@ public class C25377_PaymentDueDateEditPartialPaymentForInterestOnlyBillPaymentDu
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 25373, testRunName = TEST_RUN_NAME)
+    @TestRailIssue(issueID = 25377, testRunName = TEST_RUN_NAME)
     @Test(description = "C25377, Payment Due Date: Edit Partial Payment for Interest Only (Bill) payment due record")
     @Severity(SeverityLevel.CRITICAL)
     public void paymentDueDateEditPartialPaymentForInterestOnlyBillPaymentDueRecord() {

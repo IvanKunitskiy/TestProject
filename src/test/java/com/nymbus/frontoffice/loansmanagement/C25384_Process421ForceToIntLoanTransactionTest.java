@@ -142,7 +142,7 @@ public class C25384_Process421ForceToIntLoanTransactionTest extends BaseTest {
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 25383, testRunName = TEST_RUN_NAME)
+    @TestRailIssue(issueID = 25384, testRunName = TEST_RUN_NAME)
     @Test(description = "C25384, Process 421 - Force To Int loan transaction")
     @Severity(SeverityLevel.CRITICAL)
     public void process421ForceToIntLoanTransaction() {

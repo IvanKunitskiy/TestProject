@@ -74,8 +74,8 @@ public class EditAccountPage extends PageTools {
     private By bankruptcyJudgement = By.xpath("//div[@id='bankruptcyjudgementcode']//span[contains(@class, 'ng-scope')]");
     private By exemptFromRegCC = By.xpath("//*[@id='exemptfromregcc']");
     private By callClassCodeNotValid = By.xpath("//div[@data-test-id='field-callclasscode']/a[contains(@uib-tooltip-html, 'is no longer a valid value')]");
-    private By adjustableRate = By.xpath("//dn-switch[@id='adjustablerate_checkbox']");
-    private By adjustableRateValue = By.xpath("//dn-switch[@id='adjustablerate_checkbox']/div/div/span[2]");
+    private By adjustableRate = By.xpath("//*[@id='adjustablerate_checkbox']");
+    private By adjustableRateValue = By.xpath("//*[@id='adjustablerate_checkbox']/div/div/span[3]");
     private By saveAccountButton = By.xpath("//button[@data-test-id='action-save']");
     private By changePaymentWithRateChange = By.xpath("//dn-switch[@id='changepaymentwithratechange']");
     private By changePaymentWithRateChangeValue = By.xpath("//dn-switch[@id='changepaymentwithratechange']/div/div/span[2]");
@@ -700,7 +700,7 @@ public class EditAccountPage extends PageTools {
      */
 
     private final By pendingVariablePayment = By.xpath("//input[@id='armpendingpaymentamt']");
-    private final By lastPaymentChangeDate = By.xpath("//input[@id='armdatelastpaymentchange']");
+    private final By lastPaymentChangeDate = By.xpath("//input[@id='datelastpayment']");
     private final By priorPaymentAmount = By.xpath("//input[@id='armpriorpaymentamount']");
 
     @Step("Check if 'Last Payment Change Date' field is disabled edit mode")
@@ -2030,8 +2030,8 @@ public class EditAccountPage extends PageTools {
     }
 
     @Step("Get the 'Adjustable Rate' value")
-    public String getAdjustableRateValue() {
-        return getElementText(adjustableRateValue).trim();
+    public boolean getAdjustableRateValue() {
+        return isElementVisible(adjustableRateValue);
     }
 
     @Step("Click the 'Adjustable Rate' switch")

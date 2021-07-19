@@ -98,7 +98,7 @@ public class C25351_LoanCreateAndFundAmortizedTest extends BaseTest {
     private final String TEST_RUN_NAME = "Loans Management";
 
     @TestRailIssue(issueID = 25351, testRunName = TEST_RUN_NAME)
-    @Test(description = "C25351, Loan - Create and Fund: P&I (bill)")
+    @Test(description = "C25351, Loan - Create and Fund - Amortized")
     @Severity(SeverityLevel.CRITICAL)
     public void loanCreateAndFundPi() {
 

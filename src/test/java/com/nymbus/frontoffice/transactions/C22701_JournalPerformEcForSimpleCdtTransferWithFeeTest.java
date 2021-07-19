@@ -4,12 +4,12 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
 import com.nymbus.newmodels.account.product.RateType;
+import com.nymbus.newmodels.cashier.CashierDefinedTransactions;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
@@ -110,10 +110,17 @@ public class C22701_JournalPerformEcForSimpleCdtTransferWithFeeTest extends Base
         Actions.clientPageActions().searchAndOpenIndividualClientByID(client.getIndividualType().getClientID());
         AccountActions.createAccount().createCHKAccount(chkAccount);
 
+        //Check CDT template
+        boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK);
+        if (templateNotExists){
+            boolean isCreated = Actions.cashierDefinedActions().createIncomingWireToSavings();
+            Assert.assertTrue(isCreated, "CDT template not created");
+        }
+
         // Create simple CDT transfer with fee transaction
         Pages.aSideMenuPage().clickCashierDefinedTransactions();
         Actions.transactionActions().doLoginTeller();
-        Actions.cashierDefinedActions().setTellerOperation(Constants.CDT_TEMPLATE_NAME);
+        Actions.cashierDefinedActions().setTellerOperation(CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK.getOperation());
         performCdtWithFeeTransaction(savingsToChkTransactionSource, savingsToChkTransactionDestination, 0);
         Actions.loginActions().doLogOutProgrammatically();
 
