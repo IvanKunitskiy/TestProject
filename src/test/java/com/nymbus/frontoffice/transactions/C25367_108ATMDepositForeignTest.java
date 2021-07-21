@@ -86,11 +86,13 @@ public class C25367_108ATMDepositForeignTest extends BaseTest {
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+        logInFile("Create client - " + client.getFullName());
 
         // Create CHK account
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkAccount);
         checkingAccountNumber = checkAccount.getAccountNumber();
+        logInFile("Create CHK account - " + checkingAccountNumber);
 
         //Create debit card
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
@@ -100,6 +102,7 @@ public class C25367_108ATMDepositForeignTest extends BaseTest {
         Pages.debitCardModalWindow().clickOnSaveAndFinishButton();
         Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
         Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(nonTellerTransactionData, 1);
+        logInFile("Create debit card - " + nonTellerTransactionData.getCardNumber());
 
         Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
         expectedBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
