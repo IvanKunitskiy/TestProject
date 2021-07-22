@@ -379,9 +379,14 @@ public class EditAccount {
         Pages.editAccountPage().setMaxRate(account.getMaxRate());
         Pages.editAccountPage().setMaxRateChangeUpDown(account.getMaxRateChangeUpDown());
         Pages.editAccountPage().setMaxRateLifetimeCap(account.getMaxRateLifetimeCap());
-        Pages.editAccountPage().setRateRoundingFactor(account.getRateRoundingFactor());
+        fillInRateRoundingFactorField(account);
         AccountActions.editAccount().setRateRoundingMethod(account);
         Pages.editAccountPage().setOriginalInterestRate(account.getOriginalInterestRate());
+    }
+
+    public void fillInRateRoundingFactorField( Account account ) {
+        Pages.editAccountPage().clickRateRoundingFactorField();
+        Pages.editAccountPage().setRateRoundingFactor(account.getRateRoundingFactor());
     }
 
     public void selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccount(Account account) {
@@ -891,7 +896,8 @@ public class EditAccount {
     }
 
     public void enableAdjustableRateSwitch() {
-        if (Pages.editAccountPage().getAdjustableRateValue().equalsIgnoreCase("no")) {
+        if (Pages.editAccountPage().getAdjustableRateValue().equalsIgnoreCase("no")
+                || !(Pages.editAccountPage().isAdjustableRateYesValuePicked())) {
             Pages.editAccountPage().clickAdjustableRate();
             SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         }

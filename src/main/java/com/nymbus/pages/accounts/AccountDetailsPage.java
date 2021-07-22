@@ -1097,7 +1097,7 @@ public class AccountDetailsPage extends PageTools {
 
     @Step("Get the 'Rate rounding factor' value")
     public String getRateRoundingFactor() {
-        return getElementText(rateRoundingFactor);
+        return getElementText(rateRoundingFactor).replaceAll("[^0-9]", "");
     }
 
     @Step("Get the 'Rate Rounding Method' value")

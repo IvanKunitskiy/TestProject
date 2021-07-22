@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.loans.DaysBaseYearBase;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -47,11 +48,15 @@ public class C21728_ViewEditNewLoanAccountTest extends BaseTest {
 
         // Set up CHK account
         Account checkingAccount = new Account().setCHKAccountData();
+        checkingAccount.setDateOpened(DateTime.getDateMinusMonth(DateTime.getLocalDateWithPattern("MM/dd/yyyy"), 1));
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         loanAccount.setPaymentAmountType(PaymentAmountType.PRINCIPAL_AND_INTEREST.getPaymentAmountType());
         loanAccount.setDaysBaseYearBase(DaysBaseYearBase.DAY_YEAR_360_360.getDaysBaseYearBase());
+        loanAccount.setAdjustableRate(false);
+
+
 
         // Set transaction data
         final int transactionAmount = 12000;
@@ -106,7 +111,7 @@ public class C21728_ViewEditNewLoanAccountTest extends BaseTest {
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Open loan account from preconditions on 'Details' tab");
-        Actions.clientPageActions().searchAndOpenAccountByAccountNumber("626292805715");
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
 
         logInfo("Step 3: Pay attention at the loan account fields");
         TestRailAssert.assertTrue(Pages.accountDetailsPage().isBalanceAndInterestVisible(),
@@ -159,6 +164,8 @@ public class C21728_ViewEditNewLoanAccountTest extends BaseTest {
         logInfo("Step 8: Click 'Save'");
         Pages.editAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
+        System.out.println(Pages.accountDetailsPage().getChangePaymentWithRateChange().equalsIgnoreCase("no") + " -------------");
+        System.out.println(Pages.accountDetailsPage().getChangePaymentWithRateChange() + " -------------");
         TestRailAssert.assertTrue(Pages.accountDetailsPage().getChangePaymentWithRateChange().equalsIgnoreCase("no"),
                 new CustomStepResult("'Change Payment with Rate Change' group is not valid",
                         "'Change Payment with Rate Change' group is valid"));
@@ -195,6 +202,9 @@ public class C21728_ViewEditNewLoanAccountTest extends BaseTest {
         TestRailAssert.assertTrue(Pages.accountDetailsPage().getMaxRateChangeUpDown().equals(loanAccount.getMaxRateChangeUpDown()),
                 new CustomStepResult("'Max rate change up/down' group is not valid",
                         "'Max rate change up/down' group is valid"));
+        System.out.println(Pages.accountDetailsPage().getMaxRateLifetimeCap().equals(loanAccount.getMaxRateLifetimeCap() + " -------------"));
+        System.out.println(Pages.accountDetailsPage().getMaxRateLifetimeCap() + " -------------");
+        System.out.println(loanAccount.getMaxRateLifetimeCap() + " -------------");
         TestRailAssert.assertTrue(Pages.accountDetailsPage().getMaxRateLifetimeCap().equals(loanAccount.getMaxRateLifetimeCap()),
                 new CustomStepResult("'Max rate lifetime cap' group is not valid",
                         "'Max rate lifetime cap' group is valid"));

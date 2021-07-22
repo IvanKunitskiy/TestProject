@@ -75,8 +75,9 @@ public class EditAccountPage extends PageTools {
     private By bankruptcyJudgement = By.xpath("//div[@id='bankruptcyjudgementcode']//span[contains(@class, 'ng-scope')]");
     private By exemptFromRegCC = By.xpath("//*[@id='exemptfromregcc']");
     private By callClassCodeNotValid = By.xpath("//div[@data-test-id='field-callclasscode']/a[contains(@uib-tooltip-html, 'is no longer a valid value')]");
-    private By adjustableRate = By.xpath("//dn-switch[@id='adjustablerate_checkbox']");
-    private By adjustableRateValue = By.xpath("//dn-switch[@id='adjustablerate_checkbox']/div/div/span[2]");
+    private By adjustableRate = By.xpath("//*[@id='adjustablerate_checkbox']");
+    private By adjustableRateValue = By.xpath("//*[@id='adjustablerate_checkbox']/div/div/span[2]");
+    private By adjustableRateYesValue = By.xpath("//*[@id='adjustablerate_checkbox']/div/div/span[contains(text(), 'YES')]");
     private By saveAccountButton = By.xpath("//button[@data-test-id='action-save']");
     private By changePaymentWithRateChange = By.xpath("//dn-switch[@id='changepaymentwithratechange']");
     private By changePaymentWithRateChangeValue = By.xpath("//dn-switch[@id='changepaymentwithratechange']/div/div/span[2]");
@@ -281,7 +282,8 @@ public class EditAccountPage extends PageTools {
     private final By maxRate = By.xpath("//input[@id='armceiling']");
     private final By maxRateChangeUpDown = By.xpath("//input[@id='armperiodiccap']");
     private final By maxRateLifetimeCap = By.xpath("//input[@id='armlifetimecap']");
-    private final By rateRoundingFactor = By.xpath("//input[@id='armroundingfactor']");
+    private final By rateRoundingFactor = By.xpath("//*[@data-test-id='field-armroundingfactor']");
+    private final By rateRoundingFactorInput = By.xpath("//*[@data-test-id='field-armroundingfactor']//ul//li//span[contains(text(), '%s')]");
     private final By originalInterestRate = By.xpath("//input[@id='armoriginalinterestrate']");
 
     /**
@@ -478,6 +480,11 @@ public class EditAccountPage extends PageTools {
         waitForElementClickable(applySeasonalAddress);
         scrollToPlaceElementInCenter(applySeasonalAddress);
         return getElementText(applySeasonalAddress);
+    }
+
+    @Step("Check if 'Adjustable Rate' switcher switched to 'YES'")
+    public boolean isAdjustableRateYesValuePicked() {
+        return isElementVisible(adjustableRateYesValue);
     }
 
     /**
@@ -2319,10 +2326,17 @@ public class EditAccountPage extends PageTools {
     }
 
     @Step("Set 'Rate rounding factor' value")
-    public void setRateRoundingFactor(String days) {
+    public void setRateRoundingFactor(String factor) {
+        System.out.println("argument passed to setRatRoundingFaction() " + factor + " ------------------------");
+        waitForElementClickable(rateRoundingFactorInput, factor);
+        click(rateRoundingFactorInput, factor);
+    }
+
+    @Step("Click 'Rate rounding factor' field")
+    public void clickRateRoundingFactorField() {
         waitForElementClickable(rateRoundingFactor);
         scrollToPlaceElementInCenter(rateRoundingFactor);
-        type(days, rateRoundingFactor);
+        click(rateRoundingFactor);
     }
 
 //    @Step("Set 'Rate rounding method' value")

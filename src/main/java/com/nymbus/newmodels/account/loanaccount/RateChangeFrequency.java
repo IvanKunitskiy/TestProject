@@ -9,7 +9,8 @@ public enum RateChangeFrequency {
     NONE("None"),
     MONTHLY("Monthly"),
     DAILY("Daily"),
-    ANNUAL("Annual");
+    ANNUAL("Annual"),
+    TWO_YEARS("2 years");
 
     private final String rateChangeFrequency;
 }

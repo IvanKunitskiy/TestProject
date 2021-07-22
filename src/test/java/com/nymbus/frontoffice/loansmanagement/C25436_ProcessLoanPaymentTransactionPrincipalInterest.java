@@ -254,7 +254,7 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         double amountValue = AccountActions.retrievingAccountData().getAmountValue(1);
         TestRailAssert.assertTrue(amountValue == transactionAmount,
                 new CustomStepResult("Amount is not valid", "Amount is valid"));
-        double principalValue = AccountActions.retrievingAccountData().getBalanceValue(1);
+        double principalValue = AccountActions.retrievingAccountData().getPrincipalValue(1);
         TestRailAssert.assertTrue((int) principalValue + 1 == (int) (amountValue - i),
                 new CustomStepResult("Principal is not valid", "Principal is valid"));
         double interestValue = AccountActions.retrievingAccountData().getInterestMinusValue(1);

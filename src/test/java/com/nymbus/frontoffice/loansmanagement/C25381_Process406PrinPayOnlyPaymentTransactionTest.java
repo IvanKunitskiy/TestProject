@@ -59,12 +59,14 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
 
         // Set up account
         Account chkAccount = new Account().setCHKAccountData();
+        chkAccount.setDateOpened(DateTime.getDateMinusMonth(DateTime.getLocalDateWithPattern("MM/dd/yyyy"), 1));
+        System.out.println(chkAccount.getDateOpened() + " -------");
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         loanAccount.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
-//        loanAccount.setNextPaymentBilledDueDate(DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(),
-//                -Integer.parseInt(loanAccount.getPaymentBilledLeadDays()) - 1));
+        loanAccount.setNextPaymentBilledDueDate(DateTime.getDatePlusDays(loanAccount.getDateOpened(),
+                Integer.parseInt(loanAccount.getPaymentBilledLeadDays()) - 1));
 
         // Set up transactions
         final double depositTransactionAmount = 1001.00;
@@ -114,8 +116,7 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createLoanAccount(loanAccount);
         String clientRootId = ClientsActions.createClient().getClientIdFromUrl();
-        String loanAccountId = AccountActions.createAccount().getLoanAccountId();
-        System.out.println(loanAccountId + " -----------");
+        System.out.println(clientRootId + " -----------");
 
         // Perform deposit transaction
         Actions.transactionActions().goToTellerPage();
@@ -137,7 +138,7 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         Pages.tellerPage().closeModal();
 
         // Create nonTellerTransactions
-        Actions.nonTellerTransaction().generatePaymentDueRecord(loanAccountId);
+        Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
 
         // Get Account Details data
         Pages.aSideMenuPage().clickClientMenuItem();
@@ -186,9 +187,7 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
                 "        Account number - Loan account from preconditions\n" +
                 "        \"Transaction Code\" - \"406 - Prin Paym Only\"\n" +
                 "        \"Amount\" - specify the same amount\n");
-        int currentIndex = 0;
-        Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction_406.getTransactionSource(), currentIndex);
-        Actions.transactionActions().setMiscCreditDestination(transaction_406.getTransactionDestination(), currentIndex);
+        Actions.transactionActions().createTransaction(transaction_406);
         Pages.tellerPage().setEffectiveDate(transaction_406.getTransactionDate());
         Actions.transactionActions().clickCommitButton();
 

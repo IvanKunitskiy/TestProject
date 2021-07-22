@@ -190,6 +190,10 @@ public class CreateAccount {
         if (account.isCurrentEffectiveRateIsTeaser()) {
             enableTeaserLoanSwitch();
         }
+        if (!(account.isAdjustableRate())) {
+            System.out.println("changing adjustable rate ------------------");
+            disableAdjustableRateSwitch();
+        }
         Pages.addAccountPage().setNextPaymentBilledDueDate(account.getNextPaymentBilledDueDate());
         Pages.addAccountPage().setDateFirstPaymentDue(account.getDateFirstPaymentDue());
         Pages.addAccountPage().setCurrentEffectiveRate(account.getCurrentEffectiveRate());
@@ -880,7 +884,6 @@ public class CreateAccount {
         Assert.assertEquals(Pages.addAccountPage().getInterestFrequency(), account.getInterestFrequency(), "'Interest Frequency' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getInterestType(), account.getInterestType(), "'Interest Type' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getApplyInterestTo(), "Remain in Account", "'Apply interest to' is prefilled with wrong value");
-        Selenide.sleep(1000000);
         if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29")) {
             Assert.assertTrue(Pages.addAccountPage().isAutoRenewableYes(), "'Auto Renewable' is prefilled with wrong value");
         } else {

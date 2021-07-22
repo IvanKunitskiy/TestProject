@@ -89,6 +89,17 @@ public class C32537_PaymentProcessing420ForceToPrinNoPDrecords extends BaseTest 
         depositTransaction.getTransactionDestination().setAmount(depositTransactionAmount);
         depositTransaction.getTransactionSource().setAmount(depositTransactionAmount);
 
+        // 109 - transaction
+        int transaction109Amount = 12000;
+        Transaction transaction_109 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
+        transaction_109.getTransactionSource().setAccountNumber(loanAccount.getAccountNumber());
+        transaction_109.getTransactionSource().setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
+        transaction_109.getTransactionSource().setAmount(transaction109Amount);
+        transaction_109.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
+        transaction_109.getTransactionDestination().setAmount(transaction109Amount);
+        transaction_109.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
+
+
         // Perform deposit transaction
         Actions.loginActions().doLogOutProgrammatically();
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -96,6 +107,18 @@ public class C32537_PaymentProcessing420ForceToPrinNoPDrecords extends BaseTest 
         Actions.transactionActions().doLoginTeller();
         Actions.transactionActions().createTransaction(depositTransaction);
         Actions.transactionActions().clickCommitButton();
+        Pages.tellerPage().closeModal();
+
+        // Re-login to refresh teller session
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        // Perform '109 - deposit' transaction
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
+        Actions.transactionActions().createTransaction(transaction_109);
+        Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
+        Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();

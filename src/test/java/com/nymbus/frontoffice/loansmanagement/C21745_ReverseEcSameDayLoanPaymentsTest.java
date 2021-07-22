@@ -85,6 +85,8 @@ public class C21745_ReverseEcSameDayLoanPaymentsTest extends BaseTest {
         transaction_416.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
         transaction_416.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
         transaction_416.getTransactionDestination().setTransactionCode(TransactionCode.PAYMENT_416.getTransCode());
+        transaction_416.getTransactionSource().setAmount(transactionAmount);
+        transaction_416.getTransactionDestination().setAmount(transactionAmount);
 
         // Login to the system
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -201,7 +203,10 @@ public class C21745_ReverseEcSameDayLoanPaymentsTest extends BaseTest {
         double interestPaidToDate = Double.parseDouble(Pages.accountDetailsPage().getInterestPaidToDate());
         TestRailAssert.assertTrue(interestPaidToDate == interest,
                 new CustomStepResult("'Interest Paid To Date' is not valid", "'Interest Paid To Date' is valid"));
+        System.out.println(currentBalance + " --------");
+        System.out.println(principal + " --------");
         double actualCurrentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
+        System.out.println(actualCurrentBalance + " --------");
         TestRailAssert.assertTrue(actualCurrentBalance == currentBalance - principal,
                 new CustomStepResult("'Current Balance' is not valid", "'Current Balance' is valid"));
         int currentNumberOfPaymentsReceived = Integer.parseInt(Pages.accountDetailsPage().getNumberOfPaymentsReceived());
