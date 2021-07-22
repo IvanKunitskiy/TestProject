@@ -43,6 +43,7 @@ public class C22550_ViewEditNewCorporationClientTest extends BaseTest {
         ClientsActions.organisationClientActions().setDocumentation(organisationClient);
 
         clientId = Pages.clientDetailsPage().getClientID();
+        logInFile("Create client - " + clientId);
         Actions.loginActions().doLogOut();
     }
 

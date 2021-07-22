@@ -35,6 +35,7 @@ public class C22532_SearchByTaxIDTest extends BaseTest {
         ClientsActions.individualClientActions().setDocumentation(client);
         Pages.clientDetailsPage().waitForPageLoaded();
         clientId = Pages.clientDetailsPage().getClientID();
+        logInFile("Create client - " + client.getFullName());
 
         Actions.loginActions().doLogOut();
     }

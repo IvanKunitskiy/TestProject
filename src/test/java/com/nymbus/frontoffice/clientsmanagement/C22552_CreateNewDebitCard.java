@@ -81,9 +81,11 @@ public class C22552_CreateNewDebitCard extends BaseTest {
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+        logInFile("Create client - " + client.getFullName());
 
         // Create CHK account
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkingAccount);
+        logInFile("Create CHK account - " + checkingAccount.getAccountNumber());
 
         // Set created CHK account as related to credit card
         debitCard.getAccounts().add(checkingAccount.getAccountNumber());
@@ -132,6 +134,7 @@ public class C22552_CreateNewDebitCard extends BaseTest {
         Pages.clientDetailsPage().clickOnViewAllCardsButton();
         Actions.maintenancePageActions().verifyDebitCardDetails(debitCard);
         Actions.maintenancePageActions().setDataToDebitCard(debitCard);
+        logInFile("Create debit card - " + debitCard.getCardNumber());
 
         logInfo("Step 12: Go to the Accounts tab and search for the account that was assigned to the card. Open account on Maintenance-> Maintenance History page");
         Pages.clientDetailsPage().clickAccountsTab();

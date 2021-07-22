@@ -9,8 +9,6 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 
-import java.util.EmptyStackException;
-
 @Listeners({TestListener.class})
 public class BaseTest extends AllureLogger {
 
@@ -21,6 +19,7 @@ public class BaseTest extends AllureLogger {
     public void setUp() {
         logInfo("Creating web driver configuration...");
         SelenideConfig.createBrowserConfig(System.getProperty("selenide.browser", "chrome"));
+        configLog(this.getClass().getSimpleName());
 
         logInfo("Open browser...");
         Selenide.open(Constants.URL);

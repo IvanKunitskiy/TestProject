@@ -95,14 +95,17 @@ public class C26521_SwipeMerchantAuthMultiPpeTest extends BaseTest {
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+        logInFile("Create client - " + client.getFullName());
 
         // Create CHK account
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(chkAccount);
+        logInFile("Create CHK account - " + chkAccount.getAccountNumber());
 
         // Create debit card for CHK acc
         createDebitCard(client.getInitials(), debitCard);
         Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(swipeMerchantAuthTransactionData, 1);
+        logInFile("Create debit card - " + swipeMerchantAuthTransactionData.getCardNumber());
 
         // Re-login in system for updating teller session and capture account balances
         Actions.loginActions().doLogOut();

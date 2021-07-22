@@ -98,15 +98,18 @@ public class C26755_PartialRequestTest extends BaseTest {
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+        logInFile("Create client - " + client.getFullName());
 
         // Create CHK account
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkAccount);
         checkingAccountNumber = checkAccount.getAccountNumber();
+        logInFile("Create CHK account - " + checkingAccountNumber);
 
         // Create debit card for Checking acc
         createDebitCard(client.getInitials(), debitCard);
         Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(nonTellerTransactionData, 1);
+        logInFile("Create debit card - " + nonTellerTransactionData.getCardNumber());
 
         // Set up transaction with account number
         glDebitMiscCreditTransaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());

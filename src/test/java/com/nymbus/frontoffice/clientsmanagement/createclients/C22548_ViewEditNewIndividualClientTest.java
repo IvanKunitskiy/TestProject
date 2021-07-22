@@ -46,6 +46,7 @@ public class C22548_ViewEditNewIndividualClientTest extends BaseTest {
         ClientsActions.individualClientActions().createClient(individualClient);
         ClientsActions.individualClientActions().setClientDetailsData(individualClient);
         ClientsActions.individualClientActions().setDocumentation(individualClient);
+        logInFile("Create client - " + individualClient.getFullName());
 
         clientId = Pages.clientDetailsPage().getClientID();
         Actions.loginActions().doLogOut();

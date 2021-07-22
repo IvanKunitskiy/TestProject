@@ -5,22 +5,12 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.client.OrganisationClient;
-import com.nymbus.newmodels.client.basicinformation.address.Address;
-import com.nymbus.newmodels.client.other.document.IDType;
-import com.nymbus.newmodels.generation.client.OrganisationClientSettings;
 import com.nymbus.newmodels.generation.client.builder.OrganisationClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.organisation.CorporationBuilder;
-import com.nymbus.pages.Pages;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 @Epic("Frontoffice")
 @Feature("Create clients")
@@ -50,5 +40,6 @@ public class C23576_CreateCorporationClientTest extends BaseTest {
         ClientsActions.organisationClientActions().setDocumentation(organisationClient);
 
         ClientsActions.organisationClientActions().verifyClientData(organisationClient);
+        logInFile("Create client - " + organisationClient.getClientSignature());
     }
 }

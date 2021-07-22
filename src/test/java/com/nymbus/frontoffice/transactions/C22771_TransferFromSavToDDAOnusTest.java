@@ -100,20 +100,24 @@ public class C22771_TransferFromSavToDDAOnusTest extends BaseTest {
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+        logInFile("Create client - " + client.getFullName());
 
         // Create Savings  account
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         AccountActions.createAccount().createSavingAccountForTransactionPurpose(savingsAccount);
         savingsAccountNumber = savingsAccount.getAccountNumber();
+        logInFile("Create Sav account - " + savingsAccountNumber);
 
         // Create CHK account
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkAccount);
         checkingAccountNumber = checkAccount.getAccountNumber();
+        logInFile("Create CHK account - " + checkingAccountNumber);
 
         // Create debit card for saving acc
         createDebitCard(client.getInitials(), debitCard);
         Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(nonTellerTransactionData, 1);
+        logInFile("Create debit card for Sav - " + nonTellerTransactionData.getCardNumber());
 
         // Re-login in system for updating teller session
         Actions.loginActions().doLogOut();
