@@ -53,7 +53,7 @@ public class C25479_ProcessLoanPrepaymentTransactionTest extends BaseTest {
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setNextPaymentBilledDueDate(DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(),
                 -Integer.parseInt(loanAccount.getPaymentBilledLeadDays()) - 1));
-        loanAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getNextPaymentBilledDueDate(), 1));
+//        loanAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getNextPaymentBilledDueDate(), 1));
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         String dateOpened = loanAccount.getDateOpened();

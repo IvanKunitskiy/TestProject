@@ -203,7 +203,6 @@ public class C25378_ProcessLoanPaymentTransactionTest extends BaseTest {
         TestRailAssert.assertTrue(dateLastPayment.equals(postingDateValue),
                 new CustomStepResult("'DateLastPayment' is not valid", "'DateLastPayment' is valid"));
         String dateInterestPaidThru = Pages.accountDetailsPage().getDateInterestPaidThru();
-        System.out.println(dateInterestPaidThru + " -----------");
         TestRailAssert.assertTrue(dateInterestPaidThru.equals(DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(), 1)),
                 new CustomStepResult("'DateInterestPaidThru' is not valid", "'DateInterestPaidThru' is valid"));
         String currentBalance = Pages.accountDetailsPage().getCurrentBalance();
@@ -235,7 +234,6 @@ public class C25378_ProcessLoanPaymentTransactionTest extends BaseTest {
 
         String dueDate = Pages.accountPaymentInfoPage().getDisabledDueDate();
 
-        System.out.println(DateTime.getDateMinusMonth(nextPaymentBilledDueDate, 1) + " -----------");
         TestRailAssert.assertTrue(dueDate.equals(DateTime.getDateMinusMonth(nextPaymentBilledDueDate, 1)),
                 new CustomStepResult("Due date is not valid", "Due date is valid"));
 

@@ -64,7 +64,7 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
         transaction = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
         String dateOpened = loanAccount.getDateOpened();
-        loanAccount.setDateOpened(DateTime.getDateMinusDays(dateOpened, 1));
+//        loanAccount.setDateOpened(DateTime.getDateMinusDays(dateOpened, 1));
         checkAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
 
         // Login to the system
@@ -131,6 +131,7 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
         accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
+        System.out.println(accruedInterest + " ----------");
         Pages.accountDetailsPage().clickPaymentInfoTab();
         transactionAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getAmountDueTable().replaceAll("[^0-9.]", ""));
         transaction.getTransactionSource().setAmount(transactionAmount);
@@ -222,11 +223,11 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
         String disInterest = Pages.accountPaymentInfoPage().getDisabledInterest();
         String effectiveDate = Pages.accountPaymentInfoPage().getPiPaymentsEffectiveDate();
         double expectedAccruedInterest = Double.parseDouble(currentBalanceForInterest) * Double.parseDouble(currentEffectiveRate)/100/
-                yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate,dueDateSec,false) - 0.01f;
-//        String expected = String.format("%.2f", expectedAccruedInterest);
-//        TestRailAssert.assertTrue(disInterest.equals(expected),
-//                new CustomStepResult("Interest is valid",
-//                        String.format("Interest is not valid. Expected %s, actual %s",expected, disInterest)));
+                yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate,dueDateSec,false);
+        String expected = String.format("%.3f", expectedAccruedInterest).substring(0,5);
+        TestRailAssert.assertTrue(disInterest.equals(expected),
+                new CustomStepResult("Interest is valid",
+                        String.format("Interest is not valid. Expected %s, actual %s",expected, disInterest)));
         String disAmount = Pages.accountPaymentInfoPage().getDisabledAmount();
         String disEscrow = Pages.accountPaymentInfoPage().getDisabledEscrow();
         String disPrincipal = Pages.accountPaymentInfoPage().getDisabledPrincipal();
@@ -264,9 +265,11 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
         double interestValue = AccountActions.retrievingAccountData().getInterestMinusValue(1);
         TestRailAssert.assertTrue(interestValue == Double.parseDouble(interest),
                 new CustomStepResult("Interest is not valid", "Interest is valid"));
-        double escrowValue = AccountActions.retrievingAccountData().getEscrowMinusValue(1);
-        TestRailAssert.assertTrue(escrowValue == 0,
-                new CustomStepResult("Escrow is not valid", "Escrow is valid"));
+        if(!(disEscrow.equals("0.00"))){
+            double escrowValue = AccountActions.retrievingAccountData().getEscrowMinusValue(1);
+            TestRailAssert.assertTrue(escrowValue == 0,
+                    new CustomStepResult("Escrow is not valid", "Escrow is valid"));
+        }
 
         logInfo("Step 11: Go to the \"Details\" tab");
         Pages.accountDetailsPage().clickDetailsTab();
