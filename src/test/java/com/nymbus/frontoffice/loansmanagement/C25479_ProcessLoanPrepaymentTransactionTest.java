@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -213,9 +214,8 @@ public class C25479_ProcessLoanPrepaymentTransactionTest extends BaseTest {
         String effectiveDate = Pages.accountPaymentInfoPage().getPiPaymentsEffectiveDate();
 
         double expectedAccruedInterest = Double.parseDouble(currentBalanceForInterest) * Double.parseDouble(currentEffectiveRate) / 100 /
-                yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate, dueDate, false) - 0.01;
-        //String expectedInterest = expectedAccruedInterest + "";
-        String expectedInterest = String.format("%.2f", expectedAccruedInterest);
+                yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate, dueDate, false);
+        String expectedInterest = Functions.roundNumberForInterest(expectedAccruedInterest);
         TestRailAssert.assertTrue(disInterest.equals(expectedInterest),
                 new CustomStepResult("Interest is not valid", String.format("Interest is valid. Actual %s, Expected %s",
                         disInterest, expectedInterest)));

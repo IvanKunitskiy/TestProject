@@ -1,6 +1,5 @@
 package com.nymbus.frontoffice.loansmanagement;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -224,7 +223,7 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
         String effectiveDate = Pages.accountPaymentInfoPage().getPiPaymentsEffectiveDate();
         double expectedAccruedInterest = Double.parseDouble(currentBalanceForInterest) * Double.parseDouble(currentEffectiveRate)/100/
                 yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate,dueDateSec,false);
-        String expected = String.format("%.3f", expectedAccruedInterest).substring(0,5);
+        String expected = Functions.roundNumberForInterest(expectedAccruedInterest);
         TestRailAssert.assertTrue(disInterest.equals(expected),
                 new CustomStepResult("Interest is valid",
                         String.format("Interest is not valid. Expected %s, actual %s",expected, disInterest)));
