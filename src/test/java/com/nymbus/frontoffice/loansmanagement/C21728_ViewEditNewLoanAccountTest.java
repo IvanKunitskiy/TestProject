@@ -164,8 +164,6 @@ public class C21728_ViewEditNewLoanAccountTest extends BaseTest {
         logInfo("Step 8: Click 'Save'");
         Pages.editAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
-        System.out.println(Pages.accountDetailsPage().getChangePaymentWithRateChange().equalsIgnoreCase("no") + " -------------");
-        System.out.println(Pages.accountDetailsPage().getChangePaymentWithRateChange() + " -------------");
         TestRailAssert.assertTrue(Pages.accountDetailsPage().getChangePaymentWithRateChange().equalsIgnoreCase("no"),
                 new CustomStepResult("'Change Payment with Rate Change' group is not valid",
                         "'Change Payment with Rate Change' group is valid"));
@@ -202,13 +200,10 @@ public class C21728_ViewEditNewLoanAccountTest extends BaseTest {
         TestRailAssert.assertTrue(Pages.accountDetailsPage().getMaxRateChangeUpDown().equals(loanAccount.getMaxRateChangeUpDown()),
                 new CustomStepResult("'Max rate change up/down' group is not valid",
                         "'Max rate change up/down' group is valid"));
-        System.out.println(Pages.accountDetailsPage().getMaxRateLifetimeCap().equals(loanAccount.getMaxRateLifetimeCap() + " -------------"));
-        System.out.println(Pages.accountDetailsPage().getMaxRateLifetimeCap() + " -------------");
-        System.out.println(loanAccount.getMaxRateLifetimeCap() + " -------------");
         TestRailAssert.assertTrue(Pages.accountDetailsPage().getMaxRateLifetimeCap().equals(loanAccount.getMaxRateLifetimeCap()),
                 new CustomStepResult("'Max rate lifetime cap' group is not valid",
                         "'Max rate lifetime cap' group is valid"));
-        TestRailAssert.assertTrue(Pages.accountDetailsPage().getRateRoundingFactor().equals(loanAccount.getRateRoundingFactor()),
+        TestRailAssert.assertTrue(("." + Pages.accountDetailsPage().getRateRoundingFactor()).equals(loanAccount.getRateRoundingFactor()),
                 new CustomStepResult("'Rate rounding factor' group is not valid",
                         "'Rate rounding factor' group is valid"));
         TestRailAssert.assertTrue(Pages.accountDetailsPage().getRateRoundingMethod().equals(loanAccount.getRateRoundingMethod()),
