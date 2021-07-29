@@ -4,8 +4,10 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.nymbus.core.base.PageTools;
 import com.nymbus.core.utils.SelenideTools;
+import com.nymbus.pages.Pages;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.testng.Assert;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -325,6 +327,15 @@ public class EditAccountPage extends PageTools {
     private By previousStatementDateLabel = By.xpath("//label[contains(text(), 'Previous Statement Date')]");
     private By previousStatementBalanceLabel = By.xpath("//label[contains(text(), 'Previous Statement Balance')]");
     private By interestPaidLastLabel = By.xpath("//label[contains(text(), 'Interest Paid Last')]");
+    private By interestLastPaidLabel = By.xpath("//label[contains(text(), 'Interest Last paid')]");
+    private By interestFrequencyLabel = By.xpath("//label[conatains(text(), 'Interest Frequency')]");
+    private By correspondingAccountLastLabel = By.xpath("//label[conatains(text(), 'Corresponding Account')]");
+    private By monthlyLowBalanceLabel = By.xpath("//label[conatains(text(), 'Monthly low balance')]");
+    private By monthlyNumberOfWithdrawalsLabel = By.xpath("//label[conatains(text(), 'Monthly number of withdrawals')]");
+    private By aggregateBalanceYearToDateLabel = By.xpath("//label[conatains(text(), 'Aggregate Balance Year to date')]");
+    private By aggregateColBalLabel = By.xpath("//label[conatains(text(), 'Aggregate col bal')]");
+    private By aggrColLstStmtLabel = By.xpath("//label[conatains(text(), 'Aggr col lst stmt')]");
+    private By ytdAggrColBalLabel = By.xpath("//label[conatains(text(), 'YTD aggr col bal')]");
     private By numberOfChecksThisStatementCycleLabel = By.xpath("//label[contains(text(), 'Number Of Checks This Statement Cycle')]");
     private By dateLastActivityContactLabel = By.xpath("//label[contains(text(), 'Date Last Activity/Contact')]");
     private By numberOfDepositsThisStatementCycleLabel = By.xpath("//tr[@data-test-id='field-numberofdepositsthisstatementcycle']//td//label");
@@ -393,6 +404,21 @@ public class EditAccountPage extends PageTools {
     private By totalEarningsForLifeOfAccountLabel = By.xpath("//label[contains(text(), 'Total Earnings for Life of Account')]");
     private By verifyAchFundsLabel = By.xpath("//label[contains(text(), 'Verify ACH funds')]");
     private By waiveServiceChargesLabel = By.xpath("//label[contains(text(), 'Waive Service Charges')]");
+    private By dateOfFirstDepositLabel = By.xpath("//label[contains(text(), 'Date Of First Deposit')]");
+    private By iraDistributionFrequencyLabel = By.xpath("//label[contains(text(), 'IRA Distribution Frequency')]");
+    private By iraDistributionCodeLabel = By.xpath("//label[contains(text(), 'IRA Distribution Code')]");
+    private By iraDistributionAccountNumberLabel = By.xpath("//label[contains(text(), 'IRA Distribution Account Number')]");
+    private By iraDistributionAmountLabel = By.xpath("//label[contains(text(), 'IRA distribution amount')]");
+    private By amountLastIRADistributionLabel = By.xpath("//label[contains(text(), 'Amount last IRA distribution')]");
+    private By dateLastIRADistributionLabel = By.xpath("//label[contains(text(), 'Date last IRA distribution')]");
+    private By dateNextIRADistributionLabel = By.xpath("//label[contains(text(), 'Date next IRA distribution')]");
+    private By rmdDateLabel = By.xpath("//label[contains(text(), 'RMD Date')]");
+    private By rmdAmountLabel = By.xpath("//label[contains(text(), 'RMD Amount')]");
+    private By iraDistributionsYTDLabel = By.xpath("//label[contains(text(), 'IRA distributions YTD')]");
+    private By dateOfBirthLabel = By.xpath("//label[contains(text(), 'Date of Birth')]");
+    private By dateDeceasedLabel = By.xpath("//label[contains(text(), 'Date Deceased')]");
+    private By totalContributionsForLifeOfAccountLabel = By.xpath("//label[contains(text(), 'Total Contributions for Life of Account')]");
+
     private By numberOfDebitsThisStatementCycleLabel = By.xpath("//tr[@data-test-id='field-numberofwithdrawalsthisstatementcycle']//td//label");
     /**
      * Groups
@@ -401,6 +427,7 @@ public class EditAccountPage extends PageTools {
     private By transactionsGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Transactions')]");
     private By overdraftGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Overdraft')]");
     private By miscGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Misc')]");
+    private By distrbutionGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Distribution')]");
     private By distributionAndMiscGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Distribution and Misc')]");
     private By termGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Term')]");
 
@@ -408,6 +435,7 @@ public class EditAccountPage extends PageTools {
     private By transactionsGroupOpened = By.xpath("//div[contains(@class, 'panel-open')]//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Transactions')]");
     private By overdraftGroupOpened = By.xpath("//div[contains(@class, 'panel-open')]//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Overdraft')]");
     private By miscGroupOpened = By.xpath("//div[contains(@class, 'panel-open')]//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Misc')]");
+    private By distributionGroupOpened = By.xpath("//div[contains(@class, 'panel-open')]//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Distribution')]");
 
     private By acccountTypeDropdownItem = By.xpath("//div[@id='customertype']//li[contains(@id, 'ui-select-choices-row')]//span[contains(text(), '%s')]");
 
@@ -1354,6 +1382,50 @@ public class EditAccountPage extends PageTools {
         return isElementVisible(interestPaidLastLabel);
     }
 
+    @Step("Check if 'Interest Last paid ' is visible")
+    public boolean isInterestLastPaidFieldVisible() {
+        return isElementVisible(interestLastPaidLabel);
+    }
+
+    @Step("Check if 'Interest Frequency' is visible")
+    public boolean isInterestFrequencyFieldVisible() {
+        return isElementVisible(interestFrequencyLabel);
+    }
+
+    @Step("Check if 'Corresponding Account' is visible")
+    public boolean isCorrespondingAccountFieldVisible() {
+        return isElementVisible(correspondingAccountLastLabel);
+    }
+
+    @Step("Check if 'Monthly low balance' is visible")
+    public boolean isMonthlyLowBalanceFieldVisible() {
+        return isElementVisible(monthlyLowBalanceLabel);
+    }
+
+    @Step("Check if 'Monthly number of withdrawals' is visible")
+    public boolean isMonthlyNumberOfWithdrawalsFieldVisible() {
+        return isElementVisible(monthlyNumberOfWithdrawalsLabel);
+    }
+
+    @Step("Check if 'Aggregate Balance Year to date' is visible")
+    public boolean isAggregateBalanceYearToDateFieldVisible() {
+        return isElementVisible(aggregateBalanceYearToDateLabel);
+    }
+
+    @Step("Check if 'Aggregate col bal' is visible")
+    public boolean isAggregateColBalFieldVisible() {
+        return isElementVisible(aggregateColBalLabel);
+    }
+
+    @Step("Check if 'Aggr col lst stmt' is visible")
+    public boolean isAggrColLstStmtFieldVisible() {
+        return isElementVisible(aggrColLstStmtLabel);
+    }
+
+    @Step("Check if 'YTD aggr col bal' is visible")
+    public boolean isYTDAggrColBalFieldVisible() {
+        return isElementVisible(ytdAggrColBalLabel);
+    }
 
     @Step("Check if 'Current Balance' is visible")
     public boolean isCurrentBalanceFieldVisible() {
@@ -1626,6 +1698,11 @@ public class EditAccountPage extends PageTools {
         return isElementVisible(overdraftGroupOpened);
     }
 
+    @Step("Check if 'Distribution Section Group' fields is hidden")
+    public boolean isDistributionSectionGroupFieldsOpened() {
+        return isElementVisible(distributionGroupOpened);
+    }
+
     @Step("Federal W/H reason' field is visible")
     public boolean isFederalWhReasonFieldVisible() {
         return isElementVisible(federalWhReasonLabel);
@@ -1790,6 +1867,64 @@ public class EditAccountPage extends PageTools {
     @Step("'Waive Service Charges' field is visible")
     public boolean isWaiveServiceChargesFieldVisible() {
         return isElementVisible(waiveServiceChargesLabel);
+    }
+
+    @Step("'Date Of First Deposit' field is visible")
+    public boolean isDateOfFirstDepositFieldVisible() {
+        return isElementVisible(dateOfFirstDepositLabel);
+    }
+
+    @Step("'IRA Distribution Frequency' field is visible")
+    public boolean isIRADistributionFrequencyFieldVisible() {
+        return isElementVisible(iraDistributionFrequencyLabel);
+    }
+    @Step("'IRA Distribution Code' field is visible")
+    public boolean isIRADistributionCodeFieldVisible() {
+        return isElementVisible(iraDistributionCodeLabel);
+    }
+    @Step("'IRA Distribution Account Number' field is visible")
+    public boolean isIRADistributionAccountNumberFieldVisible() {
+        return isElementVisible(iraDistributionAccountNumberLabel);
+    }
+    @Step("'IRA distribution amount' field is visible")
+    public boolean isIRADistributionAmountFieldVisible() {
+        return isElementVisible(iraDistributionAmountLabel);
+    }
+    @Step("'Amount last IRA distribution' field is visible")
+    public boolean isAmountLastIRADistributionFieldVisible() {
+        return isElementVisible(amountLastIRADistributionLabel);
+    }
+    @Step("'Date last IRA distribution' field is visible")
+    public boolean isDateLastIRADistributionFieldVisible() {
+        return isElementVisible(dateLastIRADistributionLabel);
+    }
+    @Step("'Date next IRA distribution' field is visible")
+    public boolean isDateNextIRADistributionFieldVisible() {
+        return isElementVisible(dateNextIRADistributionLabel);
+    }
+    @Step("'RMD Date' field is visible")
+    public boolean isRMDDateFieldVisible() {
+        return isElementVisible(rmdDateLabel);
+    }
+    @Step("'RMD Amount' field is visible")
+    public boolean isRMDAmountFieldVisible() {
+        return isElementVisible(rmdAmountLabel);
+    }
+    @Step("'IRA distributions YTD' field is visible")
+    public boolean isIRADistributionsYTDFieldVisible() {
+        return isElementVisible(iraDistributionsYTDLabel);
+    }
+    @Step("'Date of Birth' field is visible")
+    public boolean isDateOfBirthFieldVisible() {
+        return isElementVisible(dateOfBirthLabel);
+    }
+    @Step("'Date Deceased' field is visible")
+    public boolean isDateDeceasedFieldVisible() {
+        return isElementVisible(dateDeceasedLabel);
+    }
+    @Step("'Total Contributions for Life of Account' field is visible")
+    public boolean isTotalContributionsForLifOfAccountFieldVisible() {
+        return isElementVisible(totalContributionsForLifeOfAccountLabel);
     }
 
     @Step("'Number of Debits This Statement Cycle' field is visible")
@@ -2580,43 +2715,43 @@ public class EditAccountPage extends PageTools {
 
     @Step("Is 'Balance And Interest' group visible")
     public boolean isBalanceAndInterestGroupVisible() {
-        waitForElementVisibility(balanceAndInterestGroup);
-        waitForElementClickable(balanceAndInterestGroup);
+        waitForElementPresent(balanceAndInterestGroup);
         return isElementVisible(balanceAndInterestGroup);
     }
 
     @Step("Is 'Transactions' group visible")
     public boolean isTransactionsGroupVisible() {
-        waitForElementVisibility(transactionsGroup);
-        waitForElementClickable(transactionsGroup);
+        waitForElementPresent(transactionsGroup);
         return isElementVisible(transactionsGroup);
     }
 
     @Step("Is 'Overdraft' group visible")
     public boolean isOverdraftGroupVisible() {
-        waitForElementVisibility(overdraftGroup);
-        waitForElementClickable(overdraftGroup);
+        waitForElementPresent(overdraftGroup);
         return isElementVisible(overdraftGroup);
     }
 
     @Step("Is 'Misc' group visible")
     public boolean isMiscGroupVisible() {
-        waitForElementVisibility(miscGroup);
-        waitForElementClickable(miscGroup);
+        waitForElementPresent(miscGroup);
         return isElementVisible(miscGroup);
+    }
+
+    @Step("Is 'Distribution' group visible")
+    public boolean isDistributionGroupVisible() {
+        waitForElementPresent(distrbutionGroup);
+        return isElementVisible(distrbutionGroup);
     }
 
     @Step("Is 'Distribution and Misc' group visible")
     public boolean isDistributionAndMiscGroupVisible() {
-        waitForElementVisibility(distributionAndMiscGroup);
-        waitForElementClickable(distributionAndMiscGroup);
+        waitForElementPresent(distributionAndMiscGroup);
         return isElementVisible(distributionAndMiscGroup);
     }
 
     @Step("Is 'Term' group visible")
     public boolean isTermGroupVisible() {
-        waitForElementVisibility(termGroup);
-        waitForElementClickable(termGroup);
+        waitForElementPresent(termGroup);
         return isElementVisible(termGroup);
     }
 
@@ -2624,6 +2759,12 @@ public class EditAccountPage extends PageTools {
     public void clickMiscSectionLink() {
         scrollToPlaceElementInCenter(miscGroup);
         click(miscGroup);
+    }
+
+    @Step("Click the 'Distribution' section link")
+    public void clickDistributionSectionLink() {
+        scrollToPlaceElementInCenter(distrbutionGroup);
+        click(distrbutionGroup);
     }
 
     @Step("Click the 'Balance and Interest' section link")
@@ -2827,4 +2968,9 @@ public class EditAccountPage extends PageTools {
         return getElementText(accountTypeFieldValue);
     }
 
+//    Check if fields is required
+
+    public boolean isAccountTitleFieldRequired() {
+        return Boolean.parseBoolean(getElementAttributeValue("required", accountTitle));
+    }
 }

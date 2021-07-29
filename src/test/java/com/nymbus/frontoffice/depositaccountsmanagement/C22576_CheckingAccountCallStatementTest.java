@@ -69,6 +69,7 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
 
         // Add seasonal address
         seasonalAddress = new AddressFactory().getSeasonalAddress();
+        System.out.println(seasonalAddress.getAddress() + " ----------------");
         ClientsActions.clientDetailsActions().clickEditProfile();
         ClientsActions.clientDetailsActions().addSeasonalAddress(seasonalAddress, client);
         Pages.clientDetailsPage().clickSaveChangesButton();
@@ -98,7 +99,7 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
     private final String TEST_RUN_NAME = "Deposit Accounts Management";
 
     @TestRailIssue(issueID = 22576, testRunName = TEST_RUN_NAME)
-    @Test(description = "C22576, Checking account call statement", enabled = false)
+    @Test(description = "C22576, Checking account call statement")
     @Severity(SeverityLevel.CRITICAL)
     public void viewClientLevelCallStatement() {
 
