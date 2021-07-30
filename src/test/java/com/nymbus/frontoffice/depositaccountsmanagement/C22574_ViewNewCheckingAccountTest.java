@@ -107,7 +107,7 @@ public class C22574_ViewNewCheckingAccountTest extends BaseTest {
                 "- Previous Statement Date\n" +
                 "- Previous Statement Balance\n" +
                 "- Interest Paid Last Year");
-        AccountActions.editAccount().verifyBalanceAndInterestFieldsAreVisible();
+        AccountActions.editAccount().verifyCheckingBalanceAndInterestFieldsAreVisible();
 
 
         logInfo("Step 6: Click [-] icon next to 'Balance and Interest' section and verify that all fields within this section were hidden");
@@ -130,7 +130,7 @@ public class C22574_ViewNewCheckingAccountTest extends BaseTest {
                 "- Transit items deposited\n" +
                 "- ON-US items deposited\n" +
                 "- Service charges YTD");
-        AccountActions.editAccount().verifyTransactionsFieldsAreVisible();
+        AccountActions.editAccount().verifyCheckingTransactionsFieldsAreVisible();
 
         logInfo("Step 8: Click [-] icon next to 'Transactions' section and verify that all fields within this section were hidden");
         Pages.editAccountPage().clickTransactionsSectionLink();
@@ -163,7 +163,7 @@ public class C22574_ViewNewCheckingAccountTest extends BaseTest {
                 "- NSF fee, rtrn last year\n" +
                 "- Number refunded stmt cycle\n" +
                 "- Amount refunded stmt cycle");
-        AccountActions.editAccount().verifyOverdraftFieldsAreVisible();
+        AccountActions.editAccount().verifyCheckingOverdraftFieldsAreVisible();
 
         logInfo("Step 10: Click [-] icon next to 'Overdraft' section and verify that all fields within this section were hidden");
         Pages.editAccountPage().clickOverdraftSectionLink();
@@ -197,7 +197,7 @@ public class C22574_ViewNewCheckingAccountTest extends BaseTest {
                 "- Total Earnings for Life of Account\n" +
                 "- Verify ACH funds\n" +
                 "- Waive Service Charges");
-        AccountActions.editAccount().verifyMiscFieldsAreVisible();
+        AccountActions.editAccount().verifyCheckingMiscFieldsAreVisible();
 
         logInfo("Step 12: Click [-] icon next to 'Misc.' section and verify that all fields within this section were hidden");
         Pages.editAccountPage().clickMiscSectionLink();

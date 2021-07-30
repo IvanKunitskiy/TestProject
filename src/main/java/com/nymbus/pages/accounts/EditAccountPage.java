@@ -328,14 +328,14 @@ public class EditAccountPage extends PageTools {
     private By previousStatementBalanceLabel = By.xpath("//label[contains(text(), 'Previous Statement Balance')]");
     private By interestPaidLastLabel = By.xpath("//label[contains(text(), 'Interest Paid Last')]");
     private By interestLastPaidLabel = By.xpath("//label[contains(text(), 'Interest Last paid')]");
-    private By interestFrequencyLabel = By.xpath("//label[conatains(text(), 'Interest Frequency')]");
-    private By correspondingAccountLastLabel = By.xpath("//label[conatains(text(), 'Corresponding Account')]");
-    private By monthlyLowBalanceLabel = By.xpath("//label[conatains(text(), 'Monthly low balance')]");
-    private By monthlyNumberOfWithdrawalsLabel = By.xpath("//label[conatains(text(), 'Monthly number of withdrawals')]");
-    private By aggregateBalanceYearToDateLabel = By.xpath("//label[conatains(text(), 'Aggregate Balance Year to date')]");
-    private By aggregateColBalLabel = By.xpath("//label[conatains(text(), 'Aggregate col bal')]");
-    private By aggrColLstStmtLabel = By.xpath("//label[conatains(text(), 'Aggr col lst stmt')]");
-    private By ytdAggrColBalLabel = By.xpath("//label[conatains(text(), 'YTD aggr col bal')]");
+    private By interestFrequencyLabel = By.xpath("//label[contains(text(), 'Interest Frequency')]");
+    private By correspondingAccountLastLabel = By.xpath("//label[contains(text(), 'Corresponding Account')]");
+    private By monthlyLowBalanceLabel = By.xpath("//label[contains(text(), 'Monthly low balance')]");
+    private By monthlyNumberOfWithdrawalsLabel = By.xpath("//label[contains(text(), 'Monthly number of withdrawals')]");
+    private By aggregateBalanceYearToDateLabel = By.xpath("//label[contains(text(), 'Aggregate Balance Year to date')]");
+    private By aggregateColBalLabel = By.xpath("//label[contains(text(), 'Aggregate col bal')]");
+    private By aggrColLstStmtLabel = By.xpath("//label[contains(text(), 'Aggr col lst stmt')]");
+    private By ytdAggrColBalLabel = By.xpath("//label[contains(text(), 'YTD aggr col bal')]");
     private By numberOfChecksThisStatementCycleLabel = By.xpath("//label[contains(text(), 'Number Of Checks This Statement Cycle')]");
     private By dateLastActivityContactLabel = By.xpath("//label[contains(text(), 'Date Last Activity/Contact')]");
     private By numberOfDepositsThisStatementCycleLabel = By.xpath("//tr[@data-test-id='field-numberofdepositsthisstatementcycle']//td//label");
@@ -372,6 +372,7 @@ public class EditAccountPage extends PageTools {
     private By nsfFeePaidThisCycleLabel = By.xpath("//label[contains(text(), 'NSF fee, paid this cycle')]");
     private By nsfFeeRtrnThisCycleLabel = By.xpath("//label[contains(text(), 'NSF fee, rtrn this cycle')]");
     private By nsfFeePaidYTDLabel = By.xpath("//label[contains(text(), 'NSF fee, paid YTD')]");
+    private By nsfFeeRtrnYTDLabel = By.xpath("//label[contains(text(), 'NSF fee, rtrn YTD')]");
     private By nsfFeePaidLastYearLabel = By.xpath("//label[contains(text(), 'NSF fee, paid last year')]");
     private By nsfFeeRtrnLastYearLabel = By.xpath("//label[contains(text(), 'NSF fee, rtrn last year')]");
     private By numberRefundedStmtCycleLabel = By.xpath("//label[contains(text(), 'Number refunded stmt cycle')]");
@@ -1656,6 +1657,11 @@ public class EditAccountPage extends PageTools {
     @Step("Check if 'NSF fee, paid YTD' field is visible")
     public boolean isNsfFeePaidYTDFieldVisible() {
         return isElementVisible(nsfFeePaidYTDLabel);
+    }
+
+    @Step("Check if 'NSF fee, rtrn YTD' field is visible")
+    public boolean isNsfFeeRtrnYTDFieldVisible() {
+        return isElementVisible(nsfFeeRtrnYTDLabel);
     }
 
     @Step("Check if 'NSF fee, paid last year' field is visible")

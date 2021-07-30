@@ -155,7 +155,7 @@ public class C22584_ViewNewSavingsIRAAccountTest extends BaseTest {
                 "- YTD charges waived\n" +
                 "- Statement Cycle\n" +
                 "- Service charges YTD");
-        AccountActions.editAccount().verifySavingsIRAATransactionsFieldsAreVisible();
+        AccountActions.editAccount().verifyCommonTransactionsFieldsAreVisible();
 
 
         logInfo("Step 8: Click [-] icon next to 'Transactions' section and verify that all fields within this section were hidden");
@@ -201,7 +201,7 @@ public class C22584_ViewNewSavingsIRAAccountTest extends BaseTest {
                 "- Transactional Account\n" +
                 "- Total Earnings for Life of Account\n" +
                 "- Verify ACH funds");
-        AccountActions.editAccount().verifySavingsIRAAAMiscFieldsAreVisible();
+        AccountActions.editAccount().verifyCommonMiscFieldsAreVisible();
 
         logInfo("Step 12: Click [-] icon next to 'Misc.' section and verify that all fields within this section were hidden");
         Pages.editAccountPage().clickMiscSectionLink();
