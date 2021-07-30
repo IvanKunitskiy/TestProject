@@ -517,6 +517,23 @@ public class EditAccount {
 
     }
 
+    public void verifyCDBalanceAndInterestFieldsAreVisible() {
+        Assert.assertTrue(Pages.editAccountPage().isInterestRateFieldVisible(), "'Interest Rate' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAnnualPercentageYieldFieldVisible(), "'Annual Percentage Yield' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isRateIndexFieldVisible(), "'Rate Index' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAccruedInterestFieldVisible(), "'Accrued Interest' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDailyInterestAccrualFieldVisible(), "'Daily Interest Accrual' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isInterestTypeFieldVisible(), "'Interest Type' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isInterestFrequencyFieldVisible(), "'Interest Frequency' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isApplyInterestToFieldVisible(), "'Interest Frequency' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isCorrespondingAccountFieldVisible(), "'Corresponding Account' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAmountLastInterestPaidFieldVisible(), "'Amount Last Interest Paid' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDateLastInterestPaidFieldVisible(), "'Date Last Interest Paid' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDateNextInterestFieldVisible(), "'Date next interest' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isNextInterestPaymentAmountFieldVisible(), "'Next Interest Payment Amount' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isInterestPaidYearToDateFieldVisible(), "'Interest Paid Year to date' is not visible");
+    }
+
     public void verifyCheckingBalanceAndInterestFieldsAreVisible() {
         verifyCommonBalanceAndInterestFieldsAreVisible();
         Assert.assertTrue(Pages.editAccountPage().isCollectedBalanceFieldVisible(), "'Collected Balance' is not visible");
