@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite" parallel="tests" thread-count="4">
+
+    <listeners>
+        <listener class-name="com.nymbus.testrail.TestListener"/>
+    </listeners>
+
+    <test name="Log In">
+        <classes>
+            <class name="com.nymbus.frontoffice.login.C22513_LogInTest"/>
+        </classes>
+    </test>
+
+    <test name="Log out">
+        <classes>
+            <class name="com.nymbus.frontoffice.login.C22514_LogOutTest"/>
+        </classes>
+    </test>
+
+    <test name="User management">
+        <classes>
+            <class name="com.nymbus.frontoffice.usermanagement.C22519_CreateUserTest"/>
+        </classes>
+    </test>
+
+    <test name="Create Clients">
+        <classes>
+            <class name="com.nymbus.frontoffice.clientsmanagement.createclients.C22541_CreateIndividualMemberClientTest"/>
+        </classes>
+    </test>
+
+<!--    <test name="Clients management">-->
+<!--        <classes>-->
+<!--            <class name="com.nymbus.frontoffice.clientsmanagement.C22545_AddNewDocumentOnClientLevelTest"/>-->
+<!--        </classes>-->
+<!--    </test>-->
+
+    <test name="Clients search">
+        <classes>
+            <class name="com.nymbus.frontoffice.clientsearch.C22527_SearchByNumberTest"/>
+        </classes>
+    </test>
+</suite>
