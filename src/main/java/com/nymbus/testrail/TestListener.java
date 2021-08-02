@@ -18,7 +18,7 @@ public class TestListener extends TestListenerAdapter implements IInvokedMethodL
     TestRailTool testRailTool;
 
     @Override
-    public void beforeInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
+    public synchronized void beforeInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
         if (Constants.SEND_RESULT_TO_TESTRAIL) {
             testRailTool = new TestRailTool();
             Method method = iInvokedMethod.getTestMethod().getConstructorOrMethod().getMethod();
