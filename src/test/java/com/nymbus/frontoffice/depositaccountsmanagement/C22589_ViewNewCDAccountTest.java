@@ -12,8 +12,10 @@ import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
+import com.nymbus.pages.Pages;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -109,10 +111,11 @@ public class C22589_ViewNewCDAccountTest extends BaseTest {
                 "- Date next interest\n" +
                 "- Next Interest Payment Amount\n" +
                 "- Interest Paid Year to date");
-        AccountActions.editAccount().verifyCommonBalanceAndInterestFieldsAreVisible();
+        AccountActions.editAccount().verifyCDBalanceAndInterestFieldsAreVisible();
 
 
         logInfo("Step 6: Click [-] icon next to 'Balance and Interest' section and verify that all fields within this section were hidden");
+        Pages.editAccountPage().clickBalanceAndInterestSectionLink();
 
         logInfo("Step 7: Look at the fields and verify that such fields are in 'Term' section:\n" +
                 "- Original Balance\n" +
@@ -126,8 +129,12 @@ public class C22589_ViewNewCDAccountTest extends BaseTest {
                 "- Date of renewal\n" +
                 "- Interest rate at renewal\n" +
                 "- Renewal amount");
+        AccountActions.editAccount().verifyCommonTermFieldsAreVisible();
+
 
         logInfo("Step 8: Click [-] icon next to 'Term' section and verify that all fields within this section were hidden");
+        Pages.editAccountPage().clickTermSectionLink();
+
 
         logInfo("Step 9: Look at the fields and verify that such fields are in 'Distribution and Misc' section:\n" +
                 "- Federal W/H reason\n" +
@@ -143,21 +150,27 @@ public class C22589_ViewNewCDAccountTest extends BaseTest {
                 "- Print interest notice override\n" +
                 "- Transactional Account\n" +
                 "- Total Earnings for Life of Account");
+        AccountActions.editAccount().verifyCdDistributionAndMiscFieldsAreVisible();
+
 
         logInfo("Step 10: Click [-] icon next to 'Distribution and Misc' section and verify that all fields within this section were hidden");
+        Pages.editAccountPage().clickDistributionAndMiscSectionLink();
 
         logInfo("Step 11: Look at the fields on the page");
+        Assert.assertFalse(Pages.editAccountPage().isBalanceAndInterestSectionGroupFieldsOpened());
+        Assert.assertFalse(Pages.editAccountPage().isTermGroupFieldsOpened());
+        Assert.assertFalse(Pages.editAccountPage().isDistributionAndMiscGroupFieldsOpened());
 
         logInfo("Step 12: Click [Expand All] button and verify that all fields within all sections are displayed");
+        Pages.editAccountPage().clickExpandAllButton();
+        Assert.assertTrue(Pages.editAccountPage().isBalanceAndInterestSectionGroupFieldsOpened());
+        Assert.assertTrue(Pages.editAccountPage().isTermGroupFieldsOpened());
+        Assert.assertTrue(Pages.editAccountPage().isDistributionAndMiscGroupFieldsOpened());
 
         logInfo("Step 13: Click [Collapse All] button and verify that all fields within all sections were hidden");
-
-
-        logInfo("Step 3: Click [Load More] button");
-        AccountActions.accountDetailsActions().clickMoreButton();
-
-        logInfo("Step 4: Pay attention to the fields on the page");
-        AccountActions.accountDetailsActions().verifyEditedCdAccountRecords(cdAccount);
-
+        Pages.editAccountPage().clickCollapseAllButton();
+        Assert.assertFalse(Pages.editAccountPage().isBalanceAndInterestSectionGroupFieldsOpened());
+        Assert.assertFalse(Pages.editAccountPage().isTermGroupFieldsOpened());
+        Assert.assertFalse(Pages.editAccountPage().isDistributionAndMiscGroupFieldsOpened());
     }
 }

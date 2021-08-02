@@ -517,6 +517,24 @@ public class EditAccount {
 
     }
 
+    public void verifyCommonTermFieldsAreVisible() {
+    Assert.assertTrue(Pages.editAccountPage().isTermTypeFieldVisible(), "'Term Type' is not visible");
+    Assert.assertTrue(Pages.editAccountPage().isTermInMonthsOrDaysFieldVisible(), "'Term In Months Or Days' is not visible");
+    Assert.assertTrue(Pages.editAccountPage().isAutoRenewableFieldVisible(), "'Auto Renewable' is not visible");
+    Assert.assertTrue(Pages.editAccountPage().isMaturityDateFieldVisible(), "'Maturity Date' is not visible");
+    Assert.assertTrue(Pages.editAccountPage().isCallClassCodeFieldVisible(), "'Call Class Code' is not visible");
+    Assert.assertTrue(Pages.editAccountPage().isPenaltyAmountYearToDateFieldVisible(), "'Penalty Amount Year-to-date' is not visible");
+    Assert.assertTrue(Pages.editAccountPage().isBalanceAtRenewalFieldVisible(), "'Balance At Renewal' is not visible");
+    Assert.assertTrue(Pages.editAccountPage().isDateOfRenewalFieldVisible(), "'Date of renewal' is not visible");
+    Assert.assertTrue(Pages.editAccountPage().isInterestRateAtRenewalFieldVisible(), "'Interest rate at renewal' is not visible");
+    Assert.assertTrue(Pages.editAccountPage().isRenewalAmountFieldVisible(), "'Renewal amount' is not visible");
+
+    }
+
+    public void verifyCdDistributionAndMiscFieldsAreVisible() {
+
+    }
+
     public void verifyCDBalanceAndInterestFieldsAreVisible() {
         Assert.assertTrue(Pages.editAccountPage().isInterestRateFieldVisible(), "'Interest Rate' is not visible");
         Assert.assertTrue(Pages.editAccountPage().isAnnualPercentageYieldFieldVisible(), "'Annual Percentage Yield' is not visible");
@@ -525,7 +543,7 @@ public class EditAccount {
         Assert.assertTrue(Pages.editAccountPage().isDailyInterestAccrualFieldVisible(), "'Daily Interest Accrual' is not visible");
         Assert.assertTrue(Pages.editAccountPage().isInterestTypeFieldVisible(), "'Interest Type' is not visible");
         Assert.assertTrue(Pages.editAccountPage().isInterestFrequencyFieldVisible(), "'Interest Frequency' is not visible");
-        Assert.assertTrue(Pages.editAccountPage().isApplyInterestToFieldVisible(), "'Interest Frequency' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isApplyInterestToFieldVisible(), "'Apply Interest To' is not visible");
         Assert.assertTrue(Pages.editAccountPage().isCorrespondingAccountFieldVisible(), "'Corresponding Account' is not visible");
         Assert.assertTrue(Pages.editAccountPage().isAmountLastInterestPaidFieldVisible(), "'Amount Last Interest Paid' is not visible");
         Assert.assertTrue(Pages.editAccountPage().isDateLastInterestPaidFieldVisible(), "'Date Last Interest Paid' is not visible");
