@@ -402,7 +402,7 @@ public class EditAccountPage extends PageTools {
     private By exemptFromRegCcLabel = By.xpath("//label[contains(text(), 'Exempt from Reg CC')]");
     private By newAccountLabel = By.xpath("//label[contains(text(), 'New Account')]");
     private By transactionalAccountLabel = By.xpath("//label[contains(text(), 'Transactional Account')]");
-    private By totalEarningsForLifeOfAccountLabel = By.xpath("//label[contains(text(), 'Total Earnings for Life of Account')]");
+    private By totalEarningsForLifeOfAccountLabel = By.xpath("//tr[@data-test-id='field-totalEarnings']//td//label");
     private By verifyAchFundsLabel = By.xpath("//label[contains(text(), 'Verify ACH funds')]");
     private By waiveServiceChargesLabel = By.xpath("//label[contains(text(), 'Waive Service Charges')]");
     private By dateOfFirstDepositLabel = By.xpath("//label[contains(text(), 'Date Of First Deposit')]");

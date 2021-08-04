@@ -486,7 +486,7 @@ public class EditAccount {
         Assert.assertTrue(Pages.editAccountPage().isProductFieldVisible(), "'Product' field is not visible");
         Assert.assertTrue(Pages.editAccountPage().isProductTypeFieldVisible(), "'Product type' field is not visible");
         Assert.assertTrue(Pages.editAccountPage().isCurrentBalanceFieldVisible(), "'Current Balance' field is not visible");
-        Assert.assertTrue(Pages.editAccountPage().isAvailableBalanceFieldVisible(), "'Available Balance' field is not visible");
+//        Assert.assertTrue(Pages.editAccountPage().isAvailableBalanceFieldVisible(), "'Available Balance' field is not visible");
         Assert.assertTrue(Pages.editAccountPage().isAccountNumberFieldVisible(), "'Account Number' is not visible");
         Assert.assertTrue(Pages.editAccountPage().isAccountTitleFieldVisible(), "'Account Title' is not visible");
         Assert.assertTrue(Pages.editAccountPage().isAccountTypeFieldVisible(), "'Account Type' is not visible");
