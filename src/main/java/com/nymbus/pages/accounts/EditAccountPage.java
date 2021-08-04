@@ -4,8 +4,10 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.nymbus.core.base.PageTools;
 import com.nymbus.core.utils.SelenideTools;
+import com.nymbus.pages.Pages;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.testng.Assert;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -416,7 +418,7 @@ public class EditAccountPage extends PageTools {
     private By iraDistributionsYTDLabel = By.xpath("//label[contains(text(), 'IRA distributions YTD')]");
     private By dateOfBirthLabel = By.xpath("//label[contains(text(), 'Date of Birth')]");
     private By dateDeceasedLabel = By.xpath("//label[contains(text(), 'Date Deceased')]");
-    private By totalContributionsForLifeOfAccountLabel = By.xpath("//label[contains(text(), 'Total Contributions for Life of Account')]");
+    private By totalContributionsForLifeOfAccountLabel = By.xpath("//tr[@data-test-id='field-totalContributions']//label[contains(text(), 'Total Contributions for Life of Account')]");
 
     private By numberOfDebitsThisStatementCycleLabel = By.xpath("//tr[@data-test-id='field-numberofwithdrawalsthisstatementcycle']//td//label");
 
@@ -439,6 +441,12 @@ public class EditAccountPage extends PageTools {
     private By dateLastInterestPaidLabel = By.xpath("//label[contains(text(), 'Date Last Interest Paid')]");
     private By dateNextInterestLabel = By.xpath("//label[contains(text(), 'Date next interest')]");
     private By nextInterestPaymentAmountLabel = By.xpath("//label[contains(text(), 'Next Interest Payment Amount')]");
+    private By balanceAtEndOfYearLabel = By.xpath("//label[contains(text(), 'Balance at end of year')]");
+    private By accruedInterestAtEndOfYearLabel = By.xpath("//label[contains(text(), 'Accrued interest at end of year')]");
+    private By interestPaidLastYearLabel = By.xpath("//label[contains(text(), 'Interest Paid Last Year')]");
+    private By printInterestNoticeOverrideLabel = By.xpath("//label[contains(text(), 'Print interest notice override')]");
+    private By iraPlanNumberLabel = By.xpath("//label[contains(text(), 'IRA plan number')]");
+
     /**
      * Groups
      */
@@ -455,6 +463,8 @@ public class EditAccountPage extends PageTools {
     private By overdraftGroupOpened = By.xpath("//div[contains(@class, 'panel-open')]//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Overdraft')]");
     private By miscGroupOpened = By.xpath("//div[contains(@class, 'panel-open')]//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Misc')]");
     private By distributionGroupOpened = By.xpath("//div[contains(@class, 'panel-open')]//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Distribution')]");
+    private By termGroupOpened = By.xpath("//div[contains(@class, 'panel-open')]//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Term')]");
+    private By distributionAndMiscGroupOpened = By.xpath("//div[contains(@class, 'panel-open')]//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Distribution and Misc')]");
 
     private By acccountTypeDropdownItem = By.xpath("//div[@id='customertype']//li[contains(@id, 'ui-select-choices-row')]//span[contains(text(), '%s')]");
 
@@ -1714,12 +1724,12 @@ public class EditAccountPage extends PageTools {
 
     @Step("Check if 'Term' fields is hidden")
     public boolean isTermGroupFieldsOpened() {
-        return isElementVisible(termGroup);
+        return isElementVisible(termGroupOpened);
     }
 
     @Step("Check if 'Distribution and Misc' fields is hidden")
     public boolean isDistributionAndMiscGroupFieldsOpened() {
-        return isElementVisible(distributionAndMiscGroup);
+        return isElementVisible(distributionAndMiscGroupOpened);
     }
 
     @Step("Check if 'Transactions Section Group' fields is hidden")
@@ -1891,6 +1901,25 @@ public class EditAccountPage extends PageTools {
         return isElementVisible(totalEarningsForLifeOfAccountLabel);
     }
 
+    @Step("'Balance at end of year' field is visible")
+    public boolean isBalanceAtEndOfYearFieldVisible() {
+        return isElementVisible(balanceAtEndOfYearLabel);
+    }
+
+    @Step("'Accrued interest at end of year' field is visible")
+    public boolean isAccruedInterestAtEndOfYearFieldVisible() {
+        return isElementVisible(accruedInterestAtEndOfYearLabel);
+    }
+
+    @Step("'Interest Paid Last Year' field is visible")
+    public boolean isInterestPaidLastYearFieldVisible() {
+        return isElementVisible(interestPaidLastYearLabel);
+    }
+
+    @Step("'Print interest notice override' field is visible")
+    public boolean isPrintInterestNoticeOverrideFieldVisible() {
+        return isElementVisible(printInterestNoticeOverrideLabel);
+    }
 
     @Step("'Verify ACH funds' field is visible")
     public boolean isVerifyAchFundsFieldVisible() {
@@ -2042,6 +2071,7 @@ public class EditAccountPage extends PageTools {
     public boolean isAmountLastInterestPaidFieldVisible() {
         return isElementVisible(amountLastInterestPaidLabel);
     }
+
     @Step("'Date Last Interest Paid' field is visible")
     public boolean isDateLastInterestPaidFieldVisible() {
         return isElementVisible(dateLastInterestPaidLabel);
@@ -2065,6 +2095,11 @@ public class EditAccountPage extends PageTools {
     @Step("'Total Contributions for Life of Account' field is visible")
     public boolean isTotalContributionsForLifOfAccountFieldVisible() {
         return isElementVisible(totalContributionsForLifeOfAccountLabel);
+    }
+
+    @Step("'IRA plan number' field is visible")
+    public boolean isIRAPlanNumberFieldVisible() {
+        return isElementVisible(iraPlanNumberLabel);
     }
 
     @Step("'Number of Debits This Statement Cycle' field is visible")

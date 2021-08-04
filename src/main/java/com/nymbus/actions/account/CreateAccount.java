@@ -909,7 +909,7 @@ public class CreateAccount {
 
     public void verifySavingsAccountPrefilledFields(Account account, IndividualClient client) {
         verifyAccountPrefilledFields(account, client);
-        if (Constants.getEnvironment().equals("dev4")) {
+        if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29")) {
             Assert.assertTrue(Pages.addAccountPage().isApplySeasonalAddressYes(), "'Apply Seasonal Address' is prefilled with wrong value");
         } else {
             Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' is prefilled with wrong value");

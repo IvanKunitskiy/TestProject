@@ -139,7 +139,7 @@ public class C22584_ViewNewSavingsIRAAccountTest extends BaseTest {
                 "- Aggregate col bal\n" +
                 "- Aggr col lst stmt\n" +
                 "- YTD aggr col bal");
-        AccountActions.editAccount().verifySavingsIRAABalanceAndInterestFieldsAreVisible();
+        AccountActions.editAccount().verifySavingsIRABalanceAndInterestFieldsAreVisible();
 
         logInfo("Step 6: Click [-] icon next to 'Balance and Interest' section and verify that all fields within this section were hidden");
         Pages.editAccountPage().clickBalanceAndInterestSectionLink();
@@ -222,7 +222,7 @@ public class C22584_ViewNewSavingsIRAAccountTest extends BaseTest {
                 "- Date Deceased\n" +
                 "- Total Contributions for Life of Account\n" +
                 "- Waive Service Charges");
-        AccountActions.editAccount().verifySavingsIRAAADistributionFieldsAreVisible();
+        AccountActions.editAccount().verifySavingsIRAADistributionFieldsAreVisible();
 
         logInfo("Step 14: Click [-] icon next to 'Distribution' section and verify that all fields within this section were hidden");
         Pages.editAccountPage().clickDistributionSectionLink();

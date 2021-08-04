@@ -215,7 +215,7 @@ public class C25479_ProcessLoanPrepaymentTransactionTest extends BaseTest {
 
         double expectedAccruedInterest = Double.parseDouble(currentBalanceForInterest) * Double.parseDouble(currentEffectiveRate) / 100 /
                 yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate, dueDate, false);
-        String expectedInterest = Functions.roundNumberForInterest(expectedAccruedInterest);
+        String expectedInterest = (Functions.roundNumberForInterest(expectedAccruedInterest)).replace(",", ".");
         TestRailAssert.assertTrue(disInterest.equals(expectedInterest),
                 new CustomStepResult("Interest is not valid", String.format("Interest is valid. Actual %s, Expected %s",
                         disInterest, expectedInterest)));
