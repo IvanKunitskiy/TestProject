@@ -69,8 +69,6 @@ public class C22604_SearchFilterTransactionHistoryItemsToWork extends BaseTest {
                 "open it on Details");
         Actions.backOfficeActions().clickToRejectTransaction(number, effectiveDate);
 
-        Selenide.sleep(100000000);
-
         logInfo("Step 8: Click [Edit]button and select valid trancode for account (106 trancode for " +
                 "CHK account) and click [Save Changes] button, Confirm Create Swap popup");
         Actions.backOfficeActions().changeTransactionCode();

@@ -210,6 +210,11 @@ public class AddAccountPage extends PageTools {
         waitForElementVisibility(accountHolderName);
     }
 
+    @Step("Check if 'Account Title' field is required")
+    public boolean isAccountTitleFieldRequired() {
+        return Boolean.parseBoolean(getElementAttributeValue("required", accountTitleField));
+    }
+
     @Step("Click the 'Account Type' option")
     public void clickAccountTypeSelectorOption(String accountTypeOption) {
         waitForElementClickable(accountTypeSelectorOption, accountTypeOption);
