@@ -1,5 +1,6 @@
 package com.nymbus.frontoffice.depositaccountsmanagement;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
@@ -33,7 +34,7 @@ public class C22603_SearchFilterTransactionHistoryWarehouseTest extends BaseTest
     private final String TEST_RUN_NAME = "Deposit Accounts Management";
 
     @TestRailIssue(issueID = 22603, testRunName = TEST_RUN_NAME)
-    @Test(description = "C22603, Account Transactions: Search / filter transaction history: Warehouse", enabled = true)
+    @Test(description = "C22603, Account Transactions: Search / filter transaction history: Warehouse")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyWarehouseTransactions() {
         logInfo("Step 1: Log in to the system as the User from the precondition");

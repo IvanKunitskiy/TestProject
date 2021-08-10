@@ -52,6 +52,8 @@ public class AccountTransactionPage extends PageTools {
     private By image = By.xpath("//tr[contains(@class, 'detail-view')][1]//img");
     private By transactionCode = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-switch-when='transactioncode']");
     private By amountByTransactionCode = By.xpath("(//tr//td[span[contains(text(), '%s')]]/following-sibling::td[1])[%s]");
+    private By descriptionValue = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span");
+
 
     @Step("Wait for transaction section")
     public void waitForTransactionSection() {
@@ -417,7 +419,7 @@ public class AccountTransactionPage extends PageTools {
     public void clickApplyFilterButton() {
         waitForElementClickable(applyFiltersButton);
         scrollToElement(applyFiltersButton);
-        click(applyFiltersButton);
+        jsClick(applyFiltersButton);
     }
 
     @Step("Click clear filter button")
@@ -425,5 +427,11 @@ public class AccountTransactionPage extends PageTools {
         waitForElementClickable(clearFilterButton);
         scrollToElement(clearFilterButton);
         jsClick(clearFilterButton);
+    }
+
+    @Step("Get description column value")
+    public String getDescriptionValue(int index) {
+        waitForElementVisibility(descriptionValue, index);
+        return getElementText(descriptionValue, index);
     }
 }

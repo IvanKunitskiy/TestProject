@@ -1,5 +1,6 @@
 package com.nymbus.frontoffice.depositaccountsmanagement;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
@@ -67,6 +68,8 @@ public class C22604_SearchFilterTransactionHistoryItemsToWork extends BaseTest {
                 "Proof Date, Reason Rejected ('Bad Code')\n" +
                 "open it on Details");
         Actions.backOfficeActions().clickToRejectTransaction(number, effectiveDate);
+
+        Selenide.sleep(100000000);
 
         logInfo("Step 8: Click [Edit]button and select valid trancode for account (106 trancode for " +
                 "CHK account) and click [Save Changes] button, Confirm Create Swap popup");

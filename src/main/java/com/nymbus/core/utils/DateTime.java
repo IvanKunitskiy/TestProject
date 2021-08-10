@@ -300,6 +300,13 @@ public class DateTime {
         return actual.isAfter(expected);
     }
 
+    public static boolean isDateEqual(String actualDate, String expectedDate, String pattern) {
+        LocalDate actual = LocalDate.parse(actualDate , DateTimeFormatter.ofPattern(pattern));
+        LocalDate expected = LocalDate.parse(expectedDate , DateTimeFormatter.ofPattern(pattern));
+
+        return actual.isEqual(expected);
+    }
+
     public static String getDatePlusYearsWithFormat(int years, String pattern) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.ENGLISH);
         Calendar calendar = Calendar.getInstance();
