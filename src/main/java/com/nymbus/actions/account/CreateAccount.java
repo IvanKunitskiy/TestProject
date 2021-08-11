@@ -397,6 +397,7 @@ public class CreateAccount {
     }
 
     public void setCorrespondingAccount(Account account) {
+//        Selenide.sleep(1000000000);
         if (account.getApplyInterestTo().equals("CHK Acct")) {
             Pages.addAccountPage().clickCorrespondingAccountSelectorButton();
             List<String> listOfCorrespondingAccount = Pages.addAccountPage().getCorrespondingAccountList();

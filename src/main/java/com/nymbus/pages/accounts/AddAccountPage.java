@@ -1026,7 +1026,7 @@ public class AddAccountPage extends PageTools {
     }
 
     @Step("Set 'Account Title' value")
-    public void setAccountTitleValue(String accountTitleValue) {
+    public void  setAccountTitleValue(String accountTitleValue) {
         waitForElementVisibility(accountTitleField);
         waitForElementClickable(accountTitleField);
         type(accountTitleValue, accountTitleField);
