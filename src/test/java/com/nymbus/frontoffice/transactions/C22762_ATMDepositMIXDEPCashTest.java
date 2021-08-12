@@ -118,24 +118,29 @@ public class C22762_ATMDepositMIXDEPCashTest extends BaseTest {
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
         clientRootId = ClientsActions.createClient().getClientIdFromUrl();
+        logInFile("Create client - " + client.getFullName());
 
         // Create Savings  account
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         AccountActions.createAccount().createSavingAccountForTransactionPurpose(savingsAccount);
         savingsAccountNumber = savingsAccount.getAccountNumber();
+        logInFile("Create Sav account - " + savingsAccountNumber);
 
         // Create CHK account
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkAccount);
         checkingAccountNumber = checkAccount.getAccountNumber();
+        logInFile("Create CHK account - " + checkingAccountNumber);
 
         // Create debit card for saving acc
         createDebitCard(client.getInitials(), debitCardForSavingsAcc, false);
         Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(mixDepTransactionData, 1);
+        logInFile("Create debit card for Sav - " + debitCardForSavingsAcc.getCardNumber());
 
         // Create debit card for checking acc
         createDebitCard(client.getInitials(), debitCardForCheckingAcc, true);
         Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(cashTransactionData, 2);
+        logInFile("Create debit card for CHK - " + cashTransactionData.getCardNumber());
 
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccountNumber);
         expectedBalanceDataForSavingAcc = AccountActions.retrievingAccountData().getBalanceData();

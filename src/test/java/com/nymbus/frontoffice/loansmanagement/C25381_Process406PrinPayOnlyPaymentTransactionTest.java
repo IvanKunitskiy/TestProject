@@ -164,7 +164,7 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 25413, testRunName = TEST_RUN_NAME)
+    @TestRailIssue(issueID = 25381, testRunName = TEST_RUN_NAME)
     @Test(description = "C25381, Process 406 - Prin Pay Only payment transaction")
     @Severity(SeverityLevel.CRITICAL)
     public void process406PrinPayOnlyPaymentTransaction() {

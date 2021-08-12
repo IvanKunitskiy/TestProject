@@ -46,6 +46,7 @@ public class C22548_ViewEditNewIndividualClientTest extends BaseTest {
         ClientsActions.individualClientActions().createClient(individualClient);
         ClientsActions.individualClientActions().setClientDetailsData(individualClient);
         ClientsActions.individualClientActions().setDocumentation(individualClient);
+        logInFile("Create client - " + individualClient.getFullName());
 
         clientId = Pages.clientDetailsPage().getClientID();
         Actions.loginActions().doLogOut();
@@ -78,7 +79,8 @@ public class C22548_ViewEditNewIndividualClientTest extends BaseTest {
                 "- Address1 section for Physical address");
         ClientsActions.clientDetailsActions().verifyNotBlankFieldsForIndividualClient();
 
-        logInfo("Step 5: Click [Edit Profile] button");
+        logInfo("Step 5: Click [Edit Profile] button" +
+                "Verify that asterisks are placed before mandatory fields");
         ClientsActions.clientDetailsActions().clickEditProfile();
 
         logInfo("Step 6: Check all required fields, make sure that they are not blank");
@@ -92,6 +94,7 @@ public class C22548_ViewEditNewIndividualClientTest extends BaseTest {
                 "City - any alphanumeric value \n" +
                 "State - any value from the drop-down \n" +
                 "zip code - 5 digit value + additional field 4 digit value \n" +
+                "- Switch 'Ignore OFAC Matching' - 'Yes' position" +
                 "and click [Save Changes] button");
         // Set user defined fields
         Pages.addClientPage().setUserDefinedField1Value(updateModel.getUserDefinedField1());

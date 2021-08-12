@@ -196,13 +196,14 @@ public class C18953_CommercialParticipationLoanSellRepurchaseTest extends BaseTe
         SelenideTools.switchTo().window(1);
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        int days = DateTime.getDaysBetweenTwoDates(effectiveDateValue, postingDateValue, true);
+        int days = DateTime.getDaysBetweenTwoDates(effectiveDateValue, postingDateValue, false);
         String interestearned = WebAdminActions.webAdminUsersActions().getParticipantInterestearnedValueByIndex(loanAccount.getAccountNumber(), 1);
         double actualInterestEarned = participantBalance * (currentEffectiveRate / 100) / Double.parseDouble(yearBase) * days;
         double interestEarnedRounded = Functions.roundToTwoDecimalPlaces(Double.parseDouble(interestearned));
         double actualInterestEarnedRounded = Functions.roundToTwoDecimalPlaces(actualInterestEarned);
         TestRailAssert.assertTrue(interestEarnedRounded == actualInterestEarnedRounded,
-                new CustomStepResult("'interestearned' is not valid", "'interestearned' is valid"));
+                new CustomStepResult("'interestearned' is valid", String.format("'interestearned' is not valid. " +
+                        "Expected %s, actual: %s", interestEarnedRounded, actualInterestEarned)));
 
         WebAdminActions.loginActions().doLogoutProgrammatically();
         SelenideTools.closeCurrentTab();

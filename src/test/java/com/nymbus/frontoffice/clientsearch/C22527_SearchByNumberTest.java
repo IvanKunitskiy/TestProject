@@ -83,6 +83,11 @@ public class C22527_SearchByNumberTest extends BaseTest {
 
         logInfo("Step 3: Click [Search] button");
         Pages.clientsSearchPage().clickOnSearchButton();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         int searchResults = Pages.clientsSearchResultsPage().getAccountNumbersFromSearchResults().size();
         assertTrue(searchResults <= 10, "Search result count is more then 10!");
         if (searchResults == 10)

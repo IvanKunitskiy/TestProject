@@ -14,10 +14,7 @@ import com.nymbus.pages.cashier.CashierPage;
 import com.nymbus.pages.cashier.NoticePage;
 import com.nymbus.pages.check.CheckPage;
 import com.nymbus.pages.check.FullCheckPage;
-import com.nymbus.pages.clients.AddClientPage;
-import com.nymbus.pages.clients.ClientDetailsPage;
-import com.nymbus.pages.clients.ClientsSearchPage;
-import com.nymbus.pages.clients.ClientsSearchResultsPage;
+import com.nymbus.pages.clients.*;
 import com.nymbus.pages.clients.documents.AddNewDocumentPage;
 import com.nymbus.pages.clients.documents.DocumentOverviewPage;
 import com.nymbus.pages.clients.documents.DocumentsPage;
@@ -46,6 +43,7 @@ public class Pages extends AllureLogger {
     private static ASideMenuPage aSideMenuPage;
     private static AddClientPage addClientPage;
     private static ClientDetailsPage clientDetailsPage;
+    private static OfacCheckFailModalPage ofacCheckFailModalPage;
     private static TellerPage tellerPage;
     private static CashierPage cashierPage;
     private static LoansPage loansPage;
@@ -200,6 +198,16 @@ public class Pages extends AllureLogger {
             clientDetailsPage = new ClientDetailsPage();
         }
         return clientDetailsPage;
+    }
+
+    /**
+     * This function return an instance of `OfacCheckFailModalPage`
+     */
+    public static OfacCheckFailModalPage ofacCheckFailModalPage() {
+        if (ofacCheckFailModalPage == null) {
+            ofacCheckFailModalPage = new OfacCheckFailModalPage();
+        }
+        return ofacCheckFailModalPage;
     }
 
     /**

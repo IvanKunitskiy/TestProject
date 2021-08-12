@@ -86,11 +86,13 @@ public class C22767_123DebitPurchaseTest extends BaseTest {
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+        logInFile("Create client - " + client.getFullName());
 
         // Create CHK account
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkAccount);
         checkingAccountNumber = checkAccount.getAccountNumber();
+        logInFile("Create CHK account - " + checkingAccountNumber);
 
         // Set up transaction with account number
         glDebitMiscCreditTransaction.getTransactionDestination().setAccountNumber(checkAccount.getAccountNumber());
@@ -98,6 +100,7 @@ public class C22767_123DebitPurchaseTest extends BaseTest {
         // Create debit card for saving acc
         createDebitCard(client.getInitials(), debitCard);
         Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(nonTellerTransactionData, 1);
+        logInFile("Create debit card for Sav - " + nonTellerTransactionData.getCardNumber());
 
         // Re-login in system for updating teller session
         Actions.loginActions().doLogOut();

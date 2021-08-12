@@ -86,11 +86,11 @@ public class C22545_AddNewDocumentOnClientLevelTest extends BaseTest {
         TestRailAssert.assertTrue(Pages.documentsPage().getDocumentIdentificationIconCount() == 4,
                 new CustomStepResult("Icons are not available for all documents", "Icons are available for all documents"));
 
-        logInfo("Step 6: Open Clients profile on Maintenance -> Maintenance History page");
+        logInfo("Step 9: Open Clients profile on Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
-        logInfo("Step 7: Look through the records on the Maintenance History page and verify that records about newly created Document are present on the Maintenance History page");
+        logInfo("Step 10: Look through the records on the Maintenance History page and verify that records about newly created Document are present on the Maintenance History page");
         AccountActions.accountMaintenanceActions().verifyClientLevelDocumentRecords();
     }
 }

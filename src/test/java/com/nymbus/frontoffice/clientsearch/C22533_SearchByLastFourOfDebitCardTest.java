@@ -68,10 +68,12 @@ public class C22533_SearchByLastFourOfDebitCardTest extends BaseTest {
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+        logInFile("Create client - " + client.getFullName());
 
         // Create account
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkingAccount);
         debitCard.getAccounts().add(checkingAccount.getAccountNumber());
+        logInFile("Create account - " + checkingAccount.getAccountNumber());
 
         // Create debit card
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
@@ -83,6 +85,7 @@ public class C22533_SearchByLastFourOfDebitCardTest extends BaseTest {
 
         // Set debit card Number
         debitCard.setCardNumber(Actions.debitCardModalWindowActions().getCardNumber(1));
+        logInFile("Create debit card - " + debitCard.getCardNumber());
 
         Actions.loginActions().doLogOut();
     }

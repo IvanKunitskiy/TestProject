@@ -42,7 +42,6 @@ public class C22541_CreateIndividualMemberClientTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void verifyIndividualClientCreation() {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-
         ClientsActions.individualClientActions().createClient(individualClient);
         ClientsActions.individualClientActions().setClientDetailsData(individualClient);
         ClientsActions.individualClientActions().setDocumentation(individualClient);

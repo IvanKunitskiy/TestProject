@@ -94,7 +94,7 @@ public class C21728_ViewEditNewLoanAccountTest extends BaseTest {
         Actions.transactionActions().doLoginTeller();
         Actions.transactionActions().setMiscDebitSource(miscDebitSource, 0);
         Actions.transactionActions().setMiscCreditDestination(miscCreditDestination, 0);
-        Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
+        //Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
@@ -102,8 +102,8 @@ public class C21728_ViewEditNewLoanAccountTest extends BaseTest {
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 25323, testRunName = TEST_RUN_NAME)
-    @Test(description="C25323, Loan - Create and Fund: Principal and Interest")
+    @TestRailIssue(issueID = 21728, testRunName = TEST_RUN_NAME)
+    @Test(description="C21728, View / edit new loan account")
     @Severity(SeverityLevel.CRITICAL)
     public void viewEditNewLoanAccount() {
 
@@ -155,7 +155,7 @@ public class C21728_ViewEditNewLoanAccountTest extends BaseTest {
         logInfo("Step 6: Change Adjustable Rate to 'Yes'");
         AccountActions.editAccount().enableAdjustableRateSwitch();
         Pages.editAccountPage().isLastPaymentChangeDateDisabled();
-        Pages.editAccountPage().isPendingVariablePaymentAmountDisabled ();
+        Pages.editAccountPage().isPendingVariablePaymentAmountDisabled();
         Pages.editAccountPage().isPriorVariablePaymentAmountDisabled();
 
         logInfo("Step 7: Fill in all appeared fields with valid values (use future dates for 'Date' fields)");

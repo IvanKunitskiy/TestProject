@@ -5,6 +5,8 @@ import com.nymbus.newmodels.client.other.debitcard.DebitCard;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import org.testng.Assert;
 
 import java.util.List;
@@ -100,6 +102,10 @@ public class DebitCardModalWindowActions {
                 debitCard.getBinControl().getDBCTransactionLimit(),
                 "Value from 'Debit Purchase Daily Limit Number Nbr' field is not equal to value from 'Bin Control' transaction limit"
         );
+
+        String dateEffective = Pages.debitCardModalWindow().getDateEffective();
+        TestRailAssert.assertTrue(dateEffective.equals(debitCard.getDateEffective()), new CustomStepResult("Effective date is true",
+                "Effective date is wrong"));
 
         String futureDate = DateTime.plusMonthsToCurrentDateWithLastDayOfMonth(debitCard.getBinControl().getCardLifeInMonths());
         Assert.assertEquals(

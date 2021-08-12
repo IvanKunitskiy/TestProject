@@ -105,14 +105,17 @@ public class C26507_DepDdaOnusMixTest extends BaseTest {
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+        logInFile("Create client - " + client.getFullName());
 
         // Create CHK account
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(chkAccount);
+        logInFile("Create CHK account - " + chkAccount.getAccountNumber());
 
         // Create debit card for saving acc
         createDebitCard(client.getInitials(), debitCard);
         Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(depDdaOnusMixTransactionData, 1);
+        logInFile("Create debit card - " + depDdaOnusMixTransactionData.getCardNumber());
 
         // Re-login in system for updating teller session
         Actions.loginActions().doLogOut();
