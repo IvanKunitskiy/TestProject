@@ -2,6 +2,7 @@ package com.nymbus.pages.modalwindow;
 
 import com.nymbus.core.base.PageTools;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -287,10 +288,8 @@ public class ParticipationsModalPage extends PageTools {
     public boolean checkFIOwnedAccruedInterest(String interest) {
         waitForElementVisibility(fiOwnedInterest);
         String accinterest = getElementText(fiOwnedInterest).replaceAll("[^0-9.]", "");
-        System.out.println(accinterest);
         if (!accinterest.equals(interest)) {
-            String newInterest = (Double.parseDouble(interest) - 0.01f) + "";
-            System.out.println(newInterest);
+            String newInterest = Functions.getDoubleWithTwoDecimalPlaces((Double.parseDouble(interest) - 0.01f));
             return accinterest.equals(newInterest);
         }
         return true;

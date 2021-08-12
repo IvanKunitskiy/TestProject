@@ -210,6 +210,7 @@ public class TransactionActions {
         int tempIndex = 1 + index;
         Pages.tellerPage().clickWithdrawalButton();
         fillSourceAccountNumber(source.getAccountNumber(), tempIndex);
+        fillSourceAccountCode(source.getTransactionCode(), tempIndex);
         fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
     }
 
@@ -379,19 +380,6 @@ public class TransactionActions {
         Pages.tellerPage().typeAccountNumber(tempIndex, accountNumber);
 
         Pages.tellerPage().clickOnAutocompleteDropDownItem(accountNumber);
-    }
-
-//    public void fillSourceAccountNumberWithFirstInLine( int tempIndex ) {
-//        Pages.tellerPage().clickAccountNumberDiv(tempIndex);
-//        Pages.tellerPage().typeAccountNumberFieldWithRandomName();
-//        String account = Pages.tellerPage().getFirstAutocompleteDropDownItem();
-//        Pages.tellerPage().clickOnAutocompleteDropDownItem( account );
-//    }
-
-    public void fillSourceCheckAccountNumber(String accountNumber, int tempIndex) {
-        Pages.tellerPage().clickAccountNumberDiv(tempIndex);
-
-        Pages.tellerPage().typeCheckAccountNumber(tempIndex, accountNumber);
     }
 
     public void waitForLoadSpinnerInvisibility() {

@@ -5,10 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
-import com.nymbus.core.utils.DateTime;
-import com.nymbus.core.utils.Generator;
-import com.nymbus.core.utils.SelenideTools;
+import com.nymbus.core.utils.*;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -236,7 +233,7 @@ public class C18912_CommercialParticipationLoanLoanParticipationToolTest extends
         TestRailAssert.assertTrue(Pages.participationsModalPage().checkPartAccruedInterest(String.format("%.2f",Double.parseDouble(interestEarned))),
                 new CustomStepResult(
                 "Participant accrued interest is correct", "Participant accrued interest is not correct"));
-        String expectedFI = String.format("%.2f", Double.parseDouble(accruedInterest) - Double.parseDouble(interestEarned));
+        String expectedFI = Functions.getDoubleWithTwoDecimalPlaces(Double.parseDouble(accruedInterest) - Double.parseDouble(interestEarned));
         TestRailAssert.assertTrue(Pages.participationsModalPage().checkFIOwnedAccruedInterest(
                 expectedFI), new CustomStepResult(
                 "FI owned accrued interest is correct", String.format("FI owned accrued interest is not correct. " +
@@ -253,13 +250,14 @@ public class C18912_CommercialParticipationLoanLoanParticipationToolTest extends
         double participationPercentSold = Integer.parseInt(Pages.accountDetailsPage().getParticipationPercentSold()) / (double) 100;
         Pages.accountDetailsPage().clickTransactionsTab();
 
-        String effectiveDateValue = Pages.accountTransactionPage().getEffectiveDateValue(1);
+        String effectiveDateValue = Pages.accountTransactionPage().getEffectiveDateForParticipantValue(1);
         String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
         double amountValue = AccountActions.retrievingAccountData().getAmountValue(1);
         TestRailAssert.assertTrue(transactionCode.equals(TransactionCode.PARTICIPATION_SELL_471.getTransCode()),
                 new CustomStepResult("'Transaction code' is not valid", "'Transaction code' is valid"));
         TestRailAssert.assertTrue(effectiveDateValue.equals(loanAccount.getDateOpened()),
-                new CustomStepResult("'Effective date' is not valid", "'Effective date' is valid"));
+                new CustomStepResult("'Effective date' is not valid",
+                        String.format("'Effective date' is valid. Expected %s, actual %s",loanAccount.getDateOpened(), effectiveDateValue)));
         TestRailAssert.assertTrue(amountValue == currentBalance * participationPercentSold,
                 new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
 

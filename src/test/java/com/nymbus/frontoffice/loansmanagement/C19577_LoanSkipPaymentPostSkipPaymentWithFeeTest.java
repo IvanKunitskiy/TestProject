@@ -133,16 +133,15 @@ public class C19577_LoanSkipPaymentPostSkipPaymentWithFeeTest extends BaseTest {
         logInfo("Step 2: Open account from preconditions on the 'Maintenance' page");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
-        double currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu());
         Pages.accountDetailsPage().clickMaintenanceTab();
 
-        logInfo("Step 3: Launch \"Loan Skip Payment\" tool");
+        logInfo("Step 3: Launch 'Loan Skip Payment' tool");
         AccountActions.accountMaintenanceActions().setTool(Tool.LOAN_SKIP_PAYMENT);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
 
         logInfo("Step 4: Specify fields:\n" +
                 "\n" +
-                "\"NBR of Payments to Skip\" (should be in range from 1 to 6)\n" +
+                "'NBR of Payments to Skip' (should be in range from 1 to 6)\n" +
                 "Fee Amount = any valid amount\n" +
                 "Fee Add-on Payment = NO\n" +
                 "Extend Maturity = NO");

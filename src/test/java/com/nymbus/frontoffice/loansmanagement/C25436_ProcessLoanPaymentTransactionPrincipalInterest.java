@@ -1,5 +1,6 @@
 package com.nymbus.frontoffice.loansmanagement;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -193,8 +194,11 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
                 new CustomStepResult("Amount due is not valid", "Amount due is valid"));
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().paidStatusIsVisibility(),
                 new CustomStepResult("Paid is not visible", "Paid is visible"));
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().paymentStatusIsVisibility("Principal & Interest"),
-                new CustomStepResult("Payment Status is not visible", "Payment Status is visible"));
+        String paymentStatus = "Principal & Interest";
+        Selenide.sleep(10000);
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().paymentStatusIsVisibility(paymentStatus),
+                new CustomStepResult("Payment Status is visible", String.format("Payment Status is visible. Expected %s",
+                        paymentStatus)));
         String dueDate = Pages.accountPaymentInfoPage().getDisabledDueDate();
         TestRailAssert.assertTrue(dueDate.equals(loanAccount.getNextPaymentBilledDueDate()),
                 new CustomStepResult("Due date is not valid", "Due date is valid"));
@@ -214,7 +218,7 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         TestRailAssert.assertTrue(dueDateSec.equals(DateTime.getDateMinusMonth(nextDueDate1, 1)),
                 new CustomStepResult("Due date is not valid", "Due date is valid"));
         String typeDue = Pages.accountPaymentInfoPage().getTypeDue();
-        String expectedType = "Principal & Interest";
+        String expectedType = paymentStatus;
         TestRailAssert.assertTrue(typeDue.equals(expectedType),
                 new CustomStepResult("Date type is not valid", "Date type is valid"));
         String disInterest = Pages.accountPaymentInfoPage().getDisabledInterest();
@@ -250,7 +254,7 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         double amountValue = AccountActions.retrievingAccountData().getAmountValue(1);
         TestRailAssert.assertTrue(amountValue == transactionAmount,
                 new CustomStepResult("Amount is not valid", "Amount is valid"));
-        double principalValue = AccountActions.retrievingAccountData().getBalanceValue(1);
+        double principalValue = AccountActions.retrievingAccountData().getPrincipalValue(1);
         TestRailAssert.assertTrue((int) principalValue + 1 == (int) (amountValue - i),
                 new CustomStepResult("Principal is not valid", "Principal is valid"));
         double interestValue = AccountActions.retrievingAccountData().getInterestMinusValue(1);

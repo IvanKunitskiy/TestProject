@@ -62,9 +62,12 @@ public class CallStatement {
     public void verifyTransactionData(TellerLocation location, CashierDefinedTransactions transaction,
                                       String proofDate, IndividualClient client, Account account) {
         SelenideTools.sleep(Constants.SMALL_TIMEOUT);
+        SelenideTools.sleep(30);
         SelenideTools.switchToLastTab();
+        System.out.println(SelenideTools.getDriver().getWindowHandles().size());
         Pages.noticePage().checkPDFVisible();
         SelenideTools.sleep(30);
+
         File file = Pages.accountStatementPage().downloadCallStatementPdf();
         PDF pdf = new PDF(file);
 
@@ -72,6 +75,23 @@ public class CallStatement {
         verifyAccountInfoInPdf(pdf, transaction, proofDate, client, account);
     }
 
+    /**
+     * Verify transaction PDF file
+     */
+//TellerLocation location, CashierDefinedTransactions transaction,
+//                                      String proofDate,
+    public void verifyCallStatementData(IndividualClient client, Account account, Address seasonalAddress, String date) {
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
+        SelenideTools.switchToLastTab();
+        Pages.noticePage().checkPDFVisible();
+        SelenideTools.sleep(30);
+        File file = Pages.accountStatementPage().downloadCallStatementPdf();
+        PDF pdf = new PDF(file);
+
+        verifyClientSectionInPdf(pdf, client, account, seasonalAddress, date);
+        verifyDepositAccountInPdfFile(pdf, account);
+
+    }
 
     /**
      * Verify CD, CD IRA account call statement PDF file
@@ -123,6 +143,60 @@ public class CallStatement {
         // Phone - Clients Phone
         String phoneNumber = client.getIndividualClientDetails().getPhones().get(1).getPhoneNumber().replaceFirst("(\\d{3})(\\d{3})(\\d+)", "$1-$2-$3");
         assertThat(pdf, containsText(phoneNumber));
+    }
+
+    /**
+     * Verify 'Client section' in PDF file
+     */
+
+    private void verifyClientSectionInPdf(PDF pdf, IndividualClient client, Account account, Address seasonalAddress, String date) {
+        // PIF Number (or Member number) - Client ID from clients profile
+        assertThat(pdf, containsText("CIF #: " + client.getIndividualType().getClientID()));
+
+        // Account number - masked account# (last 4 digits are displayed)
+        String accountNumber = account.getAccountNumber();
+        assertThat(pdf, containsText(accountNumber.substring(accountNumber.length() - 4)));
+
+
+        // Client Name - Client's First Name, Middle Name, Last Name
+        assertThat(pdf, containsText(client.getFullName()));
+
+        // Client Address - Client's Seasonal Address
+        assertThat(pdf, containsText(seasonalAddress.getAddress()));
+
+        // Client Birth Date
+        assertThat(pdf, containsText(client.getIndividualType().getBirthDate()));
+
+        // Client Since
+        assertThat(pdf, containsText(date));
+
+        // Phone - Clients Phone
+        String phoneNumber = client.getIndividualClientDetails().getPhones().get(1).getPhoneNumber().replaceFirst("(\\d{3})(\\d{3})(\\d+)", "$1.$2.$3");
+        assertThat(pdf, containsText(phoneNumber));
+    }
+
+    /**
+     * Verify 'Deposit account' in pdf file
+     */
+    private void verifyDepositAccountInPdfFile(PDF pdf, Account account) {
+        //Deposits:
+        //- Accounts are grouped together by their types - first all Checking accounts, then all Savings accounts, then all CD accounts.
+        //- "Product" field displays the full "Product" name. (bank.data.ddaprd->Name/bank.data.savprd->Name/bank.data.cdprd->Name)
+        //- Sub-headings are displayed for Checking, Savings, and CD accounts.
+        //- Total line is displayed for all deposit accounts totals up.
+
+
+        // Account Type - selected account's Account Type
+        if (account.getProductType().equals("CHK Account")) {
+            assertThat(pdf, containsText(account.getProduct()));
+        }
+
+        // Interest Rate - selected account's Interest Rate
+        assertThat(pdf, containsText(account.getInterestRate()));
+
+        //Product
+        assertThat(pdf,containsText(account.getProduct()));
+
     }
 
     /**
@@ -219,9 +293,6 @@ public class CallStatement {
 
         // Interest Rate - selected account's Interest Rate
         assertThat(pdf, containsText(account.getInterestRate()));
-
-        // Accrued Interest - selected account's Accrued Interest
-        assertThat(pdf, containsText(account.getAccruedInterest()));
     }
 
     /**
@@ -290,7 +361,6 @@ public class CallStatement {
     }
 
     public void setDataForChkSavingsIraAccountCallStatementVerification(Account account) {
-        setAccruedInterest(account);
         setInterestRate(account);
     }
 

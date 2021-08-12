@@ -27,19 +27,22 @@ public class AccountTransactionPage extends PageTools {
      */
     private By noResultsLabel = By.xpath("//section[@ng-if='!haveTransactions()']//div//p");
     private By amountMinusSymbol = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-if='showCurrency']/span[1]");
-    private By amountSymbol = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[1]");
+    private By amountSymbol = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-if='showCurrency']/span[1]");
     private By postingDate = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[2]//span");
     private By effectiveDate = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[2]//span");
+    private By effectiveDateForParticipant = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[3]//span");
     private By effectiveDateWithSourceFilter = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[2]//span");
     private By amountMinus = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-if='showCurrency']/span[2]");
-    private By amount = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[2]");
-    private By balance = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[2]");
+    private By amount = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td//span[@ng-switch-when='amount']//span[@ng-if='showCurrency']/span[2]");
+    private By balance = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td//span[@ng-switch-when='balance']//span[@ng-if='showCurrency']/span[2]");
     private By interest = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[8]//span[@ng-if='showCurrency']/span[2]");
-    private By escrow = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[9]//span[@ng-if='showCurrency']/span[2]");
+    private By escrow = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td//span[@ng-switch-when='escrow']//span[@ng-if='showCurrency']/span[2]");
+    private By principalIntegerPart = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td//span[@ng-switch-when='principal']//span[@ng-if='showCurrency']/span[2]");
+    private By principalFractionalPart = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td//span[@ng-switch-when='principal']//span[@ng-if='showCurrency']/span[3]");
     private By balanceForLoan = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[10]//span[@ng-if='showCurrency']/span[2]");
     private By balanceForLoanFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[10]//span[@ng-if='showCurrency']/span[3]");
-    private By balanceSymbol = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[1]");
-    private By balanceFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[3]");
+    private By balanceSymbol = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[1]");
+    private By balanceFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[3]");
     private By amountFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[3]");
     private By amountMinusFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-if='showCurrency']/span[3]");
     private By interestMinusFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[8]//span[@ng-if='showCurrency']/span[3]");
@@ -49,6 +52,8 @@ public class AccountTransactionPage extends PageTools {
     private By image = By.xpath("//tr[contains(@class, 'detail-view')][1]//img");
     private By transactionCode = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-switch-when='transactioncode']");
     private By amountByTransactionCode = By.xpath("(//tr//td[span[contains(text(), '%s')]]/following-sibling::td[1])[%s]");
+    private By descriptionValue = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span");
+
 
     @Step("Wait for transaction section")
     public void waitForTransactionSection() {
@@ -104,6 +109,12 @@ public class AccountTransactionPage extends PageTools {
     public String getEffectiveDateValue(int index) {
         waitForElementVisibility(effectiveDate, index);
         return getElementText(effectiveDate, index).trim().replaceAll("-", "/");
+    }
+
+    @Step("Get 'Effective date' value")
+    public String getEffectiveDateForParticipantValue(int index) {
+        waitForElementVisibility(effectiveDateForParticipant, index);
+        return getElementText(effectiveDateForParticipant, index).trim().replaceAll("-", "/");
     }
 
     @Step("Get 'Effective date' value with applied filter")
@@ -201,6 +212,18 @@ public class AccountTransactionPage extends PageTools {
         waitForElementVisibility(balanceFractional, index);
         String symbol = getElementText(balanceSymbol,index).trim();
         return symbol + getElementText(balanceFractional, index).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Principal' value")
+    public String getPrincipalValue(int index) {
+        waitForElementVisibility(principalIntegerPart, index);
+        return getElementText(principalIntegerPart, index).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get 'Principal' fractional part value")
+    public String getPrincipalFractionalPartValue(int index) {
+        waitForElementVisibility(principalFractionalPart, index);
+        return getElementText(principalFractionalPart, index).trim().replaceAll("[^0-9.]", "");
     }
 
     @Step("Wait for 'Call Statement' button")
@@ -377,7 +400,7 @@ public class AccountTransactionPage extends PageTools {
     private By transactionsFromArrowButton = By.xpath("//*[@ng-model='transactionsFilter.statement']//span[contains(@class, 'select2-arrow')]");
     private By itemInDropDown = By.xpath("//div[contains(@class, 'select2-drop-active') and not(contains(@class, 'select2-display-none'))]" +
                                  "//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
-    private By applyFiltersButton = By.xpath("//button[@ng-click='applyFilter()']");
+    private By applyFiltersButton = By.xpath("//button[@data-test-id='action-applyFilter']");
     private By clearFilterButton = By.xpath("//*[@ng-model='transactionsFilter.statement']//abbr");
 
     @Step("Click 'Transaction from dropdown' arrow")
@@ -395,12 +418,20 @@ public class AccountTransactionPage extends PageTools {
     @Step("Click apply filter button")
     public void clickApplyFilterButton() {
         waitForElementClickable(applyFiltersButton);
-        click(applyFiltersButton);
+        scrollToElement(applyFiltersButton);
+        jsClick(applyFiltersButton);
     }
 
     @Step("Click clear filter button")
     public void clickClearFilterButton() {
         waitForElementClickable(clearFilterButton);
-        click(clearFilterButton);
+        scrollToElement(clearFilterButton);
+        jsClick(clearFilterButton);
+    }
+
+    @Step("Get description column value")
+    public String getDescriptionValue(int index) {
+        waitForElementVisibility(descriptionValue, index);
+        return getElementText(descriptionValue, index);
     }
 }

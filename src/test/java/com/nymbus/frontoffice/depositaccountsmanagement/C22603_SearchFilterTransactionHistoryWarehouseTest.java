@@ -1,5 +1,6 @@
 package com.nymbus.frontoffice.depositaccountsmanagement;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
@@ -33,7 +34,7 @@ public class C22603_SearchFilterTransactionHistoryWarehouseTest extends BaseTest
     private final String TEST_RUN_NAME = "Deposit Accounts Management";
 
     @TestRailIssue(issueID = 22603, testRunName = TEST_RUN_NAME)
-    @Test(description = "C22603, Account Transactions: Search / filter transaction history: Warehouse", enabled = false)
+    @Test(description = "C22603, Account Transactions: Search / filter transaction history: Warehouse")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyWarehouseTransactions() {
         logInfo("Step 1: Log in to the system as the User from the precondition");
@@ -55,7 +56,8 @@ public class C22603_SearchFilterTransactionHistoryWarehouseTest extends BaseTest
 
         logInfo("Step 5: Look through the list of the transactions and make sure that there are no transactions \n" +
                 "were Effective Date is less than or equal to Current Date");
-        AccountActions.accountTransactionActions().verifyTransactionList(WebAdminActions.loginActions().getSystemDate(), false);
+        AccountActions.accountTransactionActions().verifyTransactionListWithACH(userCredentials,
+                WebAdminActions.loginActions().getSystemDate(), false, accountNumber);
 
         logInfo("Step 6: Remove the value from the 'Show Transactions from' drop-down search filter and click [Apply Filter] button");
         AccountActions.accountTransactionActions().clearFilterRegion();

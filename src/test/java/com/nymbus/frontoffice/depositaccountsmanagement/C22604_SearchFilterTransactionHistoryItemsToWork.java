@@ -1,5 +1,6 @@
 package com.nymbus.frontoffice.depositaccountsmanagement;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
@@ -94,8 +95,6 @@ public class C22604_SearchFilterTransactionHistoryItemsToWork extends BaseTest {
         String replace = actualTransactionData.getEffectiveDate().replace('/', '-');
         replace = replace.substring(6) + "-" + replace.substring(0,5);
         Assert.assertEquals(replace, effectiveDate, "Date not equals");
-
-
     }
 
 

@@ -150,7 +150,7 @@ public class C22661_PerformECForWithdrawAndCloseCHAccTest extends BaseTest {
     private void performWithdrawAndCloseTransaction(Transaction transaction) {
         Actions.transactionActions().goToTellerPage();
         Actions.transactionActions().doLoginTeller();
-        Actions.transactionActions().createWithdrawMiscDebitGLCreditTransaction(transaction);
+        Actions.transactionActions().createWithdrawalGlCreditTransaction(transaction);
         Actions.transactionActions().clickCommitButton();
         Assert.assertFalse(Pages.tellerPage().isNotificationsPresent(), "Error message is visible!");
         Pages.tellerPage().closeModal();

@@ -1,6 +1,8 @@
 package com.nymbus.pages.check;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -56,6 +58,7 @@ public class FullCheckPage extends PageTools {
 
     @Step("Get 'Status' text")
     public String getStatus(){
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         waitForElementVisibility(status);
         return getElementText(status);
     }
@@ -75,25 +78,25 @@ public class FullCheckPage extends PageTools {
     @Step("Get 'Remitter' text")
     public String getRemitter(){
         waitForElementVisibility(remitter);
-        return getDisabledElementAttributeValue("text",remitter);
+        return getDisabledElementAttributeValue("value",remitter);
     }
 
     @Step("Get 'Phone' text")
     public String getPhone(){
         waitForElementVisibility(phone);
-        return getDisabledElementAttributeValue("text",phone);
+        return getDisabledElementAttributeValue("value",phone);
     }
 
     @Step("Get 'Document type' text")
     public String getDocumentType(){
         waitForElementVisibility(documentType);
-        return getDisabledElementAttributeValue("text",documentType);
+        return getDisabledElementAttributeValue("value",documentType);
     }
 
     @Step("Get 'Document Id' text")
     public String getDocumentID(){
         waitForElementVisibility(documentID);
-        return getDisabledElementAttributeValue("text",documentID);
+        return getDisabledElementAttributeValue("value",documentID);
     }
 
     @Step("Get 'Branch' text")

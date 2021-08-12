@@ -48,7 +48,6 @@ public class LoansPage extends PageTools {
         click(viewAllLoanParticipantsLink);
     }
 
-
     /**
      * Loan Reserve
      */
@@ -59,5 +58,24 @@ public class LoansPage extends PageTools {
         click(viewAllLoanReserveLink);
     }
 
+    /**
+     * Insurance Companies
+     */
+    private By viewAllInsuranceCompanies = By.xpath("//a[@href='#/search/bank.data.insurance.company']");
+
+    @Step("Click the 'View all' Loan Reserves link")
+    public void clickViewAllInsuranceCompanies() {
+        click(viewAllInsuranceCompanies);
+    }
+
+    /**
+     * Loan Insurance Plan Setup
+     */
+    private By viewAllLoanInsurancePlanSetup = By.xpath("//a[@href='#/search/bank.data.lnclah']");
+
+    @Step("Click the 'View all' Loan Reserves link")
+    public void clickViewAllLoanInsurancePlanSetup() {
+        click(viewAllLoanInsurancePlanSetup);
+    }
 
 }

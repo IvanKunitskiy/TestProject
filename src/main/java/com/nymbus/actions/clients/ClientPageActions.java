@@ -126,8 +126,17 @@ public class ClientPageActions {
         String currentEffectiveRate = Pages.accountDetailsPage().getCurrentEffectiveRate();
         String daysBaseYearBase = Pages.accountDetailsPage().getDaysBaseYearBase();
         int yearBase = Integer.parseInt(daysBaseYearBase.split("/")[1].substring(0, 3));
-        double interest = Double.parseDouble(currentBalance) * Double.parseDouble(currentEffectiveRate) / 100 / yearBase *
-                Integer.parseInt(loanAccount.getCycleCode());
+        double interest;
+        int cycle = Integer.parseInt(loanAccount.getCycleCode());
+        int day = Integer.parseInt(loanAccount.getDateOpened().substring(3, 5));
+        double mainPartInterest = Double.parseDouble(currentBalance) * Double.parseDouble(currentEffectiveRate) / 100 / yearBase;
+        if (cycle > day) {
+            interest = mainPartInterest * cycle;
+        } else {
+            int daysInMonth = DateTime.getDaysInMonth(Integer.parseInt(loanAccount.getDateOpened().substring(0, 2))+1);
+            interest = mainPartInterest * (daysInMonth
+                    - day + cycle);
+        }
         paymentDueData.setInterest(String.format("%.2f", interest));
         paymentDueData.setEscrow(0.00);
         Pages.accountDetailsPage().clickPaymentInfoTab();
@@ -170,11 +179,11 @@ public class ClientPageActions {
         int countOfDays;
         if (cycleCode > number) {
             countOfDays = cycleCode - number;
-        } else if (cycleCode < number){
-            countOfDays = cycleCode + (DateTime.getDaysInMonth(Integer.parseInt(loanAccount.getDateOpened().substring(0,2)))
+        } else if (cycleCode < number) {
+            countOfDays = cycleCode + (DateTime.getDaysInMonth(Integer.parseInt(loanAccount.getDateOpened().substring(0, 2)))
                     - number);
         } else {
-            countOfDays = DateTime.getDaysInMonth(Integer.parseInt(loanAccount.getDateOpened().substring(0,2)));
+            countOfDays = DateTime.getDaysInMonth(Integer.parseInt(loanAccount.getDateOpened().substring(0, 2)));
         }
         return countOfDays + 1;
     }

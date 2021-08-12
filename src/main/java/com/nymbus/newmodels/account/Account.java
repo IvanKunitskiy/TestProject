@@ -64,6 +64,7 @@ public class Account {
     private String interestPaidYTD;
     private String iraDistributionFrequency;
     private String iraDistributionCode;
+    private String iraDistributionAccountNumber;
     private String iraDistributionAmount;
     private String dateNextIRADistribution;
     private String applyInterestTo;
@@ -118,6 +119,7 @@ public class Account {
     private String rateRoundingFactor;
     private String originalInterestRate;
     private boolean cycleLoan = false;
+    private boolean adjustableRate = false;
     private boolean currentEffectiveRateIsTeaser = false;
 
     public Account setLoanAccountData() {
@@ -132,7 +134,7 @@ public class Account {
         account.setPaymentAmount("1001.00");
         account.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
         account.setPaymentFrequency(PaymentFrequency.MONTHLY.getPaymentFrequency());
-        account.setPaymentBilledLeadDays(String.valueOf(Generator.genInt(1, 30))); // less than number of days in Payment Frequency (e.g. Payment Frequency = Monthly, then range from 1 to 31)
+        account.setPaymentBilledLeadDays(String.valueOf(Generator.genInt(6, 30))); // less than number of days in Payment Frequency (e.g. Payment Frequency = Monthly, then range from 1 to 31)
         account.setNextPaymentBilledDueDate(DateTime.getDatePlusMonth(account.getDateOpened(), 1));
         account.setDateFirstPaymentDue(DateTime.getLocalDatePlusMonthsWithPatternAndLastDay(account.getDateOpened(), 1, "MM/dd/yyyy"));
         account.setCurrentEffectiveRate(String.valueOf(10));
@@ -141,19 +143,22 @@ public class Account {
         account.setDaysBaseYearBase(DaysBaseYearBase.DAY_YEAR_365_365.getDaysBaseYearBase());
 
         /* Edit loan account fields */
-        account.setRateChangeFrequency(RateChangeFrequency.NONE.getRateChangeFrequency());
+        account.setRateChangeFrequency(RateChangeFrequency.TWO_YEARS.getRateChangeFrequency());
         account.setPaymentChangeFrequency(PaymentChangeFrequency.NONE.getPaymentChangeFrequency());
         account.setNextRateChangeDate(DateTime.getDateWithNMonthAdded(WebAdminActions.loginActions().getSystemDate(), "MM/dd/yyyy", Generator.genInt(1, 12)));
         account.setRateChangeLeadDays(Generator.getRandomStringNumber(1));
         account.setNextPaymentChangeDate(DateTime.getDateWithNMonthAdded(WebAdminActions.loginActions().getSystemDate(), "MM/dd/yyyy", Generator.genInt(1, 12)));
-        account.setPaymentChangeLeadDays(Generator.getRandomStringNumber(2));
-        account.setRateMargin(Generator.getRandomStringNumber(2));
+        account.setPaymentChangeLeadDays(Generator.getRandomIntMinMaxInclusiveStringValue(13, 99));
+        account.setRateMargin(Generator.getRandomIntMinMaxInclusiveStringValue(10, 99));
         account.setMinRate(Generator.getRandomStringNumber(1));
-        account.setMaxRate(Generator.getRandomStringNumber(2));
-        account.setMaxRateChangeUpDown(Generator.getRandomStringNumber(2));
-        account.setMaxRateLifetimeCap(Generator.getRandomStringNumber(2));
-        account.setRateRoundingFactor(Generator.getRandomStringNumber(2));
-        account.setOriginalInterestRate(Generator.getRandomStringNumber(2));
+        account.setMaxRate(Generator.getRandomIntMinMaxInclusiveStringValue(10, 99));
+        account.setMaxRateChangeUpDown(Generator.getRandomIntMinMaxInclusiveStringValue(10, 99));
+        account.setMaxRateLifetimeCap(Generator.getRandomIntMinMaxInclusiveStringValue(10, 99));
+        System.out.println("value of RateRoundingFactor enum " + RateRoundingFactor.ZERO_SEVENTY_FIVE_THOUSANDTH.getRateRoundingFactor() + " --------");
+        account.setRateRoundingFactor(RateRoundingFactor.ZERO_SEVENTY_FIVE_THOUSANDTH.getRateRoundingFactor());
+        System.out.println("value of account.gerRateRoundingFactor() " + account.getRateRoundingFactor() + " -------");
+        account.setOriginalInterestRate(Generator.getRandomIntMinMaxInclusiveStringValue(10, 99));
+        account.setRateIndex("Wall Street Journal Prime");
 
         return account;
     }
@@ -1010,6 +1015,10 @@ public class Account {
         this.daysBaseYearBase = daysBaseYearBase;
     }
 
+    public void setAdjustableRate (Boolean adjustableRate) {
+        this.adjustableRate = adjustableRate;
+    }
+
     public String getPaymentBilledLeadDays() {
         return paymentBilledLeadDays;
     }
@@ -1166,7 +1175,19 @@ public class Account {
         return currentEffectiveRateIsTeaser;
     }
 
+    public boolean isAdjustableRate() {
+        return adjustableRate;
+    }
+
     public void setCurrentEffectiveRateIsTeaser(boolean currentEffectiveRateIsTeaser) {
         this.currentEffectiveRateIsTeaser = currentEffectiveRateIsTeaser;
+    }
+
+    public String getIraDistributionAccountNumber() {
+        return iraDistributionAccountNumber;
+    }
+
+    public void setIraDistributionAccountNumber(String iraDistributionAccountNumber) {
+        this.iraDistributionAccountNumber = iraDistributionAccountNumber;
     }
 }

@@ -15,17 +15,25 @@ public class BankControlPage extends PageTools {
     private final By CTRLimit = By.xpath("//div[@data-field-id='CTRLimit']//input");
     private final By commercialParticipationLite = By.xpath("//input[@name='field[CommercialParticipationLite]']");
     private final By commercialParticipationLiteButton = By.xpath("//div[@data-rootid='43830316']//input/..");
+    private final By effectiveDays = By.xpath("//div[@id='bank.data.bcfile.debitcards-DebitCardEffectiveDateDays']//span");
 
     /*
      ** Tabs
      */
     private final By miscellaneousTab = By.xpath("//a[contains(string(),'Miscellaneous')]");
     private final By loansTab = By.xpath("//a[text()='Loans']");
+    private final By debitCardsTab = By.xpath("//a[text()='ATM/Debit Cards']");
 
     @Step("Click the 'Loans' tab")
     public void clickLoansTab() {
         waitForElementClickable(loansTab);
         click(loansTab);
+    }
+
+    @Step("Click the 'Debit Cards' tab")
+    public void clickDebitCardsTab() {
+        waitForElementClickable(debitCardsTab);
+        click(debitCardsTab);
     }
 
     @Step("Click the 'Miscellaneous' tab")
@@ -88,6 +96,12 @@ public class BankControlPage extends PageTools {
     public void setCTRLimitValue(String limit) {
         waitForElementPresent(CTRLimit);
         type(limit, CTRLimit);
+    }
+
+    @Step("Get debit card Effective Days")
+    public int getDebitCardEffectiveDays(){
+        waitForElementVisibility(effectiveDays);
+        return Integer.parseInt(getElementText(effectiveDays));
     }
 
 }

@@ -1,5 +1,6 @@
 package com.nymbus.actions.account;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.Constants;
@@ -49,7 +50,7 @@ public class CreateAccount {
         setBankBranch(account);
         setMailCode(account);
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
-        // Pages.addAccountPage().setInterestRate(account.getInterestRate());
+        Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setStatementCycle(account);
         //TODO ucom
         //setCallClassCode(account);
@@ -189,6 +190,9 @@ public class CreateAccount {
         if (account.isCurrentEffectiveRateIsTeaser()) {
             enableTeaserLoanSwitch();
         }
+        if (!(account.isAdjustableRate())) {
+            disableAdjustableRateSwitch();
+        }
         Pages.addAccountPage().setNextPaymentBilledDueDate(account.getNextPaymentBilledDueDate());
         Pages.addAccountPage().setDateFirstPaymentDue(account.getDateFirstPaymentDue());
         Pages.addAccountPage().setCurrentEffectiveRate(account.getCurrentEffectiveRate());
@@ -233,6 +237,7 @@ public class CreateAccount {
         setCallClassCode(account);
         setIRADistributionFrequency(account);
         setIRADistributionCode(account);
+        setIRADistributionAccountNumber(account);
         Pages.addAccountPage().setAccountTitleValue(account.getAccountTitle());
         Pages.addAccountPage().setIRADistributionAmountValue(account.getIraDistributionAmount());
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
@@ -250,6 +255,7 @@ public class CreateAccount {
         setCallClassCode(account);
         setIRADistributionFrequency(account);
         setIRADistributionCode(account);
+        setIRADistributionAccountNumber(account);
         Pages.addAccountPage().setIRADistributionAmountValue(account.getIraDistributionAmount());
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setDateNextIRADistributionValue(account.getDateNextIRADistribution());
@@ -375,6 +381,18 @@ public class CreateAccount {
             account.setIraDistributionCode(listOfIRADistributionCode.get(new Random().nextInt(listOfIRADistributionCode.size())).trim());
         }
         Pages.addAccountPage().clickIRADistributionCodeSelectorOption(account.getIraDistributionCode());
+    }
+
+    public void setIRADistributionAccountNumber(Account account) {
+        if (account.getIraDistributionAccountNumber() != null) {
+            if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev12")) {
+                Pages.addAccountPage().clickIRADistributionAccountNumberSelectorButton(account.getIraDistributionAccountNumber());
+                Pages.addAccountPage().clickIRADistributionAccountNumberSelectorOption(account.getIraDistributionAccountNumber());
+            } else {
+                Pages.addAccountPage().clickIRADistributionAccountNumberSelectorButton();
+                Pages.addAccountPage().clickIRADistributionAccountNumberSelectorOptionSpan(account.getIraDistributionAccountNumber());
+            }
+        }
     }
 
     public void setCorrespondingAccount(Account account) {
@@ -763,7 +781,7 @@ public class CreateAccount {
     }
 
     public void disableCycleLoanSwitch() {
-        if (Constants.getEnvironment().equals("dev4")) {
+        if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29")) {
             if (Pages.addAccountPage().isCycleLoanValueYes()) {
                 Pages.addAccountPage().clickCycleLoanSwitch();
                 SelenideTools.sleep(Constants.MICRO_TIMEOUT);
@@ -777,9 +795,16 @@ public class CreateAccount {
     }
 
     public void enableCycleLoanSwitch() {
-        if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("no")) {
-            Pages.addAccountPage().clickCycleLoanSwitch();
-            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        if(Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev4")){
+            if (!(Pages.addAccountPage().isCycleLoanValueYes())) {
+                Pages.addAccountPage().clickCycleLoanSwitch();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
+        } else {
+            if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("no")) {
+                Pages.addAccountPage().clickCycleLoanSwitch();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
         }
     }
 
@@ -858,7 +883,7 @@ public class CreateAccount {
         Assert.assertEquals(Pages.addAccountPage().getInterestFrequency(), account.getInterestFrequency(), "'Interest Frequency' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getInterestType(), account.getInterestType(), "'Interest Type' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getApplyInterestTo(), "Remain in Account", "'Apply interest to' is prefilled with wrong value");
-        if (Constants.getEnvironment().equals("dev4")) {
+        if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev12")) {
             Assert.assertTrue(Pages.addAccountPage().isAutoRenewableYes(), "'Auto Renewable' is prefilled with wrong value");
         } else {
             Assert.assertEquals(Pages.addAccountPage().getAutoRenewable(), "YES", "'Auto Renewable' is prefilled with wrong value");
@@ -883,7 +908,7 @@ public class CreateAccount {
 
     public void verifySavingsAccountPrefilledFields(Account account, IndividualClient client) {
         verifyAccountPrefilledFields(account, client);
-        if (Constants.getEnvironment().equals("dev4")) {
+        if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29")) {
             Assert.assertTrue(Pages.addAccountPage().isApplySeasonalAddressYes(), "'Apply Seasonal Address' is prefilled with wrong value");
         } else {
             Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' is prefilled with wrong value");
@@ -897,6 +922,11 @@ public class CreateAccount {
     public void verifySavingsIraAccountPrefilledFields(Account account, IndividualClient client) {
         verifyAccountPrefilledFields(account, client);
         verifyIraAccountPrefilledFields(account, client);
+        if (Constants.getEnvironment().equals("dev4")) {
+            Assert.assertTrue(Pages.addAccountPage().isApplySeasonalAddressYes(), "'Apply Seasonal Address' is prefilled with wrong value");
+        } else {
+            Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' is prefilled with wrong value");
+        }
     }
 
     /**
@@ -926,5 +956,13 @@ public class CreateAccount {
         verifyAccountPrefilledFields(account, client);
         Assert.assertEquals(Pages.addAccountPage().getOptInOutStatus(), "Client Has Not Responded", "'DBC ODP Opt In/Out Status' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' is prefilled with wrong value");
+    }
+
+    public String getLoanAccountId() {
+            String url = SelenideTools.getCurrentUrl();
+            String[] arr = url.split("/");
+            int position = arr.length - 2;
+
+            return  arr[position];
     }
 }

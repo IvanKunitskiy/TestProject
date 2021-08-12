@@ -86,11 +86,13 @@ public class C22761_224ATMWithdrawalONUSTest extends BaseTest {
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+        logInFile("Create client - " + client.getFullName());
 
         // Create CHK account
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         AccountActions.createAccount().createSavingAccountForTransactionPurpose(savingsAccount);
         savingsAccountNumber = savingsAccount.getAccountNumber();
+        logInFile("Create Sav account - " + savingsAccountNumber);
 
         // Set up transaction with account number
         glDebitMiscCreditTransaction.getTransactionDestination().setAccountNumber(savingsAccountNumber);
@@ -103,6 +105,7 @@ public class C22761_224ATMWithdrawalONUSTest extends BaseTest {
         Pages.debitCardModalWindow().clickOnSaveAndFinishButton();
         Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
         Actions.debitCardModalWindowActions().setExpirationDateAndCardNumber(nonTellerTransactionData, 1);
+        logInFile("Create debit card - " + nonTellerTransactionData.getCardNumber());
 
         // Re-login in system for updating teller session
         Actions.loginActions().doLogOut();

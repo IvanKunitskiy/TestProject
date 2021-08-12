@@ -1,8 +1,13 @@
 package com.nymbus.actions.account;
 
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
+import com.nymbus.newmodels.UserCredentials;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import org.testng.asserts.SoftAssert;
 
 import java.util.Collections;
@@ -23,16 +28,15 @@ public class AccountTransactionActions {
         if (isDebitTransaction(transaction, accountNumber)) {
             return symbol.equals(MINUS_SYMBOL)
                     && Pages.accountTransactionPage().isAmountSymbolColorRight(index, RED);
-        }
-        else {
+        } else {
             return symbol.equals(PLUS_SYMBOL)
                     && Pages.accountTransactionPage().isAmountSymbolColorRight(index, GREEN);
         }
     }
 
     public boolean isAllImageVisible() {
-        for(int i = 1; i <= TRANSACTION_ITEMS_SIZE; i++) {
-            if(!Pages.accountTransactionPage().isImageVisible(i)) {
+        for (int i = 1; i <= TRANSACTION_ITEMS_SIZE; i++) {
+            if (!Pages.accountTransactionPage().isImageVisible(i)) {
                 return false;
             }
         }
@@ -41,8 +45,8 @@ public class AccountTransactionActions {
 
     public boolean isTransactionsSymbolRight(String accountNumber, List<Transaction> transactionList) {
         Collections.reverse(transactionList);
-        for(int i = 0; i < transactionList.size(); i++) {
-            if(!isTransactionSymbolRight(accountNumber, transactionList.get(i), i+1)) {
+        for (int i = 0; i < transactionList.size(); i++) {
+            if (!isTransactionSymbolRight(accountNumber, transactionList.get(i), i + 1)) {
                 return false;
             }
         }
@@ -74,16 +78,41 @@ public class AccountTransactionActions {
 
     private void verifyEffectiveDate(String expectedDate, int count, boolean isBefore) {
         SoftAssert softAssert = new SoftAssert();
-        for(int i = 1; i <= count; ++i) {
+        for (int i = 1; i <= count; ++i) {
+            if (isBefore) {
+                String actualDate = Pages.accountTransactionPage().getEffectiveDateValue(i);
+                softAssert.assertTrue(DateTime.isDateBefore(actualDate, expectedDate, "MM/dd/yyyy") || DateTime.isDateEqual(actualDate, expectedDate, "MM/dd/yyyy"),
+                        String.format("Transaction %s effective date is incorrect!", i));
+            } else {
+                String actualDate = Pages.accountTransactionPage().getEffectiveDateWithAppliedFilterValue(i);
+                softAssert.assertTrue(DateTime.isDateAfter(actualDate, expectedDate, "MM/dd/yyyy"),
+                        String.format("Transaction %s effective date is incorrect!", i));
+            }
+        }
+        softAssert.assertAll();
+    }
+
+    public void verifyTransactionListWithACH(UserCredentials userCredentials, String currentBusinessDate, boolean isBefore, String accountNumber) {
+        int rowsCount = getRowCount();
+        verifyEffectiveDateWithACH(userCredentials, currentBusinessDate, rowsCount, isBefore, accountNumber);
+    }
+
+    private void verifyEffectiveDateWithACH(UserCredentials userCredentials, String expectedDate, int count, boolean isBefore, String accountNumber) {
+        SoftAssert softAssert = new SoftAssert();
+        for (int i = 1; i <= count; ++i) {
             if (isBefore) {
                 String actualDate = Pages.accountTransactionPage().getEffectiveDateValue(i);
                 softAssert.assertTrue(DateTime.isDateBefore(actualDate, expectedDate, "MM/dd/yyyy"),
                         String.format("Transaction %s effective date is incorrect!", i));
-            }
-            else {
+            } else {
                 String actualDate = Pages.accountTransactionPage().getEffectiveDateWithAppliedFilterValue(i);
-                softAssert.assertTrue(DateTime.isDateAfter(actualDate, expectedDate, "MM/dd/yyyy"),
-                        String.format("Transaction %s effective date is incorrect!", i));
+                if (DateTime.isDateEqual(actualDate, expectedDate, "MM/dd/yyyy")) {
+                    String description = Pages.accountTransactionPage().getDescriptionValue(i);
+                    String actualDesc = WebAdminActions.webAdminTransactionActions().getUniqueEftDescription(userCredentials, actualDate, accountNumber, i);
+                    SelenideTools.closeCurrentTab();
+                    SelenideTools.switchTo().window(0);
+                    softAssert.assertTrue(actualDesc.equals(description), String.format("Transaction %s effective date is incorrect!", i));
+                }
             }
         }
         softAssert.assertAll();

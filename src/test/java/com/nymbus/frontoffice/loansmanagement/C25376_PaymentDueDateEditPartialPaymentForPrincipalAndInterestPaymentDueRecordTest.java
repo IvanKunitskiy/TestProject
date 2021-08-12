@@ -155,7 +155,7 @@ public class C25376_PaymentDueDateEditPartialPaymentForPrincipalAndInterestPayme
     private final String TEST_RUN_NAME = "Loans Management";
 
     @TestRailIssue(issueID = 25376, testRunName = TEST_RUN_NAME)
-    @Test(description = "C25376, Payment Due Record: generation for non cycle Principal and Interest (bill) loan")
+    @Test(description = "C25376, Payment Due Date: Edit Partial Payment for Principal and Interest (Bill) payment due record")
     @Severity(SeverityLevel.CRITICAL)
     public void paymentDueDateEditPartialPaymentForPrincipalAndInterestPaymentDueRecord() {
         logInfo("Log in to the system");

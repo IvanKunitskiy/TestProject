@@ -144,7 +144,7 @@ public class C25422_ChargeOffProcessingChargeOffReversalForPartiallyChargedOffLo
 
     private final String TEST_RUN_NAME = "Loans Management";
 
-    @TestRailIssue(issueID = 25426, testRunName = TEST_RUN_NAME)
+    @TestRailIssue(issueID = 25422, testRunName = TEST_RUN_NAME)
     @Test(description="C25422, Charge Off processing: Charge Off Reversal for Partially Charged Off loans")
     @Severity(SeverityLevel.CRITICAL)
     public void commercialParticipationLoanSellRepurchase() {

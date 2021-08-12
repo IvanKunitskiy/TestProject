@@ -48,7 +48,6 @@ public class C22519_CreateUserTest extends BaseTest {
 
         logInfo("Step 6: Perform log out from the users sub-menu in the header at the top-right corner of the screen");
         Actions.loginActions().doLogOut();
-
         logInfo("Step 7: Click [Trouble Logging In?] button and fill in 'Email' field with an Email that was assigned to the newly created user,\n" +
                 "fill in CAPTCHA field and click [Send me a new password] button");
         logInfo("Step 8: Open the inbox of the appropriate Email and click the link inside the received email with Account password reset request");

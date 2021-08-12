@@ -40,7 +40,6 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
     private double savingsTransactionAmount = 200.00;
     private double returnTransactionAmount = 100.00;
     private double fee = 5.00;
-    private int checkAccountNumber;
     private Check check;
     private String name = "John";
     private FullCheck fullCheck;
@@ -97,7 +96,7 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         expectedSavingsBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-", expectedSavingsBalanceData.getCurrentBalance(), returnTransactionAmount);
+                "+", expectedSavingsBalanceData.getCurrentBalance(), returnTransactionAmount);
 
         //Check Official check and printer
         Pages.aSideMenuPage().clickSettingsMenuItem();
@@ -109,7 +108,6 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         Pages.aSideMenuPage().clickSettingsMenuItem();
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().clickViewControls();
-        checkAccountNumber = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());
 
         //New Checks
         check = new Check();
@@ -129,7 +127,7 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         fullCheck.setDocumentType(client.getIndividualClientDetails().getDocuments().get(0).getIdType().getIdType());
         fullCheck.setDocumentID(client.getIndividualClientDetails().getDocuments().get(0).getIdNumber());
         fullCheck.setPhone(client.getIndividualClientDetails().getPhones().get(0).getPhoneNumber());
-        Actions.loginActions().doLogOut();
+        Actions.loginActions().doLogOutProgrammatically();
 
         //Check CDT template
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -140,22 +138,29 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         }
 
         //Create CDT  transaction
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.transactionActions().loginTeller();
+        Actions.transactionActions().openProofDateLoginModalWindow();
+        String bankBranch = Pages.tellerModalPage().getBankBranch();
+        fullCheck.setBranch(bankBranch);
+        Actions.transactionActions().doLoginProofDate();
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
-        Actions.transactionActions().loginTeller();
         Actions.cashierDefinedActions().createOfficialTransaction(CashierDefinedTransactions.OFFICIAL_CHECK_FROM_SAVINGS,
                 transaction, false, name);
         expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
         checkNumber = Pages.confirmModalPage().getReprintCheckNumber();
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         Pages.confirmModalPage().clickYes();
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         Pages.confirmModalPage().clickYes();
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         Pages.confirmModalPage().clickNo();
-        Actions.transactionActions().clickCommitButton();
-        Pages.verifyConductorModalPage().clickVerifyButton();
-        Pages.confirmModalPage().clickNo();
-        Pages.confirmModalPage().clickNo();
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         Actions.loginActions().doLogOut();
 
@@ -185,16 +190,17 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
 
         logInfo("Step 5: Select Yes option and verify the Status field");
         Pages.fullCheckPage().clickYes();
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         Assert.assertEquals(Pages.fullCheckPage().getStatus(),"Void", "Status doesn't match");
-
 
         logInfo("Step 6: Go to account used in DEBIT item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
-        Actions.transactionActions().goToTellerPage();
+        Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         BalanceDataForCHKAcc actualSavBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
 
+        expectedSavingsBalanceData.addAmount(returnTransactionAmount);
         Assert.assertEquals(actualSavBalanceData.getCurrentBalance(), expectedSavingsBalanceData.getCurrentBalance(),
                 "Current balance doesn't match!");
         Assert.assertEquals(actualSavBalanceData.getAvailableBalance(), expectedSavingsBalanceData.getAvailableBalance(),
@@ -202,12 +208,8 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
 
         logInfo("Step 7: Open account on the Transactions tab and verify the committed transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
-        savingsAccTransactionData.setBalance(returnTransactionAmount);
         AccountActions.retrievingAccountData().goToTransactionsTab();
-        TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getSecondTransactionDataWithBalanceSymbol();
+        TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
-
     }
-
-
 }

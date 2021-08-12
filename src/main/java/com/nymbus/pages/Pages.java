@@ -14,10 +14,7 @@ import com.nymbus.pages.cashier.CashierPage;
 import com.nymbus.pages.cashier.NoticePage;
 import com.nymbus.pages.check.CheckPage;
 import com.nymbus.pages.check.FullCheckPage;
-import com.nymbus.pages.clients.AddClientPage;
-import com.nymbus.pages.clients.ClientDetailsPage;
-import com.nymbus.pages.clients.ClientsSearchPage;
-import com.nymbus.pages.clients.ClientsSearchResultsPage;
+import com.nymbus.pages.clients.*;
 import com.nymbus.pages.clients.documents.AddNewDocumentPage;
 import com.nymbus.pages.clients.documents.DocumentOverviewPage;
 import com.nymbus.pages.clients.documents.DocumentsPage;
@@ -46,6 +43,7 @@ public class Pages extends AllureLogger {
     private static ASideMenuPage aSideMenuPage;
     private static AddClientPage addClientPage;
     private static ClientDetailsPage clientDetailsPage;
+    private static OfacCheckFailModalPage ofacCheckFailModalPage;
     private static TellerPage tellerPage;
     private static CashierPage cashierPage;
     private static LoansPage loansPage;
@@ -120,6 +118,12 @@ public class Pages extends AllureLogger {
     private static LoanReservePage loanReservePage;
     private static AddNewLoanReservePage addNewLoanReservePage;
     private static LoanSkipPaymentModalPage loanSkipPaymentModalPage;
+    private static AccountLoanInsurancePoliciesPage accountLoanInsurancePoliciesPage;
+    private static InsuranceCompaniesPage insuranceCompaniesPage;
+    private static AddNewInsuranceCompanyPage addNewInsuranceCompanyPage;
+    private static LoanInsurancePlanSetupPage loanInsurancePlanSetupPage;
+    private static AddNewLoanInsurancePlanSetupPage addNewLoanInsurancePlanSetupPage;
+    private static LoanInsurancePolicyModalPage loanInsurancePolicyModalPage;
 
     /**
      * Modal Windows
@@ -194,6 +198,16 @@ public class Pages extends AllureLogger {
             clientDetailsPage = new ClientDetailsPage();
         }
         return clientDetailsPage;
+    }
+
+    /**
+     * This function return an instance of `OfacCheckFailModalPage`
+     */
+    public static OfacCheckFailModalPage ofacCheckFailModalPage() {
+        if (ofacCheckFailModalPage == null) {
+            ofacCheckFailModalPage = new OfacCheckFailModalPage();
+        }
+        return ofacCheckFailModalPage;
     }
 
     /**
@@ -651,8 +665,8 @@ public class Pages extends AllureLogger {
      * This function return an instance of `ConfirmModalPage`
      */
     public static ConfirmModalPage confirmModalPage() {
-        if (confirmModalPage == null){
-         confirmModalPage = new ConfirmModalPage();
+        if (confirmModalPage == null) {
+            confirmModalPage = new ConfirmModalPage();
         }
         return confirmModalPage;
     }
@@ -661,7 +675,7 @@ public class Pages extends AllureLogger {
      * This function return an instance of `BackOfficePage`
      */
     public static BackOfficePage backOfficePage() {
-        if (backOfficePage == null){
+        if (backOfficePage == null) {
             backOfficePage = new BackOfficePage();
         }
         return backOfficePage;
@@ -671,7 +685,7 @@ public class Pages extends AllureLogger {
      * This function return an instance of `DocumentSearchNoticesPage`
      */
     public static DocumentSearchNoticesPage documentSearchNoticesPage() {
-        if (documentSearchNoticesPage == null){
+        if (documentSearchNoticesPage == null) {
             documentSearchNoticesPage = new DocumentSearchNoticesPage();
         }
         return documentSearchNoticesPage;
@@ -681,7 +695,7 @@ public class Pages extends AllureLogger {
      * This function return an instance of `DocumentTransactionsPage`
      */
     public static DocumentSearchTransactionsPage documentSearchTransactionsPage() {
-        if (documentSearchTransactionsPage == null){
+        if (documentSearchTransactionsPage == null) {
             documentSearchTransactionsPage = new DocumentSearchTransactionsPage();
         }
         return documentSearchTransactionsPage;
@@ -690,8 +704,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `NoticePage`
      */
-    public static NoticePage noticePage(){
-        if (noticePage == null){
+    public static NoticePage noticePage() {
+        if (noticePage == null) {
             noticePage = new NoticePage();
         }
         return noticePage;
@@ -700,8 +714,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return instance of 'CheckPage'
      */
-    public static CheckPage checkPage(){
-        if(checkPage == null){
+    public static CheckPage checkPage() {
+        if (checkPage == null) {
             checkPage = new CheckPage();
         }
         return checkPage;
@@ -710,8 +724,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return instance of 'CheckPage'
      */
-    public static FullCheckPage fullCheckPage(){
-        if(fullCheckPage == null){
+    public static FullCheckPage fullCheckPage() {
+        if (fullCheckPage == null) {
             fullCheckPage = new FullCheckPage();
         }
         return fullCheckPage;
@@ -721,8 +735,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `AccountCommercialAnalysisPage`
      */
-    public static AccountCommercialAnalysisPage accountCommercialAnalysisPage(){
-        if (accountCommercialAnalysisPage == null){
+    public static AccountCommercialAnalysisPage accountCommercialAnalysisPage() {
+        if (accountCommercialAnalysisPage == null) {
             accountCommercialAnalysisPage = new AccountCommercialAnalysisPage();
         }
         return accountCommercialAnalysisPage;
@@ -731,8 +745,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `PrintChecksPage`
      */
-    public static PrintChecksPage printChecksPage(){
-        if (printChecksPage == null){
+    public static PrintChecksPage printChecksPage() {
+        if (printChecksPage == null) {
             printChecksPage = new PrintChecksPage();
         }
         return printChecksPage;
@@ -741,8 +755,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `CheckPrintPage`
      */
-    public static CheckPrintPage checkPrintPage(){
-        if (checkPrintPage == null){
+    public static CheckPrintPage checkPrintPage() {
+        if (checkPrintPage == null) {
             checkPrintPage = new CheckPrintPage();
         }
         return checkPrintPage;
@@ -753,7 +767,7 @@ public class Pages extends AllureLogger {
      * This function return an instance of `ConfirmModalPage`
      */
     public static CashierDefinedActionsPage cashierDefinedActionsPage() {
-        if (cashierDefinedActionsPage == null){
+        if (cashierDefinedActionsPage == null) {
             cashierDefinedActionsPage = new CashierDefinedActionsPage();
         }
         return cashierDefinedActionsPage;
@@ -763,7 +777,7 @@ public class Pages extends AllureLogger {
      * This function return an instance of `AlertMessageModalPage`
      */
     public static AlertMessageModalPage alertMessageModalPage() {
-        if (alertMessageModalPage == null){
+        if (alertMessageModalPage == null) {
             alertMessageModalPage = new AlertMessageModalPage();
         }
         return alertMessageModalPage;
@@ -772,8 +786,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `LoanProductPage`
      */
-    public static LoanProductPage loanProductPage(){
-        if (loanProductPage == null){
+    public static LoanProductPage loanProductPage() {
+        if (loanProductPage == null) {
             loanProductPage = new LoanProductPage();
         }
         return loanProductPage;
@@ -782,8 +796,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `LoanProductPage`
      */
-    public static LoansReservePage loansReservePage(){
-        if (loansReservePage == null){
+    public static LoansReservePage loansReservePage() {
+        if (loansReservePage == null) {
             loansReservePage = new LoansReservePage();
         }
         return loansReservePage;
@@ -792,8 +806,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `AddNewLoanProductPage`
      */
-    public static AddNewLoanProductPage addNewLoanProductPage(){
-        if (addNewLoanProductPage == null){
+    public static AddNewLoanProductPage addNewLoanProductPage() {
+        if (addNewLoanProductPage == null) {
             addNewLoanProductPage = new AddNewLoanProductPage();
         }
         return addNewLoanProductPage;
@@ -802,8 +816,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `LoanProductOverviewPage`
      */
-    public static LoanProductOverviewPage loanProductOverviewPage(){
-        if (loanProductOverviewPage == null){
+    public static LoanProductOverviewPage loanProductOverviewPage() {
+        if (loanProductOverviewPage == null) {
             loanProductOverviewPage = new LoanProductOverviewPage();
         }
         return loanProductOverviewPage;
@@ -812,8 +826,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `AccountPaymentInfoPage`
      */
-    public static AccountPaymentInfoPage accountPaymentInfoPage(){
-        if (accountPaymentInfoPage == null){
+    public static AccountPaymentInfoPage accountPaymentInfoPage() {
+        if (accountPaymentInfoPage == null) {
             accountPaymentInfoPage = new AccountPaymentInfoPage();
         }
         return accountPaymentInfoPage;
@@ -822,8 +836,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `InterestRateChangeModalPage`
      */
-    public static InterestRateChangeModalPage interestRateChangeModalPage(){
-        if (interestRateChangeModalPage == null){
+    public static InterestRateChangeModalPage interestRateChangeModalPage() {
+        if (interestRateChangeModalPage == null) {
             interestRateChangeModalPage = new InterestRateChangeModalPage();
         }
         return interestRateChangeModalPage;
@@ -832,8 +846,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `AmountDueInquiryModalPage`
      */
-    public static AmountDueInquiryModalPage amountDueInquiryModalPage(){
-        if (amountDueInquiryModalPage == null){
+    public static AmountDueInquiryModalPage amountDueInquiryModalPage() {
+        if (amountDueInquiryModalPage == null) {
             amountDueInquiryModalPage = new AmountDueInquiryModalPage();
         }
         return amountDueInquiryModalPage;
@@ -842,8 +856,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `LoanPayoffChargesModalPage`
      */
-    public static LoanPayoffChargesModalPage loanPayoffChargesModalPage(){
-        if (loanPayoffChargesModalPage == null){
+    public static LoanPayoffChargesModalPage loanPayoffChargesModalPage() {
+        if (loanPayoffChargesModalPage == null) {
             loanPayoffChargesModalPage = new LoanPayoffChargesModalPage();
         }
         return loanPayoffChargesModalPage;
@@ -852,8 +866,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `LoanPayoffPrepaymentPenaltyModalPage`
      */
-    public static LoanPayoffPrepaymentPenaltyModalPage loanPayoffPrepaymentPenaltyModalPage(){
-        if (loanPayoffPrepaymentPenaltyModalPage == null){
+    public static LoanPayoffPrepaymentPenaltyModalPage loanPayoffPrepaymentPenaltyModalPage() {
+        if (loanPayoffPrepaymentPenaltyModalPage == null) {
             loanPayoffPrepaymentPenaltyModalPage = new LoanPayoffPrepaymentPenaltyModalPage();
         }
         return loanPayoffPrepaymentPenaltyModalPage;
@@ -862,8 +876,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `QuotePayoffModalPage`
      */
-    public static QuotePayoffModalPage quotePayoffModalPage(){
-        if (quotePayoffModalPage == null){
+    public static QuotePayoffModalPage quotePayoffModalPage() {
+        if (quotePayoffModalPage == null) {
             quotePayoffModalPage = new QuotePayoffModalPage();
         }
         return quotePayoffModalPage;
@@ -872,8 +886,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `ParticipationsModalPage`
      */
-    public static ParticipationsModalPage participationsModalPage(){
-        if (participationsModalPage == null){
+    public static ParticipationsModalPage participationsModalPage() {
+        if (participationsModalPage == null) {
             participationsModalPage = new ParticipationsModalPage();
         }
         return participationsModalPage;
@@ -882,8 +896,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `TeaserModalPage`
      */
-    public static TeaserModalPage teaserModalPage(){
-        if (teaserModalPage == null){
+    public static TeaserModalPage teaserModalPage() {
+        if (teaserModalPage == null) {
             teaserModalPage = new TeaserModalPage();
         }
         return teaserModalPage;
@@ -892,8 +906,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `TeaserModalPage`
      */
-    public static ReservePremiumProcessingModalPage reservePremiumProcessingModalPage(){
-        if (reservePremiumProcessingModalPage == null){
+    public static ReservePremiumProcessingModalPage reservePremiumProcessingModalPage() {
+        if (reservePremiumProcessingModalPage == null) {
             reservePremiumProcessingModalPage = new ReservePremiumProcessingModalPage();
         }
         return reservePremiumProcessingModalPage;
@@ -902,8 +916,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `LoanReservePage`
      */
-    public static LoanReservePage loanReservePage(){
-        if (loanReservePage == null){
+    public static LoanReservePage loanReservePage() {
+        if (loanReservePage == null) {
             loanReservePage = new LoanReservePage();
         }
         return loanReservePage;
@@ -912,8 +926,8 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `AddNewLoanReservePage`
      */
-    public static AddNewLoanReservePage addNewLoanReservePage(){
-        if (addNewLoanReservePage == null){
+    public static AddNewLoanReservePage addNewLoanReservePage() {
+        if (addNewLoanReservePage == null) {
             addNewLoanReservePage = new AddNewLoanReservePage();
         }
         return addNewLoanReservePage;
@@ -922,10 +936,71 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `LoanSkipPaymentModalPage`
      */
-    public static LoanSkipPaymentModalPage loanSkipPaymentModalPage(){
-        if (loanSkipPaymentModalPage == null){
+    public static LoanSkipPaymentModalPage loanSkipPaymentModalPage() {
+        if (loanSkipPaymentModalPage == null) {
             loanSkipPaymentModalPage = new LoanSkipPaymentModalPage();
         }
         return loanSkipPaymentModalPage;
     }
+
+    /**
+     * This function return an instance of `AccountLoanInsurancePoliciesPage`
+     */
+    public static AccountLoanInsurancePoliciesPage accountLoanInsurancePoliciesPage() {
+        if (accountLoanInsurancePoliciesPage == null) {
+            accountLoanInsurancePoliciesPage = new AccountLoanInsurancePoliciesPage();
+        }
+        return accountLoanInsurancePoliciesPage;
+    }
+
+    /**
+     * This function return an instance of `InsuranceCompaniesPage`
+     */
+    public static InsuranceCompaniesPage insuranceCompaniesPage() {
+        if (insuranceCompaniesPage == null) {
+            insuranceCompaniesPage = new InsuranceCompaniesPage();
+        }
+        return insuranceCompaniesPage;
+    }
+
+    /**
+     * This function return an instance of `AddNewInsuranceCompaniesPage`
+     */
+    public static AddNewInsuranceCompanyPage addNewInsuranceCompanyPage() {
+        if (addNewInsuranceCompanyPage == null) {
+            addNewInsuranceCompanyPage = new AddNewInsuranceCompanyPage();
+        }
+        return addNewInsuranceCompanyPage;
+    }
+
+    /**
+     * This function return an instance of `InsuranceCompaniesPage`
+     */
+    public static LoanInsurancePlanSetupPage loanInsurancePlanSetupPage() {
+        if (loanInsurancePlanSetupPage == null) {
+            loanInsurancePlanSetupPage = new LoanInsurancePlanSetupPage();
+        }
+        return loanInsurancePlanSetupPage;
+    }
+
+    /**
+     * This function return an instance of `AddNewLoanInsurancePlanSetupPage`
+     */
+    public static AddNewLoanInsurancePlanSetupPage addNewLoanInsurancePlanSetupPage() {
+        if (addNewLoanInsurancePlanSetupPage == null) {
+            addNewLoanInsurancePlanSetupPage = new AddNewLoanInsurancePlanSetupPage();
+        }
+        return addNewLoanInsurancePlanSetupPage;
+    }
+
+    /**
+     * This function return an instance of `LoanInsurancePolicyModalPage`
+     */
+    public static LoanInsurancePolicyModalPage loanInsurancePolicyModalPage() {
+        if (loanInsurancePolicyModalPage == null) {
+            loanInsurancePolicyModalPage = new LoanInsurancePolicyModalPage();
+        }
+        return loanInsurancePolicyModalPage;
+    }
+
 }

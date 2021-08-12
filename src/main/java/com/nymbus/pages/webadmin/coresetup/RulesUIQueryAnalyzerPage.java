@@ -18,8 +18,8 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private By accountNumberByIndex = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[2]/span/span");
     private By skipFeePaid = By.xpath("//table[@id='searchResultTable']//tr[2]//td[6]//div");
     private By accountNumberSecByIndex = By.xpath("//table[@id='searchResultTable']//tr[%s]//span[@key-name='accountnumber']/../span/span");
-    private By accountNumberTwelveByIndex = By.xpath("//table[@id='searchResultTable']//tr[contains(@class, 'searchResultRow ') and " +
-            "not(contains(@class, 'searchResultRowHeader'))][%s]//td[12]/span/span");
+    private By accountNumberElevenByIndex = By.xpath("//table[@id='searchResultTable']//tr[contains(@class, 'searchResultRow ') and " +
+            "not(contains(@class, 'searchResultRowHeader'))][%s]//td[11]/span/span");
     private By balance = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[2]/div");
     private By dormantAccountNumberByIndex = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[2]/div");
     private By foundNumberOfRecords = By.xpath("//div[@class='panelContent']/div[@id='dqlSearch']/div/span[contains(text(), 'Found')]");
@@ -69,7 +69,6 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     @Step("Get skip fee paid value")
     public String getSkipFeePaid() {
         waitForElementVisibility(skipFeePaid);
-        System.out.println(skipFeePaid + " ------------------");
         return getElementText(skipFeePaid);
     }
 
@@ -80,9 +79,9 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     }
 
     @Step("Get account number value")
-    public String getAccountNumberTwelveByIndex(int index) {
-        waitForElementVisibility(accountNumberTwelveByIndex, index);
-        return getElementText(accountNumberTwelveByIndex, index);
+    public String getAccountNumberElevenByIndex(int index) {
+        waitForElementVisibility(accountNumberElevenByIndex, index);
+        return getElementText(accountNumberElevenByIndex, index);
     }
 
     @Step("Get account balance value")
@@ -113,8 +112,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      */
 
     private By glDateTimePosted = By.xpath("//*[@id='searchResultTable']//tr[%s]//div[@key-name='gldatetimeposted']");
-    private By effectiveEntryDate = By.xpath("//table[@id='searchResultTable']//tr[contains(@class, 'searchResultRow ')" +
-            " and not(contains(@class, 'searchResultRowHeader'))][%s]//div[@key-name='effectiveentrydate']");
+    private By effectiveEntryDate = By.xpath("//table[@id='searchResultTable']//tr[contains(@class, 'searchResultRow ')][%s]//div[@key-name='effectiveentrydate']");
     private By dateOpened = By.xpath("//*[@id='searchResultTable']//tr[%s]//div[@key-name='$DateOpened']");
     private By glFunctionValue = By.xpath("//*[@id='searchResultTable']//tr[%s]//div[@key-name='glfunction']");
     private By transactionHeaderId = By.xpath("//*[@id='searchResultTable']//tr[%s]//*[@key-name='transactionheaderid']");
@@ -311,6 +309,9 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private By name = By.xpath("//table[@id='searchResultTable']//tr[%s]"
             + "//td/div[@key-name='(databean)name']");
     private By interestValue = By.xpath("//table[@id='searchResultTable']//tr[%s]//td/div[@key-name='interest']");
+    private By transactionStatus = By.xpath("(//table[@id='searchResultTable']//tr[%s]//td)[24]//span/span");
+    private By transactionEftDescription = By.xpath("(//div[@key-name='uniqueeftdescription'])[%s]");
+
 
     @Step("Get 'terminalId' {0} value")
     public String getCustomerIdValue(int index) {
@@ -334,6 +335,18 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getInterest(int index) {
         waitForElementVisibility(interestValue, index);
         return getElementText(interestValue, index).trim();
+    }
+
+    @Step("Get 'interest' {0} value")
+    public String getTransactionStatus(int index) {
+        waitForElementVisibility(transactionStatus, index);
+        return getElementText(transactionStatus, index).trim();
+    }
+
+    @Step("Get 'eft description' {0} value")
+    public String getEftDescription(int index) {
+        waitForElementVisibility(transactionEftDescription, index);
+        return getElementText(transactionEftDescription, index).trim();
     }
 
     /**

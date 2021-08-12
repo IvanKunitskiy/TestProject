@@ -4,7 +4,6 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
-import com.nymbus.models.client.Client;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
@@ -25,7 +24,7 @@ public class C22532_SearchByTaxIDTest extends BaseTest {
     @BeforeMethod
     public void preConditions() {
         // Set up Client and Account
-        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         client = individualClientBuilder.buildClient();
 
@@ -36,6 +35,7 @@ public class C22532_SearchByTaxIDTest extends BaseTest {
         ClientsActions.individualClientActions().setDocumentation(client);
         Pages.clientDetailsPage().waitForPageLoaded();
         clientId = Pages.clientDetailsPage().getClientID();
+        logInFile("Create client - " + client.getFullName());
 
         Actions.loginActions().doLogOut();
     }
@@ -67,8 +67,8 @@ public class C22532_SearchByTaxIDTest extends BaseTest {
         }
         Pages.clientsSearchPage().typeToClientsSearchInputField(client.getIndividualType().getTaxID());
         Assert.assertTrue(Pages.clientsSearchPage().isSearchResultsRelative(Pages.clientsSearchPage().getAllLookupResults(),
-                            client.getIndividualType().getTaxID()),
-                    "Search results are not relevant");
+                client.getIndividualType().getTaxID()),
+                "Search results are not relevant");
 
         logInfo("Step 4: Click the 'Search' button");
         Pages.clientsSearchPage().clickOnSearchButton();

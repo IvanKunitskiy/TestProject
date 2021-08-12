@@ -85,10 +85,12 @@ public class C26609_ZeroDollarAuthTest extends BaseTest {
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+        logInFile("Create client - " + client.getFullName());
 
         // Create CHK account
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(chkAccount);
+        logInFile("Create CHK account - " + chkAccount.getAccountNumber());
 
         // Create debit card for CHK acc
         createDebitCard(client.getInitials(), debitCard);
@@ -97,6 +99,7 @@ public class C26609_ZeroDollarAuthTest extends BaseTest {
         Actions.clientPageActions().searchAndOpenClientByName(chkAccountNumber);
         expectedBalanceDataForCheckingAcc = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
         Actions.loginActions().doLogOut();
+        logInFile("Create debit card - " + nonTellerTransactionData.getCardNumber());
 
     }
 

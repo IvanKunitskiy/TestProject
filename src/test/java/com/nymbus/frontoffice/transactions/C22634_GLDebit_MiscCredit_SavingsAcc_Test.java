@@ -99,6 +99,7 @@ public class C22634_GLDebit_MiscCredit_SavingsAcc_Test extends BaseTest {
 
         logInfo("Step 6: Do not change the Effective Date and click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
+
         Assert.assertEquals(Pages.tellerPage().getModalText(),
                     "Transaction was successfully completed.",
                     "Transaction doesn't commit");

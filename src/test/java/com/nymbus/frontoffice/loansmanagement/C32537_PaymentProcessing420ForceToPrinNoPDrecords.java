@@ -5,7 +5,6 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
-import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -17,23 +16,15 @@ import com.nymbus.newmodels.generation.client.builder.type.individual.Individual
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
 import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitMiscCreditBuilder;
-import com.nymbus.newmodels.generation.tansactions.factory.DestinationFactory;
-import com.nymbus.newmodels.generation.tansactions.factory.SourceFactory;
 import com.nymbus.newmodels.transaction.Transaction;
-import com.nymbus.newmodels.transaction.TransactionDestination;
-import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
 import com.nymbus.testrail.CustomStepResult;
 import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import sun.jvm.hotspot.debugger.Page;
-
-import javax.net.ssl.SSLContext;
 
 @Epic("Frontoffice")
 @Feature("Loans Management")
@@ -98,6 +89,17 @@ public class C32537_PaymentProcessing420ForceToPrinNoPDrecords extends BaseTest 
         depositTransaction.getTransactionDestination().setAmount(depositTransactionAmount);
         depositTransaction.getTransactionSource().setAmount(depositTransactionAmount);
 
+        // 109 - transaction
+        int transaction109Amount = 12000;
+        Transaction transaction_109 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
+        transaction_109.getTransactionSource().setAccountNumber(loanAccount.getAccountNumber());
+        transaction_109.getTransactionSource().setTransactionCode(TransactionCode.NEW_LOAN_411.getTransCode());
+        transaction_109.getTransactionSource().setAmount(transaction109Amount);
+        transaction_109.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
+        transaction_109.getTransactionDestination().setAmount(transaction109Amount);
+        transaction_109.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
+
+
         // Perform deposit transaction
         Actions.loginActions().doLogOutProgrammatically();
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -105,6 +107,18 @@ public class C32537_PaymentProcessing420ForceToPrinNoPDrecords extends BaseTest 
         Actions.transactionActions().doLoginTeller();
         Actions.transactionActions().createTransaction(depositTransaction);
         Actions.transactionActions().clickCommitButton();
+        Pages.tellerPage().closeModal();
+
+        // Re-login to refresh teller session
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        // Perform '109 - deposit' transaction
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
+        Actions.transactionActions().createTransaction(transaction_109);
+        Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
+        Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();

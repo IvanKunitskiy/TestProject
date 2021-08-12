@@ -40,7 +40,7 @@ public class Constants {
     public final static int SUITE_ID = 81;
 
     public final static String TEST_RAIL_USER = "pkyriushkin";
-    public final static String TEST_RAIL_PASSWORD = "@!Xu&|75sSg8F!";
+    public final static String TEST_RAIL_PASSWORD = "@!Xu&|75sSg8F@!";
     public final static String TEST_RAIL_URL = "https://testrail.nymbus.com/testrail";
 
     public static String CURRENT_TIME;
@@ -92,6 +92,8 @@ public class Constants {
                 return "https://frontoffice.nj1.nymbus.com/frontoffice/#/crm/login";
             case "dev18":
                 return "https://dev18.nj1.nymbus.com/frontoffice/#/crm/login";
+            case "dev29":
+                return "https://dev29.development.nymbus.com/frontoffice/#/crm/login";
         }
     }
 
@@ -108,6 +110,8 @@ public class Constants {
                 return "https://nymbus-q-was-05.nj1.nymbus.com:9445/webadmin/";
             case "dev18":
                 return "https://dev18.nj1.nymbus.com/webadmin/";
+            case "dev29":
+                return "https://dev29.development.nymbus.com/webadmin/";
         }
     }
 
@@ -124,6 +128,8 @@ public class Constants {
                 return "https://nymbus-q-was-05.nj1.nymbus.com:9445/coreweb/controller/";
             case "dev18":
                 return "https://dev18.nj1.nymbus.com/coreweb/controller/";
+            case "dev29":
+                return "https://tomcat-029.development.nymbus.com:9443/coreweb/controller/";
         }
     }
 
@@ -136,6 +142,7 @@ public class Constants {
             case "dev21":
             case "dev4":
             case "dev18":
+            case "dev29":
                 return "408078";
         }
     }
@@ -151,6 +158,7 @@ public class Constants {
             case "dev12":
             case "dev21":
             case "dev4":
+            case "dev29":
                 return "Individual";
         }
     }
@@ -164,6 +172,7 @@ public class Constants {
             case "dev21":
             case "dev4":
             case "dev18":
+            case "dev29":
                 return FinancialInstitutionType.BANK;
         }
     }

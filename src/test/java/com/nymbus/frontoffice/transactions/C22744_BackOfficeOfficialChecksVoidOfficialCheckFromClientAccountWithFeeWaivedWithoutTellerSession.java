@@ -147,23 +147,17 @@ public class C22744_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
         Actions.cashierDefinedActions().createOfficialTransaction(CashierDefinedTransactions.OFFICIAL_CHECK_FROM_SAVINGS,
                 transaction, true, name);
-        expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
         checkNumber = Pages.confirmModalPage().getReprintCheckNumber();
-        checkNumber = checkNumber.substring(0,checkNumber.length()-2);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         Pages.confirmModalPage().clickYes();
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         Pages.confirmModalPage().clickYes();
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         Pages.confirmModalPage().clickNo();
-        Actions.transactionActions().clickCommitButton();
-        Pages.verifyConductorModalPage().clickVerifyButton();
-        SelenideTools.sleep(Constants.MINI_TIMEOUT);
-        Pages.confirmModalPage().clickNo();
-        SelenideTools.sleep(Constants.MINI_TIMEOUT);
-        Pages.confirmModalPage().clickNo();
-        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         Actions.loginActions().doLogOut();
-
     }
 
     private final String TEST_RUN_NAME = "Transactions";
@@ -184,15 +178,14 @@ public class C22744_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         FullCheck fullCheckFromBankOffice = Actions.backOfficeActions().getFullCheckFromBankOffice();
 
         logInfo("Step 4: Click [Void] button");
-        Assert.assertFalse(Pages.fullCheckPage().isVoidDisabled(),"Void button is not disabled");
         Pages.fullCheckPage().clickVoid();
         Assert.assertTrue(Pages.fullCheckPage().checkConfirmation(), "Confirmation is not present");
+        Assert.assertFalse(Pages.fullCheckPage().isVoidDisabled(),"Void button is not disabled");
 
         logInfo("Step 5: Select Yes option and verify the Status field");
         Pages.fullCheckPage().clickYes();
-        Assert.assertTrue(Pages.fullCheckPage().isVoidDisabled(),"Void button is not disabled");
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         Assert.assertEquals(Pages.fullCheckPage().getStatus(),"Void", "Status doesn't match");
-
 
         logInfo("Step 6: Go to account used in DEBIT item and verify its:\n" +
                 "- current balance\n" +
@@ -213,6 +206,4 @@ public class C22744_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getSecondTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualSavTransactionData, savingsAccTransactionData, "Transaction data doesn't match!");
     }
-
-
 }

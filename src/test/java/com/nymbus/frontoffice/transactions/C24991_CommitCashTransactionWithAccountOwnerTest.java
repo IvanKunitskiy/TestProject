@@ -115,15 +115,14 @@ public class C24991_CommitCashTransactionWithAccountOwnerTest extends BaseTest {
                 "Client ID is incorrect!");
         Pages.verifyConductorModalPage().clickVerifyButton();
         Pages.tellerPage().closeModal();
-        Actions.loginActions().doLogOutProgrammatically();
 
         logInfo("Step 9: Go to the WebAdmin and log in");
         Selenide.open(Constants.WEB_ADMIN_URL);
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         WebAdminActions.webAdminTransactionActions().goToTransactionUrl(chkAccount.getAccountNumber());
-        String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(1);
+        String transactionHeader = WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionHeaderIdValue(2);
         WebAdminActions.webAdminTransactionActions().goToTransactionHeaderUrl(transactionHeader);
-        Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getCustomerIdValue(1), clientRootId,
+        Assert.assertEquals(WebAdminPages.rulesUIQueryAnalyzerPage().getCustomerIdValue(2), clientRootId,
                 "Customer Id doesn't match!");
     }
 

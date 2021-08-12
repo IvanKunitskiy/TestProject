@@ -3,7 +3,6 @@ package com.nymbus.frontoffice.clientsearch;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
-import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.newmodels.account.Account;
@@ -34,7 +33,7 @@ public class C22533_SearchByLastFourOfDebitCardTest extends BaseTest {
     @BeforeMethod
     public void preCondition() {
         // Set up Client
-        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         IndividualClient client = individualClientBuilder.buildClient();
 
@@ -69,10 +68,12 @@ public class C22533_SearchByLastFourOfDebitCardTest extends BaseTest {
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+        logInFile("Create client - " + client.getFullName());
 
         // Create account
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkingAccount);
         debitCard.getAccounts().add(checkingAccount.getAccountNumber());
+        logInFile("Create account - " + checkingAccount.getAccountNumber());
 
         // Create debit card
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
@@ -84,6 +85,7 @@ public class C22533_SearchByLastFourOfDebitCardTest extends BaseTest {
 
         // Set debit card Number
         debitCard.setCardNumber(Actions.debitCardModalWindowActions().getCardNumber(1));
+        logInFile("Create debit card - " + debitCard.getCardNumber());
 
         Actions.loginActions().doLogOut();
     }

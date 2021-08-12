@@ -81,10 +81,12 @@ public class C22528_SearchByDebitCardTest extends BaseTest {
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+        logInFile("Create client - " + client.getFullName());
 
         // Create account
         AccountActions.createAccount().createCHKAccountForTransactionPurpose(checkingAccount);
         debitCard.getAccounts().add(checkingAccount.getAccountNumber());
+        logInFile("Create account - " + checkingAccount.getAccountNumber());
 
         // Create debit card
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
@@ -96,6 +98,7 @@ public class C22528_SearchByDebitCardTest extends BaseTest {
 
         // Set debit card Number
         debitCard.setCardNumber(Actions.debitCardModalWindowActions().getCardNumber(1));
+        logInFile("Create debit card - " + debitCard.getCardNumber());
 
         Actions.loginActions().doLogOut();
     }
@@ -113,7 +116,9 @@ public class C22528_SearchByDebitCardTest extends BaseTest {
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Pages.navigationPage().waitForUserMenuVisible();
 
-        logInfo("Step 2: Click within search field and try to search for an existing Debit Card");
+        logInfo("Step 2: Click within search field and try to search for an existing Debit Card by:\n" +
+                "- last 4 digits of card number\n" +
+                "Do not click [Search] button");
         Pages.clientsSearchPage().typeToClientsSearchInputField(lastFourNumbers);
 
         int lookupResultsCount = Pages.clientsSearchPage().getLookupResultOptionsCount();
@@ -128,7 +133,9 @@ public class C22528_SearchByDebitCardTest extends BaseTest {
                 .filter(s -> s.contains("XXXX-XXXX-XXXX-"))
                 .forEach(s -> Assert.assertEquals(s, hiddenNumber, "Search result is incorrect!"));
 
-        logInfo("Step 4: Clear the data from the field and try to search for an existing client");
+        logInfo("Step 4: Clear the data from the field and try to search for an existing client by:\n" +
+                "- full number of the Debit Card\n" +
+                "Do not click [Search] button");
         Pages.clientsSearchPage().clickOnSearchInputFieldClearButton();
 
         try {

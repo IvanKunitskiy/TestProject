@@ -7,9 +7,10 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.data.entity.User;
 import com.nymbus.pages.Pages;
-import com.nymbus.pages.settings.SettingsPage;
 import com.nymbus.testrail.TestRailIssue;
-import io.qameta.allure.*;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Owner;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -24,13 +25,7 @@ public class C22521_EnableUserTest extends BaseTest {
     @BeforeMethod
     public void prepareUserData() {
         user = new User().setDefaultUserData();
-    }
 
-    private final String TEST_RUN_NAME = "User Management";
-
-    @TestRailIssue(issueID = 22521, testRunName = TEST_RUN_NAME)
-    @Test(description = "C22521, Enable User")
-    public void verifyUserEnabling() {
 
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         Pages.aSideMenuPage().clickSettingsMenuItem();
@@ -59,15 +54,29 @@ public class C22521_EnableUserTest extends BaseTest {
                 "The user account has been disabled. Please contact your System Administrator to restore access.",
                 "Expected message is not visible");
         Pages.loginPage().waitForErrorMessageDisappear();
+    }
 
+    private final String TEST_RUN_NAME = "User Management";
+
+    @TestRailIssue(issueID = 22521, testRunName = TEST_RUN_NAME)
+    @Test(description = "C22521, Enable User")
+    public void verifyUserEnabling() {
+
+        logInfo("Step 1: Log in to the system as the User from the precondition");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
+        logInfo("Step 2: Go to Settings and click [View All] button in Users widget");
+        logInfo("Step 3: Search for any User with 'Login Disabled'=YES' and 'Is Active'=Yes, open its profile in Edit mode");
         Actions.usersActions().searUserOnCustomerSearchPage(user);
 
+        logInfo("Step 4: Switch the 'Login Disabled' switcher to NO and click [Save Changes] button");
         user.setIsLoginDisabledFlag(false);
         Actions.usersActions().editUser(user);
+
+        logInfo("Step 5: Perform log out from the users sub-menu in the header at the top-right corner of the screen");
         Actions.loginActions().doLogOut();
 
+        logInfo("Step 6: Try to log in to the system as the User from the Step3");
         Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
     }
 }

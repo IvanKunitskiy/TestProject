@@ -101,4 +101,14 @@ public class Functions {
         DecimalFormat df = new DecimalFormat("#.##");
         return Double.parseDouble(df.format(amount));
     }
+
+    public static String getDoubleWithTwoDecimalPlaces(double value){
+        return String.format("%.2f",value);
+    }
+
+    public static String roundNumberForInterest(double value) {
+        String convertedNum = String.format("%.3f", value);
+        int end = convertedNum.length();
+        return convertedNum.substring(0, end - 1);
+    }
 }

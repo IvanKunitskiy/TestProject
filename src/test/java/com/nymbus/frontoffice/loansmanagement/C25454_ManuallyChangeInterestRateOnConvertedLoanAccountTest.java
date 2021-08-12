@@ -77,6 +77,7 @@ public class C25454_ManuallyChangeInterestRateOnConvertedLoanAccountTest extends
         Pages.supervisorModalPage().clickEnter();
 
         double adjustmentAmount = (currentBalance * ((newCurrentEffectiveRate - oldCurrentEffectiveRate) / 100) / yearBase) * beginEarnDateDays;
+        System.out.println(adjustmentAmount + " -------------");
         adjustmentAmount = roundAmountToTwoDecimals(adjustmentAmount);
         double interestEarned = getInterestEarned(accountNumber);
         String alertMessageModalText = Pages.alertMessageModalPage().getAlertMessageModalText();
@@ -87,6 +88,10 @@ public class C25454_ManuallyChangeInterestRateOnConvertedLoanAccountTest extends
 
         logInfo("Step 7: Go to 'Transactions' tab and pay attention at the generated transaction");
         Pages.interestRateChangeModalPage().clickCloseButton();
+        Pages.loginPage().waitForLoginForm();
+        Pages.loginPage().typeUserName(userCredentials.getUserName());
+        Pages.loginPage().typePassword(userCredentials.getPassword());
+        Pages.loginPage().clickEnterButton();
         Pages.accountDetailsPage().clickTransactionsTab();
         String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
         checkTransactionCode(transactionCode, newCurrentEffectiveRate, oldCurrentEffectiveRate);

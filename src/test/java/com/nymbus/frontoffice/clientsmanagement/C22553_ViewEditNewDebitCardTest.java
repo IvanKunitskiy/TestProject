@@ -82,10 +82,12 @@ public class C22553_ViewEditNewDebitCardTest extends BaseTest {
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
         clientID = Pages.clientDetailsPage().getClientID();
+        logInFile("Create client - " + client.getFullName());
 
         // Create account
         AccountActions.createAccount().createCHKAccount(chkAccount);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
+        logInFile("Create CHK account - " + chkAccount.getAccountNumber());
 
         //Create debit card and logout
         Pages.clientDetailsPage().clickOnMaintenanceTab();
@@ -93,7 +95,11 @@ public class C22553_ViewEditNewDebitCardTest extends BaseTest {
         Actions.debitCardModalWindowActions().fillDebitCard(debitCard);
         Pages.debitCardModalWindow().clickOnSaveAndFinishButton();
         Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
+        Pages.clientDetailsPage().clickOnEditDebitCardButton();
+        debitCard.setCardNumber(Pages.clientDetailsPage().getDebitCardNumberFromInput());
+        Pages.debitCardModalWindow().clickTheCloseModalIcon();
         Actions.loginActions().doLogOut();
+        logInFile("Create debit card - " + debitCard.getCardNumber());
     }
 
     private final String TEST_RUN_NAME = "Clients Management";

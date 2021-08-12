@@ -23,10 +23,10 @@ public class C22529_SearchClientByIDTest extends BaseTest {
     private IndividualClient client;
     private String clientId;
 
-     @BeforeMethod
+    @BeforeMethod
     public void preConditions() {
         // Set up Client
-        IndividualClientBuilder individualClientBuilder =  new IndividualClientBuilder();
+        IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         client = individualClientBuilder.buildClient();
 

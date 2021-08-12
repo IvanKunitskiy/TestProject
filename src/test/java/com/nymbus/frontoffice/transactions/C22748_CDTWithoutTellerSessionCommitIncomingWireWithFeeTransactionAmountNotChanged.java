@@ -128,6 +128,7 @@ public class C22748_CDTWithoutTellerSessionCommitIncomingWireWithFeeTransactionA
         Actions.transactionActions().clickCommitButton();
 
         logInfo("Step 6: Click [No] button");
+//        SelenideTools.sleep(200);
         Pages.confirmModalPage().clickNo();
         Pages.confirmModalPage().clickOk();
 

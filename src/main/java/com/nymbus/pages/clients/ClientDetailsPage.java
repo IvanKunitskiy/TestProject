@@ -89,6 +89,7 @@ public class ClientDetailsPage extends PageTools {
         waitForElementVisibility(phoneCountry, index);
         return getElementText(phoneCountry, index).trim();
     }
+
     @Step("Get phone number by index {0}")
     public String getPhoneNumberByIndex(int index) {
         waitForElementVisibility(phoneNumber, index);
@@ -107,8 +108,8 @@ public class ClientDetailsPage extends PageTools {
     private By address1 = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.addressline1.isShow'][%s]//input");
     private By addressCity1 = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.cityname.isShow'][%s]//input");
     private By addressState1 = By.xpath("//tr[@class='ng-scope' and @ng-if='address.pageConfig.states.isShow'][%s]" +
-             "//span[contains(@class, 'ng-binding') and not(contains(@class, 'ng-hide'))]");
-    private By addressZipCode1 =By.xpath("(//tr[@class='ng-scope' and @ng-if='address.pageConfig.zipcode.isShow'][%s]" +
+            "//span[contains(@class, 'ng-binding') and not(contains(@class, 'ng-hide'))]");
+    private By addressZipCode1 = By.xpath("(//tr[@class='ng-scope' and @ng-if='address.pageConfig.zipcode.isShow'][%s]" +
             "//input)[1]");
 
     /**
@@ -126,7 +127,7 @@ public class ClientDetailsPage extends PageTools {
 
     @Step("Wait for contacts header visibility")
     public void waitForContactsHeaderVisibility() {
-       waitForElementInvisibility(contactInformationHeader);
+        waitForElementInvisibility(contactInformationHeader);
     }
 
     @Step("Wait for phone row {0} invisibility")
@@ -176,12 +177,12 @@ public class ClientDetailsPage extends PageTools {
     }
 
     /**
-     *  Notifications region
+     * Notifications region
      */
     private By notifications = By.xpath("//section[@ui-view='notesNotification']//div[contains(@class, 'notifications-item-text')]");
     private By notification = By.xpath("//section[@ui-view='notesNotification']//div[contains(@class, 'notifications-item-text')][%s]");
     private By notificationCloseButton = By.xpath("//section[@ui-view='notesNotification']//" +
-                                        "div[contains(@class, 'notifications-item-close')][%s]");
+            "div[contains(@class, 'notifications-item-close')][%s]");
 
     @Step("Get Notifications count")
     public int getNotificationCount() {
@@ -298,8 +299,10 @@ public class ClientDetailsPage extends PageTools {
     private By newDebitCardButton = By.xpath("//button[span[text()='New Debit Card']]");
     private By viewAllCardsButton = By.xpath("//button[span[text()='View All Cards']]");
     private By cardList = By.xpath("//tbody/tr");
+    private By editCardButton = By.xpath("//button[@ng-click='showPopupForEdit(debitCard)']");
     // Card list
     private By debitCardNumber = By.xpath("//tbody/tr/td[1]//span");
+    private By debitCardInput = By.xpath("//input[@id='cardnumber']");
     private By nameOfCardColumn = By.xpath("//tbody/tr[1]/td[2]");
     private By secondLineEmbossingColumn = By.xpath("//tbody/tr[1]/td[3]");
     private By expirationDateColumn = By.xpath("//tbody/tr[1]/td[4]");
@@ -706,6 +709,13 @@ public class ClientDetailsPage extends PageTools {
         click(newDebitCardButton);
     }
 
+    @Step("Click on 'Edit Debit Card' button")
+    public void clickOnEditDebitCardButton() {
+        waitForElementVisibility(editCardButton);
+        click(editCardButton);
+    }
+
+
     @Step("Click on 'View All Cards' button")
     public void clickOnViewAllCardsButton() {
         waitForElementVisibility(viewAllCardsButton);
@@ -723,6 +733,12 @@ public class ClientDetailsPage extends PageTools {
     public String getDebitCardNumber() {
         waitForElementVisibility(debitCardNumber);
         return getElementText(debitCardNumber);
+    }
+
+    @Step("Getting debit card number")
+    public String getDebitCardNumberFromInput() {
+        waitForElementVisibility(debitCardInput);
+        return getDisabledElementAttributeValue("value", debitCardInput);
     }
 
     @Step("Getting debit card 'Name of Card'")

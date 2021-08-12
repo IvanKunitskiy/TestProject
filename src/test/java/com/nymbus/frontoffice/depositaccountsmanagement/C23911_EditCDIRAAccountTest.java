@@ -15,8 +15,11 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -44,9 +47,6 @@ public class C23911_EditCDIRAAccountTest extends BaseTest {
         cdIRAAccount.setDateNextInterest(DateTime.getDateWithNMonthAdded(cdIRAAccount.getDateOpened(), "MM/dd/yyyy", 3)); // 3 month added as 'Interest Frequency' is set to 'Quarterly'
         cdIRAAccount.setApplyInterestTo("CHK Acct");
         cdIRAAccount.setCorrespondingAccount(checkingAccount.getAccountNumber());
-
-        System.out.println("Chk acc number: " + checkingAccount.getAccountNumber());
-        System.out.println("cdiRAAcc corresponding account: " + cdIRAAccount.getCorrespondingAccount());
 
         // Login to the system
         Selenide.open(Constants.URL);
@@ -86,42 +86,50 @@ public class C23911_EditCDIRAAccountTest extends BaseTest {
         Pages.accountDetailsPage().clickEditButton();
 
         logInfo("Step 4: Look at the fields, verify that some of them are grouped in such sections:" +
-                "Balance and Interest, Transactions, Overdraft, Misc");
-        AccountActions.editAccount().verifyFieldGroupsAreVisible();
+                "Balance and Interest, Term, Distribution and Misc");
+        AccountActions.editAccount().verifyCDFieldGroupsAreVisible();
 
         logInfo("Step 5: Look at the fields and verify that such fields are disabled for editing");
         AccountActions.editAccount().verifyCdIraAccountFieldsAreDisabledForEditing();
 
-        logInfo("Step 6: Select data in Federal W/H reason drop-down field");
-        logInfo("Step 7: Select any date in such calendar fields:");
-        logInfo("Step 8: Fill in such text fields that were not displayed in Add new mode");
-        logInfo("Step 9: Select any other value in such fields");
-        logInfo("Step 10: Set switcher Transactional Account = YES");
+        logInfo("Step 6: Look at the field 'Account Title' and verify that such field is not a required field");
+        logInfo("Step 7: Select data in Federal W/H reason drop-down field");
+        logInfo("Step 8: Look at the field 'Account Type' and verify that such field is not disabled for editing");
+        logInfo("Step 9: Click on the 'Account Type' drop-down and verify the account types that are present in the list");
+        logInfo("Step 10: Change account type to some value from the drop-down list (e.g. Officer)");
+        logInfo("Step 11: Select any date in such calendar fields:\n" +
+                "- Date Of First Deposit - any\n" +
+                "- Birth Date - any < Current Date\n" +
+                "- Date Deceased - any date > Birth Date, Less or equal to Current Date");
+        logInfo("Step 12: Fill in such text fields that were not displayed in Add new mode");
+        logInfo("Step 13: Select any other value in such fields");
+        logInfo("Step 14: Set switcher Transactional Account = YES");
+        Assert.assertFalse(Pages.addAccountPage().isAccountTitleFieldRequired(),"'Account Title' is required");
         AccountActions.editAccount().fillInInputFieldsThatWereNotAvailableDuringCDIRAAccountCreation(cdIRAAccount);
 
-        logInfo("Step 11: Click [-] icon next to any section (e.g. Transactions section) and verify that all fields within this section were hidden");
+        logInfo("Step 15: Click [-] icon next to any section (e.g. Transactions section) and verify that all fields within this section were hidden");
         Pages.editAccountPage().clickMiscSectionLink();
 
-        logInfo("Step 12: Click [+] icon next to the section from Step9 and verify that all fields within the section are displayed. Fields were NOT cleared out");
+        logInfo("Step 16: Click [+] icon next to the section from Step9 and verify that all fields within the section are displayed. Fields were NOT cleared out");
         Pages.editAccountPage().clickMiscSectionLink();
 
-        logInfo("Step 13: Submit the account editing by clicking [Save] button");
+        logInfo("Step 17: Submit the account editing by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
 
-        logInfo("Step 14: Pay attention to CD IRA account fields");
+        logInfo("Step 18: Pay attention to CD IRA account fields");
         AccountActions.accountDetailsActions().clickMoreButton();
         AccountActions.verifyingAccountDataActions().verifyCdIraAccountFieldsWithUpdatedDataInEditMode(cdIRAAccount);
 
-        logInfo("Step 15: Click [Edit] button and pay attention to the fields");
+        logInfo("Step 19: Click [Edit] button and pay attention to the fields");
         Pages.accountDetailsPage().clickEditButton();
         AccountActions.editAccount().verifyCdIraAccountFieldsWithUpdatedDataInEditMode(cdIRAAccount);
 
-        logInfo("Step 16: Do not make any changes and go to Account Maintenance -> Maintenance History page");
+        logInfo("Step 20: Do not make any changes and go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
-        logInfo("Step 17: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
+        logInfo("Step 21: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         AccountActions.accountMaintenanceActions().verifyCdIraAccountRecordsAfterEditing(cdIRAAccount);
     }
 }
