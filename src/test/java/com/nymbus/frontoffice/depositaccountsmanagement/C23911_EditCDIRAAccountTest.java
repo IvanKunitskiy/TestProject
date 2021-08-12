@@ -104,7 +104,7 @@ public class C23911_EditCDIRAAccountTest extends BaseTest {
         logInfo("Step 12: Fill in such text fields that were not displayed in Add new mode");
         logInfo("Step 13: Select any other value in such fields");
         logInfo("Step 14: Set switcher Transactional Account = YES");
-        Assert.assertTrue(Pages.addAccountPage().isAccountTitleFieldRequired(),"'Account Title' is required");
+        Assert.assertFalse(Pages.addAccountPage().isAccountTitleFieldRequired(),"'Account Title' is required");
         AccountActions.editAccount().fillInInputFieldsThatWereNotAvailableDuringCDIRAAccountCreation(cdIRAAccount);
 
         logInfo("Step 15: Click [-] icon next to any section (e.g. Transactions section) and verify that all fields within this section were hidden");
