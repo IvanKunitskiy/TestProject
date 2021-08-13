@@ -94,7 +94,7 @@ public class C22596_CDIRAAccountCallStatementTest extends BaseTest {
     private final String TEST_RUN_NAME = "Deposit Accounts Management";
 
     @TestRailIssue(issueID = 22596, testRunName = TEST_RUN_NAME)
-    @Test(description = "C22596, CD IRA account call statement", enabled = false)
+    @Test(description = "C22596, CD IRA account call statement")
     @Severity(SeverityLevel.CRITICAL)
     public void cdIraBalanceInquiryTest() {
 

@@ -81,7 +81,7 @@ public class AccountTransactionActions {
         for (int i = 1; i <= count; ++i) {
             if (isBefore) {
                 String actualDate = Pages.accountTransactionPage().getEffectiveDateValue(i);
-                softAssert.assertTrue(DateTime.isDateBefore(actualDate, expectedDate, "MM/dd/yyyy"),
+                softAssert.assertTrue(DateTime.isDateBefore(actualDate, expectedDate, "MM/dd/yyyy") || DateTime.isDateEqual(actualDate, expectedDate, "MM/dd/yyyy"),
                         String.format("Transaction %s effective date is incorrect!", i));
             } else {
                 String actualDate = Pages.accountTransactionPage().getEffectiveDateWithAppliedFilterValue(i);
@@ -106,12 +106,12 @@ public class AccountTransactionActions {
                         String.format("Transaction %s effective date is incorrect!", i));
             } else {
                 String actualDate = Pages.accountTransactionPage().getEffectiveDateWithAppliedFilterValue(i);
-                if (!DateTime.isDateAfter(actualDate, expectedDate, "MM/dd/yyyy")) {
-                    String actualDesc = WebAdminActions.webAdminTransactionActions().getUniqueEftDescription(userCredentials, actualDate, accountNumber);
+                if (DateTime.isDateEqual(actualDate, expectedDate, "MM/dd/yyyy")) {
+                    String description = Pages.accountTransactionPage().getDescriptionValue(i);
+                    String actualDesc = WebAdminActions.webAdminTransactionActions().getUniqueEftDescription(userCredentials, actualDate, accountNumber, i);
                     SelenideTools.closeCurrentTab();
                     SelenideTools.switchTo().window(0);
-                    TestRailAssert.assertTrue(actualDesc.equals("SilverhandJohnny ACH Payment"),
-                            new CustomStepResult("Transaction is ok", "Effective date is not valid"));
+                    softAssert.assertTrue(actualDesc.equals(description), String.format("Transaction %s effective date is incorrect!", i));
                 }
             }
         }

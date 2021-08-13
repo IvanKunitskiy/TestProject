@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -53,7 +54,7 @@ public class C25479_ProcessLoanPrepaymentTransactionTest extends BaseTest {
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setNextPaymentBilledDueDate(DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(),
                 -Integer.parseInt(loanAccount.getPaymentBilledLeadDays()) - 1));
-        loanAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getNextPaymentBilledDueDate(), 1));
+//        loanAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getNextPaymentBilledDueDate(), 1));
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         String dateOpened = loanAccount.getDateOpened();
@@ -213,9 +214,8 @@ public class C25479_ProcessLoanPrepaymentTransactionTest extends BaseTest {
         String effectiveDate = Pages.accountPaymentInfoPage().getPiPaymentsEffectiveDate();
 
         double expectedAccruedInterest = Double.parseDouble(currentBalanceForInterest) * Double.parseDouble(currentEffectiveRate) / 100 /
-                yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate, dueDate, false) - 0.01;
-        //String expectedInterest = expectedAccruedInterest + "";
-        String expectedInterest = String.format("%.2f", expectedAccruedInterest);
+                yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate, dueDate, false);
+        String expectedInterest = (Functions.roundNumberForInterest(expectedAccruedInterest)).replace(",", ".");
         TestRailAssert.assertTrue(disInterest.equals(expectedInterest),
                 new CustomStepResult("Interest is not valid", String.format("Interest is valid. Actual %s, Expected %s",
                         disInterest, expectedInterest)));
@@ -288,7 +288,7 @@ public class C25479_ProcessLoanPrepaymentTransactionTest extends BaseTest {
         double amountValue = AccountActions.retrievingAccountData().getAmountValue(1);
         TestRailAssert.assertTrue(amountValue == transactionAmount,
                 new CustomStepResult("Amount is not valid", "Amount is valid"));
-        double principalValue = AccountActions.retrievingAccountData().getBalanceValue(1);
+        double principalValue = AccountActions.retrievingAccountData().getPrincipalValue(1);
         TestRailAssert.assertTrue(principalValue == Double.parseDouble(principal),
                 new CustomStepResult("Principal is not valid", "Principal is valid"));
         double interestValue = AccountActions.retrievingAccountData().getInterestMinusValue(1);

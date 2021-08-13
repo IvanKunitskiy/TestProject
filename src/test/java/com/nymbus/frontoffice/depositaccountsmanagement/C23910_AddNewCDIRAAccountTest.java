@@ -13,6 +13,8 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -123,7 +125,11 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
                 "- IRA Distribution Code (No Dist by default)");
         AccountActions.createAccount().verifyCdIraAccountPrefilledFields(cdIRAAccount, client);
 
-        logInfo("Step 7: Select values in such drop-down fields:\n" +
+        logInfo("Step 7: Look at the field 'Account Title' and verify that such field is not a required field");
+        TestRailAssert.assertTrue(Pages.addAccountPage().isAccountTitleFieldRequired(),
+                new CustomStepResult("'Account Title' is required", "'Account Title' is not required"));
+
+        logInfo("Step 8: Select values in such drop-down fields:\n" +
                 "- Current Officer (any value that differs from the default Officer)\n" +
                 "- Bank Branch\n" +
                 "- Corresponding Account (if another active CHK/Savings account exists for selected Client)\n" +
@@ -134,13 +140,13 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
                 "- IRA Distribution Frequency\n" +
                 "- IRA Distribution Code = CHK Acct\n" +
                 "- IRA Distribution Account Number = CHK account from precondition#2");
-        logInfo("Step 8: Fill in such text fields with valid data (except Account Number field):\n" +
+        logInfo("Step 9: Fill in such text fields with valid data (except Account Number field):\n" +
                 "- Account Title - alphanumeric value\n" +
                 "- IRA distribution amount - numeric value (12 char, max)");
-        logInfo("Step 9: Select Date Opened as any date < Current Date\n" +
+        logInfo("Step 10: Select Date Opened as any date < Current Date\n" +
                 "Select Date next IRA distribution as any date > Current Date\n" +
                 "Select Date Of First Deposit as any date");
-        logInfo("Step 10: Set switchers:\n" +
+        logInfo("Step 11: Set switchers:\n" +
                 "- Apply Seasonal Address- to NO\n" +
                 "- Auto Renewable to NO\n" +
                 "- Transactional Account to YES");
@@ -149,29 +155,29 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
         AccountActions.createAccount().setValuesInFieldsRequiredForCDIRAAccount(cdIRAAccount);
         AccountActions.createAccount().setIRADistributionFrequency(cdIRAAccount);
 
-        logInfo("Step 11: Submit the account creation by clicking [Save] button");
+        logInfo("Step 12: Submit the account creation by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
 
-        logInfo("Step 12: Pay attention to the fields that were filled in during account creation");
+        logInfo("Step 13: Pay attention to the fields that were filled in during account creation");
         AccountActions.accountDetailsActions().clickMoreButton();
         AccountActions.accountDetailsActions().verifyCdIraAccountRecords(cdIRAAccount);
 
-        logInfo("Step 13: Check the Maturity Date field value (verify that it's calculated based on Date Opened + Term of Account)");
+        logInfo("Step 14: Check the Maturity Date field value (verify that it's calculated based on Date Opened + Term of Account)");
         Assert.assertEquals(Pages.accountDetailsPage().getMaturityDate(), cdIRAAccount.getMaturityDate(), "'Maturity Date' value does not match");
 
-        logInfo("Step 14: Click [Edit] button and pay attention to the fields that were filled in during account creation");
+        logInfo("Step 15: Click [Edit] button and pay attention to the fields that were filled in during account creation");
         Pages.accountDetailsPage().clickEditButton();
         AccountActions.editAccount().verifyCdIraFieldsAfterCreationInEditMode(cdIRAAccount);
 
-        logInfo("Step 15: Do not make any changes and go to Account Maintenance -> Maintenance History page");
+        logInfo("Step 16: Do not make any changes and go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
-        logInfo("Step 16: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
+        logInfo("Step 17: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         AccountActions.accountMaintenanceActions().verifyCdIraAccountRecords(cdIRAAccount);
 
-        logInfo("Step 17: Repeat steps 2-6\n" +
+        logInfo("Step 18: Repeat steps 2-6\n" +
                 "Fill in all the same fields as in Step7\n" +
                 "BUT\n" +
                 "- IRA Distribution Code = Check\n" +
@@ -187,13 +193,13 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
         cdIRAAccount.setIraDistributionAccountNumber(null);
         AccountActions.createAccount().setValuesInFieldsRequiredForCDIRAAccount(cdIRAAccount);
 
-        logInfo("Step 18: Fill in all other required fields and click [Save] button");
+        logInfo("Step 19: Fill in all other required fields and click [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
         AccountActions.accountDetailsActions().clickMoreButton();
         AccountActions.accountDetailsActions().verifyCdIraAccountRecords(cdIRAAccount);
 
-        logInfo("Step 19: Repeat steps 2-6\n" +
+        logInfo("Step 20: Repeat steps 2-6\n" +
                 "Fill in all the same fields as in Step7\n" +
                 "BUT\n" +
                 "- IRA Distribution Code = Savings Account\n" +
@@ -210,13 +216,13 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
         AccountActions.createAccount().setValuesInFieldsRequiredForCDIRAAccount(cdIRAAccount);
         AccountActions.createAccount().setIRADistributionFrequency(cdIRAAccount);
 
-        logInfo("Step 20: Fill in all other required fields and click [Save] button");
+        logInfo("Step 21: Fill in all other required fields and click [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
         AccountActions.accountDetailsActions().clickMoreButton();
         AccountActions.accountDetailsActions().verifyCdIraAccountRecords(cdIRAAccount);
 
-        logInfo("Step 21: Repeat steps 2-6\n" +
+        logInfo("Step 22: Repeat steps 2-6\n" +
                 "Fill in all the same fields as in Step7\n" +
                 "BUT\n" +
                 "- IRA Distribution Code = No Dist\n" +
@@ -232,7 +238,7 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
         cdIRAAccount.setIraDistributionAccountNumber(null);
         AccountActions.createAccount().setValuesInFieldsRequiredForCDIRAAccount(cdIRAAccount);
 
-        logInfo("Step 22: Fill in all other required fields and click [Save] button");
+        logInfo("Step 23: Fill in all other required fields and click [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
         AccountActions.accountDetailsActions().clickMoreButton();

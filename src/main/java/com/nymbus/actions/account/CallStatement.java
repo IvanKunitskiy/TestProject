@@ -293,9 +293,6 @@ public class CallStatement {
 
         // Interest Rate - selected account's Interest Rate
         assertThat(pdf, containsText(account.getInterestRate()));
-
-        // Accrued Interest - selected account's Accrued Interest
-        assertThat(pdf, containsText(account.getAccruedInterest()));
     }
 
     /**
@@ -364,7 +361,6 @@ public class CallStatement {
     }
 
     public void setDataForChkSavingsIraAccountCallStatementVerification(Account account) {
-        setAccruedInterest(account);
         setInterestRate(account);
     }
 

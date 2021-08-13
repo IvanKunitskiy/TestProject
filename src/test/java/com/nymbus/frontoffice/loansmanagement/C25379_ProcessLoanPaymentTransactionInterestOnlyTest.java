@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -62,7 +63,7 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
         transaction = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
         String dateOpened = loanAccount.getDateOpened();
-        loanAccount.setDateOpened(DateTime.getDateMinusDays(dateOpened, 1));
+//        loanAccount.setDateOpened(DateTime.getDateMinusDays(dateOpened, 1));
         checkAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
 
         // Login to the system
@@ -189,7 +190,6 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
 
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().paidStatusIsVisibility(),
                 new CustomStepResult("Paid is not visible", "Paid is visible"));
-
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().paymentStatusIsVisibility("Interest Only (Bill)"),
                 new CustomStepResult("Payment Status is not visible", "Payment Status is visible"));
 
@@ -221,8 +221,8 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
         String disInterest = Pages.accountPaymentInfoPage().getDisabledInterest();
         String effectiveDate = Pages.accountPaymentInfoPage().getPiPaymentsEffectiveDate();
         double expectedAccruedInterest = Double.parseDouble(currentBalanceForInterest) * Double.parseDouble(currentEffectiveRate)/100/
-                yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate,dueDateSec,false) - 0.01f;
-        String expected = String.format("%.2f", expectedAccruedInterest);
+                yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate,dueDateSec,false);
+        String expected = Functions.roundNumberForInterest(expectedAccruedInterest);
         TestRailAssert.assertTrue(disInterest.equals(expected),
                 new CustomStepResult("Interest is valid",
                         String.format("Interest is not valid. Expected %s, actual %s",expected, disInterest)));
@@ -257,15 +257,17 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
         double amountValue = AccountActions.retrievingAccountData().getAmountValue(1);
         TestRailAssert.assertTrue(amountValue == transactionAmount,
                 new CustomStepResult("Amount is not valid", "Amount is valid"));
-        double principalValue = AccountActions.retrievingAccountData().getBalanceValue(1);
+        double principalValue = AccountActions.retrievingAccountData().getPrincipalValue(1);
         TestRailAssert.assertTrue(principalValue == 0,
                 new CustomStepResult("Principal is not valid", "Principal is valid"));
         double interestValue = AccountActions.retrievingAccountData().getInterestMinusValue(1);
         TestRailAssert.assertTrue(interestValue == Double.parseDouble(interest),
                 new CustomStepResult("Interest is not valid", "Interest is valid"));
-        double escrowValue = AccountActions.retrievingAccountData().getEscrowMinusValue(1);
-        TestRailAssert.assertTrue(escrowValue == 0,
-                new CustomStepResult("Escrow is not valid", "Escrow is valid"));
+        if(!(disEscrow.equals("0.00"))){
+            double escrowValue = AccountActions.retrievingAccountData().getEscrowMinusValue(1);
+            TestRailAssert.assertTrue(escrowValue == 0,
+                    new CustomStepResult("Escrow is not valid", "Escrow is valid"));
+        }
 
         logInfo("Step 11: Go to the \"Details\" tab");
         Pages.accountDetailsPage().clickDetailsTab();
