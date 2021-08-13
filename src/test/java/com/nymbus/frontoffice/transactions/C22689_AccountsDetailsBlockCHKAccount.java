@@ -137,7 +137,7 @@ public class C22689_AccountsDetailsBlockCHKAccount extends BaseTest {
         TransfersActions.addNewTransferActions().setInsufficientFundsToAccount(insufficientFundsTransfer);
         Pages.newTransferPage().setNearestAmount(insufficientFundsTransfer.getNearestAmount());
         Pages.newTransferPage().setMaxAmount(insufficientFundsTransfer.getAmountToTransfer());
-        Pages.newTransferPage().setTransferCharge(insufficientFundsTransfer.getTransferCharge());
+        //Pages.newTransferPage().setTransferCharge(insufficientFundsTransfer.getTransferCharge());
         Pages.newTransferPage().clickSaveButton();
         Pages.transfersPage().clickTransferInTheListByType(insufficientFundsTransfer.getTransferType().getTransferType());
         Pages.accountNavigationPage().clickAccountsTab();

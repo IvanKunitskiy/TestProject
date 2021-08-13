@@ -956,7 +956,7 @@ public class WebAdminUsersActions {
         WebAdminPages.usersPage().setValueToUserField(user.getLoginID());
         WebAdminPages.usersPage().clickSearchButton();
         WebAdminPages.usersPage().waitForUserListRegion();
-        user.setPassword(Generator.genString(6));
+        user.setPassword(Generator.genString(8));
         WebAdminPages.usersPage().setNewPassword(user.getPassword());
         WebAdminPages.usersPage().setConfirmPassword(user.getPassword());
         WebAdminPages.usersPage().clickSaveButton();
