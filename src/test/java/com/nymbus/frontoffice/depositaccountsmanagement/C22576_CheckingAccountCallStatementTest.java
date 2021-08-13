@@ -69,7 +69,6 @@ public class C22576_CheckingAccountCallStatementTest extends BaseTest {
 
         // Add seasonal address
         seasonalAddress = new AddressFactory().getSeasonalAddress();
-        System.out.println(seasonalAddress.getAddress() + " ----------------");
         ClientsActions.clientDetailsActions().clickEditProfile();
         ClientsActions.clientDetailsActions().addSeasonalAddress(seasonalAddress, client);
         Pages.clientDetailsPage().clickSaveChangesButton();

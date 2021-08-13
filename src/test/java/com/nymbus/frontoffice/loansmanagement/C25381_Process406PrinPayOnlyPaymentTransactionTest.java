@@ -60,7 +60,6 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         // Set up account
         Account chkAccount = new Account().setCHKAccountData();
         chkAccount.setDateOpened(DateTime.getDateMinusMonth(DateTime.getLocalDateWithPattern("MM/dd/yyyy"), 1));
-        System.out.println(chkAccount.getDateOpened() + " -------");
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
@@ -116,7 +115,6 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createLoanAccount(loanAccount);
         String clientRootId = ClientsActions.createClient().getClientIdFromUrl();
-        System.out.println(clientRootId + " -----------");
 
         // Perform deposit transaction
         Actions.transactionActions().goToTellerPage();
@@ -156,7 +154,6 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         escrow = Pages.accountPaymentInfoPage().getDisabledEscrow();
         paymentAmount = Pages.accountPaymentInfoPage().getDisabledPaymentAmount();
         amountDue = Pages.accountPaymentInfoPage().getDisabledAmountDue();
-        System.out.println(Pages.accountPaymentInfoPage().getDisabledAmountDue() + " _-----------");
         dueDate = Pages.accountPaymentInfoPage().getDisabledDueDate();
         paymentDueStatus = Pages.accountPaymentInfoPage().getPaymentDueStatus();
         Actions.loginActions().doLogOutProgrammatically();

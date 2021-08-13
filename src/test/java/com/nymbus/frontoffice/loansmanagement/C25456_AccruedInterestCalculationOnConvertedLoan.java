@@ -121,24 +121,17 @@ public class C25456_AccruedInterestCalculationOnConvertedLoan extends BaseTest {
 
         logInfo("Step 3: Take a look at \"Daily interest factor\" value");
         double dailyInterestFactor = Double.parseDouble(Pages.accountDetailsPage().getDailyInterestAccrual());
-        System.out.println(dailyInterestFactor + " -------");
         double currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
         double currentEffectiveRate = Double.parseDouble(Pages.accountDetailsPage().getCurrentEffectiveRate());
         String daysBaseYearBaseText = Pages.accountDetailsPage().getDaysBaseYearBase();
         double daysBaseYearBase = Double.parseDouble(daysBaseYearBaseText.substring(4,7));
         double expectedFactor = (currentBalance * currentEffectiveRate / 100) / daysBaseYearBase;
-        System.out.println(expectedFactor + " -------");
         expectedFactor = Double.parseDouble(String.format("%.4f", expectedFactor));
-        System.out.println(expectedFactor + " -------");
         if (expectedFactor!=dailyInterestFactor) {
             BigDecimal bigDecimal = BigDecimal.valueOf(expectedFactor);
-            System.out.println(bigDecimal + " ---------");
             BigDecimal bigDecimal1 = BigDecimal.valueOf(-0.0001);
-            System.out.println(bigDecimal1 + " ---------");
             bigDecimal = bigDecimal.add(bigDecimal1);
-            System.out.println(bigDecimal + " --------");
             expectedFactor = bigDecimal.doubleValue();
-            System.out.println(expectedFactor + " --------");
         }
         TestRailAssert.assertTrue(dailyInterestFactor == expectedFactor,
                 new CustomStepResult("Daily interest factor is correct","Daily interest factor is not correct"));
@@ -148,8 +141,6 @@ public class C25456_AccruedInterestCalculationOnConvertedLoan extends BaseTest {
         String dateInterestPaidThru = Pages.accountDetailsPage().getDateInterestPaidThru();
         int daysBetweenTwoDates = DateTime.getDaysBetweenTwoDates(dateInterestPaidThru,
                 WebAdminActions.loginActions().getSystemDate(), false);
-        System.out.println(accruedInterest + " --------");
-        System.out.println(daysBetweenTwoDates + " -----------");
         double expectedAccruedInterest = currentBalance * currentEffectiveRate / 100 / daysBaseYearBase * daysBetweenTwoDates;
         System.out.println(expectedAccruedInterest);
 //        if (daysBetweenTwoDates==1){
