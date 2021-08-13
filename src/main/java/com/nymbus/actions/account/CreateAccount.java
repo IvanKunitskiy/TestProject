@@ -1,6 +1,5 @@
 package com.nymbus.actions.account;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.Constants;

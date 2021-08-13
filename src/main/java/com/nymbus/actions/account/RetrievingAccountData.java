@@ -158,6 +158,10 @@ public class RetrievingAccountData {
         return  getCurrentBalance() + Double.parseDouble(Pages.accountDetailsPage().getAccruedInterest());
     }
 
+    public double getCurrentBalanceWithAccruedInterestForCycle() {
+        return  getCurrentBalance() + Double.parseDouble(Pages.accountDetailsPage().getAccruedInterestThisStatementCycle());
+    }
+
     public double getAccruedInterest() {
         String accruedInterestValue = Pages.accountDetailsPage().getAccruedInterestThisStatementCycle();
         return Double.parseDouble(accruedInterestValue);

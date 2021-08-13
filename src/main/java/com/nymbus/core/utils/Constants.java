@@ -94,6 +94,8 @@ public class Constants {
                 return "https://dev18.nj1.nymbus.com/frontoffice/#/crm/login";
             case "dev29":
                 return "https://dev29.development.nymbus.com/frontoffice/#/crm/login";
+            case "dev47":
+                return "https://dev47.development.nymbus.com/frontoffice/#/crm/login";
         }
     }
 
@@ -112,6 +114,8 @@ public class Constants {
                 return "https://dev18.nj1.nymbus.com/webadmin/";
             case "dev29":
                 return "https://dev29.development.nymbus.com/webadmin/";
+            case "dev47":
+                return "https://dev47.development.nymbus.com/webadmin/";
         }
     }
 
@@ -130,6 +134,8 @@ public class Constants {
                 return "https://dev18.nj1.nymbus.com/coreweb/controller/";
             case "dev29":
                 return "https://tomcat-029.development.nymbus.com:9443/coreweb/controller/";
+            case "dev47":
+                return "https://tomcat-047.development.nymbus.com:9443/coreweb/controller/";
         }
     }
 
@@ -143,6 +149,7 @@ public class Constants {
             case "dev4":
             case "dev18":
             case "dev29":
+            case "dev47":
                 return "408078";
         }
     }
@@ -159,6 +166,7 @@ public class Constants {
             case "dev21":
             case "dev4":
             case "dev29":
+            case "dev47":
                 return "Individual";
         }
     }
@@ -173,6 +181,7 @@ public class Constants {
             case "dev4":
             case "dev18":
             case "dev29":
+            case "dev47":
                 return FinancialInstitutionType.BANK;
         }
     }

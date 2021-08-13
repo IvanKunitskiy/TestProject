@@ -36,7 +36,7 @@ public class TransferBuilder {
         transfer.setTransferType(TransferType.INSUFFICIENT_FUNDS_TRANSFER);
         transfer.setAmountToTransfer("50.99");
         transfer.setNearestAmount("0.10");
-        transfer.setTransferCharge("1.99");
+        transfer.setTransferCharge("0");
 
         return transfer;
     }
