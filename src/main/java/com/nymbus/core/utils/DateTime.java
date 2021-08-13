@@ -156,6 +156,21 @@ public class DateTime {
         }
     }
 
+    public static String getDatePlusDays(String startDate, int days) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Calendar calendar = Calendar.getInstance();
+        try {
+            Date parsedDate = simpleDateFormat.parse(startDate);
+            calendar.setTime(parsedDate);
+            calendar.add(Calendar.DAY_OF_MONTH, days);
+            return simpleDateFormat.format(calendar.getTime());
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+            return startDate;
+        }
+    }
+
     public static String getDateWithNMonthAdded(String date, String pattern, int monthToAdd) {
         LocalDate d = LocalDate.parse(date, DateTimeFormatter.ofPattern(pattern));
         return DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH).format(d.plusMonths(monthToAdd));
@@ -226,6 +241,20 @@ public class DateTime {
         return resultDate.withDayOfMonth(resultDate.lengthOfMonth()).format(DateTimeFormatter.ofPattern(pattern));
     }
 
+    public static String getDatePlusMonthPlusDays(String date, int month, int days) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Calendar calendar = Calendar.getInstance();
+
+        try {
+            calendar.setTime(simpleDateFormat.parse(date));
+            calendar.add(Calendar.MONTH, month);
+            calendar.add(Calendar.DAY_OF_MONTH, days);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return simpleDateFormat.format(calendar.getTime());
+    }
+
     public static String getExpirationDateOnDebitCard(String date) {
         LocalDate localDate = LocalDate.parse(date , DateTimeFormatter.ofPattern("MM/dd/yyyy"));
         return localDate.format(DateTimeFormatter.ofPattern("yyMM"));
@@ -269,6 +298,13 @@ public class DateTime {
         LocalDate expected = LocalDate.parse(expectedDate , DateTimeFormatter.ofPattern(pattern));
 
         return actual.isAfter(expected);
+    }
+
+    public static boolean isDateEqual(String actualDate, String expectedDate, String pattern) {
+        LocalDate actual = LocalDate.parse(actualDate , DateTimeFormatter.ofPattern(pattern));
+        LocalDate expected = LocalDate.parse(expectedDate , DateTimeFormatter.ofPattern(pattern));
+
+        return actual.isEqual(expected);
     }
 
     public static String getDatePlusYearsWithFormat(int years, String pattern) {

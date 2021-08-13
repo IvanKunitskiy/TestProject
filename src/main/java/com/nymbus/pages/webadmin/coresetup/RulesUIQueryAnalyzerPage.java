@@ -18,8 +18,8 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private By accountNumberByIndex = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[2]/span/span");
     private By skipFeePaid = By.xpath("//table[@id='searchResultTable']//tr[2]//td[6]//div");
     private By accountNumberSecByIndex = By.xpath("//table[@id='searchResultTable']//tr[%s]//span[@key-name='accountnumber']/../span/span");
-    private By accountNumberTwelveByIndex = By.xpath("//table[@id='searchResultTable']//tr[contains(@class, 'searchResultRow ') and " +
-            "not(contains(@class, 'searchResultRowHeader'))][%s]//td[12]/span/span");
+    private By accountNumberElevenByIndex = By.xpath("//table[@id='searchResultTable']//tr[contains(@class, 'searchResultRow ') and " +
+            "not(contains(@class, 'searchResultRowHeader'))][%s]//td[11]/span/span");
     private By balance = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[2]/div");
     private By dormantAccountNumberByIndex = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[2]/div");
     private By foundNumberOfRecords = By.xpath("//div[@class='panelContent']/div[@id='dqlSearch']/div/span[contains(text(), 'Found')]");
@@ -79,9 +79,9 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     }
 
     @Step("Get account number value")
-    public String getAccountNumberTwelveByIndex(int index) {
-        waitForElementVisibility(accountNumberTwelveByIndex, index);
-        return getElementText(accountNumberTwelveByIndex, index);
+    public String getAccountNumberElevenByIndex(int index) {
+        waitForElementVisibility(accountNumberElevenByIndex, index);
+        return getElementText(accountNumberElevenByIndex, index);
     }
 
     @Step("Get account balance value")
@@ -112,8 +112,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      */
 
     private By glDateTimePosted = By.xpath("//*[@id='searchResultTable']//tr[%s]//div[@key-name='gldatetimeposted']");
-    private By effectiveEntryDate = By.xpath("//table[@id='searchResultTable']//tr[contains(@class, 'searchResultRow ')" +
-            " and not(contains(@class, 'searchResultRowHeader'))][%s]//div[@key-name='effectiveentrydate']");
+    private By effectiveEntryDate = By.xpath("//table[@id='searchResultTable']//tr[contains(@class, 'searchResultRow ')][%s]//div[@key-name='effectiveentrydate']");
     private By dateOpened = By.xpath("//*[@id='searchResultTable']//tr[%s]//div[@key-name='$DateOpened']");
     private By glFunctionValue = By.xpath("//*[@id='searchResultTable']//tr[%s]//div[@key-name='glfunction']");
     private By transactionHeaderId = By.xpath("//*[@id='searchResultTable']//tr[%s]//*[@key-name='transactionheaderid']");

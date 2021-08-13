@@ -1,9 +1,11 @@
 package com.nymbus.frontoffice.loansmanagement;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -57,10 +59,13 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
 
         // Set up account
         Account chkAccount = new Account().setCHKAccountData();
+        chkAccount.setDateOpened(DateTime.getDateMinusMonth(DateTime.getLocalDateWithPattern("MM/dd/yyyy"), 1));
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         loanAccount.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
+        loanAccount.setNextPaymentBilledDueDate(DateTime.getDatePlusDays(loanAccount.getDateOpened(),
+                Integer.parseInt(loanAccount.getPaymentBilledLeadDays()) - 1));
 
         // Set up transactions
         final double depositTransactionAmount = 1001.00;
@@ -151,7 +156,6 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
         amountDue = Pages.accountPaymentInfoPage().getDisabledAmountDue();
         dueDate = Pages.accountPaymentInfoPage().getDisabledDueDate();
         paymentDueStatus = Pages.accountPaymentInfoPage().getPaymentDueStatus();
-
         Actions.loginActions().doLogOutProgrammatically();
     }
 
@@ -180,9 +184,7 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
                 "        Account number - Loan account from preconditions\n" +
                 "        \"Transaction Code\" - \"406 - Prin Paym Only\"\n" +
                 "        \"Amount\" - specify the same amount\n");
-        int currentIndex = 0;
-        Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction_406.getTransactionSource(), currentIndex);
-        Actions.transactionActions().setMiscCreditDestination(transaction_406.getTransactionDestination(), currentIndex);
+        Actions.transactionActions().createTransaction(transaction_406);
         Pages.tellerPage().setEffectiveDate(transaction_406.getTransactionDate());
         Actions.transactionActions().clickCommitButton();
 
@@ -233,7 +235,7 @@ public class C25381_Process406PrinPayOnlyPaymentTransactionTest extends BaseTest
 
         logInfo("Step 11: Go to Transactions tab and verify generated transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
-        double principalValue = AccountActions.retrievingAccountData().getBalanceValue(1);
+        double principalValue = AccountActions.retrievingAccountData().getPrincipalValue(1);
         TestRailAssert.assertTrue(principalValue == transaction406Amount,
                 new CustomStepResult("Principal is not valid", "Principal is valid"));
     }

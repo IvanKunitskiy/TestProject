@@ -189,6 +189,9 @@ public class CreateAccount {
         if (account.isCurrentEffectiveRateIsTeaser()) {
             enableTeaserLoanSwitch();
         }
+        if (!(account.isAdjustableRate())) {
+            disableAdjustableRateSwitch();
+        }
         Pages.addAccountPage().setNextPaymentBilledDueDate(account.getNextPaymentBilledDueDate());
         Pages.addAccountPage().setDateFirstPaymentDue(account.getDateFirstPaymentDue());
         Pages.addAccountPage().setCurrentEffectiveRate(account.getCurrentEffectiveRate());
@@ -791,10 +794,16 @@ public class CreateAccount {
     }
 
     public void enableCycleLoanSwitch() {
-        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
-        if (!Pages.addAccountPage().isCycleLoanValueYes()) {
-            Pages.addAccountPage().clickCycleLoanSwitch();
-            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        if(Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev4")){
+            if (!(Pages.addAccountPage().isCycleLoanValueYes())) {
+                Pages.addAccountPage().clickCycleLoanSwitch();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
+        } else {
+            if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("no")) {
+                Pages.addAccountPage().clickCycleLoanSwitch();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
         }
     }
 
@@ -873,7 +882,7 @@ public class CreateAccount {
         Assert.assertEquals(Pages.addAccountPage().getInterestFrequency(), account.getInterestFrequency(), "'Interest Frequency' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getInterestType(), account.getInterestType(), "'Interest Type' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getApplyInterestTo(), "Remain in Account", "'Apply interest to' is prefilled with wrong value");
-        if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29")) {
+        if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev12")) {
             Assert.assertTrue(Pages.addAccountPage().isAutoRenewableYes(), "'Auto Renewable' is prefilled with wrong value");
         } else {
             Assert.assertEquals(Pages.addAccountPage().getAutoRenewable(), "YES", "'Auto Renewable' is prefilled with wrong value");
@@ -898,7 +907,7 @@ public class CreateAccount {
 
     public void verifySavingsAccountPrefilledFields(Account account, IndividualClient client) {
         verifyAccountPrefilledFields(account, client);
-        if (Constants.getEnvironment().equals("dev4")) {
+        if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29")) {
             Assert.assertTrue(Pages.addAccountPage().isApplySeasonalAddressYes(), "'Apply Seasonal Address' is prefilled with wrong value");
         } else {
             Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' is prefilled with wrong value");
@@ -946,5 +955,13 @@ public class CreateAccount {
         verifyAccountPrefilledFields(account, client);
         Assert.assertEquals(Pages.addAccountPage().getOptInOutStatus(), "Client Has Not Responded", "'DBC ODP Opt In/Out Status' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' is prefilled with wrong value");
+    }
+
+    public String getLoanAccountId() {
+            String url = SelenideTools.getCurrentUrl();
+            String[] arr = url.split("/");
+            int position = arr.length - 2;
+
+            return  arr[position];
     }
 }

@@ -15,6 +15,8 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -81,37 +83,40 @@ public class C23909_EditNewRegularCDAccountTest extends BaseTest {
         AccountActions.editAccount().verifyRegularCdAccountFieldsAreDisabledForEditing();
 
         logInfo("Step 5: Select data in such dropdown fields that were not available in Add New mode");
-        logInfo("Step 6: Fill in such text fields that were not displayed in Add new mode");
-        logInfo("Step 7: Look at the field 'Account Type' and verify that such field is not disabled for editing");
-        logInfo("Step 8: Click on the 'Account Type' drop-down and verify the account types that are present in the list");
-        logInfo("Step 9: Change account type to some value from the drop-down list (e.g. Officer)");
-        logInfo("Step 10: Select any other value in such fields");
-        logInfo("Step 11: Set switcher Transactional Account = NO");
+        logInfo("Step 6: Look at the field 'Account Title' and verify that such field is not a required field");
+        logInfo("Step 7: Fill in such text fields that were not displayed in Add new mode");
+        logInfo("Step 8: Look at the field 'Account Type' and verify that such field is not disabled for editing");
+        logInfo("Step 9: Click on the 'Account Type' drop-down and verify the account types that are present in the list");
+        logInfo("Step 10: Change account type to some value from the drop-down list (e.g. Officer)");
+        logInfo("Step 11: Select any other value in such fields");
+        logInfo("Step 12: Set switcher Transactional Account = NO");
         AccountActions.editAccount().fillInInputFieldsThatWereNotAvailableDuringCDAccountCreation(cdAccount);
+        TestRailAssert.assertTrue(Pages.addAccountPage().isAccountTitleFieldRequired(),
+                new CustomStepResult("'Account Title' is required", "'Account Title' is not required"));
 
-        logInfo("Step 12: Click [-] icon next to any section (e.g. Transactions section) and verify that all fields within this section were hidden");
+        logInfo("Step 13: Click [-] icon next to any section (e.g. Transactions section) and verify that all fields within this section were hidden");
         Pages.editAccountPage().clickMiscSectionLink();
 
-        logInfo("Step 13: Click [+] icon next to the section from Step9 and verify that all fields within the section are displayed. Fields were NOT cleared out");
+        logInfo("Step 14: Click [+] icon next to the section from Step9 and verify that all fields within the section are displayed. Fields were NOT cleared out");
         Pages.editAccountPage().clickMiscSectionLink();
 
-        logInfo("Step 14: Submit the account editing by clicking [Save] button");
+        logInfo("Step 15: Submit the account editing by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
 
-        logInfo("Step 15: Pay attention to CD account fields");
+        logInfo("Step 16: Pay attention to CD account fields");
         AccountActions.accountDetailsActions().clickMoreButton();
         AccountActions.verifyingAccountDataActions().verifyRegularCdAccountFieldsWithUpdatedDataInEditMode(cdAccount);
 
-        logInfo("Step 16: Click [Edit] button and pay attention to the fields");
+        logInfo("Step 17: Click [Edit] button and pay attention to the fields");
         Pages.accountDetailsPage().clickEditButton();
         AccountActions.editAccount().verifyRegularCdAccountFieldsWithUpdatedDataInEditMode(cdAccount);
 
-        logInfo("Step 17: Do not make any changes and go to Account Maintenance -> Maintenance History page");
+        logInfo("Step 18: Do not make any changes and go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
-        logInfo("Step 18: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
+        logInfo("Step 19: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         AccountActions.accountMaintenanceActions().verifyRegularCdAccountRecordsAfterEditing(cdAccount);
     }
 }

@@ -18,7 +18,7 @@ import com.nymbus.newmodels.generation.debitcard.DebitCardConstructor;
 import com.nymbus.newmodels.generation.debitcard.builder.DebitCardBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
-import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitGLCreditTransactionBuilder;
+import com.nymbus.newmodels.generation.tansactions.builder.WithdrawalGLCreditCHKAccBuilder;
 import com.nymbus.newmodels.settings.bincontrol.BinControl;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
@@ -41,7 +41,7 @@ public class C24989_ClientAccountsCloseCHKAccountWithOpenDebitCard extends BaseT
     private DebitCard debitCard;
     private IndividualClient client;
     private Account checkingAccount;
-    private Transaction miscDebitGLCreditTransaction;
+    private Transaction withdrawlGLCreditTransaction;
 
     @BeforeMethod
     public void preCondition() {
@@ -52,7 +52,7 @@ public class C24989_ClientAccountsCloseCHKAccountWithOpenDebitCard extends BaseT
 
         // Set up CHK account
         checkingAccount = new Account().setCHKAccountData();
-        miscDebitGLCreditTransaction = new TransactionConstructor(new MiscDebitGLCreditTransactionBuilder()).constructTransaction();
+        withdrawlGLCreditTransaction = new TransactionConstructor(new WithdrawalGLCreditCHKAccBuilder()).constructTransaction();
         Transaction depositTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
 
         // Set up debit card and bin control
@@ -81,8 +81,8 @@ public class C24989_ClientAccountsCloseCHKAccountWithOpenDebitCard extends BaseT
 
         // Set product
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
-        miscDebitGLCreditTransaction.getTransactionSource().setAccountNumber(checkingAccount.getAccountNumber());
-        miscDebitGLCreditTransaction.getTransactionSource().setTransactionCode(TransactionCode.WITHDRAW_AND_CLOSE.getTransCode());
+        withdrawlGLCreditTransaction.getTransactionSource().setAccountNumber(checkingAccount.getAccountNumber());
+        withdrawlGLCreditTransaction.getTransactionSource().setTransactionCode(TransactionCode.WITHDRAW_AND_CLOSE.getTransCode());
 
         // Create a clint
         ClientsActions.individualClientActions().createClient(client);
@@ -155,7 +155,7 @@ public class C24989_ClientAccountsCloseCHKAccountWithOpenDebitCard extends BaseT
                 "Set the same amount for Destination item, any notes");
         logInfo("Step 6: Click [Commit Transaction] button and click [Verify] on Verify Client");
 
-        Actions.transactionActions().createMiscDebitGLCreditTransaction(miscDebitGLCreditTransaction);
+        Actions.transactionActions().createWithdrawalGlCreditTransaction(withdrawlGLCreditTransaction);
         Actions.transactionActions().clickCommitButton();
         Assert.assertTrue(Pages.tellerPage().errorMessagesIsVisible(), "Error messages not visible");
     }

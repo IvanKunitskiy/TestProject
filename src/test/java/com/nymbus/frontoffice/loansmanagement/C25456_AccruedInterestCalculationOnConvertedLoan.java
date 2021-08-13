@@ -56,7 +56,7 @@ public class C25456_AccruedInterestCalculationOnConvertedLoan extends BaseTest {
                 "RulesUIQuery.ct?waDbName=coreDS&dqlQuery=count%3A+10%0D%0Afrom%3A+bank.data.actloan%0D%0Awhere%3A%0D%0A+-+.paymenttypefornonclass1->name%3A+%5BPrin+%26+Int+%28Bill%29%2C+Principal+%26+Interest%5D%0D%0A+-+.accountid->dateClosed%3A+%7Bnull%7D%0D%0A+-+.accountid->currentBalance%3A+%7Bgreater%3A+0%7D%0D%0A+-+.accountid->dateOpened%3A+%7Bless%3A+%272019-09-01%27%7D%0D%0A+-+currenteffectiverate%3A+%7Bgreater%3A+0%7D%0D%0A+-+.interestmethod->name%3A+Simple+Interest%0D%0A%23orderBy%3A+-id%0D%0Aformats%3A+%0D%0A-+->bank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A&source=");
         SelenideTools.switchToLastTab();
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        loanAccountNumber = WebAdminPages.rulesUIQueryAnalyzerPage().getAccountNumberTwelveByIndex(2);
+        loanAccountNumber = WebAdminPages.rulesUIQueryAnalyzerPage().getAccountNumberElevenByIndex(2);
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
         //Get amount
@@ -141,12 +141,13 @@ public class C25456_AccruedInterestCalculationOnConvertedLoan extends BaseTest {
         String dateInterestPaidThru = Pages.accountDetailsPage().getDateInterestPaidThru();
         int daysBetweenTwoDates = DateTime.getDaysBetweenTwoDates(dateInterestPaidThru,
                 WebAdminActions.loginActions().getSystemDate(), false);
-        double expectedAccruedInterest;
-        if (daysBetweenTwoDates==1){
-            expectedAccruedInterest = expectedFactor * (0);
-        } else {
-            expectedAccruedInterest = expectedFactor * (daysBetweenTwoDates-2);
-        }
+        double expectedAccruedInterest = currentBalance * currentEffectiveRate / 100 / daysBaseYearBase * daysBetweenTwoDates;
+        System.out.println(expectedAccruedInterest);
+//        if (daysBetweenTwoDates==1){
+//            expectedAccruedInterest = expectedFactor * (0);
+//        } else {
+//            expectedAccruedInterest = expectedFactor * (daysBetweenTwoDates-2);
+//        }
         TestRailAssert.assertTrue((int)accruedInterest == (int)expectedAccruedInterest,
                 new CustomStepResult("Accrued interest factor is correct","Accrued interest factor is not correct"));
 

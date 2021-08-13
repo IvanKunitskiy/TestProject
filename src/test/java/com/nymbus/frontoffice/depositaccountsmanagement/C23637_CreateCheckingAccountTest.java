@@ -14,6 +14,8 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -79,29 +81,33 @@ public class C23637_CreateCheckingAccountTest extends BaseTest {
         logInfo("Step 6: Look through the fields. Check that fields are prefilled by default");
         AccountActions.createAccount().verifyChkAccountPrefilledFields(checkingAccount, client);
 
-        logInfo("Step 7: Select any values in drop-down fields");
-        logInfo("Step 8: Fill in text fields with valid data. NOTE: do not fill in Account Number field");
-        logInfo("Step 9: Select any date ≤ Current Date in DBC ODP Opt In/Out Status Date field");
-        logInfo("Step 10: Set 'Apply Seasonal Address' switcher - to NO");
+        logInfo("Step 7: Look at the field 'Account Title' and verify that such field is not a required field");
+        TestRailAssert.assertTrue(Pages.addAccountPage().isAccountTitleFieldRequired(),
+                new CustomStepResult("'Account Title' is required", "'Account Title' is not required"));
+
+        logInfo("Step 8: Select any values in drop-down fields");
+        logInfo("Step 9: Fill in text fields with valid data. NOTE: do not fill in Account Number field");
+        logInfo("Step 10: Select any date ≤ Current Date in DBC ODP Opt In/Out Status Date field");
+        logInfo("Step 11: Set 'Apply Seasonal Address' switcher - to NO");
         AccountActions.createAccount().setValuesInFieldsRequiredForCheckingAccount(checkingAccount);
 
-        logInfo("Step 11: Submit the account creation by clicking [Save] button");
+        logInfo("Step 12: Submit the account creation by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
 
-        logInfo("Step 12: Pay attention to the fields that were filled in during account creation");
+        logInfo("Step 13: Pay attention to the fields that were filled in during account creation");
         AccountActions.accountDetailsActions().clickMoreButton();
         AccountActions.accountDetailsActions().verifyChkAccountRecords(checkingAccount);
 
-        logInfo("Step 13: Click [Edit] button and pay attention to the fields that were filled in during account creation");
+        logInfo("Step 14: Click [Edit] button and pay attention to the fields that were filled in during account creation");
         Pages.accountDetailsPage().clickEditButton();
         AccountActions.editAccount().verifyChkAccountFieldsAfterCreationInEditMode(checkingAccount);
 
-        logInfo("Step 14: Do not make any changes and go to Account Maintenance -> Maintenance History page");
+        logInfo("Step 15: Do not make any changes and go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
-        logInfo("Step 15: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
+        logInfo("Step 16: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         AccountActions.accountMaintenanceActions().verifyChkAccountRecords(checkingAccount);
     }
 }

@@ -69,9 +69,10 @@ public class AddAccountPage extends PageTools {
     private final By autoRenewableSwitchValue = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span");
     private final By paymentAmount = By.xpath("//input[@data-test-id='field-paymentamount']");
     private final By cycleLoanValue = By.xpath("//*[@id='cycleloan']/div/div/span[2]");
+    private final By cycleLoanValueNo = By.xpath("*[@id='cycleloan']/div/div/span[3]");
     private final By cycleLoanValueYes = By.xpath("//*[@id='cycleloan']/div/div/span[1]");
     private final By teaserLoanValue = By.xpath("//*[@id='CurrentEffectiveRateTeaserYN']/div/div/span[2]");
-    private final By cycleLoanSwitch = By.xpath("//*[@id='cycleloan']/*");
+    private final By cycleLoanSwitch = By.xpath("//*[@id='cycleloan']");
     private final By teaserLoanSwitch = By.xpath("//*[@id='CurrentEffectiveRateTeaserYN']");
     private final By nextPaymentBilledDueDate = By.xpath("//input[@data-test-id='field-nextduedate']");
     private final By paymentBilledLeadDays = By.xpath("//input[@data-test-id='field-noticedays']");
@@ -197,8 +198,7 @@ public class AddAccountPage extends PageTools {
     private final By rateChangeFrequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
 
     private final By cycleCodeSelectorButton = By.xpath("//div[@id='cyclecode']");
-    private final By cycleCodeListDiv = By.xpath("//li[contains(@role, 'option')]/div");
-    private final By cycleCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By cycleCodeList = By.xpath("//li[contains(@role, 'option')]/div");
     private final By cycleCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
 
     private final By commitmentTypeAmtSelectorButton = By.xpath("//div[@id='commitmenttype']");
@@ -208,6 +208,11 @@ public class AddAccountPage extends PageTools {
     @Step("Wait for account holder name")
     public void waitForAccountHolderName() {
         waitForElementVisibility(accountHolderName);
+    }
+
+    @Step("Check if 'Account Title' field is required")
+    public boolean isAccountTitleFieldRequired() {
+        return Boolean.parseBoolean(getElementAttributeValue("required", accountTitleField));
     }
 
     @Step("Click the 'Account Type' option")
@@ -1021,7 +1026,7 @@ public class AddAccountPage extends PageTools {
     }
 
     @Step("Set 'Account Title' value")
-    public void setAccountTitleValue(String accountTitleValue) {
+    public void  setAccountTitleValue(String accountTitleValue) {
         waitForElementVisibility(accountTitleField);
         waitForElementClickable(accountTitleField);
         type(accountTitleValue, accountTitleField);
@@ -1235,8 +1240,8 @@ public class AddAccountPage extends PageTools {
 
     @Step("Returning list of 'Cycle Code' options")
     public List<String> getCycleCodeList() {
-        waitForElementVisibility(cycleCodeListDiv);
-        waitForElementClickable(cycleCodeListDiv);
+        waitForElementVisibility(cycleCodeList);
+        waitForElementClickable(cycleCodeList);
         return getElementsText(cycleCodeList);
     }
 

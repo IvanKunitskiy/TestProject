@@ -85,6 +85,8 @@ public class C21745_ReverseEcSameDayLoanPaymentsTest extends BaseTest {
         transaction_416.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
         transaction_416.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
         transaction_416.getTransactionDestination().setTransactionCode(TransactionCode.PAYMENT_416.getTransCode());
+        transaction_416.getTransactionSource().setAmount(transactionAmount);
+        transaction_416.getTransactionDestination().setAmount(transactionAmount);
 
         // Login to the system
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());

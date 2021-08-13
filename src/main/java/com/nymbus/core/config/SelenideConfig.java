@@ -18,7 +18,7 @@ public class SelenideConfig {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         if (Constants.REMOTE_URL != null) {
             capabilities.setBrowserName(System.getProperty("browserName", "chrome"));
-            capabilities.setVersion(System.getProperty("browserVersion", "88.0"));
+            capabilities.setVersion(System.getProperty("browserVersion", "79.0"));
             capabilities.setCapability("enableVNC", Boolean.parseBoolean(System.getProperty("enableVnc", "true")));
             capabilities.setCapability("enableVideo", Boolean.parseBoolean(System.getProperty("enableVideo", "false")));
             capabilities.setCapability("videoName", String.format("video_%s.mp4", DateTime.getLocalDateTimeByPattern(VIDEO_NAME_PATTERN)));

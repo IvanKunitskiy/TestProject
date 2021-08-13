@@ -379,9 +379,14 @@ public class EditAccount {
         Pages.editAccountPage().setMaxRate(account.getMaxRate());
         Pages.editAccountPage().setMaxRateChangeUpDown(account.getMaxRateChangeUpDown());
         Pages.editAccountPage().setMaxRateLifetimeCap(account.getMaxRateLifetimeCap());
-        Pages.editAccountPage().setRateRoundingFactor(account.getRateRoundingFactor());
+        fillInRateRoundingFactorField(account);
         AccountActions.editAccount().setRateRoundingMethod(account);
         Pages.editAccountPage().setOriginalInterestRate(account.getOriginalInterestRate());
+    }
+
+    public void fillInRateRoundingFactorField( Account account ) {
+        Pages.editAccountPage().clickRateRoundingFactorField();
+        Pages.editAccountPage().setRateRoundingFactor(account.getRateRoundingFactor());
     }
 
     public void selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccount(Account account) {
@@ -466,10 +471,246 @@ public class EditAccount {
         Assert.assertTrue(Pages.editAccountPage().isMiscGroupVisible(), "'Misc' group is not visible");
     }
 
+    public void verifySavingsIRAAGroupsAreVisible() {
+        verifyFieldGroupsAreVisible();
+        Assert.assertTrue(Pages.editAccountPage().isDistributionGroupVisible(), "'Distribution' group is not visible");
+    }
+
     public void verifyCDFieldGroupsAreVisible() {
         Assert.assertTrue(Pages.editAccountPage().isBalanceAndInterestGroupVisible(), "'Balance and Interest' group is not visible");
         Assert.assertTrue(Pages.editAccountPage().isDistributionAndMiscGroupVisible(), "'Distribution and Misc' group is not visible");
         Assert.assertTrue(Pages.editAccountPage().isTermGroupVisible(), "'Term' group is not visible");
+    }
+
+    public void verifyGeneralFieldsAreVisible() {
+        Assert.assertTrue(Pages.editAccountPage().isProductFieldVisible(), "'Product' field is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isProductTypeFieldVisible(), "'Product type' field is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isCurrentBalanceFieldVisible(), "'Current Balance' field is not visible");
+//        Assert.assertTrue(Pages.editAccountPage().isAvailableBalanceFieldVisible(), "'Available Balance' field is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAccountNumberFieldVisible(), "'Account Number' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAccountTitleFieldVisible(), "'Account Title' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAccountTypeFieldVisible(), "'Account Type' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAccountHoldersAndSignersFieldVisible(), "'Account Holders and Signers'");
+        Assert.assertTrue(Pages.editAccountPage().isAccountStatusFieldVisible(), "'Account Status' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isOriginatingOfficerFieldVisible(), "'Originating Officer' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isCurrentOfficerHeaderVisible(), "'Current Officer' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isBankBranchFieldVisible(), "'Bank Branch' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isMailCodeFieldVisible(), "'Mail Code' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isApplySeasonalAddressSwitcherVisible(), "'Apply Seasonal Address' switcher is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isSpecialMailingInstructionsFieldVisible(), "'Special Mailing Instructions' field is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDateOpenedFieldVisible(), "'Date Opened' field is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDateClosedFieldVisible(), "'Date Closed' field is not visible");
+    }
+
+    public void verifyCommonBalanceAndInterestFieldsAreVisible() {
+        Assert.assertTrue(Pages.editAccountPage().isAverageBalanceFieldVisible(), "'Average Balance' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isInterestRateFieldVisible(), "'Interest Rate' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAccruedInterestThisStatementCycleFieldVisible(), "'Accrued Interest this statement cycle' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isLowBalanceThisFieldVisible(), "'Low Balance This Statement Cycle' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isBalanceLastStatementFieldVisible(), "'Balance Last Statement' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isYTDaveragebalanceFieldVisible(), "'YTD average balance' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDateLastDebitFieldVisible(), "'Date Last Debit' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDateLastDepositFieldVisible(), "'Date Last Deposit' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDateLastStatementFieldVisible(), "'Date Last Statement' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAnnualPercentageYieldFieldVisible(), "'Annual Percentage Yield' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isInterestPaidYearFieldVisible(), "'Interest Paid Year to date' is not visible");
+
+    }
+
+    public void verifyCommonTermFieldsAreVisible() {
+    Assert.assertTrue(Pages.editAccountPage().isTermTypeFieldVisible(), "'Term Type' is not visible");
+    Assert.assertTrue(Pages.editAccountPage().isTermInMonthsOrDaysFieldVisible(), "'Term In Months Or Days' is not visible");
+    Assert.assertTrue(Pages.editAccountPage().isAutoRenewableFieldVisible(), "'Auto Renewable' is not visible");
+    Assert.assertTrue(Pages.editAccountPage().isMaturityDateFieldVisible(), "'Maturity Date' is not visible");
+    Assert.assertTrue(Pages.editAccountPage().isCallClassCodeFieldVisible(), "'Call Class Code' is not visible");
+    Assert.assertTrue(Pages.editAccountPage().isPenaltyAmountYearToDateFieldVisible(), "'Penalty Amount Year-to-date' is not visible");
+    Assert.assertTrue(Pages.editAccountPage().isBalanceAtRenewalFieldVisible(), "'Balance At Renewal' is not visible");
+    Assert.assertTrue(Pages.editAccountPage().isDateOfRenewalFieldVisible(), "'Date of renewal' is not visible");
+    Assert.assertTrue(Pages.editAccountPage().isInterestRateAtRenewalFieldVisible(), "'Interest rate at renewal' is not visible");
+    Assert.assertTrue(Pages.editAccountPage().isRenewalAmountFieldVisible(), "'Renewal amount' is not visible");
+
+    }
+
+    public void verifyCdDistributionAndMiscFieldsAreVisible() {
+        Assert.assertTrue(Pages.editAccountPage().isFederalWhReasonFieldVisible(), "'Federal W/H reason' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isFederalWhPercentFieldVisible(), "Federal W/H percent' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isTaxesWithheldYtdFieldVisible(), "'Taxes Withheld YTD' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isUserDefinedField1FieldVisible(), "'User Defined Field 1' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isUserDefinedField2FieldVisible(), "'User Defined Field 2' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isUserDefinedField3FieldVisible(), "'User Defined Field 3' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isUserDefinedField4FieldVisible(), "'User Defined Field 4' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isBalanceAtEndOfYearFieldVisible(), "'Balance at end of year' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAccruedInterestAtEndOfYearFieldVisible(), "'Accrued interest at end of year' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isInterestPaidLastYearFieldVisible(), "'Interest Paid Last Year' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isPrintInterestNoticeOverrideFieldVisible(), "'Print interest notice override' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isTransactionalAccountFieldVisible(), "'Transactional Account' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isTotalEarningsForLifeOfAccountFieldVisible(), "'Total Earnings for Life of Account' is not visible");
+    }
+
+    public void verifyCdIRAADistributionAndMiscFieldsAreVisible() {
+        verifyCdDistributionAndMiscFieldsAreVisible();
+        verifyCommonIraFieldsAreVisible();
+        Assert.assertTrue(Pages.editAccountPage().isIRAPlanNumberFieldVisible(), "'IRA plan number' is not visible");
+    }
+
+    public void verifyCommonIraFieldsAreVisible() {
+        Assert.assertTrue(Pages.editAccountPage().isDateOfFirstDepositFieldVisible(), "'Date Of First Deposit' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isIRADistributionFrequencyFieldVisible(), "'IRA Distribution Frequency' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isIRADistributionCodeFieldVisible(), "'IRA Distribution Code' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isIRADistributionAccountNumberFieldVisible(), "'IRA Distribution Account Number' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isIRADistributionAmountFieldVisible(), "'IRA distribution amount' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAmountLastIRADistributionFieldVisible(), "'Amount last IRA distribution' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDateLastIRADistributionFieldVisible(), "'Date last IRA distribution' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDateNextIRADistributionFieldVisible(), "'Date next IRA distribution' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isRMDDateFieldVisible(), "'RMD Date' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isRMDAmountFieldVisible(), "'RMD Amount' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isIRADistributionsYTDFieldVisible(), "'IRA distributions YTD' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDateOfBirthFieldVisible(), "'Date of Birth' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDateDeceasedFieldVisible(), "'Date Deceased' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isTotalContributionsForLifOfAccountFieldVisible(), "'Total Contributions for Life of Account' is not visible");
+    }
+
+    public void verifyCDBalanceAndInterestFieldsAreVisible() {
+        Assert.assertTrue(Pages.editAccountPage().isInterestRateFieldVisible(), "'Interest Rate' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAnnualPercentageYieldFieldVisible(), "'Annual Percentage Yield' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isRateIndexFieldVisible(), "'Rate Index' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAccruedInterestFieldVisible(), "'Accrued Interest' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDailyInterestAccrualFieldVisible(), "'Daily Interest Accrual' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isInterestTypeFieldVisible(), "'Interest Type' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isInterestFrequencyFieldVisible(), "'Interest Frequency' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isApplyInterestToFieldVisible(), "'Apply Interest To' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isCorrespondingAccountFieldVisible(), "'Corresponding Account' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAmountLastInterestPaidFieldVisible(), "'Amount Last Interest Paid' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDateLastInterestPaidFieldVisible(), "'Date Last Interest Paid' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDateNextInterestFieldVisible(), "'Date next interest' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isNextInterestPaymentAmountFieldVisible(), "'Next Interest Payment Amount' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isInterestPaidYearToDateFieldVisible(), "'Interest Paid Year to date' is not visible");
+    }
+
+    public void verifyCheckingBalanceAndInterestFieldsAreVisible() {
+        verifyCommonBalanceAndInterestFieldsAreVisible();
+        Assert.assertTrue(Pages.editAccountPage().isCollectedBalanceFieldVisible(), "'Collected Balance' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAvgColBalLstStmtFieldVisible(), "'Avg col bal lst stmt' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDateLastCheckFieldVisible(), "'Date Last Check' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAverageColBalanceFieldVisible(), "'Average col balance' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isYtdAvgColFieldVisible(), "'YTD avg col balance' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isPreviousStatementDateFieldVisible(), "'Previous Statement Date' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isPreviousStatementBalanceFieldVisible(), "'Previous Statement Balance' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isInterestPaidLastFieldVisible(), "'Interest Paid Last ' is not visible");
+    }
+
+    public void verifySavingsIRABalanceAndInterestFieldsAreVisible() {
+        verifyCommonBalanceAndInterestFieldsAreVisible();
+        Assert.assertTrue(Pages.editAccountPage().isInterestFrequencyFieldVisible(), "'Interest Frequency' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isInterestLastPaidFieldVisible(), "'Interest Last paid' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isCorrespondingAccountFieldVisible(), "'Corresponding Account' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isMonthlyLowBalanceFieldVisible(), "'Monthly low balance' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isMonthlyNumberOfWithdrawalsFieldVisible(), "'Monthly number of withdrawals' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAggregateBalanceYearToDateFieldVisible(), "'Aggregate Balance Year to date' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAggregateColBalFieldVisible(), "'Aggregate col bal' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAggrColLstStmtFieldVisible(), "'Aggr col lst stmt' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isYTDAggrColBalFieldVisible(), "'YTD aggr col bal' is not visible");
+    }
+
+
+    public void verifyCommonTransactionsFieldsAreVisible() {
+        Assert.assertTrue(Pages.editAccountPage().isDateLastActivityContactFieldVisible(), "'Date Last Activity/Contact' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isNumberOfDepositsThisStatementCycleFieldVisible(), "'Number Of Deposits This Statement Cycle' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isNumberOfDebitsThisStatementCycleLabelVisible(), "'Number of Debits This Statement Cycle' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isLastDebitAmountFieldVisible(), "'Last Debit Amount' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isLastDepositAmountFieldVisible(), "'Last Deposit Amount' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isNumberRegDItemsFieldVisible(), "'Number Reg D items (6)' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isRegDViolationsLastMosFieldVisible(), "'Reg D violations last 12 mos' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isYtdChargesWaivedFieldVisible(), "'YTD charges waived' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isStatementCycleFieldVisible(), "'Statement Cycle' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isServiceChargesYtdFieldVisible(), "'Service charges YTD' is not visible");
+    }
+
+    public void verifyCheckingTransactionsFieldsAreVisible() {
+        verifyCommonTransactionsFieldsAreVisible();
+        Assert.assertTrue(Pages.editAccountPage().isNumberOfChecksThisStatementCycleFieldVisible(), "'Number Of Checks This Statement Cycle' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isLastCheckAmountFieldVisible(), "'Last Check Amount' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isChargeOrAnalyzeFieldVisible(), "'Charge or analyze' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAccountAnalysisFieldVisible(), "'Account analysis' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isTransitItemsDepositedFieldVisible(), "'Transit items deposited' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isONusItemsDepositedFieldVisible(), "'ON-US items deposited' is not visible");
+    }
+
+    public void verifyCommonOverdraftFieldsAreVisible() {
+        Assert.assertTrue(Pages.editAccountPage().isDaysConsecutiveOverdraftFieldVisible(), "'Days consecutive overdraft' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isOverdraftChargedOffFieldVisible(), "'Overdraft Charged Off' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAggrOdBalanceFieldVisible(), "'Aggr OD balance' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAggrColOdBalFieldVisible(), "'Aggr col OD bal' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAggrOdLstStmtFieldVisible(), "'Aggr OD lst stmt' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAggrColOdLstStmtFieldVisible(), "'Aggr col OD lst stmt' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isNsfFeePaidThisCycleFieldVisible(), "'NSF fee, paid this cycle' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isNsfFeeRtrnThisCycleFieldVisible(), "'NSF fee, rtrn this cycle' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isNsfFeePaidYTDFieldVisible(), "'NSF fee, paid YTD' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isNsfFeePaidLastYearFieldVisible(), "'NSF fee, paid last year' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isNsfFeeRtrnLastYearFieldVisible(), "'NSF fee, rtrn last year' is not visible");
+    }
+
+    public void verifyCheckingOverdraftFieldsAreVisible() {
+        verifyCommonOverdraftFieldsAreVisible();
+        Assert.assertTrue(Pages.editAccountPage().isAutomaticOverdraftStatusFieldVisible(), "'Automatic Overdraft Status' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAutomaticOverdraftLimitFieldVisible(), "Automatic Overdraft Limit' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDBCODPOptInOutStatusFieldVisible(), "'DBC ODP Opt In/Out Status' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDBCODPOptInOutStatusDateFieldVisible(), "'DBC ODP Opt In/Out Status Date' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isYearToDateDaysOverdraftFieldVisible(), "'Year-to-date days overdraft' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDaysOverdraftLastYearFieldVisible(), "'Days overdraft last year' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isDateLastOverdraftFieldVisible(), "'Date Last Overdraft' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isTimesOverdrawnMonthsFieldVisible(), "'Times Overdrawn-6 Months' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isTimes$5000OverdrawnMonthsFieldVisible(), "'Times $5000 Overdrawn-6 Months' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isTimesInsufficientYTDFieldVisible(), "'Times insufficient YTD' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isItemsInsufficientYTDFieldVisible(), "'Items insufficient YTD' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isTimesInsufficientLYRFieldVisible(), "'Times insufficient LYR' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isNumberRefundedStmtCycleFieldVisible(), "'Number refunded stmt cycle' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAmountRefundedStmtCycleFieldVisible(), "'Amount refunded stmt cycle' is not visible");
+    }
+
+    public void verifySavingsIRAAOverdraftFieldsAreVisible() {
+        verifyCommonOverdraftFieldsAreVisible();
+        Assert.assertTrue(Pages.editAccountPage().isNsfFeeRtrnYTDFieldVisible(), "'NSF fee, rtrn YTD' is not visible");
+    }
+
+    public void verifyCommonMiscFieldsAreVisible() {
+        Assert.assertTrue(Pages.editAccountPage().isFederalWhReasonFieldVisible(), "'Federal W/H reason' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isFederalWhPercentFieldVisible(), "Federal W/H percent' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isTaxesWithheldYtdFieldVisible(), "'Taxes Withheld YTD' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isUserDefinedField1FieldVisible(), "'User Defined Field 1' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isUserDefinedField2FieldVisible(), "'User Defined Field 2' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isUserDefinedField3FieldVisible(), "'User Defined Field 3' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isUserDefinedField4FieldVisible(), "'User Defined Field 4' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isPrintStatementNextUpdateFieldVisible(), "'Print Statement Next Update' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isCallClassCodeFieldVisible(), "'Call Class Code' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().is1DayFloatFieldVisible(), "'1 day float' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().is2DayFloatFieldVisible(), "'2 day float' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().is3DayFloatFieldVisible(), "'3 day float' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().is4DayFloatFieldVisible(), "'4 day float' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().is5DayFloatFieldVisible(), "'5 day float' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isNumberOfDebitCardsIssuedFieldVisible(), "'Number of Debit Cards issued' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isReasonDebitCardChargeWaivedFieldVisible(), "'Reason Debit Card Charge Waived' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isExemptFromRegCCFieldVisible(), "'Exempt from Reg CC' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isNewAccountFieldVisible(), "'New Account' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isTransactionalAccountFieldVisible(), "'Transactional Account' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isTotalEarningsForLifeOfAccountFieldVisible(), "'Total Earnings for Life of Account' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isVerifyAchFundsFieldVisible(), "'Verify ACH funds' is not visible");
+    }
+
+    public void verifyCheckingMiscFieldsAreVisible() {
+        verifyCommonMiscFieldsAreVisible();
+        Assert.assertTrue(Pages.editAccountPage().isNumberRefundedYtdFieldVisible(), "'Number refunded YTD' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAmountRefundedYtdFieldVisible(), "'Amount refunded YTD' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isNumberRefundedLyrFieldVisible(), "'Number refunded LYR' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isAmountRefundedLyrFieldVisible(), "'Amount refunded LYR' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isBankruptcyJudgementFieldVisible(), "'Bankruptcy/Judgement' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isBankruptcyJudgementDateFieldVisible(), "'Bankruptcy/Judgement Date' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isWaiveServiceChargesFieldVisible(), "'Waive Service Charges' is not visible");
+    }
+
+    public void verifySavingsIRAADistributionFieldsAreVisible() {
+        verifyCommonIraFieldsAreVisible();
+        Assert.assertTrue(Pages.editAccountPage().isWaiveServiceChargesFieldVisible(), "'Waive Service Charges' is not visible");
     }
 
     /**
@@ -731,7 +972,7 @@ public class EditAccount {
         Assert.assertTrue(Pages.editAccountPage().isSpecialMailingInstructionsDisabledInEditMode(), "'Special Mailing Instructions' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAmountLastIRADistributionDisabledInEditMode(), "'Amount last IRA distribution' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isDateLastIRADistributionDisabledInEditMode(), "'Date last IRA distribution' field is not disabled");
-        if(Pages.editAccountPage().isIRADistributionAccountNumberVisibleInEditMode()){
+        if (Pages.editAccountPage().isIRADistributionAccountNumberVisibleInEditMode()) {
             Assert.assertTrue(Pages.editAccountPage().isIraDistributionAccountNumberDisabledInEditMode(), "'IRA Distribution Account Number' field is not disabled");
         }
         Assert.assertTrue(Pages.editAccountPage().isTotalContributionsDisabledInEditMode(), "'Total Contributions for Life of Account' field is not disabled");
@@ -771,7 +1012,8 @@ public class EditAccount {
     }
 
     public void enableAdjustableRateSwitch() {
-        if (Pages.editAccountPage().getAdjustableRateValue()) {
+        if (Pages.editAccountPage().getAdjustableRateValue().equalsIgnoreCase("no")
+                || !(Pages.editAccountPage().isAdjustableRateYesValuePicked())) {
             Pages.editAccountPage().clickAdjustableRate();
             SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         }

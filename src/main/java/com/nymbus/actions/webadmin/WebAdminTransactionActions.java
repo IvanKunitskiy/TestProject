@@ -389,11 +389,11 @@ public class WebAdminTransactionActions {
         return WebAdminPages.rulesUIQueryAnalyzerPage().getTransactionStatus(2);
     }
 
-    public String getUniqueEftDescription(UserCredentials userCredentials, String date, String accountNumber) {
+    public String getUniqueEftDescription(UserCredentials userCredentials, String date, String accountNumber, int index) {
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         WebAdminActions.webAdminTransactionActions().goToEftDescriptionURL(date, accountNumber);
-        return WebAdminPages.rulesUIQueryAnalyzerPage().getEftDescription(2);
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getEftDescription(index);
     }
 
     public String getTransactionStatusFromHeader(UserCredentials userCredentials, Account account) {

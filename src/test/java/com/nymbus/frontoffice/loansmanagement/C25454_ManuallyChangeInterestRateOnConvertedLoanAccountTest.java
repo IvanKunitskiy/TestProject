@@ -87,6 +87,10 @@ public class C25454_ManuallyChangeInterestRateOnConvertedLoanAccountTest extends
 
         logInfo("Step 7: Go to 'Transactions' tab and pay attention at the generated transaction");
         Pages.interestRateChangeModalPage().clickCloseButton();
+        Pages.loginPage().waitForLoginForm();
+        Pages.loginPage().typeUserName(userCredentials.getUserName());
+        Pages.loginPage().typePassword(userCredentials.getPassword());
+        Pages.loginPage().clickEnterButton();
         Pages.accountDetailsPage().clickTransactionsTab();
         String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
         checkTransactionCode(transactionCode, newCurrentEffectiveRate, oldCurrentEffectiveRate);

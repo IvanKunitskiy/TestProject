@@ -317,6 +317,12 @@ public class RetrievingAccountData {
         return  balanceIntegerPart + balanceFractionalPart;
     }
 
+    public double getPrincipalValue(int index) {
+        double principalIntegerPart = getPrincipal(index);
+        double principalFractionalPart = getPrincipalFractional(index);
+        return  principalIntegerPart + principalFractionalPart;
+    }
+
     public double getBalanceValueWithSymbol(int index) {
         double balanceIntegerPart = getBalanceWithSymbol(index);
         double balanceFractionalPart = getBalanceFractionalWithSymbol(index);
@@ -382,6 +388,16 @@ public class RetrievingAccountData {
 
     private double getBalanceFractional(int tempIndex, int offset) {
         String value = Pages.accountTransactionPage().getBalanceFractionalValue(tempIndex, offset);
+        return Double.parseDouble(value) / 100;
+    }
+
+    private double getPrincipal(int tempIndex) {
+        String value = Pages.accountTransactionPage().getPrincipalValue(tempIndex);
+        return Double.parseDouble(value);
+    }
+
+    private double getPrincipalFractional(int tempIndex) {
+        String value = Pages.accountTransactionPage().getPrincipalFractionalPartValue(tempIndex);
         return Double.parseDouble(value) / 100;
     }
 

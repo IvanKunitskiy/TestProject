@@ -113,7 +113,6 @@ public class C22822_WeilandImportfile extends BaseTest {
         Pages.accountInstructionsPage().waitForCreatedInstruction(instructionsCount + 1);
         Actions.clientPageActions().searchAndOpenClientByName(client.getInitials());
         AccountActions.createAccount().createCHKAccount(chkAccount5);
-
         // Set up transaction with account number
         // Perform deposit transactions
         depositTransaction.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
