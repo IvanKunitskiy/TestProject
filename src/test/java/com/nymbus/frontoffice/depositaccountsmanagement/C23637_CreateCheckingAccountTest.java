@@ -82,7 +82,7 @@ public class C23637_CreateCheckingAccountTest extends BaseTest {
         AccountActions.createAccount().verifyChkAccountPrefilledFields(checkingAccount, client);
 
         logInfo("Step 7: Look at the field 'Account Title' and verify that such field is not a required field");
-        TestRailAssert.assertTrue(Pages.addAccountPage().isAccountTitleFieldRequired(),
+        TestRailAssert.assertFalse(Pages.addAccountPage().isAccountTitleFieldRequired(),
                 new CustomStepResult("'Account Title' is required", "'Account Title' is not required"));
 
         logInfo("Step 8: Select any values in drop-down fields");
