@@ -223,9 +223,9 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
         double expectedAccruedInterest = Double.parseDouble(currentBalanceForInterest) * Double.parseDouble(currentEffectiveRate)/100/
                 yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate,dueDateSec,false);
         String expected = Functions.roundNumberForInterest(expectedAccruedInterest);
-//        TestRailAssert.assertTrue(disInterest.equals(expected),
-//                new CustomStepResult("Interest is valid",
-//                        String.format("Interest is not valid. Expected %s, actual %s",expected, disInterest)));
+        TestRailAssert.assertTrue(disInterest.equals(expected),
+                new CustomStepResult("Interest is valid",
+                        String.format("Interest is not valid. Expected %s, actual %s",expected, disInterest)));
         String disAmount = Pages.accountPaymentInfoPage().getDisabledAmount();
         String disEscrow = Pages.accountPaymentInfoPage().getDisabledEscrow();
         String disPrincipal = Pages.accountPaymentInfoPage().getDisabledPrincipal();
