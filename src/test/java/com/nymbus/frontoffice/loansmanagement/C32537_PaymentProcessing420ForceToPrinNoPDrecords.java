@@ -153,7 +153,7 @@ public class C32537_PaymentProcessing420ForceToPrinNoPDrecords extends BaseTest 
                 "\"Amount\" - specify the same amount");
 
         double PAYMENT_AMOUNT = 120.00;
-        // Set up 416 transaction
+        // Set up 420 transaction
         transaction_420 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
         transaction_420.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
         transaction_420.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
@@ -162,7 +162,7 @@ public class C32537_PaymentProcessing420ForceToPrinNoPDrecords extends BaseTest 
         transaction_420.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
         transaction_420.getTransactionDestination().setAmount(PAYMENT_AMOUNT);
 
-        // Perform 416 transaction
+        // Perform 420 transaction
         Actions.transactionActions().goToTellerPage();
         Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction_420.getTransactionSource(), 0);
         Actions.transactionActions().setMiscCreditDestination(transaction_420.getTransactionDestination(), 0);

@@ -16,7 +16,9 @@ import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
+import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitMiscCreditBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
+import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
@@ -80,6 +82,7 @@ public class C32541_PaymentProcessing420ForceToPrinActivePDrecordAmountPrinPorti
         AccountActions.createAccount().createCHKAccount(chkAccount);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createLoanAccount(loanAccount);
+
         clientRootId = ClientsActions.createClient().getClientIdFromUrl();
 
         // Set up deposit transaction
@@ -97,6 +100,8 @@ public class C32541_PaymentProcessing420ForceToPrinActivePDrecordAmountPrinPorti
         Actions.transactionActions().createTransaction(depositTransaction);
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
+
+        // Generate Payment Due record
         Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
 
         Actions.loginActions().doLogOutProgrammatically();
@@ -132,12 +137,26 @@ public class C32541_PaymentProcessing420ForceToPrinActivePDrecordAmountPrinPorti
                 "Account number - Loan account from preconditions\n" +
                 "\"Transaction Code\" - \"420 - Force To Prin\"\n" +
                 "\"Amount\" - specify the same amount");
+        double PAYMENT_AMOUNT = 120.00;
+        // Set up 420 transaction
+        transaction_420 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
+        transaction_420.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
+        transaction_420.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
+        transaction_420.getTransactionSource().setAmount(PAYMENT_AMOUNT);
+        transaction_420.getTransactionDestination().setTransactionCode(TransactionCode.FORCE_TO_PRIN_420.getTransCode());
+        transaction_420.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
+        transaction_420.getTransactionDestination().setAmount(PAYMENT_AMOUNT);
+
+        // Perform 420 transaction
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction_420.getTransactionSource(), 0);
+        Actions.transactionActions().setMiscCreditDestination(transaction_420.getTransactionDestination(), 0);
+        Actions.transactionActions().clickCommitButton();
 
         logInfo("Step 5: Close Transaction Receipt popup");
         logInfo("Step 6: Open loan account from preconditions on the \"Transactions\" tab");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
-        Selenide.sleep(10000000);
 
         logInfo("Step 7: Go to the 'Payment Info' tab");
         logInfo("Step 8: Verify existing Payment Due record");

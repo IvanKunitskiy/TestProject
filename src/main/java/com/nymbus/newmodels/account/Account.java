@@ -154,9 +154,7 @@ public class Account {
         account.setMaxRate(Generator.getRandomIntMinMaxInclusiveStringValue(10, 99));
         account.setMaxRateChangeUpDown(Generator.getRandomIntMinMaxInclusiveStringValue(10, 99));
         account.setMaxRateLifetimeCap(Generator.getRandomIntMinMaxInclusiveStringValue(10, 99));
-        System.out.println("value of RateRoundingFactor enum " + RateRoundingFactor.ZERO_SEVENTY_FIVE_THOUSANDTH.getRateRoundingFactor() + " --------");
         account.setRateRoundingFactor(RateRoundingFactor.ZERO_SEVENTY_FIVE_THOUSANDTH.getRateRoundingFactor());
-        System.out.println("value of account.gerRateRoundingFactor() " + account.getRateRoundingFactor() + " -------");
         account.setOriginalInterestRate(Generator.getRandomIntMinMaxInclusiveStringValue(10, 99));
         account.setRateIndex("Wall Street Journal Prime");
 
