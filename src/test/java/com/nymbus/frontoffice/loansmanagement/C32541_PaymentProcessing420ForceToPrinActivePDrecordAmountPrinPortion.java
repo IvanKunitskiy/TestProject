@@ -51,7 +51,7 @@ public class C32541_PaymentProcessing420ForceToPrinActivePDrecordAmountPrinPorti
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
-        loanAccount.setPaymentAmountType(PaymentAmountType.PRINCIPAL_AND_INTEREST.getPaymentAmountType());
+        loanAccount.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
 
         // Set proper dates
         String localDate = DateTime.getLocalDateOfPattern("MM/dd/yyyy");
@@ -154,13 +154,20 @@ public class C32541_PaymentProcessing420ForceToPrinActivePDrecordAmountPrinPorti
         Actions.transactionActions().clickCommitButton();
 
         logInfo("Step 5: Close Transaction Receipt popup");
+        Pages.tellerPage().closeModal();
+
         logInfo("Step 6: Open loan account from preconditions on the \"Transactions\" tab");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
 
         logInfo("Step 7: Go to the 'Payment Info' tab");
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+
         logInfo("Step 8: Verify existing Payment Due record");
+
+
         logInfo("Step 9: Click on the Payment Due record and check fields in the 'Payment Due Details' section");
+
         logInfo("Step 10: Pay attention to the 'Transactions' section");
 
     }
