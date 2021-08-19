@@ -136,12 +136,36 @@ public class AccountPaymentInfoPage extends PageTools {
      * Payments Due
      */
     private final By paymentDueRecord = By.xpath("(//div[@ui-view='paymentsDue']//tr)[2]");
+    private final By paymentDueRecordByIndex = By.xpath("(//div[@ui-view='paymentsDue']//tr)[%s]");
+    private final By paymentDueRecords = By.xpath("(//div[@ui-view='paymentsDue']//tr[contains(@data-test-id, 'repeat-payment')])");
+    private final By lastPaymentDueRecord = By.xpath("(//div[@ui-view='paymentsDue']//tr)[last()]");
 
     @Step("Click payment due record")
     public void clickPaymentDueRecord() {
         waitForElementVisibility(paymentDueRecord);
         waitForElementClickable(paymentDueRecord);
         click(paymentDueRecord);
+    }
+
+    @Step("Click payment due record")
+    public void clickPaymentDueRecordByIndex(int index) {
+        int indexModified = index + 1;
+        waitForElementVisibility(paymentDueRecordByIndex, indexModified);
+        waitForElementClickable(paymentDueRecordByIndex, indexModified);
+        click(paymentDueRecordByIndex, indexModified);
+    }
+
+    @Step("Click last payment due record")
+    public void clickLastPaymentDueRecord() {
+        waitForElementVisibility(lastPaymentDueRecord);
+        waitForElementClickable(lastPaymentDueRecord);
+        click(lastPaymentDueRecord);
+    }
+
+    @Step("Get number of all due records")
+    public int getDueRecordsNumber() {
+        waitForElementVisibility(paymentDueRecords);
+        return getElements(paymentDueRecords).size();
     }
 
     /**
