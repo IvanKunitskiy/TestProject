@@ -222,6 +222,7 @@ public class C32541_PaymentProcessing420ForceToPrinActivePDrecordAmountPrinPorti
         TestRailAssert.assertTrue(transactionAmount_406.equals((transactionAmount - Double.parseDouble(transactionAmount_420)) + "0"),
                 new CustomStepResult("'Transaction Amount' is not valid", "'Transaction Amount' is valid"));
 
+        Pages.accountDetailsPage().clickDetailsTab();
         double currentBalanceAfter = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
         TestRailAssert.assertTrue(String.valueOf(currentBalanceAfter).equals(String.valueOf(currentBalanceBefore - Double.parseDouble(transactionAmount_420) + Double.parseDouble(transactionAmount_406))),
                 new CustomStepResult("'Current Balance' is not valid", "'Current Balance' is valid"));
@@ -262,5 +263,4 @@ public class C32541_PaymentProcessing420ForceToPrinActivePDrecordAmountPrinPorti
         TestRailAssert.assertTrue(tranCodeStatus.equals("420 Force To Prin"),
                 new CustomStepResult("'Tran Code/Status' is not valid", "'Tran Code/Status' is valid"));
     }
-
 }
