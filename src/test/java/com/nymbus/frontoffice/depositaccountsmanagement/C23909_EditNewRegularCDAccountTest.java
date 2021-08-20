@@ -91,7 +91,7 @@ public class C23909_EditNewRegularCDAccountTest extends BaseTest {
         logInfo("Step 11: Select any other value in such fields");
         logInfo("Step 12: Set switcher Transactional Account = NO");
         AccountActions.editAccount().fillInInputFieldsThatWereNotAvailableDuringCDAccountCreation(cdAccount);
-        TestRailAssert.assertTrue(Pages.addAccountPage().isAccountTitleFieldRequired(),
+        TestRailAssert.assertFalse(Pages.addAccountPage().isAccountTitleFieldRequired(),
                 new CustomStepResult("'Account Title' is required", "'Account Title' is not required"));
 
         logInfo("Step 13: Click [-] icon next to any section (e.g. Transactions section) and verify that all fields within this section were hidden");

@@ -241,6 +241,7 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
                         i, res)));
         String amount = Pages.accountPaymentInfoPage().getAmount();
         String disabledAmount = Pages.accountPaymentInfoPage().getDisabledAmount();
+        String escrow = Pages.accountPaymentInfoPage().getEscrow();
         TestRailAssert.assertTrue(amount.equals(disabledAmount),
                 new CustomStepResult("Amount sum is not valid", "Amount sum is valid"));
         TestRailAssert.assertTrue(Double.parseDouble(amount) == transactionAmount,
@@ -260,9 +261,11 @@ public class C25436_ProcessLoanPaymentTransactionPrincipalInterest extends BaseT
         double interestValue = AccountActions.retrievingAccountData().getInterestMinusValue(1);
         TestRailAssert.assertTrue(interestValue == Double.parseDouble(interest),
                 new CustomStepResult("Interest is not valid", "Interest is valid"));
-        double escrowValue = AccountActions.retrievingAccountData().getEscrowMinusValue(1);
-        TestRailAssert.assertTrue(escrowValue == Double.parseDouble(disabledEscrow),
-                new CustomStepResult("Escrow is not valid", "Escrow is valid"));
+        if (!escrow.isEmpty()) {
+            double escrowValue = AccountActions.retrievingAccountData().getEscrowMinusValue(1);
+            TestRailAssert.assertTrue(escrowValue == Double.parseDouble(escrow),
+                    new CustomStepResult("Escrow is not valid", "Escrow is valid"));
+        }
 
         logInfo("Step 11: Go to the \"Details\" tab");
         Pages.accountDetailsPage().clickDetailsTab();
