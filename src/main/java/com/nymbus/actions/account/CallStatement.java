@@ -138,7 +138,7 @@ public class CallStatement {
         assertThat(pdf, containsText(client.getFullName()));
 
         // Client Address - Client's Seasonal Address
-        assertThat(pdf, containsText(seasonalAddress.getAddress()));
+        assertThat(pdf, containsText(client.getIndividualType().getAddresses().get(0).getAddress()));
 
         // Phone - Clients Phone
         String phoneNumber = client.getIndividualClientDetails().getPhones().get(1).getPhoneNumber().replaceFirst("(\\d{3})(\\d{3})(\\d+)", "$1-$2-$3");
@@ -273,6 +273,10 @@ public class CallStatement {
         // Totals - calculated # of all transactions, total Debits and Total Credits
         double total = debitTransaction.getTransactionSource().getAmount() - creditTransaction.getTransactionSource().getAmount();
         assertThat(pdf, containsText((String.format("%.2f", total))));
+
+        //Transaction Date
+        assertThat(pdf,containsText(DateTime.getDateWithFormat(creditTransaction.getTransactionDate(),"08/25/2021","08/25/21")));
+        assertThat(pdf,containsText(DateTime.getDateWithFormat(debitTransaction.getTransactionDate(),"08/25/2021","08/25/21")));
     }
 
     /**
