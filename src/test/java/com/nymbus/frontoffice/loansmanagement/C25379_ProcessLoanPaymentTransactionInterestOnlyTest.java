@@ -130,7 +130,6 @@ public class C25379_ProcessLoanPaymentTransactionInterestOnlyTest extends BaseTe
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
         accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
-        System.out.println(accruedInterest + " ----------");
         Pages.accountDetailsPage().clickPaymentInfoTab();
         transactionAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getAmountDueTable().replaceAll("[^0-9.]", ""));
         transaction.getTransactionSource().setAmount(transactionAmount);

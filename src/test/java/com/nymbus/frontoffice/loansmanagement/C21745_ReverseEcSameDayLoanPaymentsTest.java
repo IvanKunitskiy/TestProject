@@ -203,10 +203,7 @@ public class C21745_ReverseEcSameDayLoanPaymentsTest extends BaseTest {
         double interestPaidToDate = Double.parseDouble(Pages.accountDetailsPage().getInterestPaidToDate());
         TestRailAssert.assertTrue(interestPaidToDate == interest,
                 new CustomStepResult("'Interest Paid To Date' is not valid", "'Interest Paid To Date' is valid"));
-        System.out.println(currentBalance + " --------");
-        System.out.println(principal + " --------");
         double actualCurrentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
-        System.out.println(actualCurrentBalance + " --------");
         TestRailAssert.assertTrue(actualCurrentBalance == currentBalance - principal,
                 new CustomStepResult("'Current Balance' is not valid", "'Current Balance' is valid"));
         int currentNumberOfPaymentsReceived = Integer.parseInt(Pages.accountDetailsPage().getNumberOfPaymentsReceived());

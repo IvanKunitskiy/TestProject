@@ -77,7 +77,6 @@ public class C25454_ManuallyChangeInterestRateOnConvertedLoanAccountTest extends
         Pages.supervisorModalPage().clickEnter();
 
         double adjustmentAmount = (currentBalance * ((newCurrentEffectiveRate - oldCurrentEffectiveRate) / 100) / yearBase) * beginEarnDateDays;
-        System.out.println(adjustmentAmount + " -------------");
         adjustmentAmount = roundAmountToTwoDecimals(adjustmentAmount);
         double interestEarned = getInterestEarned(accountNumber);
         String alertMessageModalText = Pages.alertMessageModalPage().getAlertMessageModalText();

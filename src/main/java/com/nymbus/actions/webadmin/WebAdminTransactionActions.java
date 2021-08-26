@@ -258,7 +258,7 @@ public class WebAdminTransactionActions {
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
         WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
         goToTransactionUrl(accountNumber, transactionCode);
-        String effectiveDate = DateTime.getLocalDateWithFormatPlusDays(WebAdminPages.rulesUIQueryAnalyzerPage().getEffectiveDate(1), "yyyy-MM-dd", "MM/dd/yyyy", 0);
+        String effectiveDate = DateTime.getLocalDateWithFormatPlusDays(WebAdminPages.rulesUIQueryAnalyzerPage().getEffectiveDate(2), "yyyy-MM-dd", "MM/dd/yyyy", 0);
         String postingDate = DateTime.getLocalDateWithFormatPlusDays(WebAdminPages.rulesUIQueryAnalyzerPage().getDatePosted(2), "yyyy-MM-dd", "MM/dd/yyyy", 0);
         transactionData.setEffectiveDate(effectiveDate);
         transactionData.setPostingDate(postingDate);

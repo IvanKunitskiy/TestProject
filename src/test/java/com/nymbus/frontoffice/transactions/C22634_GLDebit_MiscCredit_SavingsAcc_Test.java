@@ -126,9 +126,7 @@ public class C22634_GLDebit_MiscCredit_SavingsAcc_Test extends BaseTest {
 
         logInfo("Step 10: Verify such fields: \n" +
                 "- current balance \n" +
-                "- available balance \n" +
-                "- Aggregate Balance Year to date \n" +
-                "- Total Contributions for Life of Account");
+                "- available balance ");
         Assert.assertEquals(actualBalanceData, balanceData, "Balance data doesn't match!");
 
         logInfo("Step 11: Verify such fields: \n" +

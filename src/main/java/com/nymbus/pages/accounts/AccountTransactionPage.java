@@ -27,7 +27,7 @@ public class AccountTransactionPage extends PageTools {
      */
     private By noResultsLabel = By.xpath("//section[@ng-if='!haveTransactions()']//div//p");
     private By amountMinusSymbol = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-if='showCurrency']/span[1]");
-    private By amountSymbol = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-if='showCurrency']/span[1]");
+    private By amountSymbol = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[1]");
     private By postingDate = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[2]//span");
     private By effectiveDate = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[2]//span");
     private By effectiveDateForParticipant = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[3]//span");
@@ -41,7 +41,7 @@ public class AccountTransactionPage extends PageTools {
     private By principalFractionalPart = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td//span[@ng-switch-when='principal']//span[@ng-if='showCurrency']/span[3]");
     private By balanceForLoan = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[10]//span[@ng-if='showCurrency']/span[2]");
     private By balanceForLoanFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[10]//span[@ng-if='showCurrency']/span[3]");
-    private By balanceSymbol = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[1]");
+    private By balanceSymbol = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span[@ng-if='showCurrency']/span[1]");
     private By balanceFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[3]");
     private By amountFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[6]//span[@ng-if='showCurrency']/span[3]");
     private By amountMinusFractional = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-if='showCurrency']/span[3]");

@@ -110,7 +110,6 @@ public class C19581_LoanSkipPaymentPaidAssessedFeeManualyTest extends BaseTest {
         AccountActions.accountMaintenanceActions().setTool(Tool.LOAN_SKIP_PAYMENT);
         Pages.accountMaintenancePage().clickToolsLaunchButton();
         Pages.loanSkipPaymentModalPage().typeNbrOfPaymentsToSkipInput(String.valueOf(3));
-        System.out.println(FEE_AMOUNT);
         Pages.loanSkipPaymentModalPage().typeFeeAmount(String.valueOf(FEE_AMOUNT));
         Actions.loanSkipPaymentModalActions().setExtendMaturityToggleToNo();
         Actions.loanSkipPaymentModalActions().setFeeAddOnPaymentToggleToNo();

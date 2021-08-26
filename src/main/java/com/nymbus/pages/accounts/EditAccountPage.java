@@ -2637,7 +2637,6 @@ public class EditAccountPage extends PageTools {
 
     @Step("Set 'Rate rounding factor' value")
     public void setRateRoundingFactor(String factor) {
-        System.out.println("argument passed to setRatRoundingFaction() " + factor + " ------------------------");
         waitForElementClickable(rateRoundingFactorInput, factor);
         click(rateRoundingFactorInput, factor);
     }

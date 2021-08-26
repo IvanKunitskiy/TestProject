@@ -105,7 +105,7 @@ public class C22911_PeriodicSavSavGeneration extends BaseTest {
         Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
         savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-", amount - Double.parseDouble(transfer.getAmount()), Double.parseDouble(transfer.getAmount()));
+                "-", -(amount - Double.parseDouble(transfer.getAmount())), Double.parseDouble(transfer.getAmount()));
         savingsAccTransactionData2 = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "+", amount + Double.parseDouble(transfer.getAmount()), Double.parseDouble(transfer.getAmount()));
     }

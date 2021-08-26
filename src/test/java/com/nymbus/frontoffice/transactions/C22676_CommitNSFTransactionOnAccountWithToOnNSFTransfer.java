@@ -134,7 +134,7 @@ public class C22676_CommitNSFTransactionOnAccountWithToOnNSFTransfer extends Bas
         TransfersActions.addNewTransferActions().setInsufficientFundsToAccount(insufficientFundsTransfer);
         Pages.newTransferPage().setNearestAmount(insufficientFundsTransfer.getNearestAmount());
         Pages.newTransferPage().setMaxAmount(insufficientFundsTransfer.getAmountToTransfer());
-        Pages.newTransferPage().setTransferCharge(insufficientFundsTransfer.getTransferCharge());
+        //Pages.newTransferPage().setTransferCharge(insufficientFundsTransfer.getTransferCharge());
         Pages.newTransferPage().clickSaveButton();
         Pages.transfersPage().clickTransferInTheListByType(insufficientFundsTransfer.getTransferType().getTransferType());
         Pages.accountNavigationPage().clickAccountsTab();
@@ -204,7 +204,7 @@ public class C22676_CommitNSFTransactionOnAccountWithToOnNSFTransfer extends Bas
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         Pages.accountDetailsPage().clickInstructionsTab();
-        int instructionNumber = 2;
+        int instructionNumber = 1;
         Pages.accountInstructionsPage().clickInstructionInListByIndex(instructionNumber);
         String holdAmount = Pages.accountInstructionsPage().getHoldAmount();
         Assert.assertEquals(Double.parseDouble(holdAmount), returnTransactionAmount - transactionAmount,

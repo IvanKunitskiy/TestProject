@@ -1,6 +1,5 @@
 package com.nymbus.actions.account;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.utils.Constants;
@@ -385,7 +384,7 @@ public class CreateAccount {
 
     public void setIRADistributionAccountNumber(Account account) {
         if (account.getIraDistributionAccountNumber() != null) {
-            if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev12")) {
+            if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev12") || Constants.getEnvironment().equals("dev47")) {
                 Pages.addAccountPage().clickIRADistributionAccountNumberSelectorButton(account.getIraDistributionAccountNumber());
                 Pages.addAccountPage().clickIRADistributionAccountNumberSelectorOption(account.getIraDistributionAccountNumber());
             } else {
@@ -883,7 +882,7 @@ public class CreateAccount {
         Assert.assertEquals(Pages.addAccountPage().getInterestFrequency(), account.getInterestFrequency(), "'Interest Frequency' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getInterestType(), account.getInterestType(), "'Interest Type' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getApplyInterestTo(), "Remain in Account", "'Apply interest to' is prefilled with wrong value");
-        if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev12")) {
+        if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev12") || Constants.getEnvironment().equals("dev47")) {
             Assert.assertTrue(Pages.addAccountPage().isAutoRenewableYes(), "'Auto Renewable' is prefilled with wrong value");
         } else {
             Assert.assertEquals(Pages.addAccountPage().getAutoRenewable(), "YES", "'Auto Renewable' is prefilled with wrong value");
