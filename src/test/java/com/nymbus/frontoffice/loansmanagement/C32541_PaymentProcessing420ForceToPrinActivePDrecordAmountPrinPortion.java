@@ -59,7 +59,6 @@ public class C32541_PaymentProcessing420ForceToPrinActivePDrecordAmountPrinPorti
 
         // Set proper dates
         String localDate = DateTime.getLocalDateOfPattern("MM/dd/yyyy");
-        String dateMinusMonth = DateTime.getDateMinusMonth(localDate, 1);
         loanAccount.setDateOpened(DateTime.getDateMinusMonth(localDate, 1));
         loanAccount.setNextPaymentBilledDueDate(DateTime.getDatePlusMonth(loanAccount.getDateOpened(), 1));
         loanAccount.setPaymentBilledLeadDays("1");
