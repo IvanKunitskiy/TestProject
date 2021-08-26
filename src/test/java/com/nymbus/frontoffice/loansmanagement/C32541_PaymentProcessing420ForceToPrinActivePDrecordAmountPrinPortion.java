@@ -1,6 +1,5 @@
 package com.nymbus.frontoffice.loansmanagement;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -28,6 +27,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.swing.*;
+import java.math.BigDecimal;
 
 @Epic("Frontoffice")
 @Feature("Loans Management")
@@ -60,7 +60,7 @@ public class C32541_PaymentProcessing420ForceToPrinActivePDrecordAmountPrinPorti
         // Set proper dates
         String localDate = DateTime.getLocalDateOfPattern("MM/dd/yyyy");
         String dateMinusMonth = DateTime.getDateMinusMonth(localDate, 1);
-        loanAccount.setDateOpened(DateTime.getDateWithFormatPlusDays(dateMinusMonth, "MM/dd/yyyy", "MM/dd/yyyy", 2));
+        loanAccount.setDateOpened(DateTime.getDateMinusMonth(localDate, 1));
         loanAccount.setNextPaymentBilledDueDate(DateTime.getDatePlusMonth(loanAccount.getDateOpened(), 1));
         loanAccount.setPaymentBilledLeadDays("1");
         loanAccount.setCycleLoan(false);
@@ -147,16 +147,9 @@ public class C32541_PaymentProcessing420ForceToPrinActivePDrecordAmountPrinPorti
         double currentBalanceBefore = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
 
         Pages.accountDetailsPage().clickPaymentInfoTab();
-        int numberOfDueRecords = Pages.accountPaymentInfoPage().getDueRecordsNumber();
-        double dueRecordPrincipal = 0;
-        for(int i = 1; i <= numberOfDueRecords; i++){
-            Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(i);
-            dueRecordPrincipal = dueRecordPrincipal + Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledPrincipal());
-        }
+        Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(1);
+        double dueRecordPrincipal = Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledPrincipal());
         Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
-
-        System.out.println(Pages.accountPaymentInfoPage().getDisabledPrincipal() + " -------");
-        System.out.println(dueRecordPrincipal + " get last due record principal -------");
 
         Actions.transactionActions().goToTellerPage();
 
@@ -205,15 +198,10 @@ public class C32541_PaymentProcessing420ForceToPrinActivePDrecordAmountPrinPorti
         String transactionAmount_420 = Pages.accountTransactionPage().getAmountValue(1) + Pages.accountTransactionPage().getAmountFractionalValue(1);
         String transactionAmount_406 = Pages.accountTransactionPage().getAmountValue(2) + Pages.accountTransactionPage().getAmountFractionalValue(2);
 
-        System.out.println(transactionAmount_420 + " ---------");
-        System.out.println(transactionAmount_406 + " ---------");
-        System.out.println(dueRecordPrincipal + " ---------");
-        System.out.println(transactionAmount - Double.parseDouble(transactionAmount_420) + " ---------");
-
         TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(1)
                         .equals(String.valueOf(TransactionCode.FORCE_TO_PRIN_420.getTransCode())),
                 new CustomStepResult("'Transaction Code' code is not valid", "'Transaction Code' code is valid"));
-        TestRailAssert.assertTrue(transactionAmount_420.equals(dueRecordPrincipal + "0"),
+        TestRailAssert.assertTrue(transactionAmount_420.equals(String.valueOf(dueRecordPrincipal)),
                 new CustomStepResult("'Transaction Amount' is not valid", "'Transaction Amount' is valid"));
 
         TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(2)
@@ -224,25 +212,23 @@ public class C32541_PaymentProcessing420ForceToPrinActivePDrecordAmountPrinPorti
 
         Pages.accountDetailsPage().clickDetailsTab();
         double currentBalanceAfter = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
-        TestRailAssert.assertTrue(String.valueOf(currentBalanceAfter).equals(String.valueOf(currentBalanceBefore - Double.parseDouble(transactionAmount_420) + Double.parseDouble(transactionAmount_406))),
+        TestRailAssert.assertTrue(String.valueOf(currentBalanceAfter).equals(String.valueOf(currentBalanceBefore - (Double.parseDouble(transactionAmount_420) + Double.parseDouble(transactionAmount_406)))),
                 new CustomStepResult("'Current Balance' is not valid", "'Current Balance' is valid"));
 
         logInfo("Step 7: Go to the 'Payment Info' tab");
         Pages.accountDetailsPage().clickPaymentInfoTab();
 
         logInfo("Step 8: Verify existing Payment Due record");
-        Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
+        Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(1);
 
-        double actualAmountDue = Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledPaymentAmount()) - dueRecordPrincipal;
-
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(5).equals(String.valueOf(actualAmountDue)),
+        BigDecimal actualAmountDue = BigDecimal.valueOf(Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledPaymentAmount())).subtract(BigDecimal.valueOf(dueRecordPrincipal));
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1).equals(String.valueOf(actualAmountDue)),
                 new CustomStepResult("'Amount Due' is valid", "'Amount Due' is not valid" ));
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(5).equals("Partially Paid"),
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1).equals("Partially Paid"),
                 new CustomStepResult("'Status' is not valid", "'Status' is valid"));
 
         logInfo("Step 9: Click on the Payment Due record and check fields in the 'Payment Due Details' section");
-        System.out.println(Pages.accountPaymentInfoPage().getDatePaymentPaidInFull() + " ----------");
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDatePaymentPaidInFull() == null,
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDatePaymentPaidInFull().isEmpty(),
                 new CustomStepResult("'Date Payment Paid in Full' is not empty", "'Date Payment Paid in Full' is empty"));
 
         logInfo("Step 10: Pay attention to the 'Transactions' section");
@@ -252,9 +238,9 @@ public class C32541_PaymentProcessing420ForceToPrinActivePDrecordAmountPrinPorti
         String escrow = Pages.accountPaymentInfoPage().getEscrow();
         String tranCodeStatus = Pages.accountPaymentInfoPage().getStatus();
 
-        TestRailAssert.assertTrue(amount.equals(transactionAmount + "0"),
+        TestRailAssert.assertTrue(amount.equals(String.valueOf(dueRecordPrincipal)),
                 new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
-        TestRailAssert.assertTrue(principal.equals(transactionAmount + "0"),
+        TestRailAssert.assertTrue(principal.equals(String.valueOf(dueRecordPrincipal)),
                 new CustomStepResult("'Principal' is not valid", "'Principal' is valid"));
         TestRailAssert.assertTrue(interest.isEmpty(),
                 new CustomStepResult("'Interest' is not valid", "'Interest' is valid"));
