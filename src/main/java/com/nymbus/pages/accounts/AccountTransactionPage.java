@@ -434,4 +434,8 @@ public class AccountTransactionPage extends PageTools {
         waitForElementVisibility(descriptionValue, index);
         return getElementText(descriptionValue, index);
     }
+
+//    public String clickTransactionRecordByIndex(int index) {
+//
+//    }
 }
