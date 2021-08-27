@@ -19,6 +19,8 @@ import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitMiscCreditBu
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -136,11 +138,10 @@ public class C33829_PaymentDueRecordTransactionHistory416PaymentTransactionForAm
         logInfo("Step 2: Go to the 'Teller' screen");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
-        double currentBalanceBefore = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
 
         Pages.accountDetailsPage().clickPaymentInfoTab();
         Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
-        double dueRecordAmountDue = Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledAmountDue());
+        String dueRecordAmountDue = Pages.accountPaymentInfoPage().getDisabledAmountDue();
         String dueRecordPaymentDueDate = Pages.accountPaymentInfoPage().getDisabledDueDate();
 
         Actions.transactionActions().goToTellerPage();
@@ -149,26 +150,24 @@ public class C33829_PaymentDueRecordTransactionHistory416PaymentTransactionForAm
         Actions.transactionActions().doLoginTeller();
 
         logInfo("Step 4: Commit \"416 - Payment\" transaction with the following fields:\n" +
-                "\n" +
                 "Sources -> Misc Debit:\n" +
-                "\n" +
                 "\"Account Number\" - active CHK or SAV account from preconditions\n" +
                 "\"Transaction Code\" - \"114 - Loan Payment\"\n" +
                 "Amount < Payment Info -> Payments Due record from preconditions -> Amounr Due of PD record\n" +
                 "Destinations -> Misc Credit:\n" +
-                "\n" +
                 "Account number - Loan account from preconditions\n" +
                 "\"Transaction Code\" - \"416 - Payment\"\n" +
                 "\"Amount\" - specify the same amount");
 
         // Set up 420 transaction
+        double transactionAmount = Double.parseDouble(dueRecordAmountDue) - 10;
         transaction_416 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
         transaction_416.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
         transaction_416.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
-        transaction_416.getTransactionSource().setAmount(dueRecordAmountDue);
+        transaction_416.getTransactionSource().setAmount(transactionAmount);
         transaction_416.getTransactionDestination().setTransactionCode(TransactionCode.PAYMENT_416.getTransCode());
         transaction_416.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
-        transaction_416.getTransactionDestination().setAmount(dueRecordAmountDue);
+        transaction_416.getTransactionDestination().setAmount(transactionAmount);
 
         // Perform 420 transaction
         Actions.transactionActions().goToTellerPage();
@@ -185,8 +184,15 @@ public class C33829_PaymentDueRecordTransactionHistory416PaymentTransactionForAm
         Pages.accountTransactionPage().waitForTransactionSection();
 
         logInfo("Step 7: Expand the \"416 - Payment\" transaction and look at the \"Item Due Date\" and \"Amount Due\" value");
-//        Pages.accountTransactionPage().clickTransactionRecordByIndex();
-
+        Pages.accountTransactionPage().clickTransactionRecordByIndex(1);
+        System.out.println(transactionAmount + " ------------");
+        System.out.println(dueRecordPaymentDueDate + " ------------");
+        TestRailAssert.assertTrue(String.valueOf(transactionAmount)
+                        .equals(Pages.accountTransactionPage().getCheckAmountDue()),
+                new CustomStepResult("Check's 'Amount Due' is not valid", "Check's 'Amount Due' is valid"));
+        TestRailAssert.assertTrue(dueRecordPaymentDueDate
+                        .equals(DateTime.getDateWithFormat(Pages.accountTransactionPage().getCheckItemDueDate(), "MM-dd-yyyy", "MM/dd/yyyy")),
+                new CustomStepResult("Check's 'Item Due Date' is not valid", "Check's 'Amount Due' is valid"));
 
         logInfo("Step 8: Go to the 'Payment Info' tab");
 //        Pages.accountDetailsPage().clickPaymentInfoTab();
