@@ -141,7 +141,7 @@ public class C33829_PaymentDueRecordTransactionHistory416PaymentTransactionForAm
 
         Pages.accountDetailsPage().clickPaymentInfoTab();
         Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
-        String dueRecordAmountDue = Pages.accountPaymentInfoPage().getDisabledAmountDue();
+        String dueRecordAmountDue = Pages.accountPaymentInfoPage().getDisabledAmountDue().replaceAll("[^0-9.]", "");
         String dueRecordPaymentDueDate = Pages.accountPaymentInfoPage().getDisabledDueDate();
 
         Actions.transactionActions().goToTellerPage();
@@ -160,6 +160,9 @@ public class C33829_PaymentDueRecordTransactionHistory416PaymentTransactionForAm
                 "\"Amount\" - specify the same amount");
 
         // Set up 420 transaction
+        System.out.println(dueRecordAmountDue + " ----------");
+        System.out.println((Double.parseDouble(dueRecordAmountDue) - 10) + " ----------");
+
         double transactionAmount = Double.parseDouble(dueRecordAmountDue) - 10;
         transaction_416 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
         transaction_416.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
@@ -173,6 +176,7 @@ public class C33829_PaymentDueRecordTransactionHistory416PaymentTransactionForAm
         Actions.transactionActions().goToTellerPage();
         Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction_416.getTransactionSource(), 0);
         Actions.transactionActions().setMiscCreditDestination(transaction_416.getTransactionDestination(), 0);
+        Actions.transactionActions().clickCommitButton();
 
         logInfo("Step 5: Close Transaction Receipt popup");
         Pages.tellerPage().closeModal();
@@ -187,8 +191,11 @@ public class C33829_PaymentDueRecordTransactionHistory416PaymentTransactionForAm
         Pages.accountTransactionPage().clickTransactionRecordByIndex(1);
         System.out.println(transactionAmount + " ------------");
         System.out.println(dueRecordPaymentDueDate + " ------------");
+        String amountDue = Pages.accountTransactionPage().getCheckAmountDue().replaceAll("[^0-9.]", "");
+        System.out.println(amountDue + " ------------");
+
         TestRailAssert.assertTrue(String.valueOf(transactionAmount)
-                        .equals(Pages.accountTransactionPage().getCheckAmountDue()),
+                        .equals(amountDue),
                 new CustomStepResult("Check's 'Amount Due' is not valid", "Check's 'Amount Due' is valid"));
         TestRailAssert.assertTrue(dueRecordPaymentDueDate
                         .equals(DateTime.getDateWithFormat(Pages.accountTransactionPage().getCheckItemDueDate(), "MM-dd-yyyy", "MM/dd/yyyy")),
