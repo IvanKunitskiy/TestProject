@@ -105,7 +105,7 @@ public class C22911_PeriodicSavSavGeneration extends BaseTest {
         Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
         savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-", -(amount - Double.parseDouble(transfer.getAmount())), Double.parseDouble(transfer.getAmount()));
+                "-", amount - Double.parseDouble(transfer.getAmount()), Double.parseDouble(transfer.getAmount()));
         savingsAccTransactionData2 = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "+", amount + Double.parseDouble(transfer.getAmount()), Double.parseDouble(transfer.getAmount()));
     }
@@ -161,7 +161,8 @@ public class C22911_PeriodicSavSavGeneration extends BaseTest {
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
         TestRailAssert.assertTrue(actualSavTransactionData.equals(savingsAccTransactionData),
-                new CustomStepResult("Transaction data doesn't match!", "Transaction data is match!"));
+                new CustomStepResult("Transaction data doesn't match!", String.format("Transaction data is match! Expected %s, actual %s.",
+                        savingsAccTransactionData, actualSavTransactionData)));
 
         logInfo("Step 7: Search for the Savings account#2 from the precondition (To Account) and verify its:\n" +
                 "- current balance\n" +
