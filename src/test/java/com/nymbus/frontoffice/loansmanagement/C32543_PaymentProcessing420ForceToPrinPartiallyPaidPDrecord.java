@@ -1,5 +1,6 @@
 package com.nymbus.frontoffice.loansmanagement;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -19,6 +20,8 @@ import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitMiscCreditBu
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -123,10 +126,16 @@ public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends
         // Generate Payment Due record
         Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
 
+
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+        Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
         dueRecordAmountDue = Pages.accountPaymentInfoPage().getDisabledAmountDue().replaceAll("[^0-9.]", "");
+        Actions.transactionActions().goToTellerPage();
 
         // Set up 416 transaction
-        double transactionAmount = Double.parseDouble(dueRecordAmountDue) - 10;
+        double transactionAmount = Double.parseDouble(dueRecordAmountDue);
         transaction_416 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
         transaction_416.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
         transaction_416.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
@@ -159,9 +168,8 @@ public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends
         double currentBalanceBefore = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
 
         Pages.accountDetailsPage().clickPaymentInfoTab();
-        Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(1);
-        double dueRecordPrincipal2 = Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledPrincipal());
         Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
+        double dueRecordPrincipal2 = Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledPrincipal());
 
         Actions.transactionActions().goToTellerPage();
 
@@ -207,6 +215,51 @@ public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
         Pages.accountDetailsPage().clickTransactionsTab();
         Pages.accountTransactionPage().waitForTransactionSection();
+
+        Selenide.sleep(10000000);
+
+        String transactionAmount_420 = Pages.accountTransactionPage().getAmountValue(1) + Pages.accountTransactionPage().getAmountFractionalValue(1);
+        String transactionAmount_406 = Pages.accountTransactionPage().getAmountValue(2) + Pages.accountTransactionPage().getAmountFractionalValue(2);
+
+        TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(1)
+                        .equals(String.valueOf(TransactionCode.FORCE_TO_PRIN_420.getTransCode())),
+                new CustomStepResult("'Transaction Code' code is not valid", "'Transaction Code' code is valid"));
+        TestRailAssert.assertTrue(transactionAmount_420.equals(String.valueOf(dueRecordPrincipal2)),
+                new CustomStepResult("'Transaction Amount' is not valid", "'Transaction Amount' is valid"));
+
+        TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(2)
+                        .equals(String.valueOf(TransactionCode.PRIN_PAYM_ONLY_406.getTransCode())),
+                new CustomStepResult("'Transaction Code' code is not valid", "'Transaction Code' code is valid"));
+        TestRailAssert.assertTrue(transactionAmount_406.equals((transactionAmount - Double.parseDouble(transactionAmount_420)) + "0"),
+                new CustomStepResult("'Transaction Amount' is not valid", "'Transaction Amount' is valid"));
+
+        Pages.accountDetailsPage().clickDetailsTab();
+        double currentBalanceAfter = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
+        TestRailAssert.assertTrue(String.valueOf(currentBalanceAfter).equals(String.valueOf(currentBalanceBefore - (Double.parseDouble(transactionAmount_420) + Double.parseDouble(transactionAmount_406)))),
+                new CustomStepResult("'Current Balance' is not valid", "'Current Balance' is valid"));
+
+        logInfo("Step 7: Go to the 'Payment Info' tab");
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+
+        logInfo("Step 8: Verify existing Payment Due record");
+        Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(1);
+
+        String amount = Pages.accountPaymentInfoPage().getAmount();
+        String principal = Pages.accountPaymentInfoPage().getPrincipal();
+        String interest = Pages.accountPaymentInfoPage().getInterest();
+        String escrow = Pages.accountPaymentInfoPage().getEscrow();
+        String tranCodeStatus = Pages.accountPaymentInfoPage().getStatus();
+
+        TestRailAssert.assertTrue(amount.equals(String.valueOf(dueRecordPrincipal2)),
+                new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
+        TestRailAssert.assertTrue(principal.equals(String.valueOf(dueRecordPrincipal2)),
+                new CustomStepResult("'Principal' is not valid", "'Principal' is valid"));
+        TestRailAssert.assertTrue(interest.isEmpty(),
+                new CustomStepResult("'Interest' is not valid", "'Interest' is valid"));
+        TestRailAssert.assertTrue(escrow.isEmpty(),
+                new CustomStepResult("'Escrow' is not valid", "'Escrow' is valid"));
+        TestRailAssert.assertTrue(tranCodeStatus.equals("420 Force To Prin"),
+                new CustomStepResult("'Tran Code/Status' is not valid", "'Tran Code/Status' is valid"));
 
     }
 }
