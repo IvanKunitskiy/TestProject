@@ -126,7 +126,7 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
         AccountActions.createAccount().verifyCdIraAccountPrefilledFields(cdIRAAccount, client);
 
         logInfo("Step 7: Look at the field 'Account Title' and verify that such field is not a required field");
-        TestRailAssert.assertTrue(Pages.addAccountPage().isAccountTitleFieldRequired(),
+        TestRailAssert.assertFalse(Pages.addAccountPage().isAccountTitleFieldRequired(),
                 new CustomStepResult("'Account Title' is required", "'Account Title' is not required"));
 
         logInfo("Step 8: Select values in such drop-down fields:\n" +

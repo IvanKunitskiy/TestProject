@@ -48,8 +48,10 @@ public class AddAccountPage extends PageTools {
     private final By interestFrequency = By.xpath("//div[@id='interestfrequencycode']/a/span/span[contains(@class, 'ng-scope')]");
     private final By interestRate = By.xpath("//input[@id='interestrate']");
     private final By interestType = By.xpath("//div[@id='interesttype']/a/span/span[contains(@class, 'ng-scope')]");
-    private final By transactionalAccountSwitch = By.xpath("//*[@id='transactionalaccount']");
-    private final By transactionalAccount = By.xpath("//dn-switch[@id='transactionalaccount']/div/div/span[contains(@class, 'ng-scope')]");
+    private final By transactionalAccountSwitch = By.xpath("//*[@id='transactionalaccount']/div/div");
+    private final By transactionalAccount = By.xpath("//*[@id='transactionalaccount']/div/div/span[contains(@class, 'ng-scope')]");
+    private final By transactionalAccountYes = By.xpath("//*[@id='transactionalaccount']//span[contains(text(), 'YES')]");
+    private final By transactionalAccountNo = By.xpath("//*[@id='transactionalaccount']//span[contains(text(), 'NO')]");
     private final By applyInterestTo = By.xpath("//div[@id='codetoapplyinterestto']/a/span/span[contains(@class, 'ng-scope')]");
     private final By mailCode = By.xpath("//div[@id='mailingcode']/a/span/span[contains(@class, 'ng-scope')]");
     private final By rentalAmount = By.xpath("//input[@id='rentalamount']");
@@ -60,12 +62,11 @@ public class AddAccountPage extends PageTools {
     private final By discountPeriods = By.xpath("//input[@id='discountperiods']");
     private final By applySeasonalAddressWithHandleOn = By.xpath("//*[@id='useseasonaladdress']//div[contains(@class, 'bootstrap-switch-on')]//span[contains(@class, 'bootstrap-switch-handle-on')]");
     private final By applySeasonalAddressWithHandleOff = By.xpath("//*[@id='useseasonaladdress']//div[contains(@class, 'bootstrap-switch-off')]//span[contains(@class, 'bootstrap-switch-handle-off')]");
-    private final By applySeasonalAddressSwitch = By.xpath("//*[@id='useseasonaladdress']");
+    private final By applySeasonalAddressSwitch = By.xpath("//*[@id='useseasonaladdress']/div/div");
     private final By applySeasonalAddressValue = By.xpath("//*[@id='useseasonaladdress']/div/div/span");
-    private final By applySeasonalAddress = By.xpath("//*[@id='useseasonaladdress']//span[@ng-if='model']");
     private final By applySeasonalAddressYes = By.xpath("//*[@id='useseasonaladdress']//span[text()='YES']");
     private final By dateOfFirstDeposit = By.xpath("//input[@id='datefirstdeposit']");
-    private final By autoRenewableSwitch = By.xpath("//dn-switch[@id='autorenewablecode']");
+    private final By autoRenewableSwitch = By.xpath("//*[@id='autorenewablecode']/div/div");
     private final By autoRenewableSwitchValue = By.xpath("//dn-switch[@id='autorenewablecode']/div/div/span");
     private final By paymentAmount = By.xpath("//input[@data-test-id='field-paymentamount']");
     private final By cycleLoanValue = By.xpath("//*[@id='cycleloan']/div/div/span[2]");
@@ -847,10 +848,9 @@ public class AddAccountPage extends PageTools {
     }
 
     @Step("Click 'Apply Seasonal Address' switch")
-    public String clickApplySeasonalAddressSwitch() {
-        waitForElementVisibility(applySeasonalAddressSwitch);
-        waitForElementClickable(applySeasonalAddressSwitch);
-        return getElementText(applySeasonalAddressSwitch);
+    public void clickApplySeasonalAddressSwitch() {
+        scrollToPlaceElementInCenter(applySeasonalAddressSwitch);
+        jsClick(applySeasonalAddressSwitch);
     }
 
     @Step("Get 'Seasonal Address' switch value")
@@ -862,10 +862,9 @@ public class AddAccountPage extends PageTools {
     }
 
     @Step("Click 'Auto Renewable' switch")
-    public String clickAutoRenewableSwitch() {
-        waitForElementVisibility(autoRenewableSwitch);
-        waitForElementClickable(autoRenewableSwitch);
-        return getElementText(autoRenewableSwitch);
+    public void clickAutoRenewableSwitch() {
+        scrollToPlaceElementInCenter(autoRenewableSwitch);
+        jsClick(autoRenewableSwitch);
     }
 
     @Step("Get 'Auto Renewable' switch value")
@@ -909,6 +908,18 @@ public class AddAccountPage extends PageTools {
         waitForElementVisibility(transactionalAccount);
         waitForElementClickable(transactionalAccount);
         return getElementText(transactionalAccount);
+    }
+
+    @Step("Check if 'Transactional Account' value = 'Yes'")
+    public boolean isTransactionalAccountYes() {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        return isElementVisible(transactionalAccountYes);
+    }
+
+    @Step("Check if 'Transactional Account' value = 'No'")
+    public boolean isTransactionalAccountNo() {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        return isElementVisible(transactionalAccountNo);
     }
 
     @Step("Click the 'Product Type' selector button")
