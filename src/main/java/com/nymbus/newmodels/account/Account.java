@@ -1185,7 +1185,7 @@ public class Account {
         return iraDistributionAccountNumber;
     }
 
-    public void setIraDistributionAccountNumber(String iraDistributionAccountNumber) {
+    public void  setIraDistributionAccountNumber(String iraDistributionAccountNumber) {
         this.iraDistributionAccountNumber = iraDistributionAccountNumber;
     }
 }

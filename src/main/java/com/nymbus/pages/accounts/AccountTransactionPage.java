@@ -53,7 +53,14 @@ public class AccountTransactionPage extends PageTools {
     private By transactionCode = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-switch-when='transactioncode']");
     private By amountByTransactionCode = By.xpath("(//tr//td[span[contains(text(), '%s')]]/following-sibling::td[1])[%s]");
     private By descriptionValue = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span");
+    private By specificTransactionRecord = By.xpath("//tr[contains(@data-test-id, 'repeat-transactions-%s')]");
 
+
+    /**
+     * Check info
+     */
+    private By checkAmountDue = By.xpath("//div[contains(@class, 'transaction-due-info')]//span[@ng-switch-when='amountdue']");
+    private By checkItemDueDate = By.xpath("//div[contains(@class, 'transaction-due-info')]//span[@ng-switch-when='duedate']");
 
     @Step("Wait for transaction section")
     public void waitForTransactionSection() {
@@ -433,5 +440,24 @@ public class AccountTransactionPage extends PageTools {
     public String getDescriptionValue(int index) {
         waitForElementVisibility(descriptionValue, index);
         return getElementText(descriptionValue, index);
+    }
+
+    @Step("Get check's 'Amount Due' value")
+    public String getCheckAmountDue() {
+        waitForElementVisibility(checkAmountDue);
+        return getElementText(checkAmountDue);
+    }
+
+    @Step("Get check's 'Item Due Date' value")
+    public String getCheckItemDueDate() {
+        waitForElementVisibility(checkItemDueDate);
+        return getElementText(checkItemDueDate);
+    }
+
+    @Step("Click transaction record by index: {index}")
+    public void clickTransactionRecordByIndex(int index){
+        int transformed = index - 1;
+        waitForElementVisibility(specificTransactionRecord, transformed);
+        click(specificTransactionRecord, transformed);
     }
 }

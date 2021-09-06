@@ -259,13 +259,14 @@ public class CreateAccount {
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setDateNextIRADistributionValue(account.getDateNextIRADistribution());
         Pages.addAccountPage().setDateOfFirstDepositValue(account.getDateOfFirstDeposit());
-        if (Pages.addAccountPage().getTransactionalAccountSwitchValue().equals("no")) {
+
+        if (Pages.addAccountPage().isTransactionalAccountNo()) {
             Pages.addAccountPage().clickTransactionalAccountSwitch();
         }
-        if (Pages.addAccountPage().getAutoRenewableSwitchValue().equals("yes")) {
+        if (Pages.addAccountPage().isAutoRenewableYes()) {
             Pages.addAccountPage().clickAutoRenewableSwitch();
         }
-        if (Pages.addAccountPage().getApplySeasonalAddressSwitchValue().equals("yes")) {
+        if (Pages.addAccountPage().isApplySeasonalAddressYes()) {
             Pages.addAccountPage().clickApplySeasonalAddressSwitch();
         }
     }
@@ -884,10 +885,11 @@ public class CreateAccount {
         Assert.assertEquals(Pages.addAccountPage().getApplyInterestTo(), "Remain in Account", "'Apply interest to' is prefilled with wrong value");
         if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev12") || Constants.getEnvironment().equals("dev47")) {
             Assert.assertTrue(Pages.addAccountPage().isAutoRenewableYes(), "'Auto Renewable' is prefilled with wrong value");
+            Assert.assertFalse(Pages.addAccountPage().isTransactionalAccountYes(), "'Transactional Account' is prefilled with wrong value");
         } else {
             Assert.assertEquals(Pages.addAccountPage().getAutoRenewable(), "YES", "'Auto Renewable' is prefilled with wrong value");
+            Assert.assertEquals(Pages.addAccountPage().getTransactionalAccount().toLowerCase(), "no", "'Transactional Account' is prefilled with wrong value");
         }
-        Assert.assertEquals(Pages.addAccountPage().getTransactionalAccount().toLowerCase(), "no", "'Transactional Account' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' is prefilled with wrong value");
     }
 
@@ -907,7 +909,7 @@ public class CreateAccount {
 
     public void verifySavingsAccountPrefilledFields(Account account, IndividualClient client) {
         verifyAccountPrefilledFields(account, client);
-        if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29")) {
+        if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev47")) {
             Assert.assertTrue(Pages.addAccountPage().isApplySeasonalAddressYes(), "'Apply Seasonal Address' is prefilled with wrong value");
         } else {
             Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' is prefilled with wrong value");
