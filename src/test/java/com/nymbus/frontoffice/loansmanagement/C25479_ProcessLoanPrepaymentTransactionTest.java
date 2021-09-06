@@ -281,7 +281,8 @@ public class C25479_ProcessLoanPrepaymentTransactionTest extends BaseTest {
         String actualAccruedInterest = Pages.accountDetailsPage().getAccruedInterest();
         String detailsInterest = Double.parseDouble(accruedInterest) - Double.parseDouble(interest) + "";
         TestRailAssert.assertTrue(actualAccruedInterest.equals(detailsInterest.substring(0, detailsInterest.indexOf(".") + 3)),
-                new CustomStepResult("Accrued interest is not valid", "Accrued interest is valid"));
+                new CustomStepResult("Accrued interest is not valid", String.format("Accrued interest is valid. Expected %s, actual %s",
+                        detailsInterest.substring(0, detailsInterest.indexOf(".") + 3),actualAccruedInterest)));
 
         logInfo("Step 12: Go to the \"Transaction\" tab and verify payment portions of 416 transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
