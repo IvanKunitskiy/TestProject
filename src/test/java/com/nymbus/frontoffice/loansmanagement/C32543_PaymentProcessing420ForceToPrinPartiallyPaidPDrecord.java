@@ -131,7 +131,7 @@ public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
         Pages.accountDetailsPage().clickPaymentInfoTab();
         Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
-        dueRecordAmountDue = Pages.accountPaymentInfoPage().getDisabledAmountDue().replaceAll("[^0-9.]", "");
+        dueRecordAmountDue = Pages.accountPaymentInfoPage().getDisabledInterest().replaceAll("[^0-9.]", "");
         Actions.transactionActions().goToTellerPage();
 
         // Set up 416 transaction
@@ -175,7 +175,6 @@ public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends
 
         logInfo("Step 3: Log in to the proof date");
         Actions.transactionActions().doLoginTeller();
-        Pages.tellerPage().setEffectiveDate(DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(), Integer.parseInt(loanAccount.getPaymentBilledLeadDays())));
 
         logInfo("Step 4: Commit '420 - Force To Prin' transaction with the following fields:" +
                 "Sources -> Misc Debit:\n" +
@@ -190,7 +189,7 @@ public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends
                 "\"Amount\" - specify the same amount");
 
         // modify due records principal to produce 406 transaction
-        double transactionAmount = dueRecordPrincipal2 - 1;
+        double transactionAmount = dueRecordPrincipal2 + 1;
 
         // Set up 420 transaction
         transaction_420 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
@@ -203,6 +202,7 @@ public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends
 
         // Perform 420 transaction
         Actions.transactionActions().goToTellerPage();
+        Pages.tellerPage().setEffectiveDate(DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(), Integer.parseInt(loanAccount.getPaymentBilledLeadDays())));
         Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction_420.getTransactionSource(), 0);
         Actions.transactionActions().setMiscCreditDestination(transaction_420.getTransactionDestination(), 0);
         Actions.transactionActions().clickCommitButton();
@@ -215,8 +215,6 @@ public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
         Pages.accountDetailsPage().clickTransactionsTab();
         Pages.accountTransactionPage().waitForTransactionSection();
-
-        Selenide.sleep(10000000);
 
         String transactionAmount_420 = Pages.accountTransactionPage().getAmountValue(1) + Pages.accountTransactionPage().getAmountFractionalValue(1);
         String transactionAmount_406 = Pages.accountTransactionPage().getAmountValue(2) + Pages.accountTransactionPage().getAmountFractionalValue(2);
@@ -244,11 +242,11 @@ public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends
         logInfo("Step 8: Verify existing Payment Due record");
         Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(1);
 
-        String amount = Pages.accountPaymentInfoPage().getAmount();
-        String principal = Pages.accountPaymentInfoPage().getPrincipal();
-        String interest = Pages.accountPaymentInfoPage().getInterest();
-        String escrow = Pages.accountPaymentInfoPage().getEscrow();
-        String tranCodeStatus = Pages.accountPaymentInfoPage().getStatus();
+        String amount = Pages.accountPaymentInfoPage().getSpecificRecordAmount(2);
+        String principal = Pages.accountPaymentInfoPage().getSpecificRecordPrincipal(2);
+        String interest = Pages.accountPaymentInfoPage().getSpecificRecordInterest(2);
+        String escrow = Pages.accountPaymentInfoPage().getSpecificRecordEscrow(2);
+        String tranCodeStatus = Pages.accountPaymentInfoPage().getSpecificRecordStatus(2);
 
         TestRailAssert.assertTrue(amount.equals(String.valueOf(dueRecordPrincipal2)),
                 new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
