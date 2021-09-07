@@ -52,8 +52,8 @@ public class AccountPaymentInfoPage extends PageTools {
     }
 
     @Step("Check error message")
-    public boolean errorMessagesIsVisible(){
-        if(isElementVisible(errorMessage)){
+    public boolean errorMessagesIsVisible() {
+        if (isElementVisible(errorMessage)) {
             return true;
         }
         SelenideTools.sleep(Constants.MINI_TIMEOUT);
@@ -373,6 +373,11 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By amount = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[5]//span//span");
     private final By principal = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[3]//span//span");
     private final By status = By.xpath("//tr[@data-test-id='repeat-transaction-0']//td[6]//span//span");
+    private final By specificRecordInterest = By.xpath("//tr[@data-test-id='repeat-transaction-%s']//td[2]//span//span");
+    private final By specificRecordEscrow = By.xpath("//tr[@data-test-id='repeat-transaction-%s']//td[4]//span//span");
+    private final By specificRecordAmount = By.xpath("//tr[@data-test-id='repeat-transaction-%s']//td[5]//span//span");
+    private final By specificRecordPrincipal = By.xpath("//tr[@data-test-id='repeat-transaction-%s']//td[3]//span//span");
+    private final By specificRecordStatus = By.xpath("//tr[@data-test-id='repeat-transaction-%s']//td[6]//span//span");
     private final By amountDueFromtTable = By.xpath("(//tr[@data-test-id='repeat-payment-0']//td[3]//span//span)[2]");
     private final By interestTotal = By.xpath("//tr[@class='row-total']/td[2]/div");
     private final By escrowTotal = By.xpath("//tr[@class='row-total']/td[4]/div");
@@ -415,6 +420,20 @@ public class AccountPaymentInfoPage extends PageTools {
         return getElementText(status).trim();
     }
 
+    @Step("Get {%s} record Principal value")
+    public String getSpecificRecordPrincipal(int index) {
+        int transformedIndex = index - 1;
+        waitForElementVisibility(specificRecordPrincipal, transformedIndex);
+        return getElementText(specificRecordPrincipal, transformedIndex).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get {%s} record Status value")
+    public String getSpecificRecordStatus(int index) {
+        int transformedIndex = index - 1;
+        waitForElementVisibility(specificRecordStatus, transformedIndex);
+        return getElementText(specificRecordStatus, transformedIndex).trim();
+    }
+
     @Step("Check if Status value is visible")
     public boolean isTransactionStatusVisible() {
         return isElementVisible(status);
@@ -426,16 +445,37 @@ public class AccountPaymentInfoPage extends PageTools {
         return getElementText(interest).replaceAll("[^0-9.]", "");
     }
 
+    @Step("Get {%s} record Interest value")
+    public String getSpecificRecordInterest(int index) {
+        int transformedIndex = index - 1;
+        waitForElementVisibility(specificRecordInterest, transformedIndex);
+        return getElementText(specificRecordInterest, transformedIndex).replaceAll("[^0-9.]", "");
+    }
+
     @Step("Get Escrow value")
     public String getEscrow() {
         waitForElementVisibility(escrow);
         return getElementText(escrow).replaceAll("[^0-9.]", "");
     }
 
+    @Step("Get {%s} record Escrow value")
+    public String getSpecificRecordEscrow(int index) {
+        int transformedIndex = index - 1;
+        waitForElementVisibility(specificRecordEscrow, transformedIndex);
+        return getElementText(specificRecordEscrow, transformedIndex).replaceAll("[^0-9.]", "");
+    }
+
     @Step("Get Amount value")
     public String getAmount() {
         waitForElementVisibility(amount);
         return getElementText(amount).replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Get {%s} record Amount value")
+    public String getSpecificRecordAmount(int index) {
+        int transformedIndex = index - 1;
+        waitForElementVisibility(specificRecordAmount, transformedIndex);
+        return getElementText(specificRecordAmount, transformedIndex).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get payment date value")
@@ -449,6 +489,7 @@ public class AccountPaymentInfoPage extends PageTools {
         waitForElementVisibility(amountDueFromtTable);
         return getElementText(amountDueFromtTable).replaceAll("[^0-9.]", "");
     }
+
 
     /**
      * Payments Due Section
@@ -483,7 +524,7 @@ public class AccountPaymentInfoPage extends PageTools {
     }
 
     @Step("Get 'Status' from 'Payments Due' value by index : {index}")
-    public String getStatusFromRecordByIndex(int index){
+    public String getStatusFromRecordByIndex(int index) {
         SelenideTools.sleep(Constants.SMALL_TIMEOUT);
         waitForElementVisibility(statusFromRecordByIndex, index);
         return getElementText(statusFromRecordByIndex, index).trim();
