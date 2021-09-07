@@ -313,6 +313,23 @@ public class WebAdminUsersActions {
                 + "bank.data.actmst-%3Ecurrentbalance%0D%0A&source=";
     }
 
+    private String getAccountWith207307407Transaction() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?" +
+                "waDbName=nymbusdev12DS" +
+                "&dqlQuery=count%3A+10%0D%0Aselect%3A+" +
+                "effectiveentrydate%2C+" +
+                "accountnumber%2C+" +
+                "transactioncode%2C+effectiveentrydate%2C+" +
+                "accounttype%0D%0Afrom%3A+" +
+                "bank.data.transaction.item%0D%0A" +
+                "where%3A+%0D%0A-+.accountnumber->dateclosed%3A+%7Bnull%7D%0D%0A-+" +
+                ".transactioncode->code%3A+%5B107%2C+207%2C+307%5D%0D%0A-+" +
+                "effectiveentrydate%3A+%7Bbetween%3A+%5B%272021-01-10%27%2C+%272021-01-20%27%5D%7D%0D%0A" +
+                "orderBy%3A+-effectiveentrydate%0D%0Aformats%3A+%0D%0A-+->" +
+                "bank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A&source=";
+    }
+
     private String getActiveConvertedLoanAccountFundedInPastUrl() {
         return Constants.WEB_ADMIN_URL +
                 "RulesUIQuery.ct?" +
@@ -536,6 +553,10 @@ public class WebAdminUsersActions {
         return getLoanAccountNumberFromQueryByUrl(getLoanAccountUrl());
     }
 
+    public String getAccountNumberWith07Transaction() {
+        return getAccountNumberFromQueryByUrl(getAccountWith207307407Transaction());
+    }
+
     public String getInterestEarned(String accountId) {
         return getInterestEarnedFromQueryByUrl(getInterestEarnedUrl(accountId));
     }
@@ -648,6 +669,19 @@ public class WebAdminUsersActions {
         return WebAdminPages.rulesUIQueryAnalyzerPage().getLoanAccountNumberValueByIndex(loanAccountNumberRandomIndex);
     }
 
+    private String getAccountNumberFromQueryByUrl(String url) {
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        int numberOfSearchResult = WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult();
+        int showCount = 20;
+        int bound = Math.min(numberOfSearchResult, showCount);
+        int accountNumberRandomIndex = getRandomIndex(bound);
+
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getAccountNumberValueByIndex(accountNumberRandomIndex);
+    }
+
     private int getPrintBalanceOnReceiptValueFromQueryByUrl(String url) {
         SelenideTools.openUrlInNewWindow(url);
 
@@ -699,7 +733,7 @@ public class WebAdminUsersActions {
         int amountOfRecordsFound = WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfFoundRecords();
         String skipFeePayment = "";
 
-        if(amountOfRecordsFound > 0) {
+        if (amountOfRecordsFound > 0) {
             WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
             skipFeePayment = WebAdminPages.rulesUIQueryAnalyzerPage().getSkipFeePaid();
         }
@@ -1022,5 +1056,18 @@ public class WebAdminUsersActions {
         SelenideTools.openUrlInNewWindow(getTeaserUrl(clientId));
         SelenideTools.switchToLastTab();
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+    }
+
+    public String getAccountNumberWithTransaction(UserCredentials userCredentials) {
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        String accountNumber = WebAdminActions.webAdminUsersActions().getAccountNumberWith07Transaction();
+
+        WebAdminActions.loginActions().doLogout();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+        return accountNumber;
     }
 }
