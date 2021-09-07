@@ -1057,4 +1057,17 @@ public class WebAdminUsersActions {
         SelenideTools.switchToLastTab();
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
     }
+
+    public String getAccountNumberWithTransaction(UserCredentials userCredentials) {
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        String accountNumber = WebAdminActions.webAdminUsersActions().getAccountNumberWith07Transaction();
+
+        WebAdminActions.loginActions().doLogout();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+        return accountNumber;
+    }
 }

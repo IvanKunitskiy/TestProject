@@ -25,22 +25,15 @@ public class C37365_VerifyAccountBalancesOnCommittingAnyTransactionAfterIntPayme
 
     @BeforeMethod
     public void preCondition() {
-        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
-        SelenideTools.switchTo().window(1);
-        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        //Get account number with transaction
+        accountNumber = WebAdminActions.webAdminUsersActions().getAccountNumberWithTransaction(userCredentials);
 
-        accountNumber = WebAdminActions.webAdminUsersActions().getAccountNumberWith07Transaction();
-
-        WebAdminActions.loginActions().doLogout();
-        SelenideTools.closeCurrentTab();
-        SelenideTools.switchTo().window(0);
         //Create transactions
         transaction = new TransactionConstructor(new CashInMiscCreditCHKAccBuilder()).constructTransaction();
         transaction.getTransactionDestination().setAmount(amount);
         transaction.getTransactionDestination().setAccountNumber(accountNumber);
         transaction.getTransactionDestination().setTransactionCode("09 -");
         transaction.getTransactionSource().setAmount(amount);
-
 
     }
 
