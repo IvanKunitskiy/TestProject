@@ -30,14 +30,13 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Petro")
-public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends BaseTest {
+public class C32544_PaymentProcessing420ForceToPrinActivePdRecordInterestOnlyBill extends BaseTest {
+
     private Account loanAccount;
     private Account chkAccount;
-    private Transaction transaction_416;
     private Transaction transaction_420;
     private String clientRootId;
     private final String loanProductName = "Test Loan Product";
-    private String dueRecordAmountDue = "";
     private final String loanProductInitials = "TLP";
     private final String TEST_RUN_NAME = "Loans Management";
 
@@ -54,7 +53,7 @@ public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
-        loanAccount.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
+        loanAccount.setPaymentAmountType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
 
         // Set proper dates
         String localDate = DateTime.getLocalDateOfPattern("MM/dd/yyyy");
@@ -128,39 +127,13 @@ public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends
         // Generate Payment Due record
         Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
 
-
-        Pages.aSideMenuPage().clickClientMenuItem();
-        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
-        Pages.accountDetailsPage().clickPaymentInfoTab();
-        Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
-        dueRecordAmountDue = Pages.accountPaymentInfoPage().getDisabledInterest().replaceAll("[^0-9.]", "");
-        Actions.transactionActions().goToTellerPage();
-
-        // Set up 416 transaction
-        double transactionAmount = Double.parseDouble(dueRecordAmountDue);
-        transaction_416 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
-        transaction_416.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
-        transaction_416.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
-        transaction_416.getTransactionSource().setAmount(transactionAmount);
-        transaction_416.getTransactionDestination().setTransactionCode(TransactionCode.PAYMENT_416.getTransCode());
-        transaction_416.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
-        transaction_416.getTransactionDestination().setAmount(transactionAmount);
-
-        // Perform 416 transaction
-        Actions.transactionActions().goToTellerPage();
-        Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction_416.getTransactionSource(), 0);
-        Actions.transactionActions().setMiscCreditDestination(transaction_416.getTransactionDestination(), 0);
-        Actions.transactionActions().clickCommitButton();
-
-        Pages.tellerPage().closeModal();
-
         Actions.loginActions().doLogOutProgrammatically();
     }
 
-    @TestRailIssue(issueID = 32543, testRunName = TEST_RUN_NAME)
-    @Test(description = "C32543, Payment Processing: 420 - Force To Prin, Partially Paid PD record")
+    @TestRailIssue(issueID = 32544, testRunName = TEST_RUN_NAME)
+    @Test(description = "C32544, Payment Processing: 420 - Force To Prin, Active PD record, Interest Only(bill)")
     @Severity(SeverityLevel.CRITICAL)
-    public void paymentProcessing420ForceToPrinPartiallyPaidPdRecord() {
+    public void paymentProcessing420ForceToPrinActivePdRecordInterestOnlyBill() {
         logInfo("Step 1: Log in to the NYMBUS");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
@@ -171,7 +144,18 @@ public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends
 
         Pages.accountDetailsPage().clickPaymentInfoTab();
         Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
-        double dueRecordPrincipal2 = Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledPrincipal());
+
+        double dueRecordAmount = Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledAmountDue().replaceAll("[^0-9.]", ""));
+        String principalBefore = Pages.accountPaymentInfoPage().getDisabledPrincipal();
+        String interestBefore = Pages.accountPaymentInfoPage().getDisabledInterest();
+        String escrowBefore = Pages.accountPaymentInfoPage().getDisabledEscrow();
+        String statusBefore = Pages.accountPaymentInfoPage().getDueStatus();
+
+        System.out.println(dueRecordAmount + " -----------");
+        System.out.println(principalBefore + " -----------");
+        System.out.println(interestBefore + " -----------");
+        System.out.println(escrowBefore + " -----------");
+        System.out.println(statusBefore + " -----------");
 
         Actions.transactionActions().goToTellerPage();
 
@@ -190,17 +174,14 @@ public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends
                 "\"Transaction Code\" - \"420 - Force To Prin\"\n" +
                 "\"Amount\" - specify the same amount");
 
-        // modify due records principal to produce 406 transaction
-        double transactionAmount = dueRecordPrincipal2 + 1;
-
         // Set up 420 transaction
         transaction_420 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
         transaction_420.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
         transaction_420.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
-        transaction_420.getTransactionSource().setAmount(transactionAmount);
+        transaction_420.getTransactionSource().setAmount(dueRecordAmount);
         transaction_420.getTransactionDestination().setTransactionCode(TransactionCode.FORCE_TO_PRIN_420.getTransCode());
         transaction_420.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
-        transaction_420.getTransactionDestination().setAmount(transactionAmount);
+        transaction_420.getTransactionDestination().setAmount(dueRecordAmount);
 
         // Perform 420 transaction
         Actions.transactionActions().goToTellerPage();
@@ -218,24 +199,17 @@ public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends
         Pages.accountDetailsPage().clickTransactionsTab();
         Pages.accountTransactionPage().waitForTransactionSection();
 
-        String transactionAmount_420 = Pages.accountTransactionPage().getAmountValue(1) + Pages.accountTransactionPage().getAmountFractionalValue(1);
-        String transactionAmount_406 = Pages.accountTransactionPage().getAmountValue(2) + Pages.accountTransactionPage().getAmountFractionalValue(2);
+        String transactionAmount_406 = Pages.accountTransactionPage().getAmountValue(1) + Pages.accountTransactionPage().getAmountFractionalValue(1);
 
         TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(1)
-                        .equals(String.valueOf(TransactionCode.FORCE_TO_PRIN_420.getTransCode())),
-                new CustomStepResult("'Transaction Code' code is not valid", "'Transaction Code' code is valid"));
-        TestRailAssert.assertTrue(transactionAmount_420.equals(String.valueOf(dueRecordPrincipal2)),
-                new CustomStepResult("'Transaction Amount' is not valid", "'Transaction Amount' is valid"));
-
-        TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(2)
                         .equals(String.valueOf(TransactionCode.PRIN_PAYM_ONLY_406.getTransCode())),
                 new CustomStepResult("'Transaction Code' code is not valid", "'Transaction Code' code is valid"));
-        TestRailAssert.assertTrue(transactionAmount_406.equals((transactionAmount - Double.parseDouble(transactionAmount_420)) + "0"),
+        TestRailAssert.assertTrue(transactionAmount_406.equals(String.valueOf(dueRecordAmount)),
                 new CustomStepResult("'Transaction Amount' is not valid", "'Transaction Amount' is valid"));
 
         Pages.accountDetailsPage().clickDetailsTab();
         double currentBalanceAfter = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
-        TestRailAssert.assertTrue(String.valueOf(currentBalanceAfter).equals(String.valueOf(currentBalanceBefore - (Double.parseDouble(transactionAmount_420) + Double.parseDouble(transactionAmount_406)))),
+        TestRailAssert.assertTrue(String.valueOf(currentBalanceAfter).equals(String.valueOf(currentBalanceBefore - Double.parseDouble(transactionAmount_406))),
                 new CustomStepResult("'Current Balance' is not valid", "'Current Balance' is valid"));
 
         logInfo("Step 7: Go to the 'Payment Info' tab");
@@ -244,21 +218,21 @@ public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends
         logInfo("Step 8: Verify existing Payment Due record");
         Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(1);
 
-        String amount = Pages.accountPaymentInfoPage().getSpecificRecordAmount(2);
-        String principal = Pages.accountPaymentInfoPage().getSpecificRecordPrincipal(2);
-        String interest = Pages.accountPaymentInfoPage().getSpecificRecordInterest(2);
-        String escrow = Pages.accountPaymentInfoPage().getSpecificRecordEscrow(2);
-        String tranCodeStatus = Pages.accountPaymentInfoPage().getSpecificRecordStatus(2);
+        String dueRecordAmountAfter = Pages.accountPaymentInfoPage().getDisabledAmountDue().replaceAll("[^0-9.]", "");
+        String principalAfter = Pages.accountPaymentInfoPage().getDisabledPrincipal();
+        String interestAfter = Pages.accountPaymentInfoPage().getDisabledInterest();
+        String escrowAfter = Pages.accountPaymentInfoPage().getDisabledEscrow();
+        String statusAfter = Pages.accountPaymentInfoPage().getDueStatus();
 
-        TestRailAssert.assertTrue(amount.equals(String.valueOf(dueRecordPrincipal2)),
+        TestRailAssert.assertTrue(dueRecordAmountAfter.equals(String.valueOf(dueRecordAmount)),
                 new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
-        TestRailAssert.assertTrue(principal.equals(String.valueOf(dueRecordPrincipal2)),
+        TestRailAssert.assertTrue(principalAfter.isEmpty(),
                 new CustomStepResult("'Principal' is not valid", "'Principal' is valid"));
-        TestRailAssert.assertTrue(interest.isEmpty(),
+        TestRailAssert.assertTrue(interestAfter.equals(interestBefore),
                 new CustomStepResult("'Interest' is not valid", "'Interest' is valid"));
-        TestRailAssert.assertTrue(escrow.isEmpty(),
+        TestRailAssert.assertTrue(escrowAfter.isEmpty(),
                 new CustomStepResult("'Escrow' is not valid", "'Escrow' is valid"));
-        TestRailAssert.assertTrue(tranCodeStatus.equals("420 Force To Prin"),
+        TestRailAssert.assertTrue(statusAfter.equals(statusBefore),
                 new CustomStepResult("'Tran Code/Status' is not valid", "'Tran Code/Status' is valid"));
 
     }
