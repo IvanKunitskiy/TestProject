@@ -15,7 +15,7 @@ public class NavigationPage extends PageTools {
     private By drlCaches = By.xpath("//ul/li[@data-name='DRL Caches']/a[@class='navigatorItem']");
     private By logoutMenu = By.xpath("//div[@id='logoutMenu']/div/p");
     private By signOutOption = By.xpath("//div[@id='logoutMenu' and contains(@class, 'jDropDown')]/ul/li[2]/a");
-    private By optionsUl = By.xpath("//div[@id='logoutMenu']/ul");
+    private By optionsUl = By.xpath("//div[@id='logoutMenu']");
 
     @Step("Wait for 'Navigation' page")
     public void waitForPageLoaded() {
