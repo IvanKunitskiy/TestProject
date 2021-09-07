@@ -68,12 +68,6 @@ public class C37365_VerifyAccountBalancesOnCommittingAnyTransactionAfterIntPayme
         Actions.clientPageActions().searchAndOpenClientByName(accountNumber);
         double actualCurrentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
         AccountActions.retrievingAccountData().goToTransactionsTab();
-//        String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
-//        String transCode = TransactionCode.ADD_RP_INCOME_452I.getTransCode();
-//        TestRailAssert.assertTrue(transactionCode.equals(transCode),
-//                new CustomStepResult("'Transaction code' is valid",
-//                        String.format("'Transaction code' is not valid. Expected %s, found - %s",
-//                                transCode, transactionCode)));
         double transactionAmount = AccountActions.retrievingAccountData().getAmountValue(1);
         TestRailAssert.assertTrue(transactionAmount == amount,
                 new CustomStepResult("'Amount' is valid", String.format("'Amount' is not valid. Expected %s, found - %s",
