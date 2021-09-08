@@ -226,11 +226,11 @@ public class C32544_PaymentProcessing420ForceToPrinActivePdRecordInterestOnlyBil
 
         TestRailAssert.assertTrue(dueRecordAmountAfter.equals(String.valueOf(dueRecordAmount)),
                 new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
-        TestRailAssert.assertTrue(principalAfter.isEmpty(),
+        TestRailAssert.assertTrue(principalAfter.equals(principalBefore),
                 new CustomStepResult("'Principal' is not valid", "'Principal' is valid"));
         TestRailAssert.assertTrue(interestAfter.equals(interestBefore),
                 new CustomStepResult("'Interest' is not valid", "'Interest' is valid"));
-        TestRailAssert.assertTrue(escrowAfter.isEmpty(),
+        TestRailAssert.assertTrue(escrowAfter.equals(escrowBefore),
                 new CustomStepResult("'Escrow' is not valid", "'Escrow' is valid"));
         TestRailAssert.assertTrue(statusAfter.equals(statusBefore),
                 new CustomStepResult("'Tran Code/Status' is not valid", "'Tran Code/Status' is valid"));
