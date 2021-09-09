@@ -22,19 +22,30 @@ public class C37365_VerifyAccountBalancesOnCommittingAnyTransactionAfterIntPayme
     private String accountNumber;
     private Transaction transaction;
     private double amount = 100.00;
+    private double balance;
 
     @BeforeMethod
     public void preCondition() {
         //Get account number with transaction
         accountNumber = WebAdminActions.webAdminUsersActions().getAccountNumberWithTransaction(userCredentials);
 
+        //Get balance
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Actions.clientPageActions().searchAndOpenClientByName(accountNumber);
+        balance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
+        String productTypeValue = Pages.accountDetailsPage().getProductTypeValue();
+        Actions.loginActions().doLogOut();
+
         //Create transactions
         transaction = new TransactionConstructor(new CashInMiscCreditCHKAccBuilder()).constructTransaction();
         transaction.getTransactionDestination().setAmount(amount);
         transaction.getTransactionDestination().setAccountNumber(accountNumber);
-        transaction.getTransactionDestination().setTransactionCode("09 -");
+        if (productTypeValue.contains("CD")){
+            transaction.getTransactionDestination().setTransactionCode("303 -");
+        } else {
+            transaction.getTransactionDestination().setTransactionCode("09 -");
+        }
         transaction.getTransactionSource().setAmount(amount);
-
     }
 
     private final String TEST_RUN_NAME = "Transactions";
@@ -66,13 +77,13 @@ public class C37365_VerifyAccountBalancesOnCommittingAnyTransactionAfterIntPayme
                 "Make sure that all balances are correct");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenClientByName(accountNumber);
-        double actualCurrentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
         AccountActions.retrievingAccountData().goToTransactionsTab();
         double transactionAmount = AccountActions.retrievingAccountData().getAmountValue(1);
         TestRailAssert.assertTrue(transactionAmount == amount,
                 new CustomStepResult("'Amount' is valid", String.format("'Amount' is not valid. Expected %s, found - %s",
                         amount, transactionAmount)));
         double balanceValue = AccountActions.retrievingAccountData().getBalanceValue(1);
+        double actualCurrentBalance = balance + amount;
         TestRailAssert.assertTrue(actualCurrentBalance == balanceValue,
                 new CustomStepResult("'Balance' is valid", String.format("'Balance' is not valid. Expected %s, found - %s",
                         actualCurrentBalance, balanceValue)));

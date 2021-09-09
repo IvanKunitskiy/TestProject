@@ -314,6 +314,9 @@ public class WebAdminUsersActions {
     }
 
     private String getAccountWith207307407Transaction() {
+        String now = DateTime.getLocalDateOfPattern("yyyy-MM-dd");
+        String dateMinusDays = DateTime.getDateMinusDays(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), 10);
+        dateMinusDays = DateTime.getDateWithFormat(dateMinusDays, "MM/dd/yyyy","yyyy-MM-dd");
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?" +
                 "waDbName=nymbusdev12DS" +
@@ -325,7 +328,7 @@ public class WebAdminUsersActions {
                 "bank.data.transaction.item%0D%0A" +
                 "where%3A+%0D%0A-+.accountnumber->dateclosed%3A+%7Bnull%7D%0D%0A-+" +
                 ".transactioncode->code%3A+%5B107%2C+207%2C+307%5D%0D%0A-+" +
-                "effectiveentrydate%3A+%7Bbetween%3A+%5B%272021-01-10%27%2C+%272021-01-20%27%5D%7D%0D%0A" +
+                "effectiveentrydate%3A+%7Bbetween%3A+%5B%27" + dateMinusDays + "%27%2C+%27" + now + "%27%5D%7D%0D%0A" +
                 "orderBy%3A+-effectiveentrydate%0D%0Aformats%3A+%0D%0A-+->" +
                 "bank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A&source=";
     }
@@ -677,7 +680,11 @@ public class WebAdminUsersActions {
         int numberOfSearchResult = WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult();
         int showCount = 20;
         int bound = Math.min(numberOfSearchResult, showCount);
-        int accountNumberRandomIndex = getRandomIndex(bound);
+        int randomIndex = getRandomIndex(bound);
+        if (randomIndex<2){
+            randomIndex++;
+        }
+        int accountNumberRandomIndex = randomIndex;
 
         return WebAdminPages.rulesUIQueryAnalyzerPage().getAccountNumberValueByIndex(accountNumberRandomIndex);
     }
