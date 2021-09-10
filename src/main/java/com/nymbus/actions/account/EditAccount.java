@@ -966,7 +966,7 @@ public class EditAccount {
     /**
      * Regular CD IRA account verification
      */
-    public void verifyCdIraAccountFieldsAreDisabledForEditing() {
+    public void     verifyCdIraAccountFieldsAreDisabledForEditing() {
         verifyGeneralFieldsAreDisabledForEditing();
         verifyGeneralCdAccountFieldsAreDisabledForEditing();
         Assert.assertTrue(Pages.editAccountPage().isSpecialMailingInstructionsDisabledInEditMode(), "'Special Mailing Instructions' field is not disabled");
