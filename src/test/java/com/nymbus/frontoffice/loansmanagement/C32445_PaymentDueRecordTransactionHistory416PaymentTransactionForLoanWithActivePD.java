@@ -1,6 +1,5 @@
 package com.nymbus.frontoffice.loansmanagement;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -24,25 +23,25 @@ import com.nymbus.testrail.CustomStepResult;
 import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
+import org.checkerframework.checker.units.qual.C;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Petro")
-public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends BaseTest {
+public class C32445_PaymentDueRecordTransactionHistory416PaymentTransactionForLoanWithActivePD extends BaseTest {
+
     private Account loanAccount;
     private Account chkAccount;
     private Transaction transaction_416;
-    private Transaction transaction_420;
     private String clientRootId;
     private final String loanProductName = "Test Loan Product";
-    private String dueRecordAmountDue = "";
     private final String loanProductInitials = "TLP";
     private final String TEST_RUN_NAME = "Loans Management";
 
     @BeforeMethod
-    public void preConditions(){
+    public void preConditions() {
 
         // Set up Client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
@@ -128,13 +127,39 @@ public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends
         // Generate Payment Due record
         Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
 
+        Actions.loginActions().doLogOutProgrammatically();
+    }
 
+    @TestRailIssue(issueID = 32445, testRunName = TEST_RUN_NAME)
+    @Test(description = "C32445, Payment Due Record: Transaction History: '416 - Payment' transaction for loan with Active PD")
+    @Severity(SeverityLevel.CRITICAL)
+    public void paymentDueRecordTransactionHistory416PaymentTransactionForLoanWithActivePD () {
+        logInfo("Step 1: Log in to the NYMBUS");
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        logInfo("Step 2: Go to the 'Teller' screen");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
+
         Pages.accountDetailsPage().clickPaymentInfoTab();
         Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
-        dueRecordAmountDue = Pages.accountPaymentInfoPage().getDisabledInterest().replaceAll("[^0-9.]", "");
+        String dueRecordAmountDue = Pages.accountPaymentInfoPage().getDisabledAmountDue().replaceAll("[^0-9.]", "");
+        String dueRecordPaymentDueDate = Pages.accountPaymentInfoPage().getDisabledDueDate();
+
         Actions.transactionActions().goToTellerPage();
+
+        logInfo("Step 3: Log in to the proof date");
+        Actions.transactionActions().doLoginTeller();
+
+        logInfo("Step 4: Commit \"416 - Payment\" transaction with the following fields:\n" +
+                "Sources -> Misc Debit:\n" +
+                "\"Account Number\" - active CHK or SAV account from preconditions\n" +
+                "\"Transaction Code\" - \"114 - Loan Payment\"\n" +
+                "Amount = Payment Info -> Payments Due record from preconditions -> Amount Due of PD record\n" +
+                "Destinations -> Misc Credit:\n" +
+                "Account number - Loan account from preconditions\n" +
+                "\"Transaction Code\" - \"416 - Payment\"\n" +
+                "\"Amount\" - specify the same amount");
 
         // Set up 416 transaction
         double transactionAmount = Double.parseDouble(dueRecordAmountDue);
@@ -152,114 +177,73 @@ public class C32543_PaymentProcessing420ForceToPrinPartiallyPaidPDrecord extends
         Actions.transactionActions().setMiscCreditDestination(transaction_416.getTransactionDestination(), 0);
         Actions.transactionActions().clickCommitButton();
 
-        Pages.tellerPage().closeModal();
-
-        Actions.loginActions().doLogOutProgrammatically();
-    }
-
-    @TestRailIssue(issueID = 32543, testRunName = TEST_RUN_NAME)
-    @Test(description = "C32543, Payment Processing: 420 - Force To Prin, Partially Paid PD record")
-    @Severity(SeverityLevel.CRITICAL)
-    public void paymentProcessing420ForceToPrinPartiallyPaidPdRecord() {
-        logInfo("Step 1: Log in to the NYMBUS");
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-
-        logInfo("Step 2: Go to the 'Teller' screen");
-        Pages.aSideMenuPage().clickClientMenuItem();
-        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
-        double currentBalanceBefore = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
-
-        Pages.accountDetailsPage().clickPaymentInfoTab();
-        Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
-        double dueRecordPrincipal2 = Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledPrincipal());
-
-        Actions.transactionActions().goToTellerPage();
-
-        logInfo("Step 3: Log in to the proof date");
-        Actions.transactionActions().doLoginTeller();
-
-        logInfo("Step 4: Commit '420 - Force To Prin' transaction with the following fields:" +
-                "Sources -> Misc Debit:\n" +
-                "\n" +
-                "\"Account Number\" - active CHK or SAV account from preconditions\n" +
-                "\"Transaction Code\" - \"114 - Loan Payment\"\n" +
-                "Amount > Payment Info -> Payments Due record from preconditions -> Principal portion of the PD record with Loan from preconditions\n" +
-                "Destinations -> Misc Credit:\n" +
-                "\n" +
-                "Account number - Loan account from preconditions\n" +
-                "\"Transaction Code\" - \"420 - Force To Prin\"\n" +
-                "\"Amount\" - specify the same amount");
-
-        // modify due records principal to produce 406 transaction
-        double transactionAmount = dueRecordPrincipal2 + 1;
-
-        // Set up 420 transaction
-        transaction_420 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
-        transaction_420.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
-        transaction_420.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
-        transaction_420.getTransactionSource().setAmount(transactionAmount);
-        transaction_420.getTransactionDestination().setTransactionCode(TransactionCode.FORCE_TO_PRIN_420.getTransCode());
-        transaction_420.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
-        transaction_420.getTransactionDestination().setAmount(transactionAmount);
-
-        // Perform 420 transaction
-        Actions.transactionActions().goToTellerPage();
-        Pages.tellerPage().setEffectiveDate(DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(), Integer.parseInt(loanAccount.getPaymentBilledLeadDays())));
-        Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction_420.getTransactionSource(), 0);
-        Actions.transactionActions().setMiscCreditDestination(transaction_420.getTransactionDestination(), 0);
-        Actions.transactionActions().clickCommitButton();
-
         logInfo("Step 5: Close Transaction Receipt popup");
         Pages.tellerPage().closeModal();
 
-        logInfo("Step 6: Open loan account from preconditions on the \"Transactions\" tab");
+        logInfo("Step 6: Open account from preconditions on the \"Transactions\" tab");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
         Pages.accountDetailsPage().clickTransactionsTab();
         Pages.accountTransactionPage().waitForTransactionSection();
 
-        String transactionAmount_420 = Pages.accountTransactionPage().getAmountValue(1) + Pages.accountTransactionPage().getAmountFractionalValue(1);
-        String transactionAmount_406 = Pages.accountTransactionPage().getAmountValue(2) + Pages.accountTransactionPage().getAmountFractionalValue(2);
+        logInfo("Step 7: Expand the \"416 - Payment\" transaction and look at the \"Item Due Date\" and \"Amount Due\" value");
+        Pages.accountTransactionPage().clickTransactionRecordByIndex(1);
+        String amountDue = Pages.accountTransactionPage().getCheckAmountDue().replaceAll("[^0-9.]", "");
+        String transactionPrincipal = Pages.accountTransactionPage().getPrincipalValue(1) + Pages.accountTransactionPage().getPrincipalFractionalPartValue(1);
+        String transactionInterest = Pages.accountTransactionPage().getInterestValue(1) + Pages.accountTransactionPage().getInterestMinusFractionalValue(1);
+        TestRailAssert.assertTrue((transactionAmount + "0")
+                        .equals(amountDue),
+                new CustomStepResult("Check's 'Amount Due' is not valid", "Check's 'Amount Due' is valid"));
+        TestRailAssert.assertTrue(dueRecordPaymentDueDate
+                        .equals(DateTime.getDateWithFormat(Pages.accountTransactionPage().getCheckItemDueDate().replaceAll("[^0-9-]", ""), "MM-dd-yyyy", "MM/dd/yyyy")),
+                new CustomStepResult("Check's 'Item Due Date' is not valid", "Check's 'Amount Due' is valid"));
 
-        TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(1)
-                        .equals(String.valueOf(TransactionCode.FORCE_TO_PRIN_420.getTransCode())),
-                new CustomStepResult("'Transaction Code' code is not valid", "'Transaction Code' code is valid"));
-        TestRailAssert.assertTrue(transactionAmount_420.equals(String.valueOf(dueRecordPrincipal2)),
-                new CustomStepResult("'Transaction Amount' is not valid", "'Transaction Amount' is valid"));
-
-        TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(2)
-                        .equals(String.valueOf(TransactionCode.PRIN_PAYM_ONLY_406.getTransCode())),
-                new CustomStepResult("'Transaction Code' code is not valid", "'Transaction Code' code is valid"));
-        TestRailAssert.assertTrue(transactionAmount_406.equals((transactionAmount - Double.parseDouble(transactionAmount_420)) + "0"),
-                new CustomStepResult("'Transaction Amount' is not valid", "'Transaction Amount' is valid"));
-
-        Pages.accountDetailsPage().clickDetailsTab();
-        double currentBalanceAfter = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
-        TestRailAssert.assertTrue(String.valueOf(currentBalanceAfter).equals(String.valueOf(currentBalanceBefore - (Double.parseDouble(transactionAmount_420) + Double.parseDouble(transactionAmount_406)))),
-                new CustomStepResult("'Current Balance' is not valid", "'Current Balance' is valid"));
-
-        logInfo("Step 7: Go to the 'Payment Info' tab");
+        logInfo("Step 8: Go to the 'Payment Info' tab");
         Pages.accountDetailsPage().clickPaymentInfoTab();
 
-        logInfo("Step 8: Verify existing Payment Due record");
-        Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(1);
+        logInfo("Step 9: Check Payment Due record in the \"Payment Dues\" section");
+        Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
 
-        String amount = Pages.accountPaymentInfoPage().getSpecificRecordAmount(2);
-        String principal = Pages.accountPaymentInfoPage().getSpecificRecordPrincipal(2);
-        String interest = Pages.accountPaymentInfoPage().getSpecificRecordInterest(2);
-        String escrow = Pages.accountPaymentInfoPage().getSpecificRecordEscrow(2);
-        String tranCodeStatus = Pages.accountPaymentInfoPage().getSpecificRecordStatus(2);
+        TestRailAssert.assertTrue((Pages.accountPaymentInfoPage().getDueAmount().replaceAll("[^0-9.]", "")).equals("0.00"),
+                new CustomStepResult("'Due Record Amount' is not valid", "'Due Record Amount' is valid"));
+        TestRailAssert.assertTrue((Pages.accountPaymentInfoPage().getDueStatus()).equals("Paid"),
+                new CustomStepResult("'Due Record Amount' is not valid", "'Due Record Amount' is valid"));
 
-        TestRailAssert.assertTrue(amount.equals(String.valueOf(dueRecordPrincipal2)),
+        logInfo("Step 10: Click on the Payment Due record and look at the \"Transactions\" section");
+        String amount = Pages.accountPaymentInfoPage().getAmount();
+        String principal = Pages.accountPaymentInfoPage().getPrincipal();
+        String interest = Pages.accountPaymentInfoPage().getInterest();
+        String escrow = Pages.accountPaymentInfoPage().getEscrow();
+        String tranCodeStatus = Pages.accountPaymentInfoPage().getStatus();
+        String paymentDay = Pages.accountPaymentInfoPage().getPaymentDate();
+
+        // total
+        String amountTotal = Pages.accountPaymentInfoPage().getAmountTotal();
+        String principalTotal = Pages.accountPaymentInfoPage().getPrincipalTotal();
+        String interestTotal = Pages.accountPaymentInfoPage().getInterestTotal();
+        String escrowTotal = Pages.accountPaymentInfoPage().getEscrowTotal();
+
+        TestRailAssert.assertTrue(paymentDay.equals(dueRecordPaymentDueDate),
+                new CustomStepResult("'Payment Date' is not valid", "'Payment Date' is valid"));
+        TestRailAssert.assertTrue(amount.equals(transactionAmount + "0"),
                 new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
-        TestRailAssert.assertTrue(principal.equals(String.valueOf(dueRecordPrincipal2)),
+        TestRailAssert.assertTrue(principal.equals(transactionPrincipal),
                 new CustomStepResult("'Principal' is not valid", "'Principal' is valid"));
-        TestRailAssert.assertTrue(interest.isEmpty(),
+        TestRailAssert.assertTrue(interest.equals(transactionInterest),
                 new CustomStepResult("'Interest' is not valid", "'Interest' is valid"));
         TestRailAssert.assertTrue(escrow.isEmpty(),
                 new CustomStepResult("'Escrow' is not valid", "'Escrow' is valid"));
-        TestRailAssert.assertTrue(tranCodeStatus.equals("420 Force To Prin"),
+        TestRailAssert.assertTrue(tranCodeStatus.equals("416 Payment"),
                 new CustomStepResult("'Tran Code/Status' is not valid", "'Tran Code/Status' is valid"));
 
+        // total
+        TestRailAssert.assertTrue(amountTotal.equals(amount),
+                new CustomStepResult("'Amount' total is not valid", "'Amount' total is valid"));
+        TestRailAssert.assertTrue(principalTotal.equals(principal),
+                new CustomStepResult("'Principal' total is not valid", "'Principal' total is valid"));
+        TestRailAssert.assertTrue(interestTotal.equals(interest),
+                new CustomStepResult("'Interest' total is not valid", "'Interest' total is valid"));
+        TestRailAssert.assertTrue(escrowTotal.equals("0.00"),
+                new CustomStepResult("'Escrow' total is not valid", "'Escrow' total is valid"));
     }
 }
