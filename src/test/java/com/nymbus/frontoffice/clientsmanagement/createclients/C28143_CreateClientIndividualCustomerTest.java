@@ -57,7 +57,8 @@ public class C28143_CreateClientIndividualCustomerTest extends BaseTest {
                 "* Address Line 2- any alphanumeric value \n" +
                 "* City- any alphanumeric value \n" +
                 "* Zip Code - 5 digits, + additional field - 4 digits \n" +
-                "* Years in this address - any numeric value");
+                "* Years in this address - any numeric value" +
+                "ID Number - any alphabetical value");
         logInfo("Step 6: Select data for such drop-down fields: \n" +
                 "- Tax Payer ID Type- Individual SSN \n" +
                 "- Issued By \n" +
