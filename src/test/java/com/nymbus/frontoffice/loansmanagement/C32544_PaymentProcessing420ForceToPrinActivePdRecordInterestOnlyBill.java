@@ -151,12 +151,6 @@ public class C32544_PaymentProcessing420ForceToPrinActivePdRecordInterestOnlyBil
         String escrowBefore = Pages.accountPaymentInfoPage().getDisabledEscrow();
         String statusBefore = Pages.accountPaymentInfoPage().getDueStatus();
 
-        System.out.println(dueRecordAmount + " -----------");
-        System.out.println(principalBefore + " -----------");
-        System.out.println(interestBefore + " -----------");
-        System.out.println(escrowBefore + " -----------");
-        System.out.println(statusBefore + " -----------");
-
         Actions.transactionActions().goToTellerPage();
 
         logInfo("Step 3: Log in to the proof date");
