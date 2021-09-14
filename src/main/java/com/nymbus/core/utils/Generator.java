@@ -1,8 +1,11 @@
 package com.nymbus.core.utils;
 
+import com.nymbus.newmodels.transaction.verifyingModels.NonTellerTransactionData;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class Generator {
@@ -67,5 +70,24 @@ public class Generator {
     public static String getRandomIntMinMaxInclusiveStringValue(int min, int max ) {
         Random ran = new Random();
         return Integer.toString(ran.nextInt(max - min + 1) + min);
+    }
+
+    public static Map<String, String> getFieldsMap(NonTellerTransactionData transactionData) {
+        Map<String, String> result = new HashMap<>();
+        result.put("0", "0200");
+        result.put("3", "210000");
+        result.put("4", transactionData.getAmount());
+        result.put("11", String.valueOf(Generator.genInt(100000000, 922337203)));
+        result.put("18", "5542");
+        result.put("22", "022");
+        result.put("35", String.format("%s=%s", transactionData.getCardNumber(), transactionData.getExpirationDate()));
+        result.put("41", transactionData.getTerminalId());
+        result.put("42", "01 sample av.");
+        result.put("43", "Long ave. bld. 34      Nashville      US");
+        result.put("48", "SHELL");
+        result.put("49", "840");
+        result.put("58", "10000000612");
+
+        return result;
     }
 }
