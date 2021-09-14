@@ -20,7 +20,7 @@
 
     <test name="Create Clients">
         <classes>
-            <class name="com.nymbus.frontoffice.clientsmanagement.createclients.C22541_CreateIndividualMemberClientTest"/>
+            <class name="com.nymbus.frontoffice.clientsmanagement.createclients.C28143_CreateClientIndividualCustomerTest"/>
         </classes>
     </test>
 

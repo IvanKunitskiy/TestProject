@@ -18,7 +18,7 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class C37365_VerifyAccountBalancesOnCommittingAnyTransactionAfterIntPayment extends BaseTest {
+public class C37369_VerifyAccountBalancesOnCommittingAnyTransactionAfterServiceChargeTransaction extends BaseTest {
     private String accountNumber;
     private Transaction transaction;
     private double amount = 100.00;
@@ -27,7 +27,7 @@ public class C37365_VerifyAccountBalancesOnCommittingAnyTransactionAfterIntPayme
     @BeforeMethod
     public void preCondition() {
         //Get account number with transaction
-        accountNumber = WebAdminActions.webAdminUsersActions().getAccountNumberWithTransaction(userCredentials);
+        accountNumber = WebAdminActions.webAdminUsersActions().getAccountNumberWithTransactionFor20(userCredentials);
 
         //Get balance
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -50,8 +50,8 @@ public class C37365_VerifyAccountBalancesOnCommittingAnyTransactionAfterIntPayme
 
     private final String TEST_RUN_NAME = "Transactions";
 
-    @TestRailIssue(issueID = 37365, testRunName = TEST_RUN_NAME)
-    @Test(description = "C37365, Verify Account Balances on committing any transaction after Int Payment")
+    @TestRailIssue(issueID = 37369, testRunName = TEST_RUN_NAME)
+    @Test(description = "C37369, Verify Account Balances on committing any transaction after Service Charge transaction")
     @Severity(SeverityLevel.CRITICAL)
     public void verifyAccountBalancesOnCommittingAnyTransactionAfterIntPayment() {
         logInfo("Step 1: Log in to the system as User from the preconditions");

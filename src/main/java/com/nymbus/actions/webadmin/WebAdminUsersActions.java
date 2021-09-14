@@ -314,6 +314,9 @@ public class WebAdminUsersActions {
     }
 
     private String getAccountWith207307407Transaction() {
+        String now = DateTime.getLocalDateOfPattern("yyyy-MM-dd");
+        String dateMinusDays = DateTime.getDateMinusDays(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), 10);
+        dateMinusDays = DateTime.getDateWithFormat(dateMinusDays, "MM/dd/yyyy","yyyy-MM-dd");
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?" +
                 "waDbName=nymbusdev12DS" +
@@ -325,7 +328,27 @@ public class WebAdminUsersActions {
                 "bank.data.transaction.item%0D%0A" +
                 "where%3A+%0D%0A-+.accountnumber->dateclosed%3A+%7Bnull%7D%0D%0A-+" +
                 ".transactioncode->code%3A+%5B107%2C+207%2C+307%5D%0D%0A-+" +
-                "effectiveentrydate%3A+%7Bbetween%3A+%5B%272021-01-10%27%2C+%272021-01-20%27%5D%7D%0D%0A" +
+                "effectiveentrydate%3A+%7Bbetween%3A+%5B%27" + dateMinusDays + "%27%2C+%27" + now + "%27%5D%7D%0D%0A" +
+                "orderBy%3A+-effectiveentrydate%0D%0Aformats%3A+%0D%0A-+->" +
+                "bank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A&source=";
+    }
+
+    private String getAccountWith120220Transaction() {
+        String now = DateTime.getLocalDateOfPattern("yyyy-MM-dd");
+        String dateMinusDays = DateTime.getDateMinusDays(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), 10);
+        dateMinusDays = DateTime.getDateWithFormat(dateMinusDays, "MM/dd/yyyy","yyyy-MM-dd");
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?" +
+                "waDbName=nymbusdev12DS" +
+                "&dqlQuery=count%3A+10%0D%0Aselect%3A+" +
+                "effectiveentrydate%2C+" +
+                "accountnumber%2C+" +
+                "transactioncode%2C+effectiveentrydate%2C+" +
+                "accounttype%0D%0Afrom%3A+" +
+                "bank.data.transaction.item%0D%0Awhere%3A+%0D%0A-+" +
+                ".accountnumber->dateclosed%3A+%7Bnull%7D%0D%0A-+" +
+                ".transactioncode->code%3A+%5B120%2C+220%5D%0D%0A-+" +
+                "effectiveentrydate%3A+%7Bbetween%3A+%5B%27" + dateMinusDays + "%27%2C+%27" + now + "%27%5D%7D%0D%0A" +
                 "orderBy%3A+-effectiveentrydate%0D%0Aformats%3A+%0D%0A-+->" +
                 "bank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A&source=";
     }
@@ -557,6 +580,10 @@ public class WebAdminUsersActions {
         return getAccountNumberFromQueryByUrl(getAccountWith207307407Transaction());
     }
 
+    public String getAccountNumberWith20Transaction() {
+        return getAccountNumberFromQueryByUrl(getAccountWith120220Transaction());
+    }
+
     public String getInterestEarned(String accountId) {
         return getInterestEarnedFromQueryByUrl(getInterestEarnedUrl(accountId));
     }
@@ -677,7 +704,11 @@ public class WebAdminUsersActions {
         int numberOfSearchResult = WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult();
         int showCount = 20;
         int bound = Math.min(numberOfSearchResult, showCount);
-        int accountNumberRandomIndex = getRandomIndex(bound);
+        int randomIndex = getRandomIndex(bound);
+        if (randomIndex<2){
+            randomIndex++;
+        }
+        int accountNumberRandomIndex = randomIndex;
 
         return WebAdminPages.rulesUIQueryAnalyzerPage().getAccountNumberValueByIndex(accountNumberRandomIndex);
     }
@@ -1064,6 +1095,19 @@ public class WebAdminUsersActions {
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         String accountNumber = WebAdminActions.webAdminUsersActions().getAccountNumberWith07Transaction();
+
+        WebAdminActions.loginActions().doLogout();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+        return accountNumber;
+    }
+
+    public String getAccountNumberWithTransactionFor20(UserCredentials userCredentials) {
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        String accountNumber = WebAdminActions.webAdminUsersActions().getAccountNumberWith20Transaction();
 
         WebAdminActions.loginActions().doLogout();
         SelenideTools.closeCurrentTab();
