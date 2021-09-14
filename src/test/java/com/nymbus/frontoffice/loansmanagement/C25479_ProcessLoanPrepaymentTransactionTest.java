@@ -30,6 +30,8 @@ import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.function.Function;
+
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Dmytro")
@@ -144,7 +146,7 @@ public class C25479_ProcessLoanPrepaymentTransactionTest extends BaseTest {
         logInfo("Step 3: Log in to the proof date");
         Actions.transactionActions().doLoginTeller();
 
-        logInfo("Commit 416 transaction with the following fields:\n" +
+        logInfo("Step 4: Commit 416 transaction with the following fields:\n" +
                 "\n" +
                 "Sources -> Misc Debit:\n" +
                 "\n" +
@@ -216,6 +218,9 @@ public class C25479_ProcessLoanPrepaymentTransactionTest extends BaseTest {
         double expectedAccruedInterest = Double.parseDouble(currentBalanceForInterest) * Double.parseDouble(currentEffectiveRate) / 100 /
                 yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate, dueDate, false);
         String expectedInterest = (Functions.roundNumberForInterest(expectedAccruedInterest)).replace(",", ".");
+        System.out.println(disInterest + " ------------");
+        System.out.println(expectedAccruedInterest + " ----------");
+        System.out.println(expectedInterest + " --------");
         TestRailAssert.assertTrue(disInterest.equals(expectedInterest),
                 new CustomStepResult("Interest is not valid", String.format("Interest is valid. Actual %s, Expected %s",
                         disInterest, expectedInterest)));
@@ -224,7 +229,7 @@ public class C25479_ProcessLoanPrepaymentTransactionTest extends BaseTest {
         String disPrincipal = Pages.accountPaymentInfoPage().getDisabledPrincipal();
         double disSum = Double.parseDouble(disInterest) + Double.parseDouble(disEscrow) + Double.parseDouble(disPrincipal);
         TestRailAssert.assertTrue(Double.parseDouble(disAmount) == disSum,
-                new CustomStepResult("Amount sum is not valid", "Amount sum is valid"));
+                new CustomStepResult("Amount sum is not valid","Amount sum is valid"));
         TestRailAssert.assertTrue(Double.parseDouble(disAmount) == transactionAmount,
                 new CustomStepResult("Amount is not valid", "Amount is valid"));
 
@@ -272,17 +277,21 @@ public class C25479_ProcessLoanPrepaymentTransactionTest extends BaseTest {
         dateLastPayment = Pages.accountDetailsPage().getDateLastPayment();
         TestRailAssert.assertTrue(dateLastPayment.equals(transaction.getTransactionDate()),
                 new CustomStepResult("'DateLastPayment' is not valid", "'DateLastPayment' is valid"));
-        String dateInterestPaidThru = Pages.accountDetailsPage().getDateInterestPaidThru();
+//        String dateInterestPaidThru = Pages.accountDetailsPage().getDateInterestPaidThru();
 //        TestRailAssert.assertTrue(dateInterestPaidThru.equals(DateTime.getDateMinusDays(dueDate, 1)),
 //                new CustomStepResult("'DateInterestPaidThru' is not valid", "'DateInterestPaidThru' is valid"));
         String currentBalance = Pages.accountDetailsPage().getCurrentBalance();
         TestRailAssert.assertTrue(Double.parseDouble(currentBalance) == (miscDebitSource.getAmount() - Double.parseDouble(principal)),
                 new CustomStepResult("Current balance is not valid", "Current balance is valid"));
         String actualAccruedInterest = Pages.accountDetailsPage().getAccruedInterest();
+        System.out.println(actualAccruedInterest + " ----------");
+        System.out.println(Double.parseDouble(accruedInterest) - Double.parseDouble(interest) + " ------------");
         String detailsInterest = Double.parseDouble(accruedInterest) - Double.parseDouble(interest) + "";
-        TestRailAssert.assertTrue(actualAccruedInterest.equals(detailsInterest.substring(0, detailsInterest.indexOf(".") + 3)),
+        System.out.println(detailsInterest.substring(0, detailsInterest.indexOf(".") + 3) + " -----------");
+        System.out.println(Functions.roundNumberForInterest(Double.parseDouble(detailsInterest)));
+        TestRailAssert.assertTrue(actualAccruedInterest.equals(Functions.roundNumberForInterest(Double.parseDouble(detailsInterest))),
                 new CustomStepResult("Accrued interest is not valid", String.format("Accrued interest is valid. Expected %s, actual %s",
-                        detailsInterest.substring(0, detailsInterest.indexOf(".") + 3),actualAccruedInterest)));
+                        Functions.roundNumberForInterest(Double.parseDouble(detailsInterest)),actualAccruedInterest)));
 
         logInfo("Step 12: Go to the \"Transaction\" tab and verify payment portions of 416 transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
