@@ -54,9 +54,7 @@ public class C25479_ProcessLoanPrepaymentTransactionTest extends BaseTest {
         IndividualClient client = individualClientBuilder.buildClient();
         checkAccount = new Account().setCHKAccountData();
         loanAccount = new Account().setLoanAccountData();
-        loanAccount.setNextPaymentBilledDueDate(DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(),
-                -Integer.parseInt(loanAccount.getPaymentBilledLeadDays()) - 1));
-//        loanAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getNextPaymentBilledDueDate(), 1));
+        loanAccount.setPaymentBilledLeadDays("1");
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         String dateOpened = loanAccount.getDateOpened();
@@ -218,9 +216,6 @@ public class C25479_ProcessLoanPrepaymentTransactionTest extends BaseTest {
         double expectedAccruedInterest = Double.parseDouble(currentBalanceForInterest) * Double.parseDouble(currentEffectiveRate) / 100 /
                 yearBase * DateTime.getDaysBetweenTwoDates(effectiveDate, dueDate, false);
         String expectedInterest = (Functions.roundNumberForInterest(expectedAccruedInterest)).replace(",", ".");
-        System.out.println(disInterest + " ------------");
-        System.out.println(expectedAccruedInterest + " ----------");
-        System.out.println(expectedInterest + " --------");
         TestRailAssert.assertTrue(disInterest.equals(expectedInterest),
                 new CustomStepResult("Interest is not valid", String.format("Interest is valid. Actual %s, Expected %s",
                         disInterest, expectedInterest)));
@@ -277,18 +272,14 @@ public class C25479_ProcessLoanPrepaymentTransactionTest extends BaseTest {
         dateLastPayment = Pages.accountDetailsPage().getDateLastPayment();
         TestRailAssert.assertTrue(dateLastPayment.equals(transaction.getTransactionDate()),
                 new CustomStepResult("'DateLastPayment' is not valid", "'DateLastPayment' is valid"));
-//        String dateInterestPaidThru = Pages.accountDetailsPage().getDateInterestPaidThru();
-//        TestRailAssert.assertTrue(dateInterestPaidThru.equals(DateTime.getDateMinusDays(dueDate, 1)),
-//                new CustomStepResult("'DateInterestPaidThru' is not valid", "'DateInterestPaidThru' is valid"));
+        String dateInterestPaidThru = Pages.accountDetailsPage().getDateInterestPaidThru();
+        TestRailAssert.assertTrue(dateInterestPaidThru.equals(DateTime.getDateMinusDays(dueDate, 1)),
+                new CustomStepResult("'DateInterestPaidThru' is not valid", "'DateInterestPaidThru' is valid"));
         String currentBalance = Pages.accountDetailsPage().getCurrentBalance();
         TestRailAssert.assertTrue(Double.parseDouble(currentBalance) == (miscDebitSource.getAmount() - Double.parseDouble(principal)),
                 new CustomStepResult("Current balance is not valid", "Current balance is valid"));
         String actualAccruedInterest = Pages.accountDetailsPage().getAccruedInterest();
-        System.out.println(actualAccruedInterest + " ----------");
-        System.out.println(Double.parseDouble(accruedInterest) - Double.parseDouble(interest) + " ------------");
         String detailsInterest = Double.parseDouble(accruedInterest) - Double.parseDouble(interest) + "";
-        System.out.println(detailsInterest.substring(0, detailsInterest.indexOf(".") + 3) + " -----------");
-        System.out.println(Functions.roundNumberForInterest(Double.parseDouble(detailsInterest)));
         TestRailAssert.assertTrue(actualAccruedInterest.equals(Functions.roundNumberForInterest(Double.parseDouble(detailsInterest))),
                 new CustomStepResult("Accrued interest is not valid", String.format("Accrued interest is valid. Expected %s, actual %s",
                         Functions.roundNumberForInterest(Double.parseDouble(detailsInterest)),actualAccruedInterest)));
