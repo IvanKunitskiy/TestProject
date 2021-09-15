@@ -161,8 +161,7 @@ public class C33831_PaymentDueRecordTransactionHistoryEC416PaymentTransactionFor
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
 
         Pages.accountDetailsPage().clickPaymentInfoTab();
-        Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
-        Selenide.sleep(10);
+        Pages.accountPaymentInfoPage().clickPaymentDueRecord();
         dueRecordPaymentDueDate = Pages.accountPaymentInfoPage().getDisabledDueDate();
 
         Actions.loginActions().doLogOutProgrammatically();
@@ -198,11 +197,6 @@ public class C33831_PaymentDueRecordTransactionHistoryEC416PaymentTransactionFor
         String amountDue = Pages.accountTransactionPage().getCheckAmountDue().replaceAll("[^0-9.]", "");
         String transactionPrincipal = Pages.accountTransactionPage().getPrincipalValue(1) + Pages.accountTransactionPage().getPrincipalFractionalPartValue(1);
         String transactionInterest = Pages.accountTransactionPage().getInterestValue(1) + Pages.accountTransactionPage().getInterestMinusFractionalValue(1);
-
-        System.out.println(amountDue + " ----------");
-        System.out.println(transactionAmount + " ----------");
-        System.out.println(dueRecordPaymentDueDate + " ----------");
-        System.out.println(DateTime.getDateWithFormat(Pages.accountTransactionPage().getCheckItemDueDate().replaceAll("[^0-9-]", ""), "MM-dd-yyyy", "MM/dd/yyyy") + " -------");
 
         TestRailAssert.assertTrue("0".equals(amountDue),
                 new CustomStepResult("Check's 'Amount Due' is not valid", "Check's 'Amount Due' is valid"));
@@ -245,7 +239,7 @@ public class C33831_PaymentDueRecordTransactionHistoryEC416PaymentTransactionFor
                 new CustomStepResult("'Interest' is not valid", "'Interest' is valid"));
         TestRailAssert.assertTrue(escrow.isEmpty(),
                 new CustomStepResult("'Escrow' is not valid", "'Escrow' is valid"));
-        TestRailAssert.assertTrue(tranCodeStatus.equals("416 Payment"),
+        TestRailAssert.assertTrue(tranCodeStatus.equals("416-Payment-EC"),
                 new CustomStepResult("'Tran Code/Status' is not valid", "'Tran Code/Status' is valid"));
 
         // total
