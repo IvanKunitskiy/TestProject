@@ -1,5 +1,6 @@
 package com.nymbus.frontoffice.loansmanagement;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -19,10 +20,15 @@ import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitMiscCreditBu
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import sun.jvm.hotspot.debugger.Page;
+
+import java.math.BigDecimal;
 
 @Epic("Frontoffice")
 @Feature("Loans Management")
@@ -121,6 +127,7 @@ public class C32545_PaymentProcessing421ForceToIntNoPdRecords extends BaseTest {
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().closeModal();
 
+        Actions.loginActions().doLogOutProgrammatically();
     }
 
     @TestRailIssue(issueID = 32545, testRunName = TEST_RUN_NAME)
@@ -128,5 +135,77 @@ public class C32545_PaymentProcessing421ForceToIntNoPdRecords extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void paymentProcessing421ForceToIntNoPdRecords() {
 
+        logInfo("Step 1: Log in to the NYMBUS");
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        logInfo("Step 2: Go to the 'Teller' screen");
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
+
+        String interestPortion = Pages.accountDetailsPage().getAccruedInterest();
+
+        Actions.transactionActions().goToTellerPage();
+
+        logInfo("Step 3: Log in to the proof date");
+        Actions.transactionActions().doLoginTeller();
+
+        logInfo("Step 4: Commit \"421 - Force To Int\" transaction with the following fields:\n" +
+                "\"Account Number\" - active CHK or SAV account from preconditions\n" +
+                "\"Transaction Code\" - \"114 - Loan Payment\"\n" +
+                "Amount < = Interest Portion amount with Loan from preconditions (f.e. $ 50)\n" +
+                "Destinations -> Misc Credit:\n" +
+                "Account number - Loan account from preconditions\n" +
+                "\"Transaction Code\" - \"421 - Force To Int\"\n" +
+                "\"Amount\" - specify the same amount");
+
+        System.out.println(DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(), Integer.parseInt(loanAccount.getPaymentBilledLeadDays())) + " --------------");
+
+        // Set up 421 transaction
+        double transactionAmount = Double.parseDouble(interestPortion);
+        transaction_421 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
+        transaction_421.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
+        transaction_421.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
+        transaction_421.getTransactionSource().setAmount(transactionAmount);
+        transaction_421.getTransactionDestination().setTransactionCode(TransactionCode.FORCE_TO_INT_421.getTransCode());
+        transaction_421.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
+        transaction_421.getTransactionDestination().setAmount(transactionAmount);
+
+        // Perform 421 transaction
+        Actions.transactionActions().goToTellerPage();
+        Pages.tellerPage().setEffectiveDate(DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(), Integer.parseInt(loanAccount.getPaymentBilledLeadDays())));
+        Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction_421.getTransactionSource(), 0);
+        Actions.transactionActions().setMiscCreditDestination(transaction_421.getTransactionDestination(), 0);
+        Actions.transactionActions().clickCommitButton();
+
+
+        logInfo("Step 5: Close Transaction Receipt popup");
+        Pages.tellerPage().closeModal();
+
+        logInfo("Step 6: Open Loan from preconditions on Transactions tab");
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
+        Pages.accountDetailsPage().clickTransactionsTab();
+        Pages.accountTransactionPage().waitForTransactionSection();
+
+        String transactionRecordAmount = Pages.accountTransactionPage().getAmountValue(1) + Pages.accountTransactionPage().getAmountFractionalValue(1);
+
+        TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(1).equals(TransactionCode.INT_PAY_ONLY_407.getTransCode()),
+               new CustomStepResult("'Transaction record' is valid", "'Transaction record' is not valid"));
+        TestRailAssert.assertTrue(transactionRecordAmount.equals(String.valueOf(transactionAmount)),
+                new CustomStepResult("'Transaction record amount' is valid", "'Transaction record amount' is not valid"));
+
+        Pages.accountDetailsPage().clickDetailsTab();
+        Pages.accountDetailsPage().waitForEditButton();
+        String accruedInterest = Pages.accountDetailsPage().getAccruedInterest();
+        TestRailAssert.assertTrue(((Double.parseDouble(interestPortion) - transactionAmount) + "0").equals(accruedInterest),
+                new CustomStepResult("'Accrued interest' is valid", "'Acrrued interest' is not valid"));
+
+
+        logInfo("Step 7: Go to the 'Payment Info' tab");
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+
+        logInfo("Step 8: Verify the \"Payment Dues\" section");
+        TestRailAssert.assertFalse(Pages.accountPaymentInfoPage().isPaymentDueRecordPresent(),
+                new CustomStepResult("'Payment Due Record' is not present", "'Payment Due Record' is present"));
     }
 }
