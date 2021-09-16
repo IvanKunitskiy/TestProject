@@ -13,11 +13,13 @@ import com.nymbus.pages.Pages;
 import com.nymbus.testrail.CustomStepResult;
 import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Transactions")
+@Owner("Dmytro")
 public class C37369_VerifyAccountBalancesOnCommittingAnyTransactionAfterServiceChargeTransaction extends BaseTest {
     private String accountNumber;
     private Transaction transaction;
