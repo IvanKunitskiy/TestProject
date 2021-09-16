@@ -30,11 +30,13 @@ import com.nymbus.pages.Pages;
 import com.nymbus.testrail.CustomStepResult;
 import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Frontoffice")
+@Feature("Transactions")
+@Owner("Dmytro")
 public class C37370_VerifyAccountBalancesOnCommitingAnyTransactionAfterATMTransaction extends BaseTest {
     private BalanceDataForCHKAcc expectedBalanceData;
     private NonTellerTransactionData nonTellerTransactionData;
@@ -95,12 +97,11 @@ public class C37370_VerifyAccountBalancesOnCommitingAnyTransactionAfterATMTransa
         Pages.clientDetailsPage().clickOnMaintenanceTab();
         Pages.clientDetailsPage().clickOnNewDebitCardButton();
         Actions.debitCardModalWindowActions().fillDebitCard(debitCard);
-        String expirationDate = Actions.debitCardModalWindowActions().getExpirationDate();
         Pages.debitCardModalWindow().clickOnSaveAndFinishButton();
         Pages.debitCardModalWindow().waitForAddNewDebitCardModalWindowInvisibility();
         String debitCardNumber = Actions.debitCardModalWindowActions().getCardNumber(1);
         Pages.cardsManagementPage().clickEditButton(1);
-        expirationDate = Actions.debitCardModalWindowActions().getExpirationDate();
+        String expirationDate = Actions.debitCardModalWindowActions().getExpirationDate();
         Pages.debitCardModalWindow().clickOnCancelButton();
         logInFile("Create debit card - " + debitCardNumber);
 
