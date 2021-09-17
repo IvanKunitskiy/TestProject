@@ -1,6 +1,5 @@
 package com.nymbus.frontoffice.loansmanagement;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -26,9 +25,6 @@ import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import sun.jvm.hotspot.debugger.Page;
-
-import java.math.BigDecimal;
 
 @Epic("Frontoffice")
 @Feature("Loans Management")
@@ -38,7 +34,6 @@ public class C32545_PaymentProcessing421ForceToIntNoPdRecords extends BaseTest {
     private Account loanAccount;
     private Account chkAccount;
     private Transaction transaction_421;
-    private String clientRootId;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
     private final String TEST_RUN_NAME = "Loans Management";
@@ -86,8 +81,6 @@ public class C32545_PaymentProcessing421ForceToIntNoPdRecords extends BaseTest {
         AccountActions.createAccount().createCHKAccount(chkAccount);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createLoanAccount(loanAccount);
-
-        clientRootId = ClientsActions.createClient().getClientIdFromUrl();
 
         // Set up deposit transaction
         int depositTransactionAmount = 12000;
@@ -149,16 +142,14 @@ public class C32545_PaymentProcessing421ForceToIntNoPdRecords extends BaseTest {
         logInfo("Step 3: Log in to the proof date");
         Actions.transactionActions().doLoginTeller();
 
-        logInfo("Step 4: Commit \"421 - Force To Int\" transaction with the following fields:\n" +
-                "\"Account Number\" - active CHK or SAV account from preconditions\n" +
-                "\"Transaction Code\" - \"114 - Loan Payment\"\n" +
+        logInfo("Step 4: Commit'421 - Force To Int' transaction with the following fields:\n" +
+                "'Account Number' - active CHK or SAV account from preconditions\n" +
+                "'Transaction Code' -'114 - Loan Payment'\n" +
                 "Amount < = Interest Portion amount with Loan from preconditions (f.e. $ 50)\n" +
                 "Destinations -> Misc Credit:\n" +
                 "Account number - Loan account from preconditions\n" +
-                "\"Transaction Code\" - \"421 - Force To Int\"\n" +
-                "\"Amount\" - specify the same amount");
-
-        System.out.println(DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(), Integer.parseInt(loanAccount.getPaymentBilledLeadDays())) + " --------------");
+                "'Transaction Code' -'421 - Force To Int'\n" +
+                "'Amount' - specify the same amount");
 
         // Set up 421 transaction
         double transactionAmount = Double.parseDouble(interestPortion);
@@ -204,8 +195,8 @@ public class C32545_PaymentProcessing421ForceToIntNoPdRecords extends BaseTest {
         logInfo("Step 7: Go to the 'Payment Info' tab");
         Pages.accountDetailsPage().clickPaymentInfoTab();
 
-        logInfo("Step 8: Verify the \"Payment Dues\" section");
+        logInfo("Step 8: Verify the 'Payment Dues' section");
         TestRailAssert.assertFalse(Pages.accountPaymentInfoPage().isPaymentDueRecordPresent(),
-                new CustomStepResult("'Payment Due Record' is not present", "'Payment Due Record' is present"));
+                new CustomStepResult("'Payment Due Record' is not present on the page", "'Payment Due Record' is present on the page"));
     }
 }
