@@ -8,6 +8,7 @@ public class MaintenancePage extends PageTools {
 
     private By viewAllCardsButton = By.xpath("//button[span[text()='View All Cards']]");
     private By editCardButtonSelector = By.xpath("//table//tr[td[contains(text(), '%s')]]/td/button[@data-test-id='action-showEditPopup']");
+    private By viewAllStatementProcessing = By.xpath("//article[@ui-view='statementProcessing']//button[text()='View all']");
 
     @Step("Click 'Edit' button in list by index")
     public void clickEditButtonInListByNameOnCard(String name) {
@@ -20,5 +21,11 @@ public class MaintenancePage extends PageTools {
     public void clickOnViewAllCardsButton() {
         waitForElementVisibility(viewAllCardsButton);
         click(viewAllCardsButton);
+    }
+
+    @Step("Click on 'View All Statement Processing' button")
+    public void clickOnViewAllStatementProcessing() {
+        waitForElementVisibility(viewAllStatementProcessing);
+        click(viewAllStatementProcessing);
     }
 }
