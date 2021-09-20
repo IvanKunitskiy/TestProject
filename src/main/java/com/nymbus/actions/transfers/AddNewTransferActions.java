@@ -4,6 +4,8 @@ import com.nymbus.newmodels.client.other.transfer.*;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Random;
 
@@ -46,6 +48,9 @@ public class AddNewTransferActions {
         Pages.newTransferPage().clickSaveButton();
     }
 
+    public void addExternalLoanPaymentTransfer(ExternalLoanPaymentTransfer externalLoanPaymentTransfer) {
+    }
+
     public void addNewPeriodicLoanPaymentTransfer(Transfer transfer) {
         Pages.accountNavigationPage().clickTransfersTab();
         Pages.transfersPage().clickNewTransferButton();
@@ -81,6 +86,14 @@ public class AddNewTransferActions {
         Pages.newTransferPage().clickTransferTypeSelectorOption(transfer.getTransferType().getTransferType());
     }
 
+    public void verifyAchBankAccountTypeOptions() {
+        Pages.newTransferPage().clickAchBankAccountTypeSelectorButton();
+        List<String> listOfAchBankAccountType = Pages.newTransferPage().getAchBankAccountTypeList();
+
+        for(AchBankAccountType c : AchBankAccountType.values()){
+            Assert.assertTrue(listOfAchBankAccountType.contains(c));
+        }
+    }
 
     public void setHighBalanceFromAccount(HighBalanceTransfer transfer) {
         Pages.newTransferPage().clickFromAccountSelectorButton();
@@ -133,6 +146,17 @@ public class AddNewTransferActions {
             transfer.setTransferType(TransferType.valueOf(listOfTransferType.get(new Random().nextInt(listOfTransferType.size())).trim()));
         }
         Pages.newTransferPage().clickTransferTypeSelectorOption(transfer.getTransferType().getTransferType());
+    }
+
+    public void setExternalLoanPaymentTransferType(ExternalLoanPaymentTransfer externalLoanPaymentTransfer) {
+        Pages.newTransferPage().clickTransferTypeSelectorButton();
+        List<String> listOfTransferType = Pages.newTransferPage().getTransferTypeList();
+
+        Assert.assertTrue(listOfTransferType.size() > 0, "There are no options available");
+        if (externalLoanPaymentTransfer.getTransferType() == null) {
+            externalLoanPaymentTransfer.setTransferType(TransferType.valueOf(listOfTransferType.get(new Random().nextInt(listOfTransferType.size())).trim()));
+        }
+        Pages.newTransferPage().clickTransferTypeSelectorOption(externalLoanPaymentTransfer.getTransferType().getTransferType());
     }
 
     public void setLoanPaymentTransferType(LoanPaymentTransfer transfer) {

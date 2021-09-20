@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.loansmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.transfers.TransfersActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
@@ -11,6 +12,8 @@ import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
 import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.client.other.transfer.ExternalLoanPaymentTransfer;
+import com.nymbus.newmodels.client.other.transfer.Transfer;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
@@ -18,11 +21,14 @@ import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccB
 import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitMiscCreditBuilder;
 import com.nymbus.newmodels.generation.tansactions.factory.DestinationFactory;
 import com.nymbus.newmodels.generation.tansactions.factory.SourceFactory;
+import com.nymbus.newmodels.generation.transfers.TransferBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -36,11 +42,12 @@ public class C46252_ClientTransfersExternalLoanPaymentVerifyFieldsForTransferTyp
     private Account loanAccount;
     private Account chkAccount;
     private IndividualClient client;
+    private String clientID;
     private final TransactionSource miscDebitSource = SourceFactory.getMiscDebitSource();
     private final TransactionDestination miscCreditDestination = DestinationFactory.getMiscCreditDestination();
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
-    private double escrowPaymentValue;
+    private ExternalLoanPaymentTransfer externalLoanPaymentTransfer;
     private final String TEST_RUN_NAME = "Loans Management";
 
     @BeforeMethod
@@ -77,10 +84,17 @@ public class C46252_ClientTransfersExternalLoanPaymentVerifyFieldsForTransferTyp
         // Set products
         chkAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
 
+        // Set up transfer
+        TransferBuilder transferBuilder = new TransferBuilder();
+        externalLoanPaymentTransfer = transferBuilder.getExternalLoanPaymentTransfer();
+        externalLoanPaymentTransfer.setInternalAccount(loanAccount);
+
+
         // Create client
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+        clientID = Pages.clientDetailsPage().getClientID();
 
         // Create account
         AccountActions.createAccount().createCHKAccount(chkAccount);
@@ -126,8 +140,6 @@ public class C46252_ClientTransfersExternalLoanPaymentVerifyFieldsForTransferTyp
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
-
-
     }
 
     @TestRailIssue(issueID = 46252, testRunName = TEST_RUN_NAME)
@@ -139,14 +151,51 @@ public class C46252_ClientTransfersExternalLoanPaymentVerifyFieldsForTransferTyp
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Go to Clients page and search for the client from the preconditions");
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID);
+
         logInfo("Step 3: Open Clients Profile on the Transfers tab");
+        Pages.accountNavigationPage().clickTransfersTab();
+
         logInfo("Step 4: Click [New Transfer] button and select 'External Loan Payment' in the 'Transfer Type' drop down");
+        Pages.transfersPage().clickNewTransferButton();
+        TransfersActions.addNewTransferActions().setExternalLoanPaymentTransferType(externalLoanPaymentTransfer);
+
+        TestRailAssert.assertTrue(Pages.newTransferPage().isExpirationDateFieldVisible(),
+                new CustomStepResult("'Expiration Date' is visible", "'Expiration Date' is not visible"));
+        TestRailAssert.assertTrue(Pages.newTransferPage().isInternalAccountFieldVisible(),
+                new CustomStepResult("'Internal Account' is visible", "'Internal Account' is not visible"));
+        TestRailAssert.assertTrue(Pages.newTransferPage().isAchBankAccountTypeVisible(),
+                new CustomStepResult("'ACH Bank Account Type' is visible", "'ACH Bank Account Type' is not visible"));
+        TestRailAssert.assertTrue(Pages.newTransferPage().isAchBankRoutingNumberFieldVisible(),
+                new CustomStepResult("'ACH Bank Routing Number' is visible", "'ACH Bank Routing Number' is not visible"));
+        TestRailAssert.assertTrue(Pages.newTransferPage().isAchBankAccountNumberFieldVisible(),
+                new CustomStepResult("'ACH Bank Account Number' is visible", "'ACH Bank Account Number' is not visible"));
+        TestRailAssert.assertTrue(Pages.newTransferPage().isAchTransferLeadDaysFieldVisible(),
+                new CustomStepResult("'ACH Transfer Lead Days' is visible", "'ACH Transfer Lead Days' is not visible"));
+
+
         logInfo("Step 5: Verify the following fields:\n" +
                 "Expiration Date");
+        TestRailAssert.assertFalse(Pages.newTransferPage().isExpirationDateFieldRequired(),
+                new CustomStepResult("'Expiration Date' is optional", "'Expiration Date' is required"));
+
         logInfo("Step 6: Internal Account");
+        TestRailAssert.assertTrue(Pages.newTransferPage().isInternalAccountFieldRequired(),
+                new CustomStepResult("'Internal Account' is required", "'Internal Account' is not required"));
+
         logInfo("Step 7: ACH Bank Account Type");
+        TransfersActions.addNewTransferActions().verifyAchBankAccountTypeOptions();
+
         logInfo("Step 8: ACH Bank Routing Number");
+        TestRailAssert.assertTrue(Pages.newTransferPage().isAchBankRoutingNumberFieldRequired(),
+                new CustomStepResult("'ACH Bank Routing Number", "'ACH Bank Routing Number' is not required"));
+
         logInfo("Step 9: ACH Bank Account Number");
+        TestRailAssert.assertTrue(Pages.newTransferPage().isAchBankAccountNumberFieldRequired(),
+                new CustomStepResult("'ACH Bank Account Number", "'ACH Bank Account Number' is not required"));
+
         logInfo("Step 10: ACH Transfer Lead Days");
+        TestRailAssert.assertTrue(Pages.newTransferPage().isAchTransferLeadDaysFieldRequired(),
+                new CustomStepResult("'ACH Transfer Lead Days", "'ACH Transfer Lead Days' is not required"));
     }
 }
