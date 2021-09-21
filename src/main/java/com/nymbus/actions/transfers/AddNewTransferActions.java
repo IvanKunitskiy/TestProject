@@ -3,9 +3,6 @@ package com.nymbus.actions.transfers;
 import com.nymbus.newmodels.client.other.transfer.*;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
-
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Random;
 
@@ -90,8 +87,10 @@ public class AddNewTransferActions {
         Pages.newTransferPage().clickAchBankAccountTypeSelectorButton();
         List<String> listOfAchBankAccountType = Pages.newTransferPage().getAchBankAccountTypeList();
 
+        Assert.assertTrue(listOfAchBankAccountType.size() > 0, "There are no options available");
         for(AchBankAccountType c : AchBankAccountType.values()){
-            Assert.assertTrue(listOfAchBankAccountType.contains(c));
+            Assert.assertTrue(listOfAchBankAccountType.contains(c.getTransferType()),
+                    "One or more option(s) is missing in 'ACH Bank Account Type' list");
         }
     }
 

@@ -37,6 +37,7 @@ public class NewTransferPage extends PageTools {
     private By achBankRoutingNumber = By.xpath("//input[@data-test-id='field-externalroutingnumber']");
     private By achBankAccountNumber = By.xpath("//input[@data-test-id='field-externalaccountnumber']");
     private By achTransfersLeadDays = By.xpath("//input[@data-test-id='field-achleaddays']");
+    private By getAchBankAccountTypeList = By.xpath("//div[@data-test-id='field-externalaccounttype']//li[contains(@role, 'option')]/div/span");
 
     private By frequencySelectorButton = By.xpath("//div[@data-test-id='field-frequencytransfer']");
     private By frequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
@@ -268,5 +269,19 @@ public class NewTransferPage extends PageTools {
     public boolean isAchTransferLeadDaysFieldVisible() {
         return isElementVisible(achTransfersLeadDays);
     }
+
+    @Step("Click 'ACH Bank Account Type' selector button")
+    public void clickAchBankAccountTypeSelectorButton() {
+        waitForElementClickable(achBankAccountType);
+        click(achBankAccountType);
+    }
+
+    @Step("Returning list of 'ACH Bank Account Type' options")
+    public List<String> getAchBankAccountTypeList() {
+        waitForElementVisibility(getAchBankAccountTypeList);
+        waitForElementClickable(getAchBankAccountTypeList);
+        return getElementsText(getAchBankAccountTypeList);
+    }
+
 
 }
