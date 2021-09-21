@@ -45,9 +45,6 @@ public class AddNewTransferActions {
         Pages.newTransferPage().clickSaveButton();
     }
 
-    public void addExternalLoanPaymentTransfer(ExternalLoanPaymentTransfer externalLoanPaymentTransfer) {
-    }
-
     public void addNewPeriodicLoanPaymentTransfer(Transfer transfer) {
         Pages.accountNavigationPage().clickTransfersTab();
         Pages.transfersPage().clickNewTransferButton();
