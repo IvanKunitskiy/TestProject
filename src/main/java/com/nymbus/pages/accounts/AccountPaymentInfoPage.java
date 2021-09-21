@@ -529,4 +529,9 @@ public class AccountPaymentInfoPage extends PageTools {
         waitForElementVisibility(statusFromRecordByIndex, index);
         return getElementText(statusFromRecordByIndex, index).trim();
     }
+
+    @Step("Check if any due record present")
+    public boolean isPaymentDueRecordPresent() {
+        return isElementVisible(paymentDueRecord);
+    }
 }
