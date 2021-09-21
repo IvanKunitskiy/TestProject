@@ -18,6 +18,7 @@ import com.nymbus.pages.clients.*;
 import com.nymbus.pages.clients.documents.AddNewDocumentPage;
 import com.nymbus.pages.clients.documents.DocumentOverviewPage;
 import com.nymbus.pages.clients.documents.DocumentsPage;
+import com.nymbus.pages.clients.maintenance.MaintainceStatementProcessingPage;
 import com.nymbus.pages.clients.maintenance.MaintenanceHistoryPage;
 import com.nymbus.pages.clients.maintenance.MaintenancePage;
 import com.nymbus.pages.clients.notes.NotesPage;
@@ -86,6 +87,7 @@ public class Pages extends AllureLogger {
     private static BalanceInquiryModalPage balanceInquiryModalPage;
     private static SupervisorModalPage supervisorModalPage;
     private static CardsManagementPage cardsManagementPage;
+    private static MaintainceStatementProcessingPage maintainceStatementProcessingPage;
     private static AttentionModalPage attentionModalPage;
     private static EditAccountTransactionModal editAccountTransactionModal;
     private static CashDrawerBalancePage cashDrawerBalancePage;
@@ -629,6 +631,16 @@ public class Pages extends AllureLogger {
             cardsManagementPage = new CardsManagementPage();
         }
         return cardsManagementPage;
+    }
+
+    /**
+     * This function return an instance of `CardsManagementPage`
+     */
+    public static MaintainceStatementProcessingPage maintainceStatementProcessingPage() {
+        if (maintainceStatementProcessingPage == null) {
+            maintainceStatementProcessingPage = new MaintainceStatementProcessingPage();
+        }
+        return maintainceStatementProcessingPage;
     }
 
     /**
