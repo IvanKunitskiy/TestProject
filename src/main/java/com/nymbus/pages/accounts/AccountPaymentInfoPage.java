@@ -200,6 +200,7 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By paymentType = By.xpath("(//div[@id='paymenttype_paymentHistory_0']//span[contains(string(),'%s')])[2]");
     private final By editPaymentDueDetailsButton = By.xpath("//div[@ui-view='paymentsDue']//button[@data-test-id='action-edit-payment-info']");
     private final By savePaymentDueDetailsButton = By.xpath("(//button[@data-test-id='action-save-payment-info'])[2]");
+    private final By inactiveButton = By.xpath("//button[@data-test-id='action-inactive-payment-info']");
 
     @Step("Get 'Payment amount'")
     public String getDisabledPaymentAmount() {
@@ -361,6 +362,40 @@ public class AccountPaymentInfoPage extends PageTools {
     public void clickSavePaymentDueDetailsButton() {
         waitForElementVisibility(savePaymentDueDetailsButton);
         click(savePaymentDueDetailsButton);
+    }
+
+    @Step("Check if 'Inactive' button visible")
+    public boolean isInactiveButtonVisible() {
+        return isElementVisible(inactiveButton);
+    }
+
+    @Step("Check if 'Inactive' button visible")
+    public void clickInactiveButton() {
+        waitForElementClickable(inactiveButton);
+        click(inactiveButton);
+    }
+    
+    
+    // 'Make due record inactive' modal
+
+    private final By makeDueInactiveModal = By.xpath("//div[contains(@class, 'modal-dialog')]");
+    private final By makeDueInactiveModalYesButton = By.xpath("//button//span[contains(text(), 'Yes')]");
+    private final By futurePaymentDueExists = By.xpath("//div[@id='toast-container']");
+
+    @Step("Check if 'Make Payment Due Inactive' modal is visible")
+    public boolean isMakePaymentDueInactiveModalVisible() {
+        return isElementVisible(makeDueInactiveModal);
+    }
+
+    @Step("Click 'Yes' button on 'Make Payment Due Inactive' modal")
+    public void clickYesButtonOnMakePaymentDueInactive() {
+        waitForElementClickable(makeDueInactiveModalYesButton);
+        click(makeDueInactiveModalYesButton);
+    }
+
+    @Step("Get error's text")
+    public String getErrorText() {
+        return getElementText(futurePaymentDueExists).trim();
     }
 
     /**
