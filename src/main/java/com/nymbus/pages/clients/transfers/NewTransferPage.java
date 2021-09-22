@@ -31,6 +31,14 @@ public class NewTransferPage extends PageTools {
     private By expirationDate = By.xpath("//input[@data-test-id='field-expirationdate']");
     private By nextDateOfTransfer = By.xpath("//input[@data-test-id='field-nextdateoftransfer']");
 
+    // External Loan Payment Fields
+    private By internalAccount = By.xpath("//div[@data-test-id='field-accountid']");
+    private By achBankAccountType = By.xpath("//div[@data-test-id='field-externalaccounttype']");
+    private By achBankRoutingNumber = By.xpath("//input[@data-test-id='field-externalroutingnumber']");
+    private By achBankAccountNumber = By.xpath("//input[@data-test-id='field-externalaccountnumber']");
+    private By achTransfersLeadDays = By.xpath("//input[@data-test-id='field-achleaddays']");
+    private By getAchBankAccountTypeList = By.xpath("//div[@data-test-id='field-externalaccounttype']//li[contains(@role, 'option')]/div/span");
+
     private By frequencySelectorButton = By.xpath("//div[@data-test-id='field-frequencytransfer']");
     private By frequencyList = By.xpath("//li[contains(@role, 'option')]/div/span");
     private By frequencySelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
@@ -205,4 +213,75 @@ public class NewTransferPage extends PageTools {
         waitForElementClickable(nextDateOfTransfer, date);
         type(date, nextDateOfTransfer);
     }
+
+    // External Loan Payment
+    @Step("Check if 'Expiration Date' field is required")
+    public boolean isExpirationDateFieldRequired() {
+        return Boolean.parseBoolean(getElementAttributeValue("required", expirationDate));
+    }
+
+    @Step("Check if 'Internal Account' field is required")
+    public boolean isInternalAccountFieldRequired() {
+        return Boolean.parseBoolean(getElementAttributeValue("required", internalAccount));
+    }
+
+    @Step("Check if 'ACH Bank Routing Number' field is required")
+    public boolean isAchBankRoutingNumberFieldRequired() {
+        return Boolean.parseBoolean(getElementAttributeValue("required", achBankRoutingNumber));
+    }
+
+    @Step("Check if 'ACH Bank Account Number' field is required")
+    public boolean isAchBankAccountNumberFieldRequired() {
+        return Boolean.parseBoolean(getElementAttributeValue("required", achBankAccountNumber));
+    }
+
+    @Step("Check if 'ACH Transfer Lead Days' field is required")
+    public boolean isAchTransferLeadDaysFieldRequired() {
+        return Boolean.parseBoolean(getElementAttributeValue("required", achTransfersLeadDays));
+    }
+
+    @Step("Check if 'Expiration Date' field is visible")
+    public boolean isExpirationDateFieldVisible() {
+        return isElementVisible(expirationDate);
+    }
+
+    @Step("Check if 'Internal Account' field is visible")
+    public boolean isInternalAccountFieldVisible() {
+        return isElementVisible(internalAccount);
+    }
+
+    @Step("Check if 'ACH Bank Account Type' field is visible")
+    public boolean isAchBankAccountTypeVisible() {
+        return isElementVisible(achBankAccountType);
+    }
+
+    @Step("Check if 'ACH Bank Routing Number' field is visible")
+    public boolean isAchBankRoutingNumberFieldVisible() {
+        return isElementVisible(achBankRoutingNumber);
+    }
+
+    @Step("Check if 'ACH Bank Account Number' field is visible")
+    public boolean isAchBankAccountNumberFieldVisible() {
+        return isElementVisible(achBankAccountNumber);
+    }
+
+    @Step("Check if 'ACH Transfer Lead Days' field is visible")
+    public boolean isAchTransferLeadDaysFieldVisible() {
+        return isElementVisible(achTransfersLeadDays);
+    }
+
+    @Step("Click 'ACH Bank Account Type' selector button")
+    public void clickAchBankAccountTypeSelectorButton() {
+        waitForElementClickable(achBankAccountType);
+        click(achBankAccountType);
+    }
+
+    @Step("Returning list of 'ACH Bank Account Type' options")
+    public List<String> getAchBankAccountTypeList() {
+        waitForElementVisibility(getAchBankAccountTypeList);
+        waitForElementClickable(getAchBankAccountTypeList);
+        return getElementsText(getAchBankAccountTypeList);
+    }
+
+
 }

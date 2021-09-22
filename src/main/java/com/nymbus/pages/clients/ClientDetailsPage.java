@@ -365,7 +365,6 @@ public class ClientDetailsPage extends PageTools {
         waitForElementClickable(maintenanceTab);
         click(maintenanceTab);
     }
-
     /**
      * Profile Tab
      */

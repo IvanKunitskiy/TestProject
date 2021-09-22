@@ -5,6 +5,16 @@ import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.client.other.transfer.*;
 
 public class TransferBuilder {
+
+    public ExternalLoanPaymentTransfer getExternalLoanPaymentTransfer() {
+        ExternalLoanPaymentTransfer transfer = new ExternalLoanPaymentTransfer();
+        transfer.setTransferType(TransferType.EXTERNAL_LOAN_PAYMENT);
+        transfer.setExpirationDate(DateTime.getTomorrowDate("MM/dd/yyyy"));
+        transfer.setAchBankAccountType(AchBankAccountType.EXT_LOAN);
+
+        return transfer;
+    }
+
     public HighBalanceTransfer getHighBalanceTransfer() {
         HighBalanceTransfer transfer = new HighBalanceTransfer();
 
