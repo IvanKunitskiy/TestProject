@@ -36,6 +36,7 @@ public class C32447_PaymentDueRecordsInactiveButtonActiveDues extends BaseTest {
     private Account loanAccount;
     private Account chkAccount;
     private String clientRootId;
+    private Transaction transaction_416;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
     private final String TEST_RUN_NAME = "Loans Management";
@@ -57,7 +58,7 @@ public class C32447_PaymentDueRecordsInactiveButtonActiveDues extends BaseTest {
 
         // Set proper dates
         String localDate = DateTime.getLocalDateOfPattern("MM/dd/yyyy");
-        loanAccount.setDateOpened(DateTime.getDateMinusMonth(localDate, 1));
+        loanAccount.setDateOpened(DateTime.getDateMinusMonth(localDate, 2));
         loanAccount.setNextPaymentBilledDueDate(DateTime.getDatePlusMonth(loanAccount.getDateOpened(), 1));
         loanAccount.setPaymentBilledLeadDays("1");
         loanAccount.setCycleLoan(false);
@@ -123,15 +124,33 @@ public class C32447_PaymentDueRecordsInactiveButtonActiveDues extends BaseTest {
         Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().closeModal();
-        Actions.loginActions().doLogOutProgrammatically();
 
-
-        // Generate Payment Due record
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        // Generate 2 Payment Due record
         Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
-        Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
+//
+//        // make 416 transaction
+//        Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
+//        String dueRecordAmountDue = Pages.accountPaymentInfoPage().getDisabledAmountDue().replaceAll("[^0-9.]", "");
+//
+//        // Set up 416 transaction
+//        double transactionAmount = Double.parseDouble(dueRecordAmountDue);;
+//        transaction_416 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
+//        transaction_416.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
+//        transaction_416.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
+//        transaction_416.getTransactionSource().setAmount(transactionAmount);
+//        transaction_416.getTransactionDestination().setTransactionCode(TransactionCode.PAYMENT_416.getTransCode());
+//        transaction_416.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
+//        transaction_416.getTransactionDestination().setAmount(transactionAmount);
+//
+//        // Perform 416 transaction
+//        Actions.transactionActions().goToTellerPage();
+//        Pages.tellerPage().setEffectiveDate(DateTime.getDatePlusMonth(loanAccount.getDateOpened(), 2  ));
+//        Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction_416.getTransactionSource(), 0);
+//        Actions.transactionActions().setMiscCreditDestination(transaction_416.getTransactionDestination(), 0);
+//        Actions.transactionActions().clickCommitButton();
+//
+//        Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
-
     }
 
     @TestRailIssue(issueID = 32447, testRunName = TEST_RUN_NAME)
@@ -149,8 +168,8 @@ public class C32447_PaymentDueRecordsInactiveButtonActiveDues extends BaseTest {
         Pages.accountDetailsPage().clickPaymentInfoTab();
 
         logInfo("Step 4: Click on the Oldest Payment Due record in the 'Payment Due' section");
-        Selenide.sleep(10000000);
         Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
+        Selenide.sleep(10000000);
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().isInactiveButtonVisible(),
                 new CustomStepResult("'Inactive' button is visible", "'Inactive' button is not visible"));
 
