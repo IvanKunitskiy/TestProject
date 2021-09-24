@@ -86,6 +86,7 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By dueType = By.xpath("(//dn-field-view//span//span)[2]");
     private final By dueAmount = By.xpath("(//dn-field-view//span//span)[3]");
     private final By dueStatus = By.xpath("(//dn-field-view//span//span)[4]");
+    private final By specificDueStatus = By.xpath("(//div[@ui-view='paymentsDue']//tr)[%s]//td[4]");
 
     @Step("Get Pi Payments Payment 'Recalc Future Pymt' value")
     public String getPiPaymentsRecalcFuturePymt() {
@@ -350,6 +351,13 @@ public class AccountPaymentInfoPage extends PageTools {
     public String getDueStatus() {
         waitForElementVisibility(dueStatus);
         return getElementText(dueStatus);
+    }
+
+    @Step("Get Due status value of {%s} record")
+    public String getSpecificDueStatus(int index) {
+        int indexModified = index + 1;
+        waitForElementVisibility(specificDueStatus, indexModified);
+        return getElementText(specificDueStatus, indexModified);
     }
 
     @Step("Click the 'Edit' button")
