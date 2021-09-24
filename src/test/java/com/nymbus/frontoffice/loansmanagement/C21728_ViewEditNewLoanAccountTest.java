@@ -163,7 +163,7 @@ public class C21728_ViewEditNewLoanAccountTest extends BaseTest {
 
         logInfo("Step 8: Click 'Save'");
         Pages.editAccountPage().clickSaveAccountButton();
-        Pages.accountDetailsPage().waitForFullProfileButton();
+        Pages.accountDetailsPage().waitForEditButton();
         TestRailAssert.assertTrue(Pages.accountDetailsPage().getChangePaymentWithRateChange().equalsIgnoreCase("no"),
                 new CustomStepResult("'Change Payment with Rate Change' group is not valid",
                         "'Change Payment with Rate Change' group is valid"));
