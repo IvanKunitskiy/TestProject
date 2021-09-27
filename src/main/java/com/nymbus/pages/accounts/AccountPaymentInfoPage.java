@@ -83,6 +83,7 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By disAmount = By.xpath("//input[@id='amount']");
     private final By dueTypeTittle = By.xpath("//input[@id='paymentDueTypeTitle']");
     private final By dateDue = By.xpath("//dn-field-view//span//span");
+    private final By dueDateOfSpecificRecord = By.xpath("//tr[%s]//dn-field-view//span//span");
     private final By dueType = By.xpath("(//dn-field-view//span//span)[2]");
     private final By dueAmount = By.xpath("(//dn-field-view//span//span)[3]");
     private final By dueStatus = By.xpath("(//dn-field-view//span//span)[4]");
@@ -333,6 +334,12 @@ public class AccountPaymentInfoPage extends PageTools {
     public String getDateDue() {
         waitForElementVisibility(dateDue);
         return getElementText(dateDue);
+    }
+
+    @Step("Get Due date value of {%s} record")
+    public String getDateDueOfSpecificRecord(int index) {
+        waitForElementVisibility(dueDateOfSpecificRecord, index);
+        return getElementText(dueDateOfSpecificRecord, index);
     }
 
     @Step("Get Due type value")

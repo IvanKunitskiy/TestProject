@@ -177,7 +177,7 @@ public class C32447_PaymentDueRecordsInactiveButtonActiveDues extends BaseTest {
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getSpecificDueStatus(1).equals("Inactive"),
                 new CustomStepResult("Error message is present", "Error message is not present"));
 
-        String dueDate1 = Pages.accountPaymentInfoPage().getDisabledDueDate();
+        String dueDate1 = Pages.accountPaymentInfoPage().getDateDueOfSpecificRecord(1);
 
         logInfo("Step 10: Go to the 'Details' tab");
         Pages.accountDetailsPage().clickDetailsTab();
@@ -208,7 +208,7 @@ public class C32447_PaymentDueRecordsInactiveButtonActiveDues extends BaseTest {
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getSpecificDueStatus(2).equals("Inactive"),
                 new CustomStepResult("Error message is present", "Error message is not present"));
 
-        String dueDate2 = Pages.accountPaymentInfoPage().getDisabledDueDate();
+        String dueDate2 = Pages.accountPaymentInfoPage().getDateDueOfSpecificRecord(2);
 
         logInfo("Step 16: Go to the 'Details' tab");
         Pages.accountDetailsPage().clickDetailsTab();
