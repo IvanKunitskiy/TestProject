@@ -3,7 +3,6 @@ package com.nymbus.actions.transfers;
 import com.nymbus.newmodels.client.other.transfer.*;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
-
 import java.util.List;
 import java.util.Random;
 
@@ -81,6 +80,16 @@ public class AddNewTransferActions {
         Pages.newTransferPage().clickTransferTypeSelectorOption(transfer.getTransferType().getTransferType());
     }
 
+    public void verifyAchBankAccountTypeOptions() {
+        Pages.newTransferPage().clickAchBankAccountTypeSelectorButton();
+        List<String> listOfAchBankAccountType = Pages.newTransferPage().getAchBankAccountTypeList();
+
+        Assert.assertTrue(listOfAchBankAccountType.size() > 0, "There are no options available");
+        for(AchBankAccountType c : AchBankAccountType.values()){
+            Assert.assertTrue(listOfAchBankAccountType.contains(c.getTransferType()),
+                    "One or more option(s) is missing in 'ACH Bank Account Type' list");
+        }
+    }
 
     public void setHighBalanceFromAccount(HighBalanceTransfer transfer) {
         Pages.newTransferPage().clickFromAccountSelectorButton();
@@ -133,6 +142,17 @@ public class AddNewTransferActions {
             transfer.setTransferType(TransferType.valueOf(listOfTransferType.get(new Random().nextInt(listOfTransferType.size())).trim()));
         }
         Pages.newTransferPage().clickTransferTypeSelectorOption(transfer.getTransferType().getTransferType());
+    }
+
+    public void setExternalLoanPaymentTransferType(ExternalLoanPaymentTransfer externalLoanPaymentTransfer) {
+        Pages.newTransferPage().clickTransferTypeSelectorButton();
+        List<String> listOfTransferType = Pages.newTransferPage().getTransferTypeList();
+
+        Assert.assertTrue(listOfTransferType.size() > 0, "There are no options available");
+        if (externalLoanPaymentTransfer.getTransferType() == null) {
+            externalLoanPaymentTransfer.setTransferType(TransferType.valueOf(listOfTransferType.get(new Random().nextInt(listOfTransferType.size())).trim()));
+        }
+        Pages.newTransferPage().clickTransferTypeSelectorOption(externalLoanPaymentTransfer.getTransferType().getTransferType());
     }
 
     public void setLoanPaymentTransferType(LoanPaymentTransfer transfer) {

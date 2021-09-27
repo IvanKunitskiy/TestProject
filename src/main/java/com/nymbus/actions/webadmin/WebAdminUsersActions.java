@@ -9,6 +9,7 @@ import com.nymbus.data.entity.verifyingmodels.TellerSessionVerifyingModel;
 import com.nymbus.newmodels.UserCredentials;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.AccountData;
+import com.nymbus.newmodels.backoffice.itemsToWork.Item;
 import com.nymbus.newmodels.client.basicinformation.type.ClientType;
 import com.nymbus.newmodels.client.verifyingmodels.FirstNameAndLastNameModel;
 import com.nymbus.newmodels.notice.Notice;
@@ -316,7 +317,7 @@ public class WebAdminUsersActions {
     private String getAccountWith207307407Transaction() {
         String now = DateTime.getLocalDateOfPattern("yyyy-MM-dd");
         String dateMinusDays = DateTime.getDateMinusDays(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), 10);
-        dateMinusDays = DateTime.getDateWithFormat(dateMinusDays, "MM/dd/yyyy","yyyy-MM-dd");
+        dateMinusDays = DateTime.getDateWithFormat(dateMinusDays, "MM/dd/yyyy", "yyyy-MM-dd");
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?" +
                 "waDbName=nymbusdev12DS" +
@@ -333,10 +334,30 @@ public class WebAdminUsersActions {
                 "bank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A&source=";
     }
 
+    private String getPayACHItemsToWork() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?" +
+                "waDbName=coreDS&dqlQuery=count%3A+10%0D%0Aselect%3A+%28databean%29DESCRIPTION%2C+dateeffective%2C" +
+                "+reasonrejected%2C+transitaccountnumber%2C+status%0D%0Afrom%3A" +
+                "+bank.data.transaction.rejectreentry.item%0D%0Awhere%3A+%0D%0A-+.status-%3Ename%3A+Pay%0D%0A" +
+                "-+.transactionitemid-%3E.transactionheaderid-%3E.transactionsource-%3Ename%3A+ACH%0D%0AorderBy%3A+" +
+                "-dateeffective%0D%0A&source=";
+    }
+
+    private String getRejectedItemsToWork() {
+        return Constants.WEB_ADMIN_URL
+                + "RulesUIQuery.ct?" +
+                "waDbName=coreDS&dqlQuery=count%3A+10%0D%0Aselect%3A+%28databean%29DESCRIPTION%2C+dateeffective%2C" +
+                "+reasonrejected%2C+transitaccountnumber%2C+status%0D%0Afrom%3A+bank.data.transaction.rejectreentry" +
+                ".item%0D%0Awhere%3A+%0D%0A-+.reasonrejected-%3Ename%3A+bad+code%0D%0A-+.status" +
+                "-%3Ename%3A+Rejected%0D%0A-+.transactionitemid-%3E.transactionheaderid-%3E.transactionsource" +
+                "-%3Ename%3A+ACH%0D%0A+%0D%0AorderBy%3A+-dateeffective&source=";
+    }
+
     private String getAccountWith120220Transaction() {
         String now = DateTime.getLocalDateOfPattern("yyyy-MM-dd");
         String dateMinusDays = DateTime.getDateMinusDays(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), 10);
-        dateMinusDays = DateTime.getDateWithFormat(dateMinusDays, "MM/dd/yyyy","yyyy-MM-dd");
+        dateMinusDays = DateTime.getDateWithFormat(dateMinusDays, "MM/dd/yyyy", "yyyy-MM-dd");
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?" +
                 "waDbName=nymbusdev12DS" +
@@ -580,6 +601,14 @@ public class WebAdminUsersActions {
         return getAccountNumberFromQueryByUrl(getAccountWith207307407Transaction());
     }
 
+    public Item getPayACHItemToWork() {
+        return getItemToWorkFromQueryByUrl(getPayACHItemsToWork());
+    }
+
+    public Item getRejectedItemToWork() {
+        return getItemToWorkFromQueryByUrl(getRejectedItemsToWork());
+    }
+
     public String getAccountNumberWith20Transaction() {
         return getAccountNumberFromQueryByUrl(getAccountWith120220Transaction());
     }
@@ -705,12 +734,34 @@ public class WebAdminUsersActions {
         int showCount = 20;
         int bound = Math.min(numberOfSearchResult, showCount);
         int randomIndex = getRandomIndex(bound);
-        if (randomIndex<2){
+        if (randomIndex < 2) {
             randomIndex++;
         }
         int accountNumberRandomIndex = randomIndex;
 
         return WebAdminPages.rulesUIQueryAnalyzerPage().getAccountNumberValueByIndex(accountNumberRandomIndex);
+    }
+
+    private Item getItemToWorkFromQueryByUrl(String url) {
+        SelenideTools.openUrl(url);
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForPageLoad();
+        WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
+
+        int numberOfSearchResult = WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult();
+        int showCount = 20;
+        int bound = Math.min(numberOfSearchResult, showCount);
+        int randomIndex = getRandomIndex(bound);
+        if (randomIndex < 2) {
+            randomIndex++;
+        }
+        int accountNumberRandomIndex = randomIndex;
+
+        Item item = new Item();
+        item.setAccountNumber(WebAdminPages.rulesUIQueryAnalyzerPage().getTransitAccountNumberValueByIndex(accountNumberRandomIndex));
+        item.setDateTimePosted(WebAdminPages.rulesUIQueryAnalyzerPage().getDateEffectiveValueByIndex(accountNumberRandomIndex));
+        item.setRejectStatus(WebAdminPages.rulesUIQueryAnalyzerPage().getStatusValueByIndex(accountNumberRandomIndex));
+
+        return item;
     }
 
     private int getPrintBalanceOnReceiptValueFromQueryByUrl(String url) {
@@ -1100,6 +1151,32 @@ public class WebAdminUsersActions {
         SelenideTools.closeCurrentTab();
         SelenideTools.switchTo().window(0);
         return accountNumber;
+    }
+
+    public Item getItemToWork(UserCredentials userCredentials) {
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        Item item = WebAdminActions.webAdminUsersActions().getPayACHItemToWork();
+
+        WebAdminActions.loginActions().doLogout();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+        return item;
+    }
+
+    public Item getRejectedItemToWork(UserCredentials userCredentials) {
+        SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
+        SelenideTools.switchTo().window(1);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        Item item = WebAdminActions.webAdminUsersActions().getRejectedItemToWork();
+
+        WebAdminActions.loginActions().doLogout();
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchTo().window(0);
+        return item;
     }
 
     public String getAccountNumberWithTransactionFor20(UserCredentials userCredentials) {

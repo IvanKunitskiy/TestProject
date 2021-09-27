@@ -11,7 +11,8 @@ public enum TransferType {
     INSUFFICIENT_FUNDS_TRANSFER("Insufficient Funds Transfer"),
     LOAN_PAYMENT("Loan Payment"),
     LOW_BALANCE_TRANSFER("Low Balance Transfer"),
-    TRANSFER("Transfer");
+    TRANSFER("Transfer"),
+    EXTERNAL_LOAN_PAYMENT("External Loan Payment");
 
     private final String transferType;
 }

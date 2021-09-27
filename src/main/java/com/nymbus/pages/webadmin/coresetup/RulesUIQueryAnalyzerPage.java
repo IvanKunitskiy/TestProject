@@ -112,6 +112,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      */
 
     private By glDateTimePosted = By.xpath("//*[@id='searchResultTable']//tr[%s]//div[@key-name='gldatetimeposted']");
+    private By dateTimePosted = By.xpath("//*[@id='searchResultTable']//tr[%s]//div[@key-name='datetimeposted']");
     private By effectiveEntryDate = By.xpath("//table[@id='searchResultTable']//tr[contains(@class, 'searchResultRow ')][%s]//div[@key-name='effectiveentrydate']");
     private By dateOpened = By.xpath("//*[@id='searchResultTable']//tr[%s]//div[@key-name='$DateOpened']");
     private By glFunctionValue = By.xpath("//*[@id='searchResultTable']//tr[%s]//div[@key-name='glfunction']");
@@ -124,6 +125,12 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getDatePosted(int index) {
         waitForElementVisibility(glDateTimePosted, index);
         return getElementText(glDateTimePosted, index).trim();
+    }
+
+    @Step("Get date posted  {0}")
+    public String getDateTimePosted(int index) {
+        waitForElementVisibility(dateTimePosted, index);
+        return getElementText(dateTimePosted, index).trim();
     }
 
     @Step("Get effective date {0}")
@@ -310,6 +317,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
             + "//td/div[@key-name='(databean)name']");
     private By interestValue = By.xpath("//table[@id='searchResultTable']//tr[%s]//td/div[@key-name='interest']");
     private By transactionStatus = By.xpath("(//table[@id='searchResultTable']//tr[%s]//td)[24]//span/span");
+    private By rejectionStatus = By.xpath("(//table[@id='searchResultTable']//tr[%s]//td)[6]//span/span");
     private By transactionEftDescription = By.xpath("(//div[@key-name='uniqueeftdescription'])[%s]");
 
 
@@ -337,10 +345,16 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         return getElementText(interestValue, index).trim();
     }
 
-    @Step("Get 'interest' {0} value")
+    @Step("Get 'Transaction status' {0} value")
     public String getTransactionStatus(int index) {
         waitForElementVisibility(transactionStatus, index);
         return getElementText(transactionStatus, index).trim();
+    }
+
+    @Step("Get 'Rejection status' {0} value")
+    public String getRejectionStatus(int index) {
+        waitForElementVisibility(rejectionStatus, index);
+        return getElementText(rejectionStatus, index).trim();
     }
 
     @Step("Get 'eft description' {0} value")
@@ -528,6 +542,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
 
     private By loanAccountId = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[5]/span[contains(@class, 'high_title')]/span");
     private By acountId = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[2]/span[contains(@class, 'high_title')]/span");
+    private By transitAccountNumber = By.xpath("(//div[@key-name='transitaccountnumber'])[%s]");
     private By activeConvertedLoanAccountId = By.xpath("//table[contains(@class, 'searchResultPanel')]/tbody/" +
             "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]/" +
             "td[@class='fieldsCell'][10]/span/span");
@@ -554,6 +569,8 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private By interestNextPaymentDateByIndex = By.xpath("//table[contains(@class, 'searchResultPanel' )]//" +
             "tr[contains(@class, 'searchResultRow') and not(contains(@class, 'searchResultRowHeader'))][%s]/" +
             "td/div[@key-name='interestnextpaymentdate']");
+    private By dateEffective = By.xpath("(//div[@key-name='dateeffective'])[%s]");
+    private By status = By.xpath("(//span[@key-name='status']/../span/span)[%s]");
 
     @Step("Get 'Loan account number' {index} value")
     public String getLoanAccountNumberValueByIndex(int index) {
@@ -565,6 +582,24 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getAccountNumberValueByIndex(int index) {
         waitForElementVisibility(acountId, index);
         return getElementText(acountId, index).trim();
+    }
+
+    @Step("Get 'Account number' {index} value")
+    public String getTransitAccountNumberValueByIndex(int index) {
+        waitForElementVisibility(transitAccountNumber, index);
+        return getElementText(transitAccountNumber, index).trim();
+    }
+
+    @Step("Get 'Date effective' {index} value")
+    public String getDateEffectiveValueByIndex(int index) {
+        waitForElementVisibility(dateEffective, index);
+        return getElementText(dateEffective, index).trim();
+    }
+
+    @Step("Get 'Status' {index} value")
+    public String getStatusValueByIndex(int index) {
+        waitForElementVisibility(status, index-1);
+        return getElementText(status, index-1).trim();
     }
 
     @Step("Get 'Active Converted Loan Account' {index} value")
