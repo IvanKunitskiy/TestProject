@@ -58,7 +58,6 @@ public class C32447_PaymentDueRecordsInactiveButtonActiveDues extends BaseTest {
         // Set proper dates
         String localDate = DateTime.getLocalDateOfPattern("MM/dd/yyyy");
         loanAccount.setDateOpened(DateTime.getDateMinusMonth(localDate, 2));
-        System.out.println(loanAccount.getDateOpened() + " ------------");
         loanAccount.setNextPaymentBilledDueDate(DateTime.getDatePlusMonth(loanAccount.getDateOpened(), 1));
         loanAccount.setPaymentBilledLeadDays("1");
         loanAccount.setCycleLoan(false);
