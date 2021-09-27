@@ -196,6 +196,7 @@ public class Constants {
     public static final int MICRO_TIMEOUT = 2;
     public static final int MINI_TIMEOUT = 5;
     public static final int SMALL_TIMEOUT = 10;
+    public static final int FIVE_SECONDS_TIMEOUT = 5000;
 
     /**
      * Directories

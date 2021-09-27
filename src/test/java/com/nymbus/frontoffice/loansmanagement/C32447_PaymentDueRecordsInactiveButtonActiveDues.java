@@ -174,7 +174,7 @@ public class C32447_PaymentDueRecordsInactiveButtonActiveDues extends BaseTest {
 
         logInfo("Step 9: Click on the 'Yes' button");
         Pages.accountPaymentInfoPage().clickYesButtonOnMakePaymentDueInactive();
-        Selenide.sleep(Constants.MINI_TIMEOUT);
+        Selenide.sleep(Constants.FIVE_SECONDS_TIMEOUT);
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getSpecificDueStatus(1).equals("Inactive"),
                 new CustomStepResult("Error message is present", "Error message is not present"));
 
@@ -192,7 +192,7 @@ public class C32447_PaymentDueRecordsInactiveButtonActiveDues extends BaseTest {
         Pages.accountDetailsPage().clickPaymentInfoTab();
 
         logInfo("Step 13: Click on the following Active Payment Due record in the \"Payment Due\" section");
-        Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
+        Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(2);
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().isInactiveButtonVisible(),
                 new CustomStepResult("'Inactive' button is visible", "'Inactive' button is not visible"));
 
@@ -205,7 +205,7 @@ public class C32447_PaymentDueRecordsInactiveButtonActiveDues extends BaseTest {
 
         logInfo("Step 15: Click on the 'Yes' button");
         Pages.accountPaymentInfoPage().clickYesButtonOnMakePaymentDueInactive();
-        Selenide.sleep(Constants.MINI_TIMEOUT);
+        Selenide.sleep(Constants.FIVE_SECONDS_TIMEOUT);
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getSpecificDueStatus(2).equals("Inactive"),
                 new CustomStepResult("Error message is present", "Error message is not present"));
 
