@@ -5,6 +5,7 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
@@ -173,7 +174,7 @@ public class C32447_PaymentDueRecordsInactiveButtonActiveDues extends BaseTest {
 
         logInfo("Step 9: Click on the 'Yes' button");
         Pages.accountPaymentInfoPage().clickYesButtonOnMakePaymentDueInactive();
-        Selenide.sleep(5000);
+        Selenide.sleep(Constants.MINI_TIMEOUT);
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getSpecificDueStatus(1).equals("Inactive"),
                 new CustomStepResult("Error message is present", "Error message is not present"));
 
@@ -204,7 +205,7 @@ public class C32447_PaymentDueRecordsInactiveButtonActiveDues extends BaseTest {
 
         logInfo("Step 15: Click on the 'Yes' button");
         Pages.accountPaymentInfoPage().clickYesButtonOnMakePaymentDueInactive();
-        Selenide.sleep(5000);
+        Selenide.sleep(Constants.MINI_TIMEOUT);
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getSpecificDueStatus(2).equals("Inactive"),
                 new CustomStepResult("Error message is present", "Error message is not present"));
 
