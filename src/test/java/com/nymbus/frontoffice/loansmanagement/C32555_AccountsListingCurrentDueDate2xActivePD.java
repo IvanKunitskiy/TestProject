@@ -19,6 +19,8 @@ import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitMiscCreditBu
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -31,7 +33,8 @@ public class C32555_AccountsListingCurrentDueDate2xActivePD extends BaseTest {
 
     private Account loanAccount;
     private Account chkAccount;
-    private Transaction transaction_416;
+    private String dueDate;
+    private String clientID;
     private String clientRootId;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
@@ -76,6 +79,8 @@ public class C32555_AccountsListingCurrentDueDate2xActivePD extends BaseTest {
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+
+        clientID = Pages.clientDetailsPage().getClientID();
 
         // Create account
         AccountActions.createAccount().createCHKAccount(chkAccount);
@@ -124,6 +129,15 @@ public class C32555_AccountsListingCurrentDueDate2xActivePD extends BaseTest {
 
         // Generate 2 Payment Due record
         Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
+
+
+        // Get Due Date of the oldest Payment Due record
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+
+        dueDate = Pages.accountPaymentInfoPage().getDateDueOfSpecificRecord(2);
+
         Actions.loginActions().doLogOutProgrammatically();
 
     }
@@ -132,6 +146,26 @@ public class C32555_AccountsListingCurrentDueDate2xActivePD extends BaseTest {
     @Test(description = "C32555, Accounts Listing - Current Due Date, 2x Active PDs")
     @Severity(SeverityLevel.CRITICAL)
     public void accountsListingCurrentDueDate2xActivePD() {
+
+        logInfo("Step 1: Log in to the NYMBUS");
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        logInfo("Step 2: Find and select Client from preconditions");
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID);
+
+        logInfo("Step 3: Go to the 'Accounts' tab");
+        Pages.accountNavigationPage().clickAccountsTab();
+        Pages.accountsPage().waitAccountTableLoad();
+
+        logInfo("Step 4: Find a Loan account from preconditions");
+        TestRailAssert.assertTrue(Pages.accountsPage().isSpecificAccountByNumberPresent(loanAccount.getAccountNumber()),
+                new CustomStepResult("Loan Account from preconditions present", "Loan Account from pre conditions is not present"));
+
+        logInfo("Step 5: Verify the date in the 'Current Due Date' column");
+        TestRailAssert.assertTrue(Pages.accountsPage().getSpecificAccountCurrentDate(loanAccount.getAccountNumber()).equals(dueDate),
+            new CustomStepResult("Loan Account from preconditions present", "Loan Account from pre conditions is not present"));
+
 
     }
 
