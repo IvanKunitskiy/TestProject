@@ -83,9 +83,11 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By disAmount = By.xpath("//input[@id='amount']");
     private final By dueTypeTittle = By.xpath("//input[@id='paymentDueTypeTitle']");
     private final By dateDue = By.xpath("//dn-field-view//span//span");
+    private final By dueDateOfSpecificRecord = By.xpath("//tr[%s]//dn-field-view//span//span");
     private final By dueType = By.xpath("(//dn-field-view//span//span)[2]");
     private final By dueAmount = By.xpath("(//dn-field-view//span//span)[3]");
     private final By dueStatus = By.xpath("(//dn-field-view//span//span)[4]");
+    private final By specificDueStatus = By.xpath("(//div[@ui-view='paymentsDue']//tr)[%s]//td[4]");
 
     @Step("Get Pi Payments Payment 'Recalc Future Pymt' value")
     public String getPiPaymentsRecalcFuturePymt() {
@@ -200,6 +202,7 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By paymentType = By.xpath("(//div[@id='paymenttype_paymentHistory_0']//span[contains(string(),'%s')])[2]");
     private final By editPaymentDueDetailsButton = By.xpath("//div[@ui-view='paymentsDue']//button[@data-test-id='action-edit-payment-info']");
     private final By savePaymentDueDetailsButton = By.xpath("(//button[@data-test-id='action-save-payment-info'])[2]");
+    private final By inactiveButton = By.xpath("//button[@data-test-id='action-inactive-payment-info']");
 
     @Step("Get 'Payment amount'")
     public String getDisabledPaymentAmount() {
@@ -333,6 +336,12 @@ public class AccountPaymentInfoPage extends PageTools {
         return getElementText(dateDue);
     }
 
+    @Step("Get Due date value of {%s} record")
+    public String getDateDueOfSpecificRecord(int index) {
+        waitForElementVisibility(dueDateOfSpecificRecord, index);
+        return getElementText(dueDateOfSpecificRecord, index);
+    }
+
     @Step("Get Due type value")
     public String getDueType() {
         waitForElementVisibility(dueType);
@@ -351,6 +360,13 @@ public class AccountPaymentInfoPage extends PageTools {
         return getElementText(dueStatus);
     }
 
+    @Step("Get Due status value of {%s} record")
+    public String getSpecificDueStatus(int index) {
+        int indexModified = index + 1;
+        waitForElementVisibility(specificDueStatus, indexModified);
+        return getElementText(specificDueStatus, indexModified);
+    }
+
     @Step("Click the 'Edit' button")
     public void clickTheEditPaymentDueDetailsButton() {
         waitForElementVisibility(editPaymentDueDetailsButton);
@@ -361,6 +377,40 @@ public class AccountPaymentInfoPage extends PageTools {
     public void clickSavePaymentDueDetailsButton() {
         waitForElementVisibility(savePaymentDueDetailsButton);
         click(savePaymentDueDetailsButton);
+    }
+
+    @Step("Check if 'Inactive' button visible")
+    public boolean isInactiveButtonVisible() {
+        return isElementVisible(inactiveButton);
+    }
+
+    @Step("Check if 'Inactive' button visible")
+    public void clickInactiveButton() {
+        waitForElementClickable(inactiveButton);
+        click(inactiveButton);
+    }
+    
+    
+    // 'Make due record inactive' modal
+
+    private final By makeDueInactiveModal = By.xpath("//div[contains(@class, 'modal-dialog')]");
+    private final By makeDueInactiveModalYesButton = By.xpath("//button//span[contains(text(), 'Yes')]");
+    private final By futurePaymentDueExists = By.xpath("//div[@id='toast-container']");
+
+    @Step("Check if 'Make Payment Due Inactive' modal is visible")
+    public boolean isMakePaymentDueInactiveModalVisible() {
+        return isElementVisible(makeDueInactiveModal);
+    }
+
+    @Step("Click 'Yes' button on 'Make Payment Due Inactive' modal")
+    public void clickYesButtonOnMakePaymentDueInactive() {
+        waitForElementClickable(makeDueInactiveModalYesButton);
+        click(makeDueInactiveModalYesButton);
+    }
+
+    @Step("Get error's text")
+    public String getErrorText() {
+        return getElementText(futurePaymentDueExists).trim();
     }
 
     /**
