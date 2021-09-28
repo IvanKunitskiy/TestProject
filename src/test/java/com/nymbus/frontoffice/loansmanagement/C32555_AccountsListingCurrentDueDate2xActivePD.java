@@ -1,13 +1,10 @@
 package com.nymbus.frontoffice.loansmanagement;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
-import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
-import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -32,17 +29,20 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Petro")
-public class C32447_PaymentDueRecordsInactiveButtonActiveDues extends BaseTest {
+public class C32555_AccountsListingCurrentDueDate2xActivePD extends BaseTest {
 
     private Account loanAccount;
     private Account chkAccount;
+    private String dueDate;
+    private String clientID;
     private String clientRootId;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
     private final String TEST_RUN_NAME = "Loans Management";
 
     @BeforeMethod
-    public void preConditions() {
+    public void preConditions(){
+
 
         // Set up Client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
@@ -79,6 +79,8 @@ public class C32447_PaymentDueRecordsInactiveButtonActiveDues extends BaseTest {
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+
+        clientID = Pages.clientDetailsPage().getClientID();
 
         // Create account
         AccountActions.createAccount().createCHKAccount(chkAccount);
@@ -127,99 +129,44 @@ public class C32447_PaymentDueRecordsInactiveButtonActiveDues extends BaseTest {
 
         // Generate 2 Payment Due record
         Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
+
+
+        // Get Due Date of the oldest Payment Due record
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+
+        dueDate = Pages.accountPaymentInfoPage().getDateDueOfSpecificRecord(2);
+
         Actions.loginActions().doLogOutProgrammatically();
+
     }
 
-    @TestRailIssue(issueID = 32447, testRunName = TEST_RUN_NAME)
-    @Test(description = "C32447, Payment Due Records: 'Inactive' button - Active Dues")
+    @TestRailIssue(issueID = 32555, testRunName = TEST_RUN_NAME)
+    @Test(description = "C32555, Accounts Listing - Current Due Date, 2x Active PDs")
     @Severity(SeverityLevel.CRITICAL)
-    public void paymentDueRecordsInactiveButtonActiveDues() {
+    public void accountsListingCurrentDueDate2xActivePD() {
+
         logInfo("Step 1: Log in to the NYMBUS");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        logInfo("Step 2: Find and select Loan from preconditions");
+        logInfo("Step 2: Find and select Client from preconditions");
         Pages.aSideMenuPage().clickClientMenuItem();
-        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
+        Actions.clientPageActions().searchAndOpenIndividualClientByID(clientID);
 
-        logInfo("Step 3: Go to the 'Payment Info' tab");
-        Pages.accountDetailsPage().clickPaymentInfoTab();
+        logInfo("Step 3: Go to the 'Accounts' tab");
+        Pages.accountNavigationPage().clickAccountsTab();
+        Pages.accountsPage().waitAccountTableLoad();
 
-        logInfo("Step 4: Click on the Oldest Payment Due record in the 'Payment Due' section");
-        Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(2);
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().isInactiveButtonVisible(),
-                new CustomStepResult("'Inactive' button is visible", "'Inactive' button is not visible"));
+        logInfo("Step 4: Find a Loan account from preconditions");
+        TestRailAssert.assertTrue(Pages.accountsPage().isSpecificAccountByNumberPresent(loanAccount.getAccountNumber()),
+                new CustomStepResult("Loan Account from preconditions present", "Loan Account from pre conditions is not present"));
 
+        logInfo("Step 5: Verify the date in the 'Current Due Date' column");
+        TestRailAssert.assertTrue(Pages.accountsPage().getSpecificAccountCurrentDate(loanAccount.getAccountNumber()).equals(dueDate),
+            new CustomStepResult("Loan Account from preconditions present", "Loan Account from pre conditions is not present"));
 
-        logInfo("Step 5: Click on the 'Inactive' button");
-        Pages.accountPaymentInfoPage().clickInactiveButton();
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().isMakePaymentDueInactiveModalVisible(),
-                new CustomStepResult("'Are you sure you want to make this payment due inactive?' modal visible",
-                        "'Are you sure you want to make this payment due inactive?' modal is not visible"));
-
-        logInfo("Step 6: Click on the 'Yes' button");
-        Pages.accountPaymentInfoPage().clickYesButtonOnMakePaymentDueInactive();
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getErrorText().equals("Future active payment due exists"),
-                new CustomStepResult("Error message is present", "Error message is not present"));
-
-        logInfo("Step 7: Click on the Latest Payment Due record in the 'Payment Due' section");
-        Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(1);
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().isInactiveButtonVisible(),
-                new CustomStepResult("'Inactive' button is visible", "'Inactive' button is not visible"));
-
-        logInfo("Step 8: Click on the 'Inactive' button");
-        Pages.accountPaymentInfoPage().clickInactiveButton();
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().isMakePaymentDueInactiveModalVisible(),
-                new CustomStepResult("'Are you sure you want to make this payment due inactive?' modal visible",
-                        "'Are you sure you want to make this payment due inactive?' modal is not visible"));
-
-        logInfo("Step 9: Click on the 'Yes' button");
-        Pages.accountPaymentInfoPage().clickYesButtonOnMakePaymentDueInactive();
-        SelenideTools.sleep(Constants.MINI_TIMEOUT);
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getSpecificDueStatus(1).equals("Inactive"),
-                new CustomStepResult("Error message is present", "Error message is not present"));
-
-        String dueDate1 = Pages.accountPaymentInfoPage().getDateDueOfSpecificRecord(1);
-
-        logInfo("Step 10: Go to the 'Details' tab");
-        Pages.accountDetailsPage().clickDetailsTab();
-
-        logInfo("Step 11: Check the 'Next Payment Billed Due Date' field");
-        String nextPaymentBilledDueDate1 = Pages.accountDetailsPage().getNextPaymentBilledDueDate();
-        TestRailAssert.assertTrue(nextPaymentBilledDueDate1.equals(dueDate1),
-                new CustomStepResult("'Next Payment Billed Due Date' is  valid", "'Next Payment Billed Due Date' is not valid"));
-
-        logInfo("Step 12: Go to the 'Payment Info' tab");
-        Pages.accountDetailsPage().clickPaymentInfoTab();
-
-        logInfo("Step 13: Click on the following Active Payment Due record in the \"Payment Due\" section");
-        Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(2);
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().isInactiveButtonVisible(),
-                new CustomStepResult("'Inactive' button is visible", "'Inactive' button is not visible"));
-
-
-        logInfo("Step 14: Click on the 'Inactive' button");
-        Pages.accountPaymentInfoPage().clickInactiveButton();
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().isMakePaymentDueInactiveModalVisible(),
-                new CustomStepResult("'Are you sure you want to make this payment due inactive?' modal visible",
-                        "'Are you sure you want to make this payment due inactive?' modal is not visible"));
-
-        logInfo("Step 15: Click on the 'Yes' button");
-        Pages.accountPaymentInfoPage().clickYesButtonOnMakePaymentDueInactive();
-        SelenideTools.sleep(Constants.MINI_TIMEOUT);
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getSpecificDueStatus(2).equals("Inactive"),
-                new CustomStepResult("Error message is present", "Error message is not present"));
-
-        String dueDate2 = Pages.accountPaymentInfoPage().getDateDueOfSpecificRecord(2);
-
-        logInfo("Step 16: Go to the 'Details' tab");
-        Pages.accountDetailsPage().clickDetailsTab();
-
-        logInfo("Step 17: Check the 'Next Payment Billed Due Date' field");
-        String nextPaymentBilledDueDate2 = Pages.accountDetailsPage().getNextPaymentBilledDueDate();
-        TestRailAssert.assertTrue(nextPaymentBilledDueDate2.equals(dueDate2),
-                new CustomStepResult("'Next Payment Billed Due Date' is  valid", "'Next Payment Billed Due Date' is not valid"));
 
     }
-
 
 }
