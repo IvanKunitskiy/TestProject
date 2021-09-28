@@ -218,8 +218,5 @@ public class C32447_PaymentDueRecordsInactiveButtonActiveDues extends BaseTest {
         String nextPaymentBilledDueDate2 = Pages.accountDetailsPage().getNextPaymentBilledDueDate();
         TestRailAssert.assertTrue(nextPaymentBilledDueDate2.equals(dueDate2),
                 new CustomStepResult("'Next Payment Billed Due Date' is  valid", "'Next Payment Billed Due Date' is not valid"));
-
     }
-
-
 }
