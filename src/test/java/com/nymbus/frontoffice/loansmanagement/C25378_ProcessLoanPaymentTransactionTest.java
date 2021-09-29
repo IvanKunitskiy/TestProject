@@ -1,6 +1,5 @@
 package com.nymbus.frontoffice.loansmanagement;
 
-import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
@@ -15,11 +14,11 @@ import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
-import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
-import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
-import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitMiscCreditBuilder;
-import com.nymbus.newmodels.generation.tansactions.factory.DestinationFactory;
-import com.nymbus.newmodels.generation.tansactions.factory.SourceFactory;
+import com.nymbus.newmodels.generation.transactions.TransactionConstructor;
+import com.nymbus.newmodels.generation.transactions.builder.GLDebitDepositCHKAccBuilder;
+import com.nymbus.newmodels.generation.transactions.builder.MiscDebitMiscCreditBuilder;
+import com.nymbus.newmodels.generation.transactions.factory.DestinationFactory;
+import com.nymbus.newmodels.generation.transactions.factory.SourceFactory;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
@@ -31,8 +30,6 @@ import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.text.DateFormat;
 
 @Epic("Frontoffice")
 @Feature("Loans Management")

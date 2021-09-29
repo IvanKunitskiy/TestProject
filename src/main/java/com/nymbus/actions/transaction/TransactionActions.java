@@ -275,6 +275,23 @@ public class TransactionActions {
         fillDestinationInformation(transaction.getTransactionDestination());
     }
 
+    public void createTransitCheckDepositTransaction(Transaction transaction) {
+        int tempIndex = 1;
+        Pages.tellerPage().clickDepositButton();
+        fillDestinationInformation(transaction.getTransactionDestination());
+        Pages.tellerPage().clickCheckButton();
+        fillSourceDetails(transaction.getTransactionSource().getNotes(), tempIndex);
+        Pages.tellerPage().clickSourceDetailsArrow(tempIndex);
+        fillRoutingNumber(transaction.getTransactionSource().getRoutingNumber(),tempIndex);
+        fillSourceAmount(String.format("%.2f", transaction.getTransactionSource().getAmount()), tempIndex);
+        fillCheckNumber(transaction.getTransactionSource().getCheckNumber(), tempIndex);
+        Pages.tellerPage().clickCommitButton();
+        Pages.confirmModalPage().clickOk();
+        Pages.tellerPage().clickAccountNumberDiv(tempIndex);
+        Pages.tellerPage().typeAccNumber(tempIndex, transaction.getTransactionSource().getAccountNumber());
+        Pages.tellerPage().clickCommitButton();
+    }
+
     public void createMiscDebitGLCreditTransaction(Transaction transaction) {
         int currentIndex = 0;
         setMiscDebitSource(transaction.getTransactionSource(), currentIndex);

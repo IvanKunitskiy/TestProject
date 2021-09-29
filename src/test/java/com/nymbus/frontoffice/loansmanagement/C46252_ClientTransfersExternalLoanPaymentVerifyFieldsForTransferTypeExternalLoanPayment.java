@@ -15,13 +15,11 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.transfer.ExternalLoanPaymentTransfer;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
-import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
-import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
-import com.nymbus.newmodels.generation.tansactions.builder.MiscDebitMiscCreditBuilder;
-
+import com.nymbus.newmodels.generation.transactions.TransactionConstructor;
+import com.nymbus.newmodels.generation.transactions.builder.GLDebitDepositCHKAccBuilder;
+import com.nymbus.newmodels.generation.transactions.builder.MiscDebitMiscCreditBuilder;
 import com.nymbus.newmodels.generation.transfers.TransferBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
-
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
 import com.nymbus.testrail.CustomStepResult;
