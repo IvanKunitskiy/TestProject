@@ -60,6 +60,7 @@ public class C23910_AddNewCDIRAAccountTest extends BaseTest {
         // Set account data
         cdIRAAccount.setBankBranch(Actions.usersActions().getBankBranch());
         cdIRAAccount.setProduct(Actions.productsActions().getProduct(Products.CD_PRODUCTS, AccountType.IRA, RateType.FIXED));
+        cdIRAAccount.setProduct("12 Month Traditional IRA Cert");
         cdIRAAccount.setInterestType(Actions.productsActions().getInterestType(Products.CD_PRODUCTS, cdIRAAccount));
         cdIRAAccount.setTermType(Actions.productsActions().getTermType(Products.CD_PRODUCTS, cdIRAAccount));
         cdIRAAccount.setMinTerm(Actions.productsActions().getMinTerm(Products.CD_PRODUCTS, cdIRAAccount));
