@@ -1,6 +1,6 @@
-package com.nymbus.newmodels.generation.tansactions;
+package com.nymbus.newmodels.generation.transactions;
 
-import com.nymbus.newmodels.generation.tansactions.builder.MultipleTransactionBuilder;
+import com.nymbus.newmodels.generation.transactions.builder.MultipleTransactionBuilder;
 import com.nymbus.newmodels.transaction.MultipleTransaction;
 
 public class MultipleTransactionConstructor {

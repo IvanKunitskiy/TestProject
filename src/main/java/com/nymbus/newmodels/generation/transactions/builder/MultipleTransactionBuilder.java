@@ -1,4 +1,4 @@
-package com.nymbus.newmodels.generation.tansactions.builder;
+package com.nymbus.newmodels.generation.transactions.builder;
 
 import com.nymbus.newmodels.transaction.MultipleTransaction;
 

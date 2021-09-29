@@ -15,13 +15,13 @@ public class TellerPage extends PageTools {
     private By effectiveDate = By.xpath("//input[@data-test-id='field-']");
     private By drawerNameInFooter = By.xpath("//footer//span[contains(text(), 'Drawer Name')]/span");
     private By transactionSection = By.xpath("//section[@ui-view='transaction']");
-    private By tellerOperation =By.xpath("//span[contains(string(),'Select Operation')]");
+    private By tellerOperation = By.xpath("//span[contains(string(),'Select Operation')]");
     private By operationSelector = By.xpath("//span[contains(string(),'%s')]");
     private By errorMessage = By.xpath("//div[contains(@class, 'toast-error')]");
 
     @Step("Check error message")
-    public boolean errorMessagesIsVisible(){
-        if(isElementVisible(errorMessage)){
+    public boolean errorMessagesIsVisible() {
+        if (isElementVisible(errorMessage)) {
             return true;
         }
         SelenideTools.sleep(Constants.MINI_TIMEOUT);
@@ -71,14 +71,14 @@ public class TellerPage extends PageTools {
     }
 
     @Step("Click 'Select Operation' popup")
-    public void clickSelectOperation(){
+    public void clickSelectOperation() {
         waitForElementVisibility(tellerOperation);
         jsClick(tellerOperation);
     }
 
     @Step("Select operation")
-    public void selectOperation(String type){
-        waitForElementVisibility(operationSelector,type);
+    public void selectOperation(String type) {
+        waitForElementVisibility(operationSelector, type);
         jsClick(operationSelector, type);
     }
 
@@ -180,7 +180,7 @@ public class TellerPage extends PageTools {
     private By checkAccountNumberField = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='accountNumber account']/input");
     private By accountNumberInput = By.xpath("(//input[@type='search'])[2]");
     private By accountNumberField = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]" +
-            "//*[@data-name='accountNumber account']//input[contains(@class, 'ui-select-search')]");
+            "//*[@data-name='accountNumber account']//input");
 
     private By routingNumberDiv = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='routingTransitNumber']");
     private By routingNumberInput = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='routingTransitNumber']/input");
@@ -256,7 +256,7 @@ public class TellerPage extends PageTools {
     @Step("Click {0} 'Account number' division")
     public void clickAccountNumberDiv(int i) {
         waitForElementClickable(accountNumberDiv, i);
-        jsClick(accountNumberDiv, i);
+        click(accountNumberDiv, i);
     }
 
     @Step("Click {0} 'Routing number' division")
@@ -274,8 +274,7 @@ public class TellerPage extends PageTools {
     @Step("Set {0} 'Routing number' value {1}")
     public void typeRoutingNumber(int i, String number) {
         waitForElementClickable(routingNumberInput, i);
-        jsType(number, routingNumberInput, i);
-        jsRiseOnchange(routingNumberInput, i);
+        typeWithEnter(number, routingNumberInput, i);
     }
 
     @Step("Set {0} 'Check number' value {1}")
@@ -296,6 +295,12 @@ public class TellerPage extends PageTools {
         waitForElementClickable(accountNumberField, i);
         jsType(number, accountNumberField, i);
         jsRiseOnchange(accountNumberField, i);
+    }
+
+    @Step("Set {0} 'Account number' value {1}")
+    public void typeAccNumber(int i, String number) {
+        waitForElementVisibility(accountNumberField, i);
+        typeWithEnter(number, accountNumberField, i);
     }
 
     @Step("Fill in with account name")
@@ -393,14 +398,14 @@ public class TellerPage extends PageTools {
     private By bankRoutingInput = By.xpath("(//tr[contains(string(),'Bank Routing')])[2]/*/input");
 
     @Step("Input 'Bank routing'")
-    public void inputBankRouting(String routing){
+    public void inputBankRouting(String routing) {
         waitForElementVisibility(bankRoutingInput);
         jsSetValue(routing, bankRoutingInput);
         jsRiseOnchange(bankRoutingInput);
     }
 
     @Step("Click 'Waive Fee' popup")
-    public void clickWaiveFee(){
+    public void clickWaiveFee() {
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         waitForElementVisibility(waiveFeeButton);
         jsClick(waiveFeeButton);
@@ -571,7 +576,7 @@ public class TellerPage extends PageTools {
     public String getFirstAutomaticOverdraftLimit() {
         waitForElementVisibility(automaticOverdraftLimit);
         String limit = getElementText(automaticOverdraftLimit).trim();
-        if (!limit.contains("/")){
+        if (!limit.contains("/")) {
             return limit;
         }
         return limit.substring(0, limit.indexOf("/")).trim();

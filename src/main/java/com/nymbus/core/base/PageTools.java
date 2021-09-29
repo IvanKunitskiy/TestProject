@@ -138,6 +138,11 @@ public class PageTools extends AllureLogger {
         getActions().sendKeys(text).build().perform();
     }
 
+    protected void typeWithEnter(String text, By by, Object... args) {
+        wipeText(by, args);
+        shouldBe(Condition.visible, by, args).sendKeys(text + Keys.ENTER);
+    }
+
     protected void typeWithoutLogs(String text, By by, Object... args) {
         logInfo(getPreviousMethodNameAsText());
         wipeText(by, args);

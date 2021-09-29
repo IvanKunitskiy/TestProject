@@ -1,4 +1,4 @@
-package com.nymbus.newmodels.generation.tansactions.builder;
+package com.nymbus.newmodels.generation.transactions.builder;
 
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.newmodels.transaction.Transaction;
@@ -8,12 +8,13 @@ import com.nymbus.newmodels.transaction.enums.DestinationType;
 import com.nymbus.newmodels.transaction.enums.SourceType;
 import com.nymbus.util.Random;
 
-public class GLDebitMiscCreditCDAccBuilder implements TransactionBuilder {
+public class GLDebitDepositCHKAccBuilder implements TransactionBuilder {
     private Transaction transaction;
 
-    public GLDebitMiscCreditCDAccBuilder() {
-        transaction = new Transaction();
+    public GLDebitDepositCHKAccBuilder() {
+        this.transaction = new Transaction();
     }
+
 
     @Override
     public void setDate() {
@@ -32,10 +33,10 @@ public class GLDebitMiscCreditCDAccBuilder implements TransactionBuilder {
     @Override
     public void setDestination() {
         transaction.setTransactionDestination(new TransactionDestination());
-        transaction.getTransactionDestination().setSourceType(DestinationType.MISC_CREDIT);
+        transaction.getTransactionDestination().setSourceType(DestinationType.DEPOSIT);
         transaction.getTransactionDestination().setAccountNumber("83460855747");
         transaction.getTransactionDestination().setAmount(100.00);
-        transaction.getTransactionDestination().setTransactionCode("311 - New CD");
+        transaction.getTransactionDestination().setTransactionCode("109 - Deposit");
     }
 
     @Override

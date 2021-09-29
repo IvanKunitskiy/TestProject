@@ -1,4 +1,4 @@
-package com.nymbus.newmodels.generation.tansactions.builder;
+package com.nymbus.newmodels.generation.transactions.builder;
 
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.newmodels.transaction.Transaction;
@@ -8,11 +8,11 @@ import com.nymbus.newmodels.transaction.enums.DestinationType;
 import com.nymbus.newmodels.transaction.enums.SourceType;
 import com.nymbus.util.Random;
 
-public class WithdrawalGLDebitCHKAccBuilder implements TransactionBuilder {
+public class GLDebitMiscCreditCDAccBuilder implements TransactionBuilder {
     private Transaction transaction;
 
-    public WithdrawalGLDebitCHKAccBuilder() {
-        this.transaction =  new Transaction();
+    public GLDebitMiscCreditCDAccBuilder() {
+        transaction = new Transaction();
     }
 
     @Override
@@ -23,20 +23,19 @@ public class WithdrawalGLDebitCHKAccBuilder implements TransactionBuilder {
     @Override
     public void setSource() {
         transaction.setTransactionSource(new TransactionSource());
-        transaction.getTransactionSource().setSourceType(SourceType.WITHDRAWL);
-        transaction.getTransactionSource().setAccountNumber("83460855747");
+        transaction.getTransactionSource().setSourceType(SourceType.GL_DEBIT);
+        transaction.getTransactionSource().setAccountNumber("0-0-Dummy");
         transaction.getTransactionSource().setAmount(100.00);
-        //transaction.getTransactionSource().setTransactionCode("104 - Deposit Corr");
+        transaction.getTransactionSource().setNotes(Random.genString(20));
     }
 
     @Override
     public void setDestination() {
         transaction.setTransactionDestination(new TransactionDestination());
-        transaction.getTransactionDestination().setSourceType(DestinationType.DEPOSIT);
-        transaction.getTransactionDestination().setAccountNumber("0-0-Dummy");
+        transaction.getTransactionDestination().setSourceType(DestinationType.MISC_CREDIT);
+        transaction.getTransactionDestination().setAccountNumber("83460855747");
         transaction.getTransactionDestination().setAmount(100.00);
-        transaction.getTransactionDestination().setTransactionCode("109 - Deposit");
-        transaction.getTransactionDestination().setNotes(Random.genString(20));
+        transaction.getTransactionDestination().setTransactionCode("311 - New CD");
     }
 
     @Override

@@ -14,8 +14,8 @@ import com.nymbus.newmodels.generation.accountinstructions.InstructionConstructo
 import com.nymbus.newmodels.generation.accountinstructions.builder.ActivityHoldInstructionBuilder;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
-import com.nymbus.newmodels.generation.tansactions.TransactionConstructor;
-import com.nymbus.newmodels.generation.tansactions.builder.GLDebitDepositCHKAccBuilder;
+import com.nymbus.newmodels.generation.transactions.TransactionConstructor;
+import com.nymbus.newmodels.generation.transactions.builder.GLDebitDepositCHKAccBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;

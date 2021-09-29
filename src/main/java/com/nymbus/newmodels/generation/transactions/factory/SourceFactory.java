@@ -1,4 +1,4 @@
-package com.nymbus.newmodels.generation.tansactions.factory;
+package com.nymbus.newmodels.generation.transactions.factory;
 
 import com.nymbus.core.utils.Generator;
 import com.nymbus.newmodels.transaction.TransactionSource;
