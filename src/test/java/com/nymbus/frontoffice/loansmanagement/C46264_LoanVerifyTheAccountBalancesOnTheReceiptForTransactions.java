@@ -5,7 +5,6 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
-import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -26,6 +25,9 @@ import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Epic("Frontoffice")
 @Feature("Loans Management")
@@ -143,6 +145,37 @@ public class C46264_LoanVerifyTheAccountBalancesOnTheReceiptForTransactions exte
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
 
         logInfo("Step 5: Check the Account Balances on the Transaction Receipt popup");
+        String imgSrcBefore1 = Actions.transactionActions().getImageSrcFromPopup();
+        List<String> linesBefore1 = excludeLastWordFromLine(Actions.balanceInquiryActions().getReceiptLines(imgSrcBefore1));
+
+        System.out.println(linesBefore1 + " -------------------------");
+        System.out.println(linesBefore1.contains("Available Balance") + " -------------------------");
+        System.out.println(linesBefore1.contains("Ending Balance") + " -------------------------");
+        System.out.println(linesBefore1.contains("Beginning Balance") + " -------------------------");
+
+        TestRailAssert.assertFalse(linesBefore1.contains("Available Balance"),
+                new CustomStepResult("'Available Balance' is not present", "'Available Balance' is present"));
+        TestRailAssert.assertFalse(linesBefore1.contains("Ending Balance"),
+                new CustomStepResult("'Ending Balance' is not present", "'Ending Balance' is present"));
+        TestRailAssert.assertFalse(linesBefore1.contains("Beginning Balance"),
+                new CustomStepResult("'Beginning Balance' is not present", "'Beginning Balance' is present"));
+
+        Actions.transactionActions().clickCheckBoxOnReceiptPopUp();
+
+        String imgSrcAfter1 = Actions.transactionActions().getImageSrcFromPopup();
+        List<String> linesAfter1 = excludeLastWordFromLine(Actions.balanceInquiryActions().getReceiptLines(imgSrcAfter1));
+
+        System.out.println(linesAfter1 + " -------------------------");
+        System.out.println(linesAfter1.contains("Available Balance") + " -------------------------");
+        System.out.println(linesAfter1.contains("Ending Balance") + " -------------------------");
+        System.out.println(linesAfter1.contains("Beginning Balance") + " -------------------------");
+
+        TestRailAssert.assertFalse(linesAfter1.contains("Available Balance"),
+                new CustomStepResult("'Available Balance' is not present", "'Available Balance' is present"));
+        TestRailAssert.assertFalse(linesAfter1.contains("Ending Balance"),
+                new CustomStepResult("'Ending Balance' is not present", "'Ending Balance' is present"));
+        TestRailAssert.assertFalse(linesAfter1.contains("Beginning Balance"),
+                new CustomStepResult("'Beginning Balance' is not present", "'Beginning Balance' is present"));
 
         logInfo("Step 6: Close Transaction Receipt popup");
         Pages.tellerPage().closeModal();
@@ -205,6 +238,52 @@ public class C46264_LoanVerifyTheAccountBalancesOnTheReceiptForTransactions exte
         Actions.transactionActions().clickCommitButton();
 
         logInfo("Step 10: Check the Account Balances on the Transaction Receipt popup");
-        SelenideTools.sleep(36000);
+        String imgSrcBefore2 = Actions.transactionActions().getImageSrcFromPopup();
+        List<String> linesBefore2 = excludeLastWordFromLine(Actions.balanceInquiryActions().getReceiptLines(imgSrcBefore2));
+
+        System.out.println(linesBefore2 + " -------------------------");
+        System.out.println(linesBefore2.contains("Available Balance") + " -------------------------");
+        System.out.println(linesBefore2.contains("Ending Balance") + " -------------------------");
+        System.out.println(linesBefore2.contains("Beginning Balance") + " -------------------------");
+
+        TestRailAssert.assertFalse(linesBefore2.contains("Available Balance"),
+                new CustomStepResult("'Available Balance' is not present", "'Available Balance' is present"));
+        TestRailAssert.assertFalse(linesBefore2.contains("Ending Balance"),
+                new CustomStepResult("'Ending Balance' is not present", "'Ending Balance' is present"));
+        TestRailAssert.assertFalse(linesBefore2.contains("Beginning Balance"),
+                new CustomStepResult("'Beginning Balance' is not present", "'Beginning Balance' is present"));
+
+        Actions.transactionActions().clickCheckBoxOnReceiptPopUp();
+
+        String imgSrcAfter2 = Actions.transactionActions().getImageSrcFromPopup();
+        List<String> linesAfter2 = excludeLastWordFromLine(Actions.balanceInquiryActions().getReceiptLines(imgSrcAfter2));
+        System.out.println(linesAfter2 + " -------------------------");
+        System.out.println(linesAfter2.contains("Available Balance") + " -------------------------");
+        System.out.println(linesAfter2.contains("Ending Balance") + " -------------------------");
+        System.out.println(linesAfter2.contains("Beginning Balance") + " -------------------------");
+
+        TestRailAssert.assertFalse(linesAfter2.contains("Available Balance"),
+                new CustomStepResult("'Available Balance' is not present", "'Available Balance' is present"));
+        TestRailAssert.assertFalse(linesAfter2.contains("Ending Balance"),
+                new CustomStepResult("'Ending Balance' is not present", "'Ending Balance' is present"));
+        TestRailAssert.assertFalse(linesAfter2.contains("Beginning Balance"),
+                new CustomStepResult("'Beginning Balance' is not present", "'Beginning Balance' is present"));
+    }
+
+    private static List<String> excludeLastWordFromLine(String[] line) {
+        List<String> list = new ArrayList<>();
+        if(line.length > 1) {
+            for (String e : line) {
+                String[] words = e.split(" ");
+                if(words.length > 1){
+                    list.add(String.join(" ", words[0], words[1]));
+                } else {
+                    list.add(words[0]);
+                }
+            }
+        } else {
+            list.add(line[0]);
+        }
+        return list;
     }
 }
