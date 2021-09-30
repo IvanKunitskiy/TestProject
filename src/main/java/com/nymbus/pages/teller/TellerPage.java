@@ -91,6 +91,7 @@ public class TellerPage extends PageTools {
     private By printReceipt = By.xpath("//*[@id='printReceipt']");
     private By popupLoadingSpinner = By.xpath("//*[@id='printReceipt']/dn-loading-spinner");
     private By popupImg = By.xpath("//*[@id='printReceipt']//img[@id='receiptTemplate'][contains(@src, 'base64')]");
+    private By printBalancesOnReceiptCheckbox = By.xpath("//input[@type='checkbox']");
 
     @Step("Get first autocomplete account item")
     public String getFirstAutocompleteDropDownItem() {
@@ -124,6 +125,12 @@ public class TellerPage extends PageTools {
     public String getPopupImg() {
         waitForElementVisibility(popupImg);
         return getElementAttributeValue("src", popupImg);
+    }
+
+    @Step("Click 'Print Balances on Receipt' checkbox")
+    public void clickPrintBalancesOnReceiptCheckbox() {
+        waitForElementClickable(printBalancesOnReceiptCheckbox);
+        click(printBalancesOnReceiptCheckbox);
     }
 
     /**
