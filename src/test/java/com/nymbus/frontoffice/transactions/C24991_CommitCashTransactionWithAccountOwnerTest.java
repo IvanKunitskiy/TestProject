@@ -100,7 +100,7 @@ public class C24991_CommitCashTransactionWithAccountOwnerTest extends BaseTest {
         Actions.transactionActions().clickCommitButton();
         Actions.transactionActions().verifyPreSelectedClientFields(client);
 
-        logInfo("Step 8: Сlick [Verify] button in “Verify Conductor” popup");
+        logInfo("Step 8: Click [Verify] button in “Verify Conductor” popup");
         Pages.verifyConductorModalPage().clickVerifyButton();
         String imgSrc = Actions.transactionActions().getImageSrcFromPopup();
         String[] lines = Actions.balanceInquiryActions().getReceiptLines(imgSrc);

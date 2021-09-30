@@ -148,11 +148,6 @@ public class C46264_LoanVerifyTheAccountBalancesOnTheReceiptForTransactions exte
         String imgSrcBefore1 = Actions.transactionActions().getImageSrcFromPopup();
         List<String> linesBefore1 = excludeLastWordFromLine(Actions.balanceInquiryActions().getReceiptLines(imgSrcBefore1));
 
-        System.out.println(linesBefore1 + " -------------------------");
-        System.out.println(linesBefore1.contains("Available Balance") + " -------------------------");
-        System.out.println(linesBefore1.contains("Ending Balance") + " -------------------------");
-        System.out.println(linesBefore1.contains("Beginning Balance") + " -------------------------");
-
         TestRailAssert.assertFalse(linesBefore1.contains("Available Balance"),
                 new CustomStepResult("'Available Balance' is not present", "'Available Balance' is present"));
         TestRailAssert.assertFalse(linesBefore1.contains("Ending Balance"),
@@ -165,16 +160,11 @@ public class C46264_LoanVerifyTheAccountBalancesOnTheReceiptForTransactions exte
         String imgSrcAfter1 = Actions.transactionActions().getImageSrcFromPopup();
         List<String> linesAfter1 = excludeLastWordFromLine(Actions.balanceInquiryActions().getReceiptLines(imgSrcAfter1));
 
-        System.out.println(linesAfter1 + " -------------------------");
-        System.out.println(linesAfter1.contains("Available Balance") + " -------------------------");
-        System.out.println(linesAfter1.contains("Ending Balance") + " -------------------------");
-        System.out.println(linesAfter1.contains("Beginning Balance") + " -------------------------");
-
-        TestRailAssert.assertFalse(linesAfter1.contains("Available Balance"),
+        TestRailAssert.assertTrue(linesAfter1.contains("Available Balance"),
                 new CustomStepResult("'Available Balance' is not present", "'Available Balance' is present"));
-        TestRailAssert.assertFalse(linesAfter1.contains("Ending Balance"),
+        TestRailAssert.assertTrue(linesAfter1.contains("Ending Balance"),
                 new CustomStepResult("'Ending Balance' is not present", "'Ending Balance' is present"));
-        TestRailAssert.assertFalse(linesAfter1.contains("Beginning Balance"),
+        TestRailAssert.assertTrue(linesAfter1.contains("Beginning Balance"),
                 new CustomStepResult("'Beginning Balance' is not present", "'Beginning Balance' is present"));
 
         logInfo("Step 6: Close Transaction Receipt popup");
@@ -188,13 +178,6 @@ public class C46264_LoanVerifyTheAccountBalancesOnTheReceiptForTransactions exte
         String transactionAmount = Pages.accountTransactionPage().getAmountValue(1) + Pages.accountTransactionPage().getAmountFractionalValue(1);
         String postingDate = Pages.accountTransactionPage().getPostingDateValue(1);
         String transactionEffectiveDate = Pages.accountTransactionPage().getEffectiveDateValue(1);
-
-        System.out.println(transactionAmount + " ----------------------");
-        System.out.println(transaction109Amount + ".00" + " ----------------------");
-        System.out.println(postingDate + " ----------------------");
-        System.out.println(localDate + " ----------------------");
-        System.out.println(transactionEffectiveDate + " ----------------------");
-        System.out.println(loanAccount.getDateOpened() + " ----------------------");
 
         TestRailAssert.assertTrue(transactionAmount.equals(transaction109Amount + ".00"),
                 new CustomStepResult("'Transaction Amount' is valid", "'Transaction Amount' is not valid"));
@@ -241,11 +224,6 @@ public class C46264_LoanVerifyTheAccountBalancesOnTheReceiptForTransactions exte
         String imgSrcBefore2 = Actions.transactionActions().getImageSrcFromPopup();
         List<String> linesBefore2 = excludeLastWordFromLine(Actions.balanceInquiryActions().getReceiptLines(imgSrcBefore2));
 
-        System.out.println(linesBefore2 + " -------------------------");
-        System.out.println(linesBefore2.contains("Available Balance") + " -------------------------");
-        System.out.println(linesBefore2.contains("Ending Balance") + " -------------------------");
-        System.out.println(linesBefore2.contains("Beginning Balance") + " -------------------------");
-
         TestRailAssert.assertFalse(linesBefore2.contains("Available Balance"),
                 new CustomStepResult("'Available Balance' is not present", "'Available Balance' is present"));
         TestRailAssert.assertFalse(linesBefore2.contains("Ending Balance"),
@@ -257,16 +235,12 @@ public class C46264_LoanVerifyTheAccountBalancesOnTheReceiptForTransactions exte
 
         String imgSrcAfter2 = Actions.transactionActions().getImageSrcFromPopup();
         List<String> linesAfter2 = excludeLastWordFromLine(Actions.balanceInquiryActions().getReceiptLines(imgSrcAfter2));
-        System.out.println(linesAfter2 + " -------------------------");
-        System.out.println(linesAfter2.contains("Available Balance") + " -------------------------");
-        System.out.println(linesAfter2.contains("Ending Balance") + " -------------------------");
-        System.out.println(linesAfter2.contains("Beginning Balance") + " -------------------------");
 
-        TestRailAssert.assertFalse(linesAfter2.contains("Available Balance"),
+        TestRailAssert.assertTrue(linesAfter2.contains("Available Balance"),
                 new CustomStepResult("'Available Balance' is not present", "'Available Balance' is present"));
-        TestRailAssert.assertFalse(linesAfter2.contains("Ending Balance"),
+        TestRailAssert.assertTrue(linesAfter2.contains("Ending Balance"),
                 new CustomStepResult("'Ending Balance' is not present", "'Ending Balance' is present"));
-        TestRailAssert.assertFalse(linesAfter2.contains("Beginning Balance"),
+        TestRailAssert.assertTrue(linesAfter2.contains("Beginning Balance"),
                 new CustomStepResult("'Beginning Balance' is not present", "'Beginning Balance' is present"));
     }
 
