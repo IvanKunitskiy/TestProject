@@ -7,14 +7,16 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
 public class TellerModalPage extends PageTools {
-    private By modalWindow = By.xpath("//div[contains(@class, 'login-modal')]");
-    private By cashDrawerName = By.xpath("//div[@name='cashDrawerTemplate']/a/span/span");
-    private By proofDate = By.xpath("//div[@ng-model='viewModel.proofDate']//a//span[@class='select2-chosen']/span");
-    private By location = By.xpath("//div[@ng-model='viewModel.location']//a//span[@class='select2-chosen']/span");
-    private By enterButton = By.xpath("//div[@class='modal-content']//button[contains(@class, 'btn-primary')]");
-    private By blankTellerField = By.xpath("//div[@ng-model='viewModel.otherTeller']//a/span[1]");
-    private By bankBranch = By.xpath("//div[@ng-model='viewModel.location']//a/span/span");
-    private By closeButton = By.xpath("//button[contains(string(),'×')]");
+    private final By modalWindow = By.xpath("//div[contains(@class, 'login-modal')]");
+    private final By cashDrawerName = By.xpath("//div[@name='cashDrawerTemplate']/a/span/span");
+    private final By proofDate = By.xpath("//div[@ng-model='viewModel.proofDate']//a//span[@class='select2-chosen']/span");
+    private final By location = By.xpath("//div[@ng-model='viewModel.location']//a//span[@class='select2-chosen']/span");
+    private final By enterButton = By.xpath("//div[@class='modal-content']//button[contains(@class, 'btn-primary')]");
+    private final By blankTellerField = By.xpath("//div[@ng-model='viewModel.otherTeller']//a/span[1]");
+    private final By bankBranch = By.xpath("//div[@ng-model='viewModel.location']//a/span/span");
+    private final By closeButton = By.xpath("//button[contains(string(),'×')]");
+    private final By teller = By.xpath("//a[@placeholder='Teller']/span");
+    private final By cashRecycler = By.xpath("//a[@placeholder='Select Cash Recycler']/span");
 
     @Step("Is blank teller field visible")
     public boolean isBlankTellerFieldVisible() {
@@ -84,5 +86,17 @@ public class TellerModalPage extends PageTools {
     public boolean isModalWindowVisible() {
         SelenideTools.sleep(Constants.MINI_TIMEOUT);
         return isElementVisible(modalWindow);
+    }
+
+    @Step("Get 'Teller' value")
+    public String getTeller() {
+        waitForElementVisibility(teller);
+        return getElementText(teller);
+    }
+
+    @Step("Get 'Cash Recycler' value")
+    public String getCashRecycler() {
+        waitForElementVisibility(cashRecycler);
+        return getElementText(cashRecycler);
     }
 }

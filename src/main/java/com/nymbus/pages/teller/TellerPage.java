@@ -625,6 +625,41 @@ public class TellerPage extends PageTools {
         return getElementText(productType).trim();
     }
 
+    /**
+     *  Footer region
+     */
+
+    private final By location = By.xpath("(//footer/div/div)[5]");
+    private final By proofDate = By.xpath("(//footer/div/div)[9]");
+    private final By drawerName = By.xpath("(//footer/div/div)[7]");
+    private final By drawerBalance = By.xpath("(//footer/div/div)[6]");
+
+    @Step("Get 'Location' value")
+    public String getLocation() {
+        waitForElementVisibility(location);
+        return getElementText(location).trim();
+    }
+
+    @Step("Get 'Drawer Name' value")
+    public String getDrawerName() {
+        waitForElementVisibility(drawerName);
+        return getElementText(drawerName).trim();
+    }
+
+    @Step("Get 'Drawer balance' value")
+    public String getDrawerBalance() {
+        waitForElementVisibility(drawerBalance);
+        return getElementText(drawerBalance).trim();
+    }
+
+    @Step("Get 'Proof date' value")
+    public String getProofDate() {
+        waitForElementVisibility(proofDate);
+        return getElementText(proofDate).trim();
+    }
+
+
+
     private final By lateChargesDue = By.xpath("//*[@id='accordion-operation-aqv-content']//span[text()='Late Charges Due']//ancestor::node()[1]//span[2]");
     private final By totalPastDue = By.xpath("//*[@id='accordion-operation-aqv-content']//span[text()='Total Past Due']//ancestor::node()[1]//span[2]");
     private final By principalNextDue = By.xpath("//*[@id='accordion-operation-aqv-content']//span[text()='Principal next due']//ancestor::node()[1]//span[2]");

@@ -53,6 +53,12 @@ public class WebAdminUsersActions {
                 + "formName=bank.data.bcfile&filter_(databean)code=CFMIntegrationEnable";
     }
 
+    private String getDateFilesUpdatedThroughUrl() {
+        return Constants.WEB_ADMIN_URL
+                + "rulesui2.sbs.bcfile.ct?"
+                + "formName=bank.data.bcfile&filter_(databean)code=DateFilesUpdatedThrough";
+    }
+
     private String getAccountsWithYtdInterestPaidNotNullUrl() {
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?"
@@ -905,6 +911,16 @@ public class WebAdminUsersActions {
         verifyingModel.setUserSessionExist(WebAdminPages.rulesUIQueryAnalyzerPage().isSearchResultTableExist());
 
         return verifyingModel;
+    }
+
+    public boolean isCFMIntegrationEnabled(){
+        SelenideTools.openUrl(getBankControlFileUrl());
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getBankControlFileValue().equals("1");
+    }
+
+    public String getDateFilesUpdatedThrough(){
+        SelenideTools.openUrl(getDateFilesUpdatedThroughUrl());
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getDateValue();
     }
 
     public void goToTellerSessionUrl(String userId) {
