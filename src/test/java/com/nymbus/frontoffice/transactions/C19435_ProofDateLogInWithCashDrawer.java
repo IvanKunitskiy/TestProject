@@ -30,6 +30,9 @@ public class C19435_ProofDateLogInWithCashDrawer extends BaseTest {
         }
         date = WebAdminActions.webAdminUsersActions().getDateFilesUpdatedThrough();
         date = DateTime.getDatePlusDays(date, 1);
+
+        WebAdminActions.loginActions().doLogout();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
     }
 
 
