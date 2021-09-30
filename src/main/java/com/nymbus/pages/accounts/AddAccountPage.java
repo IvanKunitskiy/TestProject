@@ -204,6 +204,7 @@ public class AddAccountPage extends PageTools {
 
     private final By commitmentTypeAmtSelectorButton = By.xpath("//div[@id='commitmenttype']");
     private final By commitmentTypeAmtList = By.xpath("//li[contains(@role, 'option')]/div/span");
+    private final By commitmentAmt = By.xpath("//input[@data-test-id='field-commitmentamount']");
     private final By commitmentTypeAmtSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[text()='%s']]");
 
     @Step("Wait for account holder name")
@@ -1275,6 +1276,13 @@ public class AddAccountPage extends PageTools {
         waitForElementClickable(term);
         scrollToPlaceElementInCenter(term);
         type(value, term);
+    }
+
+    @Step("Set 'Commitment amt'")
+    public void setCommitmentAmt(String value){
+        waitForElementClickable(commitmentAmt);
+        scrollToPlaceElementInCenter(commitmentAmt);
+        type(value, commitmentAmt);
     }
 
     @Step("Set 'Payment Billed Lead Days' value")

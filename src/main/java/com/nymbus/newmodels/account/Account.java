@@ -102,6 +102,7 @@ public class Account {
     private String rateChangeFrequency;
     private String cycleCode;
     private String commitmentTypeAmt;
+    private String commitmentAmt;
     private String dateFirstPaymentDue;
     private String escrow;
     private String paymentChangeFrequency;
@@ -1040,6 +1041,10 @@ public class Account {
     public void setCommitmentTypeAmt(String commitmentTypeAmt) {
         this.commitmentTypeAmt = commitmentTypeAmt;
     }
+
+    public String getCommitmentAmt() { return commitmentAmt; }
+
+    public void setCommitmentAmt(String commitmentAmt) { this.commitmentAmt = commitmentAmt; }
 
     public String getCycleCode() {
         return cycleCode;
