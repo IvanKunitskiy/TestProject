@@ -14,23 +14,19 @@ import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
-import com.nymbus.newmodels.generation.tansactions.factory.DestinationFactory;
-import com.nymbus.newmodels.generation.tansactions.factory.SourceFactory;
+import com.nymbus.newmodels.generation.transactions.factory.DestinationFactory;
+import com.nymbus.newmodels.generation.transactions.factory.SourceFactory;
 import com.nymbus.newmodels.maintenance.Tool;
 import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
-import com.nymbus.pages.webadmin.WebAdminPages;
 import com.nymbus.testrail.CustomStepResult;
 import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
-import org.checkerframework.checker.units.qual.A;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import javax.swing.*;
 
 @Epic("Frontoffice")
 @Feature("Loans Management")

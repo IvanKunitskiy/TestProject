@@ -14,6 +14,7 @@ import com.nymbus.pages.settings.officialcontrol.OfficialControlPage;
 import com.nymbus.pages.settings.printer.PrinterPage;
 import com.nymbus.pages.settings.products.ProductOverviewPage;
 import com.nymbus.pages.settings.products.ProductsOverviewPage;
+import com.nymbus.pages.settings.regcc.RegCCPage;
 import com.nymbus.pages.settings.safedepositboxsizes.SafeDepositBoxSizesPage;
 import com.nymbus.pages.settings.tellerlocation.BranchOverviewPage;
 import com.nymbus.pages.settings.tellerlocation.TellerLocationOverviewPage;
@@ -47,6 +48,7 @@ public class SettingsPage {
     private static CallCodePage callCodePage;
     private static EditCallCodePage editCallCodePage;
     private static BankControlLoansPage bankControlLoansPage;
+    private static RegCCPage regCCPage;
 
     /**
      * This function return an instance of `MainPage`
@@ -256,5 +258,12 @@ public class SettingsPage {
             bankControlLoansPage = new BankControlLoansPage();
         }
         return bankControlLoansPage;
+    }
+
+    public static RegCCPage regCCPage() {
+        if (regCCPage == null) {
+            regCCPage = new RegCCPage();
+        }
+        return regCCPage;
     }
 }

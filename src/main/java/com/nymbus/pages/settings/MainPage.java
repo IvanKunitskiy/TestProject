@@ -52,6 +52,9 @@ public class MainPage extends PageTools {
     // Call Class Codes
     private By viewAllCallCodes = By.xpath("//a[text()='View all Call Codes']");
 
+    //Reg CC management
+    private By regCCManagement = By.xpath("//h2[text()='Reg CC Management']/..//span");
+
     @Step("Waiting 'Cash Drawer' region")
     public void waitForCashDrawerRegion() {
         waitForElementVisibility(cashDrawerRegion);
@@ -186,4 +189,10 @@ public class MainPage extends PageTools {
         click(viewAllCallCodes);
     }
 
+    @Step("Click 'Reg CC manage' button")
+    public void clickManageRegCC() {
+        waitForElementVisibility(regCCManagement);
+        waitForElementClickable(regCCManagement);
+        click(regCCManagement);
+    }
 }

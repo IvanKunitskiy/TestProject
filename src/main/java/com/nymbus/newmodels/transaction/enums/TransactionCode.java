@@ -33,6 +33,7 @@ public enum TransactionCode {
     CUR_Yr_Contribution_330("330 - Cur Yr Contrib"),
     CUR_Yr_Contribution_2330("2330 - Cur Yr Contrib"),
     CHECK("128 - Check"),
+    TRANSIT_CHECK("Transit Check"),
     GL_CREDIT_865("865 - G/L Credit"),
     CASH_IN_850("850 - Cash In"),
     DEPOSIT_CORR_104("104 - Deposit Corr"),
