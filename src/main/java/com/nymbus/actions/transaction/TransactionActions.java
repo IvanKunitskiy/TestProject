@@ -671,6 +671,12 @@ public class TransactionActions {
         return Pages.tellerPage().getPopupImg();
     }
 
+    public void clickCheckBoxOnReceiptPopUp() {
+        Pages.tellerPage().clickPrintBalancesOnReceiptCheckbox();
+        Pages.tellerPage().waitForPrintReceipt();
+        Pages.tellerPage().waitForPopupSpinnerInvisibility();
+    }
+
     public void setTransactionCode(Transaction transaction) {
         if (Pages.accountDetailsPage().getProductTypeValue().equals(ProductType.CHK_ACCOUNT.getProductType())) {
             transaction.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
