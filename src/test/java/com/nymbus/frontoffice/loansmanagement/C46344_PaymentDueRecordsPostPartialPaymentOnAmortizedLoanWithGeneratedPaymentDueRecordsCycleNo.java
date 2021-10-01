@@ -7,7 +7,6 @@ import com.nymbus.actions.loans.DaysBaseYearBase;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Functions;
-import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.CommitmentTypeAmt;
 import com.nymbus.newmodels.account.loanaccount.InterestMethod;
@@ -195,6 +194,10 @@ public class C46344_PaymentDueRecordsPostPartialPaymentOnAmortizedLoanWithGenera
         String transactionPrincipal = Pages.accountTransactionPage().getPrincipalValue(1) + Pages.accountTransactionPage().getPrincipalFractionalPartValue(1);
         String transactionInterest = Pages.accountTransactionPage().getInterestValue(1) + Pages.accountTransactionPage().getInterestMinusFractionalValue(1);
 
+        Pages.accountDetailsPage().clickDetailsTab();
+        Pages.accountDetailsPage().waitForEditButton();
+        String nextPaymentBilledDueDateBefore = Pages.accountDetailsPage().getNextPaymentBilledDueDate();
+
         Pages.accountDetailsPage().clickPaymentInfoTab();
 
         logInfo("Step 7: Click on the Payment Due Record with Status == 'Partially Paid' in the 'Payments Due' section");
@@ -204,10 +207,6 @@ public class C46344_PaymentDueRecordsPostPartialPaymentOnAmortizedLoanWithGenera
         String amountDueActual = Pages.accountPaymentInfoPage().getDisabledAmountDue().replaceAll("[^.0-9]", "");
         double amountDueExpected = Double.parseDouble(loanAccount.getPaymentAmount()) - transactionAmount;
         String status = Pages.accountPaymentInfoPage().getDisabledStatus();
-
-        System.out.println(amountDueActual + " --------------");
-        System.out.println(amountDueExpected + " --------------");
-        System.out.println(status + " --------------");
 
         TestRailAssert.assertTrue(amountDueActual.equals(amountDueExpected + "0"),
                 new CustomStepResult("'Amount Due' is valid", "'Amount Due' is not valid"));
@@ -248,18 +247,9 @@ public class C46344_PaymentDueRecordsPostPartialPaymentOnAmortizedLoanWithGenera
         String nextPaymentBilledDueDateActual = Pages.accountDetailsPage().getNextPaymentBilledDueDate();
         String interestPaidToDateActual = Pages.accountDetailsPage().getInterestPaidToDate();
 
-        System.out.println(dailyInterestFactorExpected + " -------------");
-        System.out.println(dailyInterestFactorActual + " -------------");
-
-        System.out.println(nextPaymentBilledDueDateActual + " ----------------");
-        System.out.println(loanAccount.getNextPaymentBilledDueDate() + " ----------------");
-
-        System.out.println(interestPaidToDateActual + " ----------------");
-        System.out.println(transactionInterest + " ----------------");
-
         TestRailAssert.assertTrue(dailyInterestFactorExpected.equals(dailyInterestFactorActual),
                 new CustomStepResult("'Daily interest factor' is valid", "'Daily interest factor' is not valid"));
-        TestRailAssert.assertTrue(nextPaymentBilledDueDateActual.equals(loanAccount.getNextPaymentBilledDueDate()),
+        TestRailAssert.assertTrue(nextPaymentBilledDueDateActual.equals(nextPaymentBilledDueDateBefore),
                 new CustomStepResult("'Next Payment Billed Due Date' is valid", "'Next Payment Billed Due Date' is not valid"));
         TestRailAssert.assertTrue(interestPaidToDateActual.equals(transactionInterest),
                 new CustomStepResult("'Interest Paid to Date' is valid", "'Interest Paid to Date' is not valid"));
