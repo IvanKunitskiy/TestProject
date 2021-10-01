@@ -198,6 +198,7 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By datePaymentPaidInFull = By.xpath("//input[@id='datepaid']");
     private final By dueDate = By.xpath("//input[@id='duedate']");
     private final By paymentDueType = By.xpath("//input[@data-test-id='field-paymentDueTypeTitle']");
+    private final By disabledStatus = By.xpath("//div[@data-test-id='field-paymentduestatus']//span/span");
     private final By paymentAmount = By.xpath("//input[@data-test-id='field-amount']");
     private final By paymentType = By.xpath("(//div[@id='paymenttype_paymentHistory_0']//span[contains(string(),'%s')])[2]");
     private final By editPaymentDueDetailsButton = By.xpath("//div[@ui-view='paymentsDue']//button[@data-test-id='action-edit-payment-info']");
@@ -276,6 +277,12 @@ public class AccountPaymentInfoPage extends PageTools {
     public String getDisabledPaymentDueType() {
         waitForElementVisibility(paymentDueType);
         return getDisabledElementAttributeValue("value", paymentDueType).trim();
+    }
+
+    @Step("Get 'Status' value")
+    public String getDisabledStatus() {
+        waitForElementVisibility(disabledStatus);
+        return getElementText(disabledStatus).trim();
     }
 
     @Step("Get interest value")

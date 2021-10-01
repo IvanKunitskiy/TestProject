@@ -114,4 +114,9 @@ public class Functions {
         }
         return convertedNum.substring(0, end - 2);
     }
+
+    public static String getDoubleWithNDecimalPlaces(double value, int decimalNumber) {
+        String[] splitedDouble = String.valueOf(value).split("\\.");
+        return splitedDouble[0] + "." + splitedDouble[1].substring(0, decimalNumber);
+    }
 }
