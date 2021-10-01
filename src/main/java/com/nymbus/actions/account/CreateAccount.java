@@ -192,6 +192,9 @@ public class CreateAccount {
         if (!(account.isAdjustableRate())) {
             disableAdjustableRateSwitch();
         }
+        if(account.getCommitmentAmt() != null){
+            Pages.addAccountPage().setCommitmentAmt(account.getCommitmentAmt());
+        }
         Pages.addAccountPage().setNextPaymentBilledDueDate(account.getNextPaymentBilledDueDate());
         Pages.addAccountPage().setDateFirstPaymentDue(account.getDateFirstPaymentDue());
         Pages.addAccountPage().setCurrentEffectiveRate(account.getCurrentEffectiveRate());
@@ -201,7 +204,6 @@ public class CreateAccount {
         setDaysBaseYearBase(account);
         Pages.addAccountPage().setTerm(account.getTerm());
         setCommitmentTypeAmt(account);
-        Pages.addAccountPage().setCommitmentAmt(account.getCommitmentAmt());
         disableLocPaymentRecalculationFlagValueSwitch();
         setCallClassCode(account);
         Pages.addAccountPage().clickSaveAccountButton();
