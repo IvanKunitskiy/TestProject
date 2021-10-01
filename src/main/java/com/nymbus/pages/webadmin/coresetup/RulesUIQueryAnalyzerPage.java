@@ -240,6 +240,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      */
     private By nameField = By.xpath("//*[@id='databean_1']//td[contains(@class, 'rulesui-form-item_(databean)name')]/input");
     private By valueField = By.xpath("//*[@id='databean_1']//td[contains(@class, 'rulesui-form-item_long')]/input");
+    private final By date = By.xpath("(//*[@id='databean_1']//td[contains(@class, 'rulesui-form-item_date')]/input)[1]");
 
     @Step("Get 'CFMIntegrationEnabled' name field value")
     public String getBankControlFileNameFieldValue() {
@@ -251,6 +252,12 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     public String getBankControlFileValue() {
         waitForElementVisibility(valueField);
         return getElementAttributeValue("value", valueField).trim();
+    }
+
+    @Step("Get 'Date' value field")
+    public String getDateValue() {
+        waitForElementVisibility(date);
+        return getElementAttributeValue("value", date).trim();
     }
 
     /**
