@@ -17,8 +17,9 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Dmytro")
-public class C19435_ProofDateLogInWithCashDrawer extends BaseTest {
+public class C19436_ProofDateLogInWithCashDrawerCashMachine extends BaseTest {
     private String date;
+    private String cashRecycler;
 
     @BeforeMethod
     public void prepareTransactionData() {
@@ -31,24 +32,25 @@ public class C19435_ProofDateLogInWithCashDrawer extends BaseTest {
         date = WebAdminActions.webAdminUsersActions().getDateFilesUpdatedThrough();
         date = DateTime.getDatePlusDays(date, 1);
 
+        cashRecycler = WebAdminActions.webAdminUsersActions().getCashRecyclerName();
+
         WebAdminActions.loginActions().doLogout();
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
     }
 
     private final String TEST_RUN_NAME = "Transactions";
 
-    @TestRailIssue(issueID = 19435, testRunName = TEST_RUN_NAME)
-    @Test(description = "C19435, Proof Date Log In with Cash Drawer")
+    @TestRailIssue(issueID = 19436, testRunName = TEST_RUN_NAME)
+    @Test(description = "C19436, Proof Date Log In with Cash Drawer + Cash Machine")
     @Severity(SeverityLevel.CRITICAL)
     public void proofDateLogInWithCashDrawer() {
         logInfo("Step 1: Log in to the system as the user from preconditions");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-        logInfo("Step 2: Go to Teller page");
+        logInfo("Step 2: Click on the User Profile logo icon in the top right corner of the screen\n" +
+                "Press [Proof Date Login] button");
         Actions.transactionActions().goToTellerPage();
         Pages.tellerPage().waitModalWindow();
-
-        logInfo("Step 3: Look at the displayed proof date login popup");
         TestRailAssert.assertEquals(Pages.tellerModalPage().getTeller(), "Teller", new CustomStepResult("Teller is ok",
                 "Teller is not valid"));
         TestRailAssert.assertEquals(Pages.tellerModalPage().getProofDateValue(), date, new CustomStepResult("Date is ok",
@@ -60,7 +62,15 @@ public class C19435_ProofDateLogInWithCashDrawer extends BaseTest {
         TestRailAssert.assertEquals(Pages.tellerModalPage().getCashRecycler(), "Select Cash Recycler",
                 new CustomStepResult("CashRecycler is ok", "CashRecycler is not valid"));
 
-        logInfo("Step 4: Do not make any changes in the Proof Date login popup click [Enter] button");
+        logInfo("Step 3: Select Cash Machine from preconditions in the 'Select Cash Recycler' drop down");
+        Pages.tellerModalPage().clickCashRecycler();
+        Pages.tellerModalPage().clickCashRecyclerItem(cashRecycler);
+
+        logInfo("Step 4: Select side from the 'Side' dropdown (e.g. 'Right' or 'Left')");
+        Pages.tellerModalPage().clickSide();
+        Pages.tellerModalPage().clickLeftSide();
+
+        logInfo("Step 5: Press [Enter] button");
         Actions.transactionActions().loginTeller();
         TestRailAssert.assertEquals(Pages.tellerPage().getLocation(), "Clarence Office",
                 new CustomStepResult("Location is ok", "Location is not valid"));

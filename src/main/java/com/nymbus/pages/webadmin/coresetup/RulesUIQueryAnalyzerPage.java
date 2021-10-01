@@ -24,6 +24,13 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private By dormantAccountNumberByIndex = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[2]/div");
     private By foundNumberOfRecords = By.xpath("//div[@class='panelContent']/div[@id='dqlSearch']/div/span[contains(text(), 'Found')]");
     private By printBalanceOnReceiptValue = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[10]/div[@key-name='long']");
+    private final By cashRecyclerName = By.xpath("//div[@key-name='(databean)name']");
+
+    @Step("Get Cash Drawer Name value")
+    public String getCashRecyclerName() {
+        waitForElementVisibility(cashRecyclerName);
+        return getElementAttributeValue("value", cashRecyclerName);
+    }
 
     @Step("Wait for 'Rules UI Query Analyzer' page loaded")
     public void waitForPageLoad() {
@@ -537,7 +544,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         return getElementsText(templateName);
     }
 
-    @Step ("Get template name by index")
+    @Step("Get template name by index")
     public String getCdtTemplateNameByIndex(int index) {
         waitForElementVisibility(templateNameByIndex, index);
         return getElementText(templateNameByIndex, index).trim();
@@ -605,8 +612,8 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
 
     @Step("Get 'Status' {index} value")
     public String getStatusValueByIndex(int index) {
-        waitForElementVisibility(status, index-1);
-        return getElementText(status, index-1).trim();
+        waitForElementVisibility(status, index - 1);
+        return getElementText(status, index - 1).trim();
     }
 
     @Step("Get 'Active Converted Loan Account' {index} value")
@@ -813,10 +820,6 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         waitForElementVisibility(rateIndex, index);
         return getElementText(rateIndex, index);
     }
-
-
-
-
 
 
 }
