@@ -17,6 +17,9 @@ public class TellerModalPage extends PageTools {
     private final By closeButton = By.xpath("//button[contains(string(),'×')]");
     private final By teller = By.xpath("//a[@placeholder='Teller']/span");
     private final By cashRecycler = By.xpath("//a[@placeholder='Select Cash Recycler']/span");
+    private final By cashRecyclerItem = By.xpath("(//span[@ng-bind-html='viewModel.cashDrawerView(item)'])[%s]");
+    private final By side = By.xpath("//a[@placeholder='Side']/span");
+    private final By leftSide = By.xpath("(//span[@ng-bind-html='viewModel.cashDrawerSideView(item)'])[1]");
 
     @Step("Is blank teller field visible")
     public boolean isBlankTellerFieldVisible() {
@@ -98,5 +101,37 @@ public class TellerModalPage extends PageTools {
     public String getCashRecycler() {
         waitForElementVisibility(cashRecycler);
         return getElementText(cashRecycler);
+    }
+
+    @Step("Click 'Cash Recycler'")
+    public void clickCashRecycler() {
+        waitForElementVisibility(cashRecycler);
+        click(cashRecycler);
+    }
+
+    @Step("Click Cash Recycler item")
+    public void clickCashRecyclerItem(String name){
+        int index = 0;
+        waitForElementVisibility(cashRecyclerItem, index);
+        boolean notContains = true;
+        while (notContains){
+            index++;
+            notContains = !getElementAttributeValue("value", cashRecyclerItem, index).contains(name);
+            if (!notContains){
+                click(cashRecyclerItem, index);
+            }
+        }
+    }
+
+    @Step("Click 'Side'")
+    public void clickSide() {
+        waitForElementVisibility(side);
+        click(side);
+    }
+
+    @Step("Click 'Left Side'")
+    public void clickLeftSide() {
+        waitForElementVisibility(leftSide);
+        click(leftSide);
     }
 }

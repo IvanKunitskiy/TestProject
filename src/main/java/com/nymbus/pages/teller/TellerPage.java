@@ -19,6 +19,7 @@ public class TellerPage extends PageTools {
     private By operationSelector = By.xpath("//span[contains(string(),'%s')]");
     private By errorMessage = By.xpath("//div[contains(@class, 'toast-error')]");
 
+
     @Step("Check error message")
     public boolean errorMessagesIsVisible() {
         if (isElementVisible(errorMessage)) {
