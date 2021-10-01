@@ -201,6 +201,7 @@ public class CreateAccount {
         setDaysBaseYearBase(account);
         Pages.addAccountPage().setTerm(account.getTerm());
         setCommitmentTypeAmt(account);
+        Pages.addAccountPage().setCommitmentAmt(account.getCommitmentAmt());
         disableLocPaymentRecalculationFlagValueSwitch();
         setCallClassCode(account);
         Pages.addAccountPage().clickSaveAccountButton();
