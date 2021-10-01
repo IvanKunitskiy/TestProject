@@ -26,18 +26,20 @@ import com.nymbus.pages.Pages;
 import com.nymbus.testrail.CustomStepResult;
 import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
-import io.qameta.allure.*;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-@Epic("Frontoffice")
-@Feature("Loans Management")
-@Owner("Petro")
-public class C46344_PaymentDueRecordsPostPartialPaymentOnAmortizedLoanWithGeneratedPaymentDueRecordsCycleNo extends BaseTest {
+public class C46345_PaymentDueRecordsErrorCorrectPartialPaymentTransactionOnAmortizedLoanWithGeneratedPaymentDueRecordsCycleNo extends BaseTest {
 
     private Account loanAccount;
     private Account chkAccount;
     private String clientRootId;
+    String currentBalanceBefore;
+    double transactionAmount;
+    String interestPaidToDateAfter416;
+    String nextPaymentBilledDueDateBefore;
     Transaction transaction_416;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
@@ -132,39 +134,17 @@ public class C46344_PaymentDueRecordsPostPartialPaymentOnAmortizedLoanWithGenera
         // Generate Payment Due record
         Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
 
+        // Get 'Current Balance' value before 'Partially Paid' transaction
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
+        currentBalanceBefore = Pages.accountDetailsPage().getCurrentBalance();
+
+        // Re-login to refresh teller session
         Actions.loginActions().doLogOutProgrammatically();
-
-    }
-
-    @TestRailIssue(issueID = 46344, testRunName = TEST_RUN_NAME)
-    @Test(description = "C46344, Payment Due Records: Post partial payment on Amortized loan with generated Payment Due Records | Cycle == 'No'")
-    @Severity(SeverityLevel.CRITICAL)
-    public void paymentDueRecordsPostPartialPaymentOnAmortizedLoanWithGeneratedPaymentDueRecordsCycleNo() {
-
-        logInfo("Step 1: Log in to the NYMBUS");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        logInfo("Step 2: Go to the 'Teller' screen");
-        Pages.aSideMenuPage().clickClientMenuItem();
-        Actions.transactionActions().goToTellerPage();
-
-        logInfo("Step 3: Log in to the proof date");
-        Actions.transactionActions().doLoginTeller();
-
-        logInfo("Step 4: Fill in the following fields and click the [Commit Transaction] :\n" +
-                "Sources:\n" +
-                "\n" +
-                "\"Account number\": active CHK or SAV account from precondition #3\n" +
-                "\"Transaction Code\": specify trancode \"116 - Withdrawal\"\n" +
-                "\"Amount\": less than Payment amount for loan from precondition #4 (f.e. Payment Amount == 1,000.00, transaction amount == \"500.00\")\n" +
-                "Destinations:\n" +
-                "\n" +
-                "\"Account Number\": loan account from precondition #4\n" +
-                "\"Transaction Code\": - \"416 - Payment\"\n" +
-                "\"Amount\": the same amount as in Sources");
-
         // set up 416 transaction
-        double transactionAmount = 500.00;
+        transactionAmount = 500.00;
 
         transaction_416 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
         transaction_416.getTransactionSource().setTransactionCode(TransactionCode.WITHDRAWAL_116.getTransCode());
@@ -175,44 +155,95 @@ public class C46344_PaymentDueRecordsPostPartialPaymentOnAmortizedLoanWithGenera
         transaction_416.getTransactionDestination().setAmount(transactionAmount);
 
         // perform 416 transaction
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
         Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction_416.getTransactionSource(), 0);
         Actions.transactionActions().setMiscCreditDestination(transaction_416.getTransactionDestination(), 0);
 
         Actions.transactionActions().clickCommitButton();
-
-        logInfo("Step 5: Close Transaction Receipt popup");
         Pages.tellerPage().closeModal();
 
-        logInfo("Step 6: Open loan account from preconditions on the Payment Info tab");
+        // Get 'Interest paid to date' and 'Next Payment Billed Due Date' after 416 transaction
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
+        interestPaidToDateAfter416 = Pages.accountDetailsPage().getInterestPaidToDate();
+        nextPaymentBilledDueDateBefore = Pages.accountDetailsPage().getNextPaymentBilledDueDate();
+
+        Actions.loginActions().doLogOutProgrammatically();
+
+    }
+
+    @TestRailIssue(issueID = 46345, testRunName = TEST_RUN_NAME)
+    @Test(description = "C46345, Payment Due Records: Error Correct partial payment transaction on Amortized loan with generated Payment Due Records | Cycle == 'No'")
+    @Severity(SeverityLevel.CRITICAL)
+    public void paymentDueRecordsErrorCorrectPartialPaymentTransactionOnAmortizedLoanWithGeneratedPaymentDueRecordsCycleNo() {
+
+        logInfo("Step 1: Log in to the NYMBUS");
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+
+        logInfo("Step 2: Go to the 'Journal'");
+        Actions.transactionActions().loginTeller();
+        Actions.journalActions().goToJournalPage();
+
+        logInfo("Step 3: Open transaction record that was created after transaction caused Payment Due Record from precondition #5 to change Status to 'Partially Paid'");
+        Actions.journalActions().applyFilterByAccountNumber(loanAccount.getAccountNumber());
+        Pages.journalPage().waitForMainSpinnerInvisibility();
+
+        Actions.journalActions().clickLastTransaction();
+        Pages.journalPage().waitForMainSpinnerInvisibility();
+
+        logInfo("Step 4: Click [Error Correct] button");
+        Pages.journalDetailsPage().clickErrorCorrectButton();
+        Pages.journalDetailsPage().waitForCreateErrorApplying();
+
+        logInfo("Step 5: Open loan account from precondition #4 on the 'Transactions' tab");
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
+
+        Pages.accountDetailsPage().waitForEditButton();
+        String currentBalanceActual = Pages.accountDetailsPage().getCurrentBalance();
 
         Pages.accountDetailsPage().clickTransactionsTab();
         Pages.accountTransactionPage().waitForTransactionSection();
 
-        String transactionPrincipal = Pages.accountTransactionPage().getPrincipalValue(1) + Pages.accountTransactionPage().getPrincipalFractionalPartValue(1);
-        String transactionInterest = Pages.accountTransactionPage().getInterestValue(1) + Pages.accountTransactionPage().getInterestMinusFractionalValue(1);
+        logInfo("Step 6: Look at the generated transactions and verify:\n" +
+                "Transaction Code;\n" +
+                "Amount;\n" +
+                "Balance;\n" +
+                "EC;\n" +
+                "Current Balance");
+        String transactionAmountActual = Pages.accountTransactionPage().getAmountValue(1) + Pages.accountTransactionPage().getAmountFractionalValue(1);
 
-        Pages.accountDetailsPage().clickDetailsTab();
-        Pages.accountDetailsPage().waitForEditButton();
-        String nextPaymentBilledDueDateBefore = Pages.accountDetailsPage().getNextPaymentBilledDueDate();
 
+        String transFromPreconditionsEffectiveDate = Pages.accountTransactionPage().getEffectiveDateValue(2);
+        String transFromPreconditionsInterest = Pages.accountTransactionPage().getInterestValue(2) + Pages.accountTransactionPage().getInterestMinusFractionalValue(2);
+        String transFromPreconditionsPrincipal = Pages.accountTransactionPage().getPrincipalValue(2) + Pages.accountTransactionPage().getPrincipalFractionalPartValue(2);
+        String transFromPreconditionsAmount = Pages.accountTransactionPage().getAmountValue(2) + Pages.accountTransactionPage().getAmountFractionalValue(2);
+
+        TestRailAssert.assertTrue(transactionAmountActual.equals(transactionAmount + "0"),
+                new CustomStepResult("'Amount' is valid", "'Amount' is not valid"));
+        TestRailAssert.assertTrue(currentBalanceActual.equals(currentBalanceBefore),
+                new CustomStepResult("'Current Balance' is valid", "'Current Balance' is not valid"));
+        TestRailAssert.assertTrue(currentBalanceActual.equals(currentBalanceBefore),
+                new CustomStepResult("'Current Balance' is valid", "'Current Balance' is not valid"));
+        TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(1).equals(TransactionCode.PAYMENT_416.getTransCode()),
+                new CustomStepResult("'Transaction Code' is valid", "'Transaction Code' is not valid"));
+        TestRailAssert.assertTrue(Pages.accountTransactionPage().getEcColumnValue(1).equals("EC"),
+                new CustomStepResult("'EC' is in 'EC' column", "'EC' is not in 'EC' column"));
+
+        logInfo("Step 7: Open loan account from precondition on the Payment Info tab");
         Pages.accountDetailsPage().clickPaymentInfoTab();
 
-        logInfo("Step 7: Click on the Payment Due Record with Status == 'Partially Paid' in the 'Payments Due' section");
-        Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(1);
+        logInfo("Step 8: Look at the Payments Due section of the screen for Payment Due Record from precondition #5 and click on it.");
+        Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
 
-        logInfo("Step 8: Verify Amount Due, Status fields values in the 'Payment Due Details' section");
-        String amountDueActual = Pages.accountPaymentInfoPage().getDisabledAmountDue().replaceAll("[^.0-9]", "");
-        double amountDueExpected = Double.parseDouble(loanAccount.getPaymentAmount()) - transactionAmount;
-        String status = Pages.accountPaymentInfoPage().getDisabledStatus();
+        logInfo("Step 9: Verify Amount Due, Status fields values for 'Payment Due Details' section");
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1).equals(loanAccount.getPaymentAmount()),
+                new CustomStepResult("'Amount Due' is valid", "'Amount Due' is invalid"));
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDueStatus().equals("Active"),
+                new CustomStepResult("'Status' is valid", "'Status' is invalid"));
 
-        TestRailAssert.assertTrue(amountDueActual.equals(amountDueExpected + "0"),
-                new CustomStepResult("'Amount Due' is valid", "'Amount Due' is not valid"));
-        TestRailAssert.assertTrue(status.equals("Partially Paid"),
-                new CustomStepResult("'Status' is valid", "'Status' is not valid"));
-
-        logInfo("Step 9: Verify that the transaction record generated by the transaction from Step 4 is present in the 'Transactions' section");
+        logInfo("Step 10: Verify that transaction record generated by the transaction caused Payment Due Record from precondition #5 to change Status to 'Partially Paid' is present in the Transactions section");
         String paymentDate = Pages.accountPaymentInfoPage().getPaymentDate();
         String interest = Pages.accountPaymentInfoPage().getInterest();
         String principal = Pages.accountPaymentInfoPage().getPrincipal();
@@ -220,26 +251,28 @@ public class C46344_PaymentDueRecordsPostPartialPaymentOnAmortizedLoanWithGenera
         String amount = Pages.accountPaymentInfoPage().getAmount();
         String tranCodeStatus = Pages.accountPaymentInfoPage().getStatus();
 
-        TestRailAssert.assertTrue(DateTime.getLocalDateOfPattern("MM/dd/yyyy").equals(paymentDate),
+        TestRailAssert.assertTrue(transFromPreconditionsEffectiveDate.equals(paymentDate),
                 new CustomStepResult("'Payment Date' is valid", "'Payment Date' is not valid"));
-        TestRailAssert.assertTrue(amount.equals(transactionAmount + "0"),
+        TestRailAssert.assertTrue(amount.equals(transFromPreconditionsAmount),
                 new CustomStepResult("'Amount' is valid", "'Amount' is not valid"));
-        TestRailAssert.assertTrue(principal.equals(transactionPrincipal),
+        TestRailAssert.assertTrue(principal.equals(transFromPreconditionsPrincipal),
                 new CustomStepResult("'Principal' is valid", "'Principal' is not valid"));
-        TestRailAssert.assertTrue(interest.equals(transactionInterest),
+        TestRailAssert.assertTrue(interest.equals(transFromPreconditionsInterest),
                 new CustomStepResult("'Interest' is valid", "'Interest' is not valid"));
         TestRailAssert.assertTrue(escrow.isEmpty(),
                 new CustomStepResult("'Escrow' is valid", "'Escrow' is not valid"));
-        TestRailAssert.assertTrue(tranCodeStatus.equals("416 Payment"),
+        TestRailAssert.assertTrue(tranCodeStatus.equals("416-Payment-EC"),
                 new CustomStepResult("'Tran Code/Status' is valid", "'Tran Code/Status' is not valid"));
 
 
-        logInfo("Step 10: Open loan account from precondition on the Details tab");
+        logInfo("Step 11: Open loan account from precondition on the Details tab");
         Pages.accountDetailsPage().clickDetailsTab();
+        Pages.accountDetailsPage().waitForEditButton();
 
-        logInfo("Step 11: Verify 'Daily interest factor', 'Next Payment Billed Due Date', and 'Interest paid to date' fields values");
+        logInfo("Step 12: Verify 'Daily interest factor', 'Next Payment Billed Due Date', and 'Interest paid to date' fields values");
         double currentBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalance());
         String dailyInterestFactorExpected = Functions.getDoubleWithNDecimalPlaces(currentBalance * 0.1 / 360, 4);
+        String interestPaidToDateExpected = (Double.parseDouble(interestPaidToDateAfter416) - Double.parseDouble(transFromPreconditionsInterest)) + "0";
 
         String dailyInterestFactorActual = Pages.accountDetailsPage().getDailyInterestFactor();
         String nextPaymentBilledDueDateActual = Pages.accountDetailsPage().getNextPaymentBilledDueDate();
@@ -249,7 +282,9 @@ public class C46344_PaymentDueRecordsPostPartialPaymentOnAmortizedLoanWithGenera
                 new CustomStepResult("'Daily interest factor' is valid", "'Daily interest factor' is not valid"));
         TestRailAssert.assertTrue(nextPaymentBilledDueDateActual.equals(nextPaymentBilledDueDateBefore),
                 new CustomStepResult("'Next Payment Billed Due Date' is valid", "'Next Payment Billed Due Date' is not valid"));
-        TestRailAssert.assertTrue(interestPaidToDateActual.equals(transactionInterest),
+        TestRailAssert.assertTrue(interestPaidToDateActual.equals(interestPaidToDateExpected),
                 new CustomStepResult("'Interest Paid to Date' is valid", "'Interest Paid to Date' is not valid"));
     }
+
 }
+

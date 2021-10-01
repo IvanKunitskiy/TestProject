@@ -129,7 +129,7 @@ public class JournalPage extends PageTools {
         waitForElementVisibility(mainSpinner);
     }
 
-    @Step("Wait for aside spinner invisibility")
+    @Step("Wait for main spinner invisibility")
     public void waitForMainSpinnerInvisibility() {
         waitForElementInvisibility(mainSpinner);
     }
