@@ -54,6 +54,7 @@ public class AccountTransactionPage extends PageTools {
     private By amountByTransactionCode = By.xpath("(//tr//td[span[contains(text(), '%s')]]/following-sibling::td[1])[%s]");
     private By descriptionValue = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span");
     private By specificTransactionRecord = By.xpath("//tr[contains(@data-test-id, 'repeat-transactions-%s')]");
+    private By ecColumnValue = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[12]/span/div");
 
 
     /**
@@ -92,6 +93,12 @@ public class AccountTransactionPage extends PageTools {
     public String getTransactionCodeByIndex(int index) {
         waitForElementVisibility(transactionCode, index);
         return getWebElement(transactionCode, index).getAttribute("innerText").trim();
+    }
+
+    @Step("Get 'EC' column value of {%s} transaction")
+    public String getEcColumnValue(int index){
+        waitForElementVisibility(ecColumnValue, index);
+        return getElementText(ecColumnValue, index);
     }
 
     @Step("Get amountSymbol")
