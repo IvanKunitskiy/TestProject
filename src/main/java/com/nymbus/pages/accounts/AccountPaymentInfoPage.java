@@ -5,6 +5,10 @@ import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AccountPaymentInfoPage extends PageTools {
 
@@ -197,6 +201,7 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By paymentDueStatus = By.xpath("//div[@data-test-id='field-paymentduestatus']/a/span/span");
     private final By datePaymentPaidInFull = By.xpath("//input[@id='datepaid']");
     private final By dueDate = By.xpath("//input[@id='duedate']");
+    private final By datePaid = By.xpath("//input[@id='datepaid']");
     private final By paymentDueType = By.xpath("//input[@data-test-id='field-paymentDueTypeTitle']");
     private final By disabledStatus = By.xpath("//div[@data-test-id='field-paymentduestatus']//span/span");
     private final By paymentAmount = By.xpath("//input[@data-test-id='field-amount']");
@@ -271,6 +276,12 @@ public class AccountPaymentInfoPage extends PageTools {
     public String getDisabledDueDate() {
         waitForElementVisibility(dueDate);
         return getDisabledElementAttributeValue("value", dueDate).trim();
+    }
+
+    @Step("Get 'Date Payment Paid In Full' value")
+    public String getDisabledDatePaid() {
+        waitForElementVisibility(datePaid);
+        return getDisabledElementAttributeValue("value", datePaid).trim();
     }
 
     @Step("Get 'Payment due type' value")
@@ -440,6 +451,14 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By escrowTotal = By.xpath("//tr[@class='row-total']/td[4]/div");
     private final By principalTotal = By.xpath("//tr[@class='row-total']/td[3]/div");
     private final By amountTotal = By.xpath("//tr[@class='row-total']/td[5]/div");
+    private final By allTransactionsSectionRecordsStatus = By.xpath("//tr[contains(@data-test-id, 'repeat-transaction')]//td[6]//span//span");
+
+
+    @Step("Get all records from 'Transactions' section")
+    public List<String> getTransactionsSectionRecordsStatusList() {
+        waitForElementVisibility(allTransactionsSectionRecordsStatus);
+        return getElements(allTransactionsSectionRecordsStatus).stream().map(WebElement::getText).collect(Collectors.toList());
+    }
 
     @Step("Get 'Principal total' value")
     public String getPrincipalTotal() {
