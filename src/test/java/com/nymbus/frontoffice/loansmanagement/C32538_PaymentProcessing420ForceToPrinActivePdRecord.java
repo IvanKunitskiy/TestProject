@@ -145,7 +145,6 @@ public class C32538_PaymentProcessing420ForceToPrinActivePdRecord extends BaseTe
         Pages.accountDetailsPage().clickPaymentInfoTab();
         Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(1);
         double dueRecordPrincipal = Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledPrincipal());
-        System.out.println(dueRecordPrincipal + " ------------------");
         Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
 
         Actions.transactionActions().goToTellerPage();
@@ -205,7 +204,9 @@ public class C32538_PaymentProcessing420ForceToPrinActivePdRecord extends BaseTe
         logInfo("Step 8: Verify existing Payment Due record");
         Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(1);
 
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1).equals(String.valueOf(transactionAmount)),
+        double amountDueActual = Double.parseDouble(loanAccount.getPaymentAmount()) - transactionAmount;
+
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1).equals(String.valueOf(amountDueActual)),
                 new CustomStepResult("'Amount Due' is valid", "'Amount Due' is not valid" ));
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1).equals("Partially Paid"),
                 new CustomStepResult("'Status' is not valid", "'Status' is valid"));
