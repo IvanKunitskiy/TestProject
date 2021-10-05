@@ -23,6 +23,7 @@ import com.nymbus.testrail.CustomStepResult;
 import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -233,8 +234,8 @@ public class C32547_PaymentProcessing421ForceToIntActivePDrecordAmountIntPortion
                 new CustomStepResult("'Escrow' is not valid", "'Escrow' is valid"));
         TestRailAssert.assertTrue(tranCodeStatus.equals("421 Force To Int"),
                 new CustomStepResult("'Tran Code/Status' is not valid", "'Tran Code/Status' is valid"));
-        TestRailAssert.assertFalse(AccountActions.accountPaymentInfoActions().isRecordWithSpecificStatusPresent(TransactionCode.INT_PAY_ONLY_407.getTransCode()),
-                new CustomStepResult("Record with '407 - Int Only' code is present", "Record with '407 - Int Only' code is not present"));
+
+        Assert.assertFalse(AccountActions.accountPaymentInfoActions().isRecordWithSpecificStatusPresent(TransactionCode.INT_PAY_ONLY_407.getTransCode()));
     }
 
 }
