@@ -5,7 +5,9 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.loanaccount.CommitmentTypeAmt;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -29,18 +31,17 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Petro")
-public class C32547_PaymentProcessing421ForceToIntActivePDrecordAmountIntPortion extends BaseTest {
+public class C32449_MaxNumberOfPrepaymentsAllowedForNonCommitmentPIBillLoan extends BaseTest {
 
     private Account loanAccount;
     private Account chkAccount;
-    private Transaction transaction_421;
-    private String clientRootId;
+    private Transaction transaction_416;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
     private final String TEST_RUN_NAME = "Loans Management";
 
     @BeforeMethod
-    public void preConditions() {
+    public void preConditions(){
         // Set up Client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
@@ -55,10 +56,13 @@ public class C32547_PaymentProcessing421ForceToIntActivePDrecordAmountIntPortion
 
         // Set proper dates
         String localDate = DateTime.getLocalDateOfPattern("MM/dd/yyyy");
-        loanAccount.setDateOpened(localDate);
+        loanAccount.setDateOpened(DateTime.getDateMinusMonth(localDate, 1));
         loanAccount.setNextPaymentBilledDueDate(DateTime.getDatePlusMonth(loanAccount.getDateOpened(), 1));
         loanAccount.setPaymentBilledLeadDays("1");
         loanAccount.setCycleLoan(false);
+        loanAccount.setCommitmentTypeAmt(CommitmentTypeAmt.NONE.getCommitmentTypeAmt());
+        loanAccount.setCommitmentAmt("0");
+        loanAccount.setPaymentAmount("1000.00");
         chkAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
 
         // Login to the system
@@ -81,8 +85,6 @@ public class C32547_PaymentProcessing421ForceToIntActivePDrecordAmountIntPortion
         AccountActions.createAccount().createCHKAccount(chkAccount);
         Pages.accountNavigationPage().clickAccountsInBreadCrumbs();
         AccountActions.createAccount().createLoanAccount(loanAccount);
-
-        clientRootId = ClientsActions.createClient().getClientIdFromUrl();
 
         // Set up deposit transaction
         int depositTransactionAmount = 12000;
@@ -122,16 +124,23 @@ public class C32547_PaymentProcessing421ForceToIntActivePDrecordAmountIntPortion
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().closeModal();
 
-        // Generate Payment Due record
-        Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
+        // Set 'Max Number of Prepayments is Allowed' to 3
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
+
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+        Pages.accountPaymentInfoPage().clickEditButtonAtOtherPaymentSettings();
+        Pages.accountPaymentInfoPage().fillInMaxNumberOfPrepaymentsAllowedField("3");
+        Pages.accountPaymentInfoPage().clickSaveButtonAtOtherPaymentSettings();
+        Pages.accountPaymentInfoPage().waitForOtherPaymentSettingsSection();
 
         Actions.loginActions().doLogOutProgrammatically();
     }
 
-    @TestRailIssue(issueID = 32547, testRunName = TEST_RUN_NAME)
-    @Test(description = "C32547, Payment Processing: 421 - Force To Int, no PD records")
+    @TestRailIssue(issueID = 32449, testRunName = TEST_RUN_NAME)
+    @Test(description = "C32449, 'Max Number of Prepayments Allowed' for Non-Commitment P&I (Bill) loan")
     @Severity(SeverityLevel.CRITICAL)
-    public void paymentProcessing421ForceToIntActivePDrecordAmountIntPortion() {
+    public void maxNumberOfPrepaymentsAllowedForNonCommitmentPIBillLoan() {
 
         logInfo("Step 1: Log in to the NYMBUS");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -139,50 +148,54 @@ public class C32547_PaymentProcessing421ForceToIntActivePDrecordAmountIntPortion
         logInfo("Step 2: Go to the 'Teller' screen");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
-
-        Pages.accountDetailsPage().clickPaymentInfoTab();
-        Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
-        String interestPortion = Pages.accountPaymentInfoPage().getDisabledInterest();
-
         Actions.transactionActions().goToTellerPage();
 
         logInfo("Step 3: Log in to the proof date");
         Actions.transactionActions().doLoginTeller();
 
-        logInfo("Step 4: Commit '421 - Force To Prin' transaction with the following fields:\n" +
+        logInfo("Step 4: Commit '416 - Payment' transaction with the following fields:\n" +
                 "Sources -> Misc Debit:\n" +
                 "\n" +
                 "'Account Number' - active CHK or SAV account from preconditions\n" +
                 "'Transaction Code' - '114 - Loan Payment'\n" +
-                "Amount > Payment Info -> Payments Due record from preconditions -> Interest portion of the PD record with Loan from preconditions\n" +
+                "Amount > Max Number of Prepayments Allowed (f.e $ 5000) for the loan account from preconditions\n" +
                 "Destinations -> Misc Credit:\n" +
                 "\n" +
                 "Account number - Loan account from preconditions\n" +
-                "'Transaction Code' - '421 - Force To Prin'\n" +
+                "'Transaction Code' - '416 - Payment'\n" +
                 "'Amount' - specify the same amount");
-        // Set up 421 transaction
-        double transactionAmount = Double.parseDouble(interestPortion) + 1;
-        transaction_421 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
-        transaction_421.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
-        transaction_421.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
-        transaction_421.getTransactionSource().setAmount(transactionAmount);
-        transaction_421.getTransactionDestination().setTransactionCode(TransactionCode.FORCE_TO_INT_421.getTransCode());
-        transaction_421.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
-        transaction_421.getTransactionDestination().setAmount(transactionAmount);
 
-        // Perform 421 transaction
+        // Set up 416 transaction
+        double transactionAmount = 5000.00;
+        transaction_416 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
+        transaction_416.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
+        transaction_416.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
+        transaction_416.getTransactionSource().setAmount(transactionAmount);
+        transaction_416.getTransactionDestination().setTransactionCode(TransactionCode.PAYMENT_416.getTransCode());
+        transaction_416.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
+        transaction_416.getTransactionDestination().setAmount(transactionAmount);
+
+        // Perform 416 transaction
         Actions.transactionActions().goToTellerPage();
-        Pages.tellerPage().setEffectiveDate(DateTime.getDateMinusDays(loanAccount.getNextPaymentBilledDueDate(), Integer.parseInt(loanAccount.getPaymentBilledLeadDays())));
-        Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction_421.getTransactionSource(), 0);
-        Actions.transactionActions().setMiscCreditDestination(transaction_421.getTransactionDestination(), 0);
+        Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction_416.getTransactionSource(), 0);
+        Actions.transactionActions().setMiscCreditDestination(transaction_416.getTransactionDestination(), 0);
         Actions.transactionActions().clickCommitButton();
 
         logInfo("Step 5: Close Transaction Receipt popup");
         Pages.tellerPage().closeModal();
 
-        logInfo("Step 6: Open Loan from preconditions on Transactions tab");
+        logInfo("Step 6: Open loan account from preconditions");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
+
+        logInfo("Step 7: Go to the 'Payment Info' tab");
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+
+        logInfo("Step 8: Pay attention at the 'Payment Due Details' section");
+        SelenideTools.sleep(360000);
+
+
+        logInfo("Step 9: Go to the 'Transactions' tab");
         Pages.accountDetailsPage().clickTransactionsTab();
         Pages.accountTransactionPage().waitForTransactionSection();
 
@@ -192,50 +205,16 @@ public class C32547_PaymentProcessing421ForceToIntActivePDrecordAmountIntPortion
 
         double transactionRecordAmount2Actual = transactionAmount - Double.parseDouble(transactionRecordAmount1);
 
-        TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(1).equals(TransactionCode.FORCE_TO_INT_421.getTransCode()),
+        System.out.println(transactionRecordAmount2Actual + " ----------------------");
+
+        TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(1).equals(TransactionCode.PAYMENT_416.getTransCode()),
                 new CustomStepResult("'Transaction record' is valid", "'Transaction record' is not valid"));
-        TestRailAssert.assertTrue(transactionRecordAmount1.equals(interestPortion),
+        TestRailAssert.assertTrue(transactionRecordAmount1.equals("3000.00"),
                 new CustomStepResult("'Transaction record amount' is valid", "'Transaction record amount' is not valid"));
-        TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(2).equals(TransactionCode.INT_PAY_ONLY_407.getTransCode()),
+        TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(2).equals(TransactionCode.PRIN_PAYM_ONLY_406.getTransCode()),
                 new CustomStepResult("'Transaction record' is valid", "'Transaction record' is not valid"));
         TestRailAssert.assertTrue(transactionRecordAmount2.equals(transactionRecordAmount2Actual + "0"),
                 new CustomStepResult("'Transaction record amount' is valid", "'Transaction record amount' is not valid"));
 
-        logInfo("Step 7: Go to the 'Payment Info' tab");
-        Pages.accountDetailsPage().clickPaymentInfoTab();
-
-        logInfo("Step 8: Verify existing Payment Due record");
-        double paymentDueRecordAmount = Double.parseDouble(loanAccount.getPaymentAmount()) - Double.parseDouble(interestPortion);
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1).equals(String.valueOf(paymentDueRecordAmount)),
-                new CustomStepResult("'Payment Due Amount' is valid", "'Payment Due Amount' is not valid"));
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDueStatus().equals("Partially Paid"),
-                new CustomStepResult("'Payment Due Status' is valid", "'Payment Due Status' is not valid"));
-
-        logInfo("Step 9: Click on the Payment Due record and check field in the 'Payment Due Details' section");
-        Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDisabledDatePaid().isEmpty(),
-                new CustomStepResult("'Date Payment Paid in Full' is valid", "'Date Payment Paid in Full' is not valid"));
-
-        logInfo("Step 10: Pay attention to the 'Transactions' section");
-        String amount = Pages.accountPaymentInfoPage().getAmount();
-        String principal = Pages.accountPaymentInfoPage().getPrincipal();
-        String interest = Pages.accountPaymentInfoPage().getInterest();
-        String escrow = Pages.accountPaymentInfoPage().getEscrow();
-        String tranCodeStatus = Pages.accountPaymentInfoPage().getStatus();
-
-        TestRailAssert.assertTrue(amount.equals(interestPortion),
-                new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
-        TestRailAssert.assertTrue(principal.isEmpty(),
-                new CustomStepResult("'Principal' is not valid", "'Principal' is valid"));
-        TestRailAssert.assertTrue(interest.equals(interestPortion),
-                new CustomStepResult("'Interest' is not valid", "'Interest' is valid"));
-        TestRailAssert.assertTrue(escrow.isEmpty(),
-                new CustomStepResult("'Escrow' is not valid", "'Escrow' is valid"));
-        TestRailAssert.assertTrue(tranCodeStatus.equals("421 Force To Int"),
-                new CustomStepResult("'Tran Code/Status' is not valid", "'Tran Code/Status' is valid"));
-
-        TestRailAssert.assertFalse(AccountActions.accountPaymentInfoActions().isRecordWithSpecificStatusPresent(TransactionCode.INT_PAY_ONLY_407.getTransCode()),
-                new CustomStepResult("Record with '407 - Int Only' code is present", "Record with '407 - Int Only' code is not present"));
     }
-
 }

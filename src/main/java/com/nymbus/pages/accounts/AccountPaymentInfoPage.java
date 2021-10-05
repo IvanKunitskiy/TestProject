@@ -192,6 +192,35 @@ public class AccountPaymentInfoPage extends PageTools {
     }
 
 
+    // 'Other Payment Settings' section
+    final By otherPaymentSettingsEditButton = By.xpath("(//button[@data-test-id='action-edit-payment-info'])[2]");
+    final By otherPaymentSettingsSaveButton = By.xpath("//button[@data-test-id='action-save-payment-info']");
+    final By maxNumberOfPrepaymentsAllowedField = By.xpath("//input[@data-test-id='field-maxprepaymentsallowed_otherSettings_']");
+    final By otherPaymentSettingsSection = By.xpath("//section//div[contains(text(),'Other Payment Settings')]");
+
+    @Step("Click 'Edit' button at 'Other Payment Settings' section")
+    public void clickEditButtonAtOtherPaymentSettings() {
+        waitForElementClickable(otherPaymentSettingsEditButton);
+        click(otherPaymentSettingsEditButton);
+    }
+
+    @Step("Fill in 'Max Number of Prepayments Allowed' field")
+    public void fillInMaxNumberOfPrepaymentsAllowedField(String text) {
+        waitForElementClickable(maxNumberOfPrepaymentsAllowedField);
+        type(text, maxNumberOfPrepaymentsAllowedField);
+    }
+
+    @Step("Click 'Save' button at 'Other Payment Settings' section")
+    public void clickSaveButtonAtOtherPaymentSettings() {
+        waitForElementClickable(otherPaymentSettingsSaveButton);
+        click(otherPaymentSettingsSaveButton);
+    }
+
+    @Step("Wait for 'Other Payment Settings' section load...")
+    public void waitForOtherPaymentSettingsSection() {
+        waitForElementVisibility(otherPaymentSettingsSection);
+    }
+
     /**
      * Payment Due Details
      */
@@ -407,8 +436,8 @@ public class AccountPaymentInfoPage extends PageTools {
         waitForElementClickable(inactiveButton);
         click(inactiveButton);
     }
-    
-    
+
+
     // 'Make due record inactive' modal
 
     private final By makeDueInactiveModal = By.xpath("//div[contains(@class, 'modal-dialog')]");
