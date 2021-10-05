@@ -41,7 +41,6 @@ public class C32547_PaymentProcessing421ForceToIntActivePDrecordAmountIntPortion
 
     @BeforeMethod
     public void preConditions() {
-
         // Set up Client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
@@ -127,15 +126,12 @@ public class C32547_PaymentProcessing421ForceToIntActivePDrecordAmountIntPortion
         Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
 
         Actions.loginActions().doLogOutProgrammatically();
-
-
     }
 
     @TestRailIssue(issueID = 32547, testRunName = TEST_RUN_NAME)
     @Test(description = "C32547, Payment Processing: 421 - Force To Int, no PD records")
     @Severity(SeverityLevel.CRITICAL)
     public void paymentProcessing421ForceToIntActivePDrecordAmountIntPortion() {
-
 
         logInfo("Step 1: Log in to the NYMBUS");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -147,8 +143,6 @@ public class C32547_PaymentProcessing421ForceToIntActivePDrecordAmountIntPortion
         Pages.accountDetailsPage().clickPaymentInfoTab();
         Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
         String interestPortion = Pages.accountPaymentInfoPage().getDisabledInterest();
-
-        System.out.println(interestPortion + " -----------------------");
 
         Actions.transactionActions().goToTellerPage();
 
@@ -166,7 +160,6 @@ public class C32547_PaymentProcessing421ForceToIntActivePDrecordAmountIntPortion
                 "Account number - Loan account from preconditions\n" +
                 "'Transaction Code' - '421 - Force To Prin'\n" +
                 "'Amount' - specify the same amount");
-
         // Set up 421 transaction
         double transactionAmount = Double.parseDouble(interestPortion) + 1;
         transaction_421 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
@@ -199,8 +192,6 @@ public class C32547_PaymentProcessing421ForceToIntActivePDrecordAmountIntPortion
 
         double transactionRecordAmount2Actual = transactionAmount - Double.parseDouble(transactionRecordAmount1);
 
-        System.out.println(transactionRecordAmount2Actual + " -----------------------");
-
         TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(1).equals(TransactionCode.FORCE_TO_INT_421.getTransCode()),
                 new CustomStepResult("'Transaction record' is valid", "'Transaction record' is not valid"));
         TestRailAssert.assertTrue(transactionRecordAmount1.equals(interestPortion),
@@ -214,21 +205,14 @@ public class C32547_PaymentProcessing421ForceToIntActivePDrecordAmountIntPortion
         Pages.accountDetailsPage().clickPaymentInfoTab();
 
         logInfo("Step 8: Verify existing Payment Due record");
-        double paymentDueRecordAmount = Double.parseDouble(loanAccount.getPaymentAmount()) - transactionAmount;
-
-        System.out.println( paymentDueRecordAmount + " ---------------");
-
-        TestRailAssert.assertFalse(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1).equals(String.valueOf(paymentDueRecordAmount)),
+        double paymentDueRecordAmount = Double.parseDouble(loanAccount.getPaymentAmount()) - Double.parseDouble(interestPortion);
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1).equals(String.valueOf(paymentDueRecordAmount)),
                 new CustomStepResult("'Payment Due Amount' is valid", "'Payment Due Amount' is not valid"));
-        TestRailAssert.assertFalse(Pages.accountPaymentInfoPage().getDueStatus().equals("Partially Paid"),
+        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDueStatus().equals("Partially Paid"),
                 new CustomStepResult("'Payment Due Status' is valid", "'Payment Due Status' is not valid"));
 
         logInfo("Step 9: Click on the Payment Due record and check field in the 'Payment Due Details' section");
         Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
-
-        System.out.println( Pages.accountPaymentInfoPage().getDisabledDatePaid() + " ---------------");
-        System.out.println( Pages.accountPaymentInfoPage().getDisabledDatePaid().isEmpty() + " ---------------");
-
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDisabledDatePaid().isEmpty(),
                 new CustomStepResult("'Date Payment Paid in Full' is valid", "'Date Payment Paid in Full' is not valid"));
 
@@ -239,24 +223,17 @@ public class C32547_PaymentProcessing421ForceToIntActivePDrecordAmountIntPortion
         String escrow = Pages.accountPaymentInfoPage().getEscrow();
         String tranCodeStatus = Pages.accountPaymentInfoPage().getStatus();
 
-        System.out.println(amount+ " -----------------");
-        System.out.println(principal + " -----------------");
-        System.out.println(interest + " -----------------");
-        System.out.println(escrow + " -----------------");
-        System.out.println(tranCodeStatus + " -----------------");
-        System.out.println(AccountActions.accountPaymentInfoActions().isRecordWithSpecificStatusPresent(TransactionCode.INT_PAY_ONLY_407.getTransCode()) + " -------------------");
-
-        TestRailAssert.assertTrue(amount.equals(transactionAmount + "0"),
+        TestRailAssert.assertTrue(amount.equals(interestPortion),
                 new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
-        TestRailAssert.assertTrue(principal.equals("0.00"),
+        TestRailAssert.assertTrue(principal.isEmpty(),
                 new CustomStepResult("'Principal' is not valid", "'Principal' is valid"));
-        TestRailAssert.assertTrue(interest.equals(transactionAmount + "0"),
+        TestRailAssert.assertTrue(interest.equals(interestPortion),
                 new CustomStepResult("'Interest' is not valid", "'Interest' is valid"));
-        TestRailAssert.assertTrue(escrow.equals("0.00"),
+        TestRailAssert.assertTrue(escrow.isEmpty(),
                 new CustomStepResult("'Escrow' is not valid", "'Escrow' is valid"));
-        TestRailAssert.assertTrue(tranCodeStatus.equals(TransactionCode.FORCE_TO_INT_421.getTransCode()),
+        TestRailAssert.assertTrue(tranCodeStatus.equals("421 Force To Int"),
                 new CustomStepResult("'Tran Code/Status' is not valid", "'Tran Code/Status' is valid"));
-        TestRailAssert.assertTrue(AccountActions.accountPaymentInfoActions().isRecordWithSpecificStatusPresent(TransactionCode.INT_PAY_ONLY_407.getTransCode()),
+        TestRailAssert.assertFalse(AccountActions.accountPaymentInfoActions().isRecordWithSpecificStatusPresent(TransactionCode.INT_PAY_ONLY_407.getTransCode()),
                 new CustomStepResult("Record with '407 - Int Only' code is present", "Record with '407 - Int Only' code is not present"));
     }
 
