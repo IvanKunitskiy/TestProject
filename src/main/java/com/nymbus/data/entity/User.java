@@ -2,6 +2,7 @@ package com.nymbus.data.entity;
 
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Generator;
+import com.nymbus.newmodels.UserCredentials;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,6 +61,41 @@ public class User {
 
         user.setIsActiveFlag(true);
         user.setIsTellerFlag(false);
+
+        return user;
+    }
+
+    public User setAutotestUserData(UserCredentials userCredentials) {
+        User user = new User();
+        user.setFirstName(userCredentials.getUserName());
+        user.setLastName(userCredentials.getUserName());
+        user.setInitials(Generator.genString(2));
+        user.setTitle(Generator.genString(2));
+        user.setBusinessPhone(Generator.genMobilePhone(10));
+        user.setEmail(userCredentials.getUserName() + "@nymbus.com");
+        user.setLoginID(userCredentials.getUserName());
+        user.setIsLoginDisabledFlag(false);
+        user.setRolesList(new ArrayList<String>(3) {
+            {
+                add("Systems Group");
+                add("Teller");
+                add("Officers");
+                add("Universal Banker");
+                add("Lead Teller");
+                add("General BO");
+                add("Executive");
+                add("Daemon");
+                add("Branch Manager");
+                add("BO Operations");
+                add("BO Loans");
+                add("BO Accounting");
+            }
+        });
+
+        Collections.sort(user.getRolesList());
+
+        user.setIsActiveFlag(true);
+        user.setIsTellerFlag(true);
 
         return user;
     }
