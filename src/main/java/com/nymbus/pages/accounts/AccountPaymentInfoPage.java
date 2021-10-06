@@ -437,6 +437,10 @@ public class AccountPaymentInfoPage extends PageTools {
         click(inactiveButton);
     }
 
+    @Step("Get 'Payment Due Record' count")
+    public int getPaymentDueRecordsCount() {
+        return getElements(paymentDueRecords).size();
+    }
 
     // 'Make due record inactive' modal
 

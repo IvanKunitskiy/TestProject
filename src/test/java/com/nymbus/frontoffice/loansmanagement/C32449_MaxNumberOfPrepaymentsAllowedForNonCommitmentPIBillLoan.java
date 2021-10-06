@@ -35,6 +35,7 @@ public class C32449_MaxNumberOfPrepaymentsAllowedForNonCommitmentPIBillLoan exte
 
     private Account loanAccount;
     private Account chkAccount;
+    private String localDate;
     private Transaction transaction_416;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
@@ -55,8 +56,8 @@ public class C32449_MaxNumberOfPrepaymentsAllowedForNonCommitmentPIBillLoan exte
         loanAccount.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
 
         // Set proper dates
-        String localDate = DateTime.getLocalDateOfPattern("MM/dd/yyyy");
-        loanAccount.setDateOpened(DateTime.getDateMinusMonth(localDate, 1));
+        localDate = DateTime.getLocalDateOfPattern("MM/dd/yyyy");
+        loanAccount.setDateOpened(localDate);
         loanAccount.setNextPaymentBilledDueDate(DateTime.getDatePlusMonth(loanAccount.getDateOpened(), 1));
         loanAccount.setPaymentBilledLeadDays("1");
         loanAccount.setCycleLoan(false);
@@ -192,28 +193,49 @@ public class C32449_MaxNumberOfPrepaymentsAllowedForNonCommitmentPIBillLoan exte
         Pages.accountDetailsPage().clickPaymentInfoTab();
 
         logInfo("Step 8: Pay attention at the 'Payment Due Details' section");
-        SelenideTools.sleep(360000);
+        TestRailAssert.assertEquals(Pages.accountPaymentInfoPage().getPaymentDueRecordsCount(), 3,
+                new CustomStepResult("The number of records is valid", "The number of records is not valid"));
 
+        Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(1);
+        TestRailAssert.assertEquals(Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1), "Paid",
+                new CustomStepResult("'Payment Due Status' is valid", "'Payment Due Status', is not  valid"));
+        TestRailAssert.assertEquals(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1), "0.00",
+                new CustomStepResult("'Amount Due' is valid", "'Amount Due', is not  valid"));
+        TestRailAssert.assertEquals(Pages.accountPaymentInfoPage().getDisabledDatePaid(), localDate,
+                new CustomStepResult("'Paid in full date' is valid", "Paid in full date"));
+
+        Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(2);
+        TestRailAssert.assertEquals(Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(2), "Paid",
+                new CustomStepResult("'Payment Due Status' is valid", "'Payment Due Status', is not  valid"));
+        TestRailAssert.assertEquals(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(2), "0.00",
+                new CustomStepResult("'Amount Due' is valid", "'Amount Due', is not  valid"));
+        TestRailAssert.assertEquals(Pages.accountPaymentInfoPage().getDisabledDatePaid(), localDate,
+                new CustomStepResult("'Paid in full date' is valid", "Paid in full date"));
+
+        Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(3);
+        TestRailAssert.assertEquals(Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(3), "Paid",
+                new CustomStepResult("'Payment Due Status' is valid", "'Payment Due Status', is not  valid"));
+        TestRailAssert.assertEquals(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(3), "0.00",
+                new CustomStepResult("'Amount Due' is valid", "'Amount Due', is not  valid"));
+        TestRailAssert.assertEquals(Pages.accountPaymentInfoPage().getDisabledDatePaid(), localDate,
+                new CustomStepResult("'Paid in full date' is valid", "Paid in full date"));
 
         logInfo("Step 9: Go to the 'Transactions' tab");
         Pages.accountDetailsPage().clickTransactionsTab();
         Pages.accountTransactionPage().waitForTransactionSection();
-
 
         String transactionRecordAmount1 = Pages.accountTransactionPage().getAmountValue(1) + Pages.accountTransactionPage().getAmountFractionalValue(1);
         String transactionRecordAmount2 = Pages.accountTransactionPage().getAmountValue(2) + Pages.accountTransactionPage().getAmountFractionalValue(2);
 
         double transactionRecordAmount2Actual = transactionAmount - Double.parseDouble(transactionRecordAmount1);
 
-        System.out.println(transactionRecordAmount2Actual + " ----------------------");
-
-        TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(1).equals(TransactionCode.PAYMENT_416.getTransCode()),
+        TestRailAssert.assertEquals(Pages.accountTransactionPage().getTransactionCodeByIndex(1), TransactionCode.PAYMENT_416.getTransCode(),
                 new CustomStepResult("'Transaction record' is valid", "'Transaction record' is not valid"));
-        TestRailAssert.assertTrue(transactionRecordAmount1.equals("3000.00"),
+        TestRailAssert.assertEquals(transactionRecordAmount1, "3000.00",
                 new CustomStepResult("'Transaction record amount' is valid", "'Transaction record amount' is not valid"));
-        TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(2).equals(TransactionCode.PRIN_PAYM_ONLY_406.getTransCode()),
+        TestRailAssert.assertEquals(Pages.accountTransactionPage().getTransactionCodeByIndex(2), TransactionCode.PRIN_PAYM_ONLY_406.getTransCode(),
                 new CustomStepResult("'Transaction record' is valid", "'Transaction record' is not valid"));
-        TestRailAssert.assertTrue(transactionRecordAmount2.equals(transactionRecordAmount2Actual + "0"),
+        TestRailAssert.assertEquals(transactionRecordAmount2, transactionRecordAmount2Actual + "0",
                 new CustomStepResult("'Transaction record amount' is valid", "'Transaction record amount' is not valid"));
 
     }
