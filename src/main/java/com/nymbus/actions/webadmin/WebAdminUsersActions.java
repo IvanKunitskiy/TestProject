@@ -1106,6 +1106,19 @@ public class WebAdminUsersActions {
         WebAdminPages.usersPage().clickSaveButton();
     }
 
+    public void setUserPasswordWithoutGen(User user) {
+        WebAdminPages.navigationPage().waitForPageLoaded();
+        WebAdminPages.navigationPage().clickUsersAndSecurityItem();
+        WebAdminPages.navigationPage().clickUsersItem();
+        WebAdminPages.usersPage().waitUsersRegion();
+        WebAdminPages.usersPage().setValueToUserField(user.getLoginID());
+        WebAdminPages.usersPage().clickSearchButton();
+        WebAdminPages.usersPage().waitForUserListRegion();
+        WebAdminPages.usersPage().setNewPassword(user.getPassword());
+        WebAdminPages.usersPage().setConfirmPassword(user.getPassword());
+        WebAdminPages.usersPage().clickSaveButton();
+    }
+
     public void setDormantAccount(String rootID, Account account) {
         WebAdminPages.navigationPage().waitForPageLoaded();
         WebAdminPages.navigationPage().clickAccountsTransactionsItem();

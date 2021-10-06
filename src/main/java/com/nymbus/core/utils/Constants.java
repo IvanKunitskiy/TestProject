@@ -69,6 +69,10 @@ public class Constants {
         USERS.push(new UserCredentials("autotestfourth", "autotestfourth"));
         USERS.push(new UserCredentials("autotestfifth", "autotestfifth"));
         USERS.push(new UserCredentials("autotestsixth", "autotestsixth"));
+        USERS.push(new UserCredentials("autotestseventh", "autotestseventh"));
+        USERS.push(new UserCredentials("autotesteighth", "autotesteighth"));
+        USERS.push(new UserCredentials("autotestnineth", "autotestnineth"));
+        USERS.push(new UserCredentials("autotestteenth", "autotestteenth"));
         USERS.push(new UserCredentials("autestthredone", "autestthredone"));
         USERS.push(new UserCredentials("autotest", "autotest"));
     }

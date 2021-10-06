@@ -165,6 +165,11 @@ public class CashDrawerAction {
         return value.equals("") ? 0.00 : Double.parseDouble(value);
     }
 
+    public double getCountedCashValueWithoutFormat() {
+        String value = Pages.cashDrawerBalancePage().getCountedCashWithoutFormat();
+        return value.equals("") ? 0.00 : Double.parseDouble(value);
+    }
+
     private double getHundredsValue() {
         String value = Pages.cashDrawerBalancePage().getHundredsAmount();
         return value.equals("") ? 0.00 : Double.parseDouble(value);
