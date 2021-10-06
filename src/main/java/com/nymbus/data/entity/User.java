@@ -75,6 +75,7 @@ public class User {
         user.setEmail(userCredentials.getUserName() + "@nymbus.com");
         user.setLoginID(userCredentials.getUserName());
         user.setIsLoginDisabledFlag(false);
+        user.setPassword(userCredentials.getPassword());
         user.setRolesList(new ArrayList<String>(3) {
             {
                 add("Systems Group");

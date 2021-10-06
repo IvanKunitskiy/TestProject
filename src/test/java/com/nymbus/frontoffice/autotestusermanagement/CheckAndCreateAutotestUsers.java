@@ -5,9 +5,10 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
+import com.nymbus.data.entity.CashDrawer;
 import com.nymbus.data.entity.User;
 import com.nymbus.newmodels.UserCredentials;
-import com.nymbus.newmodels.transaction.verifyingModels.CashDrawerData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
 import com.nymbus.testrail.TestRailIssue;
@@ -40,8 +41,12 @@ public class CheckAndCreateAutotestUsers extends BaseTest {
             Pages.loginPage().typeUserName(userCredentials.getUserName());
             Pages.loginPage().typePassword(userCredentials.getPassword());
             Pages.loginPage().clickEnterButton();
+            SelenideTools.sleep(1);
             if (Pages.loginPage().isErrorsVisibleOnLoginForm()) {
-                if (Pages.loginPage().getErrorMessage().equals("The user account has been disabled. Please contact your System Administrator to restore access.")) {
+                Pages.loginPage().clickEnterButton();
+                String errorMessage = Pages.loginPage().getErrorMessage();
+                System.out.println(errorMessage);
+                if (errorMessage.equals("The user account has been disabled. Please contact your System Administrator to restore access.")) {
                     Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
                     user.setLoginID(userCredentials.getUserName());
                     user.setEmail(userCredentials.getUserName() + "@nymbus.com");
@@ -66,27 +71,36 @@ public class CheckAndCreateAutotestUsers extends BaseTest {
                     SettingsPage.addingUsersPage().clickSaveChangesButton();
                     Actions.loginActions().doLogOut();
                     Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
-                } else if (Pages.loginPage().getErrorMessage().equals("Sorry, we don't recognize that username. ")) {
+                } else if (errorMessage.equals("Wrong User or Password")) {
+                    SelenideTools.sleep(10);
                     Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
                     user = user.setAutotestUserData(userCredentials);
+                    CashDrawer cashDrawer = new CashDrawer().setDefaultTellerValues();
+                    cashDrawer.setDefaultUser(user.getFirstName() + " " + user.getLastName());
+                    cashDrawer.setBranch(user.getBranch());
+                    cashDrawer.setLocation(user.getLocation());
+                    cashDrawer.setGlAccountNumber("0-0-Dummy");
+                    user.setCashDrawer(cashDrawer);
                     Actions.usersActions().createUser(user);
                     Actions.loginActions().doLogOut();
                     Selenide.open(Constants.WEB_ADMIN_URL);
                     WebAdminActions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
-                    WebAdminActions.webAdminUsersActions().setUserPassword(user);
+                    WebAdminActions.webAdminUsersActions().setUserPasswordWithoutGen(user);
+                    WebAdminActions.loginActions().doLogoutProgrammatically();
                     Selenide.open(Constants.URL);
                     Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
                 }
             }
             Pages.aSideMenuPage().clickCashDrawerMenuItem();
             Actions.transactionActions().doLoginTeller();
-            CashDrawerData cashDrawerData = Actions.cashDrawerAction().getCashDrawerData();
-            System.out.println(cashDrawerData.getCountedCash());
-            if (cashDrawerData.getCountedCash() == 0.00) {
+            double countedCashValue = Actions.cashDrawerAction().getCountedCashValueWithoutFormat();
+            System.out.println(countedCashValue);
+            if (countedCashValue == 0.00) {
                 Pages.cashDrawerBalancePage().clickEnterAmounts();
                 Pages.cashDrawerBalancePage().setHundredsAmount(1000000.00);
                 Pages.cashDrawerBalancePage().setFiftiesAmount(1000000.00);
                 Pages.cashDrawerBalancePage().clickSave();
+                SelenideTools.sleep(2);
             }
             Actions.loginActions().doLogOut();
         }

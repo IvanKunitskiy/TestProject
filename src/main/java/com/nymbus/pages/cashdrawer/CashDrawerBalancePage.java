@@ -13,12 +13,17 @@ public class CashDrawerBalancePage extends PageTools {
     private By cashIn = By.xpath("//ul[contains(@class, 'twoColsList ')]//label[@ng-model='cashDenomination.cashin']");
     private By cashOut = By.xpath("//ul[contains(@class, 'twoColsList ')]//label[@ng-model = 'cashDenomination.cashout']");
     private final By enterAmounts = By.xpath("//span[text()='Enter Amounts']");
-    private final By save = By.xpath("");
+    private final By save = By.xpath("//button//span[text()='Save']");
 
     @Step("Get countedCash")
     public String getCountedCash() {
         waitForElementVisibility(countedCash);
         return shouldMatchText(MATCHER_FOR_SYMBOLS_COUNT, countedCash).text().trim().replaceAll(",","");
+    }
+    @Step("Get countedCash")
+    public String getCountedCashWithoutFormat() {
+        waitForElementVisibility(countedCash);
+        return getElementText(countedCash).trim().replaceAll(",","");
     }
 
     @Step("Get Cash In")
