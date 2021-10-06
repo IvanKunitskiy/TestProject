@@ -387,6 +387,7 @@ public class TellerPage extends PageTools {
 
     private By accountNumberDestinationInput = By.xpath("(//*[@id='accordion-operation-destinations-content']//*[@transaction='item'])[%s]" +
             "//*[@data-name='accountNumber account']//input[contains(@class, 'ui-select-search')]");
+    private By accountNumberDestinationField = By.xpath("//div[@dn-destination-line-item]//div[@data-test-id='account-number']");
     private By transactionDestinationCodeField = By.xpath("(//*[@id='accordion-operation-destinations-content']//*[@transaction='item'])[%s]//*[@data-name='tranCode']");
     private By transactionDestinationCodeDropdownArrow = By.xpath("(//*[@id='accordion-operation-destinations-content']//*[@transaction='item'])[%s]" +
             "//*[@data-name='tranCode']//span[contains(@class, 'select2-arrow')]");
@@ -462,6 +463,12 @@ public class TellerPage extends PageTools {
         jsSetValue(number, accountNumberDestinationInput, i);
         jsRiseOnchange(accountNumberDestinationInput, i);
 
+    }
+
+    @Step("Get destination 'Account Number' field value")
+    public String getDestinationAccountNumber() {
+        waitForElementClickable(accountNumberDestinationField);
+        return getElementText(accountNumberDestinationField);
     }
 
     @Step("Click destination 'Account number' suggestion option")
