@@ -192,13 +192,13 @@ public class C32547_PaymentProcessing421ForceToIntActivePDrecordAmountIntPortion
 
         double transactionRecordAmount2Actual = transactionAmount - Double.parseDouble(transactionRecordAmount1);
 
-        TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(1).equals(TransactionCode.FORCE_TO_INT_421.getTransCode()),
+        TestRailAssert.assertEquals(Pages.accountTransactionPage().getTransactionCodeByIndex(1), TransactionCode.FORCE_TO_INT_421.getTransCode(),
                 new CustomStepResult("'Transaction record' is valid", "'Transaction record' is not valid"));
-        TestRailAssert.assertTrue(transactionRecordAmount1.equals(interestPortion),
+        TestRailAssert.assertEquals(transactionRecordAmount1, interestPortion,
                 new CustomStepResult("'Transaction record amount' is valid", "'Transaction record amount' is not valid"));
-        TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(2).equals(TransactionCode.INT_PAY_ONLY_407.getTransCode()),
+        TestRailAssert.assertEquals(Pages.accountTransactionPage().getTransactionCodeByIndex(2), TransactionCode.INT_PAY_ONLY_407.getTransCode(),
                 new CustomStepResult("'Transaction record' is valid", "'Transaction record' is not valid"));
-        TestRailAssert.assertTrue(transactionRecordAmount2.equals(transactionRecordAmount2Actual + "0"),
+        TestRailAssert.assertEquals(transactionRecordAmount2, transactionRecordAmount2Actual + "0",
                 new CustomStepResult("'Transaction record amount' is valid", "'Transaction record amount' is not valid"));
 
         logInfo("Step 7: Go to the 'Payment Info' tab");
@@ -206,9 +206,9 @@ public class C32547_PaymentProcessing421ForceToIntActivePDrecordAmountIntPortion
 
         logInfo("Step 8: Verify existing Payment Due record");
         double paymentDueRecordAmount = Double.parseDouble(loanAccount.getPaymentAmount()) - Double.parseDouble(interestPortion);
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1).equals(String.valueOf(paymentDueRecordAmount)),
+        TestRailAssert.assertEquals(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1), String.valueOf(paymentDueRecordAmount),
                 new CustomStepResult("'Payment Due Amount' is valid", "'Payment Due Amount' is not valid"));
-        TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getDueStatus().equals("Partially Paid"),
+        TestRailAssert.assertEquals(Pages.accountPaymentInfoPage().getDueStatus(), "Partially Paid",
                 new CustomStepResult("'Payment Due Status' is valid", "'Payment Due Status' is not valid"));
 
         logInfo("Step 9: Click on the Payment Due record and check field in the 'Payment Due Details' section");
@@ -223,15 +223,15 @@ public class C32547_PaymentProcessing421ForceToIntActivePDrecordAmountIntPortion
         String escrow = Pages.accountPaymentInfoPage().getEscrow();
         String tranCodeStatus = Pages.accountPaymentInfoPage().getStatus();
 
-        TestRailAssert.assertTrue(amount.equals(interestPortion),
+        TestRailAssert.assertEquals(amount, interestPortion,
                 new CustomStepResult("'Amount' is not valid", "'Amount' is valid"));
         TestRailAssert.assertTrue(principal.isEmpty(),
                 new CustomStepResult("'Principal' is not valid", "'Principal' is valid"));
-        TestRailAssert.assertTrue(interest.equals(interestPortion),
+        TestRailAssert.assertEquals(interest, interestPortion,
                 new CustomStepResult("'Interest' is not valid", "'Interest' is valid"));
         TestRailAssert.assertTrue(escrow.isEmpty(),
                 new CustomStepResult("'Escrow' is not valid", "'Escrow' is valid"));
-        TestRailAssert.assertTrue(tranCodeStatus.equals("421 Force To Int"),
+        TestRailAssert.assertEquals(tranCodeStatus, "421 Force To Int",
                 new CustomStepResult("'Tran Code/Status' is not valid", "'Tran Code/Status' is valid"));
 
         TestRailAssert.assertFalse(AccountActions.accountPaymentInfoActions().isRecordWithSpecificStatusPresent(TransactionCode.INT_PAY_ONLY_407.getTransCode()),
