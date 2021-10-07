@@ -18,11 +18,11 @@ import com.nymbus.newmodels.generation.transactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.transactions.builder.GLDebitDepositCHKAccBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.pages.Pages;
+import com.nymbus.pages.webadmin.WebAdminPages;
 import com.nymbus.testrail.CustomStepResult;
 import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
-import org.checkerframework.checker.units.qual.C;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -33,14 +33,9 @@ import org.testng.annotations.Test;
 @Owner("Petro")
 public class C19443_CDCashOutWithCashDrawer extends BaseTest {
 
-    private IndividualClient client;
     private Account chkAccount;
-    private Transaction creditTransaction;
-    private Transaction debitTransaction;
-    private Address seasonalAddress;
-    private String date;
-    private String cashRecycler;
-
+    private String currentBalanceBefore;
+    private String availableBalanceBefore;
 
     @BeforeMethod
     public void preConditions(){
@@ -59,7 +54,7 @@ public class C19443_CDCashOutWithCashDrawer extends BaseTest {
         IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account
-        Account chkAccount = new Account().setCHKAccountData();
+        chkAccount = new Account().setCHKAccountData();
 
         // Set up transactions
         final double depositTransactionAmount = 1001.00;
@@ -87,6 +82,12 @@ public class C19443_CDCashOutWithCashDrawer extends BaseTest {
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
 
+        // Get 'Current Balance' and 'Available Balance' before test
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
+        currentBalanceBefore  = Pages.accountDetailsPage().getCurrentBalance();
+        availableBalanceBefore = Pages.accountDetailsPage().getAvailableBalance();
+
         Actions.loginActions().doLogOutProgrammatically();
     }
 
@@ -108,8 +109,11 @@ public class C19443_CDCashOutWithCashDrawer extends BaseTest {
 
         logInfo("Step 4: Fill in Cash Denominations that is > $0.00 with amount < or equal to Available Balance of Account's from Precondition#2\n" +
                 "and click OK button");
-        Pages.cashInOutModalWindowPage().typeHundredsAmountValue("100.00");
-        Pages.cashInOutModalWindowPage().typeFiftiesAmountValue("100.00");
+        String hundredsAmount = "100.00";
+        String fiftiesAmount = "100.00";
+
+        Pages.cashInOutModalWindowPage().typeHundredsAmountValue(hundredsAmount);
+        Pages.cashInOutModalWindowPage().typeFiftiesAmountValue(fiftiesAmount);
 
         Pages.cashInOutModalWindowPage().clickOKButton();
 
@@ -142,8 +146,28 @@ public class C19443_CDCashOutWithCashDrawer extends BaseTest {
         logInfo("Step 11: Go to account used in withdrawal item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
 
         logInfo("Step 12: Open account on the Transactions tab and verify the committed transaction");
+        Pages.accountDetailsPage().waitForEditButton();
+
+        String currentBalanceActual = Pages.accountDetailsPage().getCurrentBalance();
+        String availableBalanceActual = Pages.accountDetailsPage().getAvailableBalance();
+
+        double currentBalanceExpected = Double.parseDouble(currentBalanceBefore) - (Double.parseDouble(hundredsAmount) + Double.parseDouble(fiftiesAmount));
+        double availableBalanceExpected = Double.parseDouble(availableBalanceBefore) - (Double.parseDouble(hundredsAmount) + Double.parseDouble(fiftiesAmount));
+
+        System.out.println(currentBalanceActual + " --------------");
+        System.out.println(availableBalanceActual + " --------------");
+        System.out.println(currentBalanceExpected + " --------------");
+        System.out.println(availableBalanceExpected + " --------------");
+
+        TestRailAssert.assertEquals(currentBalanceActual, String.valueOf(currentBalanceExpected),
+                new CustomStepResult("'Current Balance' is valid", "'Current Balance' is not valid" ));
+        TestRailAssert.assertEquals( availableBalanceActual, String.valueOf(availableBalanceExpected),
+                new CustomStepResult("'Available Balance' is valid", "'Available Balance' is not valid" ));
+
 
     }
 }
