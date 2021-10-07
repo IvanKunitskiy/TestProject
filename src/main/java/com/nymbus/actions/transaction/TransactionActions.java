@@ -224,7 +224,7 @@ public class TransactionActions {
         fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
     }
 
-    private void setCashOutDestination(TransactionDestination transactionDestination) {
+    public void setCashOutDestination(TransactionDestination transactionDestination) {
         Pages.tellerPage().clickCashOutButton();
         setAmounts(transactionDestination.getDenominationsHashMap());
         Pages.cashInOutModalWindowPage().clickOKButton();
