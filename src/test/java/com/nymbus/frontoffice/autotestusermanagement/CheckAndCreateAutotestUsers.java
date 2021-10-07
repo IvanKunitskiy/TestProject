@@ -45,7 +45,6 @@ public class CheckAndCreateAutotestUsers extends BaseTest {
             if (Pages.loginPage().isErrorsVisibleOnLoginForm()) {
                 Pages.loginPage().clickEnterButton();
                 String errorMessage = Pages.loginPage().getErrorMessage();
-                System.out.println(errorMessage);
                 if (errorMessage.equals("The user account has been disabled. Please contact your System Administrator to restore access.")) {
                     Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
                     user.setLoginID(userCredentials.getUserName());
@@ -94,7 +93,6 @@ public class CheckAndCreateAutotestUsers extends BaseTest {
             Pages.aSideMenuPage().clickCashDrawerMenuItem();
             Actions.transactionActions().doLoginTeller();
             double countedCashValue = Actions.cashDrawerAction().getCountedCashValueWithoutFormat();
-            System.out.println(countedCashValue);
             if (countedCashValue == 0.00) {
                 Pages.cashDrawerBalancePage().clickEnterAmounts();
                 Pages.cashDrawerBalancePage().setHundredsAmount(1000000.00);
