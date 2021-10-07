@@ -189,6 +189,7 @@ public class TellerPage extends PageTools {
     private By accountNumberInput = By.xpath("(//input[@type='search'])[2]");
     private By accountNumberField = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]" +
             "//*[@data-name='accountNumber account']//input");
+    private By accountNumbetSpan = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='accountNumber account']//span");
 
     private By routingNumberDiv = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='routingTransitNumber']");
     private By routingNumberInput = By.xpath("(//*[@id='accordion-operation-sources-content']//*[@transaction='item'])[%s]//*[@data-name='routingTransitNumber']/input");
@@ -328,6 +329,12 @@ public class TellerPage extends PageTools {
     public void clickOnAutocompleteDropDownItem(String item) {
         waitForElementClickable(autocompleteItemInDropDown, item);
         jsClick(autocompleteItemInDropDown, item);
+    }
+
+    @Step("Get account number")
+    public String getAccountNumber(int index){
+        waitForElementVisibility(accountNumbetSpan, index);
+        return getElementText(accountNumbetSpan, index);
     }
 
     @Step("Check on {0} item in dropdown")
