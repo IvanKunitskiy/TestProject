@@ -42,22 +42,20 @@ public class C19443_CDCashOutWithCashDrawer extends BaseTest {
     IndividualClient client;
     private Account chkAccount;
     private TransactionData transactionData;
-    private String currentBalanceBefore;
-    private String availableBalanceBefore;
     BalanceData balanceData;
     private final TransactionSource withdrawalSource = SourceFactory.getWithdrawalSource();
     private final TransactionDestination cashOutDestination = DestinationFactory.getCashOutDestination();
 
     @BeforeMethod
     public void preConditions(){
-//        //Check CFMIntegrationEnabled
-//        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
-//        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(),userCredentials.getPassword());
-//        if (WebAdminActions.webAdminUsersActions().isCFMIntegrationEnabled()) {
-//            throw new SkipException("CFMIntegrationEnabled = 1");
-//        }
-//        WebAdminActions.loginActions().doLogout();
-//        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+        //Check CFMIntegrationEnabled
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(),userCredentials.getPassword());
+        if (WebAdminActions.webAdminUsersActions().isCFMIntegrationEnabled()) {
+            throw new SkipException("CFMIntegrationEnabled = 1");
+        }
+        WebAdminActions.loginActions().doLogout();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
         // Set up Client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
@@ -127,7 +125,6 @@ public class C19443_CDCashOutWithCashDrawer extends BaseTest {
 
         logInfo("Step 2: Go to Teller screen and log in to proof date");
         Actions.transactionActions().openProofDateLoginModalWindow();
-        String postingDate = Pages.tellerModalPage().getProofDateValue();
         Actions.transactionActions().doLoginProofDate();
         Actions.transactionActions().goToTellerPage();
 
