@@ -5,7 +5,9 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -24,11 +26,17 @@ import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
+import org.checkerframework.checker.units.qual.A;
+import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import javax.swing.*;
 
 @Epic("Frontoffice")
 @Feature("Transactions")
@@ -45,13 +53,13 @@ public class C19444_CdEcCashOutWithCashDrawer extends BaseTest {
     @BeforeMethod
     public void preConditions(){
         //Check CFMIntegrationEnabled
-        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
-        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(),userCredentials.getPassword());
-        if (WebAdminActions.webAdminUsersActions().isCFMIntegrationEnabled()) {
-            throw new SkipException("CFMIntegrationEnabled = 1");
-        }
-        WebAdminActions.loginActions().doLogout();
-        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+//        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+//        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(),userCredentials.getPassword());
+//        if (WebAdminActions.webAdminUsersActions().isCFMIntegrationEnabled()) {
+//            throw new SkipException("CFMIntegrationEnabled = 1");
+//        }
+//        WebAdminActions.loginActions().doLogout();
+//        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
         // Set up Client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
@@ -103,6 +111,11 @@ public class C19444_CdEcCashOutWithCashDrawer extends BaseTest {
         Actions.loginActions().doLogOutProgrammatically();
 
         // Perform 'Cash Out' transaction
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Actions.transactionActions().openProofDateLoginModalWindow();
+        Actions.transactionActions().doLoginProofDate();
+        Actions.transactionActions().goToTellerPage();
+
         Actions.transactionActions().setCashOutDestination(cashOutDestination);
         Actions.transactionActions().setWithDrawalSource(withdrawalSource, 0);
         Pages.tellerPage().clickCommitButton();
@@ -110,6 +123,8 @@ public class C19444_CdEcCashOutWithCashDrawer extends BaseTest {
         Pages.verifyConductor().clickVerifyButton();
         Pages.tellerPage().waitForPrintReceipt();
         Pages.tellerPage().closeModal();
+
+        Actions.loginActions().doLogOutProgrammatically();
 
         // Set transaction data
         transactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
@@ -130,21 +145,46 @@ public class C19444_CdEcCashOutWithCashDrawer extends BaseTest {
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Go to Journal screen and log in to proof date with teller + cash drawer mentioned above");
+        Actions.journalActions().goToJournalPage();
+        Actions.transactionActions().doLoginTeller();
 
         logInfo("Step 3: Search for transaction from preconditions and open its details");
+        Actions.journalActions().applyFilterByAccountNumber(chkAccount.getAccountNumber());
+        Actions.journalActions().clickLastTransaction();
 
         logInfo("Step 4: Click [Error Correct] button");
+        Pages.journalDetailsPage().clickErrorCorrectButton();
+        Pages.journalDetailsPage().waitForErrorCorrectButtonInvisibility();
+        TestRailAssert.assertEquals(Actions.journalActions().getTransactionState(), "Void",
+                new CustomStepResult("Transaction state has changed", "Transaction state hasn't changed"));
 
         logInfo("Step 5: Go to Cash Drawer screen, search for cash drawer used in teller session and verify its:\n" +
                 "- denominations\n" +
                 "- total cash out");
+        Pages.aSideMenuPage().clickCashDrawerMenuItem();
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        // TODO: add verification for "denominations" and "total cash out" quantity
 
         logInfo("Step 6: Go to account used in withdrawal item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance\n" +
                 "- Transactions history");
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
+
+        TestRailAssert.assertEquals(AccountActions.retrievingAccountData().getCurrentBalance(),
+                balanceData.getCurrentBalance() - cashOutDestination.getAmount(),
+                new CustomStepResult("CHK account current balance is correct", "CHK account current balance is not correct!"));
+        TestRailAssert.assertEquals(AccountActions.retrievingAccountData().getAvailableBalance(),
+                balanceData.getAvailableBalance() - cashOutDestination.getAmount(),
+                new CustomStepResult("CHK account available balance is correct", "CHK account available balance is not correct!"));
 
         logInfo("Step 7: Open account on the Transactions tab and verify the Error corrected transaction");
+        AccountActions.retrievingAccountData().goToTransactionsTab();
+        int offset = AccountActions.retrievingAccountData().getOffset();
+        TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset, 1);
+        TestRailAssert.assertEquals(actualTransactionData, transactionData,
+                new CustomStepResult("Transaction data is matching", "Transaction data doesn't match!"));
 
     }
 
