@@ -73,7 +73,7 @@ public class Pages extends AllureLogger {
     private static TransactionsPage transactionsPage;
     private static JournalPage journalPage;
     private static JournalDetailsPage journalDetailsPage;
-    private static CashInModalWindowPage cashInModalWindowPage;
+    private static CashInOutModalWindowPage cashInModalWindowPage;
     private static VerifyConductorModalPage verifyConductorModalPage;
     private static TransfersPage transfersPage;
     private static NewTransferPage newTransferPage;
@@ -565,9 +565,9 @@ public class Pages extends AllureLogger {
     /**
      * This function return an instance of `CashIn Modal Window Page`
      */
-    public static CashInModalWindowPage cashInModalWindowPage() {
+    public static CashInOutModalWindowPage cashInOutModalWindowPage() {
         if (cashInModalWindowPage == null) {
-            cashInModalWindowPage = new CashInModalWindowPage();
+            cashInModalWindowPage = new CashInOutModalWindowPage();
         }
         return cashInModalWindowPage;
     }

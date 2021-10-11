@@ -4,7 +4,7 @@ import com.nymbus.core.base.PageTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
-public class CashInModalWindowPage extends PageTools {
+public class CashInOutModalWindowPage extends PageTools {
 
     private By modalWindow = By.xpath("//div[@class='modal-content']//div[@name='cashDenominationForm']");
     private By hundredsDenomination = By.xpath("//td[text()='Hundreds']/following-sibling::td//input");
