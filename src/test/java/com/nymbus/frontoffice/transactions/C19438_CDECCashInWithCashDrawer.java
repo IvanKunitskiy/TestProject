@@ -28,12 +28,11 @@ import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class C19437_CDCashInWithCashDrawer extends BaseTest {
+public class C19438_CDECCashInWithCashDrawer extends BaseTest {
     private IndividualClient client;
     private Account savingsAccount;
     private double countedCashValue;
@@ -41,6 +40,7 @@ public class C19437_CDCashInWithCashDrawer extends BaseTest {
     private TransactionData transactionData;
     private final TransactionSource cashInSource = SourceFactory.getCashInSource();
     private final TransactionDestination depositDestination = DestinationFactory.getDepositDestination();
+    private String transactionNumber;
 
     @BeforeMethod
     public void setUo() {
@@ -103,8 +103,8 @@ public class C19437_CDCashInWithCashDrawer extends BaseTest {
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(savingsAccount);
         balanceData = AccountActions.retrievingAccountData().getBalanceData();
-        balanceData.setAvailableBalance(100.00);
-        balanceData.setCurrentBalance(100.00);
+        balanceData.setAvailableBalance(0.00);
+        balanceData.setCurrentBalance(0.00);
         Actions.loginActions().doLogOut();
 
         // Set transaction data
@@ -113,67 +113,78 @@ public class C19437_CDCashInWithCashDrawer extends BaseTest {
                 "+",
                 depositDestination.getAmount(),
                 depositDestination.getAmount());
+
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.transactionActions().openProofDateLoginModalWindow();
+        String postingDate = Pages.tellerModalPage().getProofDateValue();
+        Actions.transactionActions().doLoginProofDate();
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().setCashInSource(cashInSource);
+        Actions.transactionActions().setDepositDestination(depositDestination, 0);
+        Actions.transactionActions().clickCommitButton();
+        Pages.verifyConductorModalPage().clickVerifyButton();
+        transactionNumber = WebAdminActions.webAdminTransactionActions().getTransactionNumber(userCredentials, savingsAccount);
+        System.out.println(transactionNumber);
+        Pages.tellerModalPage().clickCloseButton();
+        Actions.loginActions().doLogOutProgrammatically();
     }
 
 
     private final String TEST_RUN_NAME = "Transactions";
 
-    @TestRailIssue(issueID = 19437, testRunName = TEST_RUN_NAME)
-    @Test(description = "C19437, [CD] Cash In with Cash Drawer")
+    @TestRailIssue(issueID = 19438, testRunName = TEST_RUN_NAME)
+    @Test(description = "C19438, [CD] EC Cash In with Cash Drawer")
     @Severity(SeverityLevel.CRITICAL)
     public void cDCashInWithCashDrawer() {
 
         logInfo("Step 1: Log in to the system as the user from preconditions");
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
 
-        logInfo("Step 2: Go to Teller screen and log in to proof date");
+        logInfo("Step 2: Go to Journal screen and log in to proof date with teller + cash drawer mentioned above");
         Actions.transactionActions().openProofDateLoginModalWindow();
         Actions.transactionActions().doLoginProofDate();
-        Actions.transactionActions().goToTellerPage();
+        Pages.aSideMenuPage().clickJournalMenuItem();
 
-        logInfo("Step 3: Select Cash In Fund Type");
-        logInfo("Step 4: Fill in Cash Denominations with any amount and click OK button");
-        Actions.transactionActions().setCashInSource(cashInSource);
+        logInfo("Step 3: Search for transaction from preconditions and open its details");
+        Actions.journalActions().applyFilterByTransactionNumber(transactionNumber);
+        Pages.journalPage().waitForMainSpinnerInvisibility();
 
-        logInfo("Step 5: Verify GL account populated for Cash in item");
-        TestRailAssert.assertEquals(Pages.tellerPage().getAccountNumber(1), "0-0-Dummy",
-                new CustomStepResult("GL account valid", "GL account is not valid"));
+        Actions.journalActions().clickLastTransaction();
+        Pages.journalPage().waitForMainSpinnerInvisibility();
 
-        logInfo("Step 6: Select the following fund type in the destination\n" +
-                "- Destination: Deposit");
-        logInfo("Step 7: Select account from preconditions in Destination item and specify amount the same as it was specified for Cash In item");
-        Actions.transactionActions().setDepositDestination(depositDestination, 0);
+        logInfo("Step 4: Click [Error Correct] button");
+        Pages.journalDetailsPage().clickErrorCorrectButton();
+        Pages.journalDetailsPage().waitForErrorCorrectButtonInvisibility();
+        TestRailAssert.assertEquals(Actions.journalActions().getTransactionState(),"Void",
+                new CustomStepResult("Transaction state hasn't changed", "Transaction state has changed"));
 
-        logInfo("Step 8: Click [Commit Transaction] button");
-        Actions.transactionActions().clickCommitButton();
-
-        logInfo("Step 9: Specify any client in the opened verify popup (e.g. owner of the deposit account) and submit verify screen");
-        Pages.verifyConductorModalPage().clickVerifyButton();
-        Pages.tellerModalPage().clickCloseButton();
-
-        logInfo("Step 10: Go to cash drawer and verify its:\n" +
+        logInfo("Step 5: Go to cash drawer and verify its:\n" +
                 "- denominations\n" +
                 "- total cash in");
         Pages.aSideMenuPage().clickCashDrawerMenuItem();
         double actualCashValue = Actions.cashDrawerAction().getCountedCashValueWithoutFormat();
-        TestRailAssert.assertEquals(actualCashValue,countedCashValue + depositDestination.getAmount(),
+        TestRailAssert.assertEquals(actualCashValue,countedCashValue ,
                 new CustomStepResult("Cash balance is valid","Cash balance is not valid"));
 
-        logInfo("Step 11: Go to account used in deposit item and verify its:\n" +
+        logInfo("Step 6: Go to account used in deposit item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(savingsAccount);
-        Assert.assertEquals(AccountActions.retrievingAccountData().getCurrentBalance(),
-                balanceData.getCurrentBalance(), "CHK account current balance is not correct!");
-        Assert.assertEquals(AccountActions.retrievingAccountData().getAvailableBalance(),
-                balanceData.getAvailableBalance(), "CHK account available balance is not correct!");
+        TestRailAssert.assertEquals(AccountActions.retrievingAccountData().getCurrentBalance(),
+                balanceData.getCurrentBalance(), new CustomStepResult("CHK account current balance is correct!",
+                        "CHK account current balance is not correct!"));
+        TestRailAssert.assertEquals(AccountActions.retrievingAccountData().getAvailableBalance(),
+                balanceData.getAvailableBalance(), new CustomStepResult("CHK account available balance is correct!",
+                        "CHK account available balance is not correct!"));
 
-        logInfo("Step 12: Open account on the Transactions tab and verify the committed transaction");
+        logInfo("Step 7: Open account on the Transactions tab and verify the committed transaction");
         AccountActions.retrievingAccountData().goToTransactionsTab();
         int offset = AccountActions.retrievingAccountData().getOffset();
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset, 1);
-        Assert.assertEquals(actualTransactionData, transactionData, "Transaction data doesn't match!");
+        TestRailAssert.assertTrue(Pages.accountTransactionPage().getEcColumnValueForJournal(1).equals("EC"),
+                new CustomStepResult("'EC' is in 'EC' column", "'EC' is not in 'EC' column"));
+        TestRailAssert.assertEquals(actualTransactionData, transactionData, new CustomStepResult("Transaction data match!",
+                "Transaction data doesn't match!"));
     }
-
 }
