@@ -158,8 +158,8 @@ public class TransactionActions {
     public void setCashInSource(TransactionSource source) {
         Pages.tellerPage().clickCashInButton();
         setAmounts(source.getDenominationsHashMap());
-        Pages.cashInModalWindowPage().clickOKButton();
-        Pages.cashInModalWindowPage().waitForModalWindowInVisibility();
+        Pages.cashInOutModalWindowPage().clickOKButton();
+        Pages.cashInOutModalWindowPage().waitForModalWindowInVisibility();
     }
 
     private void setAmounts(HashMap<Denominations, Double> denominationsHashMap) {
@@ -171,10 +171,10 @@ public class TransactionActions {
     private void setMappedAmount(Denominations key, Double value) {
         switch (key) {
             case HUNDREDS:
-                Pages.cashInModalWindowPage().typeHundredsAmountValue(String.format("%.0f", value));
+                Pages.cashInOutModalWindowPage().typeHundredsAmountValue(String.format("%.0f", value));
                 break;
             case FIFTIES:
-                Pages.cashInModalWindowPage().typeFiftiesAmountValue(String.format("%.0f", value));
+                Pages.cashInOutModalWindowPage().typeFiftiesAmountValue(String.format("%.0f", value));
                 break;
             default:
                 break;
@@ -224,10 +224,10 @@ public class TransactionActions {
         fillSourceAmount(String.format("%.2f", source.getAmount()), tempIndex);
     }
 
-    private void setCashOutDestination(TransactionDestination transactionDestination) {
+    public void setCashOutDestination(TransactionDestination transactionDestination) {
         Pages.tellerPage().clickCashOutButton();
         setAmounts(transactionDestination.getDenominationsHashMap());
-        Pages.cashInModalWindowPage().clickOKButton();
+        Pages.cashInOutModalWindowPage().clickOKButton();
     }
 
     public void setDepositDestination(TransactionDestination transactionDestination, int index) {
@@ -262,8 +262,8 @@ public class TransactionActions {
 
     public void createCashInMiscCreditTransaction(Transaction transaction) {
         Pages.tellerPage().clickCashInButton();
-        Pages.cashInModalWindowPage().typeHundredsAmountValue(String.format("%.0f", transaction.getTransactionSource().getAmount()));
-        Pages.cashInModalWindowPage().clickOKButton();
+        Pages.cashInOutModalWindowPage().typeHundredsAmountValue(String.format("%.0f", transaction.getTransactionSource().getAmount()));
+        Pages.cashInOutModalWindowPage().clickOKButton();
         Pages.tellerPage().clickMiscCreditButton();
         fillDestinationInformation(transaction.getTransactionDestination());
     }

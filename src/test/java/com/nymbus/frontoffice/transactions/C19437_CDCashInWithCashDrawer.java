@@ -165,16 +165,16 @@ public class C19437_CDCashInWithCashDrawer extends BaseTest {
                 "- available balance");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(savingsAccount);
-        Assert.assertEquals(AccountActions.retrievingAccountData().getCurrentBalance(),
-                balanceData.getCurrentBalance(), "CHK account current balance is not correct!");
-        Assert.assertEquals(AccountActions.retrievingAccountData().getAvailableBalance(),
-                balanceData.getAvailableBalance(), "CHK account available balance is not correct!");
+        TestRailAssert.assertEquals(AccountActions.retrievingAccountData().getCurrentBalance(), balanceData.getCurrentBalance(),
+                new CustomStepResult("CHK account current balance is correct", "CHK account current balance is not correct!"));
+        TestRailAssert.assertEquals(AccountActions.retrievingAccountData().getAvailableBalance(), balanceData.getAvailableBalance(),
+                new CustomStepResult("CHK account available balance is correct", "CHK account available balance is not correct!"));
 
         logInfo("Step 12: Open account on the Transactions tab and verify the committed transaction");
         AccountActions.retrievingAccountData().goToTransactionsTab();
         int offset = AccountActions.retrievingAccountData().getOffset();
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset, 1);
-        Assert.assertEquals(actualTransactionData, transactionData, "Transaction data doesn't match!");
+        TestRailAssert.assertEquals(actualTransactionData, transactionData, new CustomStepResult("Transaction data is matching", "Transaction data doesn't match!"));
     }
 
 }
