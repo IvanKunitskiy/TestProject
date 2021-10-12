@@ -81,11 +81,12 @@ public class ClientPageActions {
     }
 
     private void closeNotifications(int count) {
-        for (int i = 1; i <= count; i++) {
+        for (int i = 1; i <= count; count--) {
+            Pages.clientDetailsPage().clickNotificationByIndex(i);
             Pages.clientDetailsPage().clickCloseNotificationByIndex(i);
 
-            Pages.clientDetailsPage().waitForNotificationInvisibility(i);
         }
+        Pages.clientDetailsPage().waitForNotificationInvisibility(1);
     }
 
     public void checkRejectedItems(int rejectedTransactionsItems) {

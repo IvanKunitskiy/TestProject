@@ -20,6 +20,14 @@ public class JournalActions {
         SelenideTools.sleep(5);
     }
 
+    public void applyFilterByTransactionNumber(String transactionNumber) {
+        Pages.journalPage().waitForProofDateSpan();
+        Pages.journalPage().fillInTransactionNumber(transactionNumber);
+       /* Pages.journalPage().waitForMainSpinnerVisibility();
+        Pages.journalPage().waitForMainSpinnerInvisibility();*/
+        SelenideTools.sleep(5);
+    }
+
     public void clickLastTransaction() {
         int tempIndex = 1;
         Pages.journalPage().clickItemInTable(tempIndex);

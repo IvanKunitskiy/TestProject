@@ -12,6 +12,7 @@ public class JournalPage extends PageTools {
      * Filter region
      */
     private By accountNumberInput = By.xpath("//input[@ng-model='filter.number.account']");
+    private By transactionNumberInput = By.xpath("//input[@ng-model='filter.number.transaction']");
     private By proofDateSpan = By.xpath("//div[@ng-model='teller.proofDate']//span[@class='select2-chosen']/span");
     private By transactionAmountInput = By.xpath("//input[@data-test-id='field-amountTransaction']");
     private By tellerInputField = By.xpath("//div[@data-test-id='field-teller']/a");
@@ -24,6 +25,13 @@ public class JournalPage extends PageTools {
         waitForElementVisibility(accountNumberInput);
         waitForElementClickable(accountNumberInput);
         type(accountNumber, accountNumberInput);
+    }
+
+    @Step("Type transaction number")
+    public void fillInTransactionNumber(String transactionNumber) {
+        waitForElementVisibility(transactionNumberInput);
+        waitForElementClickable(transactionNumberInput);
+        type(transactionNumber, transactionNumberInput);
     }
 
     @Step("Type transaction amount")

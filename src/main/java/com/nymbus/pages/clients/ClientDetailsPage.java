@@ -182,7 +182,7 @@ public class ClientDetailsPage extends PageTools {
     private By notifications = By.xpath("//section[@ui-view='notesNotification']//div[contains(@class, 'notifications-item-text')]");
     private By notification = By.xpath("//section[@ui-view='notesNotification']//div[contains(@class, 'notifications-item-text')][%s]");
     private By notificationCloseButton = By.xpath("//section[@ui-view='notesNotification']//" +
-            "div[contains(@class, 'notifications-item-close')][%s]");
+            "div[contains(@class, 'notifications-item-close')][%s]/button");
 
     @Step("Get Notifications count")
     public int getNotificationCount() {
