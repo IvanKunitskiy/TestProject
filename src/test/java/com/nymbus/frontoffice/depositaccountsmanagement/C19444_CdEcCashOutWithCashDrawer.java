@@ -3,7 +3,6 @@ package com.nymbus.frontoffice.depositaccountsmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
-import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
@@ -24,15 +23,13 @@ import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceData;
+import com.nymbus.newmodels.transaction.verifyingModels.CashDrawerData;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.testrail.CustomStepResult;
 import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
-import org.checkerframework.checker.units.qual.A;
-import org.testng.Assert;
-import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -47,6 +44,7 @@ public class C19444_CdEcCashOutWithCashDrawer extends BaseTest {
     private Account chkAccount;
     private TransactionData transactionData;
     BalanceData balanceData;
+    CashDrawerData cashDrawerData;
     private final TransactionSource withdrawalSource = SourceFactory.getWithdrawalSource();
     private final TransactionDestination cashOutDestination = DestinationFactory.getCashOutDestination();
 
@@ -124,13 +122,17 @@ public class C19444_CdEcCashOutWithCashDrawer extends BaseTest {
         Pages.tellerPage().waitForPrintReceipt();
         Pages.tellerPage().closeModal();
 
+        Pages.aSideMenuPage().clickCashDrawerMenuItem();
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        cashDrawerData = Actions.cashDrawerAction().getCashDrawerData();
+
         Actions.loginActions().doLogOutProgrammatically();
 
         // Set transaction data
         transactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-",
-                depositTransactionAmount - cashOutDestination.getAmount(),
+                "+",
+                depositTransactionAmount,
                 cashOutDestination.getAmount());
     }
 
@@ -163,7 +165,11 @@ public class C19444_CdEcCashOutWithCashDrawer extends BaseTest {
                 "- total cash out");
         Pages.aSideMenuPage().clickCashDrawerMenuItem();
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
-        // TODO: add verification for "denominations" and "total cash out" quantity
+
+        CashDrawerData actualCashDrawerData = Actions.cashDrawerAction().getCashDrawerData();
+
+        TestRailAssert.assertEquals(actualCashDrawerData.getFiftiesAmount() + 100.00, cashDrawerData.getFiftiesAmount(),
+                new CustomStepResult("'Fifties' denomination is valid", "'Fifties' denomination is not valid"));
 
         logInfo("Step 6: Go to account used in withdrawal item and verify its:\n" +
                 "- current balance\n" +
@@ -173,10 +179,10 @@ public class C19444_CdEcCashOutWithCashDrawer extends BaseTest {
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
 
         TestRailAssert.assertEquals(AccountActions.retrievingAccountData().getCurrentBalance(),
-                balanceData.getCurrentBalance() - cashOutDestination.getAmount(),
+                balanceData.getCurrentBalance(),
                 new CustomStepResult("CHK account current balance is correct", "CHK account current balance is not correct!"));
         TestRailAssert.assertEquals(AccountActions.retrievingAccountData().getAvailableBalance(),
-                balanceData.getAvailableBalance() - cashOutDestination.getAmount(),
+                balanceData.getAvailableBalance(),
                 new CustomStepResult("CHK account available balance is correct", "CHK account available balance is not correct!"));
 
         logInfo("Step 7: Open account on the Transactions tab and verify the Error corrected transaction");
@@ -185,6 +191,8 @@ public class C19444_CdEcCashOutWithCashDrawer extends BaseTest {
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithOffset(offset, 1);
         TestRailAssert.assertEquals(actualTransactionData, transactionData,
                 new CustomStepResult("Transaction data is matching", "Transaction data doesn't match!"));
+        TestRailAssert.assertEquals(Pages.accountTransactionPage().getCheckingAccountTransactionEcColumnValue(1), "EC",
+                new CustomStepResult("'EC' is in 'EC' column", "'EC' is not in 'EC' column"));
 
     }
 
