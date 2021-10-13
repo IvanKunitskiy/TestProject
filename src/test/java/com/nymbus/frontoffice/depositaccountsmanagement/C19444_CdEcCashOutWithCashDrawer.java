@@ -3,6 +3,7 @@ package com.nymbus.frontoffice.depositaccountsmanagement;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
@@ -30,10 +31,9 @@ import com.nymbus.testrail.CustomStepResult;
 import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
+import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import javax.swing.*;
 
 @Epic("Frontoffice")
 @Feature("Transactions")
@@ -51,13 +51,13 @@ public class C19444_CdEcCashOutWithCashDrawer extends BaseTest {
     @BeforeMethod
     public void preConditions(){
         //Check CFMIntegrationEnabled
-//        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
-//        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(),userCredentials.getPassword());
-//        if (WebAdminActions.webAdminUsersActions().isCFMIntegrationEnabled()) {
-//            throw new SkipException("CFMIntegrationEnabled = 1");
-//        }
-//        WebAdminActions.loginActions().doLogout();
-//        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(),userCredentials.getPassword());
+        if (WebAdminActions.webAdminUsersActions().isCFMIntegrationEnabled()) {
+            throw new SkipException("CFMIntegrationEnabled = 1");
+        }
+        WebAdminActions.loginActions().doLogout();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
         // Set up Client
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
@@ -170,7 +170,6 @@ public class C19444_CdEcCashOutWithCashDrawer extends BaseTest {
 
         TestRailAssert.assertEquals(actualCashDrawerData.getFiftiesAmount() + 100.00, cashDrawerData.getFiftiesAmount(),
                 new CustomStepResult("'Fifties' denomination is valid", "'Fifties' denomination is not valid"));
-
         logInfo("Step 6: Go to account used in withdrawal item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance\n" +

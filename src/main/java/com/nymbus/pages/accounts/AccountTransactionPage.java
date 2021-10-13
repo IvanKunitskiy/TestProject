@@ -56,8 +56,6 @@ public class AccountTransactionPage extends PageTools {
     private By specificTransactionRecord = By.xpath("//tr[contains(@data-test-id, 'repeat-transactions-%s')]");
     private By ecColumnValue = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[12]/span/div");
     private By checkingAccountTransactionEcColumnValue = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[9]/span/div");
-    private By ecColumnValueForJournal = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[9]/span/div");
-
 
     /**
      * Check info
