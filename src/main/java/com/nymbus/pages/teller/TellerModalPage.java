@@ -111,15 +111,15 @@ public class TellerModalPage extends PageTools {
 
     @Step("Click Cash Recycler item")
     public void clickCashRecyclerItem(String name){
-        int index = 0;
+        int index = 1;
         waitForElementVisibility(cashRecyclerItem, index);
         boolean notContains = true;
         while (notContains){
-            index++;
-            notContains = !getElementAttributeValue("value", cashRecyclerItem, index).contains(name);
+            notContains = !getElementsText(cashRecyclerItem, index).contains(name);
             if (!notContains){
                 click(cashRecyclerItem, index);
             }
+            index++;
         }
     }
 

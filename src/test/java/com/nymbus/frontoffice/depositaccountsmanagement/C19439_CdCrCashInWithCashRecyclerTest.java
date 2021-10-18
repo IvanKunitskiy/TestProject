@@ -60,7 +60,6 @@ public class C19439_CdCrCashInWithCashRecyclerTest extends BaseTest {
         }
 
         cashRecycler = WebAdminActions.webAdminUsersActions().getCashRecyclerNameByRawIndex(1);
-        System.out.println(WebAdminActions.webAdminUsersActions().getCashRecyclerNameByRawIndex(1) + " -----------");
         WebAdminActions.loginActions().doLogout();
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
@@ -115,9 +114,11 @@ public class C19439_CdCrCashInWithCashRecyclerTest extends BaseTest {
         SelenideTools.sleep(Constants.MINI_TIMEOUT);
 
         Actions.cashDrawerAction().selectSpecificCashDrawer(cashRecycler);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         cashRecyclerData = Actions.cashDrawerAction().getCashDrawerData();
 
         Actions.cashDrawerAction().selectSpecificCashDrawer(Constants.USERNAME);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         cashDrawerData = Actions.cashDrawerAction().getCashDrawerData();
         Actions.loginActions().doLogOutProgrammatically();
 
@@ -125,7 +126,7 @@ public class C19439_CdCrCashInWithCashRecyclerTest extends BaseTest {
         transactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "+",
-                depositTransactionAmount,
+                depositTransactionAmount + 100.00,
                 cashInSource.getAmount());
     }
 
@@ -175,13 +176,6 @@ public class C19439_CdCrCashInWithCashRecyclerTest extends BaseTest {
                 "- total cash in");
         Pages.aSideMenuPage().clickCashDrawerMenuItem();
         SelenideTools.sleep(Constants.MINI_TIMEOUT);
-
-        Actions.cashDrawerAction().selectSpecificCashDrawer(cashRecycler);
-        System.out.println((cashRecyclerData.getCashIn()) + 100 + " ---------------");
-        System.out.println((cashRecyclerData.getHundredsAmount() + 100) + " ---------------");
-        System.out.println(Actions.cashDrawerAction().getCashDrawerData().getCashIn() + " ---------------");
-        System.out.println(Actions.cashDrawerAction().getCashDrawerData().getHundredsAmount() + " ---------------");
-
         TestRailAssert.assertEquals(cashRecyclerData.getCashIn() + 100, Actions.cashDrawerAction().getCashDrawerData().getCashIn(),
                 new CustomStepResult("'Cash In' is valid", "'Cash In' is invalid"));
         TestRailAssert.assertEquals(cashRecyclerData.getHundredsAmount() + 100, Actions.cashDrawerAction().getCashDrawerData().getHundredsAmount(),
@@ -190,12 +184,8 @@ public class C19439_CdCrCashInWithCashRecyclerTest extends BaseTest {
         logInfo("Step 11: Go to Cash Drawer screen, search for cash drawer of User that was logged in to teller session and verify its:\n" +
                 "- denominations\n" +
                 "- total cash in");
-        System.out.println(cashDrawerData.getCashIn() + " ---------------");
-        System.out.println(cashDrawerData.getHundredsAmount() + " ---------------");
-        System.out.println(Actions.cashDrawerAction().getCashDrawerData().getCashIn() + " ---------------");
-        System.out.println(Actions.cashDrawerAction().getCashDrawerData().getHundredsAmount() + " ---------------");
-
         Actions.cashDrawerAction().selectSpecificCashDrawer(Constants.USERNAME);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         TestRailAssert.assertEquals(cashDrawerData.getCashIn(), Actions.cashDrawerAction().getCashDrawerData().getCashIn(),
                 new CustomStepResult("'Cash In' is not changed", "'Cash In' is changed!"));
         TestRailAssert.assertEquals(cashDrawerData.getHundredsAmount(), Actions.cashDrawerAction().getCashDrawerData().getHundredsAmount(),
