@@ -25,11 +25,18 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     private By foundNumberOfRecords = By.xpath("//div[@class='panelContent']/div[@id='dqlSearch']/div/span[contains(text(), 'Found')]");
     private By printBalanceOnReceiptValue = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[10]/div[@key-name='long']");
     private final By cashRecyclerName = By.xpath("//div[@key-name='(databean)name']");
+    private final By cashRecyclerNameByRawIndex = By.xpath("(//div[@key-name='(databean)name'])[%s]");
 
     @Step("Get Cash Drawer Name value")
     public String getCashRecyclerName() {
         waitForElementVisibility(cashRecyclerName);
         return getElementAttributeValue("value", cashRecyclerName);
+    }
+
+    @Step("Get Cash Drawer Name value")
+    public String getCashRecyclerNameByRawIndex(int index) {
+        waitForElementVisibility(cashRecyclerNameByRawIndex, index);
+        return getElementText(cashRecyclerNameByRawIndex, index);
     }
 
     @Step("Wait for 'Rules UI Query Analyzer' page loaded")

@@ -14,6 +14,8 @@ public class CashDrawerBalancePage extends PageTools {
     private By cashOut = By.xpath("//ul[contains(@class, 'twoColsList ')]//label[@ng-model = 'cashDenomination.cashout']");
     private final By enterAmounts = By.xpath("//span[text()='Enter Amounts']");
     private final By save = By.xpath("//button//span[text()='Save']");
+    private By cashDrawerField = By.xpath("//div[@dn-ui-select]");
+    private By cashDrawerDropdownItem = By.xpath("//div[@dn-ui-select]//li/div/span[contains(text(), '%s')]");
 
     @Step("Get countedCash")
     public String getCountedCash() {
@@ -54,6 +56,17 @@ public class CashDrawerBalancePage extends PageTools {
         click(save);
     }
 
+    @Step("Click 'Cash Drawer' field")
+    public void clickCashDrawerField() {
+        waitForElementClickable(cashDrawerField);
+        click(cashDrawerField);
+    }
+
+    @Step("Pick '{%s}' cash drawer from the dropdown")
+    public void pickSpecificCashDrawerNameFromDropdown(String name){
+        waitForElementClickable(cashDrawerDropdownItem, name);
+        click(cashDrawerDropdownItem, name);
+    }
     /**
      * Amounts / Denominations section
      */

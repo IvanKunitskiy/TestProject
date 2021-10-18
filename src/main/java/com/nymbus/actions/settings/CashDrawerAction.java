@@ -179,4 +179,10 @@ public class CashDrawerAction {
         String value = Pages.cashDrawerBalancePage().getFiftiesAmount();
         return value.equals("") ? 0.00 : Double.parseDouble(value);
     }
+
+    public void selectSpecificCashDrawer(String name) {
+        Pages.cashDrawerBalancePage().clickCashDrawerField();
+        Pages.cashDrawerBalancePage().pickSpecificCashDrawerNameFromDropdown(name);
+    }
+
 }

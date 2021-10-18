@@ -56,7 +56,7 @@ public class WebAdminUsersActions {
     private String getCashRecyclerNameUrl() {
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?waDbName=fnbuatcoreDS&dqlQuery=count%3A+10%0D%0Afrom%3A+bank.data.cashdrawer"
-                + "%0D%0Awhere%3A+%0D%0A-+.cashdrawertype->name%3A+%5BCash+Recycler%2C+Cash+Dispenser%5D%0D%0A-" +
+                + "%0D%0Awhere%3A+%0D%0A-+.cashdrawertype->name%3A+Cash+Recycler%0D%0A-" +
                 "+.locationid->name%3A+Clarence+Office++%23Current+User%27s+location&source=";
     }
 
@@ -926,8 +926,13 @@ public class WebAdminUsersActions {
     }
 
     public String getCashRecyclerName(){
-        SelenideTools.openUrl(getCashRecyclerName());
+        SelenideTools.openUrl(getCashRecyclerNameUrl());
         return WebAdminPages.rulesUIQueryAnalyzerPage().getCashRecyclerName();
+    }
+
+    public String getCashRecyclerNameByRawIndex(int index){
+        SelenideTools.openUrl(getCashRecyclerNameUrl());
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getCashRecyclerNameByRawIndex(index);
     }
 
     public String getDateFilesUpdatedThrough(){
