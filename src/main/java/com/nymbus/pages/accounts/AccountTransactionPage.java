@@ -55,8 +55,7 @@ public class AccountTransactionPage extends PageTools {
     private By descriptionValue = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span");
     private By specificTransactionRecord = By.xpath("//tr[contains(@data-test-id, 'repeat-transactions-%s')]");
     private By ecColumnValue = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[12]/span/div");
-    private By ecColumnValueForJournal = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[9]/span/div");
-
+    private By checkingAccountTransactionEcColumnValue = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[9]/span/div");
 
     /**
      * Check info
@@ -100,6 +99,12 @@ public class AccountTransactionPage extends PageTools {
     public String getEcColumnValue(int index){
         waitForElementVisibility(ecColumnValue, index);
         return getElementText(ecColumnValue, index);
+    }
+
+    @Step("Get 'EC' column value of {%s} checking account transaction")
+    public String getCheckingAccountTransactionEcColumnValue(int index) {
+        waitForElementVisibility(checkingAccountTransactionEcColumnValue, index);
+        return getElementText(checkingAccountTransactionEcColumnValue, index);
     }
 
     @Step("Get 'EC' column value of {%s} transaction")
