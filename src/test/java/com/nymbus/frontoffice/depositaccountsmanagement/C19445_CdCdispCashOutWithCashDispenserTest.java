@@ -182,11 +182,11 @@ public class C19445_CdCdispCashOutWithCashDispenserTest extends BaseTest {
 
         Actions.cashDrawerAction().selectSpecificCashDrawer(cashDispenser);
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
-        System.out.println((Actions.cashDrawerAction().getCashDrawerData().getFiftiesAmount() - 100) + " -------------------");
-        System.out.println(cashDispenserData.getFiftiesAmount() + " -------------------");
-        TestRailAssert.assertEquals(Actions.cashDrawerAction().getCashDrawerData().getCashOut()  - 100, cashDispenserData.getCashOut(),
+        System.out.println((Actions.cashDrawerAction().getCashDrawerData().getFiftiesAmount()) + " -------------------");
+        System.out.println((cashDispenserData.getFiftiesAmount()  - 100) + " -------------------");
+        TestRailAssert.assertEquals(Actions.cashDrawerAction().getCashDrawerData().getCashOut(), cashDispenserData.getCashOut() + 100,
                 new CustomStepResult("'Cash Out' is valid", "'Cash Out' is invalid"));
-        TestRailAssert.assertEquals(Actions.cashDrawerAction().getCashDrawerData().getFiftiesAmount() - 100,  cashDispenserData.getFiftiesAmount(),
+        TestRailAssert.assertEquals(Actions.cashDrawerAction().getCashDrawerData().getFiftiesAmount(),  cashDispenserData.getFiftiesAmount()  - 100,
                 new CustomStepResult("Denominations is valid", "Denominations is not valid"));
 
         logInfo("Step 11: Go to Cash Drawer screen, search for cash drawer used in teller session and verify its:\n" +
@@ -194,9 +194,10 @@ public class C19445_CdCdispCashOutWithCashDispenserTest extends BaseTest {
                 "- total cash out");
         Actions.cashDrawerAction().selectSpecificCashDrawer(Constants.USERNAME);
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+
         TestRailAssert.assertEquals(Actions.cashDrawerAction().getCashDrawerData().getCashOut(), cashDrawerData.getCashOut(),
                 new CustomStepResult("'Cash In' is not changed", "'Cash In' is changed!"));
-        TestRailAssert.assertEquals(Actions.cashDrawerAction().getCashDrawerData().getFiftiesAmount(),  cashDispenserData.getFiftiesAmount(),
+        TestRailAssert.assertEquals(Actions.cashDrawerAction().getCashDrawerData().getFiftiesAmount(),  cashDrawerData.getFiftiesAmount(),
                 new CustomStepResult("Denominations is not changed", "Denominations is changed!"));
 
         logInfo("Step 12: Go to account used in withdrawal item and verify its:\n" +
