@@ -103,21 +103,6 @@ public class C19446_CdCDispEcCashOutWithCashDispenserTest extends BaseTest {
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
 
-        // Perform 'Cash out' transaction
-        Actions.transactionActions().goToTellerPage();
-        Pages.tellerModalPage().clickCashRecycler();
-        Pages.tellerModalPage().clickCashRecyclerItem(cashDispenser);
-        Pages.tellerModalPage().clickSide();
-        Pages.tellerModalPage().clickLeftSide();
-        Pages.tellerModalPage().clickEnterButton();
-        Actions.transactionActions().setCashOutDestination(cashOutDestination);
-        Actions.transactionActions().setWithDrawalSource(withdrawalSource, 0);
-        Pages.tellerPage().clickCommitButton();
-        Pages.verifyConductor().waitModalWindow();
-        Pages.verifyConductor().clickVerifyButton();
-        Pages.tellerPage().waitForPrintReceipt();
-        Pages.tellerPage().closeModal();
-
         // Get 'Current Balance' and 'Available Balance' before test
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(chkAccount);
@@ -136,11 +121,28 @@ public class C19446_CdCDispEcCashOutWithCashDispenserTest extends BaseTest {
         cashDrawerData = Actions.cashDrawerAction().getCashDrawerData();
         Actions.loginActions().doLogOutProgrammatically();
 
+        // Perform 'Cash out' transaction
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Actions.transactionActions().goToTellerPage();
+        Pages.tellerModalPage().clickCashRecycler();
+        Pages.tellerModalPage().clickCashRecyclerItem(cashDispenser);
+        Pages.tellerModalPage().clickSide();
+        Pages.tellerModalPage().clickLeftSide();
+        Pages.tellerModalPage().clickEnterButton();
+        Actions.transactionActions().setCashOutDestination(cashOutDestination);
+        Actions.transactionActions().setWithDrawalSource(withdrawalSource, 0);
+        Pages.tellerPage().clickCommitButton();
+        Pages.verifyConductor().waitModalWindow();
+        Pages.verifyConductor().clickVerifyButton();
+        Pages.tellerPage().waitForPrintReceipt();
+        Pages.tellerPage().closeModal();
+        Actions.loginActions().doLogOutProgrammatically();
+
         // Set transaction data
         transactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-",
-                depositTransactionAmount - 100,
+                "+",
+                depositTransactionAmount,
                 cashOutDestination.getAmount());
 
     }
@@ -181,8 +183,8 @@ public class C19446_CdCDispEcCashOutWithCashDispenserTest extends BaseTest {
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
 
         CashDrawerData actualCashRecyclerData = Actions.cashDrawerAction().getCashDrawerData();
-        TestRailAssert.assertEquals(actualCashRecyclerData.getHundredsAmount(), cashDispenserData.getFiftiesAmount(),
-                new CustomStepResult("'Hundreds' denomination is valid", "'Hundreds' denomination is not valid"));
+        TestRailAssert.assertEquals(actualCashRecyclerData.getFiftiesAmount(), cashDispenserData.getFiftiesAmount(),
+                new CustomStepResult("'Fifties' denomination is valid", "'Fifties' denomination is not valid"));
 
         logInfo("Step 6: Go to account used in withdrawal item and verify its:\n" +
                 "- current balance\n" +
