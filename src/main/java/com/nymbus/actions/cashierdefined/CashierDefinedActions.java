@@ -1,5 +1,6 @@
 package com.nymbus.actions.cashierdefined;
 
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.product.ProductType;
 import com.nymbus.newmodels.cashier.CashierDefinedTransactions;
 import com.nymbus.newmodels.cashier.PayeeType;
@@ -66,9 +67,12 @@ public class CashierDefinedActions {
         Pages.cashInOutModalWindowPage().clickOKButton();
         Pages.cashInOutModalWindowPage().waitForModalWindowInVisibility();
         setWaiveFee(waiveFee);
-        setTransactionSource(transaction.getTransactionSource(), tempIndex);
+        //setTransactionSource(transaction.getTransactionSource(), tempIndex);
+        Pages.cashierPage().inputFirstPayeeName(name);
+        Pages.cashierPage().inputPayeeRemitter(name);
         typeName(name);
         choosePayeeType(PayeeType.PERSON.getType());
+        fillDestinationAccountNumber(transaction.getTransactionDestination().getAccountNumber(), tempIndex+1);
     }
 
     private void setAmounts(HashMap<Denominations, Double> denominationsHashMap) {
@@ -145,6 +149,7 @@ public class CashierDefinedActions {
 
     private void fillDestinationAccountNumber(String accountNumber, int tempIndex) {
         Pages.cashierPage().typeDestinationAccountNumber(tempIndex, accountNumber);
+        SelenideTools.sleep(200);
 
         Pages.cashierPage().clickOnAutocompleteDropDownItem(accountNumber);
     }

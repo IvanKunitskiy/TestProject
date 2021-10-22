@@ -373,6 +373,8 @@ public class CashierPage extends PageTools {
     private By waiveFeeButton = By.xpath("//dn-switch[contains(string(),'No')]//div//div//span");
     private By bankRoutingInput = By.xpath("(//tr[contains(string(),'Bank Routing')])[2]/*/input");
     private By payeeNameInput = By.xpath("(//tr[contains(string(),'Name')])[2]//input");
+    private By payeeFirstNameInput = By.xpath("(//tr[contains(string(),'Name')])[1]//input");
+    private By remitterInput = By.xpath("(//tr[contains(string(),'Remitter')])[1]//input");
     private By payeeTypeSpan = By.xpath("//tr[contains(string(),'Payee Type')]//span");
     private By payeeType = By.xpath("//span[contains(string(),'%s')]");
 
@@ -389,6 +391,18 @@ public class CashierPage extends PageTools {
     public void inputPayeeName(String name){
         waitForElementVisibility(payeeNameInput);
         type(name, payeeNameInput);
+    }
+
+    @Step("Input payee remitter")
+    public void inputPayeeRemitter(String remitter){
+        waitForElementVisibility(remitterInput);
+        type(remitter, remitterInput);
+    }
+
+    @Step("Input payee name")
+    public void inputFirstPayeeName(String name){
+        waitForElementVisibility(payeeFirstNameInput);
+        type(name, payeeFirstNameInput);
     }
 
     @Step("Get payee name")
@@ -450,9 +464,10 @@ public class CashierPage extends PageTools {
     @Step("Set {0} destination 'Account number' value {1}")
     public void typeDestinationAccountNumber(int i, String number) {
         waitForElementClickable(accountNumberDestinationInput, i);
-        jsSetValue(number, accountNumberDestinationInput, i);
-        jsRiseOnchange(accountNumberDestinationInput, i);
-
+        click(accountNumberDestinationInput,i);
+//        jsSetValue(number, accountNumberDestinationInput, i);
+//        jsRiseOnchange(accountNumberDestinationInput, i);
+        type(number,accountNumberDestinationInput,i);
     }
 
     @Step("Click destination 'Account number' suggestion option")
