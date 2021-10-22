@@ -2,12 +2,16 @@ package com.nymbus.frontoffice.transactions;
 
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
+import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.product.AccountType;
+import com.nymbus.newmodels.account.product.Products;
+import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.backoffice.Check;
 import com.nymbus.newmodels.backoffice.FullCheck;
 import com.nymbus.newmodels.cashier.CashierDefinedTransactions;
@@ -70,25 +74,25 @@ public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends B
 
         // Log in
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-//
-//        // Set products
-//        savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
-//
-//        // Create client
-//        ClientsActions.individualClientActions().createClient(client);
-//        ClientsActions.individualClientActions().setClientDetailsData(client);
-//        ClientsActions.individualClientActions().setDocumentation(client);
-//
-//
-//        // Create account
-//        AccountActions.createAccount().createSavingsAccount(savingsAccount);
-//        clientRootId = ClientsActions.createClient().getClientIdFromUrl();
+
+        // Set products
+        savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
+
+        // Create client
+        ClientsActions.individualClientActions().createClient(client);
+        ClientsActions.individualClientActions().setClientDetailsData(client);
+        ClientsActions.individualClientActions().setDocumentation(client);
+
+
+        // Create account
+        AccountActions.createAccount().createSavingsAccount(savingsAccount);
+        clientRootId = ClientsActions.createClient().getClientIdFromUrl();
 
         // Set up transactions with account number
         transaction.getTransactionSource().setAmount(returnTransactionAmount);
         transaction.getTransactionDestination().setAccountNumber("4800200");
-//        transaction.getTransactionDestination().setAmount(returnTransactionAmount);
-//        transaction.getTransactionSource().setAccountNumber(savingsAccount.getAccountNumber());
+        transaction.getTransactionDestination().setAmount(returnTransactionAmount);
+        transaction.getTransactionSource().setAccountNumber(savingsAccount.getAccountNumber());
         transaction.getTransactionSource().setDenominationsHashMap(new HashMap<>());
         transaction.getTransactionSource().getDenominationsHashMap().put(Denominations.HUNDREDS, 100.00);
         depositSavingsTransaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
@@ -97,22 +101,22 @@ public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends B
         depositSavingsTransaction.getTransactionSource().setAmount(savingsTransactionAmount);
 
         // Perform deposit transactions
-//        Actions.loginActions().doLogOutProgrammatically();
-//        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-//        Actions.transactionActions().goToTellerPage();
-//        Actions.transactionActions().doLoginTeller();
-//        Actions.transactionActions().createTransaction(depositSavingsTransaction);
-//        Actions.transactionActions().clickCommitButton();
-//        Pages.tellerPage().closeModal();
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
+        Actions.transactionActions().createTransaction(depositSavingsTransaction);
+        Actions.transactionActions().clickCommitButton();
+        Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         // Set transaction with amount value
-//        Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
-//        expectedSavingsBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
-//        savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-//                "-", expectedSavingsBalanceData.getCurrentBalance(), returnTransactionAmount);
+        Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
+        expectedSavingsBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
+        savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
+                "-", expectedSavingsBalanceData.getCurrentBalance(), returnTransactionAmount);
 
         //Check Official check and printer
         Pages.aSideMenuPage().clickSettingsMenuItem();
@@ -182,10 +186,11 @@ public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends B
                 "Payee Type (e.g. 'Person')");
         Actions.cashierDefinedActions().createOfficialCheckTransaction(CashierDefinedTransactions.OFFICIAL_CHECK_WITH_CASH,
                 transaction, false, name);
-        //expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
+        expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
 
         logInfo("Step 5: Click [Commit Transaction] button and click [Verify] button");
         Actions.transactionActions().clickCommitButton();
+        Pages.verifyConductorModalPage().typeIdNumberField();
         Pages.verifyConductorModalPage().clickVerifyButton();
         SelenideTools.sleep(Constants.SMALL_TIMEOUT);
         Assert.assertTrue(Pages.confirmModalPage().checkReprintButton(), "Reprint check is not visible");
