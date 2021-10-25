@@ -69,7 +69,7 @@ public class ViewCashDrawerPage extends PageTools {
      */
     @Step("Check if user present")
     public boolean isSpecificCashDrawerTypeForSpecificUserPresent(String userLoginId, String cashType) {
-        return getElementsText(tableItemByNameColumn, userLoginId).contains(cashType);
+        return isElementVisible(tableItemByNameColumn, userLoginId) && getElementText(tableItemByNameColumn, userLoginId).equals(cashType);
     }
 
     @Step("Get name of cash drawer")

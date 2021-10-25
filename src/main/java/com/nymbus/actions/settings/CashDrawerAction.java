@@ -224,7 +224,7 @@ public class CashDrawerAction {
         searchForCashDrawerByNameOnCashDrawerViewPage(cashRecyclerName);
         return SettingsPage.viewCashDrawerPage().isSpecificCashDrawerTypeForSpecificUserPresent(cashRecyclerName, "Cash Recycler");
     }
-
+    
     public void isCashRecyclerExistAndCreateIfNot(String userLoginId) {
         String cashRecyclerName = userLoginId + "CashRecycler";
         if(!isCashRecyclerExist(cashRecyclerName)){
