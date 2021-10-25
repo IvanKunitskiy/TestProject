@@ -65,6 +65,7 @@ public class AddCashDrawerPage extends PageTools {
     private By glAccountNumberOption = By.xpath("//div[@id='bank.data.cashdrawer-glaccountid']" +
             "//ul/li/a[contains(text(),'%s')]");
     private By floatingToggle = By.xpath("//div[@id='bank.data.cashdrawer-floating']//div[input[@type='checkbox']]");
+    private By includeCoinDispenserSwitcher = By.xpath("//div[@data-field-id='includecoindispenser']//div[@class='xwidget_checkbox_tumbler_container']");
 
     /**
      * Actions with controls
@@ -252,6 +253,12 @@ public class AddCashDrawerPage extends PageTools {
         return getElementAttributeValue("value",
                 By.xpath("//div[@id='bank.data.cashdrawer-floating']//div[contains(@class, 'field_container')]/input"))
                 .contains("1");
+    }
+
+    @Step("Click 'Include Coin Dispenser' switcher")
+    public void clickIncludeCoinDispenserSwitcher(){
+        waitForElementClickable(includeCoinDispenserSwitcher);
+        click(includeCoinDispenserSwitcher);
     }
 
 }

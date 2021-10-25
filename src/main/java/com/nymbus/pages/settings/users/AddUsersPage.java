@@ -48,6 +48,7 @@ public class AddUsersPage extends PageTools {
     private By locationSelectorOption = By.xpath("//div[@id='usrusers-locationid']" +
             "//ul/li/a[contains(text(),'%s')]");
     private By titleField = By.xpath("//div[@id='usrusers-jobtitle']//input[@type='text' and @class='xwidget_value']");
+    private By titleFieldRequiredErrorMessage = By.xpath("//div[@id='usrusers-jobtitle']//div[contains(text(), 'Title value is required')]");
     private By addNexTaxIDLink = By.xpath("//div[@id='usrusers-taxidnumbers']//div[contains(@class, 'xwidget_editableGrid_add')]//span[@class='ui-button-text']");
     private By taxIDFieldByIndex = By.xpath("//div[@id='usrusers-taxidnumbers']" +
             "//tr[@data-alias='usrusers.taxidnumber'][%s]//input[@type='text' and @class='xwidget_value']");
@@ -163,6 +164,11 @@ public class AddUsersPage extends PageTools {
     public void setBranchValue(String branchValue) {
         wipeText(brandField);
         type(branchValue, brandField);
+    }
+
+    @Step("Check if 'Title value is required' error message present")
+    public boolean isTitleRequiredErrorMessagePresent() {
+        return isElementVisible(titleFieldRequiredErrorMessage);
     }
 
     @Step("Click on 'Branch' selector")
