@@ -178,6 +178,12 @@ public class TransactionActions {
             case FIFTIES:
                 Pages.cashInOutModalWindowPage().typeFiftiesAmountValue(String.format("%.0f", value));
                 break;
+            case HALFDOLLARS:
+                Pages.cashInOutModalWindowPage().typeHalfDollarsAmountValue(String.format("%.0f", value));
+                break;
+            case QUARTERS:
+                Pages.cashInOutModalWindowPage().typeQuartersAmountValue(String.format("%.0f", value));
+                break;
             default:
                 break;
         }
