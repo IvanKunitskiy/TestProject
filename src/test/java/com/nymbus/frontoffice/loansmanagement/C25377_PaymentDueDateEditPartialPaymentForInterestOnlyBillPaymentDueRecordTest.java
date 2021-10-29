@@ -60,7 +60,7 @@ public class C25377_PaymentDueDateEditPartialPaymentForInterestOnlyBillPaymentDu
         loanAccount.setPaymentAmountType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
         loanAccount.setCommitmentTypeAmt(CommitmentTypeAmt.NONE.getCommitmentTypeAmt());
 
-        loanAccount.setCallClassCode("223322 - John sotkaa");
+        loanAccount.setCallClassCode("223322 - John sotka");
         chkAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
 
         // 109 - transaction

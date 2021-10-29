@@ -48,6 +48,7 @@ public class C23908_SavingsIRAAccountCallStatementTest extends BaseTest {
 
         // Set up account
         iraAccount = new Account().setSavingsIraAccountData();
+        iraAccount.setApplyInterestTo("");
 
         // Set up transaction
         creditTransaction = new TransactionConstructor(new GLDebitMiscCreditBuilder()).constructTransaction();

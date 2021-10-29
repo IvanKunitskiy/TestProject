@@ -71,7 +71,8 @@ public class AddAccountPage extends PageTools {
     private final By paymentAmount = By.xpath("//input[@data-test-id='field-paymentamount']");
     private final By cycleLoanValue = By.xpath("//*[@id='cycleloan']/div/div/span[2]");
     private final By cycleLoanValueNo = By.xpath("*[@id='cycleloan']/div/div/span[3]");
-    private final By cycleLoanValueYes = By.xpath("//*[@id='cycleloan']/div/div/span[1]");
+    private final By cycleLoanValueYes = By.xpath("//*[@id='cycleloan']/div/div/span[1][contains(text(), 'YES')]");
+    private final By teaserLoanValueYes = By.xpath("//*[@id='CurrentEffectiveRateTeaserYN']/div/div/span[1][contains(text(), 'YES')]");
     private final By teaserLoanValue = By.xpath("//*[@id='CurrentEffectiveRateTeaserYN']/div/div/span[2]");
     private final By cycleLoanSwitch = By.xpath("//*[@id='cycleloan']");
     private final By teaserLoanSwitch = By.xpath("//*[@id='CurrentEffectiveRateTeaserYN']");
@@ -114,7 +115,7 @@ public class AddAccountPage extends PageTools {
 
     private final By callClassCodeSelectorButton = By.xpath("//div[@data-test-id='field-callclasscode']");
     private final By callClassCodeList = By.xpath("//li[contains(@role, 'option')]/div/span");
-    private final By callClassCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), '%s')]]");
+    private final By callClassCodeSelectorOption = By.xpath("//ul[@role='listbox']//li[contains(@role, 'option')]/div[span[contains(text(), \"%s\")]]");
 
     private final By accountAnalysisSelectorButton = By.xpath("//div[@id='accountanalysis']");
     private final By accountAnalysisList = By.xpath("//li[contains(@role, 'option')]/div/span");
@@ -1338,6 +1339,12 @@ public class AddAccountPage extends PageTools {
     public boolean isCycleLoanValueYes() {
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         return isElementVisible(cycleLoanValueYes);
+    }
+
+    @Step("Check the 'Teaser Loan' value - YES")
+    public boolean isTeaserLoanValueYes() {
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        return isElementVisible(teaserLoanValueYes);
     }
 
     @Step("Get the 'Cycle Loan' value")

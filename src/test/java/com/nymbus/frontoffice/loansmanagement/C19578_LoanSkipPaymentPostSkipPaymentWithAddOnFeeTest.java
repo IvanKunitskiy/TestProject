@@ -211,16 +211,16 @@ public class C19578_LoanSkipPaymentPostSkipPaymentWithAddOnFeeTest extends BaseT
                 new CustomStepResult("'Status' is valid", "'Status' is not valid"));
 
         // "Loan Skip Payment Charges" Payment Due record
-        String dueDateFromRecordByIndex = Pages.accountPaymentInfoPage().getDueDateFromRecordByIndex(4);
+        String dueDateFromRecordByIndex = Pages.accountPaymentInfoPage().getDueDateFromRecordByIndex(3);
         TestRailAssert.assertTrue(dueDateFromRecordByIndex.equals(WebAdminActions.loginActions().getSystemDate()),
                 new CustomStepResult("'Due Date' is valid", "'Due Date' is not valid"));
 
-        String paidAmountDue = Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(4);
+        String paidAmountDue = Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(3);
         TestRailAssert.assertTrue(Double.parseDouble(paidAmountDue) == 0.00,
                 new CustomStepResult("'Amount Due' is valid", String.format("'Amount Due' is not valid." +
                         " Expected: %s, actual: %s",paidAmountDue, 0.00)));
 
-        String paidStatus = Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(4);
+        String paidStatus = Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(3);
         TestRailAssert.assertTrue(paidStatus.equals("Paid"),
                 new CustomStepResult("'Status' is valid", "'Status' is not valid"));
     }
