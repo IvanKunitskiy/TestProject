@@ -29,7 +29,7 @@ public class TeaserModalPage extends PageTools {
     private final By minRateInput = By.xpath("//input[@id='minrate']");
     private final By maxRateInput = By.xpath("//input[@id='maxrate']");
     private final By maxRateChangeInput = By.xpath("//input[@id='maxratechangeupdown']");
-    private final By rateRoundingFactorInput = By.xpath("//input[@id='rateroundingfactor']");
+    private final By rateRoundingFactorInput = By.xpath("//*[@id='rateroundingfactor']");
     private final By rateRoundingMethodInput = By.xpath("//div[@id='rateroundingmethod']");
     private final By effectiveDateInput = By.xpath("//input[@id='efffectivedate']");
     private final By expirationDateInput = By.xpath("//input[@id='expirationdate']");
@@ -173,7 +173,7 @@ public class TeaserModalPage extends PageTools {
     @Step("Check Rate Rounding Factor is disabled")
     public void checkRateRoundingFactorIsDisabled() {
         waitForElementVisibility(rateRoundingFactorInput);
-        getDisabledElementAttributeValue("disabled", rateRoundingFactorInput);
+        getElementAttributeValue("disabled", rateRoundingFactorInput);
     }
 
     @Step("Check Rate Rounding Method is disabled")

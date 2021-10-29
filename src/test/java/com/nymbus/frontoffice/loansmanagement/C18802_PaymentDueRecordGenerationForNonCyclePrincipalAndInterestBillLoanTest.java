@@ -32,6 +32,8 @@ import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.nio.channels.SelectionKey;
+
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Petro")
@@ -140,6 +142,7 @@ public class C18802_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestBil
         double cBalance = Double.parseDouble(Pages.accountDetailsPage().getCurrentBalanceFromHeaderMenu());
         String daysBaseYearBase = Pages.accountDetailsPage().getDaysBaseYearBase();
         int yearBase = Integer.parseInt(daysBaseYearBase.split("/")[1].substring(0, 3));
+        Actions.loginActions().doLogOutProgrammatically();
 
         logInfo("Step 3: Log in to the webadmin -> RulesUI Query Analyzer");
         logInfo("Step 4: Search with DQL");
@@ -189,7 +192,8 @@ public class C18802_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestBil
                 new CustomStepResult("'paymentduestatus' is not valid", "'paymentduestatus' is valid"));
 
         logInfo("Step 6: Open account from precondition on 'Payment info' tab");
-        Pages.aSideMenuPage().clickClientMenuItem();
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
         Pages.accountDetailsPage().clickPaymentInfoTab();
 

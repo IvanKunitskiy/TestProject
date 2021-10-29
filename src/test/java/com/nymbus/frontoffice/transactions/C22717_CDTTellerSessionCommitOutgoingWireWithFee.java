@@ -4,7 +4,9 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -25,6 +27,8 @@ import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.util.logging.ConsoleHandler;
 
 @Epic("Frontoffice")
 @Feature("Transactions")
@@ -124,6 +128,7 @@ public class C22717_CDTTellerSessionCommitOutgoingWireWithFee extends BaseTest {
 
         logInfo("Step 5: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
 
         logInfo("Step 6: Go to account used in CREDIT item and verify its:\n" +
                 "- current balance\n" +
