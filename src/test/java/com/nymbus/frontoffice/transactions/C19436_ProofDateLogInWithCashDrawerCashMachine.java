@@ -25,11 +25,12 @@ public class C19436_ProofDateLogInWithCashDrawerCashMachine extends BaseTest {
     public void prepareTransactionData() {
         //Check CFMIntegrationEnabled
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
-        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(),userCredentials.getPassword());
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         if (WebAdminActions.webAdminUsersActions().isCFMIntegrationEnabled()) {
             throw new SkipException("CFMIntegrationEnabled = 1");
         }
         date = WebAdminActions.webAdminUsersActions().getDateFilesUpdatedThrough();
+        date = DateTime.getDateWithFormat(date, "yyyy-mm-dd", "mm/dd/yyyy");
         date = DateTime.getDatePlusDays(date, 1);
 
         cashRecycler = WebAdminActions.webAdminUsersActions().getCashRecyclerName();
@@ -71,14 +72,15 @@ public class C19436_ProofDateLogInWithCashDrawerCashMachine extends BaseTest {
         Pages.tellerModalPage().clickLeftSide();
 
         logInfo("Step 5: Press [Enter] button");
-        Actions.transactionActions().loginTeller();
-        TestRailAssert.assertEquals(Pages.tellerPage().getLocation(), "Clarence Office",
+        Pages.tellerModalPage().clickEnterButton();
+        Pages.tellerModalPage().waitForModalInvisibility();
+        TestRailAssert.assertEquals(Pages.tellerPage().getLocation(), "Location: Clarence Office",
                 new CustomStepResult("Location is ok", "Location is not valid"));
-        TestRailAssert.assertEquals(Pages.tellerPage().getDrawerName(), userCredentials.getUserName(),
+        TestRailAssert.assertEquals(Pages.tellerPage().getDrawerName(), "Drawer Name: " + userCredentials.getUserName(),
                 new CustomStepResult("CashDrawer name is ok", "CashDrawer name is not valid"));
-        TestRailAssert.assertEquals(Pages.tellerPage().getDrawerBalance(), "$2,016,900.00",
+        TestRailAssert.assertEquals(Pages.tellerPage().getDrawerBalance(), "Drawer Balance: $2,017,365.00",
                 new CustomStepResult("Drawer Balance is ok", "Drawer Balance is not valid"));
-        TestRailAssert.assertEquals(Pages.tellerPage().getProofDate(), date, new CustomStepResult("Date is ok",
+        TestRailAssert.assertEquals(Pages.tellerPage().getProofDate(), "Proof Date: " + date, new CustomStepResult("Date is ok",
                 "Date is not valid"));
     }
 }

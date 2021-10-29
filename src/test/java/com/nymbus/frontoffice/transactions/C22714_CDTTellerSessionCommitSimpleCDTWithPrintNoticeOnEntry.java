@@ -187,7 +187,6 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
         AccountActions.callStatement().verifyTransactionData(tellerLocation, CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry,
                 proofDateValue, client, savingsAccount);
 
-
         logInfo("Step 7: Verify the following fields are printed on the Notice 2nd Page:\n" +
                 "- Bank information to the left in the header\n" +
                 "- CDT Template name\n" +

@@ -114,6 +114,7 @@ public class TellerModalPage extends PageTools {
         int index = 1;
         waitForElementVisibility(cashRecyclerItem, index);
         boolean notContains = true;
+        System.out.println(name);
         while (notContains){
             notContains = !getElementsText(cashRecyclerItem, index).contains(name);
             if (!notContains){
