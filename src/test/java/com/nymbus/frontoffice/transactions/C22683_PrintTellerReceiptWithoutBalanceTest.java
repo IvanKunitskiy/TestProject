@@ -180,7 +180,6 @@ public class C22683_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
         logInfo("Step 10: Look at generated transaction receipt");
         File balanceInquiryImageFile = Actions.balanceInquiryActions().saveBalanceInquiryImage();
         String balanceInquiryImageData = Actions.balanceInquiryActions(). readBalanceInquiryImage(balanceInquiryImageFile);
-        System.out.println(balanceInquiryImageData);
 
         Assert.assertTrue(Pages.balanceInquiryModalPage().isTransactionWasSuccessfullyCompletedLabelVisible(),
                 "The 'Transaction was successfully completed.' label is not visible");

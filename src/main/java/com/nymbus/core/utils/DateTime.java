@@ -117,9 +117,7 @@ public class DateTime {
     public static String plusMonthsToCurrentDateWithLastDayOfMonth(int months) {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
-        System.out.println(simpleDateFormat.format(calendar.getTime()));
         calendar.add(Calendar.MONTH, months);
-        //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
 
         return simpleDateFormat.format(calendar.getTime());
     }
