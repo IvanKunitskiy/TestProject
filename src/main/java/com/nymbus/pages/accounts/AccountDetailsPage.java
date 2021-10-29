@@ -164,6 +164,8 @@ public class AccountDetailsPage extends PageTools {
     private final By participationPercentSold = By.xpath("//tr[@data-test-id='field-participationpercentsold']//span/span");
     private final By participantBalance = By.xpath("//tr[@data-test-id='field-participantcurrentbalance']//span/span");
     private final By amountChargedOff = By.xpath("//tr[@data-config-name='amountchargedoff']//span/span");
+    private final By unsavedTextAttentionModal = By.xpath("//div[contains(@class, 'dialog-modal')]//p[contains(text(), \"If you leave now, you will lose any text you've entered on this page. Are you sure you want to leave?\")]");
+    private final By yesButton = By.xpath("//button/span[contains(text(), 'Yes')]");
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -175,6 +177,16 @@ public class AccountDetailsPage extends PageTools {
     /**
      * Details tab
      */
+    @Step("Check if 'Unsaved Text' modal present")
+    public boolean isUnsavedTextAttentionModalPresent(){
+        return isElementVisible(unsavedTextAttentionModal);
+    }
+
+    @Step("Click 'Yes' button")
+    public void clickYesButton(){
+        waitForElementClickable(yesButton);
+        click(yesButton);
+    }
 
     @Step("Get 'Participation Percent Sold'")
     public String getParticipationPercentSold() {

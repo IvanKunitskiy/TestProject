@@ -19,6 +19,7 @@ import com.nymbus.newmodels.generation.client.builder.type.individual.Individual
 import com.nymbus.pages.Pages;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
+import jdk.nashorn.internal.ir.IfNode;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -91,7 +92,7 @@ public class C22816_WeilandSpfChargeTest extends BaseTest {
         logInfo("Step 4: Fill in all required fields and click [Save] button");
         int instructionsCount = AccountActions.createInstruction().getInstructionCount();
         AccountActions.createInstruction().createStopPaymentInstruction(instruction);
-        Pages.accountInstructionsPage().waitForCreatedInstruction(instructionsCount + 1);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
 
         logInfo("Step 5: Open account on Account Analysis tab");
         Pages.accountDetailsPage().clickCommercialAnalysisTab();
