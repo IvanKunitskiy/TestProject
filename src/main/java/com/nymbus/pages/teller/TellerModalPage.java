@@ -129,6 +129,12 @@ public class TellerModalPage extends PageTools {
         click(side);
     }
 
+    @Step("Get 'Side'")
+    public String getSide(){
+        waitForElementVisibility(side);
+        return getElementText(side);
+    }
+
     @Step("Click 'Left Side'")
     public void clickLeftSide() {
         waitForElementVisibility(leftSide);
