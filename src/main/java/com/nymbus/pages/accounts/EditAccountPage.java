@@ -74,6 +74,7 @@ public class EditAccountPage extends PageTools {
     private By bankAccountNumberInterestOnCD = By.xpath("//input[@id='bankaccountnumberinterestoncd']");
     private By bankRoutingNumberInterestOnCD = By.xpath("//input[@id='bankroutingnumberinterestoncd']");
     private By applySeasonalAddress = By.xpath("//*[@id='useseasonaladdress']");
+    private By enablePositivePay = By.xpath("//*[@id='positivepay']");
     private By bankruptcyJudgement = By.xpath("//div[@id='bankruptcyjudgementcode']//span[contains(@class, 'ng-scope')]");
     private By exemptFromRegCC = By.xpath("//*[@id='exemptfromregcc']");
     private By callClassCodeNotValid = By.xpath("//div[@data-test-id='field-callclasscode']/a[contains(@uib-tooltip-html, 'is no longer a valid value')]");
@@ -538,6 +539,20 @@ public class EditAccountPage extends PageTools {
         scrollToPlaceElementInCenter(applySeasonalAddress);
         return getElementText(applySeasonalAddress);
     }
+
+    @Step("Click 'Apply Seasonal Address' switch")
+    public void clickEnablePositivePaySwitch() {
+        click(enablePositivePay);
+    }
+
+    @Step("Get 'Apply Seasonal Address' value")
+    public String getEnablePositivePaySwitchValue() {
+        waitForElementVisibility(enablePositivePay);
+        waitForElementClickable(enablePositivePay);
+        scrollToPlaceElementInCenter(enablePositivePay);
+        return getElementText(enablePositivePay).trim();
+    }
+
 
     @Step("Check if 'Adjustable Rate' switcher switched to 'YES'")
     public boolean isAdjustableRateYesValuePicked() {

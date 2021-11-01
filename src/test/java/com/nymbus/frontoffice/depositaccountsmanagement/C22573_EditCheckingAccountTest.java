@@ -13,8 +13,11 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
+import org.checkerframework.checker.units.qual.C;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -73,7 +76,7 @@ public class C22573_EditCheckingAccountTest extends BaseTest {
         logInfo("Step 5: Look at the fields and verify that such fields are disabled for editing");
         AccountActions.editAccount().verifyChkAccountFieldsAreDisabledForEditing();
 
-        logInfo("Step 6: Look at the field 'Account Type' and verify that such field is not disabled for editing");
+        logInfo("Step 6: Look at the field 'Account Title' and verify that such field is not a required field");
         logInfo("Step 7: Select data in such dropdown fields that were not available in Add New mode");
         logInfo("Step 8: Look at the field 'Account Type' and verify that such field is not disabled for editing");
         logInfo("Step 9: Click on the 'Account Type' drop-down and verify the account types that are present in the list");
@@ -81,13 +84,20 @@ public class C22573_EditCheckingAccountTest extends BaseTest {
         logInfo("Step 11: Fill in such text fields that were not displayed in Add new mode");
         logInfo("Step 12: Select any other value in such fields");
         logInfo("Step 13: Set Apply Seasonal Address switcher to NO");
+        TestRailAssert.assertFalse(Pages.editAccountPage().isAccountTitleFieldRequired(),
+                new CustomStepResult("'Account Title' is required", "'Account Title' is not required"));
+        TestRailAssert.assertFalse(Pages.editAccountPage().isAccountTypeFieldDisabledInEditMode(),
+                new CustomStepResult("'Account Type' is disabled", "'Account Type' is not disabled"));
         AccountActions.editAccount().selectValuesInFieldsThatWereNotAvailableDuringCheckingAccountCreation(checkingAccount);
 
         logInfo("Step 14: Verify that 'Enable Positive Pay' switcher that was not displayed in Add new mode is displayed in the Edit mode and it is NO by default");
-
+        TestRailAssert.assertEquals(Pages.editAccountPage().getEnablePositivePaySwitchValue(), "NO",
+                new CustomStepResult("'Enable Positive Pay' is not valid","'Enable Positive Pay' is valid"));
 
         logInfo("Step 15: Set Enable Positive Pay switcher to YES");
-
+        Pages.editAccountPage().clickEnablePositivePaySwitch();
+        TestRailAssert.assertEquals(Pages.editAccountPage().getEnablePositivePaySwitchValue(), "YES",
+                new CustomStepResult("'Enable Positive Pay' is not valid","'Enable Positive Pay' is valid"));
 
         logInfo("Step 16: Click [-] icon next to any section (e.g. Transactions section) and verify that all fields within this section were hidden");
         Pages.editAccountPage().clickMiscSectionLink();
