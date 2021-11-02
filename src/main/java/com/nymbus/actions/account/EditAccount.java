@@ -706,6 +706,7 @@ public class EditAccount {
         Assert.assertTrue(Pages.editAccountPage().isBankruptcyJudgementFieldVisible(), "'Bankruptcy/Judgement' is not visible");
         Assert.assertTrue(Pages.editAccountPage().isBankruptcyJudgementDateFieldVisible(), "'Bankruptcy/Judgement Date' is not visible");
         Assert.assertTrue(Pages.editAccountPage().isWaiveServiceChargesFieldVisible(), "'Waive Service Charges' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isEnablePositivePayFieldVisible(), "'Enable Positive Pay' is not visible");
     }
 
     public void verifySavingsIRAADistributionFieldsAreVisible() {
