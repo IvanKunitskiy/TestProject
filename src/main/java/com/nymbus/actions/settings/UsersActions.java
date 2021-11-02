@@ -258,6 +258,7 @@ public class UsersActions {
 
     public String getBankBranch() {
         Pages.aSideMenuPage().clickSettingsMenuItem();
+
         SettingsPage.mainPage().clickViewProfile();
 
         return SettingsPage.viewUserPage().getBankBranch();

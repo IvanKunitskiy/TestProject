@@ -200,6 +200,10 @@ public class PageTools extends AllureLogger {
         shouldBe(Condition.hidden, by, args);
     }
 
+    protected void waitForElementDisabled(By by, Object... args) {
+        shouldBe(Condition.disabled, by, args);
+    }
+
     protected void waitForElementClickable(By by, Object... args) {
         shouldBe(Condition.visible, by, args);
         shouldBe(Condition.enabled, by, args);
