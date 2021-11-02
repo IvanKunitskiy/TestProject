@@ -59,6 +59,8 @@ public class C19435_ProofDateLogInWithCashDrawer extends BaseTest {
                 new CustomStepResult("CashDrawer name is ok", "CashDrawer name is not valid"));
         TestRailAssert.assertEquals(Pages.tellerModalPage().getCashRecycler(), "Select Cash Recycler",
                 new CustomStepResult("CashRecycler is ok", "CashRecycler is not valid"));
+        TestRailAssert.assertEquals(Pages.tellerModalPage().getSide(), "Side",
+                new CustomStepResult("Side is ok", "Side is not valid"));
 
         logInfo("Step 4: Do not make any changes in the Proof Date login popup click [Enter] button");
         Actions.transactionActions().loginTeller();

@@ -74,6 +74,7 @@ public class EditAccountPage extends PageTools {
     private By bankAccountNumberInterestOnCD = By.xpath("//input[@id='bankaccountnumberinterestoncd']");
     private By bankRoutingNumberInterestOnCD = By.xpath("//input[@id='bankroutingnumberinterestoncd']");
     private By applySeasonalAddress = By.xpath("//*[@id='useseasonaladdress']");
+    private By enablePositivePay = By.xpath("//*[@id='positivepay']");
     private By bankruptcyJudgement = By.xpath("//div[@id='bankruptcyjudgementcode']//span[contains(@class, 'ng-scope')]");
     private By exemptFromRegCC = By.xpath("//*[@id='exemptfromregcc']");
     private By callClassCodeNotValid = By.xpath("//div[@data-test-id='field-callclasscode']/a[contains(@uib-tooltip-html, 'is no longer a valid value')]");
@@ -405,6 +406,7 @@ public class EditAccountPage extends PageTools {
     private By totalEarningsForLifeOfAccountLabel = By.xpath("//tr[@data-test-id='field-totalEarnings']//td//label");
     private By verifyAchFundsLabel = By.xpath("//label[contains(text(), 'Verify ACH funds')]");
     private By waiveServiceChargesLabel = By.xpath("//label[contains(text(), 'Waive Service Charges')]");
+    private By enablePositivePayLabel = By.xpath("//label[contains(text(), 'Enable Positive Pay')]");
     private By dateOfFirstDepositLabel = By.xpath("//label[contains(text(), 'Date Of First Deposit')]");
     private By iraDistributionFrequencyLabel = By.xpath("//label[contains(text(), 'IRA Distribution Frequency')]");
     private By iraDistributionCodeLabel = By.xpath("//label[contains(text(), 'IRA Distribution Code')]");
@@ -538,6 +540,20 @@ public class EditAccountPage extends PageTools {
         scrollToPlaceElementInCenter(applySeasonalAddress);
         return getElementText(applySeasonalAddress);
     }
+
+    @Step("Click 'Enable Positive Pay' switch")
+    public void clickEnablePositivePaySwitch() {
+        click(enablePositivePay);
+    }
+
+    @Step("Get 'Enable Positive Pay' value")
+    public String getEnablePositivePaySwitchValue() {
+        waitForElementVisibility(enablePositivePay);
+        waitForElementClickable(enablePositivePay);
+        scrollToPlaceElementInCenter(enablePositivePay);
+        return getElementText(enablePositivePay).trim();
+    }
+
 
     @Step("Check if 'Adjustable Rate' switcher switched to 'YES'")
     public boolean isAdjustableRateYesValuePicked() {
@@ -1930,6 +1946,11 @@ public class EditAccountPage extends PageTools {
     @Step("'Waive Service Charges' field is visible")
     public boolean isWaiveServiceChargesFieldVisible() {
         return isElementVisible(waiveServiceChargesLabel);
+    }
+
+    @Step("'Enable Positive Pay' field is visible")
+    public boolean isEnablePositivePayFieldVisible() {
+        return isElementVisible(enablePositivePayLabel);
     }
 
     @Step("'Date Of First Deposit' field is visible")

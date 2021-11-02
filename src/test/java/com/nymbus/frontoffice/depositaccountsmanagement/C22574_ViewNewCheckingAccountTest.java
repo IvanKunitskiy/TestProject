@@ -196,6 +196,7 @@ public class C22574_ViewNewCheckingAccountTest extends BaseTest {
                 "- Transactional Account\n" +
                 "- Total Earnings for Life of Account\n" +
                 "- Verify ACH funds\n" +
+                "- Enable Positive Pay\n" +
                 "- Waive Service Charges");
         AccountActions.editAccount().verifyCheckingMiscFieldsAreVisible();
 
