@@ -126,6 +126,7 @@ public class Pages extends AllureLogger {
     private static LoanInsurancePlanSetupPage loanInsurancePlanSetupPage;
     private static AddNewLoanInsurancePlanSetupPage addNewLoanInsurancePlanSetupPage;
     private static LoanInsurancePolicyModalPage loanInsurancePolicyModalPage;
+    private static ChromeSettingsPage chromeSettingsPage;
 
     /**
      * Modal Windows
@@ -1013,6 +1014,13 @@ public class Pages extends AllureLogger {
             loanInsurancePolicyModalPage = new LoanInsurancePolicyModalPage();
         }
         return loanInsurancePolicyModalPage;
+    }
+
+    public static ChromeSettingsPage chromeSettingsPage() {
+        if (chromeSettingsPage == null) {
+            chromeSettingsPage = new ChromeSettingsPage();
+        }
+        return chromeSettingsPage;
     }
 
 }

@@ -17,6 +17,7 @@ import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThanOrEqual;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selectors.shadowCss;
 
 public class PageTools extends AllureLogger {
 
@@ -83,6 +84,16 @@ public class PageTools extends AllureLogger {
     protected void clickIfExist(By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
         shouldBe(Condition.exist, by, args).click();
+    }
+
+    protected void clickInShadow(By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
+        $(shadowCss("#permission", "settings-ui",
+                "settings-main",
+                "settings-basic-page",
+                "settings-privacy-page",
+                "settings-animated-pages > settings-subpage > site-details",
+                "site-details-permission[label=\"Notifications\"]")).click();
     }
 
     protected void jsClick(By by, Object... args) {

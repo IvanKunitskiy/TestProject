@@ -53,6 +53,7 @@ public class Actions {
     private static LoanSkipPaymentModalActions loanSkipPaymentModalActions;
     private static InsuranceCompaniesActions insuranceCompaniesActions;
     private static LoanInsurancePlanSetupActions loanInsurancePlanSetupActions;
+    private static ChromeSettingsActions chromeSettingsActions;
 
     /**
      * Modal Window Actions
@@ -362,5 +363,15 @@ public class Actions {
             loanInsurancePlanSetupActions = new LoanInsurancePlanSetupActions();
         }
         return loanInsurancePlanSetupActions;
+    }
+
+    /**
+     * This function returns an instance of `LoanInsurancePlanSetupActions`
+     */
+    public static ChromeSettingsActions chromeSettingsActions() {
+        if (chromeSettingsActions == null) {
+            chromeSettingsActions = new ChromeSettingsActions();
+        }
+        return chromeSettingsActions;
     }
 }

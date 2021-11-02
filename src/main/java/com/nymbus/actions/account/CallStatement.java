@@ -75,6 +75,34 @@ public class CallStatement {
         verifyAccountInfoInPdf(pdf, transaction, proofDate, client, account);
     }
 
+    public void verifyTransactionFields(CashierDefinedTransactions transaction) {
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
+        SelenideTools.sleep(25);
+        SelenideTools.switchToLastTab();
+        System.out.println(SelenideTools.getDriver().getWindowHandles().size());
+        Pages.noticePage().checkPDFVisible();
+        SelenideTools.sleep(10);
+
+        File file = Pages.accountStatementPage().downloadCallStatementPdf();
+        System.out.println(file + " -------------------------");
+        PDF pdf = new PDF(file);
+
+        assertThat(pdf, containsText(transaction.getOperation()));
+
+        assertThat(pdf, containsText("Amount"));
+
+        assertThat(pdf, containsText("Wire Fee"));
+
+        assertThat(pdf, containsText("Date"));
+
+        assertThat(pdf, containsText("Receiver ABA Number"));
+
+        assertThat(pdf, containsText("Receiver Bank Name"));
+
+        assertThat(pdf, containsText("Originator Code"));
+
+    }
+
     /**
      * Verify transaction PDF file
      */
