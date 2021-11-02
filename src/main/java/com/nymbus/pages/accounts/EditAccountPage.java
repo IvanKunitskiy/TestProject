@@ -541,12 +541,12 @@ public class EditAccountPage extends PageTools {
         return getElementText(applySeasonalAddress);
     }
 
-    @Step("Click 'Apply Seasonal Address' switch")
+    @Step("Click 'Enable Positive Pay' switch")
     public void clickEnablePositivePaySwitch() {
         click(enablePositivePay);
     }
 
-    @Step("Get 'Apply Seasonal Address' value")
+    @Step("Get 'Enable Positive Pay' value")
     public String getEnablePositivePaySwitchValue() {
         waitForElementVisibility(enablePositivePay);
         waitForElementClickable(enablePositivePay);
