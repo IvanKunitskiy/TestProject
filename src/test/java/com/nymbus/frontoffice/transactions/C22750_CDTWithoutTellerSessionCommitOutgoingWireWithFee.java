@@ -135,7 +135,8 @@ public class C22750_CDTWithoutTellerSessionCommitOutgoingWireWithFee extends Bas
 
         logInfo("Step 5: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
-        AccountActions.callStatement().verifyTransactionFields(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS);
+        SelenideTools.sleep(36000);
+//        AccountActions.callStatement().verifyTransactionFields(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS);
 
         logInfo("Step 6: Go to account used in CREDIT item and verify its:\n" +
                 "- current balance\n" +

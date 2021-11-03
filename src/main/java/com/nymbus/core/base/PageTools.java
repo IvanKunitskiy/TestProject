@@ -1,6 +1,7 @@
 package com.nymbus.core.base;
 
 import com.codeborne.selenide.*;
+import com.codeborne.selenide.conditions.Visible;
 import com.nymbus.core.allure.AllureLogger;
 import com.nymbus.core.utils.LocatorParser;
 import org.openqa.selenium.By;
@@ -86,22 +87,8 @@ public class PageTools extends AllureLogger {
         shouldBe(Condition.exist, by, args).click();
     }
 
-    protected void clickInShadow() {
-        $(shadowCss("#permission", "settings-ui",
-                "settings-main",
-                "settings-basic-page",
-                "settings-privacy-page",
-                "settings-animated-pages", "site-details",
-                "site-details-permission[label=\"Notifications\"]")).click();
-    }
-
-    protected void clickInShadow2() {
-        $(shadowCss("#permission > option#allow", "settings-ui",
-                "settings-main",
-                "settings-basic-page",
-                "settings-privacy-page",
-                "settings-animated-page", "site-details",
-                "site-details-permission[label=\"Notifications\"]")).click();
+    protected void clickElementInShadowRoot(By by) {
+        $(by).shouldBe(Condition.visible).click();
     }
 
     protected void jsClick(By by, Object... args) {
