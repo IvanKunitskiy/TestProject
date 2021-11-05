@@ -232,6 +232,7 @@ public class Account {
         account.setAccountTitle(Generator.genString(5));
         account.setDateOpened(DateTime.getDateMinusDays(WebAdminActions.loginActions().getSystemDate(), Constants.DAYS_BEFORE_SYSTEM_DATE));
         account.setAccountNumber(Generator.genAccountNumber());
+        account.setApplyInterestTo("CHK Acct");
         account.setIraDistributionCode("No dist");
         account.setIraDistributionFrequency("No Dist");
         account.setIraDistributionAmount(String.valueOf(Generator.genLong(10000000000L, 922337203685L)));

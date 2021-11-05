@@ -7,6 +7,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -154,7 +155,8 @@ public class C19438_CDECCashInWithCashDrawer extends BaseTest {
 
         logInfo("Step 4: Click [Error Correct] button");
         Pages.journalDetailsPage().clickErrorCorrectButton();
-        Pages.journalDetailsPage().waitForErrorCorrectButtonInvisibility();
+        //Pages.journalDetailsPage().waitForErrorCorrectButtonInvisibility();
+        SelenideTools.sleep(2);
         TestRailAssert.assertEquals(Actions.journalActions().getTransactionState(),"Void",
                 new CustomStepResult("Transaction state hasn't changed", "Transaction state has changed"));
 

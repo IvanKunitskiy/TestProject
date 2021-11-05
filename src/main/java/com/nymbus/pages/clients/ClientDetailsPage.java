@@ -39,7 +39,7 @@ public class ClientDetailsPage extends PageTools {
     private By aka_1 = By.id("customerAliasSubform1");
     private By taxPairIdType = By.xpath("//div[@name='taxpayeridtype' and contains(@field-config, 'fieldConfig')]//span[@class='select2-chosen']/span");
     private By taxID = By.id("taxidnumber");
-    private By industry = By.xpath("//div[@id='naicsindustry' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'ng-binding')]");
+    private By industry = By.xpath("//div[@data-test-id='field-naicsIndustry' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'ng-binding')]");
     private By birthDate = By.id("birthdate");
     private By gender = By.xpath("//div[@name='gender' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
     private By education = By.xpath("//div[@name='education' and contains(@field-config, 'fieldConfig')]//span[contains(@class, 'select2-chosen')]/span");
