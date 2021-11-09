@@ -84,7 +84,6 @@ public class CallStatement {
         SelenideTools.sleep(10);
 
         File file = Pages.accountStatementPage().downloadCallStatementPdf();
-        System.out.println(file + " -------------------------");
         PDF pdf = new PDF(file);
 
         assertThat(pdf, containsText(transaction.getOperation()));

@@ -59,8 +59,6 @@ public class C22750_CDTWithoutTellerSessionCommitOutgoingWireWithFee extends Bas
         // Log in
         Actions.loginActions().doLogin(Constants.NOT_TELLER_USERNAME, Constants.NOT_TELLER_PASSWORD);
 
-        Actions.chromeSettingsActions().enablePopups(Constants.getEnvironment());
-
         // Set products
         savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
 
@@ -135,8 +133,7 @@ public class C22750_CDTWithoutTellerSessionCommitOutgoingWireWithFee extends Bas
 
         logInfo("Step 5: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
-        SelenideTools.sleep(36000);
-//        AccountActions.callStatement().verifyTransactionFields(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS);
+        AccountActions.callStatement().verifyTransactionFields(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS);
 
         logInfo("Step 6: Go to account used in CREDIT item and verify its:\n" +
                 "- current balance\n" +
