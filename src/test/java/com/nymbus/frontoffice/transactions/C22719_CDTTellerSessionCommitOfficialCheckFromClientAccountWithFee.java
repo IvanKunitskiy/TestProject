@@ -218,7 +218,7 @@ public class C22719_CDTTellerSessionCommitOfficialCheckFromClientAccountWithFee 
         logInfo("Step 11: Go to account used in DEBIT item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
-        Actions.transactionActions().goToTellerPage();
+        Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         BalanceDataForCHKAcc actualSavBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
 

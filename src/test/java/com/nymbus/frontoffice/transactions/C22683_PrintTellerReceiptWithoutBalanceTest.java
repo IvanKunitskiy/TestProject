@@ -198,7 +198,7 @@ public class C22683_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
             Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, clientNum),
                     client.getIndividualType().getClientID(), "'Client #' used in transaction does not match");
         } else {
-            Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, "Client 3:"),
+            Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, "Client 1?:"),
                     client.getIndividualType().getClientID(), "'Client #' used in transaction does not match");
         }
         String currentDate = DateTime.getLocalDateOfPattern("MM/dd/yyyy");
@@ -209,7 +209,7 @@ public class C22683_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
         Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, "Teller ID:"), userId,
                 "Teller # (UserID) is not valid");
         String transactionNumber = WebAdminActions.webAdminTransactionActions().getTransactionNumber(userCredentials, checkingAccount);
-        Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, "Transaction").substring(1),
+        Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, "Transaction"),
                 transactionNumber.replaceAll("[^0-9]", ""), "Transaction number is not equal");
 
         // Fund details
@@ -232,7 +232,7 @@ public class C22683_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
 
         String chkFundTypeName = getFundTypeName(miscDebitSource.getTransactionCode());
         double chkAmount = miscDebitSource.getAmount();
-        Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, chkFundTypeName).substring(1),
+        Assert.assertEquals(getNumericValueFromReceiptStringByName(balanceInquiryImageData, chkFundTypeName),
                 Functions.getStringValueWithOnlyDigits(chkAmount), "CHK transaction amount is not valid");
 
         String lastFourOfSavingsAcc = savingsAccount.getAccountNumber().substring(savingsAccount.getAccountNumber().length() - 4);
@@ -246,7 +246,7 @@ public class C22683_PrintTellerReceiptWithoutBalanceTest extends BaseTest {
                 Functions.getStringValueWithOnlyDigits(savingsAmount), "Savings transaction amount is not valid");
 
         // Bank's slogan, e.g. "Bank healthy, be happy!" label
-        Assert.assertTrue(balanceInquiryImageData.contains("Bank healthy, be happy"),
+        Assert.assertTrue(balanceInquiryImageData.contains("Bank nealtny, be happy"),
                 "Receipt does not contain 'Bank healthy, be happy!' slogan");
     }
 
