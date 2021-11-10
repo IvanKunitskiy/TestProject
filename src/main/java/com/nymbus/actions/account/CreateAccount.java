@@ -222,6 +222,7 @@ public class CreateAccount {
         setCurrentOfficer(account);
         setBankBranch(account);
         setMailCode(account);
+        setAccountType(account);
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setInterestFrequency(account);

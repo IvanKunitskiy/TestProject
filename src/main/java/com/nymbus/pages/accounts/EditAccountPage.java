@@ -4,10 +4,8 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.nymbus.core.base.PageTools;
 import com.nymbus.core.utils.SelenideTools;
-import com.nymbus.pages.Pages;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.testng.Assert;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -455,7 +453,8 @@ public class EditAccountPage extends PageTools {
     private By balanceAndInterestGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Balance and Interest')]");
     private By transactionsGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Transactions')]");
     private By overdraftGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Overdraft')]");
-    private By miscGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Misc')]");
+    private By miscTitle = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Misc')]");
+    private By miscGroup = By.xpath("//span[contains(text(), 'Misc')]//ancestor::div[contains(@class, 'panel-heading')]/following-sibling::div");
     private By distrbutionGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Distribution')]");
     private By distributionAndMiscGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Distribution and Misc')]");
     private By termGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Term')]");
@@ -2952,8 +2951,8 @@ public class EditAccountPage extends PageTools {
 
     @Step("Click the 'Misc' section link")
     public void clickMiscSectionLink() {
-        scrollToPlaceElementInCenter(miscGroup);
-        click(miscGroup);
+        scrollToPlaceElementInCenter(miscTitle);
+        click(miscTitle);
     }
 
     @Step("Click the 'Distribution' section link")
