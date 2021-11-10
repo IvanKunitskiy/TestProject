@@ -137,7 +137,7 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
         Actions.clientPageActions().searchAndOpenClientByName(miscDebitGLCreditTransaction.getTransactionSource().getAccountNumber());
         ExtendedBalanceDataForCHKAcc actualBalanceDate = AccountActions.retrievingAccountData().getExtendedBalanceDataForCHKAcc();
         actualBalanceDate.setAverageBalance(0);
-
+        balanceData.setAverageBalance(0);
         Assert.assertEquals(actualBalanceDate, balanceData, "Balance data doesn't match!");
 
         logInfo("Step 8: Open account on Transactions history and verify that transaction is written on transactions history page");
