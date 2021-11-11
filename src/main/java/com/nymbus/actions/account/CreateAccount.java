@@ -6,6 +6,7 @@ import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.client.other.account.InterestFrequency;
 import com.nymbus.newmodels.client.other.account.type.CHKAccount;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
@@ -935,6 +936,7 @@ public class CreateAccount {
     public void verifySavingsIraAccountPrefilledFields(Account account, IndividualClient client) {
         verifyAccountPrefilledFields(account, client);
         verifyIraAccountPrefilledFields(account, client);
+        Assert.assertEquals(Pages.addAccountPage().getInterestFrequency(), InterestFrequency.MONTHLY.getInterestFrequency(), "'Interest Frequency' value does not match");
         if (Constants.getEnvironment().equals("dev4")) {
             Assert.assertTrue(Pages.addAccountPage().isApplySeasonalAddressYes(), "'Apply Seasonal Address' is prefilled with wrong value");
         } else {
