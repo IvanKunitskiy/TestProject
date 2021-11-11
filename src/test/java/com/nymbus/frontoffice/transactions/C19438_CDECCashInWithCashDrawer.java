@@ -7,6 +7,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -110,8 +111,8 @@ public class C19438_CDECCashInWithCashDrawer extends BaseTest {
         // Set transaction data
         transactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "+",
-                depositDestination.getAmount(),
+                "-",
+                0.0,
                 depositDestination.getAmount());
 
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -156,7 +157,7 @@ public class C19438_CDECCashInWithCashDrawer extends BaseTest {
         Pages.journalDetailsPage().clickErrorCorrectButton();
         Pages.journalDetailsPage().waitForErrorCorrectButtonInvisibility();
         Pages.journalDetailsPage().waitForLoadingSpinnerInvisibility();
-        //SelenideTools.sleep(5);
+        SelenideTools.sleep(15);
         TestRailAssert.assertEquals(Actions.journalActions().getTransactionState(),"Void",
                 new CustomStepResult("Transaction state hasn't changed", "Transaction state has changed"));
 

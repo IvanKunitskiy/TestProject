@@ -3,9 +3,11 @@ package com.nymbus.frontoffice.transactions;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
+import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -127,11 +129,14 @@ public class C22751_CDTWithoutTellerSessionCommitOutgoingWireWithWaivedFee exten
 
         logInfo("Step 6: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
+        SelenideTools.sleep(10);
+        SelenideTools.switchToLastTab();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
         logInfo("Step 7: Go to account used in CREDIT item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
-        Actions.transactionActions().goToTellerPage();
+        Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
         BalanceDataForCHKAcc actualSavBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
 

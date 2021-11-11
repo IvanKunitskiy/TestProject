@@ -129,7 +129,7 @@ public class MainPage extends PageTools {
 
     @Step("Click 'View Profile' link")
     public void clickViewProfile() {
-        SelenideTools.sleep(15);
+        SelenideTools.sleep(5);
         scrollToElement(viewProfileLink);
         waitForElementClickable(viewProfileLink);
         click(viewProfileLink);

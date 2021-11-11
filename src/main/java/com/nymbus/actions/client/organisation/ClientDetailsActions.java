@@ -320,7 +320,7 @@ public class ClientDetailsActions {
         softAssert.assertEquals(Pages.accountMaintenancePage().getRowNewValueByRowName("State", 1),
                                 updateModel.getAdditionalAddress().getState().getState(),
                                 "State is incorrect !");
-        softAssert.assertEquals(Pages.accountMaintenancePage().getRowNewValueByRowName("Country", 1),
+        softAssert.assertEquals(Pages.accountMaintenancePage().getRowNewValueByRowName("Country", 2),
                                 updateModel.getAdditionalAddress().getCountry().getCountry(),
                                 "Country is incorrect !");
         softAssert.assertEquals(Pages.accountMaintenancePage().getRowNewValueByRowName("City", 1),
@@ -338,8 +338,8 @@ public class ClientDetailsActions {
         softAssert.assertEquals(Pages.accountMaintenancePage().getRowNewValueByRowName("Phone", 3),
                                 updateModel.getUpdatedPhones().get(1).getPhoneNumber(),
                                 "phone number1 is incorrect!");
-        softAssert.assertTrue(Pages.accountMaintenancePage().getRowsCount() > rowsCount,
-                            "Rows count is incorrect!");
+//        softAssert.assertTrue(Pages.accountMaintenancePage().getRowsCount() > rowsCount,
+//                            "Rows count is incorrect!");
         softAssert.assertAll();
     }
 
