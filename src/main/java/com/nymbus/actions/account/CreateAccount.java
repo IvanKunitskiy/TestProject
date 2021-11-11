@@ -321,7 +321,15 @@ public class CreateAccount {
         setInterestType(account);
         setCorrespondingAccount(account);
         setCallClassCode(account);
-        Pages.addAccountPage().clickTransactionalAccountSwitch();
+        if (Pages.addAccountPage().isTransactionalAccountNo()) {
+            Pages.addAccountPage().clickTransactionalAccountSwitch();
+        }
+        if (Pages.addAccountPage().isAutoRenewableYes()) {
+            Pages.addAccountPage().clickAutoRenewableSwitch();
+        }
+        if (Pages.addAccountPage().isApplySeasonalAddressYes()) {
+            Pages.addAccountPage().clickApplySeasonalAddressSwitch();
+        }
     }
 
     public void fillInInputFieldsRequiredForSafeDepositBoxAccount(Account account) {
@@ -390,12 +398,12 @@ public class CreateAccount {
 
     public void setIRADistributionAccountNumber(Account account) {
         if (account.getIraDistributionAccountNumber() != null) {
-            if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev12") || Constants.getEnvironment().equals("dev47")) {
-                Pages.addAccountPage().clickIRADistributionAccountNumberSelectorButton(account.getIraDistributionAccountNumber());
-                Pages.addAccountPage().clickIRADistributionAccountNumberSelectorOption(account.getIraDistributionAccountNumber());
-            } else {
+            if (Constants.getEnvironment().equals("dev21")) {
                 Pages.addAccountPage().clickIRADistributionAccountNumberSelectorButton();
                 Pages.addAccountPage().clickIRADistributionAccountNumberSelectorOptionSpan(account.getIraDistributionAccountNumber());
+            } else {
+                Pages.addAccountPage().clickIRADistributionAccountNumberSelectorButton(account.getIraDistributionAccountNumber());
+                Pages.addAccountPage().clickIRADistributionAccountNumberSelectorOption(account.getIraDistributionAccountNumber());
             }
         }
     }
@@ -896,12 +904,12 @@ public class CreateAccount {
         Assert.assertEquals(Pages.addAccountPage().getInterestFrequency(), account.getInterestFrequency(), "'Interest Frequency' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getInterestType(), account.getInterestType(), "'Interest Type' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getApplyInterestTo(), "Remain in Account", "'Apply interest to' is prefilled with wrong value");
-        if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev12") || Constants.getEnvironment().equals("dev47")) {
-            Assert.assertTrue(Pages.addAccountPage().isAutoRenewableYes(), "'Auto Renewable' is prefilled with wrong value");
-            Assert.assertFalse(Pages.addAccountPage().isTransactionalAccountYes(), "'Transactional Account' is prefilled with wrong value");
-        } else {
+        if (Constants.getEnvironment().equals("dev21")) {
             Assert.assertEquals(Pages.addAccountPage().getAutoRenewable(), "YES", "'Auto Renewable' is prefilled with wrong value");
             Assert.assertEquals(Pages.addAccountPage().getTransactionalAccount().toLowerCase(), "no", "'Transactional Account' is prefilled with wrong value");
+        } else {
+            Assert.assertTrue(Pages.addAccountPage().isAutoRenewableYes(), "'Auto Renewable' is prefilled with wrong value");
+            Assert.assertFalse(Pages.addAccountPage().isTransactionalAccountYes(), "'Transactional Account' is prefilled with wrong value");
         }
         Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' is prefilled with wrong value");
     }
@@ -936,7 +944,7 @@ public class CreateAccount {
     public void verifySavingsIraAccountPrefilledFields(Account account, IndividualClient client) {
         verifyAccountPrefilledFields(account, client);
         verifyIraAccountPrefilledFields(account, client);
-        Assert.assertEquals(Pages.addAccountPage().getInterestFrequency(), InterestFrequency.MONTHLY.getInterestFrequency(), "'Interest Frequency' value does not match");
+//        Assert.assertEquals(Pages.addAccountPage().getInterestFrequency(), InterestFrequency.MONTHLY.getInterestFrequency(), "'Interest Frequency' value does not match");
         if (Constants.getEnvironment().equals("dev4")) {
             Assert.assertTrue(Pages.addAccountPage().isApplySeasonalAddressYes(), "'Apply Seasonal Address' is prefilled with wrong value");
         } else {
