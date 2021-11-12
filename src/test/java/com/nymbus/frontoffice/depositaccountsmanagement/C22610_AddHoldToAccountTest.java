@@ -68,6 +68,7 @@ public class C22610_AddHoldToAccountTest extends BaseTest {
 
         // Set up transaction with account number
         transaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
+        Pages.aSideMenuPage().clickClientMenuItem();
 
         // Create transaction
         Actions.transactionActions().goToTellerPage();
