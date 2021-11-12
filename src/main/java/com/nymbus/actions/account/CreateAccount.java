@@ -280,7 +280,7 @@ public class CreateAccount {
         setCurrentOfficer(account);
         setBankBranch(account);
         setCorrespondingAccount(account);
-        /*setDiscountReason(account);*/
+//        setDiscountReason(account);
     }
 
     public void setValuesInFieldsRequiredForCheckingAccount(Account account) {

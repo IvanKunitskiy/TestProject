@@ -204,6 +204,8 @@ public class C22822_WeilandImportfile extends BaseTest {
 
         logInfo("Step 6: Click [Post] button");
         Pages.backOfficePage().clickPostButton();
+        SelenideTools.sleep(36000);
+
 
         logInfo("Step 7: Verify results for CHK#1");
         Assert.assertTrue(Pages.backOfficePage().checkValueFromSpanImportFilesTable(3,""),

@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -96,40 +97,43 @@ public class C22612_AddNewSafeDepositBoxAccountTest extends BaseTest {
         logInfo("Step 5: Look through the fields. Check that fields are prefilled by default");
         AccountActions.verifyingAccountDataActions().verifyPredefinedFields();
 
-        logInfo("Step 6: Select any value from Box Size drop-down and check the Rental Amount field");
+        logInfo("Step 6: Look at the field 'Account Title' and verify that such field is not a required field");
+        Assert.assertFalse(Pages.addAccountPage().isAccountTitleFieldRequired(),"'Account Title' is required");
+
+        logInfo("Step 7: Select any value from Box Size drop-down and check the Rental Amount field");
         AccountActions.createAccount().setBoxSize(safeDepositBoxAccount);
         Assert.assertEquals(Pages.addAccountPage().getRentalAmount(), safeDepositBoxAccount.getRentalAmount(),
                 "'Rental Amount' is prefilled with wrong value");
 
-        logInfo("Step 7: Select values in such drop-down fields:");
+        logInfo("Step 8: Select values in such drop-down fields:");
         AccountActions.createAccount().selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccount(safeDepositBoxAccount);
 
-        logInfo("Step 8: Fill in such text fields with valid data (except Account Number field):");
+        logInfo("Step 9: Fill in such text fields with valid data (except Account Number field):");
         AccountActions.createAccount().fillInInputFieldsRequiredForSafeDepositBoxAccount(safeDepositBoxAccount);
 
-        logInfo("Step 9: Select Date Opened as any date < Current Date");
+        logInfo("Step 10: Select Date Opened as any date < Current Date");
         Pages.addAccountPage().setDateOpenedValue(safeDepositBoxAccount.getDateOpened());
 
-        logInfo("Step 10: Submit the account creation by clicking [Save] button");
+        logInfo("Step 11: Submit the account creation by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
 
-        logInfo("Step 11: Pay attention to the fields that were filled in during account creation");
+        logInfo("Step 12: Pay attention to the fields that were filled in during account creation");
         AccountActions.verifyingAccountDataActions().verifyFieldsInViewMode(safeDepositBoxAccount);
 
-        logInfo("Step 12: Check the 'Next Billing Date' field value");
+        logInfo("Step 13: Check the 'Next Billing Date' field value");
         Assert.assertEquals(Pages.accountDetailsPage().getBillingNextDate(), safeDepositBoxAccount.getDateOpened(), "'Date Opened' value does not match");
 
-        logInfo("Step 13: Click [Edit] button and pay attention to the fields that were filled in during account creation");
+        logInfo("Step 14: Click [Edit] button and pay attention to the fields that were filled in during account creation");
         Pages.accountDetailsPage().clickEditButton();
         AccountActions.verifyingAccountDataActions().verifyFieldsInEditMode(safeDepositBoxAccount);
 
-        logInfo("Step 14: Do not make any changes and go to Account Maintenance -> Maintenance History page");
+        logInfo("Step 15: Do not make any changes and go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
         AccountActions.accountMaintenanceActions().expandAllRows();
 
-        logInfo("Step 15: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
+        logInfo("Step 16: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         AccountActions.verifyingAccountDataActions().verifySafeDepositBoxAccountInformationOnMaintenanceTab(safeDepositBoxAccount, 26);
     }
 }

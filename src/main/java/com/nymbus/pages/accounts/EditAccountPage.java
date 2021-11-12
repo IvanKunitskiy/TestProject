@@ -929,7 +929,7 @@ public class EditAccountPage extends PageTools {
 
     @Step("Check if 'Date Next Billing' field is disabled edit mode")
     public boolean isDateNextBillingDisabledInEditMode() {
-        return Boolean.parseBoolean(getElementAttributeValue("disabled", interestPaidYTD));
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", dateNextBilling));
     }
 
     @Step("Check if 'Date Last Paid' field is disabled edit mode")
