@@ -11,7 +11,7 @@ import java.util.List;
 public class ReservePremiumProcessingModalPage extends PageTools {
 
     private final By modalWindow = By.xpath("//div[@class='modal-content']");
-    private final By closeButton = By.xpath("(//button[span[text()='×']])[2]");
+    private final By closeButton = By.xpath("(//button[span[text()='×']])[5]");
     private final By addNewLoanReservePremiumButton = By.xpath("//button/span[text()='Add New Loan Reserve/Premium']");
     private final By effectiveDate = By.xpath("//input[@data-test-id='field-effectivedate']");
     private final By reservePremiumAmount = By.xpath("//input[@data-test-id='field-originalamount']");

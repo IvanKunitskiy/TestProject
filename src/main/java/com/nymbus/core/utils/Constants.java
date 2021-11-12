@@ -40,7 +40,7 @@ public class Constants {
     public final static int SUITE_ID = 81;
 
     public final static String TEST_RAIL_USER = "pkyriushkin";
-    public final static String TEST_RAIL_PASSWORD = "@!Xu&|75sSg8F@!";
+    public final static String TEST_RAIL_PASSWORD = "@!Xu&|75sSg8F@!!";
     public final static String TEST_RAIL_URL = "https://testrail.nymbus.com/testrail";
 
     public static String CURRENT_TIME;

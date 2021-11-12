@@ -225,6 +225,10 @@ public class PageTools extends AllureLogger {
         return isCondition(Condition.enabled, by, args);
     }
 
+    protected boolean isElementChecked(By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
+        return isCondition(Condition.checked, by, args);
+    }
     /**
      * Getters
      */

@@ -784,13 +784,13 @@ public class CreateAccount {
     }
 
     public void disableCycleLoanSwitch() {
-        if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29")) {
-            if (Pages.addAccountPage().isCycleLoanValueYes()) {
+        if (Constants.getEnvironment().equals("dev21")) {
+            if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("yes")) {
                 Pages.addAccountPage().clickCycleLoanSwitch();
                 SelenideTools.sleep(Constants.MICRO_TIMEOUT);
             }
         } else {
-            if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("yes")) {
+            if (Pages.addAccountPage().isCycleLoanValueYes()) {
                 Pages.addAccountPage().clickCycleLoanSwitch();
                 SelenideTools.sleep(Constants.MICRO_TIMEOUT);
             }
@@ -798,13 +798,13 @@ public class CreateAccount {
     }
 
     public void enableCycleLoanSwitch() {
-        if(Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev4")){
-            if (!(Pages.addAccountPage().isCycleLoanValueYes())) {
+        if(Constants.getEnvironment().equals("dev21")){
+            if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("no")) {
                 Pages.addAccountPage().clickCycleLoanSwitch();
                 SelenideTools.sleep(Constants.MICRO_TIMEOUT);
             }
         } else {
-            if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("no")) {
+            if (!(Pages.addAccountPage().isCycleLoanValueYes())) {
                 Pages.addAccountPage().clickCycleLoanSwitch();
                 SelenideTools.sleep(Constants.MICRO_TIMEOUT);
             }
@@ -812,10 +812,18 @@ public class CreateAccount {
     }
 
     public void enableTeaserLoanSwitch() {
-        if (Pages.addAccountPage().getTeaserLoanValue().equalsIgnoreCase("no")) {
-            Pages.addAccountPage().clickTeaserLoanSwitch();
-            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        if(Constants.getEnvironment().equals("dev21")){
+            if (Pages.addAccountPage().getTeaserLoanValue().equalsIgnoreCase("no")) {
+                Pages.addAccountPage().clickTeaserLoanSwitch();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
+        } else {
+            if(!(Pages.addAccountPage().isTeaserLoanValueYes())){
+                Pages.addAccountPage().clickTeaserLoanSwitch();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
         }
+
     }
 
     public void disableLocPaymentRecalculationFlagValueSwitch() {

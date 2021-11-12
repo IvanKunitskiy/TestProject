@@ -54,7 +54,7 @@ public class AccountTransactionPage extends PageTools {
     private By amountByTransactionCode = By.xpath("(//tr//td[span[contains(text(), '%s')]]/following-sibling::td[1])[%s]");
     private By descriptionValue = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span");
     private By specificTransactionRecord = By.xpath("//tr[contains(@data-test-id, 'repeat-transactions-%s')]");
-    private By ecColumnValue = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[12]/span/div");
+    private By ecColumnValue = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[9]//div");
     private By checkingAccountTransactionEcColumnValue = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[9]/span/div");
 
     /**

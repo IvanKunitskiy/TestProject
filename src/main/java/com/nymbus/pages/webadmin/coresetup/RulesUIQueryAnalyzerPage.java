@@ -30,7 +30,7 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
     @Step("Get Cash Drawer Name value")
     public String getCashRecyclerName() {
         waitForElementVisibility(cashRecyclerName);
-        return getElementAttributeValue("value", cashRecyclerName);
+        return getElementText(cashRecyclerName);
     }
 
     @Step("Get Cash Drawer Name value")

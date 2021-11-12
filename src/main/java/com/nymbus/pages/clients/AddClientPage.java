@@ -165,9 +165,9 @@ public class AddClientPage extends PageTools {
     /**
      * Client Details Organisation info
      */
-    private By industrySearchIcon = By.xpath("//*[@id='naicsindustry']//i[contains(@class, 'nyb-icon-search')]");
-    private By industryField = By.xpath("//*[@id='naicsindustry']//input[contains(@class, 'ui-select-search')]");
-    private By industryOption = By.xpath("//*[@id='naicsindustry']//div[contains(@class, 'ui-select-choices-row-inner')]/div[contains(text(), '%s')]");
+    private By industrySearchIcon = By.xpath("//*[@data-test-id='field-naicsIndustry']//i[contains(@class, 'nyb-icon-search')]");
+    private By industryField = By.xpath("//*[@data-test-id='field-naicsIndustry']//input[contains(@class, 'ui-select-search')]");
+    private By industryOption = By.xpath("//*[@data-test-id='field-naicsIndustry']//div[contains(@class, 'ui-select-choices-row-inner')]/div[contains(text(), '%s')]");
     private By mailCodeSelectorButton1 = By.xpath("//*[@id='mailingcode']//span[contains(@class, 'select2-arrow')]");
     private By selectOfficerSelectorButton1 = By.xpath("//*[@id='officerid']//span[contains(@class, 'select2-arrow')]");
     private By akaField1 = By.xpath("//tr[@class='ng-scope' and  @ng-repeat='alias in basicInformation.aliases'][%s]" +

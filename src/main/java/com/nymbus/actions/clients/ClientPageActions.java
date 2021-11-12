@@ -1,7 +1,9 @@
 package com.nymbus.actions.clients;
 
 import com.nymbus.actions.webadmin.WebAdminActions;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.models.TempClient;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentDueData;
@@ -83,8 +85,9 @@ public class ClientPageActions {
     private void closeNotifications(int count) {
         for (int i = 1; i <= count; count--) {
             Pages.clientDetailsPage().clickNotificationByIndex(i);
+            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
             Pages.clientDetailsPage().clickCloseNotificationByIndex(i);
-
+            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         }
         Pages.clientDetailsPage().waitForNotificationInvisibility(1);
     }
