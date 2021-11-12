@@ -1,7 +1,6 @@
 package com.nymbus.core.base;
 
 import com.codeborne.selenide.*;
-import com.codeborne.selenide.conditions.Visible;
 import com.nymbus.core.allure.AllureLogger;
 import com.nymbus.core.utils.LocatorParser;
 import org.openqa.selenium.By;
@@ -18,7 +17,6 @@ import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThanOrEqual;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selectors.shadowCss;
 
 public class PageTools extends AllureLogger {
 
@@ -87,8 +85,9 @@ public class PageTools extends AllureLogger {
         shouldBe(Condition.exist, by, args).click();
     }
 
-    protected void clickElementInShadowRoot(By by) {
-        $(by).shouldBe(Condition.visible).click();
+    protected void clickNotVisible(By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
+        shouldBe(Condition.hidden,by,args).click();
     }
 
     protected void jsClick(By by, Object... args) {
@@ -204,6 +203,10 @@ public class PageTools extends AllureLogger {
 
     protected void waitForElementInvisibility(By by, Object... args) {
         shouldBe(Condition.hidden, by, args);
+    }
+
+    protected void waitForElementDisabled(By by, Object... args) {
+        shouldBe(Condition.disabled, by, args);
     }
 
     protected void waitForElementClickable(By by, Object... args) {

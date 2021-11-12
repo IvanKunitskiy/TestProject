@@ -118,7 +118,7 @@ public class C25312_CommitDebitTransactionWithOfficialCheckAccount extends BaseT
         Pages.accountDetailsPage().clickTransactionsTab();
         transactionData.setBalance(balance.getCurrentBalance());
         AccountActions.retrievingAccountData().goToTransactionsTab();
-        TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
+        TransactionData actualTransactionData = AccountActions.retrievingAccountData(). getTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualTransactionData, transactionData, "Transaction data doesn't match!");
 
 

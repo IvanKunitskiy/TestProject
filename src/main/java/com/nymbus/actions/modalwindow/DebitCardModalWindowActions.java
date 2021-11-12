@@ -108,7 +108,6 @@ public class DebitCardModalWindowActions {
                 "Effective date is wrong"));
 
         String futureDate = DateTime.plusMonthsToCurrentDateWithLastDayOfMonth(debitCard.getBinControl().getCardLifeInMonths());
-        System.out.println(futureDate);
         Assert.assertEquals(
                 Pages.debitCardModalWindow().getExpirationDateMonth(),
                 futureDate.split(" ")[0],

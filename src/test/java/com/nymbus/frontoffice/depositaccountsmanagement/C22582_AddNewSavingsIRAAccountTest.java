@@ -50,6 +50,7 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
         // Set the missing CHK account data
         checkingAccount.setBankBranch(Actions.usersActions().getBankBranch());
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
+        Pages.aSideMenuPage().clickClientMenuItem();
 
         // Set the bank branch of the user to account
         savingsIRAAccount.setBankBranch(Actions.usersActions().getBankBranch());

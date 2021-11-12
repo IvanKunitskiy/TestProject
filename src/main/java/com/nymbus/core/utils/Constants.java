@@ -131,10 +131,9 @@ public class Constants {
         switch (getEnvironment()) {
             case "dev6":
             default:
-                return "ht" +
-                        "tps://nymbus-u-was-07.nj1.nymbus.com:9443/coreweb/controller/";
+                return "https://nymbus-u-was-07.nj1.nymbus.com:9443/coreweb/controller/";
             case "dev12":
-                return "*https://nymbus-d-was-12.nj1.nymbus.com:9443/coreweb/controller/";
+                return "https://nymbus-d-was-12.nj1.nymbus.com:9443/coreweb/controller/";
             case "dev21":
                 return "https://was-21.nj1.nymbus.com:9445/coreweb/controller/";
             case "dev4":
@@ -147,7 +146,6 @@ public class Constants {
                 return "https://tomcat-047.development.nymbus.com:9443/coreweb/controller/";
             case "dev58":
                 return "https://tomcat-058.development.nymbus.com:9443/coreweb/controller/";
-
         }
     }
 
