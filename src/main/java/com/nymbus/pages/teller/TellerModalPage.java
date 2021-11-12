@@ -11,7 +11,8 @@ public class TellerModalPage extends PageTools {
     private final By cashDrawerName = By.xpath("//div[@name='cashDrawerTemplate']/a/span/span");
     private final By proofDate = By.xpath("//div[@ng-model='viewModel.proofDate']//a//span[@class='select2-chosen']/span");
     private final By location = By.xpath("//div[@ng-model='viewModel.location']//a//span[@class='select2-chosen']/span");
-    private final By enterButton = By.xpath("//div[@class='modal-content']//button[contains(@class, 'btn-primary')]");
+        private final By enterButton = By.xpath("//div[@class='modal-content']//button[contains(@class, 'btn-primary')]");
+    private final By enterButtonSpan = By.xpath("//div[@class='modal-content']//button[contains(@class, 'btn-primary')]");
     private final By blankTellerField = By.xpath("//div[@ng-model='viewModel.otherTeller']//a/span[1]");
     private final By bankBranch = By.xpath("//div[@ng-model='viewModel.location']//a/span/span");
     private final By closeButton = By.xpath("//button[contains(string(),'×')]");
@@ -61,6 +62,12 @@ public class TellerModalPage extends PageTools {
         waitForElementVisibility(enterButton);
         waitForElementClickable(enterButton);
         jsClick(enterButton);
+    }
+
+    @Step("Click 'Enter' button")
+    public void clickEnterSpanButton() {
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        clickNotVisible(enterButtonSpan);
     }
 
     @Step("Click 'Close' button")

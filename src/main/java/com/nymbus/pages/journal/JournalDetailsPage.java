@@ -8,9 +8,10 @@ public class JournalDetailsPage extends PageTools {
 
     private By errorCorrectButton = By.xpath("//td[contains(@class, 'actions')]/button[1]");
     private By itemInTableState = By.xpath("//tr[contains(@class, 'hoverPointer')][%s]//td[2]/button");
-    private By voidState =  By.xpath("//tr[contains(@class, 'hoverPointer')][1]//td[2]/button[@title='Void']");
+    private By voidState = By.xpath("//tr[contains(@class, 'hoverPointer')][1]//td[2]/button[@title='Void']");
     private By transactionData = By.xpath("//tr[contains(@class, 'hoverPointer')][%s]/td[4]");
     private By journalLinkInBreadCrumbs = By.xpath("//a[@data-test-id='go-tellerJournal']");
+    private By loadingSpinner = By.xpath("//div[@id='printReceipt']/dn-loading-spinner/div/svg");
 
     @Step("Click 'Error Correct' button")
     public void clickErrorCorrectButton() {
@@ -20,7 +21,12 @@ public class JournalDetailsPage extends PageTools {
 
     @Step("Wait for 'Error Correct' button invisibility")
     public void waitForErrorCorrectButtonInvisibility() {
-        waitForElementInvisibility(errorCorrectButton);
+        waitForElementDisabled(errorCorrectButton);
+    }
+
+    @Step("Wait for loading spinner invisibility")
+    public void waitForLoadingSpinnerInvisibility() {
+        waitForElementInvisibility(loadingSpinner);
     }
 
     @Step("Get item {0} state")

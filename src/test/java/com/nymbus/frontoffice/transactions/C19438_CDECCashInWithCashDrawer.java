@@ -111,8 +111,8 @@ public class C19438_CDECCashInWithCashDrawer extends BaseTest {
         // Set transaction data
         transactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "+",
-                depositDestination.getAmount(),
+                "-",
+                0.0,
                 depositDestination.getAmount());
 
         Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
@@ -155,8 +155,9 @@ public class C19438_CDECCashInWithCashDrawer extends BaseTest {
 
         logInfo("Step 4: Click [Error Correct] button");
         Pages.journalDetailsPage().clickErrorCorrectButton();
-        //Pages.journalDetailsPage().waitForErrorCorrectButtonInvisibility();
-        SelenideTools.sleep(2);
+        Pages.journalDetailsPage().waitForErrorCorrectButtonInvisibility();
+        Pages.journalDetailsPage().waitForLoadingSpinnerInvisibility();
+        SelenideTools.sleep(15);
         TestRailAssert.assertEquals(Actions.journalActions().getTransactionState(),"Void",
                 new CustomStepResult("Transaction state hasn't changed", "Transaction state has changed"));
 

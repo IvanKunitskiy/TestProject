@@ -4,7 +4,9 @@ import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -158,6 +160,7 @@ public class C22701_JournalPerformEcForSimpleCdtTransferWithFeeTest extends Base
         logInfo("Step 4: Press [Error Correct] button");
         Pages.journalDetailsPage().clickErrorCorrectButton();
         Pages.journalDetailsPage().waitForErrorCorrectButtonInvisibility();
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
         chkBalanceData.reduceAmount(fee);
 
         logInfo("Step 5: Go to account used in DEBIT item and verify its:\n" +

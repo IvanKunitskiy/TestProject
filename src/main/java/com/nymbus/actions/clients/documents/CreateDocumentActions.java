@@ -103,6 +103,7 @@ public class CreateDocumentActions {
             case "dev18":
             case "dev29":
             case "dev47":
+            case "dev58":
                 return "Account Opening";
         }
     }
@@ -118,6 +119,7 @@ public class CreateDocumentActions {
             case "dev18":
             case "dev29":
             case "dev47":
+            case "dev58":
                 return "Application";
         }
     }
@@ -133,6 +135,7 @@ public class CreateDocumentActions {
             case "dev18":
             case "dev29":
             case "dev47":
+            case "dev58":
                 return "Birth Certificate";
         }
     }

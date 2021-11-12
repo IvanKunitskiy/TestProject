@@ -171,6 +171,7 @@ public class C19446_CdCDispEcCashOutWithCashDispenserTest extends BaseTest {
         logInfo("Step 4: Click [Error Correct] button");
         Pages.journalDetailsPage().clickErrorCorrectButton();
         Pages.journalDetailsPage().waitForErrorCorrectButtonInvisibility();
+        SelenideTools.sleep(15);
         TestRailAssert.assertEquals(Actions.journalActions().getTransactionState(), "Void",
                 new CustomStepResult("Transaction state has changed", "Transaction state hasn't changed"));
 
