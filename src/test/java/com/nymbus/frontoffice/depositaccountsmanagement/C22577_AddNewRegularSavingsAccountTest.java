@@ -13,6 +13,8 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -45,6 +47,7 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         // Set the bank branch of the user to account
         regularSavingsAccount.setBankBranch(Actions.usersActions().getBankBranch());
         regularSavingsAccount.setApplyInterestTo("Remain in Account");
+        regularSavingsAccount.setAccountType("Individual");
 
         // Set the product to accounts
         regularSavingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
@@ -88,29 +91,38 @@ public class C22577_AddNewRegularSavingsAccountTest extends BaseTest {
         logInfo("Step 6: Look through the fields. Check that fields are prefilled by default");
         AccountActions.createAccount().verifySavingsAccountPrefilledFields(regularSavingsAccount, client);
 
-        logInfo("Step 7: Select any values in drop-down fields");
-        logInfo("Step 8: Fill in text fields with valid data. NOTE: do not fill in Account Number field");
-        logInfo("Step 9: Select Date Opened as any date < Current Date");
+        logInfo("Step 7: Look at the field 'Account Title' and verify that such field is not a required field");
+        TestRailAssert.assertFalse(Pages.addAccountPage().isAccountTitleFieldRequired(),
+                new CustomStepResult("'Account Title' is required", "'Account Title' is not required"));
+
+        logInfo("Step 8: Select any values in drop-down fields");
+        logInfo("Step 9: Fill in text fields with valid data. NOTE: do not fill in Account Number field");
+        logInfo("Step 10: Select Date Opened as any date < Current Date");
         regularSavingsAccount.setApplyInterestTo("CHK Acct");
         AccountActions.createAccount().setValuesInFieldsRequiredForSavingsAccount(regularSavingsAccount);
 
-        logInfo("Step 10: Submit the account creation by clicking [Save] button");
+        logInfo("Step 11: Set 'Apply Seasonal Address' switcher - to NO");
+        if (Pages.addAccountPage().isApplySeasonalAddressYes()) {
+            Pages.addAccountPage().clickApplySeasonalAddressSwitch();
+        }
+
+        logInfo("Step 12: Submit the account creation by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
 
-        logInfo("Step 11: Pay attention to the fields that were filled in during account creation");
+        logInfo("Step 13: Pay attention to the fields that were filled in during account creation");
         AccountActions.accountDetailsActions().clickMoreButton();
         AccountActions.accountDetailsActions().verifySavingsAccountRecords(regularSavingsAccount);
 
-        logInfo("Step 12: Click [Edit] button and pay attention to the fields that were filled in during account creation");
+        logInfo("Step 14: Click [Edit] button and pay attention to the fields that were filled in during account creation");
         Pages.accountDetailsPage().clickEditButton();
         AccountActions.editAccount().verifySavingsAccountFieldsAfterCreationInEditMode(regularSavingsAccount);
 
-        logInfo("Step 13: Do not make any changes and go to Account Maintenance -> Maintenance History page");
+        logInfo("Step 15: Do not make any changes and go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
-        logInfo("Step 14: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
+        logInfo("Step 16: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         AccountActions.accountMaintenanceActions().verifySavingsAccountRecords(regularSavingsAccount);
     }
 }

@@ -1,6 +1,8 @@
 package com.nymbus.pages.settings;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -128,6 +130,8 @@ public class MainPage extends PageTools {
 
     @Step("Click 'View Profile' link")
     public void clickViewProfile() {
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        scrollToElement(viewProfileLink);
         waitForElementClickable(viewProfileLink);
         click(viewProfileLink);
     }

@@ -189,13 +189,14 @@ public class C22822_WeilandImportfile extends BaseTest {
                 "Import table does not match");
         Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(15,"Analysis Charges AutoTest"),
                 "Import table does not match");
-        if (Constants.getEnvironment().equals("dev4")){
-            Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(16,"1001000"),
-                    "Import table does not match");
-        } else {
+        if (Constants.getEnvironment().equals("dev29")){
             Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(16,"1111100"),
                     "Import table does not match");
+        } else {
+            Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(16,"1001000"),
+                    "Import table does not match");
         }
+
         Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(17,String.valueOf(amount*5)),
                 "Import table does not match");
         Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(18,"Analysis Charges AutoTest"),
@@ -203,6 +204,8 @@ public class C22822_WeilandImportfile extends BaseTest {
 
         logInfo("Step 6: Click [Post] button");
         Pages.backOfficePage().clickPostButton();
+        SelenideTools.sleep(36000);
+
 
         logInfo("Step 7: Verify results for CHK#1");
         Assert.assertTrue(Pages.backOfficePage().checkValueFromSpanImportFilesTable(3,""),

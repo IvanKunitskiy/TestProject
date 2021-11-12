@@ -706,6 +706,7 @@ public class EditAccount {
         Assert.assertTrue(Pages.editAccountPage().isBankruptcyJudgementFieldVisible(), "'Bankruptcy/Judgement' is not visible");
         Assert.assertTrue(Pages.editAccountPage().isBankruptcyJudgementDateFieldVisible(), "'Bankruptcy/Judgement Date' is not visible");
         Assert.assertTrue(Pages.editAccountPage().isWaiveServiceChargesFieldVisible(), "'Waive Service Charges' is not visible");
+        Assert.assertTrue(Pages.editAccountPage().isEnablePositivePayFieldVisible(), "'Enable Positive Pay' is not visible");
     }
 
     public void verifySavingsIRAADistributionFieldsAreVisible() {
@@ -978,6 +979,7 @@ public class EditAccount {
         if (Pages.editAccountPage().isIRADistributionAccountNumberVisibleInEditMode()) {
             Assert.assertTrue(Pages.editAccountPage().isIraDistributionAccountNumberDisabledInEditMode(), "'IRA Distribution Account Number' field is not disabled");
         }
+        Assert.assertTrue(Pages.editAccountPage().isIraPlanNumberDisabledInEditMode(), "'IRA plan number' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isTotalContributionsDisabledInEditMode(), "'Total Contributions for Life of Account' field is not disabled");
     }
 

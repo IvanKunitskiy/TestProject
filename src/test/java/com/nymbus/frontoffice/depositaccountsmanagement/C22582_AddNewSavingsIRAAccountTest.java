@@ -13,6 +13,8 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
@@ -48,6 +50,7 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
         // Set the missing CHK account data
         checkingAccount.setBankBranch(Actions.usersActions().getBankBranch());
         checkingAccount.setProduct(Actions.productsActions().getProduct(Products.CHK_PRODUCTS, AccountType.CHK, RateType.FIXED));
+        Pages.aSideMenuPage().clickClientMenuItem();
 
         // Set the bank branch of the user to account
         savingsIRAAccount.setBankBranch(Actions.usersActions().getBankBranch());
@@ -93,40 +96,44 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
         logInfo("Step 6: Look through the fields. Check that fields are prefilled by default");
         AccountActions.createAccount().verifySavingsIraAccountPrefilledFields(savingsIRAAccount, client);
 
-        logInfo("Step 7: Select any values in drop-down fields");
-        logInfo("Step 8: Fill in such text fields with valid data (except Account Number field):");
-        logInfo("Step 9: Select Date Opened as any date < Current Date and Select Date next IRA distribution as any date > Current Date" +
+        logInfo("Step 7: Look at the field 'Account Title' and verify that such field is not a required field");
+        TestRailAssert.assertFalse(Pages.addAccountPage().isAccountTitleFieldRequired(),
+                new CustomStepResult("'Account Title' is required", "'Account Title' is not required"));
+
+        logInfo("Step 8: Select any values in drop-down fields");
+        logInfo("Step 9: Fill in such text fields with valid data (except Account Number field):");
+        logInfo("Step 10: Select Date Opened as any date < Current Date and Select Date next IRA distribution as any date > Current Date" +
                 "Select Date next IRA distribution as any date > Current Date" +
                 "Select Date Of First Deposit as any date");
         savingsIRAAccount.setIraDistributionCode("CHK Acct");
         savingsIRAAccount.setIraDistributionAccountNumber(checkingAccount.getAccountNumber());
         AccountActions.createAccount().selectValuesInDropdownFieldsRequiredForSavingsIRAAccount(savingsIRAAccount);
 
-        logInfo("Step 10: Set 'Apply Seasonal Address' switcher - to NO");
+        logInfo("Step 11: Set 'Apply Seasonal Address' switcher - to NO");
         if (Pages.addAccountPage().getApplySeasonalAddressSwitchValue().equals("yes")) {
             Pages.addAccountPage().clickApplySeasonalAddressSwitch();
         }
 
-        logInfo("Step 11: Submit the account creation by clicking [Save] button");
+        logInfo("Step 12: Submit the account creation by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
 
-        logInfo("Step 12: Pay attention to the fields that were filled in during account creation");
+        logInfo("Step 13: Pay attention to the fields that were filled in during account creation");
         AccountActions.accountDetailsActions().clickMoreButton();
         AccountActions.accountDetailsActions().verifySavingsIRAAccountRecords(savingsIRAAccount);
 
-        logInfo("Step 13: Click [Edit] button and pay attention to the fields that were filled in during account creation");
+        logInfo("Step 14: Click [Edit] button and pay attention to the fields that were filled in during account creation");
         Pages.accountDetailsPage().clickEditButton();
         AccountActions.editAccount().verifySavingsIraFieldsAfterCreationInEditMode(savingsIRAAccount);
 
-        logInfo("Step 14: Do not make any changes and go to Account Maintenance -> Maintenance History page");
+        logInfo("Step 15: Do not make any changes and go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
-        logInfo("Step 15: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
+        logInfo("Step 16: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         AccountActions.accountMaintenanceActions().verifySavingsIraAccountRecords(savingsIRAAccount);
 
-        logInfo("Step 16: Repeat steps 2-6\n" +
+        logInfo("Step 17: Repeat steps 2-6\n" +
                 "Fill in all the same fields as in Step7\n" +
                 "BUT\n" +
                 "- IRA Distribution Code = Check\n" +
@@ -143,7 +150,7 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
         AccountActions.createAccount().selectValuesInDropdownFieldsRequiredForSavingsIRAAccount(savingsIRAAccount);
         Pages.addAccountPage().checkIRADistributionAccountNumberSelectorButtonIsDisabled();
 
-        logInfo("Step 17: Fill in all other required fields and click [Save] button");
+        logInfo("Step 18: Fill in all other required fields and click [Save] button");
         if (Pages.addAccountPage().getApplySeasonalAddressSwitchValue().equals("yes")) {
             Pages.addAccountPage().clickApplySeasonalAddressSwitch();
         }
@@ -153,7 +160,7 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
         AccountActions.accountDetailsActions().verifySavingsIRAAccountRecords(savingsIRAAccount);
         String savAcc = Pages.accountDetailsPage().getAccountNumberValue();
 
-        logInfo("Step 18: Repeat steps 2-6\n" +
+        logInfo("Step 19: Repeat steps 2-6\n" +
                 "Fill in all the same fields as in Step7\n" +
                 "BUT\n" +
                 "- IRA Distribution Code = Savings Account\n" +
@@ -169,7 +176,7 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
         savingsIRAAccount.setIraDistributionAccountNumber(savAcc);
         AccountActions.createAccount().selectValuesInDropdownFieldsRequiredForSavingsIRAAccount(savingsIRAAccount);
 
-        logInfo("Step 19: Fill in all other required fields and click [Save] button");
+        logInfo("Step 20: Fill in all other required fields and click [Save] button");
         if (Pages.addAccountPage().getApplySeasonalAddressSwitchValue().equals("yes")) {
             Pages.addAccountPage().clickApplySeasonalAddressSwitch();
         }
@@ -178,7 +185,7 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
         AccountActions.accountDetailsActions().clickMoreButton();
         AccountActions.accountDetailsActions().verifySavingsIRAAccountRecords(savingsIRAAccount);
 
-        logInfo("Repeat steps 2-6\n" +
+        logInfo("Step 21: Repeat steps 2-6\n" +
                 "Fill in all the same fields as in Step7\n" +
                 "BUT\n" +
                 "- IRA Distribution Code = No Dist\n" +
@@ -195,7 +202,7 @@ public class C22582_AddNewSavingsIRAAccountTest extends BaseTest {
         AccountActions.createAccount().selectValuesInDropdownFieldsRequiredForSavingsIRAAccount(savingsIRAAccount);
         Pages.addAccountPage().checkIRADistributionAccountNumberSelectorButtonIsDisabled();
 
-        logInfo("Step 21: Fill in all other required fields and click [Save] button");
+        logInfo("Step 22: Fill in all other required fields and click [Save] button");
         if (Pages.addAccountPage().getApplySeasonalAddressSwitchValue().equals("yes")) {
             Pages.addAccountPage().clickApplySeasonalAddressSwitch();
         }

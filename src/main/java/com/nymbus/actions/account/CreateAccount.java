@@ -6,6 +6,7 @@ import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
+import com.nymbus.newmodels.client.other.account.InterestFrequency;
 import com.nymbus.newmodels.client.other.account.type.CHKAccount;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
@@ -222,6 +223,7 @@ public class CreateAccount {
         setCurrentOfficer(account);
         setBankBranch(account);
         setMailCode(account);
+        setAccountType(account);
         Pages.addAccountPage().setDateOpenedValue(account.getDateOpened());
         Pages.addAccountPage().setInterestRate(account.getInterestRate());
         setInterestFrequency(account);
@@ -278,7 +280,7 @@ public class CreateAccount {
         setCurrentOfficer(account);
         setBankBranch(account);
         setCorrespondingAccount(account);
-        /*setDiscountReason(account);*/
+//        setDiscountReason(account);
     }
 
     public void setValuesInFieldsRequiredForCheckingAccount(Account account) {
@@ -319,7 +321,15 @@ public class CreateAccount {
         setInterestType(account);
         setCorrespondingAccount(account);
         setCallClassCode(account);
-        Pages.addAccountPage().clickTransactionalAccountSwitch();
+        if (Pages.addAccountPage().isTransactionalAccountNo()) {
+            Pages.addAccountPage().clickTransactionalAccountSwitch();
+        }
+        if (Pages.addAccountPage().isAutoRenewableYes()) {
+            Pages.addAccountPage().clickAutoRenewableSwitch();
+        }
+        if (Pages.addAccountPage().isApplySeasonalAddressYes()) {
+            Pages.addAccountPage().clickApplySeasonalAddressSwitch();
+        }
     }
 
     public void fillInInputFieldsRequiredForSafeDepositBoxAccount(Account account) {
@@ -388,12 +398,12 @@ public class CreateAccount {
 
     public void setIRADistributionAccountNumber(Account account) {
         if (account.getIraDistributionAccountNumber() != null) {
-            if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev12") || Constants.getEnvironment().equals("dev47")) {
-                Pages.addAccountPage().clickIRADistributionAccountNumberSelectorButton(account.getIraDistributionAccountNumber());
-                Pages.addAccountPage().clickIRADistributionAccountNumberSelectorOption(account.getIraDistributionAccountNumber());
-            } else {
+            if (Constants.getEnvironment().equals("dev21")) {
                 Pages.addAccountPage().clickIRADistributionAccountNumberSelectorButton();
                 Pages.addAccountPage().clickIRADistributionAccountNumberSelectorOptionSpan(account.getIraDistributionAccountNumber());
+            } else {
+                Pages.addAccountPage().clickIRADistributionAccountNumberSelectorButton(account.getIraDistributionAccountNumber());
+                Pages.addAccountPage().clickIRADistributionAccountNumberSelectorOption(account.getIraDistributionAccountNumber());
             }
         }
     }
@@ -784,13 +794,13 @@ public class CreateAccount {
     }
 
     public void disableCycleLoanSwitch() {
-        if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29")) {
-            if (Pages.addAccountPage().isCycleLoanValueYes()) {
+        if (Constants.getEnvironment().equals("dev21")) {
+            if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("yes")) {
                 Pages.addAccountPage().clickCycleLoanSwitch();
                 SelenideTools.sleep(Constants.MICRO_TIMEOUT);
             }
         } else {
-            if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("yes")) {
+            if (Pages.addAccountPage().isCycleLoanValueYes()) {
                 Pages.addAccountPage().clickCycleLoanSwitch();
                 SelenideTools.sleep(Constants.MICRO_TIMEOUT);
             }
@@ -798,13 +808,13 @@ public class CreateAccount {
     }
 
     public void enableCycleLoanSwitch() {
-        if(Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev4")){
-            if (!(Pages.addAccountPage().isCycleLoanValueYes())) {
+        if(Constants.getEnvironment().equals("dev21")){
+            if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("no")) {
                 Pages.addAccountPage().clickCycleLoanSwitch();
                 SelenideTools.sleep(Constants.MICRO_TIMEOUT);
             }
         } else {
-            if (Pages.addAccountPage().getCycleLoanValue().equalsIgnoreCase("no")) {
+            if (!(Pages.addAccountPage().isCycleLoanValueYes())) {
                 Pages.addAccountPage().clickCycleLoanSwitch();
                 SelenideTools.sleep(Constants.MICRO_TIMEOUT);
             }
@@ -812,10 +822,18 @@ public class CreateAccount {
     }
 
     public void enableTeaserLoanSwitch() {
-        if (Pages.addAccountPage().getTeaserLoanValue().equalsIgnoreCase("no")) {
-            Pages.addAccountPage().clickTeaserLoanSwitch();
-            SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        if(Constants.getEnvironment().equals("dev21")){
+            if (Pages.addAccountPage().getTeaserLoanValue().equalsIgnoreCase("no")) {
+                Pages.addAccountPage().clickTeaserLoanSwitch();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
+        } else {
+            if(!(Pages.addAccountPage().isTeaserLoanValueYes())){
+                Pages.addAccountPage().clickTeaserLoanSwitch();
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+            }
         }
+
     }
 
     public void disableLocPaymentRecalculationFlagValueSwitch() {
@@ -886,12 +904,12 @@ public class CreateAccount {
         Assert.assertEquals(Pages.addAccountPage().getInterestFrequency(), account.getInterestFrequency(), "'Interest Frequency' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getInterestType(), account.getInterestType(), "'Interest Type' is prefilled with wrong value");
         Assert.assertEquals(Pages.addAccountPage().getApplyInterestTo(), "Remain in Account", "'Apply interest to' is prefilled with wrong value");
-        if (Constants.getEnvironment().equals("dev4") || Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev12") || Constants.getEnvironment().equals("dev47")) {
-            Assert.assertTrue(Pages.addAccountPage().isAutoRenewableYes(), "'Auto Renewable' is prefilled with wrong value");
-            Assert.assertFalse(Pages.addAccountPage().isTransactionalAccountYes(), "'Transactional Account' is prefilled with wrong value");
-        } else {
+        if (Constants.getEnvironment().equals("dev21")) {
             Assert.assertEquals(Pages.addAccountPage().getAutoRenewable(), "YES", "'Auto Renewable' is prefilled with wrong value");
             Assert.assertEquals(Pages.addAccountPage().getTransactionalAccount().toLowerCase(), "no", "'Transactional Account' is prefilled with wrong value");
+        } else {
+            Assert.assertTrue(Pages.addAccountPage().isAutoRenewableYes(), "'Auto Renewable' is prefilled with wrong value");
+            Assert.assertFalse(Pages.addAccountPage().isTransactionalAccountYes(), "'Transactional Account' is prefilled with wrong value");
         }
         Assert.assertEquals(Pages.addAccountPage().getApplySeasonalAddress().toLowerCase(), "yes", "'Apply Seasonal Address' is prefilled with wrong value");
     }
@@ -926,6 +944,7 @@ public class CreateAccount {
     public void verifySavingsIraAccountPrefilledFields(Account account, IndividualClient client) {
         verifyAccountPrefilledFields(account, client);
         verifyIraAccountPrefilledFields(account, client);
+//        Assert.assertEquals(Pages.addAccountPage().getInterestFrequency(), InterestFrequency.MONTHLY.getInterestFrequency(), "'Interest Frequency' value does not match");
         if (Constants.getEnvironment().equals("dev4")) {
             Assert.assertTrue(Pages.addAccountPage().isApplySeasonalAddressYes(), "'Apply Seasonal Address' is prefilled with wrong value");
         } else {

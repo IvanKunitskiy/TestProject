@@ -4,10 +4,8 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.nymbus.core.base.PageTools;
 import com.nymbus.core.utils.SelenideTools;
-import com.nymbus.pages.Pages;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.testng.Assert;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -74,6 +72,7 @@ public class EditAccountPage extends PageTools {
     private By bankAccountNumberInterestOnCD = By.xpath("//input[@id='bankaccountnumberinterestoncd']");
     private By bankRoutingNumberInterestOnCD = By.xpath("//input[@id='bankroutingnumberinterestoncd']");
     private By applySeasonalAddress = By.xpath("//*[@id='useseasonaladdress']");
+    private By enablePositivePay = By.xpath("//*[@id='positivepay']");
     private By bankruptcyJudgement = By.xpath("//div[@id='bankruptcyjudgementcode']//span[contains(@class, 'ng-scope')]");
     private By exemptFromRegCC = By.xpath("//*[@id='exemptfromregcc']");
     private By callClassCodeNotValid = By.xpath("//div[@data-test-id='field-callclasscode']/a[contains(@uib-tooltip-html, 'is no longer a valid value')]");
@@ -405,6 +404,7 @@ public class EditAccountPage extends PageTools {
     private By totalEarningsForLifeOfAccountLabel = By.xpath("//tr[@data-test-id='field-totalEarnings']//td//label");
     private By verifyAchFundsLabel = By.xpath("//label[contains(text(), 'Verify ACH funds')]");
     private By waiveServiceChargesLabel = By.xpath("//label[contains(text(), 'Waive Service Charges')]");
+    private By enablePositivePayLabel = By.xpath("//label[contains(text(), 'Enable Positive Pay')]");
     private By dateOfFirstDepositLabel = By.xpath("//label[contains(text(), 'Date Of First Deposit')]");
     private By iraDistributionFrequencyLabel = By.xpath("//label[contains(text(), 'IRA Distribution Frequency')]");
     private By iraDistributionCodeLabel = By.xpath("//label[contains(text(), 'IRA Distribution Code')]");
@@ -451,11 +451,15 @@ public class EditAccountPage extends PageTools {
      * Groups
      */
     private By balanceAndInterestGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Balance and Interest')]");
-    private By transactionsGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Transactions')]");
+    private By transactionsTitle = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Transactions')]");
+    private By transactionsGroup = By.xpath("//span[contains(text(), 'Transactions')]//ancestor::div[contains(@class, 'panel-heading')]/following-sibling::div");
     private By overdraftGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Overdraft')]");
-    private By miscGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Misc')]");
-    private By distrbutionGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Distribution')]");
-    private By distributionAndMiscGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Distribution and Misc')]");
+    private By miscTitle = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Misc')]");
+    private By miscGroup = By.xpath("//span[contains(text(), 'Misc')]//ancestor::div[contains(@class, 'panel-heading')]/following-sibling::div");
+    private By distrbutionTitle = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Distribution')]");
+    private By distrbutionGroup = By.xpath("//span[contains(text(), 'Misc')]//ancestor::div[contains(@class, 'panel-heading')]/following-sibling::div");
+    private By distributionAndMiscTitle = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Distribution and Misc')]");
+    private By distributionAndMiscGroup = By.xpath("//span[contains(text(), 'Misc')]//ancestor::div[contains(@class, 'panel-heading')]/following-sibling::div");
     private By termGroup = By.xpath("//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Term')]");
 
     private By balanceAndInterestGroupOpened = By.xpath("//div[contains(@class, 'panel-open')]//h4[contains(@class, 'panel-title')]//span[contains(text(), 'Balance and Interest')]");
@@ -538,6 +542,20 @@ public class EditAccountPage extends PageTools {
         scrollToPlaceElementInCenter(applySeasonalAddress);
         return getElementText(applySeasonalAddress);
     }
+
+    @Step("Click 'Enable Positive Pay' switch")
+    public void clickEnablePositivePaySwitch() {
+        click(enablePositivePay);
+    }
+
+    @Step("Get 'Enable Positive Pay' value")
+    public String getEnablePositivePaySwitchValue() {
+        waitForElementVisibility(enablePositivePay);
+        waitForElementClickable(enablePositivePay);
+        scrollToPlaceElementInCenter(enablePositivePay);
+        return getElementText(enablePositivePay).trim();
+    }
+
 
     @Step("Check if 'Adjustable Rate' switcher switched to 'YES'")
     public boolean isAdjustableRateYesValuePicked() {
@@ -911,7 +929,7 @@ public class EditAccountPage extends PageTools {
 
     @Step("Check if 'Date Next Billing' field is disabled edit mode")
     public boolean isDateNextBillingDisabledInEditMode() {
-        return Boolean.parseBoolean(getElementAttributeValue("disabled", interestPaidYTD));
+        return Boolean.parseBoolean(getElementAttributeValue("disabled", dateNextBilling));
     }
 
     @Step("Check if 'Date Last Paid' field is disabled edit mode")
@@ -1932,6 +1950,11 @@ public class EditAccountPage extends PageTools {
         return isElementVisible(waiveServiceChargesLabel);
     }
 
+    @Step("'Enable Positive Pay' field is visible")
+    public boolean isEnablePositivePayFieldVisible() {
+        return isElementVisible(enablePositivePayLabel);
+    }
+
     @Step("'Date Of First Deposit' field is visible")
     public boolean isDateOfFirstDepositFieldVisible() {
         return isElementVisible(dateOfFirstDepositLabel);
@@ -2931,14 +2954,14 @@ public class EditAccountPage extends PageTools {
 
     @Step("Click the 'Misc' section link")
     public void clickMiscSectionLink() {
-        scrollToPlaceElementInCenter(miscGroup);
-        click(miscGroup);
+        scrollToPlaceElementInCenter(miscTitle);
+        click(miscTitle);
     }
 
     @Step("Click the 'Distribution' section link")
     public void clickDistributionSectionLink() {
-        scrollToPlaceElementInCenter(distrbutionGroup);
-        click(distrbutionGroup);
+        scrollToPlaceElementInCenter(distrbutionTitle);
+        click(distrbutionTitle);
     }
 
     @Step("Click the 'Balance and Interest' section link")
@@ -2949,8 +2972,8 @@ public class EditAccountPage extends PageTools {
 
     @Step("Click the 'Transactions' section link")
     public void clickTransactionsSectionLink() {
-        scrollToPlaceElementInCenter(transactionsGroup);
-        click(transactionsGroup);
+        scrollToPlaceElementInCenter(transactionsTitle);
+        click(transactionsTitle);
     }
 
     @Step("Click the 'Overdraft' section link")
@@ -2967,8 +2990,8 @@ public class EditAccountPage extends PageTools {
 
     @Step("Click the 'Distribution and Misc' section link")
     public void clickDistributionAndMiscSectionLink() {
-        scrollToPlaceElementInCenter(distributionAndMiscGroup);
-        click(distributionAndMiscGroup);
+        scrollToPlaceElementInCenter(distributionAndMiscTitle);
+        click(distributionAndMiscTitle);
     }
 
     @Step("Check 'Call class code' not valid anymore")

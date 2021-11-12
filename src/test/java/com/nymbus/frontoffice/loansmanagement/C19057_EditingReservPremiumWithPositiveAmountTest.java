@@ -189,7 +189,6 @@ public class C19057_EditingReservPremiumWithPositiveAmountTest extends BaseTest 
         Pages.reservePremiumProcessingModalPage().clickCloseButton();
 
         logInfo("Step 6: Open account from preconditions on the 'Transactions' tab");
-        Pages.reservePremiumProcessingModalPage().clickCloseButton();
         Pages.accountDetailsPage().clickTransactionsTab();
 
         logInfo("Step 7: Verify committed transaction");

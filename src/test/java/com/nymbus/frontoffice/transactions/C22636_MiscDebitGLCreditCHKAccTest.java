@@ -24,6 +24,7 @@ import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.newmodels.transaction.verifyingModels.WebAdminTransactionData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.webadmin.WebAdminPages;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -88,7 +89,6 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenClientByName(miscDebitGLCreditTransaction.getTransactionSource().getAccountNumber());
         ExtendedBalanceDataForCHKAcc balanceData = AccountActions.retrievingAccountData().getExtendedBalanceDataForCHKAcc();
-        double averageBalance = balanceData.getAverageBalance();
 
         logInfo("Balance data " + balanceData.toString());
 
@@ -119,7 +119,6 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
 
         // Set transaction data and update balances
         balanceData.reduceAmount(miscDebitGLCreditTransaction.getTransactionSource().getAmount());
-        balanceData.reduceAverageBalance(averageBalance);
         TransactionData transactionData = new TransactionData(postingDate,
                 effectiveDate, "-",
                 balanceData.getCurrentBalance(),
@@ -129,8 +128,7 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
                 "Go to the account used in Misc Debit item. Verify such fields: \n" +
                 "- current balance \n" +
                 "- available balance \n" +
-                "- Collected Balance \n" +
-                "- Average Balance");
+                "- Collected Balance");
         Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
@@ -138,6 +136,8 @@ public class C22636_MiscDebitGLCreditCHKAccTest extends BaseTest {
 
         Actions.clientPageActions().searchAndOpenClientByName(miscDebitGLCreditTransaction.getTransactionSource().getAccountNumber());
         ExtendedBalanceDataForCHKAcc actualBalanceDate = AccountActions.retrievingAccountData().getExtendedBalanceDataForCHKAcc();
+        actualBalanceDate.setAverageBalance(0);
+        balanceData.setAverageBalance(0);
         Assert.assertEquals(actualBalanceDate, balanceData, "Balance data doesn't match!");
 
         logInfo("Step 8: Open account on Transactions history and verify that transaction is written on transactions history page");

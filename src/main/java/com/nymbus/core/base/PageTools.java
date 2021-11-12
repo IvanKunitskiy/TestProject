@@ -85,6 +85,11 @@ public class PageTools extends AllureLogger {
         shouldBe(Condition.exist, by, args).click();
     }
 
+    protected void clickNotVisible(By by, Object... args) {
+        logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
+        shouldBe(Condition.hidden,by,args).click();
+    }
+
     protected void jsClick(By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + ", element --> " + byLocator(by, args));
         waitForElementClickable(by, args);
@@ -198,6 +203,10 @@ public class PageTools extends AllureLogger {
 
     protected void waitForElementInvisibility(By by, Object... args) {
         shouldBe(Condition.hidden, by, args);
+    }
+
+    protected void waitForElementDisabled(By by, Object... args) {
+        shouldBe(Condition.disabled, by, args);
     }
 
     protected void waitForElementClickable(By by, Object... args) {
