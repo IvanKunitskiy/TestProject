@@ -66,7 +66,7 @@ public class TellerModalPage extends PageTools {
 
     @Step("Click 'Enter' button")
     public void clickEnterSpanButton() {
-        SelenideTools.sleep(5);
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         clickNotVisible(enterButtonSpan);
     }
 

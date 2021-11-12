@@ -7,7 +7,6 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.FinancialInstitutionType;
-import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.client.OrganisationClient;
 import com.nymbus.newmodels.client.basicinformation.address.Address;
 import com.nymbus.newmodels.client.clientdetails.contactinformation.phone.Phone;
@@ -101,13 +100,11 @@ public class C24987_ViewEditNewTrustAccountTest extends BaseTest {
 
         // Update phones
         ClientsActions.clientDetailsActions().deleteAllPhoneRows();
-        SelenideTools.sleep(10);
         ClientsActions.clientDetailsActions().setPhones(updateModel.getUpdatedPhones());
 
         // Add one more address
         ClientsActions.clientDetailsActions().addAddress(updateModel.getAdditionalAddress());
 
-        SelenideTools.sleep(54);
         // Save changes
         ClientsActions.clientDetailsActions().clickSaveChangesButton();
 
@@ -118,7 +115,6 @@ public class C24987_ViewEditNewTrustAccountTest extends BaseTest {
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
         AccountActions.accountMaintenanceActions().expandAllRows();
-        System.out.println(updateModel);
         ClientsActions.clientDetailsActions().verifyClientInformationOnMaintenanceTab(updateModel, 60);
     }
 
