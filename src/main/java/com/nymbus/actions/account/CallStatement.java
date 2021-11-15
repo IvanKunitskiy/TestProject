@@ -61,18 +61,41 @@ public class CallStatement {
 
     public void verifyTransactionData(TellerLocation location, CashierDefinedTransactions transaction,
                                       String proofDate, IndividualClient client, Account account) {
-        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
-        SelenideTools.sleep(25);
+        SelenideTools.sleep(Constants.BIG_TIMEOUT);
         SelenideTools.switchToLastTab();
-        System.out.println(SelenideTools.getDriver().getWindowHandles().size());
         Pages.noticePage().checkPDFVisible();
-        SelenideTools.sleep(10);
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
 
         File file = Pages.accountStatementPage().downloadCallStatementPdf();
         PDF pdf = new PDF(file);
 
         verifyTellerLocationInPdf(pdf, location);
         verifyAccountInfoInPdf(pdf, transaction, proofDate, client, account);
+    }
+
+    public void verifyTransactionFields(CashierDefinedTransactions transaction) {
+        SelenideTools.sleep(Constants.BIG_TIMEOUT);
+        SelenideTools.switchToLastTab();
+        Pages.noticePage().checkPDFVisible();
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
+
+        File file = Pages.accountStatementPage().downloadCallStatementPdf();
+        PDF pdf = new PDF(file);
+
+        assertThat(pdf, containsText(transaction.getOperation()));
+
+        assertThat(pdf, containsText("Amount"));
+
+        assertThat(pdf, containsText("Wire Fee"));
+
+        assertThat(pdf, containsText("Date"));
+
+        assertThat(pdf, containsText("Receiver ABA Number"));
+
+        assertThat(pdf, containsText("Receiver Bank Name"));
+
+        assertThat(pdf, containsText("Originator Code"));
+
     }
 
     /**
@@ -84,7 +107,7 @@ public class CallStatement {
         SelenideTools.sleep(Constants.SMALL_TIMEOUT);
         SelenideTools.switchToLastTab();
         Pages.noticePage().checkPDFVisible();
-        SelenideTools.sleep(30);
+        SelenideTools.sleep(Constants.BIG_TIMEOUT);
         File file = Pages.accountStatementPage().downloadCallStatementPdf();
         PDF pdf = new PDF(file);
 

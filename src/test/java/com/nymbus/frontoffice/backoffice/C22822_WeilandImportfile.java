@@ -205,6 +205,7 @@ public class C22822_WeilandImportfile extends BaseTest {
         logInfo("Step 6: Click [Post] button");
         Pages.backOfficePage().clickPostButton();
 
+
         logInfo("Step 7: Verify results for CHK#1");
         Assert.assertTrue(Pages.backOfficePage().checkValueFromSpanImportFilesTable(3,""),
                 "Reject reason does not match");

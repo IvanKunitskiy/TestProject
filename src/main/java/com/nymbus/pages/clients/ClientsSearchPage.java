@@ -1,6 +1,7 @@
 package com.nymbus.pages.clients;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -30,7 +31,7 @@ public class ClientsSearchPage extends PageTools {
 
     @Step("Wait for 'Add new client' button")
     public void waitForAddNewClientButton() {
-        SelenideTools.sleep(5);
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         waitForElementVisibility(addNewClientButton);
     }
 

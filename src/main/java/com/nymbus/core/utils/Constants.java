@@ -100,6 +100,8 @@ public class Constants {
                 return "https://dev29.development.nymbus.com/frontoffice/#/crm/login";
             case "dev47":
                 return "https://dev47.development.nymbus.com/frontoffice/#/crm/login";
+            case "dev58":
+                return "https://dev58.development.nymbus.com/frontoffice/#/crm/login";
         }
     }
 
@@ -120,6 +122,8 @@ public class Constants {
                 return "https://dev29.development.nymbus.com/webadmin/";
             case "dev47":
                 return "https://dev47.development.nymbus.com/webadmin/";
+            case "dev58":
+                return "https://dev58.development.nymbus.com/webadmin/";
         }
     }
 
@@ -140,6 +144,8 @@ public class Constants {
                 return "https://tomcat-029.development.nymbus.com:9443/coreweb/controller/";
             case "dev47":
                 return "https://tomcat-047.development.nymbus.com:9443/coreweb/controller/";
+            case "dev58":
+                return "https://tomcat-058.development.nymbus.com:9443/coreweb/controller/";
         }
     }
 
@@ -154,6 +160,7 @@ public class Constants {
             case "dev18":
             case "dev29":
             case "dev47":
+            case "dev58":
                 return "408078";
         }
     }
@@ -171,6 +178,7 @@ public class Constants {
             case "dev4":
             case "dev29":
             case "dev47":
+            case "dev58":
                 return "Individual";
         }
     }
@@ -186,6 +194,7 @@ public class Constants {
             case "dev18":
             case "dev29":
             case "dev47":
+            case "dev58":
                 return FinancialInstitutionType.BANK;
         }
     }
@@ -200,6 +209,7 @@ public class Constants {
     public static final int MICRO_TIMEOUT = 2;
     public static final int MINI_TIMEOUT = 5;
     public static final int SMALL_TIMEOUT = 10;
+    public static final int BIG_TIMEOUT = 25;
 
     /**
      * Directories

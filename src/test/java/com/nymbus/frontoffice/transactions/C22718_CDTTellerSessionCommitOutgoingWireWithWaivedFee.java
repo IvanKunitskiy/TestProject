@@ -124,6 +124,7 @@ public class C22718_CDTTellerSessionCommitOutgoingWireWithWaivedFee extends Base
 
         logInfo("Step 6: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
+        AccountActions.callStatement().verifyTransactionFields(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS);
 
         logInfo("Step 7: Go to account used in CREDIT item and verify its:\n" +
                 "- current balance\n" +

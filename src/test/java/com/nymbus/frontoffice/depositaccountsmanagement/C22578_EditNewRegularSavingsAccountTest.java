@@ -6,6 +6,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -14,9 +15,11 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
 import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
+import org.checkerframework.checker.units.qual.C;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -93,9 +96,13 @@ public class C22578_EditNewRegularSavingsAccountTest extends BaseTest {
 
         logInfo("Step 14: Click [-] icon next to any section (e.g. Transactions section) and verify that all fields within this section were hidden");
         Pages.editAccountPage().clickMiscSectionLink();
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        TestRailAssert.assertFalse(Pages.editAccountPage().isMiscGroupVisible(), new CustomStepResult("'Misc' section is visible", "'Misc' section is collapsed"));
 
         logInfo("Step 15: Click [+] icon next to the section from Step9 and verify that all fields within the section are displayed. Fields were NOT cleared out");
         Pages.editAccountPage().clickMiscSectionLink();
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        TestRailAssert.assertTrue(Pages.editAccountPage().isMiscGroupVisible(), new CustomStepResult("'Misc' section is collapsed", "'Misc' section is visible"));
 
         logInfo("Step 16: Submit the account editing by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
