@@ -355,8 +355,8 @@ public class TransactionActions {
 
     private void fillSourceInformation(TransactionSource transactionSource) {
         int tempIndex = 1;
-        fillSourceAccountNumber(transactionSource.getAccountNumber(), tempIndex);
         fillSourceAmount(String.format("%.2f", transactionSource.getAmount()), tempIndex);
+        fillSourceAccountNumber(transactionSource.getAccountNumber(), tempIndex);
         fillSourceDetails(transactionSource.getNotes(), tempIndex);
     }
 

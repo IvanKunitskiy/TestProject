@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -74,6 +75,7 @@ public class C22610_AddHoldToAccountTest extends BaseTest {
         Actions.transactionActions().goToTellerPage();
         Actions.transactionActions().doLoginTeller();
         Actions.transactionActions().createGlDebitMiscCreditTransaction(transaction);
+        SelenideTools.sleep(1200);
         Actions.transactionActions().clickCommitButton();
         Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
