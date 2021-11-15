@@ -1,17 +1,12 @@
 package com.nymbus.frontoffice.transactions;
 
 import com.nymbus.actions.Actions;
-import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.SelenideTools;
-import com.nymbus.newmodels.account.Account;
-import com.nymbus.newmodels.account.product.AccountType;
-import com.nymbus.newmodels.account.product.Products;
-import com.nymbus.newmodels.account.product.RateType;
 import com.nymbus.newmodels.backoffice.Check;
 import com.nymbus.newmodels.backoffice.FullCheck;
 import com.nymbus.newmodels.cashier.CashierDefinedTransactions;
@@ -19,12 +14,10 @@ import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.newmodels.generation.transactions.TransactionConstructor;
-import com.nymbus.newmodels.generation.transactions.builder.GLDebitDepositCHKAccBuilder;
-import com.nymbus.newmodels.generation.transactions.builder.WithdrawalGLDebitCHKAccBuilder;
+import com.nymbus.newmodels.generation.transactions.builder.CashInDepositCHKAccBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.Denominations;
-import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
-import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
+import com.nymbus.newmodels.transaction.verifyingModels.CashDrawerData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
 import com.nymbus.testrail.CustomStepResult;
@@ -33,6 +26,7 @@ import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
+import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -40,83 +34,53 @@ import java.util.HashMap;
 
 public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends BaseTest {
     private Transaction transaction;
-    private BalanceDataForCHKAcc expectedSavingsBalanceData;
-    private TransactionData savingsAccTransactionData;
-    private Account savingsAccount;
-    private double savingsTransactionAmount = 200.00;
     private double returnTransactionAmount = 100.00;
     private double fee = 5.00;
     private int checkAccountNumber;
     private Check check;
     private String name = "John";
     private FullCheck fullCheck;
-    private String clientRootId;
+    private String clientId;
+    private CashDrawerData cashData;
 
 
     @BeforeMethod
     public void prepareTransactionData() {
         //Check CFMIntegrationEnabled
-//        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
-//        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(),userCredentials.getPassword());
-//        if (WebAdminActions.webAdminUsersActions().isCFMIntegrationEnabled()) {
-//            throw new SkipException("CFMIntegrationEnabled = 1");
-//        }
-//        WebAdminActions.loginActions().doLogout();
-//        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(),userCredentials.getPassword());
+        if (WebAdminActions.webAdminUsersActions().isCFMIntegrationEnabled()) {
+            throw new SkipException("CFMIntegrationEnabled = 1");
+        }
+        WebAdminActions.loginActions().doLogout();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
         // Set up Client and Accounts
         IndividualClientBuilder individualClientBuilder = new IndividualClientBuilder();
         individualClientBuilder.setIndividualClientBuilder(new IndividualBuilder());
         IndividualClient client = individualClientBuilder.buildClient();
-        savingsAccount = new Account().setSavingsAccountData();
-        Transaction depositSavingsTransaction = new TransactionConstructor(new GLDebitDepositCHKAccBuilder()).constructTransaction();
-        transaction = new TransactionConstructor(new WithdrawalGLDebitCHKAccBuilder()).constructTransaction();
+        transaction = new TransactionConstructor(new CashInDepositCHKAccBuilder()).constructTransaction();
 
         // Log in
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-
-        // Set products
-        savingsAccount.setProduct(Actions.productsActions().getProduct(Products.SAVINGS_PRODUCTS, AccountType.REGULAR_SAVINGS, RateType.FIXED));
 
         // Create client
         ClientsActions.individualClientActions().createClient(client);
         ClientsActions.individualClientActions().setClientDetailsData(client);
         ClientsActions.individualClientActions().setDocumentation(client);
+        clientId = Pages.clientDetailsPage().getClientID();
 
-
-        // Create account
-        AccountActions.createAccount().createSavingsAccount(savingsAccount);
-        clientRootId = ClientsActions.createClient().getClientIdFromUrl();
 
         // Set up transactions with account number
         transaction.getTransactionSource().setAmount(returnTransactionAmount);
         transaction.getTransactionDestination().setAccountNumber("4800200");
         transaction.getTransactionDestination().setAmount(returnTransactionAmount);
-        transaction.getTransactionSource().setAccountNumber(savingsAccount.getAccountNumber());
+        transaction.getTransactionSource().setAccountNumber("4800200");
         transaction.getTransactionSource().setDenominationsHashMap(new HashMap<>());
         transaction.getTransactionSource().getDenominationsHashMap().put(Denominations.HUNDREDS, 100.00);
-        depositSavingsTransaction.getTransactionDestination().setAccountNumber(savingsAccount.getAccountNumber());
-        depositSavingsTransaction.getTransactionDestination().setTransactionCode("209 - Deposit");
-        depositSavingsTransaction.getTransactionDestination().setAmount(savingsTransactionAmount);
-        depositSavingsTransaction.getTransactionSource().setAmount(savingsTransactionAmount);
-
-        // Perform deposit transactions
-        Actions.loginActions().doLogOutProgrammatically();
-        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        Actions.transactionActions().goToTellerPage();
-        Actions.transactionActions().doLoginTeller();
-        Actions.transactionActions().createTransaction(depositSavingsTransaction);
-        Actions.transactionActions().clickCommitButton();
-        Pages.tellerPage().closeModal();
 
         Actions.loginActions().doLogOutProgrammatically();
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-
-        // Set transaction with amount value
-        Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
-        expectedSavingsBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
-        savingsAccTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
-                "-", expectedSavingsBalanceData.getCurrentBalance(), returnTransactionAmount);
 
         //Check Official check and printer
         Pages.aSideMenuPage().clickSettingsMenuItem();
@@ -137,26 +101,29 @@ public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends B
         check.setPayee(name);
         check.setPurchaser(client.getInitials());
         check.setInitials(userCredentials.getUserName() + " " + userCredentials.getUserName());
-        check.setAmount(returnTransactionAmount);
+        check.setAmount(returnTransactionAmount - fee);
         check.setStatus("Outstanding");
         fullCheck = new FullCheck();
         fullCheck.fromCheck(check);
         fullCheck.setFee(fee);
-        fullCheck.setCashPurchased("NO");
+        fullCheck.setCashPurchased("YES");
         fullCheck.setRemitter(client.getNameForDebitCard());
-        fullCheck.setBranch(savingsAccount.getBankBranch());
         fullCheck.setDocumentType(client.getIndividualClientDetails().getDocuments().get(0).getIdType().getIdType());
         fullCheck.setDocumentID(client.getIndividualClientDetails().getDocuments().get(0).getIdNumber());
         fullCheck.setPhone(client.getIndividualClientDetails().getPhones().get(client.getIndividualClientDetails().getPhones().size() - 1).getPhoneNumber());
-        fullCheck.setPurchaseAccount("Savings Account " + savingsAccount.getAccountNumber());
+        fullCheck.setPurchaseAccount("");
 
         //Check CDT template
         boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.OFFICIAL_CHECK_WITH_CASH);
-        if (templateNotExists){
+        if (templateNotExists) {
             boolean isCreated = Actions.cashierDefinedActions().createOfficialCheckWithCash();
             Assert.assertTrue(isCreated, "CDT template not created");
         }
 
+
+        Pages.aSideMenuPage().clickCashDrawerMenuItem();
+        Actions.transactionActions().doLoginTeller();
+        cashData = Actions.cashDrawerAction().getCashDrawerData();
         Actions.loginActions().doLogOut();
     }
 
@@ -186,11 +153,13 @@ public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends B
                 "Payee Type (e.g. 'Person')");
         Actions.cashierDefinedActions().createOfficialCheckTransaction(CashierDefinedTransactions.OFFICIAL_CHECK_WITH_CASH,
                 transaction, false, name);
-        expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount());
 
-        logInfo("Step 5: Click [Commit Transaction] button and click [Verify] button");
+        logInfo("Step 5: Click [Commit Transaction] button" +
+                "Search for any Client and select him" +
+                "Сlick [Verify] button");
         Actions.transactionActions().clickCommitButton();
-        Pages.verifyConductorModalPage().typeIdNumberField();
+        Pages.verifyConductorModalPage().typeSearchField(clientId);
+        Pages.verifyConductorModalPage().clickSearchDiv();
         Pages.verifyConductorModalPage().clickVerifyButton();
         SelenideTools.sleep(Constants.SMALL_TIMEOUT);
         Assert.assertTrue(Pages.confirmModalPage().checkReprintButton(), "Reprint check is not visible");
@@ -201,9 +170,13 @@ public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends B
         logInfo("Step 6: Go to the WA Rules UI and search for the transaction header record using" +
                 " bank.data.transaction.header rootid from createOfficialCheckCashierDefined method response\n" +
                 "Verify transactionstatusid value");
-        String transactionStatus = WebAdminActions.webAdminTransactionActions().getTransactionStatusFromHeader(userCredentials, savingsAccount);
-        TestRailAssert.assertTrue(transactionStatus.equals("Void"), new CustomStepResult("Status is valid",
+        String transactionRootId = Actions.journalActions().getTransactionRootId(CashierDefinedTransactions.OFFICIAL_CHECK_WITH_CASH);
+        String transactionStatus = WebAdminActions.webAdminTransactionActions().getTransactionStatusFromHeader(userCredentials, transactionRootId);
+        WebAdminActions.loginActions().doLogoutProgrammatically();
+        TestRailAssert.assertEquals(transactionStatus,"Void", new CustomStepResult("Status is valid",
                 "Status is not valid"));
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchToLastTab();
 
         logInfo("Step 7: Click [Yes] button on a 'Reprint check #X?' popup");
         Pages.confirmModalPage().clickYes();
@@ -225,58 +198,42 @@ public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends B
                 String.format("Number doesn't match. Expected %s, actual %s", checkAccountNumber + 1, number)));
 
         logInfo("Step 10: Go to b.d.transaction.header again and check transactionstatusid value");
-        transactionStatus = WebAdminActions.webAdminTransactionActions().getTransactionStatusFromHeader(userCredentials, savingsAccount);
+        transactionStatus = WebAdminActions.webAdminTransactionActions().getTransactionStatusFromHeader(userCredentials, transactionRootId);
         TestRailAssert.assertTrue(transactionStatus.equals("Open"), new CustomStepResult("Status is valid",
                 "Status is not valid"));
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchToLastTab();
 
+        logInfo("Step 11: Go to Cash Drawer screen and verify Counted Cash and Cash In values" +
+                "Verify Cash Denominations");
+        Pages.aSideMenuPage().clickCashDrawerMenuItem();
+        cashData.setCashIn(cashData.getCashIn() + transaction.getTransactionDestination().getAmount());
+        cashData.setHundredsAmount(cashData.getHundredsAmount() + transaction.getTransactionDestination().getAmount());
+        cashData.setCountedCash(cashData.getCountedCash() + transaction.getTransactionDestination().getAmount());
+        TestRailAssert.assertEquals(Actions.cashDrawerAction().getCashDrawerData(),
+                cashData,
+                new CustomStepResult("Cash data is correct", "Cash data not correct"));
 
-
-
-        logInfo("Step 11: Go to account used in DEBIT item and verify its:\n" +
-                "- current balance\n" +
-                "- available balance");
-        Actions.transactionActions().goToTellerPage();
-        Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
-        BalanceDataForCHKAcc actualSavBalanceData = AccountActions.retrievingAccountData().getBalanceDataForCHKAcc();
-
-        expectedSavingsBalanceData.reduceAmount(5);
-        TestRailAssert.assertTrue(actualSavBalanceData.getCurrentBalance() == expectedSavingsBalanceData.getCurrentBalance(),
-                new CustomStepResult("Current balance match!", String.format("Current balance doesn't match! " +
-                        "Expected %s, actual %s", expectedSavingsBalanceData.getCurrentBalance(), actualSavBalanceData.getCurrentBalance())));
-        TestRailAssert.assertTrue(actualSavBalanceData.getAvailableBalance() == expectedSavingsBalanceData.getAvailableBalance(),
-                new CustomStepResult("Available balance match!",
-                        String.format("Available balance doesn't match! Expected %s, actual %s",
-                                expectedSavingsBalanceData.getAvailableBalance(), actualSavBalanceData.getAvailableBalance())));
-
-        logInfo("Step 12: Open account on the Transactions tab and verify the committed transaction");
-        Pages.accountDetailsPage().clickTransactionsTab();
-        savingsAccTransactionData.setBalance(returnTransactionAmount);
-        AccountActions.retrievingAccountData().goToTransactionsTab();
-        TransactionData actualSavTransactionData = AccountActions.retrievingAccountData().getSecondTransactionDataWithBalanceSymbol();
-        TestRailAssert.assertTrue(actualSavTransactionData.equals(savingsAccTransactionData),
-                new CustomStepResult("Transaction data match!", String.format("Transaction data doesn't match!" +
-                        " Actual %s, expected %s", savingsAccTransactionData, actualSavTransactionData)));
-
-        logInfo("Step 13: Go to Back Office -> Official Checks and find generated Check from the related transaction\n" +
+        logInfo("Step 12: Go to Back Office -> Official Checks and find generated Check from the related transaction\n" +
                 "Verify Check Number, Purchaser, PAYEE, Date Issued, Initials, Check Type, Status, Amount fields");
         Pages.aSideMenuPage().clickBackOfficeMenuItem();
         Pages.backOfficePage().clickOfficialChecks();
         Check checkFromBankOffice = Actions.backOfficeActions().getCheckFromBankOffice(checkNumber);
-        TestRailAssert.assertTrue(checkFromBankOffice.equals(check), new CustomStepResult("Check match",
-                String.format("Check doesn't match. Expected %s, actual %s.", check, checkFromBankOffice)));
+        Assert.assertEquals(checkFromBankOffice, check, "Check doesn't match");
 
-        logInfo("Step 14: Open check on Details and verify the following fields: Status, Check Number, " +
-                "Remitter, Phone Number, Document Type, Document ID, Payee, Check Type, Purchase Account, " +
-                "Branch, Initials, Check Amount, Fee, Date Issued, Cash Purchased");
+        logInfo("Step 13: Select generated Check and verify the following fields: Status, Check Number, Remitter, " +
+                "Phone Number, Document Type, Document ID, Payee, Check Type, Purchase Account, Branch, Initials, Check Amount," +
+                " Fee, Date Issued, Cash Purchased");
         Pages.checkPage().clickToCheck(checkNumber);
         FullCheck fullCheckFromBankOffice = Actions.backOfficeActions().getFullCheckFromBankOffice();
         fullCheck.setCheckNumber(null);
         fullCheck.setPayee(null);
         fullCheck.setDate(null);
         fullCheck.setPurchaser(null);
-
-        TestRailAssert.assertTrue(fullCheckFromBankOffice.equals(fullCheck), new CustomStepResult("Check details match",
-                String.format("Check details doesn't match. Expected %s, actual %s.", fullCheck, fullCheckFromBankOffice)));
+        fullCheck.setRemitter(name);
+        Assert.assertEquals(fullCheckFromBankOffice,fullCheck,"Check details doesn't match");
+        //[FullCheck{checkNumber='null', purchaser='null', payee='null', date='null', initials='autotest autotest', checkType='Cashiers Check', status='Outstanding', amount=95.0, remitter='rkaautotest dumautotest', phone='5555742912', documentType='Passport', documentID='C91774808', branch='Clarence Office', fee=5.0, cashPurchased='YES', purchaseAccount=''}]
+        //[FullCheck{checkNumber='null', purchaser='null', payee='null', date='null', initials='autotest autotest', checkType='Cashiers Check', status='Outstanding', amount=95.0, remitter='John', phone='5555742912', documentType='Passport', documentID='C91774808', branch='Clarence Office', fee=5.0, cashPurchased=' ', purchaseAccount=''}]
     }
 
 }

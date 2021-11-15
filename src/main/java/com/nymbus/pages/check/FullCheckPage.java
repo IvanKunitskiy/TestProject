@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 public class FullCheckPage extends PageTools {
     private By checkType = By.xpath("(//td[@ng-if])[1]");
     private By payee = By.xpath("(//tr[contains(string(),'%s')]/td)[3]/span");
+    private By selectPurchaser = By.xpath("//*[@id=\"purchaseraccountnumber\"]/a/span");
     private By purchaser = By.xpath("//*[@id=\"purchaseraccountnumber\"]/a/span[2]/span");
     private By initials = By.xpath("//*[@id=\"operatoruserid\"]/a/span[2]/span");
     private By amount = By.xpath("//*[@id=\"amount\"]");
@@ -22,6 +23,7 @@ public class FullCheckPage extends PageTools {
     private By branch = By.xpath("//*[@id=\"bankbranchlocationid\"]/a/span[2]/span");
     private By fee = By.xpath("//*[@id=\"checkfee\"]");
     private By cashPurchased = By.xpath("//*[@id=\"iscashpurchase\"]/div/div/span[2]");
+    private By yesCashPurchased = By.xpath("//*[@id=\"iscashpurchase\"]/div/div/span[1]");
     private By voidButton = By.xpath("//button[contains(string(),'Void')]");
     private By confirmation = By.xpath("//p[contains(string(),'Do you want to void the selected official check?')]");
     private final By yesButton = By.xpath("//button[span[text()='Yes']]");
@@ -40,6 +42,9 @@ public class FullCheckPage extends PageTools {
 
     @Step("Get 'Purchaser' text")
     public String getPurchaser() {
+        if (isElementVisible(selectPurchaser)){
+            return "";
+        }
         waitForElementVisibility(purchaser);
         return getElementText(purchaser);
     }
@@ -115,6 +120,12 @@ public class FullCheckPage extends PageTools {
     public String getCashPurchased(){
         waitForElementVisibility(cashPurchased);
         return getElementText(cashPurchased);
+    }
+
+    @Step("Get 'Cash purchased' text")
+    public String getYesCashPurchased(){
+        waitForElementVisibility(yesCashPurchased);
+        return getElementText(yesCashPurchased);
     }
 
     @Step("Click 'Void' button")

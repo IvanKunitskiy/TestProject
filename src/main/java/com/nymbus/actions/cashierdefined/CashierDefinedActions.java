@@ -1,6 +1,5 @@
 package com.nymbus.actions.cashierdefined;
 
-import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.product.ProductType;
 import com.nymbus.newmodels.cashier.CashierDefinedTransactions;
 import com.nymbus.newmodels.cashier.PayeeType;
@@ -149,7 +148,6 @@ public class CashierDefinedActions {
 
     private void fillDestinationAccountNumber(String accountNumber, int tempIndex) {
         Pages.cashierPage().typeDestinationAccountNumber(tempIndex, accountNumber);
-        SelenideTools.sleep(200);
 
         Pages.cashierPage().clickOnAutocompleteDropDownItem(accountNumber);
     }
