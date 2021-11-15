@@ -11,7 +11,6 @@ public class AccountMaintenancePage extends PageTools {
     private final By viewAllMaintenanceHistoryLink = By.xpath("//button//span[contains(text(), 'View All History')]");
     private final By viewMoreButton = By.xpath("//button[@data-test-id='action-loadMore']");
     private final By changeTypeFields = By.xpath("//table//tr//td/span[text()='%s']");
-    private final By dateNextBilling = By.xpath("");
     private final By rowsInTable = By.xpath("//table//tr");
     private final By rowOldValueByRowName = By.xpath("(//table//tr//td/span[text()='%s']//ancestor::node()[3]/td[4]/span)[%s]");
     private final By rowNewValueByRowName = By.xpath("(//table//tr//td/span[text()='%s']//ancestor::node()[3]/td[5]/span)[%s]");
