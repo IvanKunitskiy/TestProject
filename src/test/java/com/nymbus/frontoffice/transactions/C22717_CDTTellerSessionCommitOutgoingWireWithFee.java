@@ -129,6 +129,7 @@ public class C22717_CDTTellerSessionCommitOutgoingWireWithFee extends BaseTest {
         logInfo("Step 5: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
         SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        AccountActions.callStatement().verifyTransactionFields(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS);
 
         logInfo("Step 6: Go to account used in CREDIT item and verify its:\n" +
                 "- current balance\n" +

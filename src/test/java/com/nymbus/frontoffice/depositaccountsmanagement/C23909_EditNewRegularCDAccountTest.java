@@ -7,6 +7,7 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -75,8 +76,10 @@ public class C23909_EditNewRegularCDAccountTest extends BaseTest {
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(cdAccount);
         Pages.accountDetailsPage().clickEditButton();
 
-        logInfo("Step 3: Look at the fields, verify that some of them are grouped in such sections:" +
-                "Balance and Interest, Transactions, Overdraft, Misc");
+        logInfo("Step 3: Look at the fields, verify that some of them are grouped in such sections:\n" +
+                "- Balance and Interest\n" +
+                "- Term\n" +
+                "- Distribution and Misc");
         AccountActions.editAccount().verifyCDFieldGroupsAreVisible();
 
         logInfo("Step 4: Look at the fields and verify that such fields are disabled for editing");
@@ -95,10 +98,14 @@ public class C23909_EditNewRegularCDAccountTest extends BaseTest {
                 new CustomStepResult("'Account Title' is required", "'Account Title' is not required"));
 
         logInfo("Step 13: Click [-] icon next to any section (e.g. Transactions section) and verify that all fields within this section were hidden");
-        Pages.editAccountPage().clickMiscSectionLink();
+        Pages.editAccountPage().clickDistributionSectionLink();
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        TestRailAssert.assertFalse(Pages.editAccountPage().isDistributionAndMiscGroupVisible(), new CustomStepResult("'Distribution and Misc' section is visible", "'Distribution and Misc' section is collapsed"));
 
         logInfo("Step 14: Click [+] icon next to the section from Step9 and verify that all fields within the section are displayed. Fields were NOT cleared out");
-        Pages.editAccountPage().clickMiscSectionLink();
+        Pages.editAccountPage().clickDistributionSectionLink();
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        TestRailAssert.assertTrue(Pages.editAccountPage().isDistributionAndMiscGroupVisible(), new CustomStepResult("'Distribution and Misc' section is collapsed", "'Distribution and Misc' section is visible"));
 
         logInfo("Step 15: Submit the account editing by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();

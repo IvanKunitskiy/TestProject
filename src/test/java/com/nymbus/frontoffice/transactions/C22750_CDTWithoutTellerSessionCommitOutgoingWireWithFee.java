@@ -1,11 +1,13 @@
 package com.nymbus.frontoffice.transactions;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.actions.Actions;
 import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -91,7 +93,7 @@ public class C22750_CDTWithoutTellerSessionCommitOutgoingWireWithFee extends Bas
         boolean templateNotExists = Actions.cashierDefinedActions().checkCDTTemplateIsExist(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS);
         if (templateNotExists){
             boolean isCreated = Actions.cashierDefinedActions().createOutgoingWireFromSavings();
-            Assert.assertTrue(isCreated, "CDT template not created");
+            Assert.assertTrue(isCreated, "CDT template not   created");
         }
 
         Actions.loginActions().doLogOutProgrammatically();
@@ -105,6 +107,7 @@ public class C22750_CDTWithoutTellerSessionCommitOutgoingWireWithFee extends Bas
         savingsAccFeeTransactionData = new TransactionData(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "-", expectedSavingsBalanceData.getCurrentBalance(), fee);
         Actions.loginActions().doLogOut();
+
     }
 
     private final String TEST_RUN_NAME = "Transactions";
@@ -121,17 +124,18 @@ public class C22750_CDTWithoutTellerSessionCommitOutgoingWireWithFee extends Bas
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
 
         logInfo("Step 3: Search for template from preconditions and select it");
-        logInfo("Step 4: Click on [Waive Fee] toggle button");
-        logInfo("Step 5: Specify accounts from preconditions in source and destination line items;\n" +
-                "Set transaction amount less than the balance of debit account.");
+        logInfo("Step 4: Specify account from a precondition in sources line account number field;\n" +
+                "Set transaction amount\n" +
+                "Specify Bank Routing number in Beneficiary Bank Information with any valid Routing Number (can be found here)");
         Actions.cashierDefinedActions().createOutgoingTransaction(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS,
                 transaction, false);
         expectedSavingsBalanceData.reduceAmount(transaction.getTransactionDestination().getAmount() + fee);
 
-        logInfo("Step 6: Click [Commit Transaction] button");
+        logInfo("Step 5: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
+        AccountActions.callStatement().verifyTransactionFields(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS);
 
-        logInfo("Step 7: Go to account used in CREDIT item and verify its:\n" +
+        logInfo("Step 6: Go to account used in CREDIT item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
         Actions.transactionActions().goToTellerPage();
@@ -143,7 +147,7 @@ public class C22750_CDTWithoutTellerSessionCommitOutgoingWireWithFee extends Bas
         Assert.assertEquals(actualSavBalanceData.getAvailableBalance(), expectedSavingsBalanceData.getAvailableBalance(),
                 "Available balance doesn't match!");
 
-        logInfo("Step 8: Open account on the Transactions tab and verify the committed transaction");
+        logInfo("Step 7: Open account on the Transactions tab and verify the committed transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
         savingsAccTransactionData.setBalance(returnTransactionAmount);
         savingsAccFeeTransactionData.setBalance(expectedSavingsBalanceData.getCurrentBalance());

@@ -1,7 +1,6 @@
 package com.nymbus.core.utils;
 
 import org.openqa.selenium.By;
-
 import java.util.MissingFormatArgumentException;
 
 public class LocatorParser {
