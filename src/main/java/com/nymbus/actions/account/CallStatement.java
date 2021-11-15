@@ -61,12 +61,10 @@ public class CallStatement {
 
     public void verifyTransactionData(TellerLocation location, CashierDefinedTransactions transaction,
                                       String proofDate, IndividualClient client, Account account) {
-        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
-        SelenideTools.sleep(25);
+        SelenideTools.sleep(Constants.BIG_TIMEOUT);
         SelenideTools.switchToLastTab();
-        System.out.println(SelenideTools.getDriver().getWindowHandles().size());
         Pages.noticePage().checkPDFVisible();
-        SelenideTools.sleep(10);
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
 
         File file = Pages.accountStatementPage().downloadCallStatementPdf();
         PDF pdf = new PDF(file);
@@ -76,12 +74,10 @@ public class CallStatement {
     }
 
     public void verifyTransactionFields(CashierDefinedTransactions transaction) {
-        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
-        SelenideTools.sleep(25);
+        SelenideTools.sleep(Constants.BIG_TIMEOUT);
         SelenideTools.switchToLastTab();
-        System.out.println(SelenideTools.getDriver().getWindowHandles().size());
         Pages.noticePage().checkPDFVisible();
-        SelenideTools.sleep(10);
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
 
         File file = Pages.accountStatementPage().downloadCallStatementPdf();
         PDF pdf = new PDF(file);
@@ -111,7 +107,7 @@ public class CallStatement {
         SelenideTools.sleep(Constants.SMALL_TIMEOUT);
         SelenideTools.switchToLastTab();
         Pages.noticePage().checkPDFVisible();
-        SelenideTools.sleep(30);
+        SelenideTools.sleep(Constants.BIG_TIMEOUT);
         File file = Pages.accountStatementPage().downloadCallStatementPdf();
         PDF pdf = new PDF(file);
 
