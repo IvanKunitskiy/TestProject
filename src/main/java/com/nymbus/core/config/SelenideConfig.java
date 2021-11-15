@@ -4,8 +4,12 @@ import com.codeborne.selenide.Configuration;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +32,22 @@ public class SelenideConfig {
         return capabilities;
     }
 
+    private static ChromeOptions getChromeOptions() {
+        ChromeOptions options = new ChromeOptions();
+        Map<String, Object> prefs = new HashMap<String, Object>();
+        Map<String, Object> profile = new HashMap<String, Object>();
+        Map<String, Object> contentSettings = new HashMap<String, Object>();
+
+        // Enable notifications
+        // 0 - Default, 1 - Allow, 2 - Block
+        contentSettings.put("notifications", 1);
+        profile.put("managed_default_content_settings", contentSettings);
+        prefs.put("profile", profile);
+        options.setExperimentalOption("prefs", prefs);
+
+        return options;
+    }
+
     public static void createBrowserConfig(String browser) {
         System.setProperty(ChromeDriverService.CHROME_DRIVER_SILENT_OUTPUT_PROPERTY, "true");
         Logger.getLogger("org.openqa.selenium").setLevel(Level.ALL);
@@ -38,13 +58,15 @@ public class SelenideConfig {
             Configuration.driverManagerEnabled = false;
             Configuration.remote = Constants.REMOTE_URL;
         }
-        Configuration.browserCapabilities = getBrowserCapabilities();
 
 //        Configuration.holdBrowserOpen = true;
 
+        DesiredCapabilities caps = getBrowserCapabilities();
+        caps.setCapability(ChromeOptions.CAPABILITY, getChromeOptions());
+
 //        Configuration.startMaximized = true;
         Configuration.browserSize = "1920x1080";
-        Configuration.browserCapabilities = getBrowserCapabilities();
+        Configuration.browserCapabilities = caps;
         Configuration.fastSetValue = false;
         Configuration.savePageSource = false;
         Configuration.screenshots = true;

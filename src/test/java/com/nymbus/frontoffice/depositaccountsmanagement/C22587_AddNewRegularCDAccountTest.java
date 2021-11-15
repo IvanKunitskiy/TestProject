@@ -13,6 +13,8 @@ import com.nymbus.newmodels.client.other.account.InterestFrequency;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
 import com.nymbus.newmodels.generation.client.builder.type.individual.IndividualBuilder;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -91,42 +93,49 @@ public class C22587_AddNewRegularCDAccountTest extends BaseTest {
         logInfo("Step 6: Look through the fields. Check that fields are prefilled by default");
         AccountActions.createAccount().verifyRegularCdAccountPrefilledFields(cdAccount, client);
 
-        logInfo("Step 7: Select values in such drop-down fields:");
-        logInfo("Step 8: Fill in such text fields with valid data (except Account Number field):");
-        logInfo("Step 9: Set 'Transactional Account' switcher to YES):");
-        logInfo("Step 10: Select Date Opened as any date < Current Date");
+        logInfo("Step 7: Look at the field 'Account Title' and verify that such field is not a required field");
+        TestRailAssert.assertFalse(Pages.addAccountPage().isAccountTitleFieldRequired(),
+                new CustomStepResult("'Account Title' is required", "'Account Title' is not required"));
+
+        logInfo("Step 8: Select values in such drop-down fields:");
+        logInfo("Step 9: Fill in such text fields with valid data (except Account Number field):");
+        logInfo("Step 10: Set switchers:\n" +
+                "- Apply Seasonal Address- to NO\n" +
+                "- Auto Renewable to NO\n" +
+                "- Transactional Account to YES");
+        logInfo("Step 11: Select Date Opened as any date < Current Date");
         cdAccount.setInterestFrequency(InterestFrequency.ONE_TIME_PAY.getInterestFrequency());
         cdAccount.setApplyInterestTo("CHK Acct");
         AccountActions.createAccount().selectValuesInFieldsRequiredForCDAccount(cdAccount);
 
-        logInfo("Step 11: Submit the account creation by clicking [Save] button");
+        logInfo("Step 12: Submit the account creation by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
 
-        logInfo("Step 12: Check the fields that were filled in during account creation");
+        logInfo("Step 13: Check the fields that were filled in during account creation");
         AccountActions.accountDetailsActions().clickMoreButton();
         AccountActions.accountDetailsActions().verifyCDAccountRecords(cdAccount);
 
-        logInfo("Step 13: Check the Maturity Date field value (verify that it's calculated based on Date Opened + Term of Account)");
+        logInfo("Step 14: Check the Maturity Date field value (verify that it's calculated based on Date Opened + Term of Account)");
         int minTerm = Integer.parseInt(cdAccount.getMinTerm());
         String maturityDate =  Actions.productsActions().getMaturityDateValue(cdAccount, minTerm);
         cdAccount.setMaturityDate(maturityDate);
         Assert.assertEquals(Pages.accountDetailsPage().getMaturityDate(), cdAccount.getMaturityDate(), "'Maturity Date' value does not match");
 
-        logInfo("Step 14: Check the Date next interest field value (verify that it's calculated based on Date Opened + Interest Frequency)");
+        logInfo("Step 15: Check the Date next interest field value (verify that it's calculated based on Date Opened + Interest Frequency)");
         String dateNextInterest =  Actions.productsActions().getDateNextInterestValue(cdAccount);
         cdAccount.setDateNextInterest(dateNextInterest);
         Assert.assertEquals(Pages.accountDetailsPage().getDateNextInterest(), cdAccount.getDateNextInterest(), "'Maturity Date' value does not match");
 
-        logInfo("Step 15: Click [Edit] button and pay attention to the fields that were filled in during account creation");
+        logInfo("Step 16: Click [Edit] button and pay attention to the fields that were filled in during account creation");
         Pages.accountDetailsPage().clickEditButton();
         AccountActions.editAccount().verifyCdAccountFieldsAfterCreationInEditMode(cdAccount);
 
-        logInfo("Step 16: Do not make any changes and go to Account Maintenance -> Maintenance History page");
+        logInfo("Step 17: Do not make any changes and go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
-        logInfo("Step 17: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
+        logInfo("Step 18: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         AccountActions.accountMaintenanceActions().verifyRegularCdAccountRecords(cdAccount);
     }
 }

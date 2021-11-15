@@ -33,12 +33,6 @@ public class VerifyingAccountDataActions {
         softAssert.assertNotEquals(Pages.addAccountPage().getOriginatingOfficer(),
                 empty,
                 "'Originating officer' is empty!");
-        softAssert.assertNotEquals(Pages.addAccountPage().getDateOpened(),
-                empty,
-                "'Date' is empty!");
-        softAssert.assertNotEquals(Pages.addAccountPage().getCurrentOfficer(),
-                empty,
-                "'Current officer' is empty!");
         softAssert.assertNotEquals(Pages.addAccountPage().getBankBranch(),
                 empty,
                 "'Bank branch' is empty!");

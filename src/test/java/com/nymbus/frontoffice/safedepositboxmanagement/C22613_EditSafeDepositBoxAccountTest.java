@@ -5,6 +5,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -93,41 +94,42 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
         logInfo("Step 4: Look at the fields and verify that such fields are disabled for editing");
         Assert.assertTrue(Pages.editAccountPage().isProductTypeFieldDisabledInEditMode(), "'Product Type' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAccountNumberFieldDisabledInEditMode(), "'Account Number' field is not disabled");
-        if (Constants.getEnvironment().equals("dev6") || Constants.getEnvironment().equals("dev21")) {
-            Assert.assertTrue(Pages.editAccountPage().isAccountTypeFieldDisabledInEditMode(), "'Account Type' field is not disabled");
-        }
         Assert.assertTrue(Pages.editAccountPage().isOriginatingOfficerFieldDisabledInEditMode(), "'Originating Officer' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAccountStatusFieldDisabledInEditMode(), "'Account Status' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isDateOpenedFieldDisabledInEditMode(), "'Date Opened' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isDateClosedFieldDisabledInEditMode(), "'Date Closed field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isDateNextBillingDisabledInEditMode(), "'Date Next Billing' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isDateLastPaidDisabledInEditMode(), "'Date Last Paid' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAmountLastPaidDisabledInEditMode(), "'Amount Last Paid' field is not disabled");
 
-        logInfo("Step 5: Select any other value in such drop-down fields:");
+        logInfo("Step 5: Look at the field 'Account Title' and verify that such field is not a required field");
+        Assert.assertFalse(Pages.addAccountPage().isAccountTitleFieldRequired(),"'Account Title' is required");
+
+        logInfo("Step 6: Select any other value in such drop-down fields:");
         AccountActions.editAccount().selectValuesInDropdownFieldsRequiredForSafeDepositBoxAccountWithJs(safeDepositBoxAccount);
 
-        logInfo("Step 6: Make some changes in such fields:");
+        logInfo("Step 7: Make some changes in such fields:");
         Pages.editAccountPage().setUserDefinedField_1(safeDepositBoxAccount.getUserDefinedField_1());
         Pages.editAccountPage().setUserDefinedField_2(safeDepositBoxAccount.getUserDefinedField_2());
         Pages.editAccountPage().setUserDefinedField_3(safeDepositBoxAccount.getUserDefinedField_3());
         Pages.editAccountPage().setUserDefinedField_4(safeDepositBoxAccount.getUserDefinedField_4());
 
-        logInfo("Step 7: Select current date from the 'Date Last Access' calendar");
+        logInfo("Step 8: Select current date from the 'Date Last Access' calendar");
         Pages.editAccountPage().setDateLastAccess(safeDepositBoxAccount.getDateLastAccess());
 
-        logInfo("Step 8: Submit the account editing by clicking [Save] button");
+        logInfo("Step 9: Submit the account editing by clicking [Save] button");
         Pages.addAccountPage().clickSaveAccountButton();
         Pages.accountDetailsPage().waitForFullProfileButton();
 
-        logInfo("Step 9: Click [Edit] button and pay attention to the fields");
+        logInfo("Step 10: Click [Edit] button and pay attention to the fields");
         Pages.accountDetailsPage().clickEditButton();
         AccountActions.verifyingAccountDataActions().verifyFieldsInEditMode(safeDepositBoxAccount);
 
-        logInfo("Step 10: Do not make any changes and go to Account Maintenance -> Maintenance History page");
+        logInfo("Step 11: Do not make any changes and go to Account Maintenance -> Maintenance History page");
         Pages.accountNavigationPage().clickMaintenanceTab();
         Pages.accountMaintenancePage().clickViewAllMaintenanceHistoryLink();
 
-        logInfo("Step 11: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
+        logInfo("Step 12: Look through the records on Maintenance History page and check that all fields that were filled in during account creation are reported in account Maintenance History");
         AccountActions.accountMaintenanceActions().expandAllRows();
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Account Type") >= 1,
                 "'accounttype' row count is incorrect!");
@@ -142,6 +144,8 @@ public class C22613_EditSafeDepositBoxAccountTest extends BaseTest {
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date Opened") >= 1,
                 "'Date Opened' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Box Size") >= 1,
+                "'Box Size' row count is incorrect!");
+        Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("Date Next Billing") >= 1,
                 "'Box Size' row count is incorrect!");
         Assert.assertTrue(Pages.accountMaintenancePage().getChangeTypeElementsCount("User Defined Field 1") >= 1,
                 "'User Defined Field 1' row count is incorrect!");
