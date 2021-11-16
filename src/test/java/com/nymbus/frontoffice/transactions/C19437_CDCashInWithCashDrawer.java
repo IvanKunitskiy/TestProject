@@ -26,13 +26,13 @@ import com.nymbus.pages.settings.SettingsPage;
 import com.nymbus.testrail.CustomStepResult;
 import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import org.testng.Assert;
+import io.qameta.allure.*;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
+@Epic("Frontoffice")
+@Feature("Transactions")
+@Owner("Dmytro")
 public class C19437_CDCashInWithCashDrawer extends BaseTest {
     private IndividualClient client;
     private Account savingsAccount;
