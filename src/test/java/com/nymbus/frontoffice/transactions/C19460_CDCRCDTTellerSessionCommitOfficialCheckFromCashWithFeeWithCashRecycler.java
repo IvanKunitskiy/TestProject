@@ -178,7 +178,8 @@ public class C19460_CDCRCDTTellerSessionCommitOfficialCheckFromCashWithFeeWithCa
         Pages.verifyConductorModalPage().clickSearchDiv();
         Pages.verifyConductorModalPage().clickVerifyButton();
         SelenideTools.sleep(Constants.SMALL_TIMEOUT);
-        Assert.assertTrue(Pages.confirmModalPage().checkReprintButton(), "Reprint check is not visible");
+        TestRailAssert.assertTrue(Pages.confirmModalPage().checkReprintButton(), new CustomStepResult("Reprint check is visible",
+                "Reprint check is not visible"));
         String checkNumber = Pages.confirmModalPage().getReprintCheckNumber();
         check.setCheckNumber(checkNumber);
         fullCheck.setCheckNumber(checkNumber);
@@ -196,11 +197,13 @@ public class C19460_CDCRCDTTellerSessionCommitOfficialCheckFromCashWithFeeWithCa
 
         logInfo("Step 7: Click [Yes] button on a 'Reprint check #X?' popup");
         Pages.confirmModalPage().clickYes();
-        Assert.assertTrue(Pages.confirmModalPage().checkIsCheck(), "Is check is not visible");
+        TestRailAssert.assertTrue(Pages.confirmModalPage().checkIsCheck(), new CustomStepResult("Is check is visible",
+                "Is check is not visible"));
 
         logInfo("Step 8: Click [Yes] button on a 'Is check #X still usable?' popup:");
         Pages.confirmModalPage().clickYes();
-        Assert.assertTrue(Pages.confirmModalPage().checkReprintButton(), "Reprint check is not visible");
+        TestRailAssert.assertTrue(Pages.confirmModalPage().checkReprintButton(), new CustomStepResult("Reprint check is visible",
+                "Reprint check is not visible"));
 
         logInfo("Step 9: Click [NO] on 'Reprint check #X?' popup");
         Pages.confirmModalPage().clickNo();
@@ -235,7 +238,8 @@ public class C19460_CDCRCDTTellerSessionCommitOfficialCheckFromCashWithFeeWithCa
         Pages.aSideMenuPage().clickBackOfficeMenuItem();
         Pages.backOfficePage().clickOfficialChecks();
         Check checkFromBankOffice = Actions.backOfficeActions().getCheckFromBankOffice(checkNumber);
-        Assert.assertEquals(checkFromBankOffice, check, "Check doesn't match");
+        TestRailAssert.assertEquals(checkFromBankOffice, check, new CustomStepResult("Check match",
+                "Check doesn't match"));
 
         logInfo("Step 13: Select generated Check and verify the following fields: Status, Check Number, Remitter, " +
                 "Phone Number, Document Type, Document ID, Payee, Check Type, Purchase Account, Branch, Initials, Check Amount," +
@@ -247,11 +251,12 @@ public class C19460_CDCRCDTTellerSessionCommitOfficialCheckFromCashWithFeeWithCa
         fullCheck.setDate(null);
         fullCheck.setPurchaser(null);
         fullCheck.setRemitter(name);
-        Assert.assertEquals(fullCheckFromBankOffice, fullCheck, "Check details doesn't match");
+        TestRailAssert.assertEquals(fullCheckFromBankOffice, fullCheck, new CustomStepResult("Check details match",
+                "Check details doesn't match"));
     }
 
     @AfterMethod(description = "End Batch for this recycler")
-    public void postCondition(){
+    public void postCondition() {
         SelenideTools.openUrl(Constants.URL);
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickJournalMenuItem();

@@ -25,7 +25,6 @@ import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
-import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -34,7 +33,8 @@ import java.util.HashMap;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Dmytro")
-public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends BaseTest {
+public class C19462_CDBackOfficeOfficialChecksVoidOfficialCheckFromCashWithFee extends BaseTest {
+
     private Transaction transaction;
     private double returnTransactionAmount = 100.00;
     private double fee = 5.00;
@@ -44,6 +44,7 @@ public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends B
     private FullCheck fullCheck;
     private String clientId;
     private CashDrawerData cashData;
+    private String checkNumber;
 
 
     @BeforeMethod
@@ -51,9 +52,9 @@ public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends B
         //Check CFMIntegrationEnabled
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(),userCredentials.getPassword());
-        if (WebAdminActions.webAdminUsersActions().isCFMIntegrationEnabled()) {
-            throw new SkipException("CFMIntegrationEnabled = 1");
-        }
+//        if (WebAdminActions.webAdminUsersActions().isCFMIntegrationEnabled()) {
+//            throw new SkipException("CFMIntegrationEnabled = 1");
+//        }
         WebAdminActions.loginActions().doLogout();
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
@@ -127,18 +128,9 @@ public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends B
         Actions.transactionActions().doLoginTeller();
         cashData = Actions.cashDrawerAction().getCashDrawerData();
         Actions.loginActions().doLogOut();
-    }
 
-    private final String TEST_RUN_NAME = "Transactions";
-
-    @TestRailIssue(issueID = 19459, testRunName = TEST_RUN_NAME)
-    @Test(description = "C19459, CDT+Teller Session - Commit official check from cash with fee")
-    @Severity(SeverityLevel.CRITICAL)
-    public void cDTTellerSessionCommitOfficialCheckFromCashWithFee() {
-        logInfo("Step 1: Log in to the system as User from the preconditions");
+        //Commit official check with fee
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-
-        logInfo("Step 2: Go to Cashier Defined Transactions screen and log in to proof date");
         Actions.transactionActions().loginTeller();
         Actions.transactionActions().openProofDateLoginModalWindow();
         String bankBranch = Pages.tellerModalPage().getBankBranch();
@@ -147,98 +139,66 @@ public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends B
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
 
-        logInfo("Step 3: Search for template from preconditions and select it");
-        logInfo("Step 4: Specify account from the precondition in the source line account number field;\n" +
-                "Set transaction amount < Account's Available Balance\n" +
-                "Specify Payee Info required fields:\n" +
-                "Name (any value)\n" +
-                "Payee Type (e.g. 'Person')");
         Actions.cashierDefinedActions().createOfficialCheckTransaction(CashierDefinedTransactions.OFFICIAL_CHECK_WITH_CASH,
                 transaction, false, name);
-
-        logInfo("Step 5: Click [Commit Transaction] button" +
-                "Search for any Client and select him" +
-                "Сlick [Verify] button");
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().typeSearchField(clientId);
         Pages.verifyConductorModalPage().clickSearchDiv();
         Pages.verifyConductorModalPage().clickVerifyButton();
         SelenideTools.sleep(Constants.SMALL_TIMEOUT);
-        TestRailAssert.assertTrue(Pages.confirmModalPage().checkReprintButton(), new CustomStepResult("Reprint check is visible",
-                "Reprint check is not visible"));
-        String checkNumber = Pages.confirmModalPage().getReprintCheckNumber();
+        checkNumber = Pages.confirmModalPage().getReprintCheckNumber();
         check.setCheckNumber(checkNumber);
         fullCheck.setCheckNumber(checkNumber);
-
-        logInfo("Step 6: Go to the WA Rules UI and search for the transaction header record using" +
-                " bank.data.transaction.header rootid from createOfficialCheckCashierDefined method response\n" +
-                "Verify transactionstatusid value");
-        String transactionRootId = Actions.journalActions().getTransactionRootId(CashierDefinedTransactions.OFFICIAL_CHECK_WITH_CASH);
-        String transactionStatus = WebAdminActions.webAdminTransactionActions().getTransactionStatusFromHeader(userCredentials, transactionRootId);
-        WebAdminActions.loginActions().doLogoutProgrammatically();
-        TestRailAssert.assertEquals(transactionStatus,"Void", new CustomStepResult("Status is valid",
-                "Status is not valid"));
-        SelenideTools.closeCurrentTab();
-        SelenideTools.switchToLastTab();
-
-        logInfo("Step 7: Click [Yes] button on a 'Reprint check #X?' popup");
         Pages.confirmModalPage().clickYes();
-        TestRailAssert.assertTrue(Pages.confirmModalPage().checkIsCheck(), new CustomStepResult("Is check is visible",
-                "Is check is not visible"));
-
-        logInfo("Step 8: Click [Yes] button on a 'Is check #X still usable?' popup:");
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
         Pages.confirmModalPage().clickYes();
-        TestRailAssert.assertTrue(Pages.confirmModalPage().checkReprintButton(), new CustomStepResult("Reprint check is visible",
-                "Reprint check is not visible"));
-
-        logInfo("Step 9: Click [NO] on 'Reprint check #X?' popup");
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
         Pages.confirmModalPage().clickNo();
-        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
+        Actions.loginActions().doLogOut();
+    }
 
-        SelenideTools.openUrlInNewWindow(Constants.URL.substring(0, Constants.URL.indexOf("com") + 3)
-                + "/settings/#/view/bank.data.officialcheck.control");
-        SelenideTools.switchToLastTab();
-        int number = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());
-        TestRailAssert.assertTrue(number == checkAccountNumber + 1, new CustomStepResult("Number match",
-                String.format("Number doesn't match. Expected %s, actual %s", checkAccountNumber + 1, number)));
+    private final String TEST_RUN_NAME = "Transactions";
 
-        logInfo("Step 10: Go to b.d.transaction.header again and check transactionstatusid value");
-        transactionStatus = WebAdminActions.webAdminTransactionActions().getTransactionStatusFromHeader(userCredentials, transactionRootId);
-        TestRailAssert.assertTrue(transactionStatus.equals("Open"), new CustomStepResult("Status is valid",
-                "Status is not valid"));
-        SelenideTools.closeCurrentTab();
-        SelenideTools.switchToLastTab();
+    @TestRailIssue(issueID = 19462, testRunName = TEST_RUN_NAME)
+    @Test(description = "C19462, [CD] BackOffice->Official Checks: Void official check from cash with fee")
+    @Severity(SeverityLevel.CRITICAL)
+    public void cDTTellerSessionCommitOfficialCheckFromCashWithFee() {
+        logInfo("Step 1: Log in to the system as User from the preconditions");
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        logInfo("Step 11: Go to Cash Drawer screen and verify Counted Cash and Cash In values" +
-                "Verify Cash Denominations");
+        logInfo("Step 2: Go to Back Office -> Official Checks and search for the Transaction from the preconditions");
+        Pages.aSideMenuPage().clickBackOfficeMenuItem();
+        Pages.backOfficePage().clickOfficialChecks();
+
+        logInfo("Step 3: Open Official check on Details");
+        Pages.checkPage().clickToCheck(checkNumber);
+        TestRailAssert.assertFalse(Pages.fullCheckPage().isVoidDisabled(),new CustomStepResult("Void button is not disabled",
+                "Void button is disabled"));
+
+        logInfo("Step 4: Click [Void] button");
+        Pages.fullCheckPage().clickVoid();
+        TestRailAssert.assertTrue(Pages.fullCheckPage().checkConfirmation(), new CustomStepResult("Confirmation is present",
+                "Confirmation is not present"));
+        TestRailAssert.assertFalse(Pages.fullCheckPage().isVoidDisabled(),new CustomStepResult("Void button is disabled",
+                "Void button is not disabled"));
+
+        logInfo("Step 5: Select Yes option and verify the Status field");
+        Pages.fullCheckPage().clickYes();
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        TestRailAssert.assertEquals(Pages.fullCheckPage().getStatus(),"Void", new CustomStepResult("Status match",
+                "Status doesn't match"));
+
+        logInfo("Step 6: Navigate to Cash Drawer screen");
+        logInfo("Step 7: Verify Cash Drawer\n" +
+                "- denominations\n" +
+                "- total cash in");
         Pages.aSideMenuPage().clickCashDrawerMenuItem();
-        cashData.setCashIn(cashData.getCashIn() + transaction.getTransactionDestination().getAmount());
-        cashData.setHundredsAmount(cashData.getHundredsAmount() + transaction.getTransactionDestination().getAmount());
-        cashData.setCountedCash(cashData.getCountedCash() + transaction.getTransactionDestination().getAmount());
+        SelenideTools.sleep(2);
+        Pages.tellerModalPage().clickEnterButton();
+        Pages.tellerModalPage().waitForModalInvisibility();
         TestRailAssert.assertEquals(Actions.cashDrawerAction().getCashDrawerData(),
                 cashData,
                 new CustomStepResult("Cash data is correct", "Cash data not correct"));
-
-        logInfo("Step 12: Go to Back Office -> Official Checks and find generated Check from the related transaction\n" +
-                "Verify Check Number, Purchaser, PAYEE, Date Issued, Initials, Check Type, Status, Amount fields");
-        Pages.aSideMenuPage().clickBackOfficeMenuItem();
-        Pages.backOfficePage().clickOfficialChecks();
-        Check checkFromBankOffice = Actions.backOfficeActions().getCheckFromBankOffice(checkNumber);
-        TestRailAssert.assertEquals(checkFromBankOffice, check, new CustomStepResult( "Check match",
-                "Check doesn't match"));
-
-        logInfo("Step 13: Select generated Check and verify the following fields: Status, Check Number, Remitter, " +
-                "Phone Number, Document Type, Document ID, Payee, Check Type, Purchase Account, Branch, Initials, Check Amount," +
-                " Fee, Date Issued, Cash Purchased");
-        Pages.checkPage().clickToCheck(checkNumber);
-        FullCheck fullCheckFromBankOffice = Actions.backOfficeActions().getFullCheckFromBankOffice();
-        fullCheck.setCheckNumber(null);
-        fullCheck.setPayee(null);
-        fullCheck.setDate(null);
-        fullCheck.setPurchaser(null);
-        fullCheck.setRemitter(name);
-        TestRailAssert.assertEquals(fullCheckFromBankOffice, fullCheck, new CustomStepResult("Check details match",
-                "Check details doesn't match"));
     }
-
 }
