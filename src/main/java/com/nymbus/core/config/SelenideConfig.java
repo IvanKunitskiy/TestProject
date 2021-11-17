@@ -10,7 +10,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,7 +58,7 @@ public class SelenideConfig {
             Configuration.remote = Constants.REMOTE_URL;
         }
 
-//        Configuration.holdBrowserOpen = true;
+       Configuration.holdBrowserOpen = true;
 
         DesiredCapabilities caps = getBrowserCapabilities();
         caps.setCapability(ChromeOptions.CAPABILITY, getChromeOptions());
