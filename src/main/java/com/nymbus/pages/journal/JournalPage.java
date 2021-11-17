@@ -19,6 +19,9 @@ public class JournalPage extends PageTools {
     private By tellerListOption = By.xpath("//ul[@role='listbox']/li[@role='option']/div/span");
     private By tellerListSelectorOption = By.xpath("//ul[@role='listbox']/li[@role='option']/div/span[contains(text(), '%s')]");
     private By clearFiltersButton = By.xpath("//button[@data-test-id='action-clearFilters']");
+    private By endBatchButton = By.xpath("//button[@data-test-id='action-endBatch']");
+    private By enterAmountsButton = By.xpath("//button[@data-test-id='action-enterAmounts']");
+    private By commitButton = By.xpath("//button[@data-test-id='action-commitCashDenomination']");
     private By clearSelectButton = By.xpath("(//button[contains(string(),'Clear Select')])[2]");
     private By checkbox = By.xpath("(//span[contains(string(),'%s')]/../input)[%s]");
     private final By cdtSelector = By.xpath("//div[@data-test-id='field-cashierDefinedTemplate']/a");
@@ -52,6 +55,27 @@ public class JournalPage extends PageTools {
     @Step("Click 'Clear filters' button")
     public void clickClearFiltersButton() {
         click(clearFiltersButton);
+    }
+
+    @Step("Click 'Clear end batch' button")
+    public void clickEndBatchButton() {
+        waitForElementVisibility(endBatchButton);
+        waitForElementClickable(endBatchButton);
+        click(endBatchButton);
+    }
+
+    @Step("Click 'Clear enter amounts' button")
+    public void clickEnterAmountsButton() {
+        waitForElementVisibility(enterAmountsButton);
+        waitForElementClickable(enterAmountsButton);
+        click(enterAmountsButton);
+    }
+
+    @Step("Click 'Commit' button")
+    public void clickCommitButton() {
+        waitForElementVisibility(commitButton);
+        waitForElementClickable(commitButton);
+        click(commitButton);
     }
 
     @Step("Click 'Clear filters' button")

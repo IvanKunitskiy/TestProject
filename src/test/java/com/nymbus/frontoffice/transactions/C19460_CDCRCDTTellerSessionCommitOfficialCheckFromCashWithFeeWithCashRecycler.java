@@ -26,6 +26,7 @@ import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.SkipException;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -247,6 +248,16 @@ public class C19460_CDCRCDTTellerSessionCommitOfficialCheckFromCashWithFeeWithCa
         fullCheck.setPurchaser(null);
         fullCheck.setRemitter(name);
         Assert.assertEquals(fullCheckFromBankOffice, fullCheck, "Check details doesn't match");
+    }
+
+    @AfterMethod(description = "End Batch for this recycler")
+    public void postCondition(){
+        SelenideTools.openUrl(Constants.URL);
+        Pages.aSideMenuPage().waitForASideMenu();
+        Pages.aSideMenuPage().clickJournalMenuItem();
+        Pages.journalPage().clickEndBatchButton();
+        Pages.journalPage().clickEnterAmountsButton();
+        Pages.journalPage().clickCommitButton();
     }
 
 }
