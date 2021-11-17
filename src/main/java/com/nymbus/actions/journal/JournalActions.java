@@ -1,6 +1,8 @@
 package com.nymbus.actions.journal;
 
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
+import com.nymbus.newmodels.cashier.CashierDefinedTransactions;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
 
@@ -55,5 +57,23 @@ public class JournalActions {
             }
         }
         return false;
+    }
+
+    public String getTransactionRootId(CashierDefinedTransactions template) {
+        SelenideTools.openUrlInNewWindow(Constants.URL);
+        SelenideTools.switchToLastTab();
+        Pages.aSideMenuPage().clickJournalMenuItem();
+        Pages.journalPage().searchCDT(template.getOperation());
+        Pages.journalPage().clickCheckbox("Cashier-Defined", 1);
+        Pages.journalPage().clickCheckbox("Transaction", 2);
+        Pages.journalPage().clickCheckbox("Transaction", 3);
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        Pages.journalPage().clickItemInTable(1);
+        String url = SelenideTools.getCurrentUrl();
+        String[] arr = url.split("/");
+        int position = arr.length - 1;
+        SelenideTools.closeCurrentTab();
+        SelenideTools.switchToLastTab();
+        return arr[position];
     }
 }

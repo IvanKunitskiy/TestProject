@@ -6,8 +6,12 @@ import com.nymbus.newmodels.cashier.PayeeType;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.TransactionDestination;
 import com.nymbus.newmodels.transaction.TransactionSource;
+import com.nymbus.newmodels.transaction.enums.Denominations;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CashierDefinedActions {
 
@@ -52,6 +56,41 @@ public class CashierDefinedActions {
         setTransactionSource(transaction.getTransactionSource(), tempIndex);
         typeName(name);
         choosePayeeType(PayeeType.PERSON.getType());
+    }
+
+
+    public void createOfficialCheckTransaction(CashierDefinedTransactions type, Transaction transaction, boolean waiveFee, String name){
+        int tempIndex = 0;
+        setTellerOperation(type.getOperation());
+        setAmounts(transaction.getTransactionSource().getDenominationsHashMap());
+        Pages.cashInOutModalWindowPage().clickOKButton();
+        Pages.cashInOutModalWindowPage().waitForModalWindowInVisibility();
+        setWaiveFee(waiveFee);
+        //setTransactionSource(transaction.getTransactionSource(), tempIndex);
+        Pages.cashierPage().inputFirstPayeeName(name);
+        Pages.cashierPage().inputPayeeRemitter(name);
+        typeName(name);
+        choosePayeeType(PayeeType.PERSON.getType());
+        fillDestinationAccountNumber(transaction.getTransactionDestination().getAccountNumber(), tempIndex+1);
+    }
+
+    private void setAmounts(HashMap<Denominations, Double> denominationsHashMap) {
+        for (Map.Entry<Denominations,Double> entry : denominationsHashMap.entrySet()) {
+            setMappedAmount(entry.getKey(), entry.getValue());
+        }
+    }
+
+    private void setMappedAmount(Denominations key, Double value) {
+        switch (key) {
+            case HUNDREDS:
+                Pages.cashInOutModalWindowPage().typeHundredsAmountValue(String.format("%.0f", value));
+                break;
+            case FIFTIES:
+                Pages.cashInOutModalWindowPage().typeFiftiesAmountValue(String.format("%.0f", value));
+                break;
+            default:
+                break;
+        }
     }
 
     private void choosePayeeType(String type) {

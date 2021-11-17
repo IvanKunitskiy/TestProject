@@ -19,6 +19,11 @@ public class JournalPage extends PageTools {
     private By tellerListOption = By.xpath("//ul[@role='listbox']/li[@role='option']/div/span");
     private By tellerListSelectorOption = By.xpath("//ul[@role='listbox']/li[@role='option']/div/span[contains(text(), '%s')]");
     private By clearFiltersButton = By.xpath("//button[@data-test-id='action-clearFilters']");
+    private By clearSelectButton = By.xpath("(//button[contains(string(),'Clear Select')])[2]");
+    private By checkbox = By.xpath("(//span[contains(string(),'%s')]/../input)[%s]");
+    private final By cdtSelector = By.xpath("//div[@data-test-id='field-cashierDefinedTemplate']/a");
+    private final By cdtSearch = By.xpath("(//div[@data-test-id='field-cashierDefinedTemplate']//input)[1]");
+    private final By cdtSpan = By.xpath("(//span[contains(string(),'%s')])[1]");
 
     @Step("Type account number")
     public void fillInAccountNumber(String accountNumber) {
@@ -47,6 +52,37 @@ public class JournalPage extends PageTools {
     @Step("Click 'Clear filters' button")
     public void clickClearFiltersButton() {
         click(clearFiltersButton);
+    }
+
+    @Step("Click 'Clear filters' button")
+    public void clickClearSelectFiltersButton() {
+        waitForElementVisibility(clearSelectButton);
+        waitForElementClickable(clearSelectButton);
+        jsClick(clearSelectButton);
+    }
+
+    @Step("Click {0} checkbox")
+    public void clickCheckbox(String text, int index) {
+        waitForElementVisibility(checkbox, text, index);
+        waitForElementClickable(checkbox, text, index);
+        jsClick(checkbox, text, index);
+    }
+
+    @Step("Click 'CDT' button")
+    public void clickCDTFilterButton() {
+        waitForElementVisibility(cdtSelector);
+        click(cdtSelector);
+    }
+
+    @Step("Search 'CDT'")
+    public void searchCDT(String template) {
+        waitForElementVisibility(cdtSelector);
+        click(cdtSelector);
+        waitForElementVisibility(cdtSearch);
+        type(template, cdtSearch);
+        waitForElementVisibility(cdtSpan, template);
+        click(cdtSpan, template);
+
     }
 
     @Step("Wait for Proof date span")
