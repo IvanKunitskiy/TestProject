@@ -275,6 +275,9 @@ public class TransactionActions {
 
     public void createGlDebitMiscCreditTransaction(Transaction transaction) {
         Pages.tellerPage().clickGLDebitButton();
+        String text = SelenideTools.switchTo().alert().getText();
+        System.out.println(1+ text);
+        SelenideTools.switchTo().alert().dismiss();
         fillSourceInformation(transaction.getTransactionSource());
         Pages.tellerPage().clickMiscCreditButton();
         fillDestinationInformation(transaction.getTransactionDestination());
