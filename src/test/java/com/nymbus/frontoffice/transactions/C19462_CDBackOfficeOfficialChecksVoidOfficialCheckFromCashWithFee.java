@@ -150,11 +150,11 @@ public class C19462_CDBackOfficeOfficialChecksVoidOfficialCheckFromCashWithFee e
         check.setCheckNumber(checkNumber);
         fullCheck.setCheckNumber(checkNumber);
         Pages.confirmModalPage().clickYes();
-        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         Pages.confirmModalPage().clickYes();
-        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         Pages.confirmModalPage().clickNo();
-        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         Actions.loginActions().doLogOut();
     }
 
@@ -194,7 +194,7 @@ public class C19462_CDBackOfficeOfficialChecksVoidOfficialCheckFromCashWithFee e
                 "- denominations\n" +
                 "- total cash in");
         Pages.aSideMenuPage().clickCashDrawerMenuItem();
-        SelenideTools.sleep(2);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         Pages.tellerModalPage().clickEnterButton();
         Pages.tellerModalPage().waitForModalInvisibility();
         TestRailAssert.assertEquals(Actions.cashDrawerAction().getCashDrawerData(),

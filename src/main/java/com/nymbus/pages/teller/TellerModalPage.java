@@ -137,7 +137,6 @@ public class TellerModalPage extends PageTools {
         while (notContains) {
             notContains = !getElementsText(cashRecyclerItem, index).contains(name);
             if (!notContains) {
-                System.out.println(name);
                 click(cashRecyclerItem, index);
             }
             index++;
