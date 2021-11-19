@@ -7,7 +7,6 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
-import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -125,7 +124,6 @@ public class C19438_CDECCashInWithCashDrawer extends BaseTest {
         Actions.transactionActions().clickCommitButton();
         Pages.verifyConductorModalPage().clickVerifyButton();
         transactionNumber = WebAdminActions.webAdminTransactionActions().getTransactionNumber(userCredentials, savingsAccount);
-        System.out.println(transactionNumber);
         Pages.tellerModalPage().clickCloseButton();
         Actions.loginActions().doLogOutProgrammatically();
     }
@@ -139,7 +137,7 @@ public class C19438_CDECCashInWithCashDrawer extends BaseTest {
     public void cDCashInWithCashDrawer() {
 
         logInfo("Step 1: Log in to the system as the user from preconditions");
-        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Go to Journal screen and log in to proof date with teller + cash drawer mentioned above");
         Actions.transactionActions().openProofDateLoginModalWindow();
@@ -157,7 +155,6 @@ public class C19438_CDECCashInWithCashDrawer extends BaseTest {
         Pages.journalDetailsPage().clickErrorCorrectButton();
         Pages.journalDetailsPage().waitForErrorCorrectButtonInvisibility();
         Pages.journalDetailsPage().waitForLoadingSpinnerInvisibility();
-        SelenideTools.sleep(15);
         TestRailAssert.assertEquals(Actions.journalActions().getTransactionState(),"Void",
                 new CustomStepResult("Transaction state hasn't changed", "Transaction state has changed"));
 

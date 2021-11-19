@@ -14,8 +14,6 @@ import com.nymbus.newmodels.transaction.enums.DestinationType;
 import com.nymbus.newmodels.transaction.enums.SourceType;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
-import com.nymbus.testrail.CustomStepResult;
-import com.nymbus.testrail.TestRailAssert;
 import org.testng.asserts.SoftAssert;
 
 import java.util.HashMap;
@@ -229,8 +227,8 @@ public class TransactionActions {
     public void setCashOutDestination(TransactionDestination transactionDestination) {
         Pages.tellerPage().clickCashOutButton();
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
-        TestRailAssert.assertTrue(Pages.cashInOutModalWindowPage().isCashMachineRadioButtonChecked(),
-                new CustomStepResult("'Cash Machine' radio button checked", "'Cash Machine' radio button is not checked"));
+//        TestRailAssert.assertTrue(Pages.cashInOutModalWindowPage().isCashMachineRadioButtonChecked(),
+//                new CustomStepResult("'Cash Machine' radio button checked", "'Cash Machine' radio button is not checked"));
         setAmounts(transactionDestination.getDenominationsHashMap());
         Pages.cashInOutModalWindowPage().clickOKButton();
     }
@@ -275,9 +273,9 @@ public class TransactionActions {
 
     public void createGlDebitMiscCreditTransaction(Transaction transaction) {
         Pages.tellerPage().clickGLDebitButton();
-        String text = SelenideTools.switchTo().alert().getText();
-        System.out.println(1+ text);
-        SelenideTools.switchTo().alert().dismiss();
+//        String text = SelenideTools.switchTo().alert().getText();
+//        System.out.println(1+ text);
+//        SelenideTools.switchTo().alert().dismiss();
         fillSourceInformation(transaction.getTransactionSource());
         Pages.tellerPage().clickMiscCreditButton();
         fillDestinationInformation(transaction.getTransactionDestination());
