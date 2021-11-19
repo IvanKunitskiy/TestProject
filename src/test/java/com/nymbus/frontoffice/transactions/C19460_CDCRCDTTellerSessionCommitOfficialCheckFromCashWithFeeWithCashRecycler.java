@@ -26,6 +26,7 @@ import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.SkipException;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -34,7 +35,7 @@ import java.util.HashMap;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Dmytro")
-public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends BaseTest {
+public class C19460_CDCRCDTTellerSessionCommitOfficialCheckFromCashWithFeeWithCashRecycler extends BaseTest {
     private Transaction transaction;
     private double returnTransactionAmount = 100.00;
     private double fee = 5.00;
@@ -44,16 +45,18 @@ public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends B
     private FullCheck fullCheck;
     private String clientId;
     private CashDrawerData cashData;
+    private String cashRecycler;
 
 
     @BeforeMethod
     public void prepareTransactionData() {
         //Check CFMIntegrationEnabled
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
-        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(),userCredentials.getPassword());
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         if (WebAdminActions.webAdminUsersActions().isCFMIntegrationEnabled()) {
             throw new SkipException("CFMIntegrationEnabled = 1");
         }
+        cashRecycler = WebAdminActions.webAdminUsersActions().getCashRecyclerNameByRawIndex(1);
         WebAdminActions.loginActions().doLogout();
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
@@ -122,27 +125,38 @@ public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends B
             Assert.assertTrue(isCreated, "CDT template not created");
         }
 
-
         Pages.aSideMenuPage().clickCashDrawerMenuItem();
-        Actions.transactionActions().doLoginTeller();
+        Pages.tellerModalPage().clickTeller();
+        Pages.tellerModalPage().clickTellerOption(userCredentials.getUserName() + " " + userCredentials.getUserName());
+        Pages.tellerModalPage().clickCashRecycler();
+        Pages.tellerModalPage().clickCashRecyclerItem(cashRecycler);
+        Pages.tellerModalPage().clickSide();
+        Pages.tellerModalPage().clickLeftSide();
+        Actions.transactionActions().doLoginProofDate();
+        Pages.aSideMenuPage().waitForASideMenu();
         cashData = Actions.cashDrawerAction().getCashDrawerData();
         Actions.loginActions().doLogOut();
     }
 
     private final String TEST_RUN_NAME = "Transactions";
 
-    @TestRailIssue(issueID = 19459, testRunName = TEST_RUN_NAME)
-    @Test(description = "C19459, CDT+Teller Session - Commit official check from cash with fee")
+    @TestRailIssue(issueID = 19460, testRunName = TEST_RUN_NAME)
+    @Test(description = "C19460, [CD+CR] CDT+Teller Session - Commit official check from cash with fee with cash recycler")
     @Severity(SeverityLevel.CRITICAL)
     public void cDTTellerSessionCommitOfficialCheckFromCashWithFee() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Go to Cashier Defined Transactions screen and log in to proof date");
-        Actions.transactionActions().loginTeller();
         Actions.transactionActions().openProofDateLoginModalWindow();
         String bankBranch = Pages.tellerModalPage().getBankBranch();
         fullCheck.setBranch(bankBranch);
+        Pages.tellerModalPage().clickTeller();
+        Pages.tellerModalPage().clickTellerOption(userCredentials.getUserName() + " " + userCredentials.getUserName());
+        Pages.tellerModalPage().clickCashRecycler();
+        Pages.tellerModalPage().clickCashRecyclerItem(cashRecycler);
+        Pages.tellerModalPage().clickSide();
+        Pages.tellerModalPage().clickLeftSide();
         Actions.transactionActions().doLoginProofDate();
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
@@ -176,7 +190,7 @@ public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends B
         String transactionRootId = Actions.journalActions().getTransactionRootId(CashierDefinedTransactions.OFFICIAL_CHECK_WITH_CASH);
         String transactionStatus = WebAdminActions.webAdminTransactionActions().getTransactionStatusFromHeader(userCredentials, transactionRootId);
         WebAdminActions.loginActions().doLogoutProgrammatically();
-        TestRailAssert.assertEquals(transactionStatus,"Void", new CustomStepResult("Status is valid",
+        TestRailAssert.assertEquals(transactionStatus, "Void", new CustomStepResult("Status is valid",
                 "Status is not valid"));
         SelenideTools.closeCurrentTab();
         SelenideTools.switchToLastTab();
@@ -224,7 +238,7 @@ public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends B
         Pages.aSideMenuPage().clickBackOfficeMenuItem();
         Pages.backOfficePage().clickOfficialChecks();
         Check checkFromBankOffice = Actions.backOfficeActions().getCheckFromBankOffice(checkNumber);
-        TestRailAssert.assertEquals(checkFromBankOffice, check, new CustomStepResult( "Check match",
+        TestRailAssert.assertEquals(checkFromBankOffice, check, new CustomStepResult("Check match",
                 "Check doesn't match"));
 
         logInfo("Step 13: Select generated Check and verify the following fields: Status, Check Number, Remitter, " +
@@ -239,6 +253,16 @@ public class C19459_CDTTellerSessionCommitOfficialCheckFromCashWithFee extends B
         fullCheck.setRemitter(name);
         TestRailAssert.assertEquals(fullCheckFromBankOffice, fullCheck, new CustomStepResult("Check details match",
                 "Check details doesn't match"));
+    }
+
+    @AfterMethod(description = "End Batch for this recycler")
+    public void postCondition() {
+        SelenideTools.openUrl(Constants.URL);
+        Pages.aSideMenuPage().waitForASideMenu();
+        Pages.aSideMenuPage().clickJournalMenuItem();
+        Pages.journalPage().clickEndBatchButton();
+        Pages.journalPage().clickEnterAmountsButton();
+        Pages.journalPage().clickCommitButton();
     }
 
 }
