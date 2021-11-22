@@ -17,6 +17,7 @@ public class CashInOutModalWindowPage extends PageTools {
     private By inputQuarters = By.xpath("//input[@name='quartersloose']");
     private By inputHundredsInventory = By.xpath("//div[@class='modal-content']//*[@class='cashDenominationTableBody']//tr[1]//td[2]//input");
     private By cashMachineRadioButton = By.xpath("//input[@id='cashMachine']");
+    private By cashDrawerRadioButton = By.xpath("//label[contains(string(),'Cash Drawer')]");
 
     /**
      * Action buttons
@@ -89,5 +90,11 @@ public class CashInOutModalWindowPage extends PageTools {
     @Step("Check if 'Cash Machine' radio button checked")
     public boolean isCashMachineRadioButtonChecked(){
         return isElementChecked(cashMachineRadioButton);
+    }
+
+    @Step("Click 'Cash Drawer' radio button")
+    public void clickCashDrawerRadioButton(){
+        waitForElementVisibility(cashDrawerRadioButton);
+        click(cashDrawerRadioButton);
     }
 }

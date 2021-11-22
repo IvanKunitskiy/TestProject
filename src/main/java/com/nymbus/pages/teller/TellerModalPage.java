@@ -11,12 +11,13 @@ public class TellerModalPage extends PageTools {
     private final By cashDrawerName = By.xpath("//div[@name='cashDrawerTemplate']/a/span/span");
     private final By proofDate = By.xpath("//div[@ng-model='viewModel.proofDate']//a//span[@class='select2-chosen']/span");
     private final By location = By.xpath("//div[@ng-model='viewModel.location']//a//span[@class='select2-chosen']/span");
-        private final By enterButton = By.xpath("//div[@class='modal-content']//button[contains(@class, 'btn-primary')]");
+    private final By enterButton = By.xpath("//div[@class='modal-content']//button[contains(@class, 'btn-primary')]");
     private final By enterButtonSpan = By.xpath("//div[@class='modal-content']//button[contains(@class, 'btn-primary')]");
     private final By blankTellerField = By.xpath("//div[@ng-model='viewModel.otherTeller']//a/span[1]");
     private final By bankBranch = By.xpath("//div[@ng-model='viewModel.location']//a/span/span");
     private final By closeButton = By.xpath("//button[contains(string(),'×')]");
     private final By teller = By.xpath("//a[@placeholder='Teller']/span");
+    private final By tellerOption = By.xpath("//li[@role='option']//span[contains(string(),'%s')]");
     private final By cashRecycler = By.xpath("//a[@placeholder='Select Cash Recycler']/span");
     private final By cashRecyclerItem = By.xpath("(//span[@ng-bind-html='viewModel.cashDrawerView(item)'])[%s]");
     private final By side = By.xpath("//a[@placeholder='Side']/span");
@@ -104,6 +105,18 @@ public class TellerModalPage extends PageTools {
         return getElementText(teller);
     }
 
+    @Step("Click 'Teller'")
+    public void clickTeller() {
+        waitForElementVisibility(teller);
+        click(teller);
+    }
+
+    @Step("Click 'Teller' option")
+    public void clickTellerOption(String teller) {
+        waitForElementVisibility(tellerOption, teller);
+        click(tellerOption, teller);
+    }
+
     @Step("Get 'Cash Recycler' value")
     public String getCashRecycler() {
         waitForElementVisibility(cashRecycler);
@@ -117,13 +130,13 @@ public class TellerModalPage extends PageTools {
     }
 
     @Step("Click Cash Recycler item")
-    public void clickCashRecyclerItem(String name){
+    public void clickCashRecyclerItem(String name) {
         int index = 1;
         waitForElementVisibility(cashRecyclerItem, index);
         boolean notContains = true;
-        while (notContains){
+        while (notContains) {
             notContains = !getElementsText(cashRecyclerItem, index).contains(name);
-            if (!notContains){
+            if (!notContains) {
                 click(cashRecyclerItem, index);
             }
             index++;
@@ -137,7 +150,7 @@ public class TellerModalPage extends PageTools {
     }
 
     @Step("Get 'Side'")
-    public String getSide(){
+    public String getSide() {
         waitForElementVisibility(side);
         return getElementText(side);
     }
