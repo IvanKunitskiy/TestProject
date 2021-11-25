@@ -5,6 +5,7 @@ import com.nymbus.pages.accounts.*;
 import com.nymbus.pages.accounts.transactions.EditAccountTransactionModal;
 import com.nymbus.pages.accounts.transactions.TransactionsPage;
 import com.nymbus.pages.backoffice.BackOfficePage;
+import com.nymbus.pages.backoffice.BatchProcessingPage;
 import com.nymbus.pages.backoffice.documentsearch.DocumentSearchNoticesPage;
 import com.nymbus.pages.backoffice.documentsearch.DocumentSearchTransactionsPage;
 import com.nymbus.pages.backoffice.printchecks.CheckPrintPage;
@@ -126,6 +127,7 @@ public class Pages extends AllureLogger {
     private static LoanInsurancePlanSetupPage loanInsurancePlanSetupPage;
     private static AddNewLoanInsurancePlanSetupPage addNewLoanInsurancePlanSetupPage;
     private static LoanInsurancePolicyModalPage loanInsurancePolicyModalPage;
+    private static BatchProcessingPage batchProcessingPage;
 
     /**
      * Modal Windows
@@ -1013,6 +1015,16 @@ public class Pages extends AllureLogger {
             loanInsurancePolicyModalPage = new LoanInsurancePolicyModalPage();
         }
         return loanInsurancePolicyModalPage;
+    }
+
+    /**
+     * This function return an instance of `BatchProcessingPage`
+     */
+    public static BatchProcessingPage batchProcessingPage() {
+        if (batchProcessingPage == null) {
+            batchProcessingPage = new BatchProcessingPage();
+        }
+        return batchProcessingPage;
     }
 
 }

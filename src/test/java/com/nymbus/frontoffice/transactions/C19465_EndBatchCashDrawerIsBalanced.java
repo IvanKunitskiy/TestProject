@@ -34,8 +34,7 @@ import java.util.HashMap;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Dmytro")
-public class C19462_CDBackOfficeOfficialChecksVoidOfficialCheckFromCashWithFee extends BaseTest {
-
+public class C19465_EndBatchCashDrawerIsBalanced extends BaseTest {
     private Transaction transaction;
     private double returnTransactionAmount = 100.00;
     private double fee = 5.00;
@@ -46,16 +45,18 @@ public class C19462_CDBackOfficeOfficialChecksVoidOfficialCheckFromCashWithFee e
     private String clientId;
     private CashDrawerData cashData;
     private String checkNumber;
-
+    private String cashRecycler;
+    private String teller;
 
     @BeforeMethod
     public void prepareTransactionData() {
         //Check CFMIntegrationEnabled
         WebAdminActions.loginActions().openWebAdminPageInNewWindow();
-        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(),userCredentials.getPassword());
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         if (WebAdminActions.webAdminUsersActions().isCFMIntegrationEnabled()) {
             throw new SkipException("CFMIntegrationEnabled = 1");
         }
+        cashRecycler = WebAdminActions.webAdminUsersActions().getCashRecyclerNameByRawIndex(1);
         WebAdminActions.loginActions().doLogout();
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
@@ -132,10 +133,15 @@ public class C19462_CDBackOfficeOfficialChecksVoidOfficialCheckFromCashWithFee e
 
         //Commit official check with fee
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        Actions.transactionActions().loginTeller();
         Actions.transactionActions().openProofDateLoginModalWindow();
         String bankBranch = Pages.tellerModalPage().getBankBranch();
         fullCheck.setBranch(bankBranch);
+        Pages.tellerModalPage().clickTeller();
+        Pages.tellerModalPage().clickTellerOption(userCredentials.getUserName() + " " + userCredentials.getUserName());
+        Pages.tellerModalPage().clickCashRecycler();
+        Pages.tellerModalPage().clickCashRecyclerItem(cashRecycler);
+        Pages.tellerModalPage().clickSide();
+        Pages.tellerModalPage().clickLeftSide();
         Actions.transactionActions().doLoginProofDate();
         Pages.aSideMenuPage().waitForASideMenu();
         Pages.aSideMenuPage().clickCashierDefinedTransactionsMenuItem();
@@ -161,45 +167,65 @@ public class C19462_CDBackOfficeOfficialChecksVoidOfficialCheckFromCashWithFee e
 
     private final String TEST_RUN_NAME = "Transactions";
 
-    @TestRailIssue(issueID = 19462, testRunName = TEST_RUN_NAME)
-    @Test(description = "C19462, [CD] BackOffice->Official Checks: Void official check from cash with fee")
+    @TestRailIssue(issueID = 19465, testRunName = TEST_RUN_NAME)
+    @Test(description = "C19465, End batch - Cash Drawer is balanced")
     @Severity(SeverityLevel.CRITICAL)
     public void cDTTellerSessionCommitOfficialCheckFromCashWithFee() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        logInfo("Step 2: Go to Back Office -> Official Checks and search for the Transaction from the preconditions");
-        Pages.aSideMenuPage().clickBackOfficeMenuItem();
-        Pages.backOfficePage().clickOfficialChecks();
+        logInfo("Step 2: Go to Journal or Teller page and log in to proof date");
+        Pages.aSideMenuPage().waitForASideMenu();
+        Pages.aSideMenuPage().clickJournalMenuItem();
+        Pages.journalPage().waitForProofDateSpan();
+        Pages.tellerModalPage().clickTeller();
+        Pages.tellerModalPage().clickTellerOption(userCredentials.getUserName() + " " + userCredentials.getUserName());
+        Pages.tellerModalPage().clickCashRecycler();
+        Pages.tellerModalPage().clickCashRecyclerItem(cashRecycler);
+        Pages.tellerModalPage().clickSide();
+        Pages.tellerModalPage().clickLeftSide();
+        Actions.transactionActions().doLoginProofDate();
 
-        logInfo("Step 3: Open Official check on Details");
-        Pages.checkPage().clickToCheck(checkNumber);
-        TestRailAssert.assertFalse(Pages.fullCheckPage().isVoidDisabled(),new CustomStepResult("Void button is not disabled",
-                "Void button is disabled"));
+        logInfo("Step 3: Click [End Batch] button");
+        Pages.journalPage().clickEndBatchButton();
 
-        logInfo("Step 4: Click [Void] button");
-        Pages.fullCheckPage().clickVoid();
-        TestRailAssert.assertTrue(Pages.fullCheckPage().checkConfirmation(), new CustomStepResult("Confirmation is present",
-                "Confirmation is not present"));
-        TestRailAssert.assertFalse(Pages.fullCheckPage().isVoidDisabled(),new CustomStepResult("Void button is disabled",
-                "Void button is not disabled"));
+        logInfo("Step 4: Click [Enter Amounts] and then click [Commit] button");
+        Pages.journalPage().clickEnterAmountsButton();
+        Pages.journalPage().clickCommitButton();
+        Pages.journalPage().clickCancelButton();
 
-        logInfo("Step 5: Select Yes option and verify the Status field");
-        Pages.fullCheckPage().clickYes();
+        logInfo("Step 5: Log in to the Proof Date again");
+        Pages.journalPage().waitForProofDateSpan();
+        Pages.tellerModalPage().clickTeller();
+        teller = userCredentials.getUserName() + " " + userCredentials.getUserName();
+        Pages.tellerModalPage().clickTellerOption(teller);
+        Pages.tellerModalPage().clickCashRecycler();
+        Pages.tellerModalPage().clickCashRecyclerItem(cashRecycler);
+        Pages.tellerModalPage().clickSide();
+        Pages.tellerModalPage().clickLeftSide();
+        Actions.transactionActions().doLoginProofDate();
+
+        logInfo("Step 6: Search for transactions from preconditions on the Journal after end batch is done");
+        Pages.journalPage().searchCDT(CashierDefinedTransactions.OFFICIAL_CHECK_WITH_CASH.getOperation());
+        Pages.journalPage().clickCheckbox("Cashier-Defined", 1);
+        Pages.journalPage().clickCheckbox("Transaction", 2);
+        Pages.journalPage().clickCheckbox("Transaction", 3);
         SelenideTools.sleep(Constants.MINI_TIMEOUT);
-        TestRailAssert.assertEquals(Pages.fullCheckPage().getStatus(),"Void", new CustomStepResult("Status match",
-                "Status doesn't match"));
 
-        logInfo("Step 6: Navigate to Cash Drawer screen");
-        logInfo("Step 7: Verify Cash Drawer\n" +
-                "- denominations\n" +
-                "- total cash in");
-        Pages.aSideMenuPage().clickCashDrawerMenuItem();
-        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
-        Pages.tellerModalPage().clickEnterButton();
-        Pages.tellerModalPage().waitForModalInvisibility();
-        TestRailAssert.assertEquals(Actions.cashDrawerAction().getCashDrawerData(),
-                cashData,
-                new CustomStepResult("Cash data is correct", "Cash data not correct"));
+        logInfo("Step 7: Open any batched transaction on Details and search for [Void] button");
+        Pages.journalPage().clickItemInTable(1);
+        Pages.journalPage().isVoidNotVisible();
+
+        logInfo("Step 8: Go to BackOffice->Batch Processing / Outgoing Cash Letter page");
+        Pages.aSideMenuPage().clickBackOfficeMenuItem();
+        Pages.backOfficePage().clickBatchProcessingButton();
+
+        logInfo("Step 9: Search for performed batch");
+        Pages.batchProcessingPage().clickTellerSearch();
+        Pages.batchProcessingPage().clickTellerOption(teller);
+        Pages.batchProcessingPage().clickSearchButton();
+        TestRailAssert.assertEquals(Pages.batchProcessingPage().getStatusTransaction(),"Balanced - Not Exported",
+                new CustomStepResult("Status is ok", "Status is not ok"));
+
     }
 }

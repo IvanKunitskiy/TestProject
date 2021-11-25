@@ -1,10 +1,13 @@
 package com.nymbus.pages.journal;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
 import java.util.List;
+import java.util.Set;
 
 public class JournalPage extends PageTools {
 
@@ -28,6 +31,17 @@ public class JournalPage extends PageTools {
     private final By cdtSelector = By.xpath("//div[@data-test-id='field-cashierDefinedTemplate']/a");
     private final By cdtSearch = By.xpath("(//div[@data-test-id='field-cashierDefinedTemplate']//input)[1]");
     private final By cdtSpan = By.xpath("(//span[contains(string(),'%s')])[1]");
+    private final By preview = By.xpath("//print-preview-app");
+    private By voidButton = By.xpath("//button[contains(string(),'Void')]");
+
+    @Step("Click Cancel Button")
+    public void clickCancelButton(){
+        Set<String> windowHandles = SelenideTools.getDriver().getWindowHandles();
+        SelenideTools.getDriver().switchTo().window((String) windowHandles.toArray()[windowHandles.size()-1]);
+        SelenideTools.sleep(5);
+        waitForElementVisibility(preview);
+        clickCancelForShadowElementVisible(preview);
+    }
 
     @Step("Type account number")
     public void fillInAccountNumber(String accountNumber) {
@@ -91,6 +105,12 @@ public class JournalPage extends PageTools {
         waitForElementVisibility(checkbox, text, index);
         waitForElementClickable(checkbox, text, index);
         jsClick(checkbox, text, index);
+    }
+
+    @Step("Check 'Void' is disabled")
+    public void isVoidNotVisible(){
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        waitForElementNotPresent(voidButton);
     }
 
     @Step("Click 'CDT' button")
