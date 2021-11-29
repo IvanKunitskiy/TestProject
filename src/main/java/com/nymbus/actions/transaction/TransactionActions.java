@@ -53,6 +53,7 @@ public class TransactionActions {
         doLoginTeller();
         createGlDebitMiscCreditTransaction(transaction);
         clickCommitButtonWithProofDateModalVerification();
+
         Pages.tellerPage().closeModal();
     }
 
