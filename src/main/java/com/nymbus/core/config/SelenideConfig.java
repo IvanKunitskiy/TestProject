@@ -85,7 +85,7 @@ public class SelenideConfig {
             Configuration.remote = Constants.REMOTE_URL;
         }
 
-        Configuration.holdBrowserOpen = true;
+//        Configuration.holdBrowserOpen = true;
 
         DesiredCapabilities caps = getBrowserCapabilities();
         caps.setCapability(ChromeOptions.CAPABILITY, getChromeOptions());
