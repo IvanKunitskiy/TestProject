@@ -34,6 +34,8 @@ public class VerifyConductorModalPage extends PageTools {
     private By phoneField = By.xpath("//input[@name='fullphonenumber']");
     private By idTypeField = By.xpath("//*[@id='type']//span[@class='select2-chosen']/span");
     private By idNumberField = By.xpath("//input[@name='id']");
+    private By searchField = By.xpath("//input[@placeholder='Type to Search Clients']");
+    private By searchDiv = By.xpath("//div[@role='option']");
     private By issuedByField = By.xpath("//*[@id='state']//span[@class='select2-chosen']/span");
     private By countryField = By.xpath("//*[@id='country']//span[@class='select2-chosen']/span");
 
@@ -216,6 +218,19 @@ public class VerifyConductorModalPage extends PageTools {
         waitForElementVisibility(idNumberField);
         jsType(text, idNumberField);
         jsRiseOnchange(idNumberField);
+    }
+
+    @Step("Type {0} in search number")
+    public void typeSearchField(String text) {
+        waitForElementVisibility(searchField);
+        jsType(text, searchField);
+        jsRiseOnchange(searchField);
+    }
+
+    @Step("Click {0} in search div")
+    public void clickSearchDiv() {
+        waitForElementVisibility(searchDiv);
+        click(searchDiv);
     }
 
     @Step("Click 'State dropdown' button")

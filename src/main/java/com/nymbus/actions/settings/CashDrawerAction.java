@@ -170,7 +170,12 @@ public class CashDrawerAction {
         return value.equals("") ? 0.00 : Double.parseDouble(value);
     }
 
-    private double getHundredsValue() {
+    public double getCashIn() {
+        String value = Pages.cashDrawerBalancePage().getCashIn();
+        return value.equals("") ? 0.00 : Double.parseDouble(value);
+    }
+
+    public double getHundredsValue() {
         String value = Pages.cashDrawerBalancePage().getHundredsAmount();
         return value.equals("") ? 0.00 : Double.parseDouble(value);
     }

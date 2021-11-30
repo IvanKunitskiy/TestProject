@@ -181,7 +181,6 @@ public class C22710_BackOfficeOfficialChecksVoidOfficialCheckFromClientAccountWi
 
         logInfo("Step 3: Open Official check on Details");
         Pages.checkPage().clickToCheck(checkNumber);
-        FullCheck fullCheckFromBankOffice = Actions.backOfficeActions().getFullCheckFromBankOffice();
 
         logInfo("Step 4: Click [Void] button");
         Pages.fullCheckPage().clickVoid();
