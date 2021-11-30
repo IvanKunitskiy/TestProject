@@ -17,7 +17,6 @@ import com.nymbus.newmodels.generation.transactions.TransactionConstructor;
 import com.nymbus.newmodels.generation.transactions.builder.CashInDepositCHKAccBuilder;
 import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.enums.Denominations;
-import com.nymbus.newmodels.transaction.verifyingModels.CashDrawerData;
 import com.nymbus.pages.Pages;
 import com.nymbus.pages.settings.SettingsPage;
 import com.nymbus.testrail.CustomStepResult;
@@ -29,6 +28,7 @@ import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.awt.*;
 import java.util.HashMap;
 
 @Epic("Frontoffice")
@@ -38,12 +38,10 @@ public class C19465_EndBatchCashDrawerIsBalanced extends BaseTest {
     private Transaction transaction;
     private double returnTransactionAmount = 100.00;
     private double fee = 5.00;
-    private int checkAccountNumber;
     private Check check;
     private String name = "John";
     private FullCheck fullCheck;
     private String clientId;
-    private CashDrawerData cashData;
     private String checkNumber;
     private String cashRecycler;
     private String teller;
@@ -97,7 +95,6 @@ public class C19465_EndBatchCashDrawerIsBalanced extends BaseTest {
         Pages.aSideMenuPage().clickSettingsMenuItem();
         Pages.settings().waitForSettingsPageLoaded();
         SettingsPage.mainPage().clickViewControls();
-        checkAccountNumber = Integer.parseInt(SettingsPage.officialComtrolPage().checkAccountNumber());
 
         //New Checks
         check = new Check();
@@ -127,7 +124,6 @@ public class C19465_EndBatchCashDrawerIsBalanced extends BaseTest {
 
         Pages.aSideMenuPage().clickCashDrawerMenuItem();
         Actions.transactionActions().doLoginTeller();
-        cashData = Actions.cashDrawerAction().getCashDrawerData();
         Actions.loginActions().doLogOut();
 
         //Commit official check with fee
@@ -169,7 +165,7 @@ public class C19465_EndBatchCashDrawerIsBalanced extends BaseTest {
     @TestRailIssue(issueID = 19465, testRunName = TEST_RUN_NAME)
     @Test(description = "C19465, End batch - Cash Drawer is balanced")
     @Severity(SeverityLevel.CRITICAL)
-    public void cDTTellerSessionCommitOfficialCheckFromCashWithFee() {
+    public void cDTTellerSessionCommitOfficialCheckFromCashWithFee() throws AWTException {
         logInfo("Step 1: Log in to the system as User from the preconditions");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
@@ -225,6 +221,5 @@ public class C19465_EndBatchCashDrawerIsBalanced extends BaseTest {
         Pages.batchProcessingPage().clickSearchButton();
         TestRailAssert.assertEquals(Pages.batchProcessingPage().getStatusTransaction(),"Balanced - Not Exported",
                 new CustomStepResult("Status is ok", "Status is not ok"));
-
     }
 }
