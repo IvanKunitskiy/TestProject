@@ -125,7 +125,6 @@ public class C19465_EndBatchCashDrawerIsBalanced extends BaseTest {
             Assert.assertTrue(isCreated, "CDT template not created");
         }
 
-
         Pages.aSideMenuPage().clickCashDrawerMenuItem();
         Actions.transactionActions().doLoginTeller();
         cashData = Actions.cashDrawerAction().getCashDrawerData();

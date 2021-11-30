@@ -171,7 +171,6 @@ public class PageTools extends AllureLogger {
             shouldBe(Condition.enabled, by, args).sendKeys(Keys.BACK_SPACE);
         }
     }
-
     protected void typeIntoFrame(String text, By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + " '" + text + "', element --> " + byLocator(by, args));
         shouldBe(Condition.visible, by, args).clear();

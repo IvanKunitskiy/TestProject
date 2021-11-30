@@ -5,9 +5,10 @@ import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.Actions;
 
 import java.util.List;
-import java.util.Set;
 
 public class JournalPage extends PageTools {
 
@@ -36,11 +37,14 @@ public class JournalPage extends PageTools {
 
     @Step("Click Cancel Button")
     public void clickCancelButton(){
-        Set<String> windowHandles = SelenideTools.getDriver().getWindowHandles();
-        SelenideTools.getDriver().switchTo().window((String) windowHandles.toArray()[windowHandles.size()-1]);
         SelenideTools.sleep(5);
-        waitForElementVisibility(preview);
-        clickCancelForShadowElementVisible(preview);
+        Actions actions = new Actions(SelenideTools.getDriver());
+        actions.sendKeys(Keys.ESCAPE);
+        SelenideTools.sleep(5);
+        actions.sendKeys(Keys.ESCAPE);
+        SelenideTools.sleep(5);
+        actions.sendKeys(Keys.ESCAPE);
+        SelenideTools.sleep(5);
     }
 
     @Step("Type account number")
