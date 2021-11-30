@@ -25,6 +25,7 @@ import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.SkipException;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -45,6 +46,7 @@ public class C19465_EndBatchCashDrawerIsBalanced extends BaseTest {
     private String checkNumber;
     private String cashRecycler;
     private String teller;
+    private boolean batchIsChanged = false;
 
     @BeforeMethod
     public void prepareTransactionData() {
@@ -127,6 +129,7 @@ public class C19465_EndBatchCashDrawerIsBalanced extends BaseTest {
         Actions.loginActions().doLogOut();
 
         //Commit official check with fee
+        batchIsChanged = true;
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.transactionActions().openProofDateLoginModalWindow();
         String bankBranch = Pages.tellerModalPage().getBankBranch();
@@ -187,6 +190,7 @@ public class C19465_EndBatchCashDrawerIsBalanced extends BaseTest {
         logInfo("Step 4: Click [Enter Amounts] and then click [Commit] button");
         Pages.journalPage().clickEnterAmountsButton();
         Pages.journalPage().clickCommitButton();
+        batchIsChanged = false;
         Pages.journalPage().clickCancelButton();
 
         logInfo("Step 5: Log in to the Proof Date again");
@@ -219,7 +223,19 @@ public class C19465_EndBatchCashDrawerIsBalanced extends BaseTest {
         Pages.batchProcessingPage().clickTellerSearch();
         Pages.batchProcessingPage().clickTellerOption(teller);
         Pages.batchProcessingPage().clickSearchButton();
-        TestRailAssert.assertEquals(Pages.batchProcessingPage().getStatusTransaction(),"Balanced - Not Exported",
+        TestRailAssert.assertEquals(Pages.batchProcessingPage().getStatusTransaction(), "Balanced - Not Exported",
                 new CustomStepResult("Status is ok", "Status is not ok"));
+    }
+
+    @AfterMethod(description = "End Batch for this recycler")
+    public void postCondition() {
+        if (batchIsChanged) {
+            SelenideTools.openUrl(Constants.URL);
+            Pages.aSideMenuPage().waitForASideMenu();
+            Pages.aSideMenuPage().clickJournalMenuItem();
+            Pages.journalPage().clickEndBatchButton();
+            Pages.journalPage().clickEnterAmountsButton();
+            Pages.journalPage().clickCommitButton();
+        }
     }
 }
