@@ -126,6 +126,12 @@ public class C19468_EndBatchCashDrawerIsUnbalanced extends BaseTest {
 
         Pages.aSideMenuPage().clickCashDrawerMenuItem();
         Actions.transactionActions().doLoginTeller();
+        String ones = Pages.cashDrawerBalancePage().getOnes();
+        System.out.println(ones);
+        Pages.cashDrawerBalancePage().clickEnterAmounts();
+        System.out.println(Double.parseDouble(ones));
+        Pages.cashDrawerBalancePage().setOnes(Double.parseDouble(ones) + 1.00);
+        Pages.cashDrawerBalancePage().clickSave();
         Actions.loginActions().doLogOut();
 
         //Commit official check with fee
@@ -183,7 +189,8 @@ public class C19468_EndBatchCashDrawerIsUnbalanced extends BaseTest {
         Pages.tellerModalPage().clickCashRecyclerItem(cashRecycler);
         Pages.tellerModalPage().clickSide();
         Pages.tellerModalPage().clickLeftSide();
-        Actions.transactionActions().doLoginProofDate();;
+        Actions.transactionActions().doLoginProofDate();
+        ;
 
         logInfo("Step 3: Click [End Batch] button");
         Pages.journalPage().clickEndBatchButton();
@@ -240,6 +247,9 @@ public class C19468_EndBatchCashDrawerIsUnbalanced extends BaseTest {
             Pages.journalPage().clickEndBatchButton();
             Pages.journalPage().clickEnterAmountsButton();
             Pages.journalPage().clickCommitButton();
+            Pages.supervisorModalPage().inputLogin(userCredentials.getUserName());
+            Pages.supervisorModalPage().inputPassword(userCredentials.getPassword());
+            Pages.supervisorModalPage().clickEnter();
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.nymbus.pages.cashdrawer;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -16,6 +18,7 @@ public class CashDrawerBalancePage extends PageTools {
     private By calculatedCash = By.xpath("//label[@ng-model='cashDenomination.calculatedcash']");
     private By cashOver = By.xpath("//label[@ng-model='cashDenomination.cashover']");
     private By cashShort = By.xpath("//label[@ng-model='cashDenomination.cashshort']");
+    private By ones = By.xpath("//input[@data-test-id='field-onesloose']");
     private final By enterAmounts = By.xpath("//span[text()='Enter Amounts']");
     private final By save = By.xpath("//button//span[text()='Save']");
     private By cashDrawerField = By.xpath("//div[@dn-ui-select]");
@@ -54,6 +57,13 @@ public class CashDrawerBalancePage extends PageTools {
     }
 
     @Step("Get Calculated Cash")
+    public String getCalculatedCashWithoutReplace() {
+        waitForElementVisibility(calculatedCash);
+        shouldMatchText(MATCHER_FOR_SYMBOLS_COUNT, calculatedCash);
+        return getElementText(calculatedCash).trim();
+    }
+
+    @Step("Get Calculated Cash")
     public String getCalculatedCash() {
         waitForElementVisibility(calculatedCash);
         shouldMatchText(MATCHER_FOR_SYMBOLS_COUNT, calculatedCash);
@@ -72,6 +82,19 @@ public class CashDrawerBalancePage extends PageTools {
         waitForElementVisibility(cashShort);
         shouldMatchText(MATCHER_FOR_SYMBOLS_COUNT, cashShort);
         return getElementText(cashShort).trim().replaceAll(",","");
+    }
+
+    @Step("Get Ones")
+    public String getOnes() {
+        waitForElementVisibility(ones);
+        return getElementAttributeValue("value",ones).trim();
+    }
+
+    @Step("Set Ones")
+    public void setOnes(double value) {
+        waitForElementVisibility(ones);
+        type(String.valueOf(value)+"0",ones);
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
     }
 
     @Step("Click 'Enter amounts' button")

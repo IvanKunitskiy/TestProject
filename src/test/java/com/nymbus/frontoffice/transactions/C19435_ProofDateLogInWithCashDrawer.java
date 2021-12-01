@@ -19,6 +19,7 @@ import org.testng.annotations.Test;
 @Owner("Dmytro")
 public class C19435_ProofDateLogInWithCashDrawer extends BaseTest {
     private String date;
+    private String calculatedCash;
 
     @BeforeMethod
     public void prepareTransactionData() {
@@ -34,6 +35,13 @@ public class C19435_ProofDateLogInWithCashDrawer extends BaseTest {
 
         WebAdminActions.loginActions().doLogout();
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+
+        //Get Drawer Balamce
+        Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
+        Pages.aSideMenuPage().clickCashDrawerMenuItem();
+        Actions.transactionActions().doLoginTeller();
+        calculatedCash = Pages.cashDrawerBalancePage().getCalculatedCashWithoutReplace();
+        Actions.loginActions().doLogOut();
     }
 
     private final String TEST_RUN_NAME = "Transactions";
@@ -70,7 +78,7 @@ public class C19435_ProofDateLogInWithCashDrawer extends BaseTest {
                 new CustomStepResult("Location is ok", "Location is not valid"));
         TestRailAssert.assertEquals(Pages.tellerPage().getDrawerName(), "Drawer Name: " + userCredentials.getUserName(),
                 new CustomStepResult("CashDrawer name is ok", "CashDrawer name is not valid"));
-        TestRailAssert.assertEquals(Pages.tellerPage().getDrawerBalance(), "Drawer Balance: $2,017,365.00",
+        TestRailAssert.assertEquals(Pages.tellerPage().getDrawerBalance(), "Drawer Balance: $"+ calculatedCash,
                 new CustomStepResult("Drawer Balance is ok", "Drawer Balance is not valid"));
         TestRailAssert.assertEquals(Pages.tellerPage().getProofDate(), "Proof Date: " + date, new CustomStepResult("Date is ok",
                 "Date is not valid"));
