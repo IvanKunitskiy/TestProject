@@ -932,6 +932,11 @@ public class WebAdminUsersActions {
         return WebAdminPages.rulesUIQueryAnalyzerPage().getBankControlFileValue().equals("1");
     }
 
+    public boolean isCFMIntegrationDisabled(){
+        SelenideTools.openUrl(getBankControlFileUrl());
+        return WebAdminPages.rulesUIQueryAnalyzerPage().getBankControlFileValue().equals("0");
+    }
+
     public String getCashRecyclerName(){
         SelenideTools.openUrl(getCashRecyclerNameUrl());
         return WebAdminPages.rulesUIQueryAnalyzerPage().getCashRecyclerName();
