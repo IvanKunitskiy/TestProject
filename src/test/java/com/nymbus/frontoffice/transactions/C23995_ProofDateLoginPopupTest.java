@@ -14,6 +14,7 @@ import com.nymbus.pages.webadmin.WebAdminPages;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
+import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -25,6 +26,15 @@ public class C23995_ProofDateLoginPopupTest extends BaseTest {
 
     @BeforeMethod
     public void prepareData() {
+        //Check CFMIntegrationEnabled
+        WebAdminActions.loginActions().openWebAdminPageInNewWindow();
+        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(),userCredentials.getPassword());
+        if (WebAdminActions.webAdminUsersActions().isCFMIntegrationDisabled()) {
+            throw new SkipException("CFMIntegrationEnabled = 0");
+        }
+        WebAdminActions.loginActions().doLogout();
+        WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
+
         // Set up user and cashDrawer
         user = new User().setDefaultUserData();
         CashDrawer cashDrawer = new CashDrawer().setDefaultTellerValues();
