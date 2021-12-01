@@ -52,6 +52,7 @@ public enum TransactionCode {
     ADD_TO_IENC_409("409 - Add To IENC"),
     LOAN_PAYMENT_114("114 - Loan Payment"),
     PAYOFF_433("433 - Payoff"),
+    ESCROW_PYMT_435("435 - Escrow Pymt"),
     PAYMENT_416("416 - Payment"),
     INT_PAY_ONLY_407("407 - Int Paym Only"),
     FORCE_TO_PRIN_420("420 - Force To Prin"),
