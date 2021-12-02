@@ -41,8 +41,10 @@ public class ViewUserPage extends PageTools {
     private By officialCheckLimit = By.xpath("//div[@id='usrusers-officialcheckslimit']//span[@class='xwidget_readonly_value']");
     private By cashOutLimit = By.xpath("//div[@id='usrusers-cashoutlimit']//span");
     private By teller = By.xpath("//div[@id='usrusers-telleryn']//input[contains(@name, 'teller')]");
-    private By cashDrawer = By.xpath("//div[@id='usrusers-cashdrawerid']//span[contains(@class, 'xwidget_readonly_value')]");
     private By bankBranch = By.xpath("//div[@id='usrusers-branchid']//span[@class='xwidget_readonly_value']");
+    private By cashDrawer = By.xpath("//div[@id='usrusers-cashdrawerid']//span[contains(@class, 'xwidget_readonly_value')]");
+    private By cashRecycler = By.xpath("//div[@id='usrusers-cashrecyclerid']//span[contains(@class, 'xwidget_readonly_value')]");
+    private By cashDispenser = By.xpath("//div[@id='usrusers-cashdispenserid']//span[contains(@class, 'xwidget_readonly_value')]");
 
     public void waitForUserDataRegion(){
         waitForElementVisibility(userDataRegion);
@@ -218,5 +220,15 @@ public class ViewUserPage extends PageTools {
     public String getBankBranch() {
         waitForElementVisibility(bankBranch);
         return getElementText(bankBranch).trim();
+    }
+
+    @Step("Check if user have 'Cash Recycler'")
+    public boolean isCashRecyclerPresent() {
+        return isElementVisible(cashRecycler);
+    }
+
+    @Step("Check if user have 'Cash Dispenser'")
+    public boolean isCashDispenserPresent() {
+        return isElementVisible(cashDispenser);
     }
 }

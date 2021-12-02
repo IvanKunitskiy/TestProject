@@ -8,7 +8,9 @@ import lombok.Getter;
 public enum Denominations {
     HUNDREDS("onehundredsloose"),
     FIFTIES("fiftiesloose"),
-    TWENTIES("twentiesloose");
+    TWENTIES("twentiesloose"),
+    HALFDOLLARS("halfdollarsloose"),
+    QUARTERS("quartersloose");
 
     private final String denominationValue;
 }
