@@ -127,9 +127,7 @@ public class C19468_EndBatchCashDrawerIsUnbalanced extends BaseTest {
         Pages.aSideMenuPage().clickCashDrawerMenuItem();
         Actions.transactionActions().doLoginTeller();
         String ones = Pages.cashDrawerBalancePage().getOnes();
-        System.out.println(ones);
         Pages.cashDrawerBalancePage().clickEnterAmounts();
-        System.out.println(Double.parseDouble(ones));
         Pages.cashDrawerBalancePage().setOnes(Double.parseDouble(ones) + 1.00);
         Pages.cashDrawerBalancePage().clickSave();
         Actions.loginActions().doLogOut();

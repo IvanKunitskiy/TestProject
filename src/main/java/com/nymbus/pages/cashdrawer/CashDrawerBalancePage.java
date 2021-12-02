@@ -45,14 +45,12 @@ public class CashDrawerBalancePage extends PageTools {
     @Step("Get Cash In")
     public String getCashIn() {
         waitForElementVisibility(cashIn);
-        shouldMatchText(MATCHER_FOR_SYMBOLS_COUNT, cashIn);
         return getElementText(cashIn).trim().replaceAll(",","");
     }
 
     @Step("Get Cash Out")
     public String getCashOut() {
         waitForElementVisibility(cashOut);
-        shouldMatchText(MATCHER_FOR_SYMBOLS_COUNT, cashOut);
         return getElementText(cashOut).trim().replaceAll(",","");
     }
 
@@ -73,14 +71,12 @@ public class CashDrawerBalancePage extends PageTools {
     @Step("Get Cash Over")
     public String getCashOver() {
         waitForElementVisibility(cashOver);
-        shouldMatchText(MATCHER_FOR_SYMBOLS_COUNT, cashOver);
         return getElementText(cashOver).trim().replaceAll(",","");
     }
 
     @Step("Get Cash Short")
     public String getCashShort() {
         waitForElementVisibility(cashShort);
-        shouldMatchText(MATCHER_FOR_SYMBOLS_COUNT, cashShort);
         return getElementText(cashShort).trim().replaceAll(",","");
     }
 
