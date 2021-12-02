@@ -123,6 +123,8 @@ public class AccountDetailsPage extends PageTools {
     private By activeStatus = By.xpath("//tr[@data-test-id='field-accountstatus']//span[contains(text(), 'Active')]");
     private By accruedInterest = By.xpath("//tr[@data-config-name='accruedinterest']" +
             "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
+    private By escrowBalance = By.xpath("//tr[@data-test-id='field-escrowbalance']\" +\n" +
+            "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By dailyInterestFactor = By.xpath("//tr[@data-config-name='dailyinterestfactor']" +
             "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By accruedInterestThisStatementCycle = By.xpath("//tr[@data-config-name='accruedinterestthisstatementcycle']" +
@@ -332,6 +334,13 @@ public class AccountDetailsPage extends PageTools {
         waitForElementVisibility(accruedInterest);
         String accruedInterestValue = getElementText(accruedInterest).trim();
         return accruedInterestValue.replaceAll("[^0-9.-]", "");
+    }
+
+    @Step("Get 'Escrow Balance' value")
+    public String getEscrowBalance() {
+        waitForElementVisibility(escrowBalance);
+        String escrowBalanceValue = getElementText(escrowBalance).trim();
+        return escrowBalanceValue.replaceAll("[^0-9.-]", "");
     }
 
     @Step("Get 'Daily Interest Factor' value")

@@ -34,6 +34,9 @@ public class AccountPaymentInfoPage extends PageTools {
     private final By otherPaymentsAmount = By.xpath("//input[@data-test-id='field-amount_otherPaymentHistory_0']");
     private final By otherPaymentsFrequencyField = By.xpath("//div[@data-test-id='field-frequency_otherPaymentHistory_0']");
     private final By otherPaymentsFrequencyDropdownItem = By.xpath("//div[@data-test-id='field-frequency_otherPaymentHistory_0']//div[contains(@class, 'ui-select-dropdown')]/ul/li/ul/li//span[text()='%s']");
+    private final By otherPaymentsPaymentTypeField = By.xpath("//div[@data-test-id='field-otherpaymenttype_otherPaymentHistory_0']");
+    private final By otherPaymentsPaymentTypeDropdownItem = By.xpath("//div[@data-test-id='field-otherpaymenttype_otherPaymentHistory_0']//div[contains(@class, 'ui-select-dropdown')]/ul/li/ul/li//span[text()='%s']");
+
 
     @Step("Click 'Edit Button' button at 'Other Payments' section")
     public void clickEditButtonAtOtherPayments() {
@@ -44,7 +47,7 @@ public class AccountPaymentInfoPage extends PageTools {
     @Step("Click 'Add New' button at 'Other Payments' section")
     public void clickOtherPaymentsAddNewButton() {
         waitForElementClickable(otherPaymentsAddNewButton);
-        click(otherPaymentsAddNewButton);
+        jsClick(otherPaymentsAddNewButton);
     }
 
     @Step("Set 'Effective Date' at 'Other Payments' section")
@@ -61,14 +64,14 @@ public class AccountPaymentInfoPage extends PageTools {
 
     @Step("Click 'Payment Type' at 'Other Payments' section")
     public void clickOtherPaymentsPaymentType(){
-        waitForElementClickable(otherPaymentsFrequencyField);
-        click(otherPaymentsFrequencyField);
+        waitForElementClickable(otherPaymentsPaymentTypeField);
+        click(otherPaymentsPaymentTypeField);
     }
 
     @Step("Pick item from 'Payment Type' dropdown")
     public void pickOtherPaymentsPaymentTypeDropdownItem(String item){
-        waitForElementClickable(otherPaymentsFrequencyDropdownItem);
-        click(otherPaymentsFrequencyDropdownItem, item);
+        waitForElementClickable(otherPaymentsPaymentTypeDropdownItem, item);
+        click(otherPaymentsPaymentTypeDropdownItem, item);
     }
 
     @Step("CLick 'Frequency' at 'Other Payments' section")
@@ -79,7 +82,7 @@ public class AccountPaymentInfoPage extends PageTools {
 
     @Step("Pick item from 'Frequency' dropdown")
     public void pickOtherPaymentsFrequencyDropdownItem(String item) {
-        waitForElementClickable(otherPaymentsFrequencyDropdownItem);
+        waitForElementClickable(otherPaymentsFrequencyDropdownItem, item);
         click(otherPaymentsFrequencyDropdownItem, item);
     }
 

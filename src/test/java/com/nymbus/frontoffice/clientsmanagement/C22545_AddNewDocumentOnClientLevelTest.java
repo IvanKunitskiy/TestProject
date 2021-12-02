@@ -7,6 +7,7 @@ import com.nymbus.actions.clients.documents.DocumentActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.document.CompanyID;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
@@ -83,6 +84,7 @@ public class C22545_AddNewDocumentOnClientLevelTest extends BaseTest {
         Pages.addNewDocumentPage().waitForModalInvisibility();
 
         logInfo("Step 8: Make sure that Document identification icon is present for any document");
+        SelenideTools.sleep(3500);
         TestRailAssert.assertTrue(Pages.documentsPage().getDocumentIdentificationIconCount() == 4,
                 new CustomStepResult("Icons are not available for all documents", "Icons are available for all documents"));
 
