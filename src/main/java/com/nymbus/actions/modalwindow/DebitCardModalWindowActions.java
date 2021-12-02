@@ -32,7 +32,7 @@ public class DebitCardModalWindowActions {
         selectAccount(debitCard.getAccounts());
         setCardDesign(debitCard.getCardDesign().getCardDesign());
         Pages.debitCardModalWindow().selectCardStatus(debitCard.getCardStatus());
-        Pages.debitCardModalWindow().clickOnYesButton();
+        // Pages.debitCardModalWindow().clickOnYesButton();
         Pages.debitCardModalWindow().typeToPinOffsetInputField(debitCard.getPinOffset());
         Pages.debitCardModalWindow().typeToATMDailyLimitNumberAmtInputField(debitCard.getATMDailyDollarLimit());          // This values will fill automatically
         Pages.debitCardModalWindow().typeToATMDailyLimitNumberNbrInputField(debitCard.getATMTransactionLimit());            // Values described on Bin Control settings
@@ -56,7 +56,7 @@ public class DebitCardModalWindowActions {
         selectAccount(debitCard.getAccounts());
         setCardDesign(debitCard.getCardDesign().getCardDesign());
         Pages.debitCardModalWindow().selectCardStatus(debitCard.getCardStatus());
-        Pages.debitCardModalWindow().clickOnYesButton();
+        //Pages.debitCardModalWindow().clickOnYesButton();
         Pages.debitCardModalWindow().typeToPinOffsetInputField(debitCard.getPinOffset());
         Pages.debitCardModalWindow().selectTransactionTypeAllowedSelect(debitCard.getTranslationTypeAllowed());
         Pages.debitCardModalWindow().setChargeForCardReplacementToggle(debitCard.isChargeForCardReplacement());
