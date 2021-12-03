@@ -204,7 +204,7 @@ public class C47338_EscrowProcessingProcess435EscrowPymtTransactionOnAmountEscro
         TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(1)
                         .equals(String.valueOf(TransactionCode.ESCROW_PYMT_435.getTransCode())),
                 new CustomStepResult("'Transaction Code' code is not valid", "'Transaction Code' code is valid"));
-        TestRailAssert.assertEquals(String.valueOf(escrowAmount), transactionAmount_435,
+        TestRailAssert.assertEquals(escrowAmount + "0", transactionAmount_435,
                 new CustomStepResult("'Transaction Amount' is not valid", "'Transaction Amount' is valid"));
 
         logInfo("Step 7: Go to the \"Payment Info\" tab");
@@ -222,7 +222,7 @@ public class C47338_EscrowProcessingProcess435EscrowPymtTransactionOnAmountEscro
 
         logInfo("Step 9: Click on the Payment Due record and check the \"Transactions\" section");
         Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(1);
-        String escrow = Pages.accountPaymentInfoPage().getEscrow();
+        double escrow = Double.parseDouble(Pages.accountPaymentInfoPage().getEscrow());
         String tranCodeStatus = Pages.accountPaymentInfoPage().getStatus();
 
         TestRailAssert.assertEquals(escrowAmount, escrow,

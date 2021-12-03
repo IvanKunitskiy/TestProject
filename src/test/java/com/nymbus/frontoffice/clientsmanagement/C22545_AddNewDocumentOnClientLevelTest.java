@@ -84,7 +84,6 @@ public class C22545_AddNewDocumentOnClientLevelTest extends BaseTest {
         Pages.addNewDocumentPage().waitForModalInvisibility();
 
         logInfo("Step 8: Make sure that Document identification icon is present for any document");
-        SelenideTools.sleep(3500);
         TestRailAssert.assertTrue(Pages.documentsPage().getDocumentIdentificationIconCount() == 4,
                 new CustomStepResult("Icons are not available for all documents", "Icons are available for all documents"));
 

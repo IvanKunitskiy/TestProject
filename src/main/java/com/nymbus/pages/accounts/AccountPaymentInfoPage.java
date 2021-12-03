@@ -453,7 +453,7 @@ public class AccountPaymentInfoPage extends PageTools {
     @Step("Get Due amount value")
     public String getDueAmount() {
         waitForElementVisibility(dueAmount);
-        return getElementText(dueAmount);
+        return getElementText(dueAmount).replaceAll("^[0-9.]", "");
     }
 
     @Step("Get Due status value")
