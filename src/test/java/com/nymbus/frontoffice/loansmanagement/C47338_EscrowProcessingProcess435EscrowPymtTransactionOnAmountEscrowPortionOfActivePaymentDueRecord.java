@@ -6,6 +6,7 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.settings.LoansActions;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
@@ -232,10 +233,11 @@ public class C47338_EscrowProcessingProcess435EscrowPymtTransactionOnAmountEscro
 
         logInfo("Step 10: Go to the \"Details\" tab and check the \"Escrow Balance\" field");
         Pages.accountDetailsPage().clickDetailsTab();
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
 
         double actualEscrowBalance = Double.parseDouble(Pages.accountDetailsPage().getEscrowBalance());
 
-        TestRailAssert.assertEquals(actualEscrowBalance, actualEscrowBalance + escrowAmount,
+        TestRailAssert.assertEquals(actualEscrowBalance, escrowAmount,
                 new CustomStepResult("'Escrow Balance' is not valid", "'Escrow Balance' is valid"));
     }
 }

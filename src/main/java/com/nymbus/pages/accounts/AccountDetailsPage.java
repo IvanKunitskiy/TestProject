@@ -123,7 +123,7 @@ public class AccountDetailsPage extends PageTools {
     private By activeStatus = By.xpath("//tr[@data-test-id='field-accountstatus']//span[contains(text(), 'Active')]");
     private By accruedInterest = By.xpath("//tr[@data-config-name='accruedinterest']" +
             "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
-    private By escrowBalance = By.xpath("//tr[@data-test-id='field-escrowbalance']\" +\n" +
+    private By escrowBalance = By.xpath("//tr[@data-test-id='field-escrowbalance']" +
             "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
     private By dailyInterestFactor = By.xpath("//tr[@data-config-name='dailyinterestfactor']" +
             "//span[contains(@class, 'dnTextFixedWidthText') and contains(@class, 'ng-binding')]");
