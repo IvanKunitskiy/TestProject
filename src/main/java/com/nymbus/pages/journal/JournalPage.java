@@ -1,9 +1,15 @@
 package com.nymbus.pages.journal;
 
+import com.codeborne.selenide.Selenide;
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
+import java.awt.*;
 import java.util.List;
 
 public class JournalPage extends PageTools {
@@ -28,6 +34,25 @@ public class JournalPage extends PageTools {
     private final By cdtSelector = By.xpath("//div[@data-test-id='field-cashierDefinedTemplate']/a");
     private final By cdtSearch = By.xpath("(//div[@data-test-id='field-cashierDefinedTemplate']//input)[1]");
     private final By cdtSpan = By.xpath("(//span[contains(string(),'%s')])[1]");
+    private final By preview = By.xpath("//print-preview-app");
+    private By voidButton = By.xpath("//button[contains(string(),'Void')]");
+
+    @Step("Click Cancel Button")
+    public void clickCancelButton() throws AWTException {
+        SelenideTools.sleep(15);
+        WebDriver driver = SelenideTools.getDriver();
+        driver.switchTo().window(driver.getWindowHandles().stream().filter(handle -> !handle.equals(driver.getWindowHandle())).findAny().get());
+        WebElement printPreviewApp = driver.findElement(By.xpath("//print-preview-app"));
+        WebElement printPreviewAppContent = Selenide.executeJavaScript("return arguments[0].shadowRoot", printPreviewApp);
+        WebElement printPreviewSideBar = printPreviewAppContent.findElement(By.id("sidebar"));
+        WebElement printPreviewSideBarContent = Selenide.executeJavaScript("return arguments[0].shadowRoot", printPreviewSideBar);
+        WebElement printPreviewHeader = printPreviewSideBarContent.findElement(By.tagName("print-preview-button-strip"));
+        WebElement printPreviewHeaderContent = Selenide.executeJavaScript("return arguments[0].shadowRoot", printPreviewHeader);
+        printPreviewHeaderContent.findElement(By.className("cancel-button")).click();
+        SelenideTools.sleep(15);
+        SelenideTools.switchToLastTab();
+
+    }
 
     @Step("Type account number")
     public void fillInAccountNumber(String accountNumber) {
@@ -91,6 +116,12 @@ public class JournalPage extends PageTools {
         waitForElementVisibility(checkbox, text, index);
         waitForElementClickable(checkbox, text, index);
         jsClick(checkbox, text, index);
+    }
+
+    @Step("Check 'Void' is disabled")
+    public void isVoidNotVisible() {
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        waitForElementNotPresent(voidButton);
     }
 
     @Step("Click 'CDT' button")

@@ -171,7 +171,6 @@ public class PageTools extends AllureLogger {
             shouldBe(Condition.enabled, by, args).sendKeys(Keys.BACK_SPACE);
         }
     }
-
     protected void typeIntoFrame(String text, By by, Object... args) {
         logInfo(getPreviousMethodNameAsText() + " '" + text + "', element --> " + byLocator(by, args));
         shouldBe(Condition.visible, by, args).clear();
@@ -199,6 +198,10 @@ public class PageTools extends AllureLogger {
 
     protected void waitForElementPresent(By by, Object... args) {
         shouldBe(Condition.exist, by, args);
+    }
+
+    protected void waitForElementNotPresent(By by, Object... args) {
+        shouldBe(Condition.not(Condition.exist), by, args);
     }
 
     protected void waitForElementInvisibility(By by, Object... args) {
@@ -304,6 +307,10 @@ public class PageTools extends AllureLogger {
         return WebDriverRunner.getWebDriver().findElement(byLocator(by, args));
     }
 
+    protected void clickCancelForShadowElementVisible(By by, Object... args){
+        logInfo(getPreviousMethodNameAsText() + ", elements --> " + byLocator(by, args));
+        Selenide.executeJavaScript("arguments[0].shadowRoot.querySelector(\"#sidebar\").shadowRoot.querySelector(\"print-preview-button-strip\").shadowRoot.querySelector(\"div > cr-button.cancel-button\")", getWebElement(byLocator(by,args)));
+    }
     /**
      * Work with colors
      */

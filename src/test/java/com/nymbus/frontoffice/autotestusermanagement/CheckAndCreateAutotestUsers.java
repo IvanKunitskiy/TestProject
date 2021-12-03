@@ -112,7 +112,7 @@ public class CheckAndCreateAutotestUsers extends BaseTest {
                 Pages.cashDrawerBalancePage().setHundredsAmount(1000000.00);
                 Pages.cashDrawerBalancePage().setFiftiesAmount(1000000.00);
                 Pages.cashDrawerBalancePage().clickSave();
-                SelenideTools.sleep(2);
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
             }
             Actions.loginActions().doLogOut();
         }

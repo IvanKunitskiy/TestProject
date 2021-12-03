@@ -187,6 +187,15 @@ public class UsersActions {
         }
     }
 
+    public void addNewCashDrawer(CashDrawer cashDrawer) {
+            SettingsPage.addingUsersPage().clickAddNewCashDrawerLink();
+            SettingsPage.addingUsersPage().waitAddNewCashDrawerWindow();
+            SettingsPage.addingUsersPage().setCashDrawerNameValue(cashDrawer.getName());
+            setCashDrawerType(cashDrawer);
+            setGLAccountNumber(cashDrawer);
+            SettingsPage.addingUsersPage().clickAddNewCashDrawerButton();
+    }
+
     private void setCashDrawerType(CashDrawer cashDrawer) {
         SettingsPage.addingUsersPage().clickCashDrawerTypeSelectorButton();
         SettingsPage.addingUsersPage().clickCashDrawerTypeOption(cashDrawer.getType());

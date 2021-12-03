@@ -42,6 +42,7 @@ public class BackOfficePage extends PageTools {
     private final By branchDropDown = By.xpath("//a[@placeholder='Branch']");
     private final By branchOption = By.xpath("//li[@role='option']/div/span[contains(string(),'%s')]");
     private final By showMore = By.xpath("//button[@ng-click='loadMoreHandler()']");
+    private final By batchProc = By.xpath("//li[contains(string(),'Batch Processing / Outgoing Cash Letter')]//a");
 
     @Step("Click the 'Official checks' button")
     public void clickOfficialChecks() {
@@ -165,6 +166,12 @@ public class BackOfficePage extends PageTools {
     public void clickSaveButton() {
         waitForElementVisibility(saveButton);
         click(saveButton);
+    }
+
+    @Step("Click 'Batch Processing' button")
+    public void clickBatchProcessingButton() {
+        waitForElementVisibility(batchProc);
+        click(batchProc);
     }
 
     @Step("Click 'Create Swap' button")
