@@ -24,12 +24,67 @@ public class AccountPaymentInfoPage extends PageTools {
     /**
      * Payment history
      */
-
     private final By editPaymentHistoryButton = By.xpath("//button[@data-test-id='action-edit-payment-info']");
     private final By editPaymentDueButton = By.xpath("(//button[@data-test-id='action-edit-payment-info'])[3]");
-    private final By saveButton = By.xpath("//button[@data-test-id='action-save-payment-info']");
+    private final By paymentHistorySaveButton = By.xpath("//button[@data-test-id='action-save-payment-info']");
     private final By saveButtonSecond = By.xpath("(//button[@data-test-id='action-save-payment-info'])[2]");
     private final By errorMessage = By.xpath("//div[contains(@class, 'toast-error')]");
+    private final By otherPaymentsAddNewButton = By.xpath("(//div[contains(@class, 'payments-table')]//button)[2]");
+    private final By otherPaymentsEffectiveDate = By.xpath("//input[@data-test-id='field-effectivedate_otherPaymentHistory_0']");
+    private final By otherPaymentsAmount = By.xpath("//input[@data-test-id='field-amount_otherPaymentHistory_0']");
+    private final By otherPaymentsFrequencyField = By.xpath("//div[@data-test-id='field-frequency_otherPaymentHistory_0']");
+    private final By otherPaymentsFrequencyDropdownItem = By.xpath("//div[@data-test-id='field-frequency_otherPaymentHistory_0']//div[contains(@class, 'ui-select-dropdown')]/ul/li/ul/li//span[text()='%s']");
+    private final By otherPaymentsPaymentTypeField = By.xpath("//div[@data-test-id='field-otherpaymenttype_otherPaymentHistory_0']");
+    private final By otherPaymentsPaymentTypeDropdownItem = By.xpath("//div[@data-test-id='field-otherpaymenttype_otherPaymentHistory_0']//div[contains(@class, 'ui-select-dropdown')]/ul/li/ul/li//span[text()='%s']");
+
+
+    @Step("Click 'Edit Button' button at 'Other Payments' section")
+    public void clickEditButtonAtOtherPayments() {
+        waitForElementClickable(editPaymentHistoryButton);
+        click(editPaymentHistoryButton);
+    }
+
+    @Step("Click 'Add New' button at 'Other Payments' section")
+    public void clickOtherPaymentsAddNewButton() {
+        waitForElementClickable(otherPaymentsAddNewButton);
+        jsClick(otherPaymentsAddNewButton);
+    }
+
+    @Step("Set 'Effective Date' at 'Other Payments' section")
+    public void setOtherPaymentsEffectiveDate(String date) {
+        waitForElementClickable(otherPaymentsEffectiveDate);
+        type(date, otherPaymentsEffectiveDate);
+    }
+
+    @Step("Type 'Amount' at 'Other Payments' section")
+    public void typeOtherPaymentsAmountValue(String amount) {
+        waitForElementClickable(otherPaymentsAmount);
+        type(amount, otherPaymentsAmount);
+    }
+
+    @Step("Click 'Payment Type' at 'Other Payments' section")
+    public void clickOtherPaymentsPaymentType(){
+        waitForElementClickable(otherPaymentsPaymentTypeField);
+        click(otherPaymentsPaymentTypeField);
+    }
+
+    @Step("Pick item from 'Payment Type' dropdown")
+    public void pickOtherPaymentsPaymentTypeDropdownItem(String item){
+        waitForElementClickable(otherPaymentsPaymentTypeDropdownItem, item);
+        click(otherPaymentsPaymentTypeDropdownItem, item);
+    }
+
+    @Step("CLick 'Frequency' at 'Other Payments' section")
+    public void clickOtherPaymentsFrequency() {
+        waitForElementClickable(otherPaymentsFrequencyField);
+        click(otherPaymentsFrequencyField);
+    }
+
+    @Step("Pick item from 'Frequency' dropdown")
+    public void pickOtherPaymentsFrequencyDropdownItem(String item) {
+        waitForElementClickable(otherPaymentsFrequencyDropdownItem, item);
+        click(otherPaymentsFrequencyDropdownItem, item);
+    }
 
     @Step("Click 'Edit' button")
     public void clickEditPaymentHistoryButton() {
@@ -45,8 +100,8 @@ public class AccountPaymentInfoPage extends PageTools {
 
     @Step("Click 'Save' button")
     public void clickSaveButton() {
-        waitForElementClickable(saveButton);
-        click(saveButton);
+        waitForElementClickable(paymentHistorySaveButton);
+        click(paymentHistorySaveButton);
     }
 
     @Step("Click 'Save' button")
@@ -66,7 +121,7 @@ public class AccountPaymentInfoPage extends PageTools {
 
     @Step("Wait for 'Save' button invisibility")
     public void waitForSaveButtonInvisibility() {
-        waitForElementInvisibility(saveButton);
+        waitForElementInvisibility(paymentHistorySaveButton);
     }
 
     /**
@@ -398,7 +453,7 @@ public class AccountPaymentInfoPage extends PageTools {
     @Step("Get Due amount value")
     public String getDueAmount() {
         waitForElementVisibility(dueAmount);
-        return getElementText(dueAmount);
+        return getElementText(dueAmount).replaceAll("[^0-9.]", "");
     }
 
     @Step("Get Due status value")
