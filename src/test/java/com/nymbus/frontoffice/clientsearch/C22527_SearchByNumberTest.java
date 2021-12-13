@@ -77,7 +77,6 @@ public class C22527_SearchByNumberTest extends BaseTest {
         int lookupResultsCount = Pages.clientsSearchPage().getLookupResultsCount();
         boolean countIsCorrect = lookupResultsCount > 1 && lookupResultsCount < 9;
         Assert.assertTrue(countIsCorrect, "Lookup results is incorrect!");
-        //assertTrue(Pages.clientsSearchPage().isLoadMoreResultsButtonVisible(), "Load more results button is not visible!");
 
         List<String> clients = Pages.clientsSearchPage().getAllLookupResults();
         verifyResultsList(clients, lastFourNumbers);
