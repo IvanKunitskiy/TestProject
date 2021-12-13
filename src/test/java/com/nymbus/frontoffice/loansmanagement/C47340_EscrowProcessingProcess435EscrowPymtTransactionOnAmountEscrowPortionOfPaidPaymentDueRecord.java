@@ -147,7 +147,7 @@ public class C47340_EscrowProcessingProcess435EscrowPymtTransactionOnAmountEscro
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
         Pages.accountDetailsPage().clickPaymentInfoTab();
         Pages.accountPaymentInfoPage().clickEditButtonAtOtherPayments();
-        SelenideTools.sleep(5);
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         Pages.accountPaymentInfoPage().clickOtherPaymentsAddNewButton();
         Pages.accountPaymentInfoPage().setOtherPaymentsEffectiveDate(loanAccount.getDateOpened());
         Pages.accountPaymentInfoPage().typeOtherPaymentsAmountValue(escrowAmount + "0");
