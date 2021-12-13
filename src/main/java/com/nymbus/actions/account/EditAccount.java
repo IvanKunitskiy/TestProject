@@ -967,12 +967,15 @@ public class EditAccount {
     /**
      * Regular CD IRA account verification
      */
-    public void     verifyCdIraAccountFieldsAreDisabledForEditing() {
+    public void  verifyCdIraAccountFieldsAreDisabledForEditing() {
         verifyGeneralFieldsAreDisabledForEditing();
         verifyGeneralCdAccountFieldsAreDisabledForEditing();
         Assert.assertTrue(Pages.editAccountPage().isSpecialMailingInstructionsDisabledInEditMode(), "'Special Mailing Instructions' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isAmountLastIRADistributionDisabledInEditMode(), "'Amount last IRA distribution' field is not disabled");
         Assert.assertTrue(Pages.editAccountPage().isDateLastIRADistributionDisabledInEditMode(), "'Date last IRA distribution' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isIraPlanNumberDisabledInEditMode(), "IRA plan number' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isIRADistributionsYTDDisabledInEditMode(), "IRA distributions YTD' field is not disabled");
+        Assert.assertTrue(Pages.editAccountPage().isInterestPaidLastYearDisabledInEditMode(), "Interest Paid Last Year' field is not disabled");
         if (Pages.editAccountPage().isIRADistributionAccountNumberVisibleInEditMode()) {
             Assert.assertTrue(Pages.editAccountPage().isIraDistributionAccountNumberDisabledInEditMode(), "'IRA Distribution Account Number' field is not disabled");
         }

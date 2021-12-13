@@ -18,6 +18,8 @@ import io.qameta.allure.Owner;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.sql.SQLSyntaxErrorException;
+
 @Epic("Frontoffice")
 @Feature("Autotest User Management")
 @Owner("Dmytro")
@@ -49,9 +51,10 @@ public class CheckAndCreateAutotestUsers extends BaseTest {
                     Actions.loginActions().doLogin(Constants.USERNAME, Constants.PASSWORD);
                     user.setLoginID(userCredentials.getUserName());
                     user.setEmail(userCredentials.getUserName() + "@nymbus.com");
+                    user.setPassword(userCredentials.getPassword());
                     Actions.usersActions().searchUser(user);
 
-                    SettingsPage.usersSearchPage().clickCellByUserData(user.getEmail());
+                    SettingsPage.usersSearchPage().clickCellByUserData(user.getLoginID());
 
                     user.setIsLoginDisabledFlag(false);
 
@@ -68,6 +71,13 @@ public class CheckAndCreateAutotestUsers extends BaseTest {
                     }
 
                     SettingsPage.addingUsersPage().clickSaveChangesButton();
+
+                    if(SettingsPage.addingUsersPage().isTitleRequiredErrorMessagePresent()){
+                        SettingsPage.addingUsersPage().setTitleValue(user.getTitle());
+                    }
+
+                    SettingsPage.addingUsersPage().clickSaveChangesButton();
+
                     Actions.loginActions().doLogOut();
                     Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
                 } else if (errorMessage.equals("Wrong User or Password")) {
@@ -90,6 +100,10 @@ public class CheckAndCreateAutotestUsers extends BaseTest {
                     Actions.loginActions().doLogin(user.getLoginID(), user.getPassword());
                 }
             }
+
+            Actions.cashDrawerAction().isCashRecyclerExistAndCreateIfNot(userCredentials.getUserName());
+            Actions.cashDrawerAction().isCashDispenserExistAndCreateIfNot(userCredentials.getUserName());
+
             Pages.aSideMenuPage().clickCashDrawerMenuItem();
             Actions.transactionActions().doLoginTeller();
             double countedCashValue = Actions.cashDrawerAction().getCountedCashValueWithoutFormat();

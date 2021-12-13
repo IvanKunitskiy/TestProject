@@ -1,5 +1,8 @@
 package com.nymbus.actions.settings;
 
+import com.nymbus.actions.Actions;
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.data.entity.CashDrawer;
 import com.nymbus.newmodels.transaction.verifyingModels.CashDrawerData;
 import com.nymbus.pages.Pages;
@@ -42,6 +45,27 @@ public class CashDrawerAction {
         setCashDrawerData(cashDrawer);
 
         SettingsPage.addCashDrawerPage().clickSaveChangesButton();
+    }
+
+    public void createCashRecyclerDispenser(CashDrawer cashDrawer) {
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        Pages.settings().waitForSettingsPageLoaded();
+        SettingsPage.mainPage().waitForCashDrawerRegion();
+        SettingsPage.mainPage().clickAddNewCashDrawerLink();
+
+        setCashRecyclerData(cashDrawer);
+
+        SettingsPage.addCashDrawerPage().clickSaveChangesButton();
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
+    }
+
+    private void setCashRecyclerData(CashDrawer cashDrawer) {
+        SettingsPage.addCashDrawerPage().setNameValue(cashDrawer.getName());
+        setCashDrawerType(cashDrawer);
+        setRandomBranch(cashDrawer);
+        setRandomLocation(cashDrawer);
+        setGLAccountNumber(cashDrawer);
+        SettingsPage.addCashDrawerPage().clickIncludeCoinDispenserSwitcher();
     }
 
     private void setCashDrawerData(CashDrawer cashDrawer) {
@@ -188,6 +212,51 @@ public class CashDrawerAction {
     public void selectSpecificCashDrawer(String name) {
         Pages.cashDrawerBalancePage().clickCashDrawerField();
         Pages.cashDrawerBalancePage().pickSpecificCashDrawerNameFromDropdown(name);
+    }
+
+    public void searchForCashDrawerByNameOnCashDrawerViewPage(String cashDrawerName) {
+        Pages.aSideMenuPage().clickSettingsMenuItem();
+        Pages.settings().waitForSettingsPageLoaded();
+        SettingsPage.mainPage().waitForCashDrawerRegion();
+        SettingsPage.mainPage().clickViewAllCashDrawerLink();
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
+
+        SettingsPage.viewCashDrawerPage().typeIntoSearchField(cashDrawerName);
+        SettingsPage.viewCashDrawerPage().clickSearchButton();
+    }
+
+    public boolean isCashRecyclerExist(String cashRecyclerName) {
+        searchForCashDrawerByNameOnCashDrawerViewPage(cashRecyclerName);
+        return SettingsPage.viewCashDrawerPage().isSpecificCashDrawerTypeForSpecificUserPresent(cashRecyclerName, "Cash Recycler");
+    }
+    
+    public void isCashRecyclerExistAndCreateIfNot(String userLoginId) {
+        String cashRecyclerName = userLoginId + "CashRecycler";
+        if(!isCashRecyclerExist(cashRecyclerName)){
+            CashDrawer cashRecycler = new CashDrawer();
+            cashRecycler.setName(cashRecyclerName);
+            cashRecycler.setType("Cash Recycler");
+            cashRecycler.setBranch(Actions.usersActions().getBankBranch());
+            cashRecycler.setLocation(Actions.usersActions().getLocation());
+            createCashRecyclerDispenser(cashRecycler);
+        }
+    }
+
+    public boolean isCashDispenserExist(String cashDispenserName) {
+        searchForCashDrawerByNameOnCashDrawerViewPage(cashDispenserName);
+        return SettingsPage.viewCashDrawerPage().isSpecificCashDrawerTypeForSpecificUserPresent(cashDispenserName, "Cash Dispenser");
+    }
+
+    public void isCashDispenserExistAndCreateIfNot(String userLoginId) {
+        String cashDispenser= userLoginId + "CashDispenser";
+        if(!isCashDispenserExist(cashDispenser)){
+            CashDrawer cashRecycler = new CashDrawer();
+            cashRecycler.setName(cashDispenser);
+            cashRecycler.setType("Cash Dispenser");
+            cashRecycler.setBranch(Actions.usersActions().getBankBranch());
+            cashRecycler.setLocation(Actions.usersActions().getLocation());
+            createCashRecyclerDispenser(cashRecycler);
+        }
     }
 
 }

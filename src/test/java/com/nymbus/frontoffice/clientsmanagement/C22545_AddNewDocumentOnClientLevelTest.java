@@ -7,6 +7,7 @@ import com.nymbus.actions.clients.documents.DocumentActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.Functions;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.client.IndividualClient;
 import com.nymbus.newmodels.client.other.document.CompanyID;
 import com.nymbus.newmodels.generation.client.builder.IndividualClientBuilder;
