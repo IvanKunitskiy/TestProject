@@ -14,7 +14,6 @@ public class BaseTest extends AllureLogger {
 
     protected UserCredentials userCredentials;
 
-
     @BeforeMethod(alwaysRun = true, description = "Opening web browser...")
     public void setUp() {
         logInfo("Creating web driver configuration...");

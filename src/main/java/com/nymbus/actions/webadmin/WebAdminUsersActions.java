@@ -813,7 +813,8 @@ public class WebAdminUsersActions {
 
         if (amountOfRecordsFound > 0) {
             WebAdminPages.rulesUIQueryAnalyzerPage().waitForSearchResultTable();
-            int index = (new Random().nextInt(WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult())) + 1;
+            int max = WebAdminPages.rulesUIQueryAnalyzerPage().getNumberOfSearchResult();
+            int index = (new Random().nextInt(max - 2)) + 2;
             accountNumber = WebAdminPages.rulesUIQueryAnalyzerPage().getAccountNumberByIndex(index);
         }
 

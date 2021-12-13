@@ -1,6 +1,7 @@
 package com.nymbus.core.config;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.FileDownloadMode;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -27,6 +28,7 @@ public class SelenideConfig {
             capabilities.setCapability("videoName", String.format("video_%s.mp4", DateTime.getLocalDateTimeByPattern(VIDEO_NAME_PATTERN)));
             capabilities.setCapability("sessionTimeout", "5m");
         }
+
         capabilities.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
         return capabilities;
     }
@@ -88,6 +90,7 @@ public class SelenideConfig {
 //        Configuration.holdBrowserOpen = true;
 
         DesiredCapabilities caps = getBrowserCapabilities();
+
         caps.setCapability(ChromeOptions.CAPABILITY, getChromeOptions());
 
 //        Configuration.startMaximized = true;
@@ -101,5 +104,7 @@ public class SelenideConfig {
         Configuration.pageLoadStrategy = "eager";
         Configuration.timeout = 18000;
         Configuration.reportsFolder = "screenshots/";
+        Configuration.proxyEnabled = true;
+        Configuration.fileDownload = FileDownloadMode.PROXY;
     }
 }

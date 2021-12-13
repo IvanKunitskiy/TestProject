@@ -86,13 +86,16 @@ public class TellerPage extends PageTools {
     /**
      * Success transaction Modal dialog region
      */
+
     private By successModalWindow = By.xpath("//*[@class='modal-dialog']");
     private By modalHeaderText = By.xpath("//*[@class='modal-dialog']//h4//span");
     private By closeModalButton = By.xpath("(//*[@class='modal-dialog']//button[@ng-click='close()'])[1]");
+    private By modalOkButton = By.xpath("//div[contains(@class, 'modal-dialog')]//button");
     private By printReceipt = By.xpath("//*[@id='printReceipt']");
     private By popupLoadingSpinner = By.xpath("//*[@id='printReceipt']/dn-loading-spinner");
     private By popupImg = By.xpath("//*[@id='printReceipt']//img[@id='receiptTemplate'][contains(@src, 'base64')]");
     private By printBalancesOnReceiptCheckbox = By.xpath("//input[@type='checkbox']");
+    private By transactionCommitSuccessfullyModal = By.xpath("//div[contains(@class, 'modal-dialog')]//p[text()='Transaction commit successfully']");
 
     @Step("Get first autocomplete account item")
     public String getFirstAutocompleteDropDownItem() {
@@ -104,6 +107,17 @@ public class TellerPage extends PageTools {
     public String getModalText() {
         waitForElementVisibility(modalHeaderText);
         return getElementText(modalHeaderText).trim();
+    }
+
+    @Step("Click 'Ok' button")
+    public void clickModalOkButton() {
+        waitForElementClickable(modalOkButton);
+        click(modalOkButton);
+    }
+
+    @Step("Check if 'Transaction commit successfully' modal present")
+    public boolean isTransactionCommitSuccessfullyModalPresent() {
+        return isElementVisible(transactionCommitSuccessfullyModal);
     }
 
     @Step("Close modal window")

@@ -23,6 +23,8 @@ import com.nymbus.newmodels.transaction.Transaction;
 import com.nymbus.newmodels.transaction.verifyingModels.BalanceDataForCHKAcc;
 import com.nymbus.newmodels.transaction.verifyingModels.TransactionData;
 import com.nymbus.pages.Pages;
+import com.nymbus.testrail.CustomStepResult;
+import com.nymbus.testrail.TestRailAssert;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
 import org.testng.Assert;
@@ -135,7 +137,15 @@ public class C22750_CDTWithoutTellerSessionCommitOutgoingWireWithFee extends Bas
         Actions.transactionActions().clickCommitButton();
         AccountActions.callStatement().verifyTransactionFields(CashierDefinedTransactions.OUTGOING_WIRE_FROM_SAVINGS);
 
-        logInfo("Step 6: Go to account used in CREDIT item and verify its:\n" +
+        logInfo("Step 6: Go back to the previous browser tab (On the Cashier Defined Transactions screen)");
+        Selenide.switchTo().window(0);
+        TestRailAssert.assertTrue( Pages.tellerPage().isTransactionCommitSuccessfullyModalPresent(),
+                new CustomStepResult("'Transaction commit successfully' modal is not present", "'Transaction commit successfully' modal is present"));
+
+        logInfo("Step 7: Click [OK] button in Alert Message");
+        Pages.tellerPage().clickModalOkButton();
+
+        logInfo("Step 8: Go to account used in DEBIT item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
         Actions.transactionActions().goToTellerPage();
@@ -147,7 +157,7 @@ public class C22750_CDTWithoutTellerSessionCommitOutgoingWireWithFee extends Bas
         Assert.assertEquals(actualSavBalanceData.getAvailableBalance(), expectedSavingsBalanceData.getAvailableBalance(),
                 "Available balance doesn't match!");
 
-        logInfo("Step 7: Open account on the Transactions tab and verify the committed transaction");
+        logInfo("Step 9: Open account on the Transactions tab and verify the committed transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
         savingsAccTransactionData.setBalance(returnTransactionAmount);
         savingsAccFeeTransactionData.setBalance(expectedSavingsBalanceData.getCurrentBalance());

@@ -6,6 +6,7 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Functions;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.CommitmentTypeAmt;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
@@ -55,10 +56,10 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         loanAccount.setPaymentAmountType(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType());
-        loanAccount.setCommitmentTypeAmt(CommitmentTypeAmt.NONE.getCommitmentTypeAmt());
-        loanAccount.setNextPaymentBilledDueDate(DateTime.getLocalDatePlusMonthsWithPatternAndLastDay(loanAccount.getDateOpened(), 1, "MM/dd/yyyy"));
-        String dateOpened = loanAccount.getDateOpened();
-        loanAccount.setDateOpened(DateTime.getDateMinusDays(dateOpened, 1));
+        loanAccount.setCommitmentTypeAmt(CommitmentTypeAmt.REVOLVING_AMOUNT.getCommitmentTypeAmt());
+//        loanAccount.setNextPaymentBilledDueDate(DateTime.getLocalDatePlusMonthsWithPatternAndLastDay(loanAccount.getDateOpened(), 1, "MM/dd/yyyy"));
+//        String dateOpened = loanAccount.getDateOpened();
+//        loanAccount.setDateOpened(DateTime.getDateMinusDays(dateOpened, 1));
         chkAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
 
         // Chk acc transaction
@@ -124,7 +125,7 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
         Actions.transactionActions().goToTellerPage();
         Actions.transactionActions().doLoginTeller();
         Actions.transactionActions().createTransaction(transaction_109);
-        Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
+//        Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().closeModal();
 
@@ -149,7 +150,7 @@ public class C25380_Process416LoanPaymentTransactionInterestOnlyOverAmountDueTes
     private final String TEST_RUN_NAME = "Loans Management";
 
     @TestRailIssue(issueID = 25380, testRunName = TEST_RUN_NAME)
-    @Test(description = "C25380, Process 416 loan payment transaction. Interest Only (bill). Over Amount Due.")
+    @Test(description = "C25380, Process 416 loan payment transaction. Interest Only (bill). Over Amount Due.", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void process416LoanPaymentTransactionInterestOnlyOverAmountDue() {
 

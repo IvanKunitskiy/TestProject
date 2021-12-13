@@ -139,7 +139,7 @@ public class C25382_ProcessIntPayOnlyPaymentTransaction extends BaseTest {
     private final String TEST_RUN_NAME = "Loans Management";
 
     @TestRailIssue(issueID = 25382, testRunName = TEST_RUN_NAME)
-    @Test(description = "C25382, Process 407 - Int Pay Only payment transaction")
+    @Test(description = "C25382, Process 407 - Int Pay Only payment transaction", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void process416LoanPaymentTransaction() {
         logInfo("Log in to the system");

@@ -144,7 +144,7 @@ public class C25383_Process420ForceToPrinLoanTransactionTest extends BaseTest {
     private final String TEST_RUN_NAME = "Loans Management";
 
     @TestRailIssue(issueID = 25383, testRunName = TEST_RUN_NAME)
-    @Test(description = "C25383, Process 420 - Force To Prin loan transaction")
+    @Test(description = "C25383, Process 420 - Force To Prin loan transaction", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void process420ForceToPrinLoanTransaction() {
 

@@ -158,7 +158,7 @@ public class C25416_ProcessEc416LoanPaymentTransactionInterestOnlyBillTest exten
     }
 
     @TestRailIssue(issueID = 25416, testRunName = TEST_RUN_NAME)
-    @Test(description = "C25416, Process EC 416 loan payment transaction. Interest Only (bill)")
+    @Test(description = "C25416, Process EC 416 loan payment transaction. Interest Only (bill)", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void processEc416LoanPaymentTransactionPrinIntBill() {
 

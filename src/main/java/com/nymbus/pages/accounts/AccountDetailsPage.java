@@ -517,7 +517,8 @@ public class AccountDetailsPage extends PageTools {
     @Step("Get 'Interest Paid To Date' value")
     public String getInterestPaidToDate() {
         waitForElementVisibility(interestPaidToDate);
-        return getElementText(interestPaidToDate).replaceAll("[^0-9.]", "");
+        String interestPaidToDateToReturn = getElementText(interestPaidToDate).replaceAll("[^0-9.]", "");
+        return interestPaidToDateToReturn.isEmpty() ? "0.0" : interestPaidToDateToReturn;
     }
 
     @Step("Get 'Interest Paid Last Year' value")

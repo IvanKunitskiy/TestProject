@@ -104,7 +104,7 @@ public class C25443_QuotePayoffPullPayoffQuoteTest extends BaseTest {
     private final String TEST_RUN_NAME = "Loans Management";
 
     @TestRailIssue(issueID = 25443, testRunName = TEST_RUN_NAME)
-    @Test(description = "C25443, Quote Payoff: Pull payoff quote")
+    @Test(description = "C25443, Quote Payoff: Pull payoff quote", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void interestRateChangeManuallyChangeInterestRateOnConvertedLoanAccount() {
 

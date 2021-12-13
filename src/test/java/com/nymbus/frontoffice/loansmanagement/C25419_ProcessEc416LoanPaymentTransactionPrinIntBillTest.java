@@ -158,7 +158,7 @@ public class C25419_ProcessEc416LoanPaymentTransactionPrinIntBillTest extends Ba
     }
 
     @TestRailIssue(issueID = 25419, testRunName = TEST_RUN_NAME)
-    @Test(description = "C25419, Process EC 416 loan payment transaction. Prin&Int (bill)")
+    @Test(description = "C25419, Process EC 416 loan payment transaction. Prin&Int (bill)", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void processEc416LoanPaymentTransactionPrinIntBill() {
 

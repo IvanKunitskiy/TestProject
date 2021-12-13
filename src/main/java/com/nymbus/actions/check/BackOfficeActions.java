@@ -1,5 +1,7 @@
 package com.nymbus.actions.check;
 
+import com.nymbus.core.utils.Constants;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.backoffice.Check;
 import com.nymbus.newmodels.backoffice.FullCheck;
 import com.nymbus.pages.Pages;
@@ -52,7 +54,9 @@ public class BackOfficeActions {
         Pages.backOfficePage().clickEditButton();
         Pages.backOfficePage().chooseTranCode();
         Pages.backOfficePage().clickSaveButton();
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         Pages.backOfficePage().clickCreateSwapButton();
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
         Pages.backOfficePage().clickCloseButton();
     }
 }

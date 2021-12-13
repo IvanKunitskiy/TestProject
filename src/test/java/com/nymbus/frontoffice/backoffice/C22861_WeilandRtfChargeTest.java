@@ -42,7 +42,7 @@ public class C22861_WeilandRtfChargeTest extends BaseTest {
                 "There are no records found with RDC charge code");
         Assert.assertEquals(WebAdminActions.webAdminUsersActions().getRemoteDepositReturnEFTDescription(),
                 "Returned Deposit Item - MSB", "Description is not equal to 'Returned Deposit Item - MSB'");
-        if(Constants.getEnvironment().equals("dev29")){
+        if(Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev58")){
             Assert.assertTrue(WebAdminActions.webAdminUsersActions().isCdtTemplateCommittedFromChkOnGlAccountCreated(cdtTemplateNameForDev29),
                     "There is no CDT Template where Misc Debit trans is committed from CHK on GL account");
         } else {
@@ -103,7 +103,7 @@ public class C22861_WeilandRtfChargeTest extends BaseTest {
         Actions.transactionActions().doLoginTeller();
 
         logInfo("Step 3: Select CDT Template from the preconditions");
-        if(Constants.getEnvironment().equals("dev29")){
+        if(Constants.getEnvironment().equals("dev29") || Constants.getEnvironment().equals("dev58")){
             Actions.cashierDefinedActions().setTellerOperation(cdtTemplateNameForDev29);
         } else {
             Actions.cashierDefinedActions().setTellerOperation(cdtTemplateName);
@@ -147,7 +147,8 @@ public class C22861_WeilandRtfChargeTest extends BaseTest {
 
         logInfo("Step 9: Click [Error Correct] button");
         Pages.journalDetailsPage().clickErrorCorrectButton();
-        Pages.journalDetailsPage().waitForErrorCorrectButtonInvisibility();
+        SelenideTools.sleep(Constants.SMALL_TIMEOUT);
+//        Pages.journalDetailsPage().waitForErrorCorrectButtonInvisibility();
 
         logInfo("Step 10: Refresh Account Analysis page for CHK account and verify that RTF record was deleted for Error Corrected transaction");
         SelenideTools.closeCurrentTab();

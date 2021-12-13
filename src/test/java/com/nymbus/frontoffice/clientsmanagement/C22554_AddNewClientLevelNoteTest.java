@@ -84,7 +84,11 @@ public class C22554_AddNewClientLevelNoteTest extends BaseTest {
         logInfo("Step 4: Click [Add New Note] button");
         Pages.notesPage().clickAddNewNoteButton();
 
-        logInfo("Step 5: Select current user as the 'Responsible Officer', Severity, any Due Date and click [Save] button and refresh the page");
+        logInfo("Step 5: Fill in all the displayed fields:\n" +
+                "- Select Current user as the Responsible Officer\n" +
+                "- Select any Severity and any Due Date\n" +
+                "- Specify some text in 'Note' field\n" +
+                "click [Save] button and refresh the page");
         NotesActions.editActions().selectResponsibleOfficer(note);
         Pages.notesPage().setDueDateValue(note.getDueDate());
         NotesActions.editActions().setSeverity(note);

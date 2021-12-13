@@ -141,7 +141,7 @@ public class C25378_ProcessLoanPaymentTransactionTest extends BaseTest {
     private final String TEST_RUN_NAME = "Loans Management";
 
     @TestRailIssue(issueID = 25378, testRunName = TEST_RUN_NAME)
-    @Test(description = "C25378, Process 416 loan payment transaction")
+    @Test(description = "C25378, Process 416 loan payment transaction", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void process416LoanPaymentTransaction() {
         logInfo("Step 1: Log in to SmartCore");
