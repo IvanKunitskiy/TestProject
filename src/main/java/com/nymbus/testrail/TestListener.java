@@ -1,12 +1,14 @@
 package com.nymbus.testrail;
 
-
 import com.nymbus.core.utils.Constants;
-import org.testng.IInvokedMethod;
-import org.testng.IInvokedMethodListener;
-import org.testng.ITestResult;
-import org.testng.TestListenerAdapter;
+import com.nymbus.core.utils.SelenideTools;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.remote.UnreachableBrowserException;
+import org.testng.*;
 
+import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -52,6 +54,7 @@ public class TestListener extends TestListenerAdapter implements IInvokedMethodL
 
     @Override
     public void afterInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
+        String imageName = "";
         if (Constants.SEND_RESULT_TO_TESTRAIL) {
             Method method = iInvokedMethod.getTestMethod().getConstructorOrMethod().getMethod();
             for (Annotation a : method.getDeclaredAnnotations()) {
@@ -79,16 +82,30 @@ public class TestListener extends TestListenerAdapter implements IInvokedMethodL
                         e.printStackTrace();
                     }
 
+                    imageName = method.getName();
+                    saveScreenShot(imageName);
+
                     if (annotation.customResults.size() > 0) {
-                        testRailTool.setTestExecutionStatus(testRailTool.getRunId(), annotation.issueID(), executionStatus.getValue(), annotation.customResults);
+                        testRailTool.setTestExecutionStatus(testRailTool.getRunId(), annotation.issueID(), executionStatus.getValue(), annotation.customResults, imageName);
                     } else {
-                        testRailTool.setTestExecutionStatus(testRailTool.getRunId(), annotation.issueID(), executionStatus.getValue());
+                        testRailTool.setTestExecutionStatus(testRailTool.getRunId(), annotation.issueID(), executionStatus.getValue(), imageName);
                     }
 
                 }
             }
 
             TestRailIssue.customResults.clear();
+        }
+    }
+
+    public void saveScreenShot(String imageName){
+        try {
+            File scrFile = ((TakesScreenshot) SelenideTools.getDriver()).getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(scrFile, new File(System.getProperty("report.dir") + File.separatorChar + "html" + File.separatorChar + imageName + ".png"));
+        } catch (UnreachableBrowserException ubs) {
+            Reporter.log("Unable to save screenshot. Browser unreachable!");
+        } catch (Throwable e) {
+            Reporter.log("Error saving screenshot!");
         }
     }
 

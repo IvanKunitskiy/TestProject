@@ -1,6 +1,7 @@
 package com.nymbus.pages.journal;
 
 import com.nymbus.core.base.PageTools;
+import com.nymbus.core.utils.SelenideTools;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -22,6 +23,7 @@ public class JournalDetailsPage extends PageTools {
     @Step("Wait for 'Error Correct' button invisibility")
     public void waitForErrorCorrectButtonInvisibility() {
         waitForElementDisabled(errorCorrectButton);
+        SelenideTools.sleep(12);
     }
 
     @Step("Wait for loading spinner invisibility")
