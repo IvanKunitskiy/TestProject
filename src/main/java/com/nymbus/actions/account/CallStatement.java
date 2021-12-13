@@ -80,11 +80,8 @@ public class CallStatement {
         SelenideTools.sleep(Constants.SMALL_TIMEOUT);
 
         File file = Pages.accountStatementPage().downloadCallStatementPdf();
-        System.out.println(file);
 
         PDF pdf = new PDF(file);
-
-        System.out.println(pdf);
 
         assertThat(pdf, containsText("Outgoing Wire Transfer"));
 

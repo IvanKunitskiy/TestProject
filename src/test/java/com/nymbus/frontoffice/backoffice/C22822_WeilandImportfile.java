@@ -159,7 +159,6 @@ public class C22822_WeilandImportfile extends BaseTest {
         Pages.backOfficePage().importFile(Functions.getFilePathByName("weiland.IF3"));
 
         logInfo("Step 5: Verify \"Import Files\" window");
-//        TODO: 
         Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(1,chkAccountNumber),
                 "Import table does not match");
         Assert.assertTrue(Pages.backOfficePage().checkValueFromImportFilesTable(2,String.valueOf(amount)),
