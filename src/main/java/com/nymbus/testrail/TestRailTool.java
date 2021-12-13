@@ -4,6 +4,7 @@ import com.nymbus.core.utils.Constants;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ public class TestRailTool {
 
     // URL for setting test execution status
     private final String SET_TEST_EXECUTION_STATUS = "add_result_for_case/%s/%s";
+    private final String GET_TEST_RESULTS_CASE = "get_results_for_case/%s/%s";
     private final String UPDATE_TEST_RUN = "update_run/%s";
     private final String GET_TESTS = "get_tests/%s";
 
@@ -68,22 +70,62 @@ public class TestRailTool {
      *
      * @param statusExecution status execution (1 - PASS, 2 - BLOCKED, 3 - UNTESTED, 4 - RETEST, 5 - FAIL)
      */
-    public void setTestExecutionStatus(long idRun, int caseId, int statusExecution) {
+    public void setTestExecutionStatus(long idRun, int caseId, int statusExecution, String imageName) {
         initRequest();
         try {
 
+            System.out.println("Screenshot name: " + imageName);
             Map data = new HashMap();
             data.put("status_id", statusExecution);
 
             JSONObject r = (JSONObject) client.sendPost(String.format(SET_TEST_EXECUTION_STATUS, idRun, caseId), data);
 
+            attachScreenshot(idRun, caseId, imageName);
 
         } catch (IOException | APIException e) {
             e.printStackTrace();
         }
     }
 
-    public void setTestExecutionStatus(long idRun, int caseId, int statusExecution, ArrayList<CustomStepResult> customStepResults) {
+    public void attachScreenshot(long idRun, int caseId, String imageName){
+        initRequest();
+
+        int idResult = getLastResultForCase(idRun, caseId);
+
+        File image = new File(System.getProperty("report.dir") +
+                File.separator + "html" +
+                File.separator + imageName + ".png");
+        try {
+            JSONObject r = (JSONObject) client.sendPost("add_attachment_to_result/" + idResult, image.getAbsoluteFile().toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (APIException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public int getLastResultForCase(long idRun, int caseId){
+        initRequest();
+        int lastResultId = -1;
+        try {
+            JSONObject r = (JSONObject) client.sendGet(String.format(GET_TEST_RESULTS_CASE, idRun, caseId));
+
+            JSONArray caseResults = (JSONArray) r.get("results");
+            JSONObject lastTestResult = (JSONObject) caseResults.get(0);
+
+            lastResultId = Integer.parseInt(lastTestResult.get("id").toString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (APIException e) {
+            e.printStackTrace();
+        }
+        System.out.println("ID: " + lastResultId);
+        return lastResultId;
+    }
+
+    public void setTestExecutionStatus(long idRun, int caseId, int statusExecution, ArrayList<CustomStepResult> customStepResults, String imageName) {
 
         int i = 1;
         ArrayList<Map> customSteps = new ArrayList<>();
@@ -106,6 +148,8 @@ public class TestRailTool {
 
             JSONObject r = (JSONObject) client.sendPost(String.format(SET_TEST_EXECUTION_STATUS, idRun, caseId), data);
 
+            attachScreenshot(idRun, caseId, imageName);
+
         } catch (IOException | APIException e) {
             e.printStackTrace();
         }
@@ -126,7 +170,7 @@ public class TestRailTool {
         Map createTestRunBody = new HashMap();
         createTestRunBody.put("suite_id", Constants.SUITE_ID);
         createTestRunBody.put("name", runName);
-        createTestRunBody.put("assignedto_id", "4");
+        createTestRunBody.put("assignedto_id", "1");
         createTestRunBody.put("include_all", false);
 
 
@@ -152,7 +196,7 @@ public class TestRailTool {
     public void updateTestRun(long caseID) {
         initRequest();
         try {
-            JSONArray getTestsByRunId = (JSONArray) client.sendGet(String.format(GET_TESTS, runId));
+            JSONArray getTestsByRunId = (JSONArray) ((JSONObject)client.sendGet(String.format(GET_TESTS, runId))).get("tests");
 
             ArrayList<Long> listOfTestCases = getListOfTestCasesIDFromTestRun(getTestsByRunId);
             listOfTestCases.add(caseID);
@@ -173,7 +217,7 @@ public class TestRailTool {
         initRequest();
 
         try {
-            JSONArray jsonArray = (JSONArray) client.sendGet(String.format(GET_PROJECT_SECTIONS_URL, projectId, suiteId));
+            JSONArray jsonArray = (JSONArray) ((JSONObject)client.sendGet(String.format(GET_PROJECT_SECTIONS_URL, projectId, suiteId))).get("sections");
 
             for (Object jsonObject : jsonArray) {
                 listSections.put((String) (((JSONObject) jsonObject).get("name")), (Long) (((JSONObject) jsonObject).get("id")));

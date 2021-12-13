@@ -21,7 +21,7 @@ public class TestRailAssert {
 
     public static void assertEquals(String actual, String expected, CustomStepResult customStepResult) {
         TestRailIssue.customResults.add(customStepResult);
-        Assert.assertEquals(expected, actual, customStepResult.getExpected());
+        Assert.assertEquals( actual, expected, customStepResult.getExpected());
         TestRailIssue.customResults.get(TestRailIssue.customResults.size() - 1).setStatus_id(1);
         TestRailIssue.customResults.get(TestRailIssue.customResults.size() - 1)
                 .setActual(TestRailIssue.customResults.get(TestRailIssue.customResults.size() - 1).getExpected());
@@ -29,7 +29,7 @@ public class TestRailAssert {
 
     public static void assertEquals(Object actual, Object expected, CustomStepResult customStepResult) {
         TestRailIssue.customResults.add(customStepResult);
-        Assert.assertEquals(expected, actual, customStepResult.getExpected());
+        Assert.assertEquals(actual, customStepResult.getExpected());
         TestRailIssue.customResults.get(TestRailIssue.customResults.size() - 1).setStatus_id(1);
         TestRailIssue.customResults.get(TestRailIssue.customResults.size() - 1)
                 .setActual(TestRailIssue.customResults.get(TestRailIssue.customResults.size() - 1).getExpected());
