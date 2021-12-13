@@ -115,6 +115,7 @@ public class C22651_JournalPerformEcForNsfTransactionTest extends BaseTest {
         logInfo("Step 4: Click [Error Correct] button");
         Pages.journalDetailsPage().clickErrorCorrectButton();
         Pages.journalDetailsPage().waitForErrorCorrectButtonInvisibility();
+        Pages.journalDetailsPage().waitForLoadingSpinnerInvisibility();
         Assert.assertEquals(Actions.journalActions().getTransactionState(), "Void",
                 "Transaction state hasn't changed");
 
