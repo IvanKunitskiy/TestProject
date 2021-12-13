@@ -165,7 +165,7 @@ public class C25481_ProcessEc416LoanPrepaymentTransactionPrinIntBillTest extends
     }
 
     @TestRailIssue(issueID = 25481, testRunName = TEST_RUN_NAME)
-    @Test(description = "C25481, Process EC 416 loan prepayment transaction. Prin&Int (bill)")
+    @Test(description = "C25481, Process EC 416 loan prepayment transaction. Prin&Int (bill)", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void processEc416LoanPrepaymentTransactionPrinIntBill() {
 

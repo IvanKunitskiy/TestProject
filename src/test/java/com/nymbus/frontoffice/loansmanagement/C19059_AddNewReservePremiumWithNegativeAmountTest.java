@@ -143,7 +143,7 @@ public class C19059_AddNewReservePremiumWithNegativeAmountTest extends BaseTest 
                 "'IRS Reportable Points Paid' = No\n" +
                 "and 'Commit Transaction'");
         String reservePremiumAmount = "300000";
-        Pages.reservePremiumProcessingModalPage().setEffectiveDate(DateTime.getLocalDateOfPattern("MM/dd/yyyy"));
+        Pages.reservePremiumProcessingModalPage().setEffectiveDate(DateTime.getDateMinusDays(DateTime.getLocalDate(), 2));
         Pages.reservePremiumProcessingModalPage().setReservePremiumAmount("-" + reservePremiumAmount);
         Actions.reservePremiumProcessingModalPageActions().setDeferredYesNoSwitchValueToYes();
         Actions.reservePremiumProcessingModalPageActions().setRandomReservePremiumCode("DE");

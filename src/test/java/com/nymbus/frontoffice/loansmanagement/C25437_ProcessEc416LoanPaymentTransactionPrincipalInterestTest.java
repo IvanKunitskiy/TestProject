@@ -168,7 +168,7 @@ public class C25437_ProcessEc416LoanPaymentTransactionPrincipalInterestTest exte
     }
 
     @TestRailIssue(issueID = 25437, testRunName = TEST_RUN_NAME)
-    @Test(description = "C25437, Process EC 416 loan payment transaction. Principal & Interest")
+    @Test(description = "C25437, Process EC 416 loan payment transaction. Principal & Interest", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void processEc416LoanPaymentTransactionPrincipalInterest() {
 

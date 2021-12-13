@@ -154,7 +154,7 @@ public class C21745_ReverseEcSameDayLoanPaymentsTest extends BaseTest {
     private final String TEST_RUN_NAME = "Loans Management";
 
     @TestRailIssue(issueID = 21745 , testRunName = TEST_RUN_NAME)
-    @Test(description = "C21745, Reverse (EC) same day loan payments")
+    @Test(description = "C21745, Reverse (EC) same day loan payments", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     public void reverseEcSameDayLoanPayments() {
 

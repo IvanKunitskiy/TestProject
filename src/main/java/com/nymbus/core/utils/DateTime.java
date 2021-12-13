@@ -235,6 +235,11 @@ public class DateTime {
             return localDate.plusDays(days).format(DateTimeFormatter.ofPattern(newPattern));
     }
 
+    public static String getLocalDateWithFormatMinusDays(String date, String currentPattern, String newPattern, int days) {
+        LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern(currentPattern));
+        return localDate.minusDays(days).format(DateTimeFormatter.ofPattern(newPattern));
+    }
+
     public static String getLocalDatePlusMonthsWithPatternAndLastDay(String date, int month, String pattern) {
         LocalDate localDate = LocalDate.parse(date , DateTimeFormatter.ofPattern(pattern));
         LocalDate resultDate = localDate.plusMonths(month);
