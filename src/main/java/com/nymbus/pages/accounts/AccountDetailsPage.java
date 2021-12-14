@@ -340,7 +340,9 @@ public class AccountDetailsPage extends PageTools {
     public String getEscrowBalance() {
         waitForElementVisibility(escrowBalance);
         String escrowBalanceValue = getElementText(escrowBalance).trim();
-        return escrowBalanceValue.replaceAll("[^0-9.-]", "");
+        return escrowBalanceValue.isEmpty()
+                ? "0.00"
+                : escrowBalanceValue.replaceAll("[^0-9.-]", "");
     }
 
     @Step("Get 'Daily Interest Factor' value")
