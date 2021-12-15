@@ -6,7 +6,6 @@ import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.client.IndividualClient;
-import com.nymbus.newmodels.client.other.account.InterestFrequency;
 import com.nymbus.newmodels.client.other.account.type.CHKAccount;
 import com.nymbus.pages.Pages;
 import org.testng.Assert;
@@ -590,6 +589,7 @@ public class CreateAccount {
 
         for (String s : listOfProduct) {
             if (s.trim().equals(account.getProduct())) {
+                SelenideTools.sleep(Constants.MICRO_TIMEOUT);
                 Pages.addAccountPage().clickProductOption(s);
             }
         }
