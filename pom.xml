@@ -17,8 +17,8 @@
         <testng>7.0.0</testng>
         <selenide>5.19.0</selenide>
         <assertj>3.14.0</assertj>
-        <logback>1.2.3</logback>
-        <org.slf4j>1.7.25</org.slf4j>
+        <logback>1.2.8</logback>
+        <org.slf4j>1.7.32</org.slf4j>
         <allure.version>2.13.0</allure.version>
         <aspectj.version>1.8.10</aspectj.version>
         <test.resource.dir>src${file.separator}test${file.separator}resources</test.resource.dir>
@@ -85,7 +85,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
+            <version>1.18.22</version>
             <scope>provided</scope>
         </dependency>
 

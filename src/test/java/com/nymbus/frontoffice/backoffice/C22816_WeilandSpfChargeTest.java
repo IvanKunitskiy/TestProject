@@ -19,7 +19,6 @@ import com.nymbus.newmodels.generation.client.builder.type.individual.Individual
 import com.nymbus.pages.Pages;
 import com.nymbus.testrail.TestRailIssue;
 import io.qameta.allure.*;
-import jdk.nashorn.internal.ir.IfNode;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
