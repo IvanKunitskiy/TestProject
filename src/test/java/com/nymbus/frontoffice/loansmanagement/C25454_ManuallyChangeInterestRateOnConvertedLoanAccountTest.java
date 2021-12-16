@@ -91,6 +91,7 @@ public class C25454_ManuallyChangeInterestRateOnConvertedLoanAccountTest extends
         Pages.loginPage().typeUserName(userCredentials.getUserName());
         Pages.loginPage().typePassword(userCredentials.getPassword());
         Pages.loginPage().clickEnterButton();
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         Pages.accountDetailsPage().clickTransactionsTab();
         String transactionCode = Pages.accountTransactionPage().getTransactionCodeByIndex(1);
         checkTransactionCode(transactionCode, newCurrentEffectiveRate, oldCurrentEffectiveRate);
@@ -130,6 +131,7 @@ public class C25454_ManuallyChangeInterestRateOnConvertedLoanAccountTest extends
 
         WebAdminActions.loginActions().doLogout();
         SelenideTools.closeCurrentTab();
+
         SelenideTools.switchTo().window(0);
 
         return interestEarned;
