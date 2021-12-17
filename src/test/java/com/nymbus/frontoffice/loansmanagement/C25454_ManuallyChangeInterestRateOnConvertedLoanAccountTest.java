@@ -5,6 +5,7 @@ import com.nymbus.actions.webadmin.WebAdminActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
+import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.transaction.enums.TransactionCode;
 import com.nymbus.pages.Pages;
@@ -77,11 +78,11 @@ public class C25454_ManuallyChangeInterestRateOnConvertedLoanAccountTest extends
         Pages.supervisorModalPage().clickEnter();
 
         double adjustmentAmount = (currentBalance * ((newCurrentEffectiveRate - oldCurrentEffectiveRate) / 100) / yearBase) * beginEarnDateDays;
-        adjustmentAmount = roundAmountToTwoDecimals(adjustmentAmount);
+        String roundedAdjustmentAmount = Functions.roundNumberForInterest(adjustmentAmount);
         double interestEarned = getInterestEarned(accountNumber);
         String alertMessageModalText = Pages.alertMessageModalPage().getAlertMessageModalText();
 
-        Assert.assertTrue(alertMessageModalText.contains(String.valueOf(adjustmentAmount)), "'Adjustment Amount' is calculated incorrect");
+        Assert.assertTrue(alertMessageModalText.contains(roundedAdjustmentAmount), "'Adjustment Amount' is calculated incorrect");
         Assert.assertTrue(alertMessageModalText.contains(String.format("%.2f", interestEarned)), "'Interest Earned' is calculated incorrect");
         Pages.alertMessageModalPage().clickOkButton();
 
@@ -117,11 +118,6 @@ public class C25454_ManuallyChangeInterestRateOnConvertedLoanAccountTest extends
         }
     }
 
-    private double roundAmountToTwoDecimals(double amount) {
-        DecimalFormat df = new DecimalFormat("#.##");
-        return Double.parseDouble(df.format(amount));
-    }
-
     private double getInterestEarned(String accountNumber) {
         SelenideTools.openUrlInNewWindow(Constants.WEB_ADMIN_URL);
         SelenideTools.switchTo().window(1);
@@ -129,6 +125,7 @@ public class C25454_ManuallyChangeInterestRateOnConvertedLoanAccountTest extends
 
         double interestEarned = Double.parseDouble(WebAdminActions.webAdminUsersActions().getInterestEarned(accountNumber));
 
+        SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         WebAdminActions.loginActions().doLogout();
         SelenideTools.closeCurrentTab();
 

@@ -107,9 +107,11 @@ public class Functions {
     }
 
     public static String roundNumberForInterest(double value) {
-        String convertedNum = String.format("%.4f", value);
+        String convertedNum = String.valueOf(value);
+        int decimalPointIndex = convertedNum.indexOf(".");
+        convertedNum = convertedNum.substring(0, decimalPointIndex + 5);
         int end = convertedNum.length();
-        if (Integer.parseInt(convertedNum.substring(end - 3, end - 2)) > 5){
+        if (Integer.parseInt(convertedNum.substring(end - 1, end)) > 5){
             return String.format("%.2f", value);
         }
         return convertedNum.substring(0, end - 2);

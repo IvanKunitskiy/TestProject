@@ -40,8 +40,6 @@ public class AddNewTransferActions {
         TransfersActions.addNewTransferActions().setLoanPaymentFromAccount(loanPaymentTransfer);
         TransfersActions.addNewTransferActions().setLoanPaymentToAccount(loanPaymentTransfer);
         Pages.newTransferPage().setAdvanceDaysFromDueDate(loanPaymentTransfer.getAdvanceDaysFromDueDate());
-        TransfersActions.addNewTransferActions().setEftChargeCode(loanPaymentTransfer);
-        Pages.newTransferPage().setTransferCharge(loanPaymentTransfer.getTransferCharge());
         Pages.newTransferPage().clickSaveButton();
     }
 

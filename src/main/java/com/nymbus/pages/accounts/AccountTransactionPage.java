@@ -50,7 +50,7 @@ public class AccountTransactionPage extends PageTools {
     private By transactionItems = By.xpath("//tr[contains(@class, 'transactionLine')]");
     private By rejectedItems = By.xpath("//span[contains(string(),\"Rejected\")]");
     private By image = By.xpath("//tr[contains(@class, 'detail-view')][1]//img");
-    private By transactionCode = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[5]//span[@ng-switch-when='transactioncode']");
+    private By transactionCode = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[4]//span[@ng-switch-when='transactioncode']");
     private By amountByTransactionCode = By.xpath("(//tr//td[span[contains(text(), '%s')]]/following-sibling::td[1])[%s]");
     private By descriptionValue = By.xpath("//tr[contains(@class, 'transactionLine')][%s]//td[7]//span");
     private By specificTransactionRecord = By.xpath("//tr[contains(@data-test-id, 'repeat-transactions-%s')]");
@@ -159,6 +159,11 @@ public class AccountTransactionPage extends PageTools {
     public String getInterestValue(int index) {
         waitForElementVisibility(interest, index);
         return getElementText(interest, index).trim().replaceAll("[^0-9.]", "");
+    }
+
+    @Step("Check if 'Escrow' column is present")
+    public Boolean isEscrowColumnPresent(int index) {
+        return isElementVisible(escrow, index);
     }
 
     @Step("Get 'Escrow' value")
