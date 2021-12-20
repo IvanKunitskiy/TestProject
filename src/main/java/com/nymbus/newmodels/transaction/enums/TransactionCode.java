@@ -53,6 +53,7 @@ public enum TransactionCode {
     LOAN_PAYMENT_114("114 - Loan Payment"),
     PAYOFF_433("433 - Payoff"),
     ESCROW_PYMT_435("435 - Escrow Pymt"),
+    ESCROW_CREDIT_437("437 - Escrow Credit"),
     PAYMENT_416("416 - Payment"),
     INT_PAY_ONLY_407("407 - Int Paym Only"),
     FORCE_TO_PRIN_420("420 - Force To Prin"),

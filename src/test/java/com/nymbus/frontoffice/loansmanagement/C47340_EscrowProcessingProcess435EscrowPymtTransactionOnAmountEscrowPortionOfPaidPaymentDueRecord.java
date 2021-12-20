@@ -8,6 +8,7 @@ import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
+import com.nymbus.newmodels.account.loanaccount.CommitmentTypeAmt;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
 import com.nymbus.newmodels.account.product.Products;
@@ -28,17 +29,17 @@ import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Petro")
-public class C47338_EscrowProcessingProcess435EscrowPymtTransactionOnAmountEscrowPortionOfActivePaymentDueRecord extends BaseTest {
+public class C47340_EscrowProcessingProcess435EscrowPymtTransactionOnAmountEscrowPortionOfPaidPaymentDueRecord extends BaseTest {
 
     private Account loanAccount;
     private Account chkAccount;
     private String clientRootId;
     double escrowAmount;
     Transaction transaction_435;
+    Transaction transaction_416;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
     private final String TEST_RUN_NAME = "Loans Management";
@@ -57,10 +58,12 @@ public class C47338_EscrowProcessingProcess435EscrowPymtTransactionOnAmountEscro
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         loanAccount.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
+        loanAccount.setCommitmentTypeAmt(CommitmentTypeAmt.NONE.getCommitmentTypeAmt());
+        loanAccount.setCommitmentAmt("0");
 
         // Set proper dates
         String localDate = DateTime.getLocalDateOfPattern("MM/dd/yyyy");
-        loanAccount.setDateOpened(DateTime.getDateMinusMonth(localDate, 1));
+        loanAccount.setDateOpened(DateTime.getDateMinusMonth(localDate, 2));
         loanAccount.setNextPaymentBilledDueDate(DateTime.getDatePlusMonth(loanAccount.getDateOpened(), 1));
         loanAccount.setPaymentBilledLeadDays("1");
         loanAccount.setCycleLoan(false);
@@ -106,6 +109,16 @@ public class C47338_EscrowProcessingProcess435EscrowPymtTransactionOnAmountEscro
         transaction_109.getTransactionDestination().setAmount(transaction109Amount);
         transaction_109.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
 
+        // Set up 416 transaction
+        double transactionAmount = Double.parseDouble(loanAccount.getPaymentAmount());
+        transaction_416 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
+        transaction_416.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
+        transaction_416.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
+        transaction_416.getTransactionSource().setAmount(transactionAmount);
+        transaction_416.getTransactionDestination().setTransactionCode(TransactionCode.PAYMENT_416.getTransCode());
+        transaction_416.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
+        transaction_416.getTransactionDestination().setAmount(transactionAmount);
+
         // Perform deposit transaction
         Actions.loginActions().doLogOutProgrammatically();
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -134,7 +147,7 @@ public class C47338_EscrowProcessingProcess435EscrowPymtTransactionOnAmountEscro
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
         Pages.accountDetailsPage().clickPaymentInfoTab();
         Pages.accountPaymentInfoPage().clickEditButtonAtOtherPayments();
-        SelenideTools.sleep(5);
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         Pages.accountPaymentInfoPage().clickOtherPaymentsAddNewButton();
         Pages.accountPaymentInfoPage().setOtherPaymentsEffectiveDate(loanAccount.getDateOpened());
         Pages.accountPaymentInfoPage().typeOtherPaymentsAmountValue(escrowAmount + "0");
@@ -144,20 +157,32 @@ public class C47338_EscrowProcessingProcess435EscrowPymtTransactionOnAmountEscro
         Pages.accountPaymentInfoPage().clickSaveButton();
         Actions.loginActions().doLogOutProgrammatically();
 
-        // Generate Payment Due record
+        // Perform 416 transaction
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
-        Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
+        Actions.transactionActions().goToTellerPage();
+        Actions.transactionActions().doLoginTeller();
+        Actions.transactionActions().setMiscDebitSourceForWithDraw(transaction_416.getTransactionSource(), 0);
+        Actions.transactionActions().setMiscCreditDestination(transaction_416.getTransactionDestination(), 0);
+        Actions.transactionActions().clickCommitButton();
+        Pages.tellerPage().closeModal();
         Actions.loginActions().doLogOutProgrammatically();
     }
 
-    @TestRailIssue(issueID = 47338, testRunName = TEST_RUN_NAME)
-    @Test(description = "C47338, Escrow Processing: Process \"435 - Escrow Pymt\" transaction on amount = Escrow portion of Active Payment Due record")
+    @TestRailIssue(issueID = 47340, testRunName = TEST_RUN_NAME)
+    @Test(description = "C47340, Escrow Processing: Process '435 - Escrow Pymt' transaction on amount = Escrow portion of Paid Payment Due record")
     @Severity(SeverityLevel.CRITICAL)
-    public void paymentDueRecordsErrorCorrectPartialPaymentTransactionOnAmortizedLoanWithGeneratedPaymentDueRecordsCycleNo() {
+    public void escrowProcessingProcess435EscrowPymtTransactionOnAmountEscrowPortionOfPaidPaymentDueRecord(){
         logInfo("Step 1: Log in to the NYMBUS");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
         logInfo("Step 2: Go to the \"Teller\" screen");
+        Pages.aSideMenuPage().clickClientMenuItem();
+        Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
+        double beforeEscrowBalance = Double.parseDouble(Pages.accountDetailsPage().getEscrowBalance());
+
+        Pages.accountDetailsPage().clickPaymentInfoTab();
+        double beforePaymentDueRecordCount = Pages.accountPaymentInfoPage().getPaymentDueRecordsCount();
+
         Actions.transactionActions().goToTellerPage();
 
         logInfo("Step 3: Log in to the proof date");
@@ -200,7 +225,7 @@ public class C47338_EscrowProcessingProcess435EscrowPymtTransactionOnAmountEscro
         String transactionAmount_435 = Pages.accountTransactionPage().getAmountValue(1) + Pages.accountTransactionPage().getAmountFractionalValue(1);
 
         TestRailAssert.assertTrue(Pages.accountTransactionPage().getTransactionCodeByIndex(1)
-                        .equals(String.valueOf(TransactionCode.ESCROW_PYMT_435.getTransCode())),
+                        .equals(String.valueOf(TransactionCode.ESCROW_CREDIT_437.getTransCode())),
                 new CustomStepResult("'Transaction Code' code is not valid", "'Transaction Code' code is valid"));
         TestRailAssert.assertEquals(escrowAmount + "0", transactionAmount_435,
                 new CustomStepResult("'Transaction Amount' is not valid", "'Transaction Amount' is valid"));
@@ -209,32 +234,19 @@ public class C47338_EscrowProcessingProcess435EscrowPymtTransactionOnAmountEscro
         Pages.accountDetailsPage().clickPaymentInfoTab();
 
         logInfo("Step 8: Verify existing Payment Due record");
-        double recordAmountActual = Double.parseDouble(Pages.accountPaymentInfoPage().getDueAmount());
-        double recordAmountExpected = Double.parseDouble(loanAccount.getPaymentAmount()) - escrowAmount;
-        String recordStatus = Pages.accountPaymentInfoPage().getDueStatus();
+        double actualPaymentDueRecordCount = Pages.accountPaymentInfoPage().getPaymentDueRecordsCount();
 
-        TestRailAssert.assertEquals(recordAmountActual, recordAmountExpected,
-                new CustomStepResult("'Payment Due Record Amount' is not valid", "'Payment Due Record Amount' is valid"));
-        TestRailAssert.assertEquals(recordStatus, "Partially Paid",
-                new CustomStepResult("'Payment Due Record Status' is not valid", "'Payment Due Record Status' is valid"));
+        TestRailAssert.assertEquals(beforePaymentDueRecordCount, actualPaymentDueRecordCount,
+                new CustomStepResult("The amount of 'Payment Due Records' is not valid", "The amount of 'Payment Due Records' is valid"));
 
-        logInfo("Step 9: Click on the Payment Due record and check the \"Transactions\" section");
-        Pages.accountPaymentInfoPage().clickPaymentDueRecordByIndex(1);
-        double escrow = Double.parseDouble(Pages.accountPaymentInfoPage().getEscrow());
-        String tranCodeStatus = Pages.accountPaymentInfoPage().getStatus();
-
-        TestRailAssert.assertEquals(escrowAmount, escrow,
-                new CustomStepResult("'Escrow' is not valid", "'Escrow' is valid"));
-        TestRailAssert.assertEquals(tranCodeStatus, "435 Escrow Pymt",
-                new CustomStepResult("'Tran Code/Status' is not valid", "'Tran Code/Status' is valid"));
-
-        logInfo("Step 10: Go to the \"Details\" tab and check the \"Escrow Balance\" field");
+        logInfo("Step 9: Go to the \"Details\" tab and check the \"Escrow Balance\" field");
         Pages.accountDetailsPage().clickDetailsTab();
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
 
         double actualEscrowBalance = Double.parseDouble(Pages.accountDetailsPage().getEscrowBalance());
 
-        TestRailAssert.assertEquals(actualEscrowBalance, escrowAmount,
+        TestRailAssert.assertEquals(actualEscrowBalance, beforeEscrowBalance + escrowAmount,
                 new CustomStepResult("'Escrow Balance' is not valid", "'Escrow Balance' is valid"));
     }
+
 }
