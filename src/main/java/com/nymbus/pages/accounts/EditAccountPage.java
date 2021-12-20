@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 public class EditAccountPage extends PageTools {
 
+    private By bypassNonAccrualOnDelinquentLoanSwitch = By.xpath("//dn-switch2[@name='bypassNonAccrual']");
     private By accountHoldersAndSignersFormTitle = By.xpath("//label[contains(text(), 'Account Holders and Signers')]");
     private By accountTitle = By.xpath("//input[@id='accounttitlemailinginstructions']");
     private By bankBranch = By.xpath("//div[@id='bankbranch']//span[contains(@class, 'ng-scope')]");
@@ -556,6 +557,12 @@ public class EditAccountPage extends PageTools {
         return getElementText(enablePositivePay).trim();
     }
 
+    @Step("Click the 'Bypass Non-Accrual on Delinquent Loan' switch")
+    public void clickBypassNonAccrualOnDelinquentLoanSwitch() {
+        waitForElementClickable(bypassNonAccrualOnDelinquentLoanSwitch);
+        scrollToPlaceElementInCenter(bypassNonAccrualOnDelinquentLoanSwitch);
+        click(bypassNonAccrualOnDelinquentLoanSwitch);
+    }
 
     @Step("Check if 'Adjustable Rate' switcher switched to 'YES'")
     public boolean isAdjustableRateYesValuePicked() {
