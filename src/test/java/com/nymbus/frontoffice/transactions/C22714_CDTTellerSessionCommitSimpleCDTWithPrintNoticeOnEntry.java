@@ -176,6 +176,7 @@ public class C22714_CDTTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry extend
 
         logInfo("Step 5: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
+        Pages.confirmModalPage().clickOk();
 
         logInfo("Step 6: Verify the following fields are printed on the Notice 1st Page:\n" +
                 "- Bank information to the left in the header\n" +
