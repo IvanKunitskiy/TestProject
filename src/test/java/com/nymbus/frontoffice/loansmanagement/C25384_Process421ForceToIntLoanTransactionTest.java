@@ -57,9 +57,6 @@ public class C25384_Process421ForceToIntLoanTransactionTest extends BaseTest {
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         loanAccount.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
-        String localDate = DateTime.getLocalDateOfPattern("MM/dd/yyyy");
-//        loanAccount.setDateOpened(DateTime.getDateMinusMonth(localDate, 3));
-//        loanAccount.setNextPaymentBilledDueDate(DateTime.getDatePlusMonth(loanAccount.getDateOpened(), 1));
         chkAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
 
         // Set up transactions
