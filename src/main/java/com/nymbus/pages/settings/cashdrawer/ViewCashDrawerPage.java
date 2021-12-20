@@ -34,7 +34,7 @@ public class ViewCashDrawerPage extends PageTools {
      * Actions with controls
      */
     public void waitViewCashDrawerDataVisible() {
-        waitForElementVisibility(overLay);
+        //waitForElementVisibility(overLay);
         waitForElementInvisibility(overLay);
     }
 

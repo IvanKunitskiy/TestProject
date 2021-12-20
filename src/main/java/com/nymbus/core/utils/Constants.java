@@ -2,8 +2,12 @@ package com.nymbus.core.utils;
 
 import com.nymbus.newmodels.UserCredentials;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Properties;
 import java.util.Stack;
 
 public class Constants {
@@ -14,15 +18,9 @@ public class Constants {
     public static String BIN_NUMBER = getBinNumber();
     public static FinancialInstitutionType INSTITUTION_TYPE = getInstitutionType();
 
-    public static final String CDT_TEMPLATE_NAME = "AUTOMATION_SAV_TO_CHK_CDT";
-
     public static String USERNAME = "autestthredone";
-    //    public static String USERNAME = "autotest";
     public static String PASSWORD = "autestthredone";
-    //    public static String PASSWORD = "autotest";
-    //    public static String FIRST_NAME = "autotest";
     public static String FIRST_NAME = "autestthredone";
-    //    public static String LAST_NAME = "autotest";
     public static String LAST_NAME = "autestthredone";
 
     public static String NOT_TELLER_USERNAME = "autotesttell";
@@ -39,9 +37,9 @@ public class Constants {
     public final static int PROJECT_ID = 2;
     public final static int SUITE_ID = 81;
 
-    public final static String TEST_RAIL_USER = "pkyriushkin";
-    public final static String TEST_RAIL_PASSWORD = "@!Xu&|75sSg8F@!!";
-    public final static String TEST_RAIL_URL = "https://testrail.nymbus.com/testrail";
+    public static String TEST_RAIL_USER = "pkyriushkin";
+    public static String TEST_RAIL_PASSWORD = "@!Xu&|75sSg8F@!!";
+    public static String TEST_RAIL_URL = "https://testrail.nymbus.com/testrail";
 
     public static String CURRENT_TIME;
 
@@ -62,20 +60,6 @@ public class Constants {
 
     public static Stack<UserCredentials> USERS = new Stack<>();
 
-    static {
-        USERS.push(new UserCredentials("autotestfirst", "autotestfirst"));
-        USERS.push(new UserCredentials("autotestsecond", "autotestsecond"));
-        USERS.push(new UserCredentials("autotestthird", "autotestthird"));
-        USERS.push(new UserCredentials("autotestfourth", "autotestfourth"));
-        USERS.push(new UserCredentials("autotestfifth", "autotestfifth"));
-        USERS.push(new UserCredentials("autotestsixth", "autotestsixth"));
-        USERS.push(new UserCredentials("autotestseventh", "autotestseventh"));
-        USERS.push(new UserCredentials("autotesteighth", "autotesteighth"));
-        USERS.push(new UserCredentials("autotestnineth", "autotestnineth"));
-        USERS.push(new UserCredentials("autotestteenth", "autotestteenth"));
-        USERS.push(new UserCredentials("autestthredone", "autestthredone"));
-        USERS.push(new UserCredentials("autotest", "autotest"));
-    }
 
     /**
      * Browsers
@@ -84,85 +68,139 @@ public class Constants {
     public static String FIREFOX = "firefox";
 
     private static String getBaseUrl() {
-        switch (getEnvironment()) {
-            case "dev6":
-            default:
-                return "https://dev6.nymbus.com/";
-            case "dev12":
-                return "https://dev12.nymbus.com/frontoffice";
-            case "dev21":
-                return "https://dev21.nj1.nymbus.com/frontoffice/";
-            case "dev4":
-                return "https://frontoffice.nj1.nymbus.com/frontoffice/#/crm/login";
-            case "dev18":
-                return "https://dev18.nj1.nymbus.com/frontoffice/#/crm/login";
-            case "dev29":
-                return "https://dev29.development.nymbus.com/frontoffice/#/crm/login";
-            case "dev47":
-                return "https://dev47.development.nymbus.com/frontoffice/#/crm";
-            case "dev58":
-                return "https://dev58.development.nymbus.com/frontoffice/#/crm/login";
+
+        try (InputStream input = new FileInputStream("constants.properties")) {
+
+            Properties prop = new Properties();
+
+            if (input == null) {
+                System.out.println("Sorry, unable to find config.properties");
+            } else {
+                prop.load(input);
+            }
+            switch (getEnvironment()) {
+                case "dev6":
+                default:
+                    return prop.getProperty("db.dev6");
+                case "dev12":
+                    return prop.getProperty("db.dev12");
+                case "dev21":
+                    return prop.getProperty("db.dev21");
+                case "dev4":
+                    return prop.getProperty("db.dev4");
+                case "dev18":
+                    return prop.getProperty("db.dev18");
+                case "dev29":
+                    return prop.getProperty("db.dev29");
+                case "dev47":
+                    return prop.getProperty("db.dev47");
+                case "dev58":
+                    return prop.getProperty("db.dev58");
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
+        return null;
     }
 
     private static String getWebAdminUrl() {
-        switch (getEnvironment()) {
-            case "dev6":
-            default:
-                return "https://nymbus-u-was-07.nj1.nymbus.com:9445/webadmin/";
-            case "dev12":
-                return "https://nymbus-d-was-12.nj1.nymbus.com:9445/webadmin/";
-            case "dev21":
-                return "https://was-21.nj1.nymbus.com:9445/webadmin/";
-            case "dev4":
-                return "https://nymbus-q-was-05.nj1.nymbus.com:9445/webadmin/";
-            case "dev18":
-                return "https://dev18.nj1.nymbus.com/webadmin/";
-            case "dev29":
-                return "https://dev29.development.nymbus.com/webadmin/";
-            case "dev47":
-                return "https://dev47.development.nymbus.com/webadmin/";
-            case "dev58":
-                return "https://dev58.development.nymbus.com/webadmin/";
+
+        try (InputStream input = new FileInputStream("constants.properties")) {
+
+            Properties prop = new Properties();
+
+            if (input == null) {
+                System.out.println("Sorry, unable to find config.properties");
+            } else {
+                prop.load(input);
+            }
+            switch (getEnvironment()) {
+                case "dev6":
+                default:
+                    return prop.getProperty("db.wadev6");
+                case "dev12":
+                    return prop.getProperty("db.wadev12");
+                case "dev21":
+                    return prop.getProperty("db.wadev21");
+                case "dev4":
+                    return prop.getProperty("db.wadev4");
+                case "dev18":
+                    return prop.getProperty("db.wadev18");
+                case "dev29":
+                    return prop.getProperty("db.wadev29");
+                case "dev47":
+                    return prop.getProperty("db.wadev47");
+                case "dev58":
+                    return prop.getProperty("db.wadev58");
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
+        return null;
     }
 
     private static String getApiUrl() {
-        switch (getEnvironment()) {
-            case "dev6":
-            default:
-                return "https://nymbus-u-was-07.nj1.nymbus.com:9443/coreweb/controller/";
-            case "dev12":
-                return "https://nymbus-d-was-12.nj1.nymbus.com:9443/coreweb/controller/";
-            case "dev21":
-                return "https://was-21.nj1.nymbus.com:9445/coreweb/controller/";
-            case "dev4":
-                return "https://nymbus-q-was-05.nj1.nymbus.com:9445/coreweb/controller/";
-            case "dev18":
-                return "https://dev18.nj1.nymbus.com/coreweb/controller/";
-            case "dev29":
-                return "https://tomcat-029.development.nymbus.com:9443/coreweb/controller/";
-            case "dev47":
-                return "https://tomcat-047.development.nymbus.com:9443/coreweb/controller/";
-            case "dev58":
-                return "https://tomcat-058.development.nymbus.com:9443/coreweb/controller/";
+        try (InputStream input = new FileInputStream("constants.properties")) {
+
+            Properties prop = new Properties();
+
+            if (input == null) {
+                System.out.println("Sorry, unable to find config.properties");
+            } else {
+                prop.load(input);
+            }
+            switch (getEnvironment()) {
+                case "dev6":
+                default:
+                    return prop.getProperty("db.apidev6");
+                case "dev12":
+                    return prop.getProperty("db.apidev12");
+                case "dev21":
+                    return prop.getProperty("db.apidev21");
+                case "dev4":
+                    return prop.getProperty("db.apidev4");
+                case "dev18":
+                    return prop.getProperty("db.apidev18");
+                case "dev29":
+                    return prop.getProperty("db.apidev29");
+                case "dev47":
+                    return prop.getProperty("db.apidev47");
+                case "dev58":
+                    return prop.getProperty("db.apidev58");
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
+        return null;
     }
 
     private static String getBinNumber() {
-        switch (getEnvironment()) {
-            case "dev6":
-            case "dev12":
-            default:
-                return "510986";
-            case "dev21":
-            case "dev4":
-            case "dev18":
-            case "dev29":
-            case "dev47":
-            case "dev58":
-                return "408078";
+        try (InputStream input = new FileInputStream("constants.properties")) {
+
+            Properties prop = new Properties();
+
+            if (input == null) {
+                System.out.println("Sorry, unable to find config.properties");
+            } else {
+                prop.load(input);
+            }
+            switch (getEnvironment()) {
+                case "dev6":
+                case "dev12":
+                default:
+                    return prop.getProperty("db.binDev6");
+                case "dev21":
+                case "dev4":
+                case "dev18":
+                case "dev29":
+                case "dev47":
+                case "dev58":
+                    return prop.getProperty("db.binDev21");
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
+        return null;
     }
 
     /**
@@ -206,13 +244,65 @@ public class Constants {
     /**
      * Timeouts
      */
-    public static final int MICRO_TIMEOUT = 2;
-    public static final int MINI_TIMEOUT = 5;
-    public static final int SMALL_TIMEOUT = 10;
-    public static final int BIG_TIMEOUT = 25;
+    public static int MICRO_TIMEOUT;
+    public static int MINI_TIMEOUT;
+    public static int SMALL_TIMEOUT;
+    public static int BIG_TIMEOUT;
 
     /**
      * Directories
      */
-    public static final String RECEIPTS = "receipts";
+    public static String RECEIPTS;
+
+    static {
+        try (InputStream input = new FileInputStream("constants.properties")) {
+
+            Properties prop = new Properties();
+
+            if (input == null) {
+                System.out.println("Sorry, unable to find config.properties");
+            } else {
+                prop.load(input);
+
+                USERS.push(new UserCredentials(prop.getProperty("db.user"), prop.getProperty("db.user")));
+                USERS.push(new UserCredentials(prop.getProperty("db.user2"), prop.getProperty("db.user2")));
+                USERS.push(new UserCredentials(prop.getProperty("db.user3"), prop.getProperty("db.user3")));
+                USERS.push(new UserCredentials(prop.getProperty("db.user4"), prop.getProperty("db.user4")));
+                USERS.push(new UserCredentials(prop.getProperty("db.user5"), prop.getProperty("db.user5")));
+                USERS.push(new UserCredentials(prop.getProperty("db.user6"), prop.getProperty("db.user6")));
+                USERS.push(new UserCredentials(prop.getProperty("db.user7"), prop.getProperty("db.user7")));
+                USERS.push(new UserCredentials(prop.getProperty("db.user8"), prop.getProperty("db.user8")));
+                USERS.push(new UserCredentials(prop.getProperty("db.user9"), prop.getProperty("db.user9")));
+                USERS.push(new UserCredentials(prop.getProperty("db.user10"), prop.getProperty("db.user10")));
+                USERS.push(new UserCredentials(prop.getProperty("db.userdone"), prop.getProperty("db.userdone")));
+                USERS.push(new UserCredentials(prop.getProperty("db.userautotest"), prop.getProperty("db.userautotest")));
+
+                RECEIPTS = prop.getProperty("db.receipts");
+                MICRO_TIMEOUT = Integer.parseInt(prop.getProperty("db.microTimeout"));
+                MINI_TIMEOUT = Integer.parseInt(prop.getProperty("db.miniTimeout"));
+                SMALL_TIMEOUT = Integer.parseInt(prop.getProperty("db.smallTimeout"));
+                BIG_TIMEOUT = Integer.parseInt(prop.getProperty("db.bigTimeout"));
+
+                TEST_RAIL_USER = prop.getProperty("db.testRailUser");
+                TEST_RAIL_PASSWORD = prop.getProperty("db.testRailPass");
+                TEST_RAIL_URL = prop.getProperty("db.testRailURL");
+
+                DAYS_BEFORE_SYSTEM_DATE = Integer.parseInt(prop.getProperty("db.DAYS_BEFORE_SYSTEM_DATE"));
+                DAYS_BEFORE_SYSTEM_DATE_MONTH = Integer.parseInt(prop.getProperty("db.DAYS_BEFORE_SYSTEM_DATE_MONTH"));
+                MAX_CHARACTERS_ON_DEBIT_CARD = Integer.parseInt(prop.getProperty("db.maxCharchtersDebitCard"));
+
+                NOT_TELLER_USERNAME = prop.getProperty("db.notTellerUsername");
+                NOT_TELLER_PASSWORD = prop.getProperty("db.notTellerPassword");
+
+                USERNAME = prop.getProperty("db.username");
+                PASSWORD = prop.getProperty("db.password");
+                FIRST_NAME = prop.getProperty("db.firstname");
+                LAST_NAME = prop.getProperty("db.lastname");
+
+            }
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 }

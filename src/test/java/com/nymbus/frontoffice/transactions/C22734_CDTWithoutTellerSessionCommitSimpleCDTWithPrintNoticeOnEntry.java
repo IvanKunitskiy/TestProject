@@ -178,7 +178,10 @@ public class C22734_CDTWithoutTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry
         logInfo("Step 5: Click [Commit Transaction] button");
         Actions.transactionActions().clickCommitButton();
 
-        logInfo("Step 6: Verify the following fields are printed on the Notice 1st Page:\n" +
+        logInfo("Step 6: Submit the Alert popup");
+        Pages.confirmModalPage().clickOk();
+
+        logInfo("Step 7: Verify the following fields are printed on the Notice 1st Page:\n" +
                 "- Bank information to the left in the header\n" +
                 "- CDT Template name\n" +
                 "- Proof Date\n" +
@@ -188,7 +191,7 @@ public class C22734_CDTWithoutTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry
         AccountActions.callStatement().verifyTransactionData(tellerLocation, CashierDefinedTransactions.TRANSFER_FROM_SAV_TO_CHK_Print_Notice_On_Entry,
                 proofDateValue, client, savingsAccount);
 
-        logInfo("Step 7: Verify the following fields are printed on the Notice 2nd Page:\n" +
+        logInfo("Step 8: Verify the following fields are printed on the Notice 2nd Page:\n" +
                 "- Bank information to the left in the header\n" +
                 "- CDT Template name\n" +
                 "- Proof Date\n" +
@@ -201,7 +204,7 @@ public class C22734_CDTWithoutTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry
 
         WebAdminActions.loginActions().closeWebAdminPageAndSwitchToPreviousTab();
 
-        logInfo("Step 8: Go to account used in DEBIT item and verify its:\n" +
+        logInfo("Step 9: Go to account used in DEBIT item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
         Actions.clientPageActions().searchAndOpenClientByName(checkAccount.getAccountNumber());
@@ -212,14 +215,14 @@ public class C22734_CDTWithoutTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry
         Assert.assertEquals(actualBalanceData.getAvailableBalance(), expectedBalanceData.getAvailableBalance(),
                 "Available balance doesn't match!");
 
-        logInfo("Step 9: Open account on the Transactions tab and verify the committed transaction");
+        logInfo("Step 10: Open account on the Transactions tab and verify the committed transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
         chkAccTransactionData.setBalance(expectedBalanceData.getCurrentBalance());
         AccountActions.retrievingAccountData().goToTransactionsTab();
         TransactionData actualTransactionData = AccountActions.retrievingAccountData().getTransactionDataWithBalanceSymbol();
         Assert.assertEquals(actualTransactionData, chkAccTransactionData, "Transaction data doesn't match!");
 
-        logInfo("Step 10: Go to account used in CREDIT item and verify its:\n" +
+        logInfo("Step 11: Go to account used in CREDIT item and verify its:\n" +
                 "- current balance\n" +
                 "- available balance");
         Actions.clientPageActions().searchAndOpenClientByName(savingsAccount.getAccountNumber());
@@ -230,7 +233,7 @@ public class C22734_CDTWithoutTellerSessionCommitSimpleCDTWithPrintNoticeOnEntry
         Assert.assertEquals(actualSavBalanceData.getAvailableBalance(), expectedSavingsBalanceData.getAvailableBalance(),
                 "Available balance doesn't match!");
 
-        logInfo("Step 11: Open account on the Transactions tab and verify the committed transaction");
+        logInfo("Step 12: Open account on the Transactions tab and verify the committed transaction");
         Pages.accountDetailsPage().clickTransactionsTab();
         savingsAccTransactionData.setBalance(expectedSavingsBalanceData.getCurrentBalance());
         AccountActions.retrievingAccountData().goToTransactionsTab();

@@ -29,6 +29,10 @@ public class TellerToTellerPage extends PageTools {
     private By numberList = By.xpath("//td[@ng-if='transfer.config.transactionid.isShow']");
     private By approveButton = By.xpath("(//button[contains(string(),'Approve')])[%s]");
     private By approveButtonList = By.xpath("//button[contains(string(),'Approve')]");
+    private By voidButton = By.xpath("(//button[contains(string(),'Void')])[%s]");
+    private By voidButtonList = By.xpath("//button[contains(string(),'Void')]");
+    private By confirmVoidButton = By.xpath("(//button[contains(string(),'Confirm Void')])[%s]");
+    private By confirmVoidButtonList = By.xpath("//button[contains(string(),'Confirm Void')]");
     private By noResultsP = By.xpath("//td[contains(string(),'%s')]");
 
     @Step("Wait 'Proof Date Login' modal window")
@@ -52,12 +56,12 @@ public class TellerToTellerPage extends PageTools {
 
     @Step("Click apprower")
     public void clickApprover(String teller) {
-        waitForElementVisibility(approverArrow,1);
+        waitForElementVisibility(approverArrow, 1);
         int size = getElements(approverArrowList).size();
         waitForElementVisibility(approverArrow, size);
         waitForElementClickable(approverArrow, size);
         click(approverArrow, size);
-        waitForElementVisibility(approwerSpan,teller, 1);
+        waitForElementVisibility(approwerSpan, teller, 1);
         int sizeSpan = getElements(approwerSpanList, teller).size();
         waitForElementVisibility(approwerSpan, teller, sizeSpan);
         waitForElementClickable(approwerSpan, teller, sizeSpan);
@@ -66,12 +70,12 @@ public class TellerToTellerPage extends PageTools {
 
     @Step("Click action")
     public void clickAction(String action) {
-        waitForElementVisibility(actionArrow,1);
+        waitForElementVisibility(actionArrow, 1);
         int size = getElements(actionArrowList).size();
-        waitForElementVisibility(actionArrow,size);
-        waitForElementClickable(actionArrow,size);
-        click(actionArrow,size);
-        waitForElementVisibility(approwerSpan,action, 1);
+        waitForElementVisibility(actionArrow, size);
+        waitForElementClickable(actionArrow, size);
+        click(actionArrow, size);
+        waitForElementVisibility(approwerSpan, action, 1);
         int sizeSpan = getElements(approwerSpanList, action).size();
         waitForElementVisibility(approwerSpan, action, sizeSpan);
         waitForElementClickable(approwerSpan, action, sizeSpan);
@@ -106,7 +110,7 @@ public class TellerToTellerPage extends PageTools {
         SelenideTools.sleep(Constants.MINI_TIMEOUT);
         waitForElementVisibility(statusList);
         int size = getElements(statusList).size();
-        waitForElementVisibility(status,size);
+        waitForElementVisibility(status, size);
         return getElementAttributeValue("innerHTML", status, size);
     }
 
@@ -115,7 +119,7 @@ public class TellerToTellerPage extends PageTools {
         SelenideTools.sleep(Constants.MINI_TIMEOUT);
         waitForElementVisibility(numberList);
         int size = getElements(numberList).size();
-        waitForElementVisibility(number,size);
+        waitForElementVisibility(number, size);
         return getElementAttributeValue("innerHTML", number, size);
     }
 
@@ -123,15 +127,35 @@ public class TellerToTellerPage extends PageTools {
     public void clickApproveButton() {
         waitForElementVisibility(approveButtonList);
         int size = getElements(approveButtonList).size();
-        waitForElementVisibility(approveButton,size);
-        click(approveButton,size);
+        waitForElementVisibility(approveButton, size);
+        click(approveButton, size);
         SelenideTools.sleep(Constants.MINI_TIMEOUT);
     }
 
+    @Step("Click Void Button")
+    public void clickVoidButton() {
+        waitForElementVisibility(voidButtonList);
+        int size = getElements(voidButtonList).size();
+        waitForElementVisibility(voidButton, size);
+        click(voidButton, size);
+        //SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        waitForElementInvisibility(voidButton, size);
+    }
+
+    @Step("Click Confirm  Void Button")
+    public void clickConfirmVoidButton() {
+        waitForElementVisibility(confirmVoidButtonList);
+        int size = getElements(confirmVoidButtonList).size();
+        waitForElementVisibility(confirmVoidButton, size);
+        click(confirmVoidButton, size);
+        //SelenideTools.sleep(Constants.MINI_TIMEOUT);
+        waitForElementInvisibility(confirmVoidButton, size);
+    }
+
     @Step("No results is visible")
-    public boolean noTransactionsByNumber(String number){
+    public boolean noTransactionsByNumber(String number) {
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
-        return getElementsWithZeroOption(noResultsP,number).size() == 0;
+        return getElementsWithZeroOption(noResultsP, number).size() == 0;
     }
 
 }
