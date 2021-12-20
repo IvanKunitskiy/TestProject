@@ -80,7 +80,7 @@ public class TestRailTool {
 
             JSONObject r = (JSONObject) client.sendPost(String.format(SET_TEST_EXECUTION_STATUS, idRun, caseId), data);
 
-            attachScreenshot(idRun, caseId, imageName);
+            //attachScreenshot(idRun, caseId, imageName);
 
         } catch (IOException | APIException e) {
             e.printStackTrace();
@@ -97,9 +97,7 @@ public class TestRailTool {
                 File.separator + imageName + ".png");
         try {
             JSONObject r = (JSONObject) client.sendPost("add_attachment_to_result/" + idResult, image.getAbsoluteFile().toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (APIException e) {
+        } catch (IOException | APIException e) {
             e.printStackTrace();
         }
 
@@ -116,9 +114,7 @@ public class TestRailTool {
 
             lastResultId = Integer.parseInt(lastTestResult.get("id").toString());
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (APIException e) {
+        } catch (IOException | APIException e) {
             e.printStackTrace();
         }
         System.out.println("ID: " + lastResultId);
@@ -148,7 +144,7 @@ public class TestRailTool {
 
             JSONObject r = (JSONObject) client.sendPost(String.format(SET_TEST_EXECUTION_STATUS, idRun, caseId), data);
 
-            attachScreenshot(idRun, caseId, imageName);
+            //attachScreenshot(idRun, caseId, imageName);
 
         } catch (IOException | APIException e) {
             e.printStackTrace();
@@ -196,7 +192,7 @@ public class TestRailTool {
     public void updateTestRun(long caseID) {
         initRequest();
         try {
-            JSONArray getTestsByRunId = (JSONArray) ((JSONObject)client.sendGet(String.format(GET_TESTS, runId))).get("tests");
+            JSONArray getTestsByRunId = (JSONArray) client.sendGet(String.format(GET_TESTS, runId));
 
             ArrayList<Long> listOfTestCases = getListOfTestCasesIDFromTestRun(getTestsByRunId);
             listOfTestCases.add(caseID);
@@ -217,7 +213,7 @@ public class TestRailTool {
         initRequest();
 
         try {
-            JSONArray jsonArray = (JSONArray) ((JSONObject)client.sendGet(String.format(GET_PROJECT_SECTIONS_URL, projectId, suiteId))).get("sections");
+            JSONArray jsonArray = (JSONArray) client.sendGet(String.format(GET_PROJECT_SECTIONS_URL, projectId, suiteId));
 
             for (Object jsonObject : jsonArray) {
                 listSections.put((String) (((JSONObject) jsonObject).get("name")), (Long) (((JSONObject) jsonObject).get("id")));

@@ -19,7 +19,7 @@ import org.testng.annotations.Test;
 @Epic("Frontoffice")
 @Feature("Transactions")
 @Owner("Dmytro")
-public class C19469_CDT2TBetweenCashDrawersCashOut extends BaseTest {
+public class C19471_CDVoidT2TBetweenCashDrawersTransactionByAprroverConfirmInitiatorCashOut extends BaseTest {
     private UserCredentials secondUserCredentials;
     private String amount = "100";
     private String cashOut;
@@ -56,10 +56,10 @@ public class C19469_CDT2TBetweenCashDrawersCashOut extends BaseTest {
 
     private final String TEST_RUN_NAME = "Transactions";
 
-    @TestRailIssue(issueID = 19468, testRunName = TEST_RUN_NAME)
-    @Test(description = "C19468, End batch - Cash Drawer is Unbalanced")
+    @TestRailIssue(issueID = 19471, testRunName = TEST_RUN_NAME)
+    @Test(description = "C19471, [CD] Void T2T between Cash Drawers transaction by approver + Confirm Void by initiator (Cash Out)")
     @Severity(SeverityLevel.CRITICAL)
-    public void cDTTellerSessionCommitOfficialCheckFromCashWithFee() {
+    public void cDVoidT2TBetweenCashDrawersTransactionByInitiatorCashOut() {
         logInfo("Step 1: Log in to the system as User from the preconditions");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
@@ -98,7 +98,7 @@ public class C19469_CDT2TBetweenCashDrawersCashOut extends BaseTest {
                 "- Denominations used in the committed transaction");
         Pages.aSideMenuPage().clickCashDrawerMenuItem();
         TestRailAssert.assertEquals(Pages.cashDrawerBalancePage().getCashOut(),
-                 Double.parseDouble(cashOut) + Double.parseDouble(amount) + "0",
+                Double.parseDouble(cashOut) + Double.parseDouble(amount) + "0",
                 new CustomStepResult("Cash out is correct", "Cash out isn't correct"));
         TestRailAssert.assertEquals(Pages.cashDrawerBalancePage().getHundredsAmount(),
                 Double.parseDouble(hundredsAmount) - Double.parseDouble(amount) + "0",
@@ -128,9 +128,9 @@ public class C19469_CDT2TBetweenCashDrawersCashOut extends BaseTest {
         TestRailAssert.assertEquals(Pages.tellerToTellerPage().getStatusTransfer(), "Teller-to-Teller Pending",
                 new CustomStepResult("Status is correct", "Status is not correct"));
 
-        logInfo("Step 10: [Workstration2, Teller2]:\n" +
-                "Click [Approve] button");
-        Pages.tellerToTellerPage().clickApproveButton();
+        logInfo("Step 10: [Workstration2, Teller2]:" +
+                " Click [Void] button");
+        Pages.tellerToTellerPage().clickVoidButton();
 
         logInfo("Step 11: [Workstration2, Teller2]:\n" +
                 "Go to Cash Drawer screen and verify fields for Approver:\n" +
@@ -138,16 +138,16 @@ public class C19469_CDT2TBetweenCashDrawersCashOut extends BaseTest {
                 "- Denominations used in the committed transaction");
         Pages.aSideMenuPage().clickCashDrawerMenuItem();
         TestRailAssert.assertEquals(Pages.cashDrawerBalancePage().getCashIn(),
-                Double.parseDouble(cashIn) + Double.parseDouble(amount) + "0",
-                new CustomStepResult("Cash in is correct", "Cash in isn't correct"));
+                cashIn,
+                new CustomStepResult("Cash out is correct", "Cash out isn't correct"));
         TestRailAssert.assertEquals(Pages.cashDrawerBalancePage().getHundredsAmount(),
-                Double.parseDouble(hundredsAmountForSec) + Double.parseDouble(amount) + "0",
+                hundredsAmountForSec,
                 new CustomStepResult("Hundreds is correct","Hundreds isn't correct"));
 
-        logInfo("Step 12: Go back to Workstration1 with Teller1 user logged in;\n" +
-                "Go to Cash Drawer screen and verify fields for the Creator:\n" +
+        logInfo("Step 12: [workstration1, teller1] :\n" +
+                "Go to Cash Drawer screen and verify fields for Creator:\n" +
                 "- Cash out total on the left part of the screen (if Teller1 was selected as cash out)\n" +
-                "- Denominations used in the committed transaction");
+                "- Denominations used in committed transaction");
         Actions.loginActions().doLogOutProgrammatically();
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Pages.aSideMenuPage().clickCashDrawerMenuItem();
@@ -160,10 +160,46 @@ public class C19469_CDT2TBetweenCashDrawersCashOut extends BaseTest {
                 new CustomStepResult("Hundreds is correct","Hundreds isn't correct"));
 
         logInfo("Step 13: [Workstration1, Teller1 ]:\n" +
-                "Go to Teller to Teller Transfer screen and search for an approved transaction");
+                "Go to Teller to Teller Transfer screen again");
         Pages.aSideMenuPage().clickTellerToTellerMenuItem();
+
+        logInfo("Step 14: [Workstration1, Teller1 ]:\n" +
+                "Click [Confirm Void] button");
+        Pages.tellerToTellerPage().clickConfirmVoidButton();
         boolean b = Pages.tellerToTellerPage().noTransactionsByNumber(numberTransfer);
         TestRailAssert.assertTrue(b, new CustomStepResult("Transactions is not visible","Transactions is visible"));
-    }
 
+        logInfo("Step 15: [Workstration1, Teller1 ]:\n" +
+                "Go to Cash Drawer screen and verify fields for approver:\n" +
+                "- Cash out total on the left part of the screen (if Teller1 was selected as cash out)\n" +
+                "- Denominations used in committed transaction");
+        Pages.aSideMenuPage().clickCashDrawerMenuItem();
+        TestRailAssert.assertEquals(Pages.cashDrawerBalancePage().getCashOut(),
+                cashOut,
+                new CustomStepResult("Cash out is correct", "Cash out isn't correct"));
+        TestRailAssert.assertEquals(Pages.cashDrawerBalancePage().getHundredsAmount(),
+                hundredsAmount,
+                new CustomStepResult("Hundreds is correct","Hundreds isn't correct"));
+
+        logInfo("Step 16: [Workstration2, Teller2]:\n" +
+                "Go to Cash Drawer screen and verify fields for Approver:\n" +
+                "- Cash in total on the left part of the screen (if Teller2 was selected as cash in)\n" +
+                "- Denominations used in the committed transaction");
+        Actions.loginActions().doLogOutProgrammatically();
+        Actions.loginActions().doLogin(secondUserCredentials.getUserName(), secondUserCredentials.getPassword());
+        Pages.aSideMenuPage().clickCashDrawerMenuItem();
+        Actions.transactionActions().doLoginTeller();
+        TestRailAssert.assertEquals(Pages.cashDrawerBalancePage().getCashIn(),
+                cashIn,
+                new CustomStepResult("Cash out is correct", "Cash out isn't correct"));
+        TestRailAssert.assertEquals(Pages.cashDrawerBalancePage().getHundredsAmount(),
+                hundredsAmountForSec,
+                new CustomStepResult("Hundreds is correct","Hundreds isn't correct"));
+
+        logInfo("Step 17: [Workstration2, Teller2] :\n" +
+                "Go to Teller to Teller Transfer screen and search for Voided transaction");
+        b = Pages.tellerToTellerPage().noTransactionsByNumber(numberTransfer);
+        TestRailAssert.assertTrue(b, new CustomStepResult("Transactions is not visible","Transactions is visible"));
+
+    }
 }
