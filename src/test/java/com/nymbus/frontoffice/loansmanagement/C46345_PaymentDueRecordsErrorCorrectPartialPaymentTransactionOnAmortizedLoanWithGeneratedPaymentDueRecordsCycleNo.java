@@ -5,8 +5,10 @@ import com.nymbus.actions.account.AccountActions;
 import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.actions.loans.DaysBaseYearBase;
 import com.nymbus.core.base.BaseTest;
+import com.nymbus.core.utils.Constants;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Functions;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.CommitmentTypeAmt;
 import com.nymbus.newmodels.account.loanaccount.InterestMethod;
@@ -194,7 +196,7 @@ public class C46345_PaymentDueRecordsErrorCorrectPartialPaymentTransactionOnAmor
 
         logInfo("Step 4: Click [Error Correct] button");
         Pages.journalDetailsPage().clickErrorCorrectButton();
-        Pages.journalDetailsPage().waitForCreateErrorApplying();
+        SelenideTools.sleep(Constants.BIG_TIMEOUT);
 
         logInfo("Step 5: Open loan account from precondition #4 on the 'Transactions' tab");
         Pages.aSideMenuPage().clickClientMenuItem();

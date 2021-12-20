@@ -39,6 +39,7 @@ public class C22816_WeilandSpfChargeTest extends BaseTest {
         WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         int accAnalyzeWithRdcCodeAndAmountCount = WebAdminActions.webAdminUsersActions().getAccAnalyzeWithRdcCodeAndAmountCount();
         Assert.assertTrue(accAnalyzeWithRdcCodeAndAmountCount > 0, "There are no records found with RDC charge code");
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         WebAdminActions.loginActions().doLogout();
 
         // Set up Client
