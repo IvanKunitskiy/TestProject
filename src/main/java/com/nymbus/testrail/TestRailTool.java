@@ -97,9 +97,7 @@ public class TestRailTool {
                 File.separator + imageName + ".png");
         try {
             JSONObject r = (JSONObject) client.sendPost("add_attachment_to_result/" + idResult, image.getAbsoluteFile().toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (APIException e) {
+        } catch (IOException | APIException e) {
             e.printStackTrace();
         }
 
@@ -116,9 +114,7 @@ public class TestRailTool {
 
             lastResultId = Integer.parseInt(lastTestResult.get("id").toString());
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (APIException e) {
+        } catch (IOException | APIException e) {
             e.printStackTrace();
         }
         System.out.println("ID: " + lastResultId);
