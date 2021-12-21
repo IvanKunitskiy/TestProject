@@ -7,6 +7,7 @@ import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Functions;
 import com.nymbus.core.utils.Generator;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.LoanReserve;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -143,7 +144,8 @@ public class C19059_AddNewReservePremiumWithNegativeAmountTest extends BaseTest 
                 "'IRS Reportable Points Paid' = No\n" +
                 "and 'Commit Transaction'");
         String reservePremiumAmount = "300000";
-        Pages.reservePremiumProcessingModalPage().setEffectiveDate(DateTime.getDateMinusDays(DateTime.getLocalDate(), 2));
+        Pages.reservePremiumProcessingModalPage().setEffectiveDate(DateTime.getDateMinusDays(DateTime.getLocalDateOfPattern("MM/dd/yyyy"), 2));
+        Pages.reservePremiumProcessingModalPage().clickEffectiveDateIcon();
         Pages.reservePremiumProcessingModalPage().setReservePremiumAmount("-" + reservePremiumAmount);
         Actions.reservePremiumProcessingModalPageActions().setDeferredYesNoSwitchValueToYes();
         Actions.reservePremiumProcessingModalPageActions().setRandomReservePremiumCode("DE");

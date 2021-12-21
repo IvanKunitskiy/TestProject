@@ -142,7 +142,7 @@ public class C32547_PaymentProcessing421ForceToIntActivePDrecordAmountIntPortion
 
         Pages.accountDetailsPage().clickPaymentInfoTab();
         Pages.accountPaymentInfoPage().clickLastPaymentDueRecord();
-        String interestPortion = Pages.accountPaymentInfoPage().getDisabledInterest();
+        String interestPortion = Pages.accountPaymentInfoPage().getDisabledInterest().isEmpty() ? "0.00" : Pages.accountPaymentInfoPage().getDisabledInterest();
 
         Actions.transactionActions().goToTellerPage();
 

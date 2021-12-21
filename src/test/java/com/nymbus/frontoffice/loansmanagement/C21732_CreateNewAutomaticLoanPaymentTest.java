@@ -123,15 +123,11 @@ public class C21732_CreateNewAutomaticLoanPaymentTest extends BaseTest {
                 "- From Account = CHK or SAV account from preconditions with enough money for transfer\n" +
                 "- To Account = Loan account from preconditions\n" +
                 "- Advance days from due date = any number of days if need to make a payment in advance\n" +
-                "- Amount = no need to populate (the system will take \"Total Next Due\" amount)\n" +
-                "- EFT charge code (optional) = EFT charge\n" +
-                "- Transfer Charge (optional) = any amount (charge amount for transfer)");
+                "- Amount = no need to populate (the system will take \"Total Next Due\" amount)");
         Pages.newTransferPage().setExpirationDate(loanPaymentTransfer.getExpirationDate());
         TransfersActions.addNewTransferActions().setLoanPaymentFromAccount(loanPaymentTransfer);
         TransfersActions.addNewTransferActions().setLoanPaymentToAccount(loanPaymentTransfer);
         Pages.newTransferPage().setAdvanceDaysFromDueDate(loanPaymentTransfer.getAdvanceDaysFromDueDate());
-        TransfersActions.addNewTransferActions().setEftChargeCode(loanPaymentTransfer);
-        Pages.newTransferPage().setTransferCharge(loanPaymentTransfer.getTransferCharge());
 
         logInfo("Step 7: Click 'Save'");
         Pages.newTransferPage().clickSaveButton();
@@ -139,13 +135,9 @@ public class C21732_CreateNewAutomaticLoanPaymentTest extends BaseTest {
                 "'From Account' is not valid");
         Assert.assertTrue(Pages.viewTransferPage().getToAccount().contains(loanPaymentTransfer.getToAccount().getAccountNumber()),
                 "'To Account' is not valid");
-        Assert.assertEquals(Pages.viewTransferPage().getTransferCharge(), loanPaymentTransfer.getTransferCharge(),
-                "'Transfer Charge' is not valid");
         Assert.assertEquals(Pages.viewTransferPage().getCreationDate(), DateTime.getLocalDateOfPattern("MM/dd/yyyy"),
                 "'Creation Date' is not equal to current date");
         Assert.assertEquals(Pages.viewTransferPage().getAdvanceDaysFromDueDate(), loanPaymentTransfer.getAdvanceDaysFromDueDate(),
                 "'Advance Days From Due Date' is not equal to current date");
-        Assert.assertEquals(Pages.viewTransferPage().getEftChargeCode(), loanPaymentTransfer.getEftChargeCode(),
-                "'EFT charge code' is not equal to current date");
     }
 }

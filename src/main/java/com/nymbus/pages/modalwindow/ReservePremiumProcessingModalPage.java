@@ -14,6 +14,7 @@ public class ReservePremiumProcessingModalPage extends PageTools {
     private final By closeButton = By.xpath("(//button[span[text()='×']])[5]");
     private final By addNewLoanReservePremiumButton = By.xpath("//button/span[text()='Add New Loan Reserve/Premium']");
     private final By effectiveDate = By.xpath("//input[@data-test-id='field-effectivedate']");
+    private final By datePickerIcon = By.xpath("//*[@data-test-id='field-effectivedate']//div[@class='input-group-addon']");
     private final By reservePremiumAmount = By.xpath("//input[@data-test-id='field-originalamount']");
     private final By deferredYesNoSwitch = By.xpath("//dn-switch[@id='isdeferred']");
     private final By deferredYesNoSwitchValue = By.xpath("//dn-switch[@id='isdeferred']//div/span[1]");
@@ -101,6 +102,12 @@ public class ReservePremiumProcessingModalPage extends PageTools {
         typeWithoutWipe("", effectiveDate);
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
         typeWithoutWipe(date, effectiveDate);
+    }
+
+    @Step("Click 'Effective date' icon")
+    public void clickEffectiveDateIcon(){
+        waitForElementClickable(datePickerIcon);
+        click(datePickerIcon);
     }
 
     @Step("Set 'Reserve/Premium Amount' value")

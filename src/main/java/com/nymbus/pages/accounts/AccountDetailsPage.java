@@ -233,7 +233,8 @@ public class AccountDetailsPage extends PageTools {
     @Step("Get 'Amount charged off' value")
     public String getChargedOffAmount() {
         waitForElementVisibility(amountChargedOff);
-        return getElementText(amountChargedOff).replaceAll("[^0-9.]", "");
+        String elementText = getElementText(amountChargedOff).replaceAll("[^0-9.]", "");
+        return elementText.isEmpty() ? "0.00" : elementText;
     }
 
 

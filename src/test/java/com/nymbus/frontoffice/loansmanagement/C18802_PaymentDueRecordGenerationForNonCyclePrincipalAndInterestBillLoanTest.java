@@ -32,8 +32,6 @@ import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.nio.channels.SelectionKey;
-
 @Epic("Frontoffice")
 @Feature("Loans Management")
 @Owner("Petro")
@@ -193,7 +191,7 @@ public class C18802_PaymentDueRecordGenerationForNonCyclePrincipalAndInterestBil
 
         logInfo("Step 6: Open account from precondition on 'Payment info' tab");
         SelenideTools.sleep(Constants.MINI_TIMEOUT);
-        WebAdminActions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
         Pages.accountDetailsPage().clickPaymentInfoTab();
 

@@ -49,6 +49,7 @@ public class C22861_WeilandRtfChargeTest extends BaseTest {
             Assert.assertTrue(WebAdminActions.webAdminUsersActions().isCdtTemplateCommittedFromChkOnGlAccountCreated(cdtTemplateName),
                     "There is no CDT Template where Misc Debit trans is committed from CHK on GL account");
         }
+        SelenideTools.sleep(Constants.MINI_TIMEOUT);
         WebAdminActions.loginActions().doLogout();
 
         // Set up Client

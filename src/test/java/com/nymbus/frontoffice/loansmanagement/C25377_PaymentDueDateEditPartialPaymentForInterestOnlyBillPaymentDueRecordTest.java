@@ -121,10 +121,9 @@ public class C25377_PaymentDueDateEditPartialPaymentForInterestOnlyBillPaymentDu
         Pages.accountPaymentInfoPage().clickPaymentDueRecord();
         double interest = Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledInterest());
         double escrow = Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledEscrow());
-        double min = Math.min(interest, escrow);
 
         // assign amount to 416 transaction more than due date
-        transaction416Amount = min - diff;
+        transaction416Amount = getMinimumValue(interest, escrow) - diff;
         transaction_416.getTransactionDestination().setAmount(transaction416Amount);
         transaction_416.getTransactionSource().setAmount(transaction416Amount);
         Actions.loginActions().doLogOut();
@@ -170,9 +169,11 @@ public class C25377_PaymentDueDateEditPartialPaymentForInterestOnlyBillPaymentDu
         logInfo("Step 8: Check Payment Due record in the 'Payments Due' section");
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getPaymentDueTypeFromRecordByIndex(1).equals(PaymentAmountType.INTEREST_ONLY.getPaymentAmountType()),
                 new CustomStepResult("'Payment Due Type' is not valid", "'Payment Due Type' is valid"));
-        String actualAmountDue = Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1);
-        TestRailAssert.assertTrue(actualAmountDue.equals(Functions.roundAmountToTwoDecimals(amountDue - transaction416Amount)),
-                new CustomStepResult("'Amount Due' is not valid", "'Amount Due' is valid"));
+        double actualAmountDue = Double.parseDouble(Pages.accountPaymentInfoPage().getAmountDueFromRecordByIndex(1));
+        double expectedAmountDue = amountDue - transaction416Amount;
+        TestRailAssert.assertEquals(actualAmountDue, expectedAmountDue,
+                new CustomStepResult("'Amount Due' is not valid",
+                        String.format("'Amount Due' is valid, Expected: %s, Actual: %s", expectedAmountDue, actualAmountDue)));
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1).equals("Partially Paid"),
                 new CustomStepResult("'Status' is not valid", "'Status' is valid"));
 
@@ -181,7 +182,7 @@ public class C25377_PaymentDueDateEditPartialPaymentForInterestOnlyBillPaymentDu
         Pages.accountPaymentInfoPage().clickTheEditPaymentDueDetailsButton();
 
         logInfo("Step 10: Change 'Principal', 'Interest', 'Escrow' to the value < paid amount from step 4 and click 'Save'");
-        Pages.accountPaymentInfoPage().typeEscrow(Functions.getStringValueWithOnlyDigits(transaction416Amount - diff));
+        Pages.accountPaymentInfoPage().typeInterest(Functions.getStringValueWithOnlyDigits(transaction416Amount - diff));
         Pages.accountPaymentInfoPage().clickSavePaymentDueDetailsButton();
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1).equals("Partially Paid"),
                 new CustomStepResult("'Status' is not valid", "'Status' is valid"));
@@ -189,7 +190,7 @@ public class C25377_PaymentDueDateEditPartialPaymentForInterestOnlyBillPaymentDu
         logInfo("Step 11: Edit this record one more time and change 'Principal', 'Interest', 'Escrow' to the value > paid amount from step 4 and click 'Save'");
         Pages.accountPaymentInfoPage().clickPaymentDueRecord();
         Pages.accountPaymentInfoPage().clickTheEditPaymentDueDetailsButton();
-        Pages.accountPaymentInfoPage().typeEscrow(Functions.getStringValueWithOnlyDigits(transaction416Amount + diff + 1));
+        Pages.accountPaymentInfoPage().typeInterest(Functions.getStringValueWithOnlyDigits(transaction416Amount + diff + 1));
         Pages.accountPaymentInfoPage().clickSavePaymentDueDetailsButton();
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1).equals("Partially Paid"),
                 new CustomStepResult("'Status' is not valid", "'Status' is valid"));
@@ -197,8 +198,7 @@ public class C25377_PaymentDueDateEditPartialPaymentForInterestOnlyBillPaymentDu
         logInfo("Step 12: Edit this record one more time and change 'Principal', 'Interest', 'Escrow' to the value = paid amount from step 4 and click 'save'");
         Pages.accountPaymentInfoPage().clickPaymentDueRecord();
         Pages.accountPaymentInfoPage().clickTheEditPaymentDueDetailsButton();
-        Pages.accountPaymentInfoPage().typeInterest(Functions.getStringValueWithOnlyDigits(0.00));
-        Pages.accountPaymentInfoPage().typeEscrow(Functions.getStringValueWithOnlyDigits(transaction416Amount));
+        Pages.accountPaymentInfoPage().typeInterest(Functions.getStringValueWithOnlyDigits(transaction416Amount));
         Pages.accountPaymentInfoPage().clickSavePaymentDueDetailsButton();
         TestRailAssert.assertTrue(Pages.accountPaymentInfoPage().getStatusFromRecordByIndex(1).equals("Paid"),
                 new CustomStepResult("'Status' is not valid", "'Status' is valid"));
@@ -215,5 +215,12 @@ public class C25377_PaymentDueDateEditPartialPaymentForInterestOnlyBillPaymentDu
         String dateWithFormat = DateTime.getDateWithFormat(interestNextPaymentDate, "yyyy-MM-dd", "MM/dd/yyyy");
         TestRailAssert.assertTrue(dateWithFormat.equals(nextPaymentBilledDueDate),
                 new CustomStepResult("'principalnextpaymentdate' is not valid", "'principalnextpaymentdate' is valid"));
+    }
+
+    private double getMinimumValue(double x, double y) {
+        if (x != 0 && y != 0) {
+            return Math.min(x, y);
+        }
+        return x == 0 ? y : x;
     }
 }

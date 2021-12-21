@@ -161,6 +161,11 @@ public class AccountTransactionPage extends PageTools {
         return getElementText(interest, index).trim().replaceAll("[^0-9.]", "");
     }
 
+    @Step("Check if 'Escrow' column is present")
+    public Boolean isEscrowColumnPresent(int index) {
+        return isElementVisible(escrow, index);
+    }
+
     @Step("Get 'Escrow' value")
     public String getEscrowValue(int index) {
         waitForElementVisibility(escrow, index);
