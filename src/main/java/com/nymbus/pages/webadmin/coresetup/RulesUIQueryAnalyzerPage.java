@@ -561,7 +561,8 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
      * Loan Accounts
      */
 
-    private By loanAccountId = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[5]/span[contains(@class, 'high_title')]/span");
+    private By loanAccountId = By.xpath("//table[@id='searchResultTable']//tr[%s]//span[contains(@class, 'high_title')]/span");
+    private By searchResultTableHeaderCellValues = By.xpath("//table[@id='searchResultTable']//tr[contains(@class, 'searchResultRowHeader')][1]");
     private By acountId = By.xpath("//table[@id='searchResultTable']//tr[%s]/td[2]/span[contains(@class, 'high_title')]/span");
     private By transitAccountNumber = By.xpath("(//div[@key-name='transitaccountnumber'])[%s]");
     private By activeConvertedLoanAccountId = By.xpath("//table[contains(@class, 'searchResultPanel')]/tbody/" +
@@ -598,7 +599,6 @@ public class RulesUIQueryAnalyzerPage extends PageTools {
         waitForElementVisibility(loanAccountId, index);
         return getElementText(loanAccountId, index).trim();
     }
-
     @Step("Get 'Account number' {index} value")
     public String getAccountNumberValueByIndex(int index) {
         waitForElementVisibility(acountId, index);

@@ -175,7 +175,7 @@ public class C47340_EscrowProcessingProcess435EscrowPymtTransactionOnAmountEscro
         logInfo("Step 1: Log in to the NYMBUS");
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
 
-        logInfo("Step 2: Go to the \"Teller\" screen");
+        logInfo("Step 2: Go to the 'Teller' screen");
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount);
         double beforeEscrowBalance = Double.parseDouble(Pages.accountDetailsPage().getEscrowBalance());
@@ -230,7 +230,7 @@ public class C47340_EscrowProcessingProcess435EscrowPymtTransactionOnAmountEscro
         TestRailAssert.assertEquals(escrowAmount + "0", transactionAmount_435,
                 new CustomStepResult("'Transaction Amount' is not valid", "'Transaction Amount' is valid"));
 
-        logInfo("Step 7: Go to the \"Payment Info\" tab");
+        logInfo("Step 7: Go to the 'Payment Info' tab");
         Pages.accountDetailsPage().clickPaymentInfoTab();
 
         logInfo("Step 8: Verify existing Payment Due record");
@@ -239,7 +239,7 @@ public class C47340_EscrowProcessingProcess435EscrowPymtTransactionOnAmountEscro
         TestRailAssert.assertEquals(beforePaymentDueRecordCount, actualPaymentDueRecordCount,
                 new CustomStepResult("The amount of 'Payment Due Records' is not valid", "The amount of 'Payment Due Records' is valid"));
 
-        logInfo("Step 9: Go to the \"Details\" tab and check the \"Escrow Balance\" field");
+        logInfo("Step 9: Go to th'Details' tab and check the 'Escrow Balance' field");
         Pages.accountDetailsPage().clickDetailsTab();
         SelenideTools.sleep(Constants.MICRO_TIMEOUT);
 

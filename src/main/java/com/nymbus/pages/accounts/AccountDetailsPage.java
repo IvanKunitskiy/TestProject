@@ -36,7 +36,6 @@ public class AccountDetailsPage extends PageTools {
     /**
      * Details tab
      */
-
     private By moreButton = By.xpath("//button[@data-test-id='action-showMoreFields']");
     private By lessButton = By.xpath("//button[@data-test-id='action-hideLessFields']");
     private By fullProfileButton = By.xpath("//button[@data-test-id='go-fullProfile']");
@@ -168,6 +167,7 @@ public class AccountDetailsPage extends PageTools {
     private final By amountChargedOff = By.xpath("//tr[@data-config-name='amountchargedoff']//span/span");
     private final By unsavedTextAttentionModal = By.xpath("//div[contains(@class, 'dialog-modal')]//p[contains(text(), \"If you leave now, you will lose any text you've entered on this page. Are you sure you want to leave?\")]");
     private final By yesButton = By.xpath("//button/span[contains(text(), 'Yes')]");
+    private final By bypassNonAccrualOnDelinquentLoanSwitchYesValue = By.xpath("//tr[@data-test-id='field-bypassNonAccrual']//div/span/span");
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
@@ -188,6 +188,11 @@ public class AccountDetailsPage extends PageTools {
     public void clickYesButton(){
         waitForElementClickable(yesButton);
         click(yesButton);
+    }
+
+    @Step("Check if 'Bypass Non-Accrual on Delinquent Loan' switch value equals to 'Yes'")
+    public boolean isBypassNonAccrualOnDelinquentLoanSwitchYesValuePresent() {
+        return isElementVisible(bypassNonAccrualOnDelinquentLoanSwitchYesValue);
     }
 
     @Step("Get 'Participation Percent Sold'")
