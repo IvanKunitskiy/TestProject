@@ -6,6 +6,7 @@ import com.nymbus.actions.client.ClientsActions;
 import com.nymbus.core.base.BaseTest;
 import com.nymbus.core.utils.DateTime;
 import com.nymbus.core.utils.Functions;
+import com.nymbus.core.utils.SelenideTools;
 import com.nymbus.newmodels.account.Account;
 import com.nymbus.newmodels.account.loanaccount.PaymentAmountType;
 import com.nymbus.newmodels.account.product.AccountType;
@@ -33,6 +34,7 @@ import org.testng.annotations.Test;
 public class C25384_Process421ForceToIntLoanTransactionTest extends BaseTest {
 
     private Account loanAccount;
+    private Account chkAccount;
     private final String loanProductName = "Test Loan Product";
     private final String loanProductInitials = "TLP";
     private Transaction transaction_421;
@@ -50,11 +52,12 @@ public class C25384_Process421ForceToIntLoanTransactionTest extends BaseTest {
         IndividualClient client = individualClientBuilder.buildClient();
 
         // Set up account
-        Account chkAccount = new Account().setCHKAccountData();
+        chkAccount = new Account().setCHKAccountData();
         loanAccount = new Account().setLoanAccountData();
         loanAccount.setProduct(loanProductName);
         loanAccount.setMailCode(client.getIndividualClientDetails().getMailCode().getMailCode());
         loanAccount.setPaymentAmountType(PaymentAmountType.PRIN_AND_INT.getPaymentAmountType());
+        chkAccount.setDateOpened(DateTime.getDateMinusMonth(loanAccount.getDateOpened(), 1));
 
         // Set up transactions
         final double depositTransactionAmount = 1001.00;
@@ -71,13 +74,6 @@ public class C25384_Process421ForceToIntLoanTransactionTest extends BaseTest {
         transaction_109.getTransactionDestination().setAccountNumber(chkAccount.getAccountNumber());
         transaction_109.getTransactionDestination().setTransactionCode(TransactionCode.ATM_DEPOSIT_109.getTransCode());
         transaction_109.getTransactionDestination().setAmount(transaction109Amount);
-
-        transaction421Amount = 0;
-        transaction_421 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
-        transaction_421.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
-        transaction_421.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
-        transaction_421.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
-        transaction_421.getTransactionDestination().setTransactionCode(TransactionCode.FORCE_TO_INT_421.getTransCode());
 
         // Login to the system
         Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
@@ -121,10 +117,14 @@ public class C25384_Process421ForceToIntLoanTransactionTest extends BaseTest {
         Pages.tellerPage().setEffectiveDate(loanAccount.getDateOpened());
         Actions.transactionActions().clickCommitButtonWithProofDateModalVerification();
         Pages.tellerPage().closeModal();
+        Actions.loginActions().doLogOutProgrammatically();
 
         // Create nonTellerTransactions
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Actions.nonTellerTransaction().generatePaymentDueRecord(clientRootId);
+        Actions.loginActions().doLogOutProgrammatically();
 
+        Actions.loginActions().doLogin(userCredentials.getUserName(), userCredentials.getPassword());
         Pages.aSideMenuPage().clickClientMenuItem();
         Actions.clientPageActions().searchAndOpenAccountByAccountNumber(loanAccount.getAccountNumber());
         nextPaymentBilledDueDate = Pages.accountDetailsPage().getNextPaymentBilledDueDate();
@@ -134,8 +134,6 @@ public class C25384_Process421ForceToIntLoanTransactionTest extends BaseTest {
         Pages.accountDetailsPage().clickPaymentInfoTab();
         Pages.accountPaymentInfoPage().clickPaymentDueRecord();
         transaction421Amount = Double.parseDouble(Pages.accountPaymentInfoPage().getDisabledInterest());
-        transaction_421.getTransactionDestination().setAmount(transaction421Amount);
-        transaction_421.getTransactionSource().setAmount(transaction421Amount);
 
         Actions.loginActions().doLogOutProgrammatically();
     }
@@ -165,6 +163,14 @@ public class C25384_Process421ForceToIntLoanTransactionTest extends BaseTest {
                 "        Account number - Loan account from preconditions\n" +
                 "        \"Transaction Code\" - \"421 - Force To Int\"\n" +
                 "        \"Amount\" - specify the same amount\n");
+        transaction_421 = new TransactionConstructor(new MiscDebitMiscCreditBuilder()).constructTransaction();
+        transaction_421.getTransactionSource().setAccountNumber(chkAccount.getAccountNumber());
+        transaction_421.getTransactionSource().setTransactionCode(TransactionCode.LOAN_PAYMENT_114.getTransCode());
+        transaction_421.getTransactionDestination().setAccountNumber(loanAccount.getAccountNumber());
+        transaction_421.getTransactionDestination().setTransactionCode(TransactionCode.FORCE_TO_INT_421.getTransCode());
+        transaction_421.getTransactionDestination().setAmount(transaction421Amount);
+        transaction_421.getTransactionSource().setAmount(transaction421Amount);
+
         Actions.transactionActions().createTransaction(transaction_421);
         Actions.transactionActions().clickCommitButton();
 
@@ -249,12 +255,12 @@ public class C25384_Process421ForceToIntLoanTransactionTest extends BaseTest {
         double amountValue = AccountActions.retrievingAccountData().getAmountValue(1);
         TestRailAssert.assertTrue(amountValue == transaction421Amount,
                 new CustomStepResult("Amount is not valid", "Amount is valid"));
-        double principalValue = AccountActions.retrievingAccountData().getBalanceValue(1);
-        TestRailAssert.assertTrue(principalValue == 0.00,
-                new CustomStepResult("Principal is not valid", "Principal is valid"));
+        double principalValue = AccountActions.retrievingAccountData().getPrincipalValue(1);
+        TestRailAssert.assertEquals(principalValue,  0.0,
+                new CustomStepResult("Principal is not valid", String.format("Principal is not valid. Expected: %s, Actual: %s", 0.0, principalValue)));
         TestRailAssert.assertTrue(AccountActions.retrievingAccountData().getInterestMinusValue(1) == transaction421Amount,
                 new CustomStepResult("Interest is not valid", "Interest is valid"));
-        TestRailAssert.assertTrue(AccountActions.retrievingAccountData().getEscrowMinusValue(1) == 0.00,
-                new CustomStepResult("Escrow is not valid", "Escrow is valid"));
+        TestRailAssert.assertFalse(Pages.accountTransactionPage().isEscrowColumnPresent(1),
+                new CustomStepResult("'Escrow' column is present", "'Escrow' column is not present, because it's value '0.00'"));
+        }
     }
-}

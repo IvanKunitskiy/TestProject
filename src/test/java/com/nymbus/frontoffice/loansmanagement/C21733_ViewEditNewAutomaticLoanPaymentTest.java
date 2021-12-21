@@ -124,20 +124,13 @@ public class C21733_ViewEditNewAutomaticLoanPaymentTest extends BaseTest {
         logInfo("Step 5: Click on the 'Edit' button");
         Pages.viewTransferPage().clickEditButton();
 
-        logInfo("Step 6: Change some fields f.e.: 'From Account:', 'Advance days from due date:', 'Transfer Charge:'");
+        logInfo("Step 6: Change some fields f.e.: 'From Account:', 'Advance days from due date:'");
         logInfo("Step 7: Click 'Save'");
         loanPaymentTransfer.setAdvanceDaysFromDueDate(String.valueOf(Generator.genInt(1, 30)));
         Pages.editTransferPage().setAdvanceDaysFromDueDate(loanPaymentTransfer.getAdvanceDaysFromDueDate());
-        loanPaymentTransfer.setTransferCharge(String.valueOf(Generator.genInt(100, 900)));
-        Pages.editTransferPage().setTransferCharge(loanPaymentTransfer.getTransferCharge());
-        TransfersActions.editTransferActions().setRandomEftChargeCode(loanPaymentTransfer);
         Pages.editTransferPage().clickSaveButton();
 
-        Assert.assertEquals(Pages.viewTransferPage().getEftChargeCode(), loanPaymentTransfer.getEftChargeCode(),
-                "'EFT Charge code' value is not saved after editing");
         Assert.assertEquals(Pages.viewTransferPage().getAdvanceDaysFromDueDate(), loanPaymentTransfer.getAdvanceDaysFromDueDate(),
                 "'Advance Days From Due Date' value is not saved after editing");
-        Assert.assertEquals(Pages.viewTransferPage().getTransferCharge(), loanPaymentTransfer.getTransferCharge(),
-                "'Transfer Charge' value is not saved after editing");
     }
 }
