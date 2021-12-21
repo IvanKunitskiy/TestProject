@@ -63,9 +63,10 @@ public class WebAdminUsersActions {
     private String getLoanAccountWithDaysLateAboveOrEqualTwoUrl() {
         return Constants.WEB_ADMIN_URL
                 + "RulesUIQuery.ct?waDbName=coreDS&dqlQuery=count%3A+25%0D%0Aselect%3A+%28databean%29CREATEDBY%2C+" +
-                "%28databean%29CREATEDWHEN%2C+accountid%2C+dayslate%0D%0Afrom%3A+bank.data.actloan%" +
-                "0D%0Awhere%3A+%0D%0A-+.accountid->dateclosed%3A+%7Bnull%7D%0D%0A-+dayslate%3A+%7Bge%3A+2%7D%0D%0A" +
-                "formats%3A+%0D%0A-+->bank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A&source=";
+                "%28databean%29CREATEDWHEN%2C+accountid%2C+dayslate%2C+bypassNonAccrual%0D%0Afrom%3A+bank.data.actloan%" +
+                "0D%0Awhere%3A+%0D%0A-+.accountid->dateclosed%3A+%7Bnull%7D%0D%0A-+dayslate%3A+%7Bge%3A+2%7D%0D%0A-+" +
+                "hmdaloannumber%3A+%7Bnull%7D%0D%0A-+bypassNonAccrual%3A+0%0D%0Aformats%3A+%0D%0A-+->" +
+                "bank.data.actmst%3A+%24%7Baccountnumber%7D%0D%0A&source=";
     }
 
     private String getCashDispenserNameUrl() {

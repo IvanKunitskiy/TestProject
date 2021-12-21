@@ -56,6 +56,6 @@ public class C40465_NonAccrualProcessingBypassNonAccrualFlagVerifyThatThereIsAnO
         logInfo("Step 6: Check the 'Bypass Non-Accrual on Delinquent Loan' field");
         TestRailAssert.assertTrue(Pages.accountDetailsPage().isBypassNonAccrualOnDelinquentLoanSwitchYesValuePresent(),
                 new CustomStepResult("'Bypass Non-Accrual on Delinquent Loan' switch value is not valid",
-                        "'CBypass Non-Accrual on Delinquent Loan' switch value is valid"));
+                        "'Bypass Non-Accrual on Delinquent Loan' switch value is valid"));
     }
 }

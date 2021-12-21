@@ -167,7 +167,7 @@ public class AccountDetailsPage extends PageTools {
     private final By amountChargedOff = By.xpath("//tr[@data-config-name='amountchargedoff']//span/span");
     private final By unsavedTextAttentionModal = By.xpath("//div[contains(@class, 'dialog-modal')]//p[contains(text(), \"If you leave now, you will lose any text you've entered on this page. Are you sure you want to leave?\")]");
     private final By yesButton = By.xpath("//button/span[contains(text(), 'Yes')]");
-    private By bypassNonAccrualOnDelinquentLoanSwitchYesValue = By.xpath("//*[@name='bypassNonAccrual']//div/span[1]");
+    private final By bypassNonAccrualOnDelinquentLoanSwitchYesValue = By.xpath("//tr[@data-test-id='field-bypassNonAccrual']//div/span/span");
 
     @Step("Click the 'Accounts' link")
     public void clickAccountsLink() {
