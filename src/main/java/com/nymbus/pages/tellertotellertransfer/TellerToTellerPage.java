@@ -15,8 +15,8 @@ public class TellerToTellerPage extends PageTools {
     private By actionArrowList = By.xpath("//div[@ng-model='transfer.tellerrole']");
     private By approverArrow = By.xpath("(//div[@ng-model='transfer.otherCashDrawerId'])[%s]");
     private By approverArrowList = By.xpath("//div[@ng-model='transfer.otherCashDrawerId']");
-    private By approwerSpanList = By.xpath("//span[contains(string(),'%s')]");
-    private By approwerSpan = By.xpath("(//span[contains(string(),'%s')])[%s]");
+    private By approwerSpanList = By.xpath("//div/span[contains(string(),'%s')]");
+    private By approwerSpan = By.xpath("(//div/span[contains(string(),'%s')])[%s]");
     private By notesArray = By.xpath("//textarea");
     private By notes = By.xpath("(//textarea)[%s]");
     private By hundredsDenomination = By.xpath("//td[text()='Hundreds']/following-sibling::td//input");
