@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.nymbus</groupId>
-    <artifactId>nymbus-automation</artifactId>
+    <groupId>com.demo</groupId>
+    <artifactId>demo-automation</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>Nymbus</name>
+    <name>Demo</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,15 +16,12 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <testng>7.0.0</testng>
         <selenide>5.19.0</selenide>
-        <assertj>3.14.0</assertj>
         <logback>1.2.8</logback>
-        <org.slf4j>1.7.32</org.slf4j>
         <allure.version>2.13.0</allure.version>
         <aspectj.version>1.8.10</aspectj.version>
         <test.resource.dir>src${file.separator}test${file.separator}resources</test.resource.dir>
         <suiteXmlFile>AllTest</suiteXmlFile>
         <main.resource.dir>${project.basedir}${file.separator}src${file.separator}main${file.separator}resources</main.resource.dir>
-        <client.resource.dir>${main.resource.dir}${file.separator}client</client.resource.dir>
     </properties>
 
     <dependencies>
@@ -47,12 +44,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>${assertj}</version>
-        </dependency>
-
-        <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
             <version>${allure.version}</version>
@@ -65,77 +56,17 @@
         </dependency>
 
         <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>${aspectj.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${org.slf4j}</version>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.8.10</version>
+            <scope>runtime</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.22</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20190722</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.browserup</groupId>
-            <artifactId>browserup-proxy-core</artifactId>
-            <version>2.1.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.bytedeco</groupId>
-            <artifactId>tesseract-platform</artifactId>
-            <version>4.1.1-1.5.3</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.codeborne</groupId>
-            <artifactId>pdf-test</artifactId>
-            <version>1.4</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>2.3</version>
-        </dependency>
-
-        <!--<dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest</artifactId>
-            <version>2.2</version>
-        </dependency>-->
-
     </dependencies>
 
     <build>
@@ -146,14 +77,11 @@
                     <version>2.22.1</version>
                     <configuration>
                         <argLine>
-                            -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                            -javaagent:"${settings.localRepository}${file.separator}org${file.separator}aspectj${file.separator}aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                         </argLine>
                         <suiteXmlFiles>
                             <suiteXmlFile>${test.resource.dir}${file.separator}${suiteXmlFile}.xml</suiteXmlFile>
                         </suiteXmlFiles>
-                        <systemProperties>
-                            <client.resource.dir>${client.resource.dir}</client.resource.dir>
-                        </systemProperties>
                         <trimStackTrace>false</trimStackTrace>
                     </configuration>
                 </plugin>

@@ -3,67 +3,13 @@
 <suite name="Suite" parallel="true" thread-count="4">
 
     <listeners>
-        <listener class-name="com.nymbus.testrail.TestListener"/>
+        <listener class-name="com.demo.testrail.TestListener"/>
     </listeners>
 
-        <test name="Log In">
-            <packages>
-                <package name="com.nymbus.frontoffice.login.*"/>
-            </packages>
-        </test>
-
-    <test name="User management">
-        <packages>
-            <package name="com.nymbus.frontoffice.usermanagement.*"/>
-        </packages>
-    </test>
-
-        <test name="Create Clients">
-            <packages>
-                <package name="com.nymbus.frontoffice.clientsmanagement.createclients.*"/>
-            </packages>
-        </test>
-
-        <test name="Clients management">
-            <packages>
-                <package name="com.nymbus.frontoffice.clientsmanagement.*"/>
-            </packages>
-        </test>
-
-        <test name="Clients search">
-            <packages>
-                <package name="com.nymbus.frontoffice.clientsearch.*"/>
-            </packages>
-        </test>
-
-        <test name="Transactions">
-            <packages>
-                <package name="com.nymbus.frontoffice.transactions.*"/>
-            </packages>
-        </test>
-
-        <test name="Safe deposit box management">
-            <packages>
-                <package name="com.nymbus.frontoffice.safedepositboxmanagement.*"/>
-            </packages>
-        </test>
-
-        <test name="Deposit accounts management">
-            <packages>
-                <package name="com.nymbus.frontoffice.depositaccountsmanagement.*"/>
-            </packages>
-        </test>
-
-        <test name="Back office">
-            <packages>
-                <package name="com.nymbus.frontoffice.backoffice.*"/>
-            </packages>
-        </test>
-
-        <test name="Loans management">
-            <packages>
-                <package name="com.nymbus.frontoffice.loansmanagement.*"/>
-            </packages>
+        <test name="First">
+            <classes>
+                <class name="com.demo.FirstTest"/>
+            </classes>
         </test>
 
 </suite>

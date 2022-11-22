@@ -27,4 +27,4 @@ Download project from git.
     - allure serve allure-results
 
 Example:
-    - mvn clean -Dheadless=true -Dbrowser=chrome -Dtest=com.nymbus.tests.*Test test
+    - mvn clean -Dheadless=true -Dbrowser=chrome -Dtest=com.demo.tests.*Test test
